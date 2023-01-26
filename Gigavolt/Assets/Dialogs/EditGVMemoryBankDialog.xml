@@ -1,0 +1,50 @@
+<CanvasWidget xmlns="runtime-namespace:Game">
+
+  <CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+    <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
+
+      <LabelWidget  Text="[EditGVMemoryBankDialog:1]" HorizontalAlignment="Center" />
+
+      <CanvasWidget Size="0, 5" />
+
+      <CanvasWidget Size="Infinity, 50">
+        <LabelWidget  Color="128, 128, 128" Text="[EditGVMemoryBankDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0" />
+      </CanvasWidget>
+
+      <CanvasWidget Size="0, 15" />
+
+      <StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
+        <CanvasWidget Size="0, Infinity" />
+        <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+          <LabelWidget  Text="[EditGVMemoryBankDialog:3]"/>
+          <CanvasWidget Size="104, 34">
+            <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
+            <TextBoxWidget Name="EditGVMemoryBankDialog.RowCount" Size="500, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+          </CanvasWidget>
+          <CanvasWidget Size="20, 34" />
+          <LabelWidget  Text="[EditGVMemoryBankDialog:4]"/>
+          <CanvasWidget Size="104, 34">
+            <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
+            <TextBoxWidget Name="EditGVMemoryBankDialog.ColCount" Size="500, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+          </CanvasWidget>
+        </StackPanelWidget>
+        <CanvasWidget Size="0, 10" />
+        <LabelWidget Name="EditGVMemoryBankDialog.ImageLocation" Color="128, 128, 128" Text="[EditGVMemoryBankDialog:20]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" />
+        <CanvasWidget Size="0, 10" />
+        <CanvasWidget Size="504, 34" HorizontalAlignment="Center">
+          <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
+          <TextBoxWidget Name="EditGVMemoryBankDialog.LinearText" Size="500, 30" MaximumLength="10000000"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+        </CanvasWidget>
+        <CanvasWidget Size="0, Infinity" />
+      </StackPanelWidget>
+
+      <CanvasWidget Size="0, 15" />
+
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <BevelledButtonWidget Name="EditGVMemoryBankDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVMemoryBankDialog:21]" Margin="20, 0" />
+        <BevelledButtonWidget Name="EditGVMemoryBankDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVMemoryBankDialog:22]" />
+      </StackPanelWidget>
+    </StackPanelWidget>
+  </CanvasWidget>
+</CanvasWidget>

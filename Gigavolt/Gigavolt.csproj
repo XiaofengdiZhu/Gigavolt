@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{77E3E4A0-32D2-423E-9014-5AEF2B450F14}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gigavolt</RootNamespace>
+    <AssemblyName>Gigavolt</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Engine">
+      <HintPath>reference\Engine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EntitySystem">
+      <HintPath>reference\EntitySystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Survivalcraft">
+      <HintPath>reference\Survivalcraft.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs" />
+    <Compile Include="BaseBlock\IGVElectricElementBlock.cs" />
+    <Compile Include="BaseBlock\IGVElectricWireElementBlock.cs" />
+    <Compile Include="BaseBlock\MountedElectricGVElement.cs" />
+    <Compile Include="BaseBlock\MountedElectricGVElementBlock.cs" />
+    <Compile Include="BaseBlock\RotateableElectricGVElement.cs" />
+    <Compile Include="BaseBlock\RotateableMountedElectricGVElementBlock.cs" />
+    <Compile Include="Block\Gate\AdjustableDelayGateGVElectricElement.cs" />
+    <Compile Include="Block\Gate\AndGateElectricGVElement.cs" />
+    <Compile Include="Block\Gate\BaseDelayGateGVElectricElement.cs" />
+    <Compile Include="Block\Gate\DelayGateGVElectricElement.cs" />
+    <Compile Include="Block\Gate\GVAdjustableDelayGateBlock.cs" />
+    <Compile Include="Block\Gate\GVDelayGateBlock.cs" />
+    <Compile Include="Block\Gate\GVNandGateBlock.cs" />
+    <Compile Include="Block\Gate\GVNorGateBlock.cs" />
+    <Compile Include="Block\Gate\GVNotGateBlock.cs" />
+    <Compile Include="Block\Gate\GVOrGateBlock.cs" />
+    <Compile Include="Block\Gate\GVXorGateBlock.cs" />
+    <Compile Include="Block\Gate\NandGateGVElectricElement.cs" />
+    <Compile Include="Block\Gate\NorGateGVElectricElement.cs" />
+    <Compile Include="Block\Gate\NotGateGVElectricElement.cs" />
+    <Compile Include="Block\Gate\OrGateGVElectricElement.cs" />
+    <Compile Include="Block\Gate\SubsystemGVAdjustableDelayGateBlockBehavior.cs" />
+    <Compile Include="Block\Gate\XorGateGVElectricElement.cs" />
+    <Compile Include="Block\Source\ButtonGVElectricElement.cs" />
+    <Compile Include="Block\LED\FourLedGVElectricElement.cs" />
+    <Compile Include="Block\Gate\GVAndGateBlock.cs" />
+    <Compile Include="Block\Source\GVButtonBlock.cs" />
+    <Compile Include="Block\Source\GigaVoltageLevelData.cs" />
+    <Compile Include="Block\LED\GVFourLedBlock.cs" />
+    <Compile Include="Block\LED\GVOneLedBlock.cs" />
+    <Compile Include="Block\Source\GVSwitchBlock.cs" />
+    <Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs" />
+    <Compile Include="Block\Source\SwitchGVElectricElement.cs" />
+    <Compile Include="Block\Wire\GVWireBlock.cs" />
+    <Compile Include="Block\Store\GVMemoryBankBlock.cs" />
+    <Compile Include="Block\Store\GVMemoryBankData.cs" />
+    <Compile Include="Block\Store\MemoryBankGVElectricElement.cs" />
+    <Compile Include="Block\LED\OneLedGVElectricElement.cs" />
+    <Compile Include="Block\Source\SubsystemGVButtonBlockBehavior.cs" />
+    <Compile Include="Block\Store\SubsystemGVMemoryBankBlockBehavior.cs" />
+    <Compile Include="Block\Wire\WireDomainGVElectricElement.cs" />
+    <Compile Include="Dialog\EditGVMemoryBankDialog.cs" />
+    <Compile Include="Dialog\EditGigaVoltageLevelDialog.cs" />
+    <Compile Include="GVElectricClasses\GVElectricConnection.cs" />
+    <Compile Include="GVElectricClasses\GVElectricConnectionPath.cs" />
+    <Compile Include="GVElectricClasses\GVElectricConnectorDirection.cs" />
+    <Compile Include="GVElectricClasses\GVElectricConnectorType.cs" />
+    <Compile Include="GVElectricClasses\GVElectricElement.cs" />
+    <Compile Include="GVElectricClasses\MathUint.cs" />
+    <Compile Include="GVElectricClasses\SubsystemElectricGVBlockBehavior.cs" />
+    <Compile Include="GVElectricClasses\SubsystemGVElectricity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Gigavolt.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Gigavolt.xdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Lang\zh-CN.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="modinfo.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Dialogs\EditGigaVoltageLevelDialog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Dialogs\EditGVMemoryBankDialog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reference\Engine.dll" />
+    <None Include="reference\EntitySystem.dll" />
+    <None Include="reference\Survivalcraft.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
