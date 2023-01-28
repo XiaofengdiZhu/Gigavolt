@@ -94,6 +94,8 @@
     <Compile Include="Block\Source\GVSwitchBlock.cs" />
     <Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs" />
     <Compile Include="Block\Source\SwitchGVElectricElement.cs" />
+    <Compile Include="Block\Store\GVSRLatchBlock.cs" />
+    <Compile Include="Block\Store\SRLatchGVElectricElement.cs" />
     <Compile Include="Block\Wire\GVWireBlock.cs" />
     <Compile Include="Block\Store\GVMemoryBankBlock.cs" />
     <Compile Include="Block\Store\GVMemoryBankData.cs" />
@@ -140,6 +142,7 @@
     <None Include="Assets\Dialogs\EditGVMemoryBankDialog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="README.md" />
     <None Include="reference\Engine.dll" />
     <None Include="reference\EntitySystem.dll" />
     <None Include="reference\Survivalcraft.dll" />
