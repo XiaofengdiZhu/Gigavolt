@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs" />
+    <Compile Include="BaseBlock\GVWireThroughBlock.cs" />
     <Compile Include="BaseBlock\IGVElectricElementBlock.cs" />
     <Compile Include="BaseBlock\IGVElectricWireElementBlock.cs" />
     <Compile Include="BaseBlock\MountedElectricGVElement.cs" />
@@ -100,6 +101,11 @@
     <Compile Include="Block\LED\OneLedGVElectricElement.cs" />
     <Compile Include="Block\Source\SubsystemGVButtonBlockBehavior.cs" />
     <Compile Include="Block\Store\SubsystemGVMemoryBankBlockBehavior.cs" />
+    <Compile Include="Block\Wire\GVWireThroughBricksBlock.cs" />
+    <Compile Include="Block\Wire\GVWireThroughCobblestoneBlock.cs" />
+    <Compile Include="Block\Wire\GVWireThroughPlanksBlock.cs" />
+    <Compile Include="Block\Wire\GVWireThroughSemiconductorBlock.cs" />
+    <Compile Include="Block\Wire\GVWireThroughStoneBlock.cs" />
     <Compile Include="Block\Wire\WireDomainGVElectricElement.cs" />
     <Compile Include="Dialog\EditGVMemoryBankDialog.cs" />
     <Compile Include="Dialog\EditGigaVoltageLevelDialog.cs" />
