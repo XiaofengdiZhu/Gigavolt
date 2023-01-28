@@ -19,5 +19,8 @@
     <MemberSubsystemTemplate Name="GVButtonBlockBehavior" Guid="a1f690ce-4bfa-4715-49ea-789e689578e4" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
       <Parameter Name="Class" Guid="bf953f67-47ae-c453-65aa-1ad5103eebfd" Value="Game.SubsystemGVButtonBlockBehavior" Type="string" />
     </MemberSubsystemTemplate>
+    <MemberSubsystemTemplate Name="GVCounterBlockBehavior" Guid="e112a9ef-8357-b008-7c9c-af038068c96d" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+      <Parameter Name="Class" Guid="d4d92f80-90d2-34e6-0937-01ffee9883a3" Value="Game.SubsystemGVCounterBlockBehavior" Type="string" />
+    </MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

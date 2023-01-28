@@ -87,11 +87,14 @@
     <Compile Include="Block\Source\ButtonGVElectricElement.cs" />
     <Compile Include="Block\LED\FourLedGVElectricElement.cs" />
     <Compile Include="Block\Gate\GVAndGateBlock.cs" />
+    <Compile Include="Block\Source\CounterGVElectricElement.cs" />
     <Compile Include="Block\Source\GVButtonBlock.cs" />
     <Compile Include="Block\Source\GigaVoltageLevelData.cs" />
     <Compile Include="Block\LED\GVFourLedBlock.cs" />
     <Compile Include="Block\LED\GVOneLedBlock.cs" />
+    <Compile Include="Block\Source\GVCounterBlock.cs" />
     <Compile Include="Block\Source\GVSwitchBlock.cs" />
+    <Compile Include="Block\Source\SubsystemGVCounterBlockBehavior.cs" />
     <Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs" />
     <Compile Include="Block\Source\SwitchGVElectricElement.cs" />
     <Compile Include="Block\Store\GVSRLatchBlock.cs" />
