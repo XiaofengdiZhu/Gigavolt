@@ -10,4 +10,5 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 |开关、按钮、电池|默认输出1.5V|默认输出0xFFFFFFFF V|
 |计数器|默认溢出电压为0x10V，上限为0xF V|默认溢出电压为0V，上限0xFFFFFFFF V，可设置溢出电压|
 |存储器|略|需先手动设置存储矩阵长宽才可使用，长宽上限为2^31-1；每个数字用英文逗号,分开，每行数字用英文句号.分开|
+|压力板|有压力时输出0.8\~1.5V，随意设置的压力与电压关系|输出准确的压力值，参考16进制结果：男性玩家0x46V，虎鲸0x5DC V|
 |彩色LED、1面LED|0.8\~1.5V对应不同颜色|所有电压对应不同颜色（ABGR格式）|

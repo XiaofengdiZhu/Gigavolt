@@ -86,6 +86,8 @@
     <Compile Include="Block\LED\LightBulbGVElectricElement.cs" />
     <Compile Include="Block\LED\MulticoloredLedGVElectricElement.cs" />
     <Compile Include="Block\LED\SevenSegmentDisplayGVElectricElement.cs" />
+    <Compile Include="Block\Sensor\GVPressurePlateBlock.cs" />
+    <Compile Include="Block\Sensor\GVPressurePlateElectricElement.cs" />
     <Compile Include="Block\Source\BatteryGVElectricElement.cs" />
     <Compile Include="Block\Source\ButtonGVElectricElement.cs" />
     <Compile Include="Block\LED\FourLedGVElectricElement.cs" />
@@ -98,10 +100,10 @@
     <Compile Include="Block\LED\GVOneLedBlock.cs" />
     <Compile Include="Block\Source\GVCounterBlock.cs" />
     <Compile Include="Block\Source\GVRandomGeneratorBlock.cs" />
-    <Compile Include="Block\Source\GVRealTimeClockBlock.cs" />
+    <Compile Include="Block\Sensor\GVRealTimeClockBlock.cs" />
     <Compile Include="Block\Source\GVSwitchBlock.cs" />
     <Compile Include="Block\Source\RandomGeneratorGVElectricElement.cs" />
-    <Compile Include="Block\Source\RealTimeClockGVElectricElement.cs" />
+    <Compile Include="Block\Sensor\RealTimeClockGVElectricElement.cs" />
     <Compile Include="Block\Source\SubsystemGVCounterBlockBehavior.cs" />
     <Compile Include="Block\Source\SubsystemGVBatteryBlockBehavior.cs" />
     <Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs" />
@@ -159,6 +161,8 @@
     <None Include="reference\EntitySystem.dll" />
     <None Include="reference\Survivalcraft.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Block\Output\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
