@@ -13,6 +13,9 @@
     <MemberSubsystemTemplate Name="GVAdjustableDelayGateBlockBehavior" Guid="3742de89-9569-07ab-9923-1e96cba9f279" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
       <Parameter Name="Class" Guid="1ce5385b-5b47-234f-8de6-b2a8a8229d07" Value="Game.SubsystemGVAdjustableDelayGateBlockBehavior" Type="string" />
     </MemberSubsystemTemplate>
+    <MemberSubsystemTemplate Name="GVBatteryBlockBehavior" Guid="4f534444-904b-6e7e-8db8-c45fee889ddc" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+      <Parameter Name="Class" Guid="c823d409-9847-bc8d-b265-77b8885af6e6" Value="Game.SubsystemGVBatteryBlockBehavior" Type="string" />
+    </MemberSubsystemTemplate>
     <MemberSubsystemTemplate Name="GVSwitchBlockBehavior" Guid="584e8916-969f-ddc5-1ae0-eb0cf8ce5711" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
       <Parameter Name="Class" Guid="ebb33520-9294-b7f0-4c7f-64e61722cdad" Value="Game.SubsystemGVSwitchBlockBehavior" Type="string" />
     </MemberSubsystemTemplate>

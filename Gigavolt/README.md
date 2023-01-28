@@ -7,7 +7,7 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 |方块|原版|十亿伏特版|
 |--|--|--|
 |SR锁存器|S端高压才储存|S端非0即储存|
-|开关、按钮|默认输出1.5V|默认输出0xFFFFFFFF V|
+|开关、按钮、电池|默认输出1.5V|默认输出0xFFFFFFFF V|
 |计数器|默认溢出电压为0x10V，上限为0xF V|默认溢出电压为0V，上限0xFFFFFFFF V，可设置溢出电压|
 |存储器|略|需先手动设置存储矩阵长宽才可使用，长宽上限为2^31-1；每个数字用英文逗号,分开，每行数字用英文句号.分开|
 |彩色LED、1面LED|0.8\~1.5V对应不同颜色|所有电压对应不同颜色（ABGR格式）|
