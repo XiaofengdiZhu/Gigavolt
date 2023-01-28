@@ -79,9 +79,11 @@
     <Compile Include="Block\Gate\SubsystemGVAdjustableDelayGateBlockBehavior.cs" />
     <Compile Include="Block\Gate\XorGateGVElectricElement.cs" />
     <Compile Include="Block\LED\GVLedBlock.cs" />
+    <Compile Include="Block\LED\GVLightbulbBlock.cs" />
     <Compile Include="Block\LED\GVMulticoloredLedBlock.cs" />
     <Compile Include="Block\LED\GVSevenSegmentDisplayBlock.cs" />
     <Compile Include="Block\LED\LedGVElectricElement.cs" />
+    <Compile Include="Block\LED\LightBulbGVElectricElement.cs" />
     <Compile Include="Block\LED\MulticoloredLedGVElectricElement.cs" />
     <Compile Include="Block\LED\SevenSegmentDisplayGVElectricElement.cs" />
     <Compile Include="Block\Source\BatteryGVElectricElement.cs" />
