@@ -8,7 +8,7 @@ namespace Game
     public class GigaVoltageLevelData : IEditableItemData
     {
 
-        public uint Data = 0u;
+        public uint Data = uint.MaxValue;
 
         public IEditableItemData Copy()
         {

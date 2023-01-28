@@ -11,7 +11,8 @@ namespace Game
 			: base(subsystemGVElectricity, cellFace)
 		{
             m_subsystemGVSwitchBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSwitchBlockBehavior>(throwOnError: true);
-            m_voltage = GVSwitchBlock.GetLeverState(value) ? m_subsystemGVSwitchBlockBehavior.GetBlockData(cellFace.Point).Data : 0;
+			GigaVoltageLevelData blockData = m_subsystemGVSwitchBlockBehavior.GetBlockData(cellFace.Point);
+            m_voltage = GVSwitchBlock.GetLeverState(value) ? (blockData==null?uint.MaxValue:blockData.Data) : 0;
         }
 
 		public override uint GetOutputVoltage(int face)

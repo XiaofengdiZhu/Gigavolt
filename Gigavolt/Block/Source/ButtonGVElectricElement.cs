@@ -40,15 +40,9 @@ namespace Game
             {
                 m_wasPressed = false;
                 GigaVoltageLevelData blockData = m_subsystemGVButtonBlockBehavior.GetBlockData(CellFaces[0].Point);
-                if (blockData != null)
-                {
-                    m_voltage = blockData.Data;
-                    base.SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, base.SubsystemGVElectricity.CircuitStep + 10);
-                }
-                else
-                {
-                    m_voltage = 0u;
-                }
+                m_voltage = blockData == null?uint.MaxValue:blockData.Data;
+                base.SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, base.SubsystemGVElectricity.CircuitStep + 10);
+
             }
             else
             {
