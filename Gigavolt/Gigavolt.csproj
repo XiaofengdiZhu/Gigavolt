@@ -94,8 +94,10 @@
     <Compile Include="Block\LED\GVOneLedBlock.cs" />
     <Compile Include="Block\Source\GVCounterBlock.cs" />
     <Compile Include="Block\Source\GVRandomGeneratorBlock.cs" />
+    <Compile Include="Block\Source\GVRealTimeClockBlock.cs" />
     <Compile Include="Block\Source\GVSwitchBlock.cs" />
     <Compile Include="Block\Source\RandomGeneratorGVElectricElement.cs" />
+    <Compile Include="Block\Source\RealTimeClockGVElectricElement.cs" />
     <Compile Include="Block\Source\SubsystemGVCounterBlockBehavior.cs" />
     <Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs" />
     <Compile Include="Block\Source\SwitchGVElectricElement.cs" />
