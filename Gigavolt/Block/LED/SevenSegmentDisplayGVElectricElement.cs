@@ -106,7 +106,7 @@ namespace Game
             }
             if (m_voltage != voltage)
             {
-                uint num = m_voltage &0xf;
+                uint num = m_voltage &0xfu;
                 for (int i = 0; i < 7; i++)
                 {
                     m_glowPoints[i].Color = (m_patterns[num] & (1 << i)) != 0 ? m_color : Color.Transparent;
