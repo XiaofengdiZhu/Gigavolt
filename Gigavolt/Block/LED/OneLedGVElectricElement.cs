@@ -5,18 +5,18 @@ namespace Game
 {
     public class OneLedGVElectricElement : MountedGVElectricElement
     {
-        public SubsystemGlow m_subsystemGlow;
+        public SubsystemGVOneLedGlow m_subsystemGVOneLedGlow;
 
         public uint m_voltage;
 
         public Color m_color;
 
-        public GlowPoint m_glowPoint;
+        public GVGlowPoint m_glowPoint;
 
         public OneLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
             : base(subsystemGVElectricity, cellFace)
         {
-            m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(throwOnError: true);
+            m_subsystemGVOneLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVOneLedGlow>(throwOnError: true);
         }
 
         public override void OnAdded()
@@ -29,21 +29,20 @@ namespace Game
             Vector3 vector = CellFace.FaceToVector3(mountingFace);
             Vector3 vector2 = (mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX;
             var right = Vector3.Cross(vector, vector2);
-            m_glowPoint = m_subsystemGlow.AddGlowPoint();
+            m_glowPoint = m_subsystemGVOneLedGlow.AddGlowPoint();
             m_glowPoint.Position = v - 0.4375f * CellFace.FaceToVector3(mountingFace);
             m_glowPoint.Forward = vector;
             m_glowPoint.Up = vector2;
             m_glowPoint.Right = right;
             m_glowPoint.Color = Color.Transparent;
-            m_glowPoint.Size = 0.52f;
-            m_glowPoint.FarSize = 0.52f;
+            m_glowPoint.Size = 0.5f;
+            m_glowPoint.FarSize = 0.5f;
             m_glowPoint.FarDistance = 1f;
-            m_glowPoint.Type = GlowPointType.Square;
         }
 
         public override void OnRemoved()
         {
-            m_subsystemGlow.RemoveGlowPoint(m_glowPoint);
+            m_subsystemGVOneLedGlow.RemoveGlowPoint(m_glowPoint);
         }
 
         public override bool Simulate()

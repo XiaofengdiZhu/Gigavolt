@@ -31,5 +31,8 @@
     <MemberSubsystemTemplate Name="GVPistonBlockBehavior" Guid="325f252e-c556-7c6d-0f0d-d7f3b6a0530d" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
       <Parameter Name="Class" Guid="cebe7b85-7db3-6175-1b44-ebcee17da574" Value="Game.SubsystemGVPistonBlockBehavior" Type="string" />
     </MemberSubsystemTemplate>
+    <MemberSubsystemTemplate Name="GVOneLedGlow" Guid="cb008e75-3c39-d73b-3944-db501b593467" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+      <Parameter Name="Class" Guid="f741c19e-3263-d90e-ac74-aa16fca07913" Value="Game.SubsystemGVOneLedGlow" Type="string" />
+    </MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>
