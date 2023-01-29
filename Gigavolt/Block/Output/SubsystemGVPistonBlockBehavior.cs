@@ -433,7 +433,6 @@ namespace Game
                 GetSpeedAndSmoothness(speed, out float speed3, out Vector2 smoothness2);
                 float s = (length == 0) ? 0.01f : 0f;
                 Vector3 targetPosition = new Vector3(position) + (length - num) * new Vector3(point) + s * new Vector3(point);
-                bool flag = false;
                 if (m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(position), targetPosition, speed3, 0f, 0f, smoothness2, m_movingBlocks, "Piston", position, testCollision: true) != null)
                 {
                     m_allowPistonHeadRemove = true;

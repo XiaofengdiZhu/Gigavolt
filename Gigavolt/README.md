@@ -14,3 +14,4 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 |活塞|0.8V开始伸长|1V开始伸长|
 |彩色LED、1面LED|0.8\~1.5V对应不同颜色|所有电压对应不同颜色（ABGR格式）|
 |靶子|输出0.8\~1.5V|输出0\~0xFFFFFF00 V，因游戏坐标精度问题，最低2字节为0|
+|电子雷管|输入0.8v及以上电压产生威力为10的爆炸|输入0v及以上电压产生威力等于电压的爆炸|
