@@ -1,0 +1,54 @@
+<CanvasWidget xmlns="runtime-namespace:Game">
+
+  <CanvasWidget Size="600, 420" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+    <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="15, 15">
+      
+      <LabelWidget Name="EditGVPistonDialog.Title"  HorizontalAlignment="Center"/>
+
+      <CanvasWidget Size="0, Infinity" />
+
+      <CanvasWidget Size="Infinity, 75">
+        <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <CanvasWidget Size="180, -1" VerticalAlignment="Center">
+            <LabelWidget Name="EditGVPistonDialog.Label1" Text="[EditGVPistonDialog:1]"  HorizontalAlignment="Center"/>
+          </CanvasWidget>
+          <CanvasWidget Size="104, 34">
+            <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
+            <TextBoxWidget Name="EditGVPistonDialog.MaxExtension" Size="100, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+          </CanvasWidget>
+        </StackPanelWidget>
+      </CanvasWidget>
+
+      <CanvasWidget Name="EditGVPistonDialog.Panel2" Size="Infinity, 75">
+        <StackPanelWidget Name="EditGVPistonDialog.Panel2" Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <CanvasWidget Size="180, -1" VerticalAlignment="Center">
+            <LabelWidget Name="EditGVPistonDialog.Label2" Text="[EditGVPistonDialog:2]"  HorizontalAlignment="Center"/>
+          </CanvasWidget>
+          <CanvasWidget Size="104, 34">
+            <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
+            <TextBoxWidget Name="EditGVPistonDialog.PullCount" Size="100, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+          </CanvasWidget>
+        </StackPanelWidget>
+      </CanvasWidget>
+
+      <CanvasWidget Size="Infinity, 75">
+        <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <CanvasWidget Size="180, -1" VerticalAlignment="Center">
+            <LabelWidget Name="EditGVPistonDialog.Label3" Text="[EditGVPistonDialog:3]"  HorizontalAlignment="Center"/>
+          </CanvasWidget>
+          <SliderWidget Name="EditGVPistonDialog.Slider3" VerticalAlignment="Center" LabelWidth="120" />
+        </StackPanelWidget>
+      </CanvasWidget>
+
+      <CanvasWidget Size="0, Infinity" />
+
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <BevelledButtonWidget Name="EditGVPistonDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVPistonDialog:4]" Margin="20, 0" />
+        <BevelledButtonWidget Name="EditGVPistonDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVPistonDialog:5]"/>
+      </StackPanelWidget>
+
+    </StackPanelWidget>
+  </CanvasWidget>
+
+</CanvasWidget>

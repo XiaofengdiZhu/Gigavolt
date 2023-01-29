@@ -1,4 +1,5 @@
 using Engine;
+using System;
 
 namespace Game
 {
@@ -111,6 +112,10 @@ namespace Game
                 {
                     m_glowPoints[i].Color = (m_patterns[num] & (1 << i)) != 0 ? m_color : Color.Transparent;
                 }
+                if (m_voltage > 0) { foreach(ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).ComponentPlayers)
+                {
+                        componentPlayer.ComponentGui.DisplaySmallMessage(Convert.ToString(m_voltage, 16), Color.White, blinking: false, playNotificationSound: false);
+                    } }
             }
             return false;
         }

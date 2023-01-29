@@ -86,6 +86,11 @@
     <Compile Include="Block\LED\LightBulbGVElectricElement.cs" />
     <Compile Include="Block\LED\MulticoloredLedGVElectricElement.cs" />
     <Compile Include="Block\LED\SevenSegmentDisplayGVElectricElement.cs" />
+    <Compile Include="Block\Output\GVPistonData.cs" />
+    <Compile Include="Block\Output\GVPistonBlock.cs" />
+    <Compile Include="Block\Output\GVPistonHeadBlock.cs" />
+    <Compile Include="Block\Output\PistonGVElectricElement.cs" />
+    <Compile Include="Block\Output\SubsystemGVPistonBlockBehavior.cs" />
     <Compile Include="Block\Sensor\GVMotionDetectorBlock.cs" />
     <Compile Include="Block\Sensor\GVPhotodiodeBlock.cs" />
     <Compile Include="Block\Sensor\GVPressurePlateBlock.cs" />
@@ -131,6 +136,7 @@
     <Compile Include="Block\Wire\WireDomainGVElectricElement.cs" />
     <Compile Include="Dialog\EditGVMemoryBankDialog.cs" />
     <Compile Include="Dialog\EditGigaVoltageLevelDialog.cs" />
+    <Compile Include="Dialog\EditGVPistonDialog.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnection.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnectionPath.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnectorDirection.cs" />
@@ -168,7 +174,9 @@
     <None Include="reference\Survivalcraft.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Block\Output\" />
+    <None Include="Assets\Dialogs\EditGVPistonDialog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

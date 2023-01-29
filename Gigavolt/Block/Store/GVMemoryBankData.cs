@@ -38,8 +38,8 @@ namespace Game
             {
                 return 0;
             }
-            int col_int = Convert.ToInt32(col);
-            int row_int = Convert.ToInt32(row);
+            int col_int = MathUint.ToInt(col);
+            int row_int = MathUint.ToInt(row);
             if (col_int < Data.Width && row_int < Data.Height)
             {
                 return Data.GetPixel(col_int, row_int).PackedValue;
@@ -53,8 +53,8 @@ namespace Game
             {
                 return;
             }
-            int col_int = Convert.ToInt32(col);
-            int row_int = Convert.ToInt32(row);
+            int col_int = MathUint.ToInt(col);
+            int row_int = MathUint.ToInt(row);
             if (col_int < Data.Width && row_int < Data.Height)
             {
                 Data.SetPixel(col_int, row_int,new Color(data));

@@ -27,5 +27,9 @@ namespace Game
 
             return min;
         }
+        public static int ToInt(uint input)
+        {
+            return input > (uint)int.MaxValue?int.MaxValue:(int)input;
+        }
     }
 }
