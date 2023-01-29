@@ -126,7 +126,11 @@
     <Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs" />
     <Compile Include="Block\Source\SwitchGVElectricElement.cs" />
     <Compile Include="Block\Store\GVSRLatchBlock.cs" />
+    <Compile Include="Block\Store\GVTruthTableCircuitBlock.cs" />
+    <Compile Include="Block\Store\GVTruthTableData.cs" />
     <Compile Include="Block\Store\SRLatchGVElectricElement.cs" />
+    <Compile Include="Block\Store\SubsystemGVTruthTableCircuitBlockBehavior.cs" />
+    <Compile Include="Block\Store\TruthTableCircuitGVElectricElement.cs" />
     <Compile Include="Block\Wire\GVWireBlock.cs" />
     <Compile Include="Block\Store\GVMemoryBankBlock.cs" />
     <Compile Include="Block\Store\GVMemoryBankData.cs" />
@@ -143,6 +147,7 @@
     <Compile Include="Dialog\EditGVMemoryBankDialog.cs" />
     <Compile Include="Dialog\EditGigaVoltageLevelDialog.cs" />
     <Compile Include="Dialog\EditGVPistonDialog.cs" />
+    <Compile Include="Dialog\EditGVTruthTableDialog.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnection.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnectionPath.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnectorDirection.cs" />
@@ -181,6 +186,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Dialogs\EditGVPistonDialog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Dialogs\EditGVTruthTableDialog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
