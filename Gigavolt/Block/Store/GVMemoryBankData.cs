@@ -19,11 +19,11 @@ namespace Game
             Data = null;
         }
 
-        public GVMemoryBankData(Guid guid, string worldDirectory, Image image=null, uint lastOutput=0)
+        public GVMemoryBankData(Guid guid, string worldDirectory, Image image=null, uint lastOutput = 0)
         {
-            m_guid=guid;
-            m_worldDirectory=worldDirectory;
-            Data= image;
+            m_guid = guid;
+            m_worldDirectory = worldDirectory;
+            Data = image;
             LastOutput = lastOutput;
         }
         public uint LastOutput
@@ -32,9 +32,9 @@ namespace Game
             set;
         }
 
-        public uint Read(uint col,uint row)
+        public uint Read(uint col, uint row)
         {
-            if(Data== null)
+            if (Data == null)
             {
                 return 0;
             }
@@ -57,7 +57,7 @@ namespace Game
             int row_int = MathUint.ToInt(row);
             if (col_int < Data.Width && row_int < Data.Height)
             {
-                Data.SetPixel(col_int, row_int,new Color(data));
+                Data.SetPixel(col_int, row_int, new Color(data));
             }
         }
 
@@ -88,12 +88,12 @@ namespace Game
             if (array.Length >= 1)
             {
                 string text = array[0];
-                m_guid = Guid.ParseExact(text,"D");
+                m_guid = Guid.ParseExact(text, "D");
                 LoadData();
             }
             if (array.Length >= 2)
             {
-                LastOutput = Convert.ToUInt32(array[1],16);
+                LastOutput = Convert.ToUInt32(array[1], 16);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Game
             if (saveLastOutput)
             {
                 stringBuilder.Append(';');
-                stringBuilder.Append(Convert.ToString(LastOutput,16));
+                stringBuilder.Append(Convert.ToString(LastOutput, 16));
             }
             if (Data != null)
             {
@@ -117,14 +117,14 @@ namespace Game
                 {
                     Image.Save(Data, $"{m_worldDirectory}/GVMB/{m_guid}.png", ImageFileFormat.Png, true);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Log.Error(ex);
                 }
             }
             return stringBuilder.ToString();
         }
-        public static Image String2Image(string data,int width=0,int height=0)
+        public static Image String2Image(string data, int width = 0, int height = 0)
         {
             List<uint[]> rowList = new List<uint[]>();
             int maxColLength = 0;
@@ -143,7 +143,7 @@ namespace Game
                 }
                 rowList.Add(uints);
             }
-            Image image = new Image(width==0?maxColLength : width, height==0? rows.Length : height);
+            Image image = new Image(width == 0 ? maxColLength : width, height == 0 ? rows.Length : height);
             for (int i = 0; i < image.Height; i++)
             {
                 if (i == rowList.Count)
@@ -182,7 +182,10 @@ namespace Game
                     stringBuilder.Append(Convert.ToString(image.GetPixel(j, i).PackedValue, 16));
                     stringBuilder.Append(',');
                 }
-                stringBuilder.Append(Convert.ToString(image.GetPixel(lastNotZero, i).PackedValue, 16));
+                if (lastNotZero > -1)
+                {
+                    stringBuilder.Append(Convert.ToString(image.GetPixel(lastNotZero, i).PackedValue, 16));
+                }
                 result[i] = stringBuilder.ToString();
             }
             return string.Join(".", result);

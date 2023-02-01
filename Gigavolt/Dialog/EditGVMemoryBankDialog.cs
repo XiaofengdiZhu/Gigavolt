@@ -43,7 +43,7 @@ namespace Game
                 {
                     m_linearTextBox.Text = "已保存的数据过多，请本地编辑";
                     m_linearTextBox.IsEnabled = false;
-                    m_okButton.IsEnabled= false;
+                    m_okButton.IsEnabled = false;
                 }
                 else
                 {

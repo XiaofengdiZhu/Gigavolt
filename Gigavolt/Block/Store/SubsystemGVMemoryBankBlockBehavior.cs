@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Text;
 using Engine;
+using Engine.Media;
 using TemplatesDatabase;
 
 namespace Game
@@ -12,7 +15,7 @@ namespace Game
         {
             base.Load(valuesDictionary);
             this.m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(true);
-            if (Storage.DirectoryExists(this.m_subsystemGameInfo.DirectoryName + "/GVMB"))
+            if (!Storage.DirectoryExists(this.m_subsystemGameInfo.DirectoryName + "/GVMB"))
             {
                 Storage.CreateDirectory(this.m_subsystemGameInfo.DirectoryName + "/GVMB");
             }
@@ -32,35 +35,28 @@ namespace Game
         }
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
         {
-            try
+            bool isDragInProgress = componentPlayer.DragHostWidget.IsDragInProgress;
+            if (isDragInProgress)
             {
-                bool isDragInProgress = componentPlayer.DragHostWidget.IsDragInProgress;
-                if (isDragInProgress)
-                {
-                    return false;
-                }
-                int value = inventory.GetSlotValue(slotIndex);
-                int count = inventory.GetSlotCount(slotIndex);
-                int id = Terrain.ExtractData(value);
-                GVMemoryBankData memoryBankData = base.GetItemData(id);
-                memoryBankData = ((memoryBankData != null) ? ((GVMemoryBankData)memoryBankData.Copy()) : new GVMemoryBankData(Guid.NewGuid(), this.m_subsystemGameInfo.DirectoryName, null, 0u));
-                if (memoryBankData.m_worldDirectory == null)
-                {
-                    memoryBankData.m_worldDirectory = this.m_subsystemGameInfo.DirectoryName;
-                    memoryBankData.LoadData();
-                }
-                DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVMemoryBankDialog(memoryBankData, delegate ()
-                {
-                    int data = this.StoreItemDataAtUniqueId(memoryBankData);
-                    int value2 = Terrain.ReplaceData(value, data);
-                    inventory.RemoveSlotItems(slotIndex, count);
-                    inventory.AddSlotItems(slotIndex, value2, count);
-                }));
+                return false;
             }
-            catch (Exception ex)
+            int value = inventory.GetSlotValue(slotIndex);
+            int count = inventory.GetSlotCount(slotIndex);
+            int id = Terrain.ExtractData(value);
+            GVMemoryBankData memoryBankData = base.GetItemData(id);
+            memoryBankData = ((memoryBankData != null) ? ((GVMemoryBankData)memoryBankData.Copy()) : new GVMemoryBankData(Guid.NewGuid(), this.m_subsystemGameInfo.DirectoryName, null, 0u));
+            if (memoryBankData.m_worldDirectory == null)
             {
-                Log.Error(ex);
+                memoryBankData.m_worldDirectory = this.m_subsystemGameInfo.DirectoryName;
+                memoryBankData.LoadData();
             }
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVMemoryBankDialog(memoryBankData, delegate ()
+            {
+                int data = this.StoreItemDataAtUniqueId(memoryBankData);
+                int value2 = Terrain.ReplaceData(value, data);
+                inventory.RemoveSlotItems(slotIndex, count);
+                inventory.AddSlotItems(slotIndex, value2, count);
+            }));
             return true;
         }
 

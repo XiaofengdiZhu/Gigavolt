@@ -183,7 +183,6 @@
     <None Include="Assets\Dialogs\EditGVMemoryBankDialog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="README.md" />
     <None Include="reference\Engine.dll" />
     <None Include="reference\EntitySystem.dll" />
     <None Include="reference\Survivalcraft.dll" />
