@@ -147,6 +147,7 @@ namespace Game
                     }
                     break;
             }
+            m_blocksData.Remove(new Point3(x, y, z));
         }
 
         public override void OnChunkDiscarding(TerrainChunk chunk)
@@ -162,7 +163,25 @@ namespace Game
                 }
             }
         }
-
+        public override void OnItemHarvested(int x, int y, int z, int blockValue, ref BlockDropValue dropValue, ref int newBlockValue)
+        {
+            GVPistonData blockData = GetBlockData(new Point3(x, y, z));
+            if (blockData != null)
+            {
+                int num = FindFreeItemId();
+                m_itemsData.Add(num, (GVPistonData)blockData.Copy());
+                dropValue.Value = Terrain.ReplaceData(dropValue.Value, (num & 1023) << 6);
+            }
+        }
+        public override void OnItemPlaced(int x, int y, int z, ref BlockPlacementData placementData, int itemValue)
+        {
+            int id = Terrain.ExtractData(itemValue);
+            GVPistonData itemData = GetItemData((id >> 6) & 1023);
+            if (itemData != null)
+            {
+                m_blocksData[new Point3(x, y, z)] = (GVPistonData)itemData.Copy();
+            }
+        }
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
