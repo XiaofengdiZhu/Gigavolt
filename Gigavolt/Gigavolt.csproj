@@ -148,9 +148,14 @@
     <Compile Include="Block\Wire\GVWireThroughSemiconductorBlock.cs" />
     <Compile Include="Block\Wire\GVWireThroughStoneBlock.cs" />
     <Compile Include="Block\Wire\WireDomainGVElectricElement.cs" />
+    <Compile Include="ClassicBlock\GVTruthTableCircuitCBlock.cs" />
+    <Compile Include="ClassicBlock\GVCTruthTableData.cs" />
+    <Compile Include="ClassicBlock\SubsystemGVTruthTableCircuitCBlockBehavior.cs" />
+    <Compile Include="ClassicBlock\TruthTableCircuitGVCElectricElement.cs" />
     <Compile Include="Dialog\EditGVMemoryBankDialog.cs" />
     <Compile Include="Dialog\EditGigaVoltageLevelDialog.cs" />
     <Compile Include="Dialog\EditGVPistonDialog.cs" />
+    <Compile Include="Dialog\EditGVTruthTableCDialog.cs" />
     <Compile Include="Dialog\EditGVTruthTableDialog.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnection.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnectionPath.cs" />
@@ -194,6 +199,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Dialogs\EditGVTruthTableDialog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Dialogs\EditGVTruthTableCDialog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

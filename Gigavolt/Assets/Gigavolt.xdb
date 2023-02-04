@@ -13,6 +13,9 @@
     <MemberSubsystemTemplate Name="GVTruthTableCircuitBlockBehavior" Guid="aeff186f-b4e7-80fa-13fe-8d8afe1b9785" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
       <Parameter Name="Class" Guid="9dc13493-2178-2a61-7002-8593cf12982a" Value="Game.SubsystemGVTruthTableCircuitBlockBehavior" Type="string" />
     </MemberSubsystemTemplate>
+    <MemberSubsystemTemplate Name="GVTruthTableCircuitCBlockBehavior" Guid="41f0a0cc-c25f-f64a-3641-528b046a9786" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+      <Parameter Name="Class" Guid="e2b5e6f9-788a-377e-3b6f-8feaa81c5808" Value="Game.SubsystemGVTruthTableCircuitCBlockBehavior" Type="string" />
+    </MemberSubsystemTemplate>
     <MemberSubsystemTemplate Name="GVAdjustableDelayGateBlockBehavior" Guid="3742de89-9569-07ab-9923-1e96cba9f279" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
       <Parameter Name="Class" Guid="1ce5385b-5b47-234f-8de6-b2a8a8229d07" Value="Game.SubsystemGVAdjustableDelayGateBlockBehavior" Type="string" />
     </MemberSubsystemTemplate>

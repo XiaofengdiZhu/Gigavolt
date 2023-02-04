@@ -14,117 +14,7 @@
 
       <CanvasWidget Size="0, 15" />
 
-      <CanvasWidget Name="EditGVTruthTableDialog.GridPanel" Margin="20, 0">
-
-        <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
-        <ScrollPanelWidget Direction="Vertical" Margin="3, 3">
-
-          <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
-
-            <LabelWidget Text="[EditGVTruthTableDialog:3]" Color="255, 255, 255" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:4]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line0" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:5]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line1" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:6]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line2" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:7]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line3" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:8]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line4" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:9]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line5" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:10]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line6" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:11]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line7" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:12]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line8" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:13]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line9" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:14]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line10" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:15]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line11" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:16]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line12" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:17]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line13" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:18]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line14" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-            <StackPanelWidget Direction="Horizontal">
-              <LabelWidget Text="[EditGVTruthTableDialog:19]" Color="128, 128, 128" TextureLinearFilter="false" Margin="10, 10" VerticalAlignment="Center"/>
-              <CanvasWidget Size="110, 0" />
-              <CheckboxWidget Name="EditGVTruthTableDialog.Line15" CheckboxSize="32, 32" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-            </StackPanelWidget>
-
-          </StackPanelWidget>
-        
-        </ScrollPanelWidget>
-      </CanvasWidget>
-
-      <StackPanelWidget Name="EditGVTruthTableDialog.LinearPanel" Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
+      <StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
         <CanvasWidget Size="0, Infinity" />
         <LabelWidget  Color="128, 128, 128" Text="[EditGVTruthTableDialog:20]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" />
         <CanvasWidget Size="0, 10" />
@@ -139,7 +29,6 @@
 
       <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
         <BevelledButtonWidget Name="EditGVTruthTableDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVTruthTableDialog:21]" Margin="20, 0" />
-        <BevelledButtonWidget Name="EditGVTruthTableDialog.SwitchViewButton" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" />
         <BevelledButtonWidget Name="EditGVTruthTableDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVTruthTableDialog:22]"/>
       </StackPanelWidget>
       

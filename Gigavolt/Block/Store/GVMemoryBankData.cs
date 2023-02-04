@@ -128,7 +128,7 @@ namespace Game
         {
             List<uint[]> rowList = new List<uint[]>();
             int maxColLength = 0;
-            string[] rows = data.Split('.');
+            string[] rows = data.Split(';');
             foreach (string row in rows)
             {
                 string[] cols = row.Split(',');
@@ -188,7 +188,7 @@ namespace Game
                 }
                 result[i] = stringBuilder.ToString();
             }
-            return string.Join(".", result);
+            return string.Join(";", result);
         }
     }
 }
