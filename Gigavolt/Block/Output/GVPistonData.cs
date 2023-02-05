@@ -25,17 +25,17 @@ namespace Game
         public void LoadString(string data)
         {
             string[] arr = data.Split(',');
-            MaxExtension = Convert.ToInt32(arr[0],16);
-            PullCount = Convert.ToInt32(arr[1],16);
-            Speed = Convert.ToInt32(arr[2],16);
+            MaxExtension = int.Parse(arr[0], System.Globalization.NumberStyles.HexNumber, null);
+            PullCount = int.Parse(arr[1], System.Globalization.NumberStyles.HexNumber, null);
+            Speed = int.Parse(arr[2], System.Globalization.NumberStyles.HexNumber, null);
         }
 
         public string SaveString()
         {
             return string.Join(",",new string[3] {
-                Convert.ToString(MaxExtension,16),
-                Convert.ToString(PullCount,16),
-                Convert.ToString(Speed,16)
+                MaxExtension.ToString("X",null),
+                PullCount.ToString("X",null),
+                Speed.ToString("X",null)
             });
         }
     }

@@ -114,7 +114,7 @@ namespace Game
                 }
                 if (m_voltage > 0) { foreach(ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).ComponentPlayers)
                 {
-                        componentPlayer.ComponentGui.DisplaySmallMessage(Convert.ToString(m_voltage, 16), Color.White, blinking: false, playNotificationSound: false);
+                        componentPlayer.ComponentGui.DisplaySmallMessage(m_voltage.ToString("X", null), Color.White, blinking: false, playNotificationSound: false);
                     } }
             }
             return false;

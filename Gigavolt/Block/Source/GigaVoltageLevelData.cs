@@ -20,12 +20,12 @@ namespace Game
 
         public void LoadString(string data)
         {
-            Data = Convert.ToUInt32(data, 16);
+            Data = uint.Parse(data, System.Globalization.NumberStyles.HexNumber,null);
         }
 
         public string SaveString()
         {
-            return Convert.ToString(Data,16);
+            return Data.ToString("X", null);
         }
     }
 }

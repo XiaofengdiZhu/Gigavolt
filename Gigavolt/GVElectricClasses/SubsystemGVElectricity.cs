@@ -471,10 +471,10 @@ namespace Game
                     {
                         break;
                     }
-                    int x = Convert.ToInt32(array2[0], 16);
-                    int y = Convert.ToInt32(array2[1], 16);
-                    int z = Convert.ToInt32(array2[2], 16);
-                    uint value = Convert.ToUInt32(array2[3], 16);
+                    int x = int.Parse(array2[0], System.Globalization.NumberStyles.HexNumber, null);
+                    int y = int.Parse(array2[1], System.Globalization.NumberStyles.HexNumber, null);
+                    int z = int.Parse(array2[2], System.Globalization.NumberStyles.HexNumber, null);
+                    uint value = uint.Parse(array2[3], System.Globalization.NumberStyles.HexNumber, null);
                     m_persistentElementsVoltages[new Point3(x, y, z)] = value;
                     num++;
                     continue;
@@ -494,13 +494,13 @@ namespace Game
                 {
                     break;
                 }
-                stringBuilder.Append(Convert.ToString(persistentElementsVoltage.Key.X, 16));
+                stringBuilder.Append(persistentElementsVoltage.Key.X.ToString("X", null));
                 stringBuilder.Append(',');
-                stringBuilder.Append(Convert.ToString(persistentElementsVoltage.Key.Y, 16));
+                stringBuilder.Append(persistentElementsVoltage.Key.Y.ToString("X", null));
                 stringBuilder.Append(',');
-                stringBuilder.Append(Convert.ToString(persistentElementsVoltage.Key.Z, 16));
+                stringBuilder.Append(persistentElementsVoltage.Key.Z.ToString("X", null));
                 stringBuilder.Append(',');
-                stringBuilder.Append(Convert.ToString(persistentElementsVoltage.Value, 16));
+                stringBuilder.Append(persistentElementsVoltage.Value.ToString("X", null));
                 stringBuilder.Append(';');
                 num++;
             }

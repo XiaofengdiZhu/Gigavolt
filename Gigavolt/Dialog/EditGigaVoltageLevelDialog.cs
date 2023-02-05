@@ -22,7 +22,7 @@ namespace Game
             m_okButton = Children.Find<ButtonWidget>("EditGigaVoltageLevelDialog.OK");
             m_cancelButton = Children.Find<ButtonWidget>("EditGigaVoltageLevelDialog.Cancel");
             m_voltageLevelTextBox = Children.Find<TextBoxWidget>("EditGigaVoltageLevelDialog.GigaVoltageLevel");
-            m_voltageLevelTextBox.Text = Convert.ToString(blockData.Data,16);
+            m_voltageLevelTextBox.Text = blockData.Data.ToString("X", null);
             m_handler = handler;
             m_blockData = blockData;
         }
@@ -31,7 +31,7 @@ namespace Game
         {
             if (m_okButton.IsClicked)
             {
-                m_blockData.Data = Convert.ToUInt32(m_voltageLevelTextBox.Text,16);
+                m_blockData.Data = uint.Parse(m_voltageLevelTextBox.Text, System.Globalization.NumberStyles.HexNumber, null);
                 m_blockData.SaveString();
                 Dismiss(true);
             }

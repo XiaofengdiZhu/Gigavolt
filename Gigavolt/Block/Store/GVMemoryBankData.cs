@@ -93,7 +93,7 @@ namespace Game
             }
             if (array.Length >= 2)
             {
-                LastOutput = Convert.ToUInt32(array[1], 16);
+                LastOutput = uint.Parse(array[1], System.Globalization.NumberStyles.HexNumber, null);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Game
             if (saveLastOutput)
             {
                 stringBuilder.Append(';');
-                stringBuilder.Append(Convert.ToString(LastOutput, 16));
+                stringBuilder.Append(LastOutput.ToString("X", null));
             }
             if (Data != null)
             {
@@ -139,7 +139,7 @@ namespace Game
                 uint[] uints = new uint[cols.Length];
                 for (int i = 0; i < cols.Length; i++)
                 {
-                    uints[i] = Convert.ToUInt32(cols[i], 16);
+                    uints[i] = uint.Parse(cols[i], System.Globalization.NumberStyles.HexNumber, null);
                 }
                 rowList.Add(uints);
             }
@@ -179,12 +179,12 @@ namespace Game
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int j = 0; j < lastNotZero; j++)
                 {
-                    stringBuilder.Append(Convert.ToString(image.GetPixel(j, i).PackedValue, 16));
+                    stringBuilder.Append(image.GetPixel(j, i).PackedValue.ToString("X", null));
                     stringBuilder.Append(',');
                 }
                 if (lastNotZero > -1)
                 {
-                    stringBuilder.Append(Convert.ToString(image.GetPixel(lastNotZero, i).PackedValue, 16));
+                    stringBuilder.Append(image.GetPixel(lastNotZero, i).PackedValue.ToString("X", null));
                 }
                 result[i] = stringBuilder.ToString();
             }
