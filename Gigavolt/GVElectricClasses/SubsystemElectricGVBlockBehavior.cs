@@ -8,6 +8,7 @@ namespace Game
 
         public override int[] HandledBlocks => new int[]
         {
+            788,
             833,
             840,
             837,

@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +23,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>
+    </NoWarn>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +35,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Engine">
@@ -49,7 +57,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +170,112 @@
     <Compile Include="GVElectricClasses\GVElectricConnectorType.cs" />
     <Compile Include="GVElectricClasses\GVElectricElement.cs" />
     <Compile Include="GVElectricClasses\MathUint.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRFileStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRInputStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRReaderStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRStringStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\AstParserRuleReturnScope.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\BaseRecognizer.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\BitSet.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\BufferedTokenStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\CharStreamConstants.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\CharStreamState.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ClassicToken.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\CommonToken.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\CommonTokenStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Debug\IDebugEventListener.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\DFA.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\EarlyExitException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\FailedPredicateException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\GrammarRuleAttribute.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\IAstRuleReturnScope.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\IAstRuleReturnScope`1.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ICharStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\IIntStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\IRuleReturnScope.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\IToken.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenSource.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenStreamInformation.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\LegacyCommonTokenStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Lexer.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Misc\FastQueue.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Misc\LookaheadStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedNotSetException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedRangeException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedSetException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedTokenException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedTreeNodeException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\MissingTokenException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\NoViableAltException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Output\ErrorOutputStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Output\IOutputStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Output\OutOutputStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Output\OutputStreamHost.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Parser.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\ParserRuleReturnScope.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\PCLExtensions\PCLExtensions.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\RecognitionException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\RecognizerSharedState.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\RuleReturnScope.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\TokenConstants.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\TokenRewriteStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\AntlrRuntime_BaseTreeDebugView.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BaseTree.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BaseTreeAdaptor.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BufferedTreeNodeStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonErrorNode.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTree.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTreeAdaptor.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTreeNodeStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\DotTreeGenerator.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITree.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeAdaptor.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeNodeStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeVisitorAction.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ParseTree.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteCardinalityException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteEarlyExitException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteEmptyStreamException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleElementStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleNodeStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleSubtreeStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleTokenStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeConstants.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeFilter.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeIterator.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeParser.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreePatternLexer.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreePatternParser.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeRewriter.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeRuleReturnScope.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeVisitor.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeWizard.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\UnbufferedTokenStream.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Antlr\UnwantedTokenException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\BinaryExpression.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\EvaluationVisitor.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\Function.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\LogicalExpression.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\LogicalExpressionVisitor.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\Parameter.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\SerializationVisitor.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\TernaryExpression.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\UnaryExpression.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Domain\Value.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\EvaluateFunctionHandler.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\EvaluateParameterHandler.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\EvaluationException.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\EvaluationOption.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Expression.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\ExtendedMethodInfo.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\FunctionArgs.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\LambdaExpressionVistor.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\NCalcLexer.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\NCalcParser.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\Numbers.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\ParameterArgs.cs" />
+    <Compile Include="GVElectricClasses\NCalc2\TypeExtensions.cs" />
     <Compile Include="GVElectricClasses\SubsystemElectricGVBlockBehavior.cs" />
     <Compile Include="GVElectricClasses\SubsystemGVElectricity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

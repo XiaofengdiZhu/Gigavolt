@@ -1,3 +1,4 @@
+using NCalc;
 using System;
 using System.Xml.Linq;
 
@@ -19,19 +20,25 @@ namespace Game
 
         public EditGVTruthTableDialog(GVTruthTableData truthTableData, Action<bool> handler)
         {
-            XElement node = ContentManager.Get<XElement>("Dialogs/EditGVTruthTableDialog");
-            LoadContents(this, node);
-            m_okButton = Children.Find<ButtonWidget>("EditGVTruthTableDialog.OK");
-            m_cancelButton = Children.Find<ButtonWidget>("EditGVTruthTableDialog.Cancel");
-            m_linearTextBox = Children.Find<TextBoxWidget>("EditGVTruthTableDialog.LinearText");
-            m_handler = handler;
-            m_truthTableData = truthTableData;
+            try
+            {
+                XElement node = ContentManager.Get<XElement>("Dialogs/EditGVTruthTableDialog");
+                LoadContents(this, node);
+                m_okButton = Children.Find<ButtonWidget>("EditGVTruthTableDialog.OK");
+                m_cancelButton = Children.Find<ButtonWidget>("EditGVTruthTableDialog.Cancel");
+                m_linearTextBox = Children.Find<TextBoxWidget>("EditGVTruthTableDialog.LinearText");
+                m_handler = handler;
+                m_truthTableData = truthTableData;
+                m_linearTextBox.Text = m_truthTableData.LastLoadedString;
+            }
+            catch(Exception ex) { Engine.Log.Error(ex); }
         }
 
         public override void Update()
         {
             if (m_okButton.IsClicked)
             {
+                m_truthTableData.LoadString(m_linearTextBox.Text);
                 Dismiss(result: true);
             }
             if (Input.Cancel || m_cancelButton.IsClicked)
