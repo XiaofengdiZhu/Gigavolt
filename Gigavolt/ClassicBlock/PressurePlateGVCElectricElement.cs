@@ -1,9 +1,8 @@
-using Engine;
-using System;
+﻿using Engine;
 
 namespace Game
 {
-    public class PressurePlateGVElectricElement : MountedGVElectricElement
+    public class PressurePlateGVCElectricElement : MountedGVElectricElement
     {
         public uint m_voltage;
 
@@ -11,7 +10,7 @@ namespace Game
 
         public float m_pressure;
 
-        public PressurePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
+        public PressurePlateGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
             : base(subsystemGVElectricity, cellFace)
         {
         }
@@ -43,7 +42,7 @@ namespace Game
             }
             else
             {
-                if (m_voltage>0)
+                if (IsSignalHigh(m_voltage))
                 {
                     CellFace cellFace = CellFaces[0];
                     SubsystemGVElectricity.SubsystemAudio.PlaySound("Audio/BlockPlaced", 0.6f, -0.1f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2.5f, autoDelay: true);
@@ -69,7 +68,39 @@ namespace Game
 
         public static uint PressureToVoltage(float pressure)
         {
-            return Convert.ToUInt32(pressure);
+            if (pressure <= 0f)
+            {
+                return 0u;
+            }
+            if (pressure < 1f)
+            {
+                return 8u;
+            }
+            if (pressure < 2f)
+            {
+                return 9u;
+            }
+            if (pressure < 5f)
+            {
+                return 10u;
+            }
+            if (pressure < 25f)
+            {
+                return 11u;
+            }
+            if (pressure < 100f)
+            {
+                return 12u;
+            }
+            if (pressure < 250f)
+            {
+                return 13u;
+            }
+            if (pressure < 500f)
+            {
+                return 14u;
+            }
+            return 15u;
         }
     }
 }

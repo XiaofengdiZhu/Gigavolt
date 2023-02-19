@@ -1,17 +1,17 @@
-namespace Game
+﻿namespace Game
 {
-    public class GVTruthTableCircuitCBlock : RotateableMountedGVElectricElementBlock
+    public class GVSRLatchCBlock : RotateableMountedGVElectricElementBlock
     {
-        public const int Index = 688;
+        public const int Index = 646;
 
-        public GVTruthTableCircuitCBlock()
-            : base("Models/Gates", "TruthTableCircuit", 0.5f)
+        public GVSRLatchCBlock()
+            : base("Models/Gates", "SRLatch", 0.375f)
         {
         }
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z)
         {
-            return new TruthTableCCircuitGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+            return new SRLatchGVCElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
         }
 
         public override GVElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
@@ -20,11 +20,11 @@ namespace Game
             if (GetFace(value) == face)
             {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-                if (connectorDirection == GVElectricConnectorDirection.Right || connectorDirection == GVElectricConnectorDirection.Left || connectorDirection == GVElectricConnectorDirection.Bottom || connectorDirection == GVElectricConnectorDirection.Top)
+                if (connectorDirection == GVElectricConnectorDirection.Right || connectorDirection == GVElectricConnectorDirection.Left || connectorDirection == GVElectricConnectorDirection.Bottom)
                 {
                     return GVElectricConnectorType.Input;
                 }
-                if (connectorDirection == GVElectricConnectorDirection.In)
+                if (connectorDirection == GVElectricConnectorDirection.Top || connectorDirection == GVElectricConnectorDirection.In)
                 {
                     return GVElectricConnectorType.Output;
                 }

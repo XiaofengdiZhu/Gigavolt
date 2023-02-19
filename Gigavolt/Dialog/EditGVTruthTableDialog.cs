@@ -38,8 +38,15 @@ namespace Game
         {
             if (m_okButton.IsClicked)
             {
-                m_truthTableData.LoadString(m_linearTextBox.Text);
-                Dismiss(result: true);
+                m_truthTableData.LoadString(m_linearTextBox.Text, out string error);
+                if(error == null)
+                {
+                    Dismiss(result: true);
+                }
+                else
+                {
+                    DialogsManager.ShowDialog(null, new MessageDialog("Error saving game", error, "OK", null, null));
+                }
             }
             if (Input.Cancel || m_cancelButton.IsClicked)
             {

@@ -83,7 +83,7 @@ namespace Game
                 LastLoadedString = LastLoadedString,
                 LastOutput = LastOutput
             };
-            result.LoadString(LastLoadedString);
+            result.LoadString(LastLoadedString, out string error);
             return result;
         }
         public uint Exe(List<SectionInput> inputs)
@@ -99,8 +99,9 @@ namespace Game
             return 0u;
         }
         public Regex hexRegex = new Regex(@"0x[\dabcdefABCDEF]+");
-        public void LoadString(string data)
+        public void LoadString(string data, out string error)
         {
+            error = null;
             List<Line> newData = new List<Line>();
             data = hexRegex.Replace(data, new MatchEvaluator(
                 (Match m) =>
@@ -109,20 +110,22 @@ namespace Game
                 }
             ));
             data = data.Replace("\n", "");
-            string[] linesString = data.Split(new string[] { ";;;" }, StringSplitOptions.None);
+            string[] linesString = data.Split(new string[] { "::" }, StringSplitOptions.None);
             foreach (string lineString in linesString)
             {
                 Line line = new Line();
-                string[] temp = lineString.Split(new string[] { "::" }, StringSplitOptions.None);
+                string[] temp = lineString.Split(':');
                 if (temp.Length < 2)
                 {
-                    Log.Error($"{lineString}Â©Ã°ºÅ");
+                    error = $"{lineString}Î´ÕÒµ½Êä³ö";
+                    Log.Error(error);
                     return;
                 }
                 Expression oe = new Expression(CookForExpression(temp[1], "o"));
                 if (oe.HasErrors())
                 {
-                    Log.Error($"{temp[1]}´æÔÚ´íÎó:{oe.Error}");
+                    error = $"{temp[1]}´æÔÚ´íÎó:{oe.Error}";
+                    Log.Error(error);
                     return;
                 }
                 line.o = oe.ToLambda<SectionInput, uint>();
@@ -149,7 +152,8 @@ namespace Game
                             Expression ie = new Expression(CookForExpression(inputString, $"i{j + 1}"));
                             if (ie.HasErrors())
                             {
-                                Log.Error($"{inputString}´æÔÚ´íÎó:{ie.Error}");
+                                error = $"{inputString}´æÔÚ´íÎó:{ie.Error}";
+                                Log.Error(error);
                                 return;
                             }
                             iF[j] = ie.ToLambda<SectionInput, bool>();
@@ -182,6 +186,11 @@ namespace Game
         public string SaveString(bool saveLastOutput)
         {
             return LastLoadedString;
+        }
+
+        public void LoadString(string data)
+        {
+            LoadString(data, out _);
         }
     }
 }

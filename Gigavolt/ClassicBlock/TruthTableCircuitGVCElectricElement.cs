@@ -57,7 +57,7 @@ namespace Game
                     }
                 }
             }
-            GVTruthTableCData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
+            TruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
             m_voltage = (blockData != null) ? (blockData.Data[num]>0u?uint.MaxValue:0u) : 0u;
             return m_voltage != voltage;
         }

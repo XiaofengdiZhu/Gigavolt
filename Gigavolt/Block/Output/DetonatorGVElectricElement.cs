@@ -13,7 +13,7 @@ namespace Game
             CellFace cellFace = CellFaces[0]; 
             if (presure == 0)
             {
-                int value = Terrain.MakeBlockValue(147);
+                int value = Terrain.MakeBlockValue(847);
                 m_subsystemExplosions.TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
             }
             else
