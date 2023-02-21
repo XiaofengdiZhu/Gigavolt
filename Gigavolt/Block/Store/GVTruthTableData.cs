@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using NCalc;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Game
 {
@@ -33,7 +34,7 @@ namespace Game
             }
             public bool Equals(SectionInput other)
             {
-                return this.i1==other.i1 && this.i2==other.i2 && this.i3 == other.i3 && this.i4 == other.i4;
+                return this.i1 == other.i1 && this.i2 == other.i2 && this.i3 == other.i3 && this.i4 == other.i4;
             }
             public override int GetHashCode()
             {
@@ -55,7 +56,7 @@ namespace Game
                 {
                     for (int j = 0; j < length; j++)
                     {
-                        SectionInput input = inputs[inputs.Count-length+j];
+                        SectionInput input = inputs[inputs.Count - length + j];
                         for (int k = 0; k < 4; k++)
                         {
                             if (!i[j][k](input))
@@ -167,13 +168,25 @@ namespace Game
             LastLoadedString = data;
         }
         public Regex addBracketRegex = new Regex(@"(i\d)");
+        public string[] notCookOperators = new string[] { "=", "!", "not", ">", "<", "and", "&&", "||", "or" };
         public string CookForExpression(string input, string category)
         {
-            if (category.StartsWith("i") && (input.StartsWith("=")|| input.StartsWith("!=") || input.StartsWith("<") || input.StartsWith(">")))
+            if (category.StartsWith("i"))
             {
-                input = $"{category}{input}";
+                if (input == "true" || input == "")
+                {
+                    return "true";
+                }
+                if (input.StartsWith("=") || input.StartsWith("!=") || input.StartsWith("<") || input.StartsWith(">"))
+                {
+                    input = $"{category}{input}";
+                }
+                else if (!notCookOperators.Any<string>(item => input.Contains(item)))
+                {
+                    input = $"{category}={input}";
+                }
             }
-            else if(category.StartsWith("i") && input.StartsWith("="))
+            else if (category == "o" && input.StartsWith("="))
             {
                 input = input.Substring(1);
             }

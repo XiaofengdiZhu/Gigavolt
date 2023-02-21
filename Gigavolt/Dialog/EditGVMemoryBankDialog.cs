@@ -60,15 +60,24 @@ namespace Game
                 int height = 0;
                 int.TryParse(m_colCountTextBox.Text, out width);
                 int.TryParse(m_rowCountTextBox.Text, out height);
+                string error = null;
                 Image image = null;
                 try
                 {
                     image = GVMemoryBankData.String2Image(m_linearTextBox.Text, width, height);
                 }
-                catch (Exception ex) { Log.Error(ex); }
-                if (image != null) { m_memoryBankData.Data = image; }
-                m_memoryBankData.SaveString();
-                Dismiss(result: true);
+                catch (Exception ex) {
+                    error = ex.ToString();
+                    Log.Error(error);
+                }
+                if (image == null) {
+                    DialogsManager.ShowDialog(null, new MessageDialog("·¢Éú´íÎó", error, "OK", null, null));
+                }
+                else{
+                    m_memoryBankData.Data = image;
+                    m_memoryBankData.SaveString();
+                    Dismiss(result: true);
+                }
             }
             if (Input.Cancel || m_cancelButton.IsClicked)
             {

@@ -82,11 +82,24 @@ namespace Game
             }
             if (m_okButton.IsClicked)
             {
-                m_pistonData.MaxExtension= Convert.ToInt32(m_maxExtensionWidget.Text)-1;
-                m_pistonData.PullCount = Convert.ToInt32(m_pullCountWidget.Text) - 1;;
-                m_pistonData.Speed= m_speed;
-                m_pistonData.SaveString();
-                Dismiss(true);
+                if(int.TryParse(m_maxExtensionWidget.Text,out int m))
+                {
+                    m_pistonData.MaxExtension = m - 1;
+                    if(int.TryParse(m_pullCountWidget.Text, out int p)){
+                        m_pistonData.PullCount = p - 1;
+                        m_pistonData.Speed = m_speed;
+                        m_pistonData.SaveString();
+                        Dismiss(true);
+                    }
+                    else
+                    {
+                        DialogsManager.ShowDialog(null, new MessageDialog("发生错误", "最大推拉数不能转换为整数", "OK", null, null));
+                    }
+                }
+                else
+                {
+                    DialogsManager.ShowDialog(null, new MessageDialog("发生错误", "最大延伸数不能转换为整数", "OK", null, null));
+                }
             }
             if (Input.Cancel || m_cancelButton.IsClicked)
             {

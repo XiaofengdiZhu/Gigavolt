@@ -31,9 +31,16 @@ namespace Game
         {
             if (m_okButton.IsClicked)
             {
-                m_blockData.Data = uint.Parse(m_voltageLevelTextBox.Text, System.Globalization.NumberStyles.HexNumber, null);
-                m_blockData.SaveString();
-                Dismiss(true);
+                if(uint.TryParse(m_voltageLevelTextBox.Text, System.Globalization.NumberStyles.HexNumber,null,out uint v))
+                {
+                    m_blockData.Data = uint.Parse(m_voltageLevelTextBox.Text, System.Globalization.NumberStyles.HexNumber, null);
+                    m_blockData.SaveString();
+                    Dismiss(true);
+                }
+                else
+                {
+                    DialogsManager.ShowDialog(null, new MessageDialog("发生错误", "不能转换为自然数", "OK", null, null));
+                }
             }
             if (base.Input.Cancel || m_cancelButton.IsClicked)
             {
