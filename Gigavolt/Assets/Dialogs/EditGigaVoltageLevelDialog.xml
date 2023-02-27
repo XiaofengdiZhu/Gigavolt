@@ -10,12 +10,13 @@
 
       <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
         <LabelWidget  Text="[EditGigaVoltageLevelDialog:2]"/>
-        <CanvasWidget Size="104, 34">
+        <CanvasWidget Size="124, 34">
           <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
-          <TextBoxWidget Name="EditGigaVoltageLevelDialog.GigaVoltageLevel" Size="500, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+          <TextBoxWidget Name="EditGigaVoltageLevelDialog.GigaVoltageLevel" Size="120, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
         </CanvasWidget>
-        <LabelWidget  Text="[EditGigaVoltageLevelDialog:3]"/>
       </StackPanelWidget>
+      
+      <LabelWidget Margin="0, 10" Text="[EditGigaVoltageLevelDialog:3]"/>
 
       <CanvasWidget Size="0, Infinity" />
 

@@ -1,4 +1,4 @@
-{
+﻿{
     "Language":
     {
         "Name": "中文"
@@ -318,7 +318,7 @@
         {
             "1": "调整电压",
             "2": "电压：",
-            "3": "（0到FFFFFFFF）"
+            "3": "（十六进制的0到FFFFFFFF）"
         },
         "EditGVMemoryBankDialog":
         {
