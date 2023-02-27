@@ -155,10 +155,14 @@
     <Compile Include="Block\Wire\GVWireThroughSemiconductorBlock.cs" />
     <Compile Include="Block\Wire\GVWireThroughStoneBlock.cs" />
     <Compile Include="Block\Wire\WireDomainGVElectricElement.cs" />
+    <Compile Include="ClassicBlock\AnalogToDigitalConverterGVCElectricElement.cs" />
     <Compile Include="ClassicBlock\CounterGVCElectricElement.cs" />
     <Compile Include="ClassicBlock\DetonatorGVCElectricElement.cs" />
+    <Compile Include="ClassicBlock\DigitalToAnalogConverterGVCElectricElement.cs" />
+    <Compile Include="ClassicBlock\GVAnalogToDigitalConverterCBlock.cs" />
     <Compile Include="ClassicBlock\GVCounterCBlock.cs" />
     <Compile Include="ClassicBlock\GVDetonatorCBlock.cs" />
+    <Compile Include="ClassicBlock\GVDigitalToAnalogConverterCBlock.cs" />
     <Compile Include="ClassicBlock\GVMemoryBankCBlock.cs" />
     <Compile Include="ClassicBlock\GVMulticoloredLedCBlock.cs" />
     <Compile Include="ClassicBlock\GVOneLedCBlock.cs" />

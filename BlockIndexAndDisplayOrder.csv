@@ -42,7 +42,9 @@ GVSRLatchCBlock,646,1000
 GVMemoryBankCBlock,686,1001
 GVCounterCBlock,684,1002
 GVTruthTableCircuitCBlock,688,1003
-GVPressurePlateCBlock,644,1004
+GVDigitalToAnalogConverterCBlock,680,1004
+GVAnalogToDigitalConverterCBlock,681,1005
+GVPressurePlateCBlock,644,1006
 GVMulticoloredLedCBlock,654,1007
 GVOneLedCBlock,653,1008
 GVTargetCBlock,699,1009

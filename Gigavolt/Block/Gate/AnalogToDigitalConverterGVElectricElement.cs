@@ -5,10 +5,20 @@ namespace Game
     public class AnalogToDigitalConverterGVElectricElement : RotateableGVElectricElement
     {
         public uint m_bits;
+        public int m_type;
+        public uint maxOutput;
 
-        public AnalogToDigitalConverterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
+        public AnalogToDigitalConverterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value)
             : base(subsystemGVElectricity, cellFace)
         {
+            m_type = GVAnalogToDigitalConverterBlock.GetType(Terrain.ExtractData(value));
+            switch (m_type)
+            {
+                case 1: maxOutput = 3u; break;
+                case 2: maxOutput = 15u; break;
+                case 3: maxOutput = 63u; break;
+                default: maxOutput = 1u; break;
+            }
         }
 
         public override uint GetOutputVoltage(int face)
@@ -18,19 +28,43 @@ namespace Game
             {
                 if (connectorDirection.Value == GVElectricConnectorDirection.Top)
                 {
-                    return ((m_bits & 1) != 0) ? uint.MaxValue : 0u;
+                    return m_bits &= maxOutput;
                 }
                 if (connectorDirection.Value == GVElectricConnectorDirection.Right)
                 {
-                    return ((m_bits & 2) != 0) ? uint.MaxValue : 0u;
+                    uint output;
+                    switch (m_type)
+                    {
+                        case 1: output = (m_bits >> 2) & maxOutput; break;
+                        case 2: output = (m_bits >> 4) & maxOutput; break;
+                        case 3: output = (m_bits >> 8) & maxOutput; break;
+                        default: output = (m_bits >> 1) & maxOutput; break;
+                    }
+                    return output;
                 }
                 if (connectorDirection.Value == GVElectricConnectorDirection.Bottom)
                 {
-                    return ((m_bits & 4) != 0) ? uint.MaxValue : 0u;
+                    uint output;
+                    switch (m_type)
+                    {
+                        case 1: output = (m_bits >> 4) & maxOutput; break;
+                        case 2: output = (m_bits >> 8) & maxOutput; break;
+                        case 3: output = (m_bits >> 16) & maxOutput; break;
+                        default: output = (m_bits >> 2) & maxOutput; break;
+                    }
+                    return output;
                 }
                 if (connectorDirection.Value == GVElectricConnectorDirection.Left)
                 {
-                    return ((m_bits & 8) != 0) ? uint.MaxValue : 0u;
+                    uint output;
+                    switch (m_type)
+                    {
+                        case 1: output = (m_bits >> 6) & maxOutput; break;
+                        case 2: output = (m_bits >> 12) & maxOutput; break;
+                        case 3: output = (m_bits >> 24) & maxOutput; break;
+                        default: output = (m_bits >> 3) & maxOutput; break;
+                    }
+                    return output;
                 }
             }
             return 0u;
