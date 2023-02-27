@@ -1,13 +1,13 @@
-using Engine;
+﻿using Engine;
 using Engine.Graphics;
 using System;
 using System.Collections.Generic;
 
 namespace Game
 {
-    public class GVOneLedBlock : MountedGVElectricElementBlock
+    public class GV8x4LedBlock : MountedGVElectricElementBlock
     {
-        public const int Index = 953;
+        public const int Index = 955;
 
         public BlockMesh m_standaloneBlockMesh;
 
@@ -34,25 +34,6 @@ namespace Game
             m_standaloneBlockMesh.AppendModelMeshPart(modelMesh.MeshParts[0], boneAbsoluteTransform * m2, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
         }
 
-        public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes()
-        {
-            var craftingRecipe = new CraftingRecipe
-            {
-                ResultCount = 4,
-                ResultValue = Terrain.MakeBlockValue(953, 0, 0),
-                RequiredHeatLevel = 0f,
-                Description = LanguageControl.Get(GetType().Name, 1)
-            };
-            craftingRecipe.Ingredients[0] = "glass";
-            craftingRecipe.Ingredients[1] = "glass";
-            craftingRecipe.Ingredients[2] = "glass";
-            craftingRecipe.Ingredients[4] = "wire";
-            craftingRecipe.Ingredients[6] = "copperingot";
-            craftingRecipe.Ingredients[7] = "copperingot";
-            craftingRecipe.Ingredients[8] = "copperingot";
-            yield return craftingRecipe;
-        }
-
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value)
         {
             int mountingFace = GetMountingFace(Terrain.ExtractData(value));
@@ -72,16 +53,6 @@ namespace Game
             result.Value = value2;
             result.CellFace = raycastResult.CellFace;
             return result;
-        }
-
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
-        {
-            dropValues.Add(new BlockDropValue
-            {
-                Value = Terrain.MakeBlockValue(953, 0, 0),
-                Count = 1
-            });
-            showDebris = true;
         }
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value)
@@ -111,7 +82,7 @@ namespace Game
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z)
         {
-            return new OneLedGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+            return new _8x4LedGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
         }
 
         public override GVElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
@@ -132,6 +103,35 @@ namespace Game
         public static int SetMountingFace(int data, int face)
         {
             return (data & -8) | (face & 7);
+        }
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
+        {
+            int type = GetType(Terrain.ExtractData(value));
+            switch (type)
+            {
+                case 1:
+                    return "GV4x4面LED灯";
+                case 2:
+                    return "GV8x4面LED灯";
+                default:
+                    return "GV4x2面LED灯";
+            }
+        }
+        public override IEnumerable<int> GetCreativeValues()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                yield return Terrain.MakeBlockValue(Index, 0, SetType(0, i));
+            }
+        }
+        public static int GetType(int data)
+        {
+            return (data >> 5) & 3;
+        }
+
+        public static int SetType(int data, int color)
+        {
+            return (data & -97) | ((color & 3) << 5);
         }
     }
 }

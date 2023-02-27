@@ -77,7 +77,8 @@ namespace Game
             937,
             943,
             953,
-            954
+            954,
+            955
         };
 
         public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)

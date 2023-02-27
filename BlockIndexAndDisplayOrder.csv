@@ -38,6 +38,7 @@ GVOneLedBlock,953,962
 GVPhotodiodeBlock,851,963
 GVTargetBlock,899,964
 GVDetonatorBlock,847,965
+GV8x4LedBlock,955,966
 GVSRLatchCBlock,646,1000
 GVMemoryBankCBlock,686,1001
 GVCounterCBlock,684,1002
