@@ -65,7 +65,7 @@ namespace Game
                             }
                         }
                     }
-                    return o(inputs[length - 1]);
+                    return o(inputs[inputs.Count - 1]);
                 }
                 catch (Exception e)
                 {
@@ -76,7 +76,7 @@ namespace Game
         }
         public List<Line> Data = null;
         public uint LastOutput { get; set; }
-        public string LastLoadedString { get; set; }
+        public string LastLoadedString = string.Empty;
         public IEditableItemData Copy()
         {
             var result = new GVTruthTableData
@@ -125,12 +125,17 @@ namespace Game
                 Expression oe = new Expression(CookForExpression(temp[1], "o"));
                 if (oe.HasErrors())
                 {
-                    error = $"{temp[1]}存在错误:{oe.Error}";
+                    error = $"{temp[1]}存在错误:\n{oe.Error}";
                     Log.Error(error);
                     return;
                 }
                 line.o = oe.ToLambda<SectionInput, uint>();
                 string[] sectionStrings = temp[0].Split(new string[] { ";;" }, StringSplitOptions.None);
+                if(sectionStrings.Length >16) {
+                    error = "其中一套输入规则参试获取15次输入变化前的输入";
+                    Log.Error(error);
+                    return;
+                }
                 for (int i = 0; i < sectionStrings.Length; i++)
                 {
                     Func<SectionInput, bool>[] iF = new Func<SectionInput, bool>[4];
@@ -153,7 +158,7 @@ namespace Game
                             Expression ie = new Expression(CookForExpression(inputString, $"i{j + 1}"));
                             if (ie.HasErrors())
                             {
-                                error = $"{inputString}存在错误:{ie.Error}";
+                                error = $"{inputString}存在错误:\n{ie.Error}";
                                 Log.Error(error);
                                 return;
                             }
