@@ -16,7 +16,7 @@ namespace Game
             {
                 case 1: maxOutput = 3u; break;
                 case 2: maxOutput = 15u; break;
-                case 3: maxOutput = 63u; break;
+                case 3: maxOutput = 255u; break;
                 default: maxOutput = 1u; break;
             }
         }

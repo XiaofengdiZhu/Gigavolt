@@ -15,7 +15,7 @@ namespace Game
             {
                 case 1: maxInput = 3u; break;
                 case 2: maxInput = 15u; break;
-                case 3: maxInput = 63u; break;
+                case 3: maxInput = 255u; break;
                 default: maxInput = 1u; break;
             }
         }
