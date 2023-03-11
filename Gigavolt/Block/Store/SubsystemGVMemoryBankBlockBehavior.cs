@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using Engine;
 using Engine.Media;
@@ -11,6 +12,7 @@ namespace Game
     {
         public SubsystemGameInfo m_subsystemGameInfo;
         public static string fName = "GVMemoryBankBlockBehavior";
+        public Dictionary<string, GVMemoryBankData> guidDataDictionary = new Dictionary<string, GVMemoryBankData>();
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
@@ -44,7 +46,7 @@ namespace Game
             int count = inventory.GetSlotCount(slotIndex);
             int id = Terrain.ExtractData(value);
             GVMemoryBankData memoryBankData = base.GetItemData(id);
-            memoryBankData = ((memoryBankData != null) ? ((GVMemoryBankData)memoryBankData.Copy()) : new GVMemoryBankData(Guid.NewGuid(), this.m_subsystemGameInfo.DirectoryName, null, 0u));
+            memoryBankData = ((memoryBankData != null) ? ((GVMemoryBankData)memoryBankData.Copy()) : new GVMemoryBankData(Guid.NewGuid(), this, this.m_subsystemGameInfo.DirectoryName, null, 0u));
             if (memoryBankData.m_worldDirectory == null)
             {
                 memoryBankData.m_worldDirectory = this.m_subsystemGameInfo.DirectoryName;
@@ -62,7 +64,7 @@ namespace Game
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer)
         {
-            GVMemoryBankData memoryBankData = base.GetBlockData(new Point3(x, y, z)) ?? new GVMemoryBankData(Guid.NewGuid(), this.m_subsystemGameInfo.DirectoryName, null, 0u);
+            GVMemoryBankData memoryBankData = base.GetBlockData(new Point3(x, y, z)) ?? new GVMemoryBankData(Guid.NewGuid(), this, this.m_subsystemGameInfo.DirectoryName, null, 0u);
             if (memoryBankData.m_worldDirectory == null)
             {
                 memoryBankData.m_worldDirectory = this.m_subsystemGameInfo.DirectoryName;

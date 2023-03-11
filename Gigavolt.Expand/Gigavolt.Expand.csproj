@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{27AAF39A-72D9-4836-91CA-181BBEDFD7A0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gigavolt.Expand</RootNamespace>
+    <AssemblyName>Gigavolt.Expand</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Engine">
+      <HintPath>..\Gigavolt\reference\Engine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EntitySystem">
+      <HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Survivalcraft">
+      <HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NesEmulator\BitmapRender.cs" />
+    <Compile Include="NesEmulator\EditGVNesEmulatorDialogData.cs" />
+    <Compile Include="NesEmulator\EditGVNesEmulatorDialog.cs" />
+    <Compile Include="NesEmulator\GVNesEmulatorGlowPoint.cs" />
+    <Compile Include="NesEmulator\GVNesEmulatorBlock.cs" />
+    <Compile Include="NesEmulator\NesEmulatorGVElectricElement.cs" />
+    <Compile Include="NesEmulator\SubsystemNesEmulatorBlockBehavior.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Flags\Byte6Flags.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Flags\Byte7Flags.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\ICartridge.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\Enums\enumNametableMirroring.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\IMapper.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\CNROM.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\MapperBase.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\MMC1.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\NROM.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\UxROM.cs" />
+    <Compile Include="NesEmulator\XamariNES.Cartridge\NESCartridge.cs" />
+    <Compile Include="NesEmulator\XamariNES.Common\Extensions\ByteExtension.cs" />
+    <Compile Include="NesEmulator\XamariNES.Common\Extensions\IntExtensions.cs" />
+    <Compile Include="NesEmulator\XamariNES.Controller\Enums\enumButtons.cs" />
+    <Compile Include="NesEmulator\XamariNES.Controller\IController.cs" />
+    <Compile Include="NesEmulator\XamariNES.Controller\NESController.cs" />
+    <Compile Include="NesEmulator\XamariNES.CPU\Core.cs" />
+    <Compile Include="NesEmulator\XamariNES.CPU\CPUInstruction.cs" />
+    <Compile Include="NesEmulator\XamariNES.CPU\CPUStatus.cs" />
+    <Compile Include="NesEmulator\XamariNES.CPU\Enums\EnumAddressingMode.cs" />
+    <Compile Include="NesEmulator\XamariNES.CPU\Enums\EnumOpcode.cs" />
+    <Compile Include="NesEmulator\XamariNES.CPU\Memory.cs" />
+    <Compile Include="NesEmulator\XamariNES.Emulator\Enums\enumEmulatorSpeed.cs" />
+    <Compile Include="NesEmulator\XamariNES.Emulator\NESEmulator.cs" />
+    <Compile Include="NesEmulator\XamariNES.PPU\Core.cs" />
+    <Compile Include="NesEmulator\XamariNES.PPU\Flags\CycleStateFlags.cs" />
+    <Compile Include="NesEmulator\XamariNES.PPU\Flags\PPUCtrlFlags.cs" />
+    <Compile Include="NesEmulator\XamariNES.PPU\Flags\PPUMaskFlags.cs" />
+    <Compile Include="NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs" />
+    <Compile Include="NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs" />
+    <Compile Include="NesEmulator\XamariNES.PPU\Memory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Gigavolt.Expand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Gigavolt.Expand.xdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Lang\zh-CN.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="modinfo.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="NesEmulator\nestest.nes" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
+      <Project>{77e3e4a0-32d2-423e-9014-5aef2b450f14}</Project>
+      <Name>Gigavolt</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Dialogs\EditGVNesEmulatorDialog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

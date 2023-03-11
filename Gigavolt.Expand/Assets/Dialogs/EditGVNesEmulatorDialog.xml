@@ -1,0 +1,26 @@
+<CanvasWidget xmlns="runtime-namespace:Game">
+
+  <CanvasWidget Size="500, 300" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+    <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
+
+      <LabelWidget Font="{Fonts/Pericles}" Text="[EditGVNesEmulatorDialog:1]" HorizontalAlignment="Center" />
+
+      <CanvasWidget Size="0, Infinity" />
+
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <CanvasWidget Size="304, 34">
+          <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
+          <TextBoxWidget Name="EditGVNesEmulatorDialog.RomPath" Size="300, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+        </CanvasWidget>
+      </StackPanelWidget>
+
+      <CanvasWidget Size="0, Infinity" />
+
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <BevelledButtonWidget Name="EditGVNesEmulatorDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVNesEmulatorDialog:2]" Margin="20, 0" />
+        <BevelledButtonWidget Name="EditGVNesEmulatorDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVNesEmulatorDialog:3]" />
+      </StackPanelWidget>
+    </StackPanelWidget>
+  </CanvasWidget>
+</CanvasWidget>

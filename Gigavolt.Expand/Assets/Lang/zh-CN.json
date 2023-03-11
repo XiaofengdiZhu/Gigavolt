@@ -1,0 +1,19 @@
+﻿{
+  "Language": {
+    "Name": "中文"
+  },
+  "Blocks": {
+    "GVNesEmulatorBlock:0": {
+      "DisplayName": "GV红白机模拟器",
+      "Description": "无",
+      "CRDescription:0": "无"
+    }
+  },
+  "ContentWidgets": {
+    "EditGVNesEmulatorDialog": {
+      "1": "ROM路径",
+      "2": "确定",
+      "3": "取消"
+    }
+  }
+}
