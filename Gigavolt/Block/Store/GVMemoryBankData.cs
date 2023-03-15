@@ -13,21 +13,19 @@ namespace Game
         public Guid m_guid;
         public string m_worldDirectory;
         public Image Data;
-        public SubsystemGVMemoryBankBlockBehavior m_subsystem;
         public GVMemoryBankData()
         {
             m_guid = Guid.NewGuid();
             m_worldDirectory = null;
             Data = null;
         }
-        public GVMemoryBankData(Guid guid, SubsystemGVMemoryBankBlockBehavior subsystem, string worldDirectory, Image image=null, uint lastOutput = 0)
+        public GVMemoryBankData(Guid guid, string worldDirectory, Image image=null, uint lastOutput = 0)
         {
             m_guid = guid;
-            m_subsystem = subsystem;
             m_worldDirectory = worldDirectory;
             Data = image;
             LastOutput = lastOutput;
-            subsystem.guidDataDictionary.Add(m_guid.ToString(), this);
+            GVStaticStorage.guidDataDictionary.Add(m_guid.ToString(), this);
         }
         public uint LastOutput
         {
@@ -66,7 +64,7 @@ namespace Game
 
         public IEditableItemData Copy()
         {
-            return new GVMemoryBankData(m_guid, m_subsystem, m_worldDirectory, Data == null ? null : new Image(Data), LastOutput);
+            return new GVMemoryBankData(m_guid, m_worldDirectory, Data == null ? null : new Image(Data), LastOutput);
         }
         public void LoadData()
         {
@@ -93,6 +91,7 @@ namespace Game
                 string text = array[0];
                 m_guid = Guid.ParseExact(text, "D");
                 LoadData();
+                GVStaticStorage.guidDataDictionary.Add(m_guid.ToString(), this);
             }
             if (array.Length >= 2)
             {
@@ -198,10 +197,10 @@ namespace Game
             byte[] bytes = new byte[image.Pixels.Length * 4];
             for (int i = 0; i < image.Pixels.Length; i++)
             {
-                bytes[i] = (byte)(image.Pixels[i].PackedValue & 0xFF);
-                bytes[i + 1] = (byte)(image.Pixels[i].PackedValue & (0xFF << 8));
-                bytes[i + 2] = (byte)(image.Pixels[i].PackedValue & (0xFF << 16));
-                bytes[i + 3] = (byte)(image.Pixels[i].PackedValue & (0xFF << 24));
+                bytes[i * 4] = (byte)(image.Pixels[i].PackedValue & 0xFF);
+                bytes[i * 4 + 1] = (byte)((image.Pixels[i].PackedValue >> 8) & 0xFF);
+                bytes[i * 4 + 2] = (byte)((image.Pixels[i].PackedValue >> 16) & 0xFF);
+                bytes[i * 4 + 3] = (byte)((image.Pixels[i].PackedValue >> 24) & 0xFF);
             }
             return bytes;
         }

@@ -2,6 +2,7 @@ using Engine;
 using GameEntitySystem;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 
@@ -56,7 +57,7 @@ namespace Game
                             {
                                 bytes = m_subsystem.GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes"));
                             }
-                            else if (m_subsystem.Project.FindSubsystem<SubsystemGVMemoryBankBlockBehavior>(true).guidDataDictionary.TryGetValue(m_romPathTextBox.Text,out GVMemoryBankData data))
+                            else if (GVStaticStorage.guidDataDictionary.TryGetValue(m_romPathTextBox.Text,out GVMemoryBankData data))
                             {
                                 bytes = GVMemoryBankData.Image2Bytes(data.Data);
                             }

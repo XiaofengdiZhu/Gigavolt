@@ -192,6 +192,7 @@
     <Compile Include="GVElectricClasses\GVElectricConnectorDirection.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnectorType.cs" />
     <Compile Include="GVElectricClasses\GVElectricElement.cs" />
+    <Compile Include="GVElectricClasses\GVStaticStorage.cs" />
     <Compile Include="GVElectricClasses\MathUint.cs" />
     <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRFileStream.cs" />
     <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRInputStream.cs" />

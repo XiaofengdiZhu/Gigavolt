@@ -27,6 +27,7 @@ namespace Game
         }
         public override void Load(ValuesDictionary valuesDictionary)
         {
+            base.Load(valuesDictionary);
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             //Project.FindSubsystem<SubsystemGVElectricBlockBehavior>(true).HandledBlocks.Append(1023);
         }
@@ -37,20 +38,20 @@ namespace Game
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
         {
             if (componentPlayer.DragHostWidget.IsDragInProgress) return false;
-            EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(0, 0, 0)) ?? new EditGVNesEmulatorDialogData();
+            EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-1023)) ?? new EditGVNesEmulatorDialogData();
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVNesEmulatorDialog(Data, this, delegate
             {
-                SetBlockData(new Point3(0, 0, 0), Data);
+                SetBlockData(new Point3(-1023), Data);
             }));
             return true;
         }
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer)
         {
-            EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(0, 0, 0)) ?? new EditGVNesEmulatorDialogData();
+            EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-1023)) ?? new EditGVNesEmulatorDialogData();
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVNesEmulatorDialog(Data, this, delegate
             {
-                SetBlockData(new Point3(0, 0, 0), Data);
-                int face = ((GVTruthTableCircuitBlock)BlocksManager.Blocks[1023]).GetFace(value);
+                SetBlockData(new Point3(-1023), Data);
+                int face = ((GVNesEmulatorBlock)BlocksManager.Blocks[1023]).GetFace(value);
                 SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
                 GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                 if (GVElectricElement != null)

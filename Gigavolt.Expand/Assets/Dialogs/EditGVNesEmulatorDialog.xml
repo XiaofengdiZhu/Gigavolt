@@ -11,7 +11,7 @@
       <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
         <CanvasWidget Size="304, 34">
           <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
-          <TextBoxWidget Name="EditGVNesEmulatorDialog.RomPath" Size="300, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+          <TextBoxWidget Name="EditGVNesEmulatorDialog.RomPath" Size="300, 30" MaximumLength="1000"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
         </CanvasWidget>
       </StackPanelWidget>
 
