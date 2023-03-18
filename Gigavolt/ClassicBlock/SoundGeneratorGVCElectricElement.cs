@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game
 {
-    public class SoundGeneratorGVElectricElement : RotateableGVElectricElement
+    public class SoundGeneratorGVCElectricElement : RotateableGVElectricElement
     {
         public SubsystemNoise m_subsystemNoise;
 
@@ -70,7 +70,7 @@ namespace Game
             "HandClap"
         };
 
-        public SoundGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
+        public SoundGeneratorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
             : base(subsystemGVElectricity, cellFace)
         {
             m_subsystemNoise = subsystemGVElectricity.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);

@@ -45,9 +45,10 @@ GVCounterCBlock,684,1002
 GVTruthTableCircuitCBlock,688,1003
 GVDigitalToAnalogConverterCBlock,680,1004
 GVAnalogToDigitalConverterCBlock,681,1005
-GVPressurePlateCBlock,644,1006
-GVMulticoloredLedCBlock,654,1007
-GVOneLedCBlock,653,1008
-GVTargetCBlock,699,1009
-GVDetonatorCBlock,647,1010
+GVSoundGeneratorCBlock,683,1006
+GVPressurePlateCBlock,644,1007
+GVMulticoloredLedCBlock,654,1008
+GVOneLedCBlock,653,1009
+GVTargetCBlock,699,1010
+GVDetonatorCBlock,647,1011
 GVNesEmulatorBlock,1023,1023

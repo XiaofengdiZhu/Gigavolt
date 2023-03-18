@@ -108,9 +108,9 @@
     <Compile Include="Block\Output\GVPistonData.cs" />
     <Compile Include="Block\Output\GVPistonBlock.cs" />
     <Compile Include="Block\Output\GVPistonHeadBlock.cs" />
-    <Compile Include="Block\Output\GVSoundGeneratorBlock.cs" />
+    <Compile Include="ClassicBlock\GVSoundGeneratorCBlock.cs" />
     <Compile Include="Block\Output\PistonGVElectricElement.cs" />
-    <Compile Include="Block\Output\SoundGeneratorGVElectricElement.cs" />
+    <Compile Include="ClassicBlock\SoundGeneratorGVCElectricElement.cs" />
     <Compile Include="Block\Output\SubsystemGVPistonBlockBehavior.cs" />
     <Compile Include="Block\Sensor\GVMotionDetectorBlock.cs" />
     <Compile Include="Block\Sensor\GVPhotodiodeBlock.cs" />

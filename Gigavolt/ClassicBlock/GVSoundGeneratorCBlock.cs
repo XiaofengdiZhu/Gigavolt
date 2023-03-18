@@ -1,17 +1,17 @@
 namespace Game
 {
-    public class GVSoundGeneratorBlock : RotateableMountedGVElectricElementBlock
+    public class GVSoundGeneratorCBlock : RotateableMountedGVElectricElementBlock
     {
-        public const int Index = 883;
+        public const int Index = 683;
 
-        public GVSoundGeneratorBlock()
+        public GVSoundGeneratorCBlock()
             : base("Models/Gates", "SoundGenerator", 0.5f)
         {
         }
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z)
         {
-            return new SoundGeneratorGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+            return new SoundGeneratorGVCElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
         }
 
         public override GVElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
