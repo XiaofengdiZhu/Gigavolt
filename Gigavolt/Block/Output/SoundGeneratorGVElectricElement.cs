@@ -69,10 +69,12 @@ namespace Game
             }
             if (bottomInput == 0)
             {
+                Log.Information("底部输入为0");
                 if (m_lastBottomInput > 0)
                 {
                     if (m_sound != null && m_playing)
                     {
+                        Log.Information("暂停播放");
                         m_sound.Stop();
                         m_playing = false;
                     }
@@ -83,30 +85,44 @@ namespace Game
                     {
                         m_sound.Dispose();
                     }
-                    if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(inInput, out GVMemoryBankData GVMBData))
+                    if (inInput > 0)
                     {
-                        try
+                        if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(inInput, out GVMemoryBankData GVMBData))
                         {
-                            short[] shorts = GVMemoryBankData.Image2Shorts(GVMBData.Data);
-                            m_sound = new Sound(new SoundBuffer(shorts, (int)topInput, (int)rightInput, 2, (int)leftInput));
-                        }catch(Exception ex)
+                            try
+                            {
+                                short[] shorts = GVMemoryBankData.Image2Shorts(GVMBData.Data);
+                                int startIndex = MathUint.ToInt(topInput);
+                                int itemsCount = MathUint.ToInt(rightInput);
+                                if (startIndex + itemsCount > shorts.Length)
+                                {
+                                    itemsCount = shorts.Length - startIndex;
+                                }
+                                if (itemsCount < 0)
+                                {
+                                    itemsCount = 0;
+                                }
+                                m_sound = new Sound(new SoundBuffer(shorts, startIndex, itemsCount, 2, (int)leftInput));
+                            }
+                            catch (Exception ex)
+                            {
+                                string error = $"{CellFaces[0].Point}的GV声音发生器加载ID为{inInput.ToString("X", null)}的存储器中的音频数据时出错";
+                                foreach (ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers)
+                                {
+                                    componentPlayer.ComponentGui.DisplaySmallMessage(error, Color.White, true, true);
+                                }
+                                Log.Error($"{error}，加载起始位置为{topInput}（均为十进制），加载short数量为{rightInput}，声道数为2，采样率为{leftInput}，详细报错：\n{ex}");
+                            }
+                        }
+                        else
                         {
-                            string error = $"{CellFaces[0].Point}的GV声音发生器加载ID为{inInput.ToString("X", null)}的存储器中的音频数据时出错";
+                            m_sound = null;
+                            string error = $"{CellFaces[0].Point}的GV声音发生器无法找到ID为{inInput.ToString("X", null)}的存储器";
+                            Log.Error(error);
                             foreach (ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers)
                             {
                                 componentPlayer.ComponentGui.DisplaySmallMessage(error, Color.White, true, true);
                             }
-                            Log.Error($"{error}，加载起始位置为{topInput}（均为十进制），加载short数量为{rightInput}，声道数为2，采样率为{leftInput}，详细报错：\n{ex}");
-                        }
-                    }
-                    else
-                    {
-                        m_sound = null;
-                        string error = $"{CellFaces[0].Point}的GV声音发生器无法找到ID为{inInput.ToString("X", null)}的存储器";
-                        Log.Error(error);
-                        foreach (ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers)
-                        {
-                            componentPlayer.ComponentGui.DisplaySmallMessage(error, Color.White, true, true);
                         }
                     }
                     m_lastInInput = inInput;
@@ -138,6 +154,17 @@ namespace Game
                 m_subsystemNoise.MakeNoise(new Vector3(cellFace.X, cellFace.Y, cellFace.Z), (m_volume < 0.5f) ? 0.25f : 0.5f, MathUtils.Lerp(2f, 20f, m_volume));
             }
             return false;
+        }
+        public override void OnRemoved()
+        {
+            base.OnRemoved();
+            if(m_sound != null)
+            {
+                if (m_playing) {
+                    m_sound.Stop();
+                };
+                m_sound.Dispose();
+            }
         }
     }
 }
