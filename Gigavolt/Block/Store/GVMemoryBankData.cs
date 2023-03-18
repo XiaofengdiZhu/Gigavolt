@@ -10,22 +10,22 @@ namespace Game
     public class GVMemoryBankData : IEditableItemData
     {
 
-        public Guid m_guid;
+        public uint m_ID;
         public string m_worldDirectory;
         public Image Data;
         public GVMemoryBankData()
         {
-            m_guid = Guid.NewGuid();
+            m_ID = GVStaticStorage.GetUniqueGVMBID();
             m_worldDirectory = null;
             Data = null;
         }
-        public GVMemoryBankData(Guid guid, string worldDirectory, Image image=null, uint lastOutput = 0)
+        public GVMemoryBankData(uint ID, string worldDirectory, Image image=null, uint lastOutput = 0)
         {
-            m_guid = guid;
+            m_ID = ID;
             m_worldDirectory = worldDirectory;
             Data = image;
             LastOutput = lastOutput;
-            GVStaticStorage.guidDataDictionary.Add(m_guid.ToString(), this);
+            GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
         }
         public uint LastOutput
         {
@@ -64,7 +64,7 @@ namespace Game
 
         public IEditableItemData Copy()
         {
-            return new GVMemoryBankData(m_guid, m_worldDirectory, Data == null ? null : new Image(Data), LastOutput);
+            return new GVMemoryBankData(m_ID, m_worldDirectory, Data == null ? null : new Image(Data), LastOutput);
         }
         public void LoadData()
         {
@@ -72,7 +72,7 @@ namespace Game
             {
                 try
                 {
-                    Data = Image.Load($"{m_worldDirectory}/GVMB/{m_guid}.png", ImageFileFormat.Png);
+                    Data = Image.Load($"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", ImageFileFormat.Png);
                 }
                 catch (Exception ex)
                 {
@@ -89,9 +89,9 @@ namespace Game
             if (array.Length >= 1)
             {
                 string text = array[0];
-                m_guid = Guid.ParseExact(text, "D");
+                m_ID = uint.Parse(text, System.Globalization.NumberStyles.HexNumber, null);
                 LoadData();
-                GVStaticStorage.guidDataDictionary.Add(m_guid.ToString(), this);
+                GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
             }
             if (array.Length >= 2)
             {
@@ -107,7 +107,7 @@ namespace Game
         public string SaveString(bool saveLastOutput)
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.Append(m_guid.ToString());
+            stringBuilder.Append(m_ID.ToString("X", null));
             if (saveLastOutput)
             {
                 stringBuilder.Append(';');
@@ -117,7 +117,7 @@ namespace Game
             {
                 try
                 {
-                    Image.Save(Data, $"{m_worldDirectory}/GVMB/{m_guid}.png", ImageFileFormat.Png, true);
+                    Image.Save(Data, $"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", ImageFileFormat.Png, true);
                 }
                 catch (Exception ex)
                 {

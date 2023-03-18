@@ -21,8 +21,8 @@
       <CanvasWidget Size="0, Infinity" />
 
       <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-        <BevelledButtonWidget Name="EditGigaVoltageLevelDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditBatteryDialog:2]" Margin="20, 0" />
-        <BevelledButtonWidget Name="EditGigaVoltageLevelDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditBatteryDialog:3]" />
+        <BevelledButtonWidget Name="EditGigaVoltageLevelDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGigaVoltageLevelDialog:4]" Margin="20, 0" />
+        <BevelledButtonWidget Name="EditGigaVoltageLevelDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGigaVoltageLevelDialog:5]" />
       </StackPanelWidget>
     </StackPanelWidget>
   </CanvasWidget>

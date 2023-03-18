@@ -30,7 +30,7 @@ namespace Game
             m_rowCountTextBox = Children.Find<TextBoxWidget>("EditGVMemoryBankDialog.RowCount");
             m_colCountTextBox = Children.Find<TextBoxWidget>("EditGVMemoryBankDialog.ColCount");
             m_imageLocationLabel = Children.Find<LabelWidget>("EditGVMemoryBankDialog.ImageLocation");
-            m_imageLocationLabel.Text += $"{memoryBankData.m_worldDirectory}/GVMB/{memoryBankData.m_guid}.png";
+            m_imageLocationLabel.Text += $"{memoryBankData.m_worldDirectory}/GVMB/{memoryBankData.m_ID.ToString("X", null)}.png";
             m_handler = handler;
             m_memoryBankData = memoryBankData;
             if (!(memoryBankData.Data == null))

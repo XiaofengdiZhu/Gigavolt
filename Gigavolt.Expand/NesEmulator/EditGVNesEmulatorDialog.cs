@@ -57,7 +57,7 @@ namespace Game
                             {
                                 bytes = m_subsystem.GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes"));
                             }
-                            else if (GVStaticStorage.guidDataDictionary.TryGetValue(m_romPathTextBox.Text,out GVMemoryBankData data))
+                            else if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(uint.Parse(m_romPathTextBox.Text, System.Globalization.NumberStyles.HexNumber, null),out GVMemoryBankData data))
                             {
                                 bytes = GVMemoryBankData.Image2Bytes(data.Data);
                             }
