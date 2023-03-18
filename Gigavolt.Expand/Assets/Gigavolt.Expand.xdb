@@ -1,6 +1,6 @@
 ﻿<Mod>
 	<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
-		<MemberSubsystemTemplate Name="NesEmulatorBlockBehavior" Guid="e75dafb1-e62a-19f0-868d-5ebe47faf54e" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+		<MemberSubsystemTemplate Name="NesEmulatorBlockBehavior" Guid="e75dafb1-e62a-19f0-868d-5ebe47faf54e" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="9dd0d325-33d3-1ca5-3185-2e0c5079668e" Value="Game.SubsystemNesEmulatorBlockBehavior" Type="string" />
 		</MemberSubsystemTemplate>
 	</ProjectTemplate>

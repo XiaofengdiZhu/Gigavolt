@@ -197,12 +197,22 @@ namespace Game
             byte[] bytes = new byte[image.Pixels.Length * 4];
             for (int i = 0; i < image.Pixels.Length; i++)
             {
-                bytes[i * 4] = (byte)(image.Pixels[i].PackedValue & 0xFF);
-                bytes[i * 4 + 1] = (byte)((image.Pixels[i].PackedValue >> 8) & 0xFF);
-                bytes[i * 4 + 2] = (byte)((image.Pixels[i].PackedValue >> 16) & 0xFF);
-                bytes[i * 4 + 3] = (byte)((image.Pixels[i].PackedValue >> 24) & 0xFF);
+                bytes[i * 4 + 3] = (byte)(image.Pixels[i].PackedValue & 0xFF);
+                bytes[i * 4 + 2] = (byte)((image.Pixels[i].PackedValue >> 8) & 0xFF);
+                bytes[i * 4 + 1] = (byte)((image.Pixels[i].PackedValue >> 16) & 0xFF);
+                bytes[i * 4] = (byte)((image.Pixels[i].PackedValue >> 24) & 0xFF);
             }
             return bytes;
+        }
+        public static short[] Image2Shorts(Image image)
+        {
+            short[] shorts = new short[image.Pixels.Length * 2];
+            for (int i = 0; i < image.Pixels.Length; i++)
+            {
+                shorts[i * 2 + 1] = (short)((image.Pixels[i].PackedValue) & 0xFFFF);
+                shorts[i * 2] = (short)((image.Pixels[i].PackedValue >> 16) & 0xFFFF);
+            }
+            return shorts;
         }
     }
 }

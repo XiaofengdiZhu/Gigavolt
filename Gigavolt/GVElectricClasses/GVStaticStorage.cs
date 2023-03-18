@@ -12,7 +12,7 @@ namespace Game
             while (true)
             {
                 uint num = random.UInt();
-                if (GVMBIDDataDictionary.ContainsKey(num))
+                if (num == 0u || GVMBIDDataDictionary.ContainsKey(num))
                 {
                     continue;
                 }
