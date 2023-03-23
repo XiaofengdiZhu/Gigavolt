@@ -11,6 +11,7 @@ namespace Game
     {
         public SubsystemNoise m_subsystemNoise;
         public SubsystemAudio m_subsystemAudio;
+        public SubsystemGameInfo m_subsystemGameInfo;
 
         public uint m_lastBottomInput = 0u;
         public uint m_lastInInput = 0u;
@@ -25,6 +26,7 @@ namespace Game
         {
             m_subsystemNoise = subsystemGVElectricity.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
             m_subsystemAudio = subsystemGVElectricity.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
             Vector3 vector = CellFace.FaceToVector3(cellFace.Face);
             Vector3 position = new Vector3(cellFace.Point) + new Vector3(0.5f) - 0.2f * vector;
         }
@@ -69,12 +71,10 @@ namespace Game
             }
             if (bottomInput == 0)
             {
-                Log.Information("底部输入为0");
                 if (m_lastBottomInput > 0)
                 {
                     if (m_sound != null && m_playing)
                     {
-                        Log.Information("暂停播放");
                         m_sound.Stop();
                         m_playing = false;
                     }
@@ -91,6 +91,11 @@ namespace Game
                         {
                             try
                             {
+                                if (GVMBData.m_worldDirectory == null)
+                                {
+                                    GVMBData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
+                                    GVMBData.LoadData();
+                                }
                                 short[] shorts = GVMemoryBankData.Image2Shorts(GVMBData.Data);
                                 int startIndex = MathUint.ToInt(topInput);
                                 int itemsCount = MathUint.ToInt(rightInput);

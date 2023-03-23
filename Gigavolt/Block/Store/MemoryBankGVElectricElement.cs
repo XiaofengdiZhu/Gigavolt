@@ -76,7 +76,6 @@ namespace Game
             {
                 memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
                 memoryBankData.LoadData();
-                m_SubsystemGVMemoryBankBlockBehavior.SetBlockData(CellFaces[0].Point, memoryBankData);
             }
             if (flag2)
             {

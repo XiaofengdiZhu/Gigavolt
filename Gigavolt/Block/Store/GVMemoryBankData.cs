@@ -12,18 +12,31 @@ namespace Game
 
         public uint m_ID;
         public string m_worldDirectory;
-        public Image Data;
+        public Image m_data;
+        public Image Data
+        {
+            get
+            {
+                return m_data;
+            }
+            set
+            {
+                m_dataChanged = true;
+                m_data = value;
+            }
+        }
+        public bool m_dataChanged;
         public GVMemoryBankData()
         {
             m_ID = GVStaticStorage.GetUniqueGVMBID();
             m_worldDirectory = null;
-            Data = null;
+            m_data = null;
         }
         public GVMemoryBankData(uint ID, string worldDirectory, Image image=null, uint lastOutput = 0)
         {
             m_ID = ID;
             m_worldDirectory = worldDirectory;
-            Data = image;
+            m_data = image;
             LastOutput = lastOutput;
             GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
         }
@@ -72,7 +85,7 @@ namespace Game
             {
                 try
                 {
-                    Data = Image.Load($"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", ImageFileFormat.Png);
+                    m_data = Image.Load($"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", ImageFileFormat.Png);
                 }
                 catch (Exception ex)
                 {
@@ -113,7 +126,7 @@ namespace Game
                 stringBuilder.Append(';');
                 stringBuilder.Append(LastOutput.ToString("X", null));
             }
-            if (Data != null)
+            if (Data != null && m_dataChanged)
             {
                 try
                 {
