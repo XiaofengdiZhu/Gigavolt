@@ -29,6 +29,7 @@ namespace Game
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
             Vector3 vector = CellFace.FaceToVector3(cellFace.Face);
             Vector3 position = new Vector3(cellFace.Point) + new Vector3(0.5f) - 0.2f * vector;
+            GVStaticStorage.GVSGCFEEList.Add(this);
         }
 
         public override bool Simulate()
@@ -162,7 +163,6 @@ namespace Game
         }
         public override void OnRemoved()
         {
-            base.OnRemoved();
             if(m_sound != null)
             {
                 if (m_playing) {
@@ -170,6 +170,7 @@ namespace Game
                 };
                 m_sound.Dispose();
             }
+            GVStaticStorage.GVSGCFEEList.Remove(this);
         }
     }
 }

@@ -189,6 +189,7 @@
     <Compile Include="Dialog\EditGigaVoltageLevelDialog.cs" />
     <Compile Include="Dialog\EditGVPistonDialog.cs" />
     <Compile Include="Dialog\EditGVTruthTableDialog.cs" />
+    <Compile Include="GVElectricClasses\GigavoltModLoader.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnection.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnectionPath.cs" />
     <Compile Include="GVElectricClasses\GVElectricConnectorDirection.cs" />

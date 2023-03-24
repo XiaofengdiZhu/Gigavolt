@@ -22,5 +22,6 @@ namespace Game
                 }
             }
         }
+        public static List<SoundGeneratorGVElectricElement> GVSGCFEEList = new List<SoundGeneratorGVElectricElement>();
     }
 }
