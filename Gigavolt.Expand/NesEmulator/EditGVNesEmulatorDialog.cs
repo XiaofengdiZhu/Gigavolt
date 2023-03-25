@@ -52,33 +52,20 @@ namespace Game
                     {
                         try
                         {
-                            byte[] bytes;
-                            if (m_romPathTextBox.Text == "nestest")
-                            {
-                                bytes = m_subsystem.GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes"));
-                            }
-                            else if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(uint.Parse(m_romPathTextBox.Text, System.Globalization.NumberStyles.HexNumber, null),out GVMemoryBankData data))
-                            {
-                                bytes = GVMemoryBankData.Image2Bytes(data.Data);
-                            }
-                            else
-                            {
-                                bytes = m_subsystem.GetByteFromStream(Storage.OpenFile(m_romPathTextBox.Text, OpenFileMode.Read));
-                            }
-                            m_subsystem._emu._cartridge.LoadROM(bytes);
+                            m_subsystem.LoadRomFromPath(m_romPathTextBox.Text);
                             m_blockData.Data = m_romPathTextBox.Text;
                             m_blockData.SaveString();
                             Dismiss(true);
                         }
                         catch (Exception ex)
                         {
-                            DialogsManager.ShowDialog(null, new MessageDialog("·¢Éú´íÎó", ex.ToString(), "OK", null, null));
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, ex.ToString(), "OK", null, null));
                         }
                     }
                 }
                 else
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog("·¢Éú´íÎó", "RomÂ·¾¶Î´ÌîÐ´", "OK", null, null));
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "ROMÂ·¾¶Î´ÌîÐ´", "OK", null, null));
                 }
             }
             if (base.Input.Cancel || m_cancelButton.IsClicked)

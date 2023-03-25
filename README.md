@@ -61,8 +61,7 @@ png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的
 |右端|播放数量|设置播放n个16位数据，仅在读取音频数据时发生作用|
 |下端|响度|电压从0V上升后立即开始播放，设为0V停止，再上升后从头播放，电压越高响度越大|
 #### 音频转换 Sound Conversion
-要使用声音发生器，首先需要将音频转换为双声道，采样率8000~48000Hz之间，采样位数16位，PCM编码的WAV格式音频，再将此WAV格式音频去掉文件头，只保留`data chunk`，按顺序写入存储器方块中  
-例如`data chunk`开头的6个16位数据为0x0001、0x0002、0x3333、0x4567、0xBA98、0xCDEF，写入存储器的数据应该为：0x00010002、0x33334567、0xBA98CDEF
+要使用声音发生器，首先需要使用[ffmpeg](https://ffmpeg.org/)或[格式工厂](http://www.pcgeshi.com/index.html)等软件将音频转换为双声道，采样率8000~48000Hz之间，采样位数16位，PCM编码的WAV格式音频，再使用存储器的导入功能导入该文件
 # GigaVoltage.Expand 十亿伏特·扩展
 这是一个为生存战争游戏十亿伏特mod带来更多电路板和功能的mod  
 This is a mod for Survivalcraft Gigavolt mod that take more circuit components and functions to the mod.
@@ -70,11 +69,11 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 ### 红白机模拟器 Nes Emulator
 可以模拟红白机的模拟器，使用的库是[XamariNES](https://github.com/enusbaum/XamariNES)，纯软件模拟，不支持声音输出，仅支持CNROM、MMC1、NROM、UxROM四种ROM格式的游戏，可能能够支持的游戏有超级玛丽、双截龙、恶魔城、冒险岛、勇者斗恶龙、合金装备、魂斗罗  
 整个游戏同时仅运行一个模拟器实例，多个红白机模拟器方块显示的内容是一样的，输入的手柄操作会按或计算后传输给模拟器，因此可以同屏异地联机  
-游戏运行时会自动加载测试ROM，如果要载入其他ROM，请编辑该方块，输入ROM的路径，或存储器的ID，点击确定，会立即从指定路径、内存板读取ROM
+游戏运行时会自动加载XamariNES内置测试ROM，如果要载入其他ROM，请编辑该方块，输入ROM的路径，或存储器的ID，点击确定，会立即从指定路径、内存板读取ROM，输入`nestest`则载入XamariNES内置测试ROM
 方块的各面输入会按或计算后执行，电压各位从低到高作用如下：
 
 |位|作用|说明|
-|--|--|
+|--|--|--|
 |1|电源|0为关闭，1为开启|
 |2|重置|0为不重置，1为执行重置；如一直为1，会不停重置|
 |3\~4|旋转|0为正位，1为顺时针旋转90度，2、3同理|

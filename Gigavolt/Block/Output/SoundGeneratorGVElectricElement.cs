@@ -100,9 +100,9 @@ namespace Game
                                 short[] shorts = GVMemoryBankData.Image2Shorts(GVMBData.Data);
                                 int startIndex = MathUint.ToInt(topInput);
                                 int itemsCount = MathUint.ToInt(rightInput);
-                                if (startIndex + itemsCount > shorts.Length)
+                                if (itemsCount > shorts.Length/2 || startIndex + itemsCount > shorts.Length/2)
                                 {
-                                    itemsCount = shorts.Length - startIndex;
+                                    itemsCount = shorts.Length/2 - startIndex;
                                 }
                                 if (itemsCount < 0)
                                 {

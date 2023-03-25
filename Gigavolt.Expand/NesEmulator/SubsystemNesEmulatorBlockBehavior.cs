@@ -12,6 +12,7 @@ namespace Game
     public class SubsystemNesEmulatorBlockBehavior : SubsystemEditableItemBehavior<EditGVNesEmulatorDialogData>, IDrawable
     {
         public SubsystemSky m_subsystemSky;
+        public SubsystemGameInfo m_subsystemGameInfo;
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
         public Dictionary<GVNesEmulatorGlowPoint, bool> m_glowPoints = new Dictionary<GVNesEmulatorGlowPoint, bool>();
         public readonly NESEmulator _emu;
@@ -29,6 +30,18 @@ namespace Game
         {
             base.Load(valuesDictionary);
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(true);
+            EditGVNesEmulatorDialogData data = GetBlockData(new Point3(-1023));
+            if(data != null && data.Data.Length > 0)
+            {
+                try
+                {
+                    LoadRomFromPath(data.Data);
+                }catch(Exception ex)
+                {
+                    Log.Error(ex);
+                }
+            }
             //Project.FindSubsystem<SubsystemGVElectricBlockBehavior>(true).HandledBlocks.Append(1023);
         }
         public override int[] HandledBlocks => new int[1]
@@ -125,7 +138,6 @@ namespace Game
                     {
                         _frame = _renderer.GenerateNoise();
                     }
-                    var a = ((XamariNES.Controller.NESController)(_emu.Controller1));
                     cachedBatch = m_primitivesRenderer.TexturedBatch(Texture2D.Load(_renderer.Render(_frame)), false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.PointClamp);
                 }
                 foreach (GVNesEmulatorGlowPoint key in m_glowPoints.Keys)
@@ -178,6 +190,29 @@ namespace Game
         {
             m_glowPoints.Remove(glowPoint);
         }
+        public void LoadRomFromPath(string path)
+        {
+            byte[] bytes;
+            if (path == "nestest")
+            {
+                bytes = SubsystemNesEmulatorBlockBehavior.GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes"));
+            }
+            else if (uint.TryParse(path, System.Globalization.NumberStyles.HexNumber, null, out uint uintResult) && GVStaticStorage.GVMBIDDataDictionary.TryGetValue(uintResult, out GVMemoryBankData data))
+            {
+                if (data.m_worldDirectory == null)
+                {
+                    data.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
+                    data.LoadData();
+                }
+                bytes = GVMemoryBankData.Image2Bytes(data.Data);
+            }
+            else
+            {
+                bytes = SubsystemNesEmulatorBlockBehavior.GetByteFromStream(Storage.OpenFile(path, OpenFileMode.Read));
+            }
+            _emu._cartridge.LoadROM(bytes);
+            _emu.LoadRom(bytes);
+        }
         /// <summary>
         ///     Delegate to receive frame that's ready from the emulator and
         ///     trigger a draw event.
@@ -196,10 +231,9 @@ namespace Game
         /// </summary>
         /// <param name="resource"></param>
         /// <returns></returns>
-        public byte[] GetByteFromStream(System.IO.Stream stream)
+        public static byte[] GetByteFromStream(System.IO.Stream stream)
         {
-            byte[] output;
-            output = new byte[stream.Length];
+            byte[] output = new byte[stream.Length];
             stream.Read(output, 0, (int)stream.Length);
             return output;
         }

@@ -154,7 +154,10 @@ namespace Game
                 uint[] uints = new uint[cols.Length];
                 for (int i = 0; i < cols.Length; i++)
                 {
-                    uints[i] = uint.Parse(cols[i], System.Globalization.NumberStyles.HexNumber, null);
+                    if (cols[i].Length > 0)
+                    {
+                        uints[i] = uint.Parse(cols[i], System.Globalization.NumberStyles.HexNumber, null);
+                    }
                 }
                 rowList.Add(uints);
             }
