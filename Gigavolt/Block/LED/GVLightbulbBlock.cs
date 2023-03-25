@@ -54,11 +54,11 @@ namespace Game
 
         public override IEnumerable<int> GetCreativeValues()
         {
-            yield return Terrain.MakeBlockValue(839);
+            yield return Terrain.MakeBlockValue(Index);
             int i = 0;
             while (i < 16)
             {
-                yield return Terrain.MakeBlockValue(839, 0, SetColor(0, i));
+                yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, i));
                 int num = i + 1;
                 i = num;
             }
@@ -98,7 +98,7 @@ namespace Game
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
         {
             BlockPlacementData result = default;
-            result.Value = Terrain.MakeBlockValue(839, 0, SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face));
+            result.Value = Terrain.MakeBlockValue(Index, 0, SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face));
             result.CellFace = raycastResult.CellFace;
             return result;
         }
@@ -108,7 +108,7 @@ namespace Game
             int? color = GetColor(Terrain.ExtractData(oldValue));
             dropValues.Add(new BlockDropValue
             {
-                Value = Terrain.MakeBlockValue(839, 0, SetColor(0, color)),
+                Value = Terrain.MakeBlockValue(Index, 0, SetColor(0, color)),
                 Count = 1
             });
             showDebris = true;

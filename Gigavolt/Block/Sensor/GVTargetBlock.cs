@@ -43,7 +43,7 @@ namespace Game
             if (raycastResult.CellFace.Face < 4)
             {
                 result.CellFace = raycastResult.CellFace;
-                result.Value = Terrain.MakeBlockValue(899, 0, SetMountingFace(0, raycastResult.CellFace.Face));
+                result.Value = Terrain.MakeBlockValue(Index, 0, SetMountingFace(0, raycastResult.CellFace.Face));
             }
             return result;
         }

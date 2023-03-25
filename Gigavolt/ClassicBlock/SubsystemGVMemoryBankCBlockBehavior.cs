@@ -6,12 +6,12 @@ namespace Game
     {
         public override int[] HandledBlocks => new int[1]
         {
-            686
+            GVMemoryBankCBlock.Index
         };
         public static string fName = "GVMemoryBankCBlockBehavior";
 
         public SubsystemGVMemoryBankCBlockBehavior()
-            : base(686)
+            : base(GVMemoryBankCBlock.Index)
         {
         }
 
@@ -52,7 +52,7 @@ namespace Game
             {
                 DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditMemoryBankDialog(memoryBankData, () => {
                     SetBlockData(new Point3(x, y, z), memoryBankData);
-                    int face = ((GVMemoryBankCBlock)BlocksManager.Blocks[686]).GetFace(value);
+                    int face = ((GVMemoryBankCBlock)BlocksManager.Blocks[GVMemoryBankCBlock.Index]).GetFace(value);
                     SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
                     GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                     if (electricElement != null)
@@ -67,7 +67,7 @@ namespace Game
                 DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditMemoryBankDialogAPI(memoryBankData, delegate ()
                 {
                     SetBlockData(new Point3(x, y, z), memoryBankData);
-                    int face = ((GVMemoryBankCBlock)BlocksManager.Blocks[686]).GetFace(value);
+                    int face = ((GVMemoryBankCBlock)BlocksManager.Blocks[GVMemoryBankCBlock.Index]).GetFace(value);
                     SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
                     GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                     if (electricElement != null)

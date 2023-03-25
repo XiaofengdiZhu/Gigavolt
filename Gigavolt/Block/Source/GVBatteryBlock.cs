@@ -31,7 +31,7 @@ namespace Game
                 int data = Terrain.ExtractData(oldValue);
                 dropValues.Add(new BlockDropValue
                 {
-                    Value = Terrain.MakeBlockValue(838, 0, data),
+                    Value = Terrain.MakeBlockValue(Index, 0, data),
                     Count = 1
                 });
             }

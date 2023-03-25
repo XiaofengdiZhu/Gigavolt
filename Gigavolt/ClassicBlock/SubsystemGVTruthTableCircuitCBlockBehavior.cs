@@ -6,11 +6,11 @@ namespace Game
     {
         public override int[] HandledBlocks => new int[1]
         {
-            688
+            GVTruthTableCircuitCBlock.Index
         };
 
         public SubsystemGVTruthTableCircuitCBlockBehavior()
-            : base(688)
+            : base(GVTruthTableCircuitCBlock.Index)
         {
         }
 
@@ -38,7 +38,7 @@ namespace Game
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditTruthTableDialog(TruthTableData, delegate
             {
                 SetBlockData(new Point3(x, y, z), TruthTableData);
-                int face = ((GVTruthTableCircuitCBlock)BlocksManager.Blocks[688]).GetFace(value);
+                int face = ((GVTruthTableCircuitCBlock)BlocksManager.Blocks[GVTruthTableCircuitCBlock.Index]).GetFace(value);
                 SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
                 GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                 if (GVElectricElement != null)

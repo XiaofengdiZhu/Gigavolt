@@ -16,7 +16,7 @@ namespace Game
             }
             Color color = GVWireBlock.WireColor;
             int num = Terrain.ExtractContents(value);
-            if (num == 833)
+            if (num == GVWireBlock.Index)
             {
                 int? color2 = GVWireBlock.GetColor(Terrain.ExtractData(value));
                 if (color2.HasValue)
@@ -47,10 +47,10 @@ namespace Game
                     {
                         num4 |= 1 << tmpConnectionPath.ConnectorFace;
                         Color color3 = color;
-                        if (num != 833)
+                        if (num != GVWireBlock.Index)
                         {
                             int cellValue = generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ);
-                            if (Terrain.ExtractContents(cellValue) == 833)
+                            if (Terrain.ExtractContents(cellValue) == GVWireBlock.Index)
                             {
                                 int? color4 = WireBlock.GetColor(Terrain.ExtractData(cellValue));
                                 if (color4.HasValue)
@@ -134,7 +134,7 @@ namespace Game
                     }
                 }
             }
-            if (centerBoxSize != 0f || (num4 == 0 && num != 833))
+            if (centerBoxSize != 0f || (num4 == 0 && num != GVWireBlock.Index))
             {
                 return;
             }

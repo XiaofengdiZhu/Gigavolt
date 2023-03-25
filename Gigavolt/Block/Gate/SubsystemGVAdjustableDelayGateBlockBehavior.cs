@@ -4,7 +4,7 @@ namespace Game
     {
         public override int[] HandledBlocks => new int[1]
         {
-            924
+            GVAdjustableDelayGateBlock.Index
         };
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
@@ -37,7 +37,7 @@ namespace Game
                 {
                     int value2 = Terrain.ReplaceData(value, num);
                     SubsystemTerrain.ChangeCell(x, y, z, value2);
-                    int face = ((GVAdjustableDelayGateBlock)BlocksManager.Blocks[924]).GetFace(value);
+                    int face = ((GVAdjustableDelayGateBlock)BlocksManager.Blocks[GVAdjustableDelayGateBlock.Index]).GetFace(value);
                     SubsystemGVElectricity subsystemGVElectricity = Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
                     GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                     if (GVElectricElement != null)

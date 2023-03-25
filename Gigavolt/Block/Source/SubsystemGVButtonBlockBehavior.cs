@@ -6,11 +6,11 @@ namespace Game
     {
         public override int[] HandledBlocks => new int[1]
         {
-            842
+            GVButtonBlock.Index
         };
 
         public SubsystemGVButtonBlockBehavior()
-            : base(842)
+            : base(GVButtonBlock.Index)
         {
         }
 
@@ -38,7 +38,7 @@ namespace Game
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGigaVoltageLevelDialog(blockData, delegate
             {
                 SetBlockData(new Point3(x, y, z), blockData);
-                int face = ((GVButtonBlock)BlocksManager.Blocks[842]).GetFace(value);
+                int face = ((GVButtonBlock)BlocksManager.Blocks[GVButtonBlock.Index]).GetFace(value);
                 SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
                 GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                 if (electricElement != null)

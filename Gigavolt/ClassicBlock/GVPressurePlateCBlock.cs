@@ -23,8 +23,8 @@ namespace Game
 
         public int[] m_creativeValuesByMaterial = new int[2]
         {
-            Terrain.MakeBlockValue(644, 0, 0),
-            Terrain.MakeBlockValue(644, 0, 1)
+            Terrain.MakeBlockValue(Index, 0, 0),
+            Terrain.MakeBlockValue(Index, 0, 1)
         };
 
         public int[] m_textureSlotsByMaterial = new int[2]

@@ -4,8 +4,8 @@ namespace Game
 {
 	public class SubsystemGVSwitchBlockBehavior : SubsystemEditableItemBehavior<GigaVoltageLevelData>
     {
-		public override int[] HandledBlocks => new int[1] { 841 };
-		public SubsystemGVSwitchBlockBehavior() : base(841) { }
+		public override int[] HandledBlocks => new int[1] { GVSwitchBlock.Index };
+		public SubsystemGVSwitchBlockBehavior() : base(GVSwitchBlock.Index) { }
 		public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
 		{
 			if (componentPlayer.DragHostWidget.IsDragInProgress) return false;
@@ -30,7 +30,7 @@ namespace Game
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGigaVoltageLevelDialog(blockData, delegate
             {
                 SetBlockData(new Point3(x, y, z), blockData);
-                int face = ((GVSwitchBlock)BlocksManager.Blocks[841]).GetFace(value);
+                int face = ((GVSwitchBlock)BlocksManager.Blocks[GVSwitchBlock.Index]).GetFace(value);
                 SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
                 GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                 if (electricElement != null)

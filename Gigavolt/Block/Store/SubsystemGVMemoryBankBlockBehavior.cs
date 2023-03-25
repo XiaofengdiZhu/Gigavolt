@@ -27,11 +27,11 @@ namespace Game
             {
                 return new int[]
                 {
-                    886
+                    GVMemoryBankBlock.Index
                 };
             }
         }
-        public SubsystemGVMemoryBankBlockBehavior() : base(886)
+        public SubsystemGVMemoryBankBlockBehavior() : base(GVMemoryBankBlock.Index)
         {
         }
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
@@ -73,7 +73,7 @@ namespace Game
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVMemoryBankDialog(memoryBankData, delegate ()
             {
                 this.SetBlockData(new Point3(x, y, z), memoryBankData);
-                int face = ((GVMemoryBankBlock)BlocksManager.Blocks[886]).GetFace(value);
+                int face = ((GVMemoryBankBlock)BlocksManager.Blocks[GVMemoryBankBlock.Index]).GetFace(value);
                 SubsystemGVElectricity subsystemGVElectricity = this.SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                 GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                 bool flag2 = GVElectricElement != null;

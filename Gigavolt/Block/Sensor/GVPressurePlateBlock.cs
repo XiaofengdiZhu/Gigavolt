@@ -23,8 +23,8 @@ namespace Game
 
         public int[] m_creativeValuesByMaterial = new int[2]
         {
-            Terrain.MakeBlockValue(844, 0, 0),
-            Terrain.MakeBlockValue(844, 0, 1)
+            Terrain.MakeBlockValue(Index, 0, 0),
+            Terrain.MakeBlockValue(Index, 0, 1)
         };
 
         public int[] m_textureSlotsByMaterial = new int[2]
@@ -100,7 +100,7 @@ namespace Game
             int material = GetMaterial(Terrain.ExtractData(oldValue));
             dropValues.Add(new BlockDropValue
             {
-                Value = Terrain.MakeBlockValue(844, 0, SetMaterial(0, material)),
+                Value = Terrain.MakeBlockValue(Index, 0, SetMaterial(0, material)),
                 Count = 1
             });
             showDebris = true;

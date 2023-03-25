@@ -40,12 +40,12 @@ namespace Game
             }
         }
 
-        public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes()
+        /*public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes()
         {
             var craftingRecipe = new CraftingRecipe
             {
                 ResultCount = 4,
-                ResultValue = Terrain.MakeBlockValue(954, 0, 0),
+                ResultValue = Terrain.MakeBlockValue(Index, 0, 0),
                 RequiredHeatLevel = 0f,
                 Description = LanguageControl.Get(GetType().Name, 1)
             };
@@ -55,7 +55,7 @@ namespace Game
             craftingRecipe.Ingredients[7] = "copperingot";
             craftingRecipe.Ingredients[8] = "copperingot";
             yield return craftingRecipe;
-        }
+        }*/
 
         public override int GetFace(int value)
         {
@@ -64,7 +64,7 @@ namespace Game
 
         public override IEnumerable<int> GetCreativeValues()
         {
-            yield return Terrain.MakeBlockValue(954, 0, 0);
+            yield return Terrain.MakeBlockValue(Index, 0, 0);
         }
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)

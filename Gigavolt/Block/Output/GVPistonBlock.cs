@@ -107,9 +107,9 @@ namespace Game
 
         public override IEnumerable<int> GetCreativeValues()
         {
-            yield return Terrain.MakeBlockValue(937, 0, SetMode(0, PistonMode.Pushing));
-            yield return Terrain.MakeBlockValue(937, 0, SetMode(0, PistonMode.Pulling));
-            yield return Terrain.MakeBlockValue(937, 0, SetMode(0, PistonMode.StrictPulling));
+            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, PistonMode.Pushing));
+            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, PistonMode.Pulling));
+            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, PistonMode.StrictPulling));
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
@@ -154,7 +154,7 @@ namespace Game
             int data = Terrain.ExtractData(oldValue);
             dropValues.Add(new BlockDropValue
             {
-                Value = Terrain.MakeBlockValue(937, 0, SetFace(SetIsExtended(data, isExtended: false), 0)),
+                Value = Terrain.MakeBlockValue(Index, 0, SetFace(SetIsExtended(data, isExtended: false), 0)),
                 Count = 1
             });
             showDebris = true;

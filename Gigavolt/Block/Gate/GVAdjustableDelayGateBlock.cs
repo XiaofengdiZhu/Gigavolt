@@ -20,7 +20,7 @@ namespace Game
                 int data = SetDelay(0, delay);
                 dropValues.Add(new BlockDropValue
                 {
-                    Value = Terrain.MakeBlockValue(924, 0, data),
+                    Value = Terrain.MakeBlockValue(Index, 0, data),
                     Count = 1
                 });
             }

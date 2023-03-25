@@ -20,7 +20,7 @@ namespace Game
         private byte[] _frame = new byte[256 * 240];
         public bool EmuStarted = false;
         public bool RomValid = false;
-        public SubsystemNesEmulatorBlockBehavior() : base(1023)
+        public SubsystemNesEmulatorBlockBehavior() : base(GVNesEmulatorBlock.Index)
         {
             _emu = new NESEmulator(GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes")), GetFrameFromEmulator, XamariNES.Emulator.Enums.enumEmulatorSpeed.Normal);
             RomValid = true;
@@ -31,7 +31,7 @@ namespace Game
             base.Load(valuesDictionary);
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(true);
-            EditGVNesEmulatorDialogData data = GetBlockData(new Point3(-1023));
+            EditGVNesEmulatorDialogData data = GetBlockData(new Point3(-GVNesEmulatorBlock.Index));
             if(data != null && data.Data.Length > 0)
             {
                 try
@@ -42,29 +42,28 @@ namespace Game
                     Log.Error(ex);
                 }
             }
-            //Project.FindSubsystem<SubsystemGVElectricBlockBehavior>(true).HandledBlocks.Append(1023);
         }
         public override int[] HandledBlocks => new int[1]
         {
-            1023
+            GVNesEmulatorBlock.Index
         };
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
         {
             if (componentPlayer.DragHostWidget.IsDragInProgress) return false;
-            EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-1023)) ?? new EditGVNesEmulatorDialogData();
+            EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-GVNesEmulatorBlock.Index)) ?? new EditGVNesEmulatorDialogData();
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVNesEmulatorDialog(Data, this, delegate
             {
-                SetBlockData(new Point3(-1023), Data);
+                SetBlockData(new Point3(-GVNesEmulatorBlock.Index), Data);
             }));
             return true;
         }
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer)
         {
-            EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-1023)) ?? new EditGVNesEmulatorDialogData();
+            EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-GVNesEmulatorBlock.Index)) ?? new EditGVNesEmulatorDialogData();
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVNesEmulatorDialog(Data, this, delegate
             {
-                SetBlockData(new Point3(-1023), Data);
-                int face = ((GVNesEmulatorBlock)BlocksManager.Blocks[1023]).GetFace(value);
+                SetBlockData(new Point3(-GVNesEmulatorBlock.Index), Data);
+                int face = ((GVNesEmulatorBlock)BlocksManager.Blocks[GVNesEmulatorBlock.Index]).GetFace(value);
                 SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
                 GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                 if (GVElectricElement != null)

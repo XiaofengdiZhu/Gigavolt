@@ -39,7 +39,7 @@ namespace Game
             var craftingRecipe = new CraftingRecipe
             {
                 ResultCount = 4,
-                ResultValue = Terrain.MakeBlockValue(653, 0, 0),
+                ResultValue = Terrain.MakeBlockValue(Index, 0, 0),
                 RequiredHeatLevel = 0f,
                 Description = LanguageControl.Get(GetType().Name, 1)
             };
@@ -78,7 +78,7 @@ namespace Game
         {
             dropValues.Add(new BlockDropValue
             {
-                Value = Terrain.MakeBlockValue(653, 0, 0),
+                Value = Terrain.MakeBlockValue(Index, 0, 0),
                 Count = 1
             });
             showDebris = true;

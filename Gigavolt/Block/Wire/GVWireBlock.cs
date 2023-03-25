@@ -165,7 +165,7 @@ namespace Game
                 {
                     dropValues.Add(new BlockDropValue
                     {
-                        Value = Terrain.MakeBlockValue(833, 0, SetColor(0, paintColor)),
+                        Value = Terrain.MakeBlockValue(Index, 0, SetColor(0, paintColor)),
                         Count = 1
                     });
                 }
@@ -175,14 +175,14 @@ namespace Game
 
         public override IEnumerable<int> GetCreativeValues()
         {
-            yield return Terrain.MakeBlockValue(833);
-            yield return Terrain.MakeBlockValue(833, 0, SetColor(0, 0));
-            yield return Terrain.MakeBlockValue(833, 0, SetColor(0, 8));
-            yield return Terrain.MakeBlockValue(833, 0, SetColor(0, 15));
-            yield return Terrain.MakeBlockValue(833, 0, SetColor(0, 11));
-            yield return Terrain.MakeBlockValue(833, 0, SetColor(0, 12));
-            yield return Terrain.MakeBlockValue(833, 0, SetColor(0, 13));
-            yield return Terrain.MakeBlockValue(833, 0, SetColor(0, 14));
+            yield return Terrain.MakeBlockValue(Index);
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 0));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 8));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 15));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 11));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 12));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 13));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 14));
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
@@ -209,7 +209,7 @@ namespace Game
 
         public static int GetWireFacesBitmask(int value)
         {
-            if (Terrain.ExtractContents(value) == 833)
+            if (Terrain.ExtractContents(value) == Index)
             {
                 return Terrain.ExtractData(value) & 0x3F;
             }
@@ -221,7 +221,7 @@ namespace Game
             int num = Terrain.ExtractData(value);
             num &= -64;
             num |= (bitmask & 0x3F);
-            return Terrain.ReplaceData(Terrain.ReplaceContents(value, 833), num);
+            return Terrain.ReplaceData(Terrain.ReplaceContents(value, Index), num);
         }
 
         public static int? GetColor(int data)

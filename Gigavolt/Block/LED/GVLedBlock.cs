@@ -60,7 +60,7 @@ namespace Game
             }
         }
 
-        public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes()
+        /*public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes()
         {
             int color = 0;
             while (color < 8)
@@ -68,7 +68,7 @@ namespace Game
                 var craftingRecipe = new CraftingRecipe
                 {
                     ResultCount = 4,
-                    ResultValue = Terrain.MakeBlockValue(852, 0, SetColor(0, color)),
+                    ResultValue = Terrain.MakeBlockValue(Index, 0, SetColor(0, color)),
                     RemainsCount = 1,
                     RemainsValue = Terrain.MakeBlockValue(90),
                     RequiredHeatLevel = 0f,
@@ -83,7 +83,7 @@ namespace Game
                 int num = color + 1;
                 color = num;
             }
-        }
+        }*/
 
         public override int GetFace(int value)
         {
@@ -102,7 +102,7 @@ namespace Game
             int i = 0;
             while (i < 8)
             {
-                yield return Terrain.MakeBlockValue(852, 0, SetColor(0, i));
+                yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, i));
                 int num = i + 1;
                 i = num;
             }
@@ -123,7 +123,7 @@ namespace Game
             int color = GetColor(Terrain.ExtractData(oldValue));
             dropValues.Add(new BlockDropValue
             {
-                Value = Terrain.MakeBlockValue(852, 0, SetColor(0, color)),
+                Value = Terrain.MakeBlockValue(Index, 0, SetColor(0, color)),
                 Count = 1
             });
             showDebris = true;
