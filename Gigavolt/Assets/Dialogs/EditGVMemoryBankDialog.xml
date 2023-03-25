@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 
-  <CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+  <CanvasWidget Size="840, 440" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
     <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
     <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 
@@ -13,6 +13,10 @@
       </CanvasWidget>
 
       <CanvasWidget Size="0, 15" />
+
+	  <LabelWidget  Name="EditGVMemoryBankDialog.ID" HorizontalAlignment="Center" />
+
+	  <CanvasWidget Size="0, 15" />
 
       <StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
         <CanvasWidget Size="0, Infinity" />
@@ -43,7 +47,8 @@
 
       <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
         <BevelledButtonWidget Name="EditGVMemoryBankDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVMemoryBankDialog:21]" Margin="20, 0" />
-        <BevelledButtonWidget Name="EditGVMemoryBankDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVMemoryBankDialog:22]" />
+		<BevelledButtonWidget Name="EditGVMemoryBankDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVMemoryBankDialog:22]" />
+		<BevelledButtonWidget Name="EditGVMemoryBankDialog.More" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVMemoryBankDialog:23]" Margin="20, 0" />
       </StackPanelWidget>
     </StackPanelWidget>
   </CanvasWidget>
