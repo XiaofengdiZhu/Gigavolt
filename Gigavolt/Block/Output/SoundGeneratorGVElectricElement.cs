@@ -100,15 +100,15 @@ namespace Game
                                 short[] shorts = GVMemoryBankData.Image2Shorts(GVMBData.Data);
                                 int startIndex = MathUint.ToInt(topInput);
                                 int itemsCount = MathUint.ToInt(rightInput);
-                                if (itemsCount > shorts.Length/2 || startIndex + itemsCount > shorts.Length/2)
+                                if (itemsCount > shorts.Length || startIndex + itemsCount > shorts.Length)
                                 {
-                                    itemsCount = shorts.Length/2 - startIndex;
+                                    itemsCount = shorts.Length - startIndex;
                                 }
                                 if (itemsCount < 0)
                                 {
                                     itemsCount = 0;
                                 }
-                                m_sound = new Sound(new SoundBuffer(shorts, startIndex, itemsCount, 2, (int)leftInput));
+                                m_sound = new Sound(new SoundBuffer(shorts, startIndex, itemsCount, 2, MathUint.ToInt(leftInput)));
                             }
                             catch (Exception ex)
                             {
