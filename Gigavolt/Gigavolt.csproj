@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Block\Other\GVStepFloatingButtons.cs" />
     <Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs" />
     <Compile Include="BaseBlock\GVWireThroughBlock.cs" />
     <Compile Include="BaseBlock\IGVElectricElementBlock.cs" />
@@ -103,6 +104,10 @@
     <Compile Include="Block\LED\SevenSegmentDisplayGVElectricElement.cs" />
     <Compile Include="Block\LED\SubsystemGV8x4LedGlow.cs" />
     <Compile Include="Block\LED\SubsystemGVOneLedGlow.cs" />
+    <Compile Include="Dialog\EditGVDebugDialog.cs" />
+    <Compile Include="Block\Other\GVDebugData.cs" />
+    <Compile Include="Block\Other\GVDebugBlock.cs" />
+    <Compile Include="Block\Other\SubsystemGVDebugBlockBehavior.cs" />
     <Compile Include="Block\Output\DetonatorGVElectricElement.cs" />
     <Compile Include="Block\Output\GVDetonatorBlock.cs" />
     <Compile Include="Block\Output\GVPistonData.cs" />
@@ -343,9 +348,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Assets\Dialogs\EditGVDebugDialog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Screens\GVMBExternalContentScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Assets\Widgets\GVStepFloatingButtons.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

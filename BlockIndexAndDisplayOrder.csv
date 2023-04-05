@@ -52,3 +52,4 @@ GVOneLedCBlock,653,1009
 GVTargetCBlock,699,1010
 GVDetonatorCBlock,647,1011
 GVNesEmulatorBlock,1023,1023
+GVDebugBlock,800,800

@@ -1,0 +1,43 @@
+<CanvasWidget xmlns="runtime-namespace:Game">
+
+  <CanvasWidget Size="500, 300" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+    <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
+
+      <LabelWidget Font="{Fonts/Pericles}" Text="[EditGVDebugDialog:1]" HorizontalAlignment="Center" />
+
+      <CanvasWidget Size="0, Infinity" />
+
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+		<LabelWidget Text="[EditGVDebugDialog:4]"/>
+        <CanvasWidget Size="124, 34">
+          <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
+          <TextBoxWidget Name="EditGVDebugDialog.Speed" Size="120, 30" MaximumLength="11"  FontScale="1" TextureLinearFilter="false" Margin="2, 2" />
+        </CanvasWidget>
+      </StackPanelWidget>
+
+	  <CanvasWidget Size="0, Infinity" />
+
+	  <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+		<LabelWidget Text="[EditGVDebugDialog:5]"/>
+		<CanvasWidget Size="20, 0" />
+	    <CheckboxWidget Name="EditGVDebugDialog.DisplayStepFloatingButtons" CheckboxSize="24, 24" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
+      </StackPanelWidget>
+
+	  <CanvasWidget Size="0, Infinity" />
+
+	  <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+		<LabelWidget Text="[EditGVDebugDialog:6]"/>
+		<CanvasWidget Size="20, 0" />
+	    <CheckboxWidget Name="EditGVDebugDialog.KeyboardControl" CheckboxSize="24, 24" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
+      </StackPanelWidget>
+
+      <CanvasWidget Size="0, Infinity" />
+
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <BevelledButtonWidget Name="EditGVDebugDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVDebugDialog:2]" Margin="20, 0" />
+        <BevelledButtonWidget Name="EditGVDebugDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVDebugDialog:3]" />
+      </StackPanelWidget>
+    </StackPanelWidget>
+  </CanvasWidget>
+</CanvasWidget>

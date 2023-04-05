@@ -1,7 +1,10 @@
 using Engine;
+using Engine.Input;
 using GameEntitySystem;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using TemplatesDatabase;
 
@@ -239,7 +242,10 @@ namespace Game
 
         public static int SimulatedGVElectricElements;
 
-        public const float CircuitStepDuration = 0.01f;
+        public float CircuitStepDuration = 0.01f;
+
+        public bool debugMode = false;
+        public bool keyboardDebug = false;
 
         public SubsystemTime SubsystemTime
         {
@@ -423,16 +429,66 @@ namespace Game
 
         public void Update(float dt)
         {
-            FrameStartCircuitStep = CircuitStep;
-            SimulatedGVElectricElements = 0;
-            m_remainingSimulationTime = MathUtils.Min(m_remainingSimulationTime + dt, 0.1f);
-            while (m_remainingSimulationTime >= 0.01f)
+            if (keyboardDebug)
             {
+                if (Keyboard.IsKeyDownOnce(Key.F5))
+                {
+                    debugMode = !debugMode;
+                }
+                if(debugMode)
+                {
+                    if (Keyboard.IsKeyDownOnce(Key.F7))
+                    {
+                        JumpUpdate();
+                    }
+                    else if (Keyboard.IsKeyDownOnce(Key.F6))
+                    {
+                        StepUpdate();
+                    }
+                }
+            }
+            if (!debugMode)
+            {
+                StepUpdateSkip();
+                FrameStartCircuitStep = CircuitStep;
+                SimulatedGVElectricElements = 0;
+                m_remainingSimulationTime = MathUtils.Min(m_remainingSimulationTime + dt, 0.1f);
+                while (m_remainingSimulationTime >= CircuitStepDuration)
+                {
+                    UpdateGVElectricElements();
+                    m_remainingSimulationTime -= CircuitStepDuration;
+                    m_nextStepSimulateList = null;
+                    if (m_futureSimulateLists.TryGetValue(++CircuitStep, out Dictionary<GVElectricElement, bool> value))
+                    {
+                        m_futureSimulateLists.Remove(CircuitStep);
+                        SimulatedGVElectricElements += value.Count;
+                        foreach (GVElectricElement key in value.Keys)
+                        {
+                            if (m_GVElectricElements.ContainsKey(key))
+                            {
+                                SimulateGVElectricElement(key);
+                            }
+                        }
+                        ReturnListToCache(value);
+                    }
+                }
+            }
+            if (DebugDrawGVElectrics)
+            {
+                DebugDraw();
+            }
+        }
+
+        public void JumpUpdate()
+        {
+            if (debugMode)
+            {
+                StepUpdateSkip();
+                FrameStartCircuitStep = CircuitStep;
+                SimulatedGVElectricElements = 0;
                 UpdateGVElectricElements();
-                int num = ++CircuitStep;
-                m_remainingSimulationTime -= 0.01f;
                 m_nextStepSimulateList = null;
-                if (m_futureSimulateLists.TryGetValue(CircuitStep, out Dictionary<GVElectricElement, bool> value))
+                if (m_futureSimulateLists.TryGetValue(++CircuitStep, out Dictionary<GVElectricElement, bool> value))
                 {
                     m_futureSimulateLists.Remove(CircuitStep);
                     SimulatedGVElectricElements += value.Count;
@@ -446,12 +502,67 @@ namespace Game
                     ReturnListToCache(value);
                 }
             }
-            if (DebugDrawGVElectrics)
+        }
+        public bool inStepping;
+        public List<GVElectricElement> steppingElements;
+        public int steppingIndex;
+        Dictionary<GVElectricElement, bool> lastWhat;
+        public void StepUpdate()
+        {
+            if(debugMode)
             {
-                DebugDraw();
+                if (inStepping)
+                {
+                    StepUpdateRun();
+                }
+                else
+                {
+                    StepUpdateInitiate();
+                }
             }
         }
-
+        public void StepUpdateInitiate()
+        {
+            FrameStartCircuitStep = CircuitStep;
+            SimulatedGVElectricElements = 0;
+            UpdateGVElectricElements();
+            m_nextStepSimulateList = null;
+            if (m_futureSimulateLists.TryGetValue(++CircuitStep, out Dictionary<GVElectricElement, bool> value))
+            {
+                if (lastWhat != null) {
+                    ReturnListToCache(lastWhat); 
+                }
+                m_futureSimulateLists.Remove(CircuitStep);
+                SimulatedGVElectricElements += value.Count;
+                steppingElements = value.Keys.ToList();
+                steppingIndex = 0;
+                if (steppingElements.Count > 0)
+                {
+                    inStepping = true;
+                    StepUpdateRun();
+                }
+                lastWhat = value;
+            }
+        }
+        public void StepUpdateRun()
+        {
+            GVElectricElement nowElement = steppingElements[steppingIndex++];
+            if (m_GVElectricElements.ContainsKey(nowElement))
+            {
+                SimulateGVElectricElement(nowElement);
+            }
+            if (steppingElements.Count <= steppingIndex)
+            {
+                inStepping = false;
+            }
+        }
+        public void StepUpdateSkip()
+        {
+            while (inStepping)
+            {
+                StepUpdate();
+            }
+        }
         public override void Load(ValuesDictionary valuesDictionary)
         {
             SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
@@ -763,6 +874,11 @@ namespace Game
 
         public void DebugDraw()
         {
+        }
+
+        public void SetSpeed(float speed)
+        {
+            CircuitStepDuration = 0.01f / speed;
         }
     }
 }
