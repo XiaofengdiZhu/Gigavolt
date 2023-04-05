@@ -27,8 +27,6 @@ namespace Game
 
         public string m_lastSpeedText;
 
-        public Dictionary<ComponentPlayer, GVStepFloatingButtons> m_buttonsDictionary = new Dictionary<ComponentPlayer, GVStepFloatingButtons>();
-
         public EditGVDebugDialog(GVDebugData blockData, SubsystemGVElectricity subsystem, Action handler)
         {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVDebugDialog");
@@ -43,12 +41,46 @@ namespace Game
             m_handler = handler;
             m_blockData = blockData;
             m_subsystem = subsystem;
+            m_displayStepFloatingButtonsCheckbox.IsChecked = m_subsystem.m_debugButtonsDictionary.Count > 0;
+            m_keyboardControlCheckbox.IsChecked = m_subsystem.keyboardDebug;
         }
 
         public override void Update()
         {
+            if (m_displayStepFloatingButtonsCheckbox.IsClicked)
+            {
+                m_displayStepFloatingButtonsCheckbox.IsChecked = !m_displayStepFloatingButtonsCheckbox.IsChecked;
+            }
+            if (m_keyboardControlCheckbox.IsClicked)
+            {
+                m_keyboardControlCheckbox.IsChecked = !m_keyboardControlCheckbox.IsChecked;
+            }
             if (m_okButton.IsClicked)
             {
+                if (m_displayStepFloatingButtonsCheckbox.IsChecked)
+                {
+                    if (m_subsystem.m_debugButtonsDictionary.Count == 0)
+                    {
+                        foreach (ComponentPlayer componentPlayer in m_subsystem.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).ComponentPlayers)
+                        {
+                            GVStepFloatingButtons buttons = new GVStepFloatingButtons(m_subsystem);
+                            m_subsystem.m_debugButtonsDictionary.Add(componentPlayer, buttons);
+                            componentPlayer.GameWidget.GuiWidget.AddChildren(buttons);
+                        }
+                    }
+                }
+                else
+                {
+                    if (m_subsystem.m_debugButtonsDictionary.Count > 0)
+                    {
+                        foreach (KeyValuePair<ComponentPlayer, GVStepFloatingButtons> pair in m_subsystem.m_debugButtonsDictionary)
+                        {
+                            pair.Key.GameWidget.GuiWidget.RemoveChildren(pair.Value);
+                        }
+                        m_subsystem.m_debugButtonsDictionary.Clear();
+                    }
+                }
+                m_subsystem.keyboardDebug = m_keyboardControlCheckbox.IsChecked;
                 if (m_speedTextBox.Text.Length > 0)
                 {
                     if (m_speedTextBox.Text == m_lastSpeedText)
@@ -66,49 +98,15 @@ namespace Game
                         }
                         else
                         {
-                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "转换为float失败", "OK", null, null));
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "速率转换为浮点数失败", "OK", null, null));
                         }
                     }
                 }
                 else
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "不能为空", "OK", null, null));
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "速率不能为空", "OK", null, null));
                 }
-            }
-            if(m_displayStepFloatingButtonsCheckbox.IsClicked)
-            {
-                if(m_displayStepFloatingButtonsCheckbox.IsChecked)
-                {
-                    foreach (KeyValuePair<ComponentPlayer, GVStepFloatingButtons> pair in m_buttonsDictionary)
-                    {
-                        pair.Key.GameWidget.GuiWidget.RemoveChildren(pair.Value);
-                    }
-                    m_buttonsDictionary.Clear();
-                    m_displayStepFloatingButtonsCheckbox.IsChecked = false;
-                }
-                else
-                {
-                    foreach (ComponentPlayer componentPlayer in m_subsystem.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).ComponentPlayers)
-                    {
-                        GVStepFloatingButtons buttons = new GVStepFloatingButtons(m_subsystem);
-                        m_buttonsDictionary.Add(componentPlayer, buttons);
-                        componentPlayer.GameWidget.GuiWidget.AddChildren(buttons);
-                    }
-                    m_displayStepFloatingButtonsCheckbox.IsChecked = true;
-                }
-            }
-            if (m_keyboardControlCheckbox.IsClicked)
-            {
-                if (m_keyboardControlCheckbox.IsChecked)
-                {
-                    m_subsystem.keyboardDebug = false;
-                    m_keyboardControlCheckbox.IsChecked = false;
-                }
-                else
-                {
-                    m_subsystem.keyboardDebug = true;
-                    m_keyboardControlCheckbox.IsChecked = true;
-                }
+                Dismiss(false);
             }
             if (base.Input.Cancel || m_cancelButton.IsClicked)
             {

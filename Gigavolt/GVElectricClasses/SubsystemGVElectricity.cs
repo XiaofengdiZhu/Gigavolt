@@ -246,6 +246,7 @@ namespace Game
 
         public bool debugMode = false;
         public bool keyboardDebug = false;
+        public Dictionary<ComponentPlayer, GVStepFloatingButtons> m_debugButtonsDictionary = new Dictionary<ComponentPlayer, GVStepFloatingButtons>();
 
         public SubsystemTime SubsystemTime
         {

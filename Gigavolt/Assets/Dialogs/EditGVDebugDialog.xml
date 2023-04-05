@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 
-  <CanvasWidget Size="500, 300" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+  <CanvasWidget Size="500, 340" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
     <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
     <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 
@@ -27,7 +27,7 @@
 	  <CanvasWidget Size="0, Infinity" />
 
 	  <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-		<LabelWidget Text="[EditGVDebugDialog:6]"/>
+		<LabelWidget Text="[EditGVDebugDialog:6]" WordWrap="true"/>
 		<CanvasWidget Size="20, 0" />
 	    <CheckboxWidget Name="EditGVDebugDialog.KeyboardControl" CheckboxSize="24, 24" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
       </StackPanelWidget>

@@ -60,7 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Block\Other\GVStepFloatingButtons.cs" />
+    <Compile Include="Widget\GVStepFloatingButtons.cs" />
     <Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs" />
     <Compile Include="BaseBlock\GVWireThroughBlock.cs" />
     <Compile Include="BaseBlock\IGVElectricElementBlock.cs" />
