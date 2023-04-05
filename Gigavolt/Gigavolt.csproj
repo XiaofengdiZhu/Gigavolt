@@ -71,7 +71,7 @@
     <Compile Include="BaseBlock\RotateableMountedElectricGVElementBlock.cs" />
     <Compile Include="Block\Gate\AdjustableDelayGateGVElectricElement.cs" />
     <Compile Include="Block\Gate\AnalogToDigitalConverterGVElectricElement.cs" />
-    <Compile Include="Block\Gate\AndGateElectricGVElement.cs" />
+    <Compile Include="Block\Gate\AndGateGVElectricElement.cs" />
     <Compile Include="Block\Gate\BaseDelayGateGVElectricElement.cs" />
     <Compile Include="Block\Gate\DelayGateGVElectricElement.cs" />
     <Compile Include="Block\Gate\DigitalToAnalogConverterGVElectricElement.cs" />

@@ -13,6 +13,15 @@ namespace Game
 
             return x1;
         }
+        public static uint Min(uint x1, uint x2)
+        {
+            if (x1 >= x2)
+            {
+                return x2;
+            }
+
+            return x1;
+        }
         public static uint Clamp(uint x, uint min, uint max)
         {
             if (x >= min)

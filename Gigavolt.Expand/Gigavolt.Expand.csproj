@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs" />
+    <Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs" />
     <Compile Include="NesEmulator\BitmapRender.cs" />
     <Compile Include="NesEmulator\EditGVNesEmulatorDialogData.cs" />
     <Compile Include="NesEmulator\EditGVNesEmulatorDialog.cs" />
@@ -119,5 +121,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
