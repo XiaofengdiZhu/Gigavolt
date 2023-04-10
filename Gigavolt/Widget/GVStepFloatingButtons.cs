@@ -1,5 +1,6 @@
 ﻿using Engine;
 using System;
+using System.Reflection.Emit;
 using System.Xml.Linq;
 
 namespace Game
@@ -9,6 +10,7 @@ namespace Game
         public ButtonWidget m_stopButton;
         public ButtonWidget m_stepButton;
         public ButtonWidget m_jumpButton;
+        public LabelWidget m_label;
         public SubsystemGVElectricity m_subsystem;
         public GVStepFloatingButtons(SubsystemGVElectricity subsystem) {
             XElement node = ContentManager.Get<XElement>("Widgets/GVStepFloatingButtons");
@@ -16,10 +18,12 @@ namespace Game
             m_stopButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Stop");
             m_stepButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Step");
             m_jumpButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Jump");
+            m_label = Children.Find<LabelWidget>("GVStepFloatingButtons.Label");
             m_subsystem = subsystem;
         }
         public override void Update()
         {
+            m_label.Text = (DateTime.Now - m_subsystem.last1000Updates.Peek()).TotalSeconds.ToString("f2");
             if (m_stopButton.IsClicked)
             {
                 m_subsystem.debugMode = !m_subsystem.debugMode;

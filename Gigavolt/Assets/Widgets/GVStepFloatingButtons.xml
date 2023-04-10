@@ -1,24 +1,28 @@
 <CanvasWidget xmlns="runtime-namespace:Game" Size="188, 64" HorizontalAlignment="Center">
-
-	<StackPanelWidget Direction="Horizontal" >
-		<BevelledButtonWidget Name="GVStepFloatingButtons.Stop" Size="60, 60">
-			<CanvasWidget Margin="0, 0" />
-			<BevelledRectangleWidget CenterColor="50, 150, 35" BevelColor="50, 150, 35" />
-			<RectangleWidget Size="24, 24" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		</BevelledButtonWidget>
-		<CanvasWidget Size="4, 0" />
-		<BevelledButtonWidget Name="GVStepFloatingButtons.Step" Size="60, 60">
-			<CanvasWidget Margin="0, 0" />
-			<BevelledRectangleWidget CenterColor="50, 150, 35" BevelColor="50, 150, 35" />
-			<RectangleWidget Size="32, 32" Subtexture="{Textures/Atlas/ArrowRight}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		</BevelledButtonWidget>
-		<CanvasWidget Size="4, 0" />
-		<BevelledButtonWidget Name="GVStepFloatingButtons.Jump" Size="60, 60">
-			<CanvasWidget Margin="0, 0" />
-			<BevelledRectangleWidget CenterColor="50, 150, 35" BevelColor="50, 150, 35" />
-			<RectangleWidget Size="32, 32" Subtexture="{Textures/Atlas/TurnRight}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		</BevelledButtonWidget>
-		<CanvasWidget Size="4, 0" />
-	</StackPanelWidget>
-
+  <StackPanelWidget Direction="Vertical">
+    <StackPanelWidget Direction="Horizontal" >
+      <BevelledButtonWidget Name="GVStepFloatingButtons.Stop" Size="60, 60">
+        <CanvasWidget Margin="0, 0" />
+        <BevelledRectangleWidget CenterColor="50, 150, 35" BevelColor="50, 150, 35" />
+        <RectangleWidget Size="24, 24" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </BevelledButtonWidget>
+      <CanvasWidget Size="4, 0" />
+      <BevelledButtonWidget Name="GVStepFloatingButtons.Step" Size="60, 60">
+        <CanvasWidget Margin="0, 0" />
+        <BevelledRectangleWidget CenterColor="50, 150, 35" BevelColor="50, 150, 35" />
+        <RectangleWidget Size="32, 32" Subtexture="{Textures/Atlas/ArrowRight}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </BevelledButtonWidget>
+      <CanvasWidget Size="4, 0" />
+      <BevelledButtonWidget Name="GVStepFloatingButtons.Jump" Size="60, 60">
+        <CanvasWidget Margin="0, 0" />
+        <BevelledRectangleWidget CenterColor="50, 150, 35" BevelColor="50, 150, 35" />
+        <RectangleWidget Size="32, 32" Subtexture="{Textures/Atlas/TurnRight}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </BevelledButtonWidget>
+      <CanvasWidget Size="4, 0" />
+    </StackPanelWidget>
+    <StackPanelWidget Direction="Horizontal" >
+      <LabelWidget Text="[GVStepFloatingButtons:1]"/>
+      <LabelWidget Name="GVStepFloatingButtons.Label"/>
+    </StackPanelWidget>
+  </StackPanelWidget>
 </CanvasWidget>
