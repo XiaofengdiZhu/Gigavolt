@@ -1,3 +1,5 @@
+using Engine.Graphics;
+using Engine;
 using System.Collections.Generic;
 
 namespace Game
@@ -5,12 +7,30 @@ namespace Game
     public class GVAnalogToDigitalConverterBlock : RotateableMountedGVElectricElementBlock
     {
         public const int Index = 881;
-
-        public GVAnalogToDigitalConverterBlock()
-            : base("Models/Gates", "AnalogToDigitalConverter", 0.375f)
+        Texture2D[] textures = new Texture2D[4];
+        public override void Initialize()
         {
+            base.Initialize();
+            for (int i = 0; i < 4; i++)
+            {
+                textures[i] = ContentManager.Get<Texture2D>($"Textures/GVAnalogToDigitalConverterBlock{4 << i}-{1 << i}");
+            }
         }
 
+        public GVAnalogToDigitalConverterBlock()
+            : base("Models/GigavoltGates", "AnalogToDigitalConverter", 0.375f)
+        {
+        }
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
+        {
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, textures[GetType(Terrain.ExtractData(value))], color, 2f * size, ref matrix, environmentData);
+        }
+        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
+        {
+            int num = Terrain.ExtractData(value) & 0x1F;
+            generator.GenerateMeshVertices(this, x, y, z, m_blockMeshes[num], Color.White, null, geometry.GetGeometry(textures[GetType(Terrain.ExtractData(value))]).SubsetOpaque);
+            GenerateGVWireVertices(generator, value, x, y, z, GetFace(value), m_centerBoxSize, Vector2.Zero, geometry.SubsetOpaque);
+        }
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z)
         {
             return new AnalogToDigitalConverterGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)), value);
