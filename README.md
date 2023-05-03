@@ -2,6 +2,8 @@
 ## 简介 Introduction
 这是一个为生存战争游戏带来十亿伏特电力系统的mod，将原版的16个电压级别（0\~1.5V）扩展到2^32个（0\~2^32-1V）  
 This is a mod for Survivalcraft that take a new Electric system with Gigavolt to the game. The original Electric system has 16 voltage level(0\~1.5V), then Gigavolt expands it to 2^32 voltage level(0\~2^32-1V).
+## 看板娘 Yuru-chara
+![](GigavoltPosterGirl.webp)
 ## 区别 Differences
 |方块|原版|十亿伏特版|
 |--|--|--|
@@ -65,8 +67,11 @@ png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的
 #### 音频转换 Sound Conversion
 要使用声音发生器，首先需要使用[ffmpeg](https://ffmpeg.org/)或[格式工厂](http://www.pcgeshi.com/index.html)等软件将音频转换为双声道，采样率8000~48000Hz之间，采样位数16位，PCM编码的WAV格式音频，再使用存储器的导入功能导入该文件
 # GigaVoltage.Expand 十亿伏特·扩展
+## 简介 Introduction
 这是一个为生存战争游戏十亿伏特mod带来更多电路板和功能的mod  
 This is a mod for Survivalcraft Gigavolt mod that take more circuit components and functions to the mod.
+## 看板娘 Yuru-chara
+![](GigavoltExpandPosterGirl.webp)
 ## 复杂方块 Complex Blocks
 ### 更多两入两出电路板 More Two In Two Out Electrics
 左和右是输入端，上和后是本位输出端，下是溢出/借位等输出端  
