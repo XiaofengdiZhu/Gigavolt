@@ -7,6 +7,11 @@
       "DisplayName": "GV红白机模拟器",
       "Description": "无",
       "CRDescription:0": "无"
+    },
+    "GVCopperHammerBlock:0": {
+      "DisplayName": "GV铜锤",
+      "Description": "使用铜锤来将导线转换为穿线块；多次使用将改变外观，第5次恢复为普通导线；染色不影响接线，仅影响外观",
+      "CRDescription:0": "无"
     }
   },
   "ContentWidgets": {

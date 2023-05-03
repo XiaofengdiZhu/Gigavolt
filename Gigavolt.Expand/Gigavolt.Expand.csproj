@@ -93,6 +93,9 @@
     <Compile Include="NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs" />
     <Compile Include="NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs" />
     <Compile Include="NesEmulator\XamariNES.PPU\Memory.cs" />
+    <Compile Include="WireThrough\GVEWireThroughBlock.cs" />
+    <Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs" />
+    <Compile Include="WireThrough\GVCopperHammerBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Gigavolt.Expand.csv">
@@ -124,9 +127,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WireThroughConverter\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Adder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

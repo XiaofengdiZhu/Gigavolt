@@ -54,3 +54,5 @@ GVDetonatorCBlock,647,1011
 GVMoreTwoInTwoOutBlock,1022,1022
 GVNesEmulatorBlock,1023,1023
 GVDebugBlock,800,800
+GVCopperHammerBlock,1020,801
+GVEWireThroughBlock,1021,802
