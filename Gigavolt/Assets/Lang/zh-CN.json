@@ -308,7 +308,7 @@
     },
     "GVDebugBlock:0": {
       "DisplayName": "GV调试石碑",
-      "Description": "提供各种调试功能的石碑",
+      "Description": "提供电路运行速率调整、单步运行功能的石碑",
       "CRDescription:0": "不可合成"
     }
   },

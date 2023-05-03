@@ -1,10 +1,10 @@
 {
-  "Name": "Gigavolt",
+  "Name": "Gigavolt十亿伏特",
   "Version": "0.1",
   "ApiVersion": "1.44",
-  "Description": "待定",
+  "Description": "这是一个为生存战争游戏带来十亿伏特电力系统的mod，将原版的16个电压级别（0~1.5V）扩展到2^32个（0~2^32-1V）",
   "ScVersion": "2.3.0.0",
-  "Link": "待定",
+  "Link": "https://github.com/XiaofengdiZhu/Gigavolt",
   "Author": "销锋镝铸",
   "PackageName": "xfdz.Gigavolt",
   "Dependencies": []

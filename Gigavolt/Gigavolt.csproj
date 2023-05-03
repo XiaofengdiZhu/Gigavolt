@@ -366,7 +366,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Textures\GVAnalogToDigitalConverterBlock16-4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
