@@ -79,7 +79,8 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 ## 简单方块 Simple Blocks
 |名称|特性|
 |--|--|
-|铜锤|将导线转换为穿线块；多次使用将改变外观，第5次恢复为普通导线；染色不影响接线，仅影响外观。|
+|铜锤|将导线转换为穿线块，显示导线的块均互相连通；多次对生成的穿线块使用将改变其外观，第5次恢复为普通导线；可染色，仅影响外观，不影响接线|
+|六面跨线块|相对的两面互相导通；可染色，仅影响外观，不影响接线|
 ## 复杂方块 Complex Blocks
 ### 更多两入两出电路板 More Two In Two Out Electrics
 左和右是输入端，上和后是本位输出端，下是溢出/借位等输出端  

@@ -27,7 +27,7 @@ namespace Game
                     flag = true;
                     int data = Terrain.ExtractData(value);
                     int type = GVEWireThroughBlock.GetType(data);
-                    SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, type < 4 ? Terrain.ReplaceData(value, GVEWireThroughBlock.SetType(data, type + 1)) : Terrain.MakeBlockValue(GVWireBlock.Index, Terrain.ExtractLight(value), GVEWireThroughBlock.SetType(Terrain.ExtractData(value), 0)));
+                    SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, type < 3 ? Terrain.ReplaceData(value, GVEWireThroughBlock.SetType(data, type + 1)) : Terrain.MakeBlockValue(GVWireBlock.Index, Terrain.ExtractLight(value), GVEWireThroughBlock.SetType(data, 0)));
                 }
                 if (flag) { m_subsystemAudio.PlaySound("Audio/Click", 1f, 0f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f, autoDelay: true); }
                 return true;

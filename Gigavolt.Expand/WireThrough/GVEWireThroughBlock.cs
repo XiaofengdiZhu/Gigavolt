@@ -7,9 +7,9 @@ namespace Game
     public class GVEWireThroughBlock : CubeBlock, IGVElectricWireElementBlock, IGVElectricElementBlock, IPaintableBlock
     {
         public const int Index = 1021;
-        public int[] m_wiredTextureSlot=new int[] { 168,184,152,216,136 };
-        public int[] m_unwiredTextureSlot=new int[] { 4,1,70,78,16 };
-        public int[] m_coloredTextureSlot=new int[] { 23,24,39,78,69 };
+        public int[] m_wiredTextureSlot=new int[] { 168,184,152,136,216 };
+        public int[] m_unwiredTextureSlot=new int[] { 4,1,70,16,78 };
+        public int[] m_coloredTextureSlot=new int[] { 23,24,39,69,78 };
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z)
         {
@@ -18,11 +18,11 @@ namespace Game
 
         public GVElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
         {
-            if (!WireExistsOnFace(value, face))
+            if (WireExistsOnFace(value,face) && connectorFace == CellFace.OppositeFace(face))
             {
-                return null;
+                return GVElectricConnectorType.InputOutput;
             }
-            return GVElectricConnectorType.InputOutput;
+            return null;
         }
 
         public int GetConnectionMask(int value)
@@ -33,26 +33,34 @@ namespace Game
         public int GetConnectedWireFacesMask(int value, int face)
         {
             int num = 0;
-            if (WireExistsOnFace(value, face))
+            int data = Terrain.ExtractData(value);
+            int type = GetType(data);
+            if (type < 4)
             {
-                int num2 = CellFace.OppositeFace(face);
-                bool flag = false;
-                for (int i = 0; i < 6; i++)
+                if (WireExistsOnFace(value, face))
                 {
-                    if (i == face)
+                    int num2 = CellFace.OppositeFace(face);
+                    bool flag = false;
+                    for (int i = 0; i < 6; i++)
                     {
-                        num |= 1 << i;
+                        if (i == face)
+                        {
+                            num |= 1 << i;
+                        }
+                        else if (i != num2 && WireExistsOnFace(value, i))
+                        {
+                            num |= 1 << i;
+                            flag = true;
+                        }
                     }
-                    else if (i != num2 && WireExistsOnFace(value, i))
+                    if (flag && WireExistsOnFace(value, num2))
                     {
-                        num |= 1 << i;
-                        flag = true;
+                        num |= 1 << num2;
                     }
                 }
-                if (flag && WireExistsOnFace(value, num2))
-                {
-                    num |= 1 << num2;
-                }
+            }else if (type ==4 && GetWireFacesBitmask(data)==63)
+            {
+                return (1 << face) | (1 << CellFace.OppositeFace(face));
             }
             return num;
         }
@@ -95,10 +103,38 @@ namespace Game
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
         {
-            int? paintColor = GetPaintColor(value);
-            return SubsystemPalette.GetName(subsystemTerrain, paintColor, base.GetDisplayName(subsystemTerrain, value));
+            int data = Terrain.ExtractData(value);
+            int type = GetType(data);
+            if (type < 4) {
+                if (GetWireFacesBitmask(data) == 63)
+                {
+                    return "GV六面穿线块";
+                }
+                else
+                {
+                    return "GV多面穿线块";
+                }
+            }else if (type == 4)
+            {
+                if (GetWireFacesBitmask(data) == 63)
+                {
+                    return "GV六面跨线块";
+                }
+                else
+                {
+                    return "GV多面跨线块";
+                }
+            }
+            else
+            {
+                return null;
+            }
         }
-
+        public override IEnumerable<int> GetCreativeValues()
+        {
+            yield return Terrain.MakeBlockValue(Index,0,63);
+            yield return Terrain.MakeBlockValue(Index, 0, 63 | (4 << 11));
+        }
         public int? GetPaintColor(int value)
         {
             return GetColor(Terrain.ExtractData(value));
@@ -112,16 +148,12 @@ namespace Game
 
         public static bool WireExistsOnFace(int value, int face)
         {
-            return (GetWireFacesBitmask(value) & (1 << face)) != 0;
+            return (GetWireFacesBitmask(Terrain.ExtractData(value)) & (1 << face)) != 0;
         }
 
-        public static int GetWireFacesBitmask(int value)
+        public static int GetWireFacesBitmask(int data)
         {
-            if (Terrain.ExtractContents(value) == Index)
-            {
-                return Terrain.ExtractData(value) & 0x3F;
-            }
-            return 0;
+            return data & 0x3F;
         }
 
         public static int SetWireFacesBitmask(int value, int bitmask)

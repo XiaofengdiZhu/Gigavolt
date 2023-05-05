@@ -10,7 +10,17 @@
     },
     "GVCopperHammerBlock:0": {
       "DisplayName": "GV铜锤",
-      "Description": "使用铜锤来将导线转换为穿线块；多次使用将改变外观，第5次恢复为普通导线；染色不影响接线，仅影响外观",
+      "Description": "使用铜锤来将导线转换为穿线块，其显示导线的块均互相连通；多次对生成的穿线块使用将改变其外观，第5次恢复为普通导线；可染色，仅影响外观，不影响接线",
+      "CRDescription:0": "无"
+    },
+    "GVEWireThroughBlock:0": {
+      "DisplayName": "GV穿线块",
+      "Description": "使用铜锤将导线转换成的穿线块，显示导线的块均互相连通；对其多次使用铜锤将改变外观，第4次恢复为普通导线；染色不影响接线，仅影响外观",
+      "CRDescription:0": "无"
+    },
+    "GVEWireThroughBlock:8255": {
+      "DisplayName": "GV六面跨线块",
+      "Description": "相对的两面互相导通；可染色，仅影响外观，不影响接线",
       "CRDescription:0": "无"
     }
   },
