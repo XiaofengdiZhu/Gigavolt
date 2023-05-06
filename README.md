@@ -3,7 +3,7 @@
 这是一个为生存战争游戏带来十亿伏特电力系统的mod，将原版的16个电压级别（0\~1.5V）扩展到2^32个（0\~2^32-1V）  
 This is a mod for Survivalcraft that take a new Electric system with Gigavolt to the game. The original Electric system has 16 voltage level(0\~1.5V), then Gigavolt expands it to 2^32 voltage level(0\~2^32-1V).
 ## 看板娘 Yuru-chara
-![](GigavoltPosterGirl.webp)
+![](DocRes/GigavoltPosterGirl.webp)
 ## 区别 Differences
 |方块|原版|十亿伏特版|
 |--|--|--|
@@ -75,7 +75,7 @@ png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的
 这是一个为生存战争游戏十亿伏特mod带来更多电路板和功能的mod  
 This is a mod for Survivalcraft Gigavolt mod that take more circuit components and functions to the mod.
 ## 看板娘 Yuru-chara
-![](GigavoltExpandPosterGirl.webp)
+![](DocRes/GigavoltExpandPosterGirl.webp)
 ## 简单方块 Simple Blocks
 |名称|特性|
 |--|--|
@@ -104,6 +104,19 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 |右移器|左>>右|左<<32>>右的后32位|
 |乘方器|左\^右，结果超过2\^32时输出后32位|溢出时输出结果倒数第二后的32位|
 |对数器|$log_{右}左$ ，整数计算只保留整数部分|0V|
+### 路选器 Multiplexer
+可以通过背面控制正面四个端点的导通和断开，内部设计如下图  
+![](DocRes/MultiplexerDiagram.svg)  
+* 圆圈代表电压节点，ABCD四个节点能从正面1234四个端点输入和输出电压，abcdO是辅助节点
+* 虚线代表常断的电压通路，共10条；实线代表常通的电压通路，共8条
+* 每条通路由两根单向导线组成，每根导线上都有一个开关，共28个开关
+* 可以通过背面电压控制这28个开关：
+  * 对于常断通路，例如最低1位为1时，图中1号开关闭合，导线导通，电压能从A传导到a；第2低的位为1时，图中2号开关闭合，导线导通，电压能从a传导到A，以此类推
+  * 对于常通通路，例如第26位为1时，电压将不能直接从O传导到c
+* 节点接收到新的电压时，会与此电压进行或运算，得到新的电压，例如节点c原本的电压是5V，从节点O收到3V，节点c的电压将会变成5|3=7V
+* 节点电压发生变化后，将向能传导到的其他节点传导新的电压，直到所有节点电压稳定，最后从ABCD节点向正面1234端点输出结果
+* 每次背面和正面输入的电压发生变化时，内部节点都将复位归0，重新计算输出结果
+> 例子：背面输入16进制的21V（二进制100001），开关1、6将闭合，此时在正面1端点输入5V，该电压将从A节点流入，延导线1传导到a，延21传导到O，延26传导到c，延6传导到C，最终从正面3号端点输出5V
 ### 红白机模拟器 Nes Emulator
 可以模拟红白机的模拟器，使用的库是[XamariNES](https://github.com/enusbaum/XamariNES)，纯软件模拟，不支持声音输出，仅支持CNROM、MMC1、NROM、UxROM四种ROM格式的游戏，可能能够支持的游戏有超级玛丽、双截龙、恶魔城、冒险岛、勇者斗恶龙、合金装备、魂斗罗  
 整个游戏同时仅运行一个模拟器实例，多个红白机模拟器方块显示的内容是一样的，输入的手柄操作会按或计算后传输给模拟器，因此可以同屏异地联机  

@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs" />
     <Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs" />
+    <Compile Include="Multiplexer\MultiplexerGVElectricElement.cs" />
+    <Compile Include="Multiplexer\GVMultiplexerBlock.cs" />
     <Compile Include="NesEmulator\BitmapRender.cs" />
     <Compile Include="NesEmulator\EditGVNesEmulatorDialogData.cs" />
     <Compile Include="NesEmulator\EditGVNesEmulatorDialog.cs" />
@@ -183,6 +185,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\RightShifter.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Textures\GVMultiplexerBlock.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

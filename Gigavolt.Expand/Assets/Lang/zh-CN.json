@@ -22,6 +22,11 @@
       "DisplayName": "GV六面跨线块",
       "Description": "相对的两面互相导通；可染色，仅影响外观，不影响接线",
       "CRDescription:0": "无"
+    },
+    "GVMultiplexerBlock:0": {
+      "DisplayName": "GV路选器",
+      "Description": "可以通过背面控制正面四个端点的导通和断开，详见本Mod Github页面的介绍",
+      "CRDescription:0": "无"
     }
   },
   "ContentWidgets": {
