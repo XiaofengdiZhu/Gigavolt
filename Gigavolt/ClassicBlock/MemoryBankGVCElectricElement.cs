@@ -17,7 +17,6 @@ namespace Game
         {
             m_subsystemMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVMemoryBankCBlockBehavior>(throwOnError: true);
             MemoryBankData blockData = m_subsystemMemoryBankBlockBehavior.GetBlockData(cellFace.Point);
-            Log.Information(blockData != null);
             if (blockData != null)
             {
                 m_voltage = blockData.LastOutput;
@@ -70,7 +69,6 @@ namespace Game
             }
             MemoryBankData memoryBankData = m_subsystemMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
             int address = (int)(num2 + (num3 << 4));
-            Log.Information(address+" "+memoryBankData.Read(address));
             if (flag2)
             {
                 if (flag && m_clockAllowed)

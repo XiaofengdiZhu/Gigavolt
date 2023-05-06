@@ -12,12 +12,10 @@ namespace Game
             : base(subsystemGVElectric, cellFace)
         {
             m_type = GVMoreTwoInTwoOutBlock.GetType(Terrain.ExtractData(value));
-            Engine.Log.Error("初始化"+ m_type);
         }
 
         public override uint GetOutputVoltage(int face)
         {
-            Engine.Log.Error("获取输出");
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
             if (connectorDirection.HasValue)
             {
@@ -37,7 +35,6 @@ namespace Game
         {
             try
             {
-                Engine.Log.Error("开始");
                 uint output = m_output;
                 uint overflow = m_overflow;
                 uint leftInput = 0u;
@@ -61,7 +58,6 @@ namespace Game
                         }
                     }
                 }
-                Engine.Log.Error("类型"+ m_type);
                 switch (m_type)
                 {
                     case 1:
@@ -177,7 +173,6 @@ namespace Game
                     m_overflow = overflow;
                     flag = true;
                 }
-                Engine.Log.Error("输出" + m_output+" "+m_overflow);
                 return flag;
             }catch(System.Exception ex)
             {
