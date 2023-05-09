@@ -54,7 +54,7 @@ namespace Antlr.Runtime
      */
     public class UnbufferedTokenStream : LookaheadStream<IToken>, ITokenStream
     {
-        [CLSCompliant(false)]
+        //[CLSCompliant(false)]
         protected ITokenSource tokenSource;
         protected int tokenIndex; // simple counter to set token index in tokens
 

@@ -12,7 +12,7 @@ namespace Game
 
         public uint[] m_nodesVoltage;
 
-        //1~20³£¶Ï£¬21~28³£Í¨
+        //1~20å¸¸æ–­ï¼Œ21~28å¸¸é€š
         public bool[] default_switched = new bool[] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true };
 
         public bool[] m_switches;

@@ -22,7 +22,7 @@ using Antlr.Runtime.Tree;
 using RewriteRuleITokenStream = Antlr.Runtime.Tree.RewriteRuleTokenStream;
 
 //[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.3.0.7239")]
-[System.CLSCompliant(false)]
+//[System.CLSCompliant(false)]
 public partial class NCalcParser : Antlr.Runtime.Parser
 {
 	internal static readonly string[] tokenNames = new string[] {

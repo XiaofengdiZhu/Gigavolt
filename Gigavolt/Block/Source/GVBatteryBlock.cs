@@ -55,10 +55,7 @@ namespace Game
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z)
         {
-            try
-            {
-                return new BatteryGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, 4));
-            }catch(System.Exception ex) { Log.Error(ex);return null; }
+            return new BatteryGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, 4));
         }
 
         public GVElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)

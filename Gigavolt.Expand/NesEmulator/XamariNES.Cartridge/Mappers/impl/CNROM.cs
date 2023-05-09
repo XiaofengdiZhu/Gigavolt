@@ -32,7 +32,7 @@ namespace XamariNES.Cartridge.Mappers.impl
         /// <summary>
         ///     PRG ROM Mirroring Enabled
         /// </summary>
-        private readonly bool _prgRomMirroring;
+        //private readonly bool _prgRomMirroring;
 
         public enumNametableMirroring NametableMirroring { get; set; }
 
