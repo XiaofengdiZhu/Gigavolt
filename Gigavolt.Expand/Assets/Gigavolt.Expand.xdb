@@ -6,5 +6,8 @@
 		<MemberSubsystemTemplate Name="GVCopperHammerBlockBehavior" Guid="0834f755-7751-cb90-e722-0abc9e3d4c7f" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="7ae560a4-5458-1959-3e8a-022526aff3a6" Value="Game.SubsystemGVCopperHammerBlockBehavior" Type="string" />
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVJumpWireBlockBehavior" Guid="d36194b1-aad0-4535-ac62-8da306f80334" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="950c0d34-ff5f-4a20-b960-0f7556220231" Value="Game.SubsystemGVJumpWireBlockBehavior" Type="string" />
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

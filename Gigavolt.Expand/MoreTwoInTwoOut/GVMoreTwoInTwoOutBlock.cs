@@ -61,37 +61,37 @@ namespace Game
             switch (type)
             {
                 case 1:
-                    return "GV¼õ·¨Æ÷";
+                    return "GVå‡æ³•å™¨";
                 case 2:
-                    return "GV³Ë·¨Æ÷";
+                    return "GVä¹˜æ³•å™¨";
                 case 3:
-                    return "GV³ı·¨Æ÷";
+                    return "GVé™¤æ³•å™¨";
                 case 4:
-                    return "GVÈ¡ÓàÆ÷";
+                    return "GVå–ä½™å™¨";
                 case 5:
-                    return "GVµÈÓÚÃÅ";
+                    return "GVç­‰äºé—¨";
                 case 6:
-                    return "GV´óÓÚÃÅ";
+                    return "GVå¤§äºé—¨";
                 case 7:
-                    return "GV´óÓÚµÈÓÚÃÅ";
+                    return "GVå¤§äºç­‰äºé—¨";
                 case 8:
-                    return "GVĞ¡ÓÚÃÅ";
+                    return "GVå°äºé—¨";
                 case 9:
-                    return "GVĞ¡ÓÚµÈÓÚÃÅ";
+                    return "GVå°äºç­‰äºé—¨";
                 case 10:
-                    return "GVÈ¡´óÆ÷";
+                    return "GVå–å¤§å™¨";
                 case 11:
-                    return "GVÈ¡Ğ¡Æ÷";
+                    return "GVå–å°å™¨";
                 case 12:
-                    return "GV×óÒÆÆ÷";
+                    return "GVå·¦ç§»å™¨";
                 case 13:
-                    return "GVÓÒÒÆÆ÷";
+                    return "GVå³ç§»å™¨";
                 case 14:
-                    return "GV³Ë·½Æ÷";
+                    return "GVä¹˜æ–¹å™¨";
                 case 15:
-                    return "GV¶ÔÊıÆ÷";
+                    return "GVå¯¹æ•°å™¨";
                 default:
-                    return "GV¼Ó·¨Æ÷";
+                    return "GVåŠ æ³•å™¨";
             }
         }
         public override IEnumerable<int> GetCreativeValues()

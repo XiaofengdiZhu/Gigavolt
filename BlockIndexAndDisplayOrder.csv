@@ -56,4 +56,5 @@ GVNesEmulatorBlock,1023,1023
 GVDebugBlock,800,800
 GVCopperHammerBlock,1020,801
 GVEWireThroughBlock,1021,1013
-GVMultiplexerBlock,1019,1014
+GVMultiplexerBlock,1019,1015
+GVJumpWireBlock,1018,1014

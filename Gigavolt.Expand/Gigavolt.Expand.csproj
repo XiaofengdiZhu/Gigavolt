@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JumpWire\GVJumpWireBlock.cs" />
+    <Compile Include="JumpWire\JumpWireGVElectricElement.cs" />
+    <Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs" />
     <Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs" />
     <Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs" />
     <Compile Include="Multiplexer\MultiplexerGVElectricElement.cs" />
@@ -190,6 +193,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Textures\GVMultiplexerBlock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Textures\GVJumpWireBlock.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
