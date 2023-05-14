@@ -158,7 +158,17 @@ namespace Game
         {
             if (string.IsNullOrEmpty(path))
             {
-                path = DiskExternalContentProvider.LocalPath;
+                switch (VersionsManager.Platform)
+                {
+                    case Platform.Desktop:
+                        path = AppDomain.CurrentDomain.BaseDirectory;
+                        break;
+                    case Platform.Android:
+                        path = Storage.GetSystemPath("android:SurvivalCraft2.3");
+                        break;
+                    default:
+                        throw new Exception("Unsupported platform");
+                }
             }
             path = path.Replace("\\", "/");
             if (path != m_path)
