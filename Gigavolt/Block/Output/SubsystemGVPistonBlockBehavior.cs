@@ -75,7 +75,7 @@ namespace Game
             blockData = blockData != null ? (GVPistonData)blockData.Copy() : new GVPistonData();
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVPistonDialog(GVPistonBlock.GetMode(data), blockData, delegate ()
             {
-                int newData = (data & -65437) | ((StoreItemDataAtUniqueId(blockData) & 1023) << 6);
+                int newData = (data & -65473) | ((StoreItemDataAtUniqueId(blockData) & 1023) << 6);
                 int value2 = Terrain.ReplaceData(value, newData);
                 inventory.RemoveSlotItems(slotIndex, count);
                 inventory.AddSlotItems(slotIndex, value2, count);

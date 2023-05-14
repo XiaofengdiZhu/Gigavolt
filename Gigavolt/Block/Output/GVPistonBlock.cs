@@ -121,11 +121,11 @@ namespace Game
             switch (mode)
             {
                 case PistonMode.Pulling:
-                    return "GVÕ³ÐÔ»îÈû";
+                    return "GVç²˜æ€§æ´»å¡ž";
                 case PistonMode.StrictPulling:
-                    return "GVÑÏ¸ñÕ³ÐÔ»îÈû";
+                    return "GVä¸¥æ ¼ç²˜æ€§æ´»å¡ž";
                 default:
-                    return "GV»îÈû";
+                    return "GVæ´»å¡ž";
             }
         }
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
@@ -177,7 +177,7 @@ namespace Game
 
         public static int SetMode(int data, PistonMode mode)
         {
-            return (data & -7) | ((int)(mode & (PistonMode)3) << 1);
+            return (data & -7) | (((int)mode & 3) << 1);
         }
 
         public static int GetFace(int data)
