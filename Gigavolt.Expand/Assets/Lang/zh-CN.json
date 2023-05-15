@@ -36,6 +36,10 @@
     "GV8NumberLedBlock:0": {
       "DisplayName": "GV8数字LED灯",
       "Description": "多数字的发光二极管，当连接到电源时，LED会发出微弱的白光。和7段显示器类似，但它一次显示8位16进制数，只提供白光。"
+    },
+    "GVEnhancedRealTimeClockBlock:0": {
+      "DisplayName": "GV增强实时钟",
+      "Description": "增强实时钟，持续输出现实世界当前的准确时间，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {

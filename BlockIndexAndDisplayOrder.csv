@@ -59,3 +59,4 @@ GVEWireThroughBlock,1021,1013
 GVMultiplexerBlock,1019,1015
 GVJumpWireBlock,1018,1014
 GV8NumberLedBlock,1017,1016
+GVEnhancedRealTimeClockBlock,1016,1017
