@@ -38,7 +38,10 @@ namespace Game
             m_worldDirectory = worldDirectory;
             m_data = image;
             LastOutput = lastOutput;
-            GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
+            if (!GVStaticStorage.GVMBIDDataDictionary.ContainsKey(m_ID))
+            {
+                GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
+            }
         }
         public uint LastOutput
         {
