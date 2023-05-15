@@ -45,7 +45,7 @@ namespace Game
                 }
                 else
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog("·¢Éú´íÎó", error, "OK", null, null));
+                    DialogsManager.ShowDialog(null, new MessageDialog("å‘ç”Ÿé”™è¯¯", error, "OK", null, null));
                 }
             }
             if (Input.Cancel || m_cancelButton.IsClicked)

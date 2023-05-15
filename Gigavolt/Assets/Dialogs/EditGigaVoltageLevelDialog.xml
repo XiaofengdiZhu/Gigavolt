@@ -16,7 +16,7 @@
         </CanvasWidget>
       </StackPanelWidget>
       
-      <LabelWidget Margin="0, 10" Text="[EditGigaVoltageLevelDialog:3]"/>
+      <LabelWidget Margin="0, 10" Text="[EditGigaVoltageLevelDialog:3]" HorizontalAlignment="Center"/>
 
       <CanvasWidget Size="0, Infinity" />
 

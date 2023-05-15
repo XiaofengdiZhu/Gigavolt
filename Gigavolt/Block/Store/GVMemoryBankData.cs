@@ -1,6 +1,5 @@
 using Engine;
 using Engine.Media;
-using GameEntitySystem;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,10 +14,7 @@ namespace Game
         public Image m_data;
         public Image Data
         {
-            get
-            {
-                return m_data;
-            }
+            get => m_data;
             set
             {
                 m_dataChanged = true;
@@ -98,10 +94,7 @@ namespace Game
         }
         public void LoadString(string data)
         {
-            string[] array = data.Split(new char[1]
-            {
-                ';'
-            }, StringSplitOptions.RemoveEmptyEntries);
+            string[] array = data.Split(new[]{';'}, StringSplitOptions.RemoveEmptyEntries);
             if (array.Length >= 1)
             {
                 string text = array[0];

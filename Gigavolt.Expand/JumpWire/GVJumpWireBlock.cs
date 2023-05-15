@@ -6,7 +6,7 @@ namespace Game
     public class GVJumpWireBlock : RotateableMountedGVElectricElementBlock
     {
         public const int Index = 1018;
-        Texture2D texture;
+        public readonly Texture2D texture;
 
         public GVJumpWireBlock()
             : base("Models/GVMoreTwoInTwoOutBlock", "AndGate", 0.5f)
