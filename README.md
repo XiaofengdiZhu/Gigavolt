@@ -127,6 +127,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 |0V或其他|毫秒|秒|分|时|
 |1V|星期|日|月|年|
 |2V|计时周期的低32位|计时周期的高32位|0V|0V|
+|3V|距离开始降水的时间，或已经降水的时间|降水时输出FFFFFFFF V，否则0V|距离结束降水的时间|0V
 > 计时周期：公历中自公历0001年1月1日午夜00:00:00.000以来经过的以100纳秒为间隔的数目，不包括归因于闰秒的嘀嗒数
 ### 红白机模拟器 Nes Emulator
 可以模拟红白机的模拟器，使用的库是[XamariNES](https://github.com/enusbaum/XamariNES)，纯软件模拟，不支持声音输出，仅支持CNROM、MMC1、NROM、UxROM四种ROM格式的游戏，可能能够支持的游戏有超级玛丽、双截龙、恶魔城、冒险岛、勇者斗恶龙、合金装备、魂斗罗  

@@ -9,11 +9,15 @@ namespace Game
 
         public uint m_input = 0u;
         public uint[] m_outputs = new uint[] { 0u, 0u, 0u, 0u };
-        int circuitAdd = 1;
+        public int circuitAdd = 1;
+        public SubsystemWeather m_subsystemWeather;
+        public SubsystemGameInfo m_subsystemGameInfo;
 
         public EnhancedRealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
             : base(subsystemGVElectricity, cellFace)
         {
+            m_subsystemWeather = subsystemGVElectricity.Project.FindSubsystem<SubsystemWeather>(true);
+            m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
         }
 
         public override uint GetOutputVoltage(int face)
@@ -69,12 +73,16 @@ namespace Game
             {
                 m_input = 0u;
             }
+
             if (m_input != input)
             {
                 switch (m_input)
                 {
                     case 1:
-                        circuitAdd = (int)MathUtils.Ceiling((DateTime.Today.AddDays(1) - now).TotalSeconds * 100);
+                        circuitAdd = (int)MathUtils.Ceiling((DateTime.Today.AddDays(1) - now).TotalSeconds / SubsystemGVElectricity.CircuitStepDuration);
+                        break;
+                    case 3:
+                        circuitAdd = (int)MathUtils.Ceiling(0.25 / SubsystemGVElectricity.CircuitStepDuration);
                         break;
                     default:
                         circuitAdd = 1;
@@ -104,6 +112,14 @@ namespace Game
                     m_outputs[2] = 0u;
                     m_outputs[3] = 0u;
                     return true;
+                case 3:
+                    double precipitationStartTimeLeft = MathUtils.Ceiling(m_subsystemWeather.m_precipitationStartTime - m_subsystemGameInfo.TotalElapsedGameTime);
+                    double precipitationEndTimeLeft = MathUtils.Ceiling(m_subsystemWeather.m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime);
+                    m_outputs[0] = (uint)MathUtils.Abs(precipitationStartTimeLeft);
+                    m_outputs[1] = precipitationStartTimeLeft < 0 ? uint.MaxValue : 0u;
+                    m_outputs[2] = (uint)MathUtils.Abs(precipitationEndTimeLeft);
+                    m_outputs[3] = precipitationEndTimeLeft < 0 ? uint.MaxValue : 0u;
+                    break;
                 default:
                     m_outputs[0] = 0u;
                     m_outputs[1] = 0u;
