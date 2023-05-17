@@ -6,12 +6,11 @@ namespace Game
 {
     public class EnhancedRealTimeClockGVElectricElement : RotateableGVElectricElement
     {
-
-        public uint m_input = 0u;
-        public uint[] m_outputs = new uint[] { 0u, 0u, 0u, 0u };
+        public uint m_input;
+        public readonly uint[] m_outputs = { 0u, 0u, 0u, 0u };
         public int circuitAdd = 1;
-        public SubsystemWeather m_subsystemWeather;
-        public SubsystemGameInfo m_subsystemGameInfo;
+        public readonly SubsystemWeather m_subsystemWeather;
+        public readonly SubsystemGameInfo m_subsystemGameInfo;
 
         public EnhancedRealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
             : base(subsystemGVElectricity, cellFace)
