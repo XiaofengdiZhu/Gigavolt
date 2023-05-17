@@ -10,12 +10,14 @@ namespace Game
 
         public BlockMesh m_standaloneBlockMesh;
 
-        public BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
+        public readonly BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
 
-        public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+        public readonly BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+        Texture2D texture;
+
         public override void Initialize()
         {
-            ModelMesh modelMesh = ContentManager.Get<Model>("Models/Leds").FindMesh("OneLed");
+            ModelMesh modelMesh = ContentManager.Get<Model>("Models/GVOneSurfaceBlock").FindMesh("OneLed");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(modelMesh.ParentBone);
             for (int i = 0; i < 6; i++)
             {
@@ -27,10 +29,13 @@ namespace Game
                     m_blockMeshesByFace[i].CalculateBoundingBox()
                 };
             }
+
             Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
             m_standaloneBlockMesh = new BlockMesh();
             m_standaloneBlockMesh.AppendModelMeshPart(modelMesh.MeshParts[0], boneAbsoluteTransform * m2, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
+            texture = ContentManager.Get<Texture2D>("Textures/GVNesEmulatorBlock");
         }
+
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value)
         {
             int mountingFace = GetMountingFace(Terrain.ExtractData(value));
@@ -46,14 +51,14 @@ namespace Game
             int mountingFace = GetMountingFace(Terrain.ExtractData(value));
             if (mountingFace < m_blockMeshesByFace.Length)
             {
-                generator.GenerateMeshVertices(this, x, y, z, m_blockMeshesByFace[mountingFace], Color.White, null, geometry.SubsetOpaque);
+                generator.GenerateMeshVertices(this, x, y, z, m_blockMeshesByFace[mountingFace], Color.White, null, geometry.GetGeometry(texture).SubsetOpaque);
                 GenerateGVWireVertices(generator, value, x, y, z, mountingFace, 1f, Vector2.Zero, geometry.SubsetOpaque);
             }
         }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
         {
-            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, 2f * size, ref matrix, environmentData);
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, texture, color, 2f * size, ref matrix, environmentData);
         }
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z)
