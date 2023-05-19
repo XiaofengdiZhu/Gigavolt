@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 3.5.1 commit date:2023-04-24, commit time:18:11, hash:e1ccd9d4a1d3</authoring_tool>
     </contributor>
-    <created>2023-05-17T21:39:25</created>
-    <modified>2023-05-17T21:39:25</modified>
+    <created>2023-05-18T08:27:05</created>
+    <modified>2023-05-18T08:27:05</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -100,7 +100,7 @@
           </technique_common>
         </source>
         <source id="OneLed-mesh-map-0">
-          <float_array id="OneLed-mesh-map-0-array" count="72">1 1 0.5 1 0.5000001 0.5 0.5000001 0.5 1 0.5000001 1 1 0.03124994 0 0.03124994 0.5 0 0.5 0 0.5 0 0 0.03124994 0 0.03125 0 0.03124994 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.03125 0 0.03125 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.03125 0 0.03125 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.5 1 0 1 0 0.5 0.5 1 0 0.5 0.5 0.5</float_array>
+          <float_array id="OneLed-mesh-map-0-array" count="72">0.5 0.5 1 0.5 0.9999999 1 0.9999999 1 0.5 0.9999999 0.5 0.5 0.03124994 0 0.03124994 0.5 0 0.5 0 0.5 0 0 0.03124994 0 0.03125 0 0.03124994 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.03125 0 0.03125 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.03125 0 0.03125 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.5 1 0 1 0 0.5 0.5 1 0 0.5 0.5 0.5</float_array>
           <technique_common>
             <accessor source="#OneLed-mesh-map-0-array" count="36" stride="2">
               <param name="S" type="float"/>

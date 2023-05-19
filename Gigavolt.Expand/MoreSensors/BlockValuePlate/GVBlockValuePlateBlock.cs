@@ -5,44 +5,24 @@ using System.Collections.Generic;
 
 namespace Game
 {
-    public class GVPressurePlateBlock : MountedGVElectricElementBlock
+    public class GVBlockValuePlateBlock : MountedGVElectricElementBlock
     {
-        public const int Index = 844;
+        public const int Index = 1015;
 
-        public BlockMesh[] m_standaloneBlockMeshesByMaterial = new BlockMesh[2];
+        public BlockMesh m_standaloneBlockMeshesByMaterial;
 
         public BlockMesh[] m_blockMeshesByData = new BlockMesh[16];
 
         public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[16][];
 
-        public string[] m_displayNamesByMaterial = new string[2]
-        {
-            "木质GV压力板",
-            "石质GV压力板"
-        };
-
-        public int[] m_creativeValuesByMaterial = new int[2]
-        {
-            Terrain.MakeBlockValue(Index, 0, 0),
-            Terrain.MakeBlockValue(Index, 0, 1)
-        };
-
-        public int[] m_textureSlotsByMaterial = new int[2]
-        {
-            4,
-            1
-        };
-
         public override void Initialize()
         {
             Model model = ContentManager.Get<Model>("Models/PressurePlate");
-            for (int i = 0; i < 2; i++)
-            {
                 Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("PressurePlate").ParentBone);
-                int num = m_textureSlotsByMaterial[i];
+                int num = 78;
                 for (int j = 0; j < 6; j++)
                 {
-                    int num2 = SetMountingFace(SetMaterial(0, i), j);
+                    int num2 = SetMountingFace(0, j);
                     Matrix matrix = (j >= 4) ? ((j != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
                     m_blockMeshesByData[num2] = new BlockMesh();
                     m_blockMeshesByData[num2].AppendModelMeshPart(model.FindMesh("PressurePlate").MeshParts[0], boneAbsoluteTransform * matrix, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
@@ -62,27 +42,15 @@ namespace Game
                     };
                 }
                 Matrix identity = Matrix.Identity;
-                m_standaloneBlockMeshesByMaterial[i] = new BlockMesh();
-                m_standaloneBlockMeshesByMaterial[i].AppendModelMeshPart(model.FindMesh("PressurePlate").MeshParts[0], boneAbsoluteTransform * identity, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-                m_standaloneBlockMeshesByMaterial[i].TransformTextureCoordinates(Matrix.CreateTranslation(num % 16 / 16f, num / 16 / 16f, 0f));
-            }
-        }
-
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
-        {
-            int material = GetMaterial(Terrain.ExtractData(value));
-            return m_displayNamesByMaterial[material];
-        }
-
-        public override IEnumerable<int> GetCreativeValues()
-        {
-            return m_creativeValuesByMaterial;
+                m_standaloneBlockMeshesByMaterial = new BlockMesh();
+                m_standaloneBlockMeshesByMaterial.AppendModelMeshPart(model.FindMesh("PressurePlate").MeshParts[0], boneAbsoluteTransform * identity, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
+                m_standaloneBlockMeshesByMaterial.TransformTextureCoordinates(Matrix.CreateTranslation(num % 16 / 16f, num / 16 / 16f, 0f));
+            
         }
 
         public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
         {
-            int material = GetMaterial(Terrain.ExtractData(value));
-            return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, m_textureSlotsByMaterial[material]);
+            return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, 78);
         }
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
@@ -93,17 +61,6 @@ namespace Game
             result.Value = value2;
             result.CellFace = raycastResult.CellFace;
             return result;
-        }
-
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
-        {
-            int material = GetMaterial(Terrain.ExtractData(oldValue));
-            dropValues.Add(new BlockDropValue
-            {
-                Value = Terrain.MakeBlockValue(Index, 0, SetMaterial(0, material)),
-                Count = 1
-            });
-            showDebris = true;
         }
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value)
@@ -133,13 +90,12 @@ namespace Game
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
         {
-            int material = GetMaterial(Terrain.ExtractData(value));
-            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMeshesByMaterial[material], color, 2f * size, ref matrix, environmentData);
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMeshesByMaterial, color, 2f * size, ref matrix, environmentData);
         }
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z)
         {
-            return new PressurePlateGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+            return new BlockValuePlateGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
         }
 
         public override GVElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
@@ -150,16 +106,6 @@ namespace Game
                 return GVElectricConnectorType.Output;
             }
             return null;
-        }
-
-        public static int GetMaterial(int data)
-        {
-            return data & 1;
-        }
-
-        public static int SetMaterial(int data, int material)
-        {
-            return (data & -2) | (material & 1);
         }
 
         public static int GetMountingFace(int data)

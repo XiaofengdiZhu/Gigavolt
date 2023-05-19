@@ -12,5 +12,8 @@
 		<MemberSubsystemTemplate Name="GV8NumberLedGlow" Guid="d801a01a-78c7-4f84-bde4-30befff42f3a" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="d4a518cf-3f5e-43c1-b948-2c8484fadd33" Value="Game.SubsystemGV8NumberLedGlow" Type="string" />
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVDisplayBlockLedGlow" Guid="a3ec5953-6388-41e4-b9df-dcba507c4b21" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="f2fa61d4-faaa-4eb9-9bee-95a8d0b68bcf" Value="Game.SubsystemGVDisplayBlockLedGlow" Type="string" />
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

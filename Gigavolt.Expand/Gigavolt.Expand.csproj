@@ -56,9 +56,15 @@
     <Compile Include="8NumberLed\GV8NumberGlowPoint.cs" />
     <Compile Include="8NumberLed\GV8NumberLedBlock.cs" />
     <Compile Include="8NumberLed\SubsystemGV8NumberLedGlow.cs" />
+    <Compile Include="DisplayBlockLed\GVBlockDisplayPoint.cs" />
+    <Compile Include="DisplayBlockLed\DisplayBlockLedGVElectricElement.cs" />
+    <Compile Include="DisplayBlockLed\GVDisplayBlockLedBlock.cs" />
+    <Compile Include="DisplayBlockLed\SubsystemGVDisplayBlockLedGlow.cs" />
     <Compile Include="JumpWire\GVJumpWireBlock.cs" />
     <Compile Include="JumpWire\JumpWireGVElectricElement.cs" />
     <Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs" />
+    <Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs" />
+    <Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs" />
     <Compile Include="MoreSensors\EnhancedRealTimeClock\EnhancedRealTimeClockGVElectricElement.cs" />
     <Compile Include="MoreSensors\EnhancedRealTimeClock\GVEnhancedRealTimeClockBlock.cs" />
     <Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs" />
@@ -268,7 +274,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MoreSensors\" />
+    <None Include="Assets\Textures\GVDisplayBlockLedBlock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Textures\GVDisplayBlockLedBlock1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

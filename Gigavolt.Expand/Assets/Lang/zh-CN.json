@@ -40,6 +40,14 @@
     "GVEnhancedRealTimeClockBlock:0": {
       "DisplayName": "GV增强实时钟",
       "Description": "增强实时钟，持续输出现实世界当前的准确时间，详见本Mod Github页面的介绍"
+    },
+    "GVBlockValuePlateBlock:0": {
+      "DisplayName": "GV方块值板",
+      "Description": "方块值板上有方块时，会输出等于最后一块放上的方块值的电信号，一旦所有方块离开，输出立即变为0V。"
+    },
+    "GVDisplayBlockLedBlock:0": {
+      "DisplayName": "GV方块展示板",
+      "Description": "用于展示方块"
     }
   },
   "ContentWidgets": {
