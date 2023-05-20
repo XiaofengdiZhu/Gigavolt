@@ -52,17 +52,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="8NumberLed\_8NumberLedGVElectricElement.cs" />
-    <Compile Include="8NumberLed\GV8NumberGlowPoint.cs" />
-    <Compile Include="8NumberLed\GV8NumberLedBlock.cs" />
-    <Compile Include="8NumberLed\SubsystemGV8NumberLedGlow.cs" />
-    <Compile Include="DisplayBlockLed\GVBlockDisplayPoint.cs" />
-    <Compile Include="DisplayBlockLed\DisplayBlockLedGVElectricElement.cs" />
-    <Compile Include="DisplayBlockLed\GVDisplayBlockLedBlock.cs" />
-    <Compile Include="DisplayBlockLed\SubsystemGVDisplayBlockLedGlow.cs" />
     <Compile Include="JumpWire\GVJumpWireBlock.cs" />
     <Compile Include="JumpWire\JumpWireGVElectricElement.cs" />
     <Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs" />
+    <Compile Include="MoreLeds\8NumberLed\GV8NumberGlowPoint.cs" />
+    <Compile Include="MoreLeds\8NumberLed\GV8NumberLedBlock.cs" />
+    <Compile Include="MoreLeds\8NumberLed\SubsystemGV8NumberLedGlow.cs" />
+    <Compile Include="MoreLeds\8NumberLed\_8NumberLedGVElectricElement.cs" />
+    <Compile Include="MoreLeds\DisplayBlockLed\DisplayBlockLedGVElectricElement.cs" />
+    <Compile Include="MoreLeds\DisplayBlockLed\GVBlockDisplayPoint.cs" />
+    <Compile Include="MoreLeds\DisplayBlockLed\GVDisplayBlockLedBlock.cs" />
+    <Compile Include="MoreLeds\DisplayBlockLed\SubsystemGVDisplayBlockLedGlow.cs" />
+    <Compile Include="MoreLeds\NesEmulator\BitmapRender.cs" />
+    <Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialog.cs" />
+    <Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialogData.cs" />
+    <Compile Include="MoreLeds\NesEmulator\GVNesEmulatorBlock.cs" />
+    <Compile Include="MoreLeds\NesEmulator\GVNesEmulatorGlowPoint.cs" />
+    <Compile Include="MoreLeds\NesEmulator\NesEmulatorGVElectricElement.cs" />
+    <Compile Include="MoreLeds\NesEmulator\SubsystemNesEmulatorBlockBehavior.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Flags\Byte6Flags.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Flags\Byte7Flags.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\ICartridge.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\Enums\enumNametableMirroring.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\IMapper.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\CNROM.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\MapperBase.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\MMC1.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\NROM.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\UxROM.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\NESCartridge.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Common\Extensions\ByteExtension.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Common\Extensions\IntExtensions.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\Enums\enumButtons.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\IController.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\NESController.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Core.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\CPUInstruction.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\CPUStatus.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Enums\EnumAddressingMode.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Enums\EnumOpcode.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Memory.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Emulator\Enums\enumEmulatorSpeed.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.Emulator\NESEmulator.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Core.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\CycleStateFlags.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUCtrlFlags.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUMaskFlags.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs" />
+    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Memory.cs" />
     <Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs" />
     <Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs" />
     <Compile Include="MoreSensors\EnhancedRealTimeClock\EnhancedRealTimeClockGVElectricElement.cs" />
@@ -71,45 +109,7 @@
     <Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs" />
     <Compile Include="Multiplexer\MultiplexerGVElectricElement.cs" />
     <Compile Include="Multiplexer\GVMultiplexerBlock.cs" />
-    <Compile Include="NesEmulator\BitmapRender.cs" />
-    <Compile Include="NesEmulator\EditGVNesEmulatorDialogData.cs" />
-    <Compile Include="NesEmulator\EditGVNesEmulatorDialog.cs" />
-    <Compile Include="NesEmulator\GVNesEmulatorGlowPoint.cs" />
-    <Compile Include="NesEmulator\GVNesEmulatorBlock.cs" />
-    <Compile Include="NesEmulator\NesEmulatorGVElectricElement.cs" />
-    <Compile Include="NesEmulator\SubsystemNesEmulatorBlockBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Flags\Byte6Flags.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Flags\Byte7Flags.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\ICartridge.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\Enums\enumNametableMirroring.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\IMapper.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\CNROM.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\MapperBase.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\MMC1.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\NROM.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\Mappers\impl\UxROM.cs" />
-    <Compile Include="NesEmulator\XamariNES.Cartridge\NESCartridge.cs" />
-    <Compile Include="NesEmulator\XamariNES.Common\Extensions\ByteExtension.cs" />
-    <Compile Include="NesEmulator\XamariNES.Common\Extensions\IntExtensions.cs" />
-    <Compile Include="NesEmulator\XamariNES.Controller\Enums\enumButtons.cs" />
-    <Compile Include="NesEmulator\XamariNES.Controller\IController.cs" />
-    <Compile Include="NesEmulator\XamariNES.Controller\NESController.cs" />
-    <Compile Include="NesEmulator\XamariNES.CPU\Core.cs" />
-    <Compile Include="NesEmulator\XamariNES.CPU\CPUInstruction.cs" />
-    <Compile Include="NesEmulator\XamariNES.CPU\CPUStatus.cs" />
-    <Compile Include="NesEmulator\XamariNES.CPU\Enums\EnumAddressingMode.cs" />
-    <Compile Include="NesEmulator\XamariNES.CPU\Enums\EnumOpcode.cs" />
-    <Compile Include="NesEmulator\XamariNES.CPU\Memory.cs" />
-    <Compile Include="NesEmulator\XamariNES.Emulator\Enums\enumEmulatorSpeed.cs" />
-    <Compile Include="NesEmulator\XamariNES.Emulator\NESEmulator.cs" />
-    <Compile Include="NesEmulator\XamariNES.PPU\Core.cs" />
-    <Compile Include="NesEmulator\XamariNES.PPU\Flags\CycleStateFlags.cs" />
-    <Compile Include="NesEmulator\XamariNES.PPU\Flags\PPUCtrlFlags.cs" />
-    <Compile Include="NesEmulator\XamariNES.PPU\Flags\PPUMaskFlags.cs" />
-    <Compile Include="NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs" />
-    <Compile Include="NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs" />
-    <Compile Include="NesEmulator\XamariNES.PPU\Memory.cs" />
     <Compile Include="WireThrough\GVEWireThroughBlock.cs" />
     <Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs" />
     <Compile Include="WireThrough\GVCopperHammerBlock.cs" />
@@ -130,7 +130,6 @@
     <None Include="modinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="NesEmulator\nestest.nes" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
@@ -280,6 +279,12 @@
     <None Include="Assets\Textures\GVDisplayBlockLedBlock1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MoreLeds\DisplayMemoryBankLed\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
