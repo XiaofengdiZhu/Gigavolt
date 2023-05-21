@@ -30,125 +30,103 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime
-{
-    using System.Collections.Generic;
+using System;
 
-    using InvalidOperationException = System.InvalidOperationException;
-    using StringBuilder = System.Text.StringBuilder;
-
-    /** <summary>
-     *  The most common stream of tokens is one where every token is buffered up
-     *  and tokens are prefiltered for a certain channel (the parser will only
-     *  see these tokens and cannot change the filter channel number during the
-     *  parse).
-     *  </summary>
-     *
-     *  <remarks>TODO: how to access the full token stream?  How to track all tokens matched per rule?</remarks>
+namespace Antlr.Runtime {
+    /**
+     * <summary>
+     *     The most common stream of tokens is one where every token is buffered up
+     *     and tokens are prefiltered for a certain channel (the parser will only
+     *     see these tokens and cannot change the filter channel number during the
+     *     parse).
+     * </summary>
+     * <remarks>TODO: how to access the full token stream?  How to track all tokens matched per rule?</remarks>
      */
-    [System.Serializable]
-    public class CommonTokenStream : BufferedTokenStream
-    {
-        /** Skip tokens on any channel but this one; this is how we skip whitespace... */
-        private int _channel;
+    [Serializable]
+    public class CommonTokenStream : BufferedTokenStream {
+        public CommonTokenStream() { }
 
-        public CommonTokenStream()
-        {
-        }
+        public CommonTokenStream(ITokenSource tokenSource) : this(tokenSource, TokenChannels.Default) { }
 
-        public CommonTokenStream(ITokenSource tokenSource)
-            : this(tokenSource, TokenChannels.Default)
-        {
-        }
+        public CommonTokenStream(ITokenSource tokenSource, int channel) : base(tokenSource) => Channel = channel;
 
-        public CommonTokenStream(ITokenSource tokenSource, int channel)
-            : base(tokenSource)
-        {
-            this._channel = channel;
-        }
+        /**
+         * Skip tokens on any channel but this one; this is how we skip whitespace...
+         */
+        public int Channel { get; private set; }
 
-        public int Channel
-        {
-            get
-            {
-                return _channel;
-            }
-        }
-
-        /** Reset this token stream by setting its token source. */
-        public override ITokenSource TokenSource
-        {
-            get
-            {
-                return base.TokenSource;
-            }
-            set
-            {
+        /**
+         * Reset this token stream by setting its token source.
+         */
+        public override ITokenSource TokenSource {
+            get => base.TokenSource;
+            set {
                 base.TokenSource = value;
-                _channel = TokenChannels.Default;
+                Channel = TokenChannels.Default;
             }
         }
 
-        /** Always leave p on an on-channel token. */
-        public override void Consume()
-        {
-            if (_p == -1)
+        /**
+         * Always leave p on an on-channel token.
+         */
+        public override void Consume() {
+            if (_p == -1) {
                 Setup();
+            }
             _p++;
             _p = SkipOffTokenChannels(_p);
         }
 
-        protected override IToken LB(int k)
-        {
-            if (k == 0 || (_p - k) < 0)
+        protected override IToken LB(int k) {
+            if (k == 0
+                || _p - k < 0) {
                 return null;
-
+            }
             int i = _p;
             int n = 1;
             // find k good tokens looking backwards
-            while (n <= k)
-            {
+            while (n <= k) {
                 // skip off-channel tokens
                 i = SkipOffTokenChannelsReverse(i - 1);
                 n++;
             }
-            if (i < 0)
+            if (i < 0) {
                 return null;
+            }
             return _tokens[i];
         }
 
-        public override IToken LT(int k)
-        {
-            if (_p == -1)
+        public override IToken LT(int k) {
+            if (_p == -1) {
                 Setup();
-            if (k == 0)
+            }
+            if (k == 0) {
                 return null;
-            if (k < 0)
+            }
+            if (k < 0) {
                 return LB(-k);
+            }
             int i = _p;
             int n = 1; // we know tokens[p] is a good one
             // find k good tokens
-            while (n < k)
-            {
+            while (n < k) {
                 // skip off-channel tokens
                 i = SkipOffTokenChannels(i + 1);
                 n++;
             }
-
-            if (i > Range)
+            if (i > Range) {
                 Range = i;
-
+            }
             return _tokens[i];
         }
 
-        /** Given a starting index, return the index of the first on-channel
-         *  token.
+        /**
+         * Given a starting index, return the index of the first on-channel
+         * token.
          */
-        protected virtual int SkipOffTokenChannels(int i)
-        {
+        protected virtual int SkipOffTokenChannels(int i) {
             Sync(i);
-            while (_tokens[i].Channel != _channel)
-            {
+            while (_tokens[i].Channel != Channel) {
                 // also stops at EOF (it's on channel)
                 i++;
                 Sync(i);
@@ -156,18 +134,15 @@ namespace Antlr.Runtime
             return i;
         }
 
-        protected virtual int SkipOffTokenChannelsReverse(int i)
-        {
-            while (i >= 0 && ((IToken)_tokens[i]).Channel != _channel)
-            {
+        protected virtual int SkipOffTokenChannelsReverse(int i) {
+            while (i >= 0
+                && _tokens[i].Channel != Channel) {
                 i--;
             }
-
             return i;
         }
 
-        protected override void Setup()
-        {
+        protected override void Setup() {
             _p = 0;
             _p = SkipOffTokenChannels(_p);
         }

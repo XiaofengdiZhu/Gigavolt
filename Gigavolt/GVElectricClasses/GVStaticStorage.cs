@@ -1,27 +1,21 @@
-﻿using Engine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Game
-{
-    public static class GVStaticStorage
-    {
+namespace Game {
+    public static class GVStaticStorage {
         public static Dictionary<uint, GVMemoryBankData> GVMBIDDataDictionary = new Dictionary<uint, GVMemoryBankData>();
-        public static uint GetUniqueGVMBID()
-        {
+
+        public static uint GetUniqueGVMBID() {
             Random random = new Random();
-            while (true)
-            {
+            while (true) {
                 uint num = random.UInt();
-                if (num == 0u || GVMBIDDataDictionary.ContainsKey(num))
-                {
+                if (num == 0u
+                    || GVMBIDDataDictionary.ContainsKey(num)) {
                     continue;
                 }
-                else
-                {
-                    return num;
-                }
+                return num;
             }
         }
+
         public static List<SoundGeneratorGVElectricElement> GVSGCFEEList = new List<SoundGeneratorGVElectricElement>();
     }
 }

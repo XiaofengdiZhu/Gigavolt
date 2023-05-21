@@ -1,10 +1,8 @@
-﻿namespace XamariNES.CPU.Enums
-{
+﻿namespace XamariNES.CPU.Enums {
     /// <summary>
     ///     Enumerator where we list the available addressing modes in XamariNES
     /// </summary>
-    public enum EnumAddressingMode
-    {
+    public enum EnumAddressingMode {
         Implicit,
         Accumulator,
         Immediate,

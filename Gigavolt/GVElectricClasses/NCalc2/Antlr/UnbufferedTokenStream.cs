@@ -30,88 +30,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime
-{
-    using Antlr.Runtime.Misc;
-    using CLSCompliant = System.CLSCompliantAttribute;
-    using NotSupportedException = System.NotSupportedException;
-    using IndexOutOfRangeException = System.IndexOutOfRangeException;
+using System;
+using Antlr.Runtime.Misc;
 
-    /** A token stream that pulls tokens from the code source on-demand and
-     *  without tracking a complete buffer of the tokens. This stream buffers
-     *  the minimum number of tokens possible.  It's the same as
-     *  OnDemandTokenStream except that OnDemandTokenStream buffers all tokens.
-     *
-     *  You can't use this stream if you pass whitespace or other off-channel
-     *  tokens to the parser. The stream can't ignore off-channel tokens.
+namespace Antlr.Runtime {
+    using CLSCompliant = CLSCompliantAttribute;
+
+    /**
+     * A token stream that pulls tokens from the code source on-demand and
+     * without tracking a complete buffer of the tokens. This stream buffers
+     * the minimum number of tokens possible.  It's the same as
+     * OnDemandTokenStream except that OnDemandTokenStream buffers all tokens.
      * 
-     *  You can only look backwards 1 token: LT(-1).
-     *
-     *  Use this when you need to read from a socket or other infinite stream.
-     *
-     *  @see BufferedTokenStream
-     *  @see CommonTokenStream
+     * You can't use this stream if you pass whitespace or other off-channel
+     * tokens to the parser. The stream can't ignore off-channel tokens.
+     * 
+     * You can only look backwards 1 token: LT(-1).
+     * 
+     * Use this when you need to read from a socket or other infinite stream.
+     * 
+     * @see BufferedTokenStream
+     * @see CommonTokenStream
      */
-    public class UnbufferedTokenStream : LookaheadStream<IToken>, ITokenStream
-    {
+    public class UnbufferedTokenStream : LookaheadStream<IToken>, ITokenStream {
         //[CLSCompliant(false)]
         protected ITokenSource tokenSource;
         protected int tokenIndex; // simple counter to set token index in tokens
 
-        /** Skip tokens on any channel but this one; this is how we skip whitespace... */
+        /**
+         * Skip tokens on any channel but this one; this is how we skip whitespace...
+         */
         protected int channel = TokenChannels.Default;
 
-        public UnbufferedTokenStream(ITokenSource tokenSource)
-        {
-            this.tokenSource = tokenSource;
-        }
+        public UnbufferedTokenStream(ITokenSource tokenSource) => this.tokenSource = tokenSource;
 
-        public ITokenSource TokenSource
-        {
-            get
-            {
-                return this.tokenSource;
-            }
-        }
+        public ITokenSource TokenSource => tokenSource;
 
-        public string SourceName
-        {
-            get
-            {
-                return TokenSource.SourceName;
-            }
-        }
+        public string SourceName => TokenSource.SourceName;
 
-        public override IToken NextElement()
-        {
-            IToken t = this.tokenSource.NextToken();
-            t.TokenIndex = this.tokenIndex++;
+        public override IToken NextElement() {
+            IToken t = tokenSource.NextToken();
+            t.TokenIndex = tokenIndex++;
             return t;
         }
 
-        public override bool IsEndOfFile(IToken o)
-        {
-            return o.Type == CharStreamConstants.EndOfFile;
-        }
+        public override bool IsEndOfFile(IToken o) => o.Type == CharStreamConstants.EndOfFile;
 
-        public IToken Get(int i)
-        {
-            throw new NotSupportedException("Absolute token indexes are meaningless in an unbuffered stream");
-        }
+        public IToken Get(int i) => throw new NotSupportedException("Absolute token indexes are meaningless in an unbuffered stream");
 
-        public int LA(int i)
-        {
-            return LT(i).Type;
-        }
+        public int LA(int i) => LT(i).Type;
 
-        public string ToString(int start, int stop)
-        {
-            return "n/a";
-        }
+        public string ToString(int start, int stop) => "n/a";
 
-        public string ToString(IToken start, IToken stop)
-        {
-            return "n/a";
-        }
+        public string ToString(IToken start, IToken stop) => "n/a";
     }
 }

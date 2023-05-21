@@ -1,9 +1,7 @@
 using Engine;
 
-namespace Game
-{
-    public class LedGVElectricElement : MountedGVElectricElement
-    {
+namespace Game {
+    public class LedGVElectricElement : MountedGVElectricElement {
         public SubsystemGlow m_subsystemGlow;
 
         public uint m_voltage;
@@ -12,23 +10,18 @@ namespace Game
 
         public Color m_color;
 
-        public LedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
-            : base(subsystemGVElectricity, cellFace)
-        {
-            m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(throwOnError: true);
-        }
+        public LedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(true);
 
-        public override void OnAdded()
-        {
+        public override void OnAdded() {
             m_glowPoint = m_subsystemGlow.AddGlowPoint();
             CellFace cellFace = CellFaces[0];
             int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             int mountingFace = GVLedBlock.GetMountingFace(data);
             m_color = GVLedBlock.LedColors[GVLedBlock.GetColor(data)];
-            var v = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
+            Vector3 v = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             m_glowPoint.Position = v - 0.4375f * CellFace.FaceToVector3(mountingFace);
             m_glowPoint.Forward = CellFace.FaceToVector3(mountingFace);
-            m_glowPoint.Up = ((mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX);
+            m_glowPoint.Up = mountingFace < 4 ? Vector3.UnitY : Vector3.UnitX;
             m_glowPoint.Right = Vector3.Cross(m_glowPoint.Forward, m_glowPoint.Up);
             m_glowPoint.Color = Color.Transparent;
             m_glowPoint.Size = 0.0324f;
@@ -37,25 +30,19 @@ namespace Game
             m_glowPoint.Type = GlowPointType.Square;
         }
 
-        public override void OnRemoved()
-        {
+        public override void OnRemoved() {
             m_subsystemGlow.RemoveGlowPoint(m_glowPoint);
         }
 
-        public override bool Simulate()
-        {
+        public override bool Simulate() {
             uint voltage = m_voltage;
             m_voltage = CalculateVoltage();
-            if (IsSignalHigh(m_voltage) != IsSignalHigh(voltage))
-            {
+            if (IsSignalHigh(m_voltage) != IsSignalHigh(voltage)) {
                 m_glowPoint.Color = IsSignalHigh(m_voltage) ? m_color : Color.Transparent;
             }
             return false;
         }
 
-        public uint CalculateVoltage()
-        {
-            return (CalculateHighInputsCount() > 0) ? 15u : 0u;
-        }
+        public uint CalculateVoltage() => CalculateHighInputsCount() > 0 ? 15u : 0u;
     }
 }

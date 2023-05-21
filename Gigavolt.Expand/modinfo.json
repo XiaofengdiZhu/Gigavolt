@@ -7,5 +7,7 @@
   "Link": "https://github.com/XiaofengdiZhu/Gigavolt#gigavoltageexpand-%E5%8D%81%E4%BA%BF%E4%BC%8F%E7%89%B9%E6%89%A9%E5%B1%95",
   "Author": "销锋镝铸",
   "PackageName": "xfdz.Gigavolt.Expand",
-  "Dependencies": [ "xfdz.Gigavolt:0.1" ]
+  "Dependencies": [
+    "xfdz.Gigavolt:0.1"
+  ]
 }

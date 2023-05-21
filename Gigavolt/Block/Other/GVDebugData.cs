@@ -1,26 +1,13 @@
-﻿namespace Game
-{
-    public class GVDebugData : IEditableItemData
-    {
-
+﻿namespace Game {
+    public class GVDebugData : IEditableItemData {
         public string Data = "1.00";
 
-        public IEditableItemData Copy()
-        {
-            return new GVDebugData
-            {
-                Data = Data
-            };
-        }
+        public IEditableItemData Copy() => new GVDebugData { Data = Data };
 
-        public void LoadString(string data)
-        {
+        public void LoadString(string data) {
             Data = data;
         }
 
-        public string SaveString()
-        {
-            return Data;
-        }
+        public string SaveString() => Data;
     }
 }

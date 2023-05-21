@@ -1,17 +1,15 @@
-﻿using Engine;
-using System;
-using System.Reflection.Emit;
+﻿using System;
 using System.Xml.Linq;
+using Engine;
 
-namespace Game
-{
-    public class GVStepFloatingButtons : CanvasWidget
-    {
+namespace Game {
+    public class GVStepFloatingButtons : CanvasWidget {
         public ButtonWidget m_stopButton;
         public ButtonWidget m_stepButton;
         public ButtonWidget m_jumpButton;
         public LabelWidget m_label;
         public SubsystemGVElectricity m_subsystem;
+
         public GVStepFloatingButtons(SubsystemGVElectricity subsystem) {
             XElement node = ContentManager.Get<XElement>("Widgets/GVStepFloatingButtons");
             LoadContents(this, node);
@@ -21,40 +19,31 @@ namespace Game
             m_label = Children.Find<LabelWidget>("GVStepFloatingButtons.Label");
             m_subsystem = subsystem;
         }
-        public override void Update()
-        {
+
+        public override void Update() {
             m_label.Text = (DateTime.Now - m_subsystem.last1000Updates.Peek()).TotalSeconds.ToString("f2");
-            if (m_stopButton.IsClicked)
-            {
+            if (m_stopButton.IsClicked) {
                 m_subsystem.debugMode = !m_subsystem.debugMode;
             }
-            if (m_stepButton.IsClicked)
-            {
-                if (!m_subsystem.debugMode)
-                {
+            if (m_stepButton.IsClicked) {
+                if (!m_subsystem.debugMode) {
                     m_subsystem.debugMode = true;
                 }
-                try
-                {
+                try {
                     m_subsystem.StepUpdate();
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     Log.Error(ex);
                 }
             }
-            if(m_jumpButton.IsClicked)
-            {
-                if (!m_subsystem.debugMode)
-                {
+            if (m_jumpButton.IsClicked) {
+                if (!m_subsystem.debugMode) {
                     m_subsystem.debugMode = true;
                 }
-                try
-                {
+                try {
                     m_subsystem.JumpUpdate();
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     Log.Error(ex);
                 }
             }

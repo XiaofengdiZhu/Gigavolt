@@ -1,16 +1,9 @@
-using Engine;
-using GameEntitySystem;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
 
-namespace Game
-{
-    public class EditGVDebugDialog : Dialog
-    {
+namespace Game {
+    public class EditGVDebugDialog : Dialog {
         public Action m_handler;
 
         public ButtonWidget m_okButton;
@@ -27,8 +20,7 @@ namespace Game
 
         public string m_lastSpeedText;
 
-        public EditGVDebugDialog(GVDebugData blockData, SubsystemGVElectricity subsystem, Action handler)
-        {
+        public EditGVDebugDialog(GVDebugData blockData, SubsystemGVElectricity subsystem, Action handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVDebugDialog");
             LoadContents(this, node);
             m_okButton = Children.Find<ButtonWidget>("EditGVDebugDialog.OK");
@@ -45,80 +37,80 @@ namespace Game
             m_keyboardControlCheckbox.IsChecked = m_subsystem.keyboardDebug;
         }
 
-        public override void Update()
-        {
-            if (m_displayStepFloatingButtonsCheckbox.IsClicked)
-            {
+        public override void Update() {
+            if (m_displayStepFloatingButtonsCheckbox.IsClicked) {
                 m_displayStepFloatingButtonsCheckbox.IsChecked = !m_displayStepFloatingButtonsCheckbox.IsChecked;
             }
-            if (m_keyboardControlCheckbox.IsClicked)
-            {
+            if (m_keyboardControlCheckbox.IsClicked) {
                 m_keyboardControlCheckbox.IsChecked = !m_keyboardControlCheckbox.IsChecked;
             }
-            if (m_okButton.IsClicked)
-            {
-                if (m_displayStepFloatingButtonsCheckbox.IsChecked)
-                {
-                    if (m_subsystem.m_debugButtonsDictionary.Count == 0)
-                    {
-                        foreach (ComponentPlayer componentPlayer in m_subsystem.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).ComponentPlayers)
-                        {
+            if (m_okButton.IsClicked) {
+                if (m_displayStepFloatingButtonsCheckbox.IsChecked) {
+                    if (m_subsystem.m_debugButtonsDictionary.Count == 0) {
+                        foreach (ComponentPlayer componentPlayer in m_subsystem.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
                             GVStepFloatingButtons buttons = new GVStepFloatingButtons(m_subsystem);
                             m_subsystem.m_debugButtonsDictionary.Add(componentPlayer, buttons);
                             componentPlayer.GameWidget.GuiWidget.AddChildren(buttons);
                         }
                     }
                 }
-                else
-                {
-                    if (m_subsystem.m_debugButtonsDictionary.Count > 0)
-                    {
-                        foreach (KeyValuePair<ComponentPlayer, GVStepFloatingButtons> pair in m_subsystem.m_debugButtonsDictionary)
-                        {
+                else {
+                    if (m_subsystem.m_debugButtonsDictionary.Count > 0) {
+                        foreach (KeyValuePair<ComponentPlayer, GVStepFloatingButtons> pair in m_subsystem.m_debugButtonsDictionary) {
                             pair.Key.GameWidget.GuiWidget.RemoveChildren(pair.Value);
                         }
                         m_subsystem.m_debugButtonsDictionary.Clear();
                     }
                 }
                 m_subsystem.keyboardDebug = m_keyboardControlCheckbox.IsChecked;
-                if (m_speedTextBox.Text.Length > 0)
-                {
-                    if (m_speedTextBox.Text == m_lastSpeedText)
-                    {
+                if (m_speedTextBox.Text.Length > 0) {
+                    if (m_speedTextBox.Text == m_lastSpeedText) {
                         Dismiss(false);
                     }
-                    else
-                    {
-                        if(float.TryParse(m_speedTextBox.Text, out float newSpeed))
-                        {
+                    else {
+                        if (float.TryParse(m_speedTextBox.Text, out float newSpeed)) {
                             m_subsystem.SetSpeed(newSpeed);
                             m_blockData.Data = m_speedTextBox.Text;
                             m_blockData.SaveString();
                             Dismiss(true);
                         }
-                        else
-                        {
-                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "速率转换为浮点数失败", "OK", null, null));
+                        else {
+                            DialogsManager.ShowDialog(
+                                null,
+                                new MessageDialog(
+                                    LanguageControl.Error,
+                                    "閫熺巼杞崲涓烘诞鐐规暟澶辫触",
+                                    "OK",
+                                    null,
+                                    null
+                                )
+                            );
                         }
                     }
                 }
-                else
-                {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "速率不能为空", "OK", null, null));
+                else {
+                    DialogsManager.ShowDialog(
+                        null,
+                        new MessageDialog(
+                            LanguageControl.Error,
+                            "閫熺巼涓嶈兘涓虹┖",
+                            "OK",
+                            null,
+                            null
+                        )
+                    );
                 }
                 Dismiss(false);
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
-            {
+            if (Input.Cancel
+                || m_cancelButton.IsClicked) {
                 Dismiss(false);
             }
         }
 
-        public void Dismiss(bool result)
-        {
+        public void Dismiss(bool result) {
             DialogsManager.HideDialog(this);
-            if (m_handler != null && result)
-            {
+            if (m_handler != null && result) {
                 m_handler();
             }
         }

@@ -30,68 +30,63 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime
-{
-    public static class TokenChannels
-    {
-        /** <summary>
-         *  All tokens go to the parser (unless skip() is called in that rule)
-         *  on a particular "channel".  The parser tunes to a particular channel
-         *  so that whitespace etc... can go to the parser on a "hidden" channel.
-         *  </summary>
+namespace Antlr.Runtime {
+    public static class TokenChannels {
+        /**
+         * <summary>
+         *     All tokens go to the parser (unless skip() is called in that rule)
+         *     on a particular "channel".  The parser tunes to a particular channel
+         *     so that whitespace etc... can go to the parser on a "hidden" channel.
+         * </summary>
          */
         public const int Default = 0;
 
-        /** <summary>
-         *  Anything on different channel than DEFAULT_CHANNEL is not parsed
-         *  by parser.
-         *  </summary>
+        /**
+         * <summary>
+         *     Anything on different channel than DEFAULT_CHANNEL is not parsed
+         *     by parser.
+         * </summary>
          */
         public const int Hidden = 99;
     }
 
-    public static class TokenTypes
-    {
+    public static class TokenTypes {
         public const int EndOfFile = CharStreamConstants.EndOfFile;
         public const int Invalid = 0;
         public const int EndOfRule = 1;
-        /** <summary>imaginary tree navigation type; traverse "get child" link</summary> */
+
+        /**
+         * <summary>imaginary tree navigation type; traverse "get child" link</summary>
+         */
         public const int Down = 2;
-        /** <summary>imaginary tree navigation type; finish with a child list</summary> */
+
+        /**
+         * <summary>imaginary tree navigation type; finish with a child list</summary>
+         */
         public const int Up = 3;
+
         public const int Min = Up + 1;
     }
 
-    public static class Tokens
-    {
+    public static class Tokens {
         public static readonly IToken EndOfFile = Tokens<CommonToken>.EndOfFile;
 
-        public static readonly IToken Invalid = new CommonToken( TokenTypes.Invalid );
+        public static readonly IToken Invalid = new CommonToken(TokenTypes.Invalid);
 
-        /** <summary>
-         *  In an action, a lexer rule can set token to this SKIP_TOKEN and ANTLR
-         *  will avoid creating a token for this symbol and try to fetch another.
-         *  </summary>
+        /**
+         * <summary>
+         *     In an action, a lexer rule can set token to this SKIP_TOKEN and ANTLR
+         *     will avoid creating a token for this symbol and try to fetch another.
+         * </summary>
          */
-        public static readonly IToken Skip = new CommonToken( TokenTypes.Invalid );
+        public static readonly IToken Skip = new CommonToken(TokenTypes.Invalid);
     }
 
-    public static class Tokens<T>
-        where T : IToken, new()
-    {
-        public static readonly T EndOfFile = new T()
-        {
-            Type = TokenTypes.EndOfFile
-        };
+    public static class Tokens<T> where T : IToken, new() {
+        public static readonly T EndOfFile = new T { Type = TokenTypes.EndOfFile };
 
-        public static readonly T Invalid = new T()
-        {
-            Type = TokenTypes.Invalid
-        };
+        public static readonly T Invalid = new T { Type = TokenTypes.Invalid };
 
-        public static readonly T Skip = new T()
-        {
-            Type = TokenTypes.Invalid
-        };
+        public static readonly T Skip = new T { Type = TokenTypes.Invalid };
     }
 }

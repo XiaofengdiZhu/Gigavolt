@@ -26,23 +26,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime
-{
-    public interface ITokenStreamInformation
-    {
-        IToken LastToken
-        {
-            get;
-        }
+namespace Antlr.Runtime {
+    public interface ITokenStreamInformation {
+        IToken LastToken { get; }
 
-        IToken LastRealToken
-        {
-            get;
-        }
+        IToken LastRealToken { get; }
 
-        int MaxLookBehind
-        {
-            get;
-        }
+        int MaxLookBehind { get; }
     }
 }

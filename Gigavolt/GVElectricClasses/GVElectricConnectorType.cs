@@ -1,7 +1,5 @@
-namespace Game
-{
-    public enum GVElectricConnectorType
-    {
+namespace Game {
+    public enum GVElectricConnectorType {
         Input,
         Output,
         InputOutput

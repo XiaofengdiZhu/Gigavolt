@@ -1,15 +1,8 @@
-using Engine;
-using GameEntitySystem;
 using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
 
-namespace Game
-{
-    public class EditGVNesEmulatorDialog : Dialog
-    {
+namespace Game {
+    public class EditGVNesEmulatorDialog : Dialog {
         public Action m_handler;
 
         public ButtonWidget m_okButton;
@@ -24,8 +17,7 @@ namespace Game
 
         public string m_lastRomPath;
 
-        public EditGVNesEmulatorDialog(EditGVNesEmulatorDialogData blockData,SubsystemNesEmulatorBlockBehavior subsystem, Action handler)
-        {
+        public EditGVNesEmulatorDialog(EditGVNesEmulatorDialogData blockData, SubsystemNesEmulatorBlockBehavior subsystem, Action handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVNesEmulatorDialog");
             LoadContents(this, node);
             m_okButton = Children.Find<ButtonWidget>("EditGVNesEmulatorDialog.OK");
@@ -38,47 +30,55 @@ namespace Game
             m_subsystem = subsystem;
         }
 
-        public override void Update()
-        {
-            if (m_okButton.IsClicked)
-            {
-                if (m_romPathTextBox.Text.Length > 0)
-                {
-                    if (m_romPathTextBox.Text == m_lastRomPath)
-                    {
+        public override void Update() {
+            if (m_okButton.IsClicked) {
+                if (m_romPathTextBox.Text.Length > 0) {
+                    if (m_romPathTextBox.Text == m_lastRomPath) {
                         Dismiss(false);
                     }
-                    else
-                    {
-                        try
-                        {
+                    else {
+                        try {
                             m_subsystem.LoadRomFromPath(m_romPathTextBox.Text);
                             m_blockData.Data = m_romPathTextBox.Text;
                             m_blockData.SaveString();
                             Dismiss(true);
                         }
-                        catch (Exception ex)
-                        {
-                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, ex.ToString(), "OK", null, null));
+                        catch (Exception ex) {
+                            DialogsManager.ShowDialog(
+                                null,
+                                new MessageDialog(
+                                    LanguageControl.Error,
+                                    ex.ToString(),
+                                    "OK",
+                                    null,
+                                    null
+                                )
+                            );
                         }
                     }
                 }
-                else
-                {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "ROMÂ·¾¶Î´ÌîÐ´", "OK", null, null));
+                else {
+                    DialogsManager.ShowDialog(
+                        null,
+                        new MessageDialog(
+                            LanguageControl.Error,
+                            "ROMÂ·ï¿½ï¿½Î´ï¿½ï¿½Ð´",
+                            "OK",
+                            null,
+                            null
+                        )
+                    );
                 }
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
-            {
+            if (Input.Cancel
+                || m_cancelButton.IsClicked) {
                 Dismiss(false);
             }
         }
 
-        public void Dismiss(bool result)
-        {
+        public void Dismiss(bool result) {
             DialogsManager.HideDialog(this);
-            if (m_handler != null && result)
-            {
+            if (m_handler != null && result) {
                 m_handler();
             }
         }

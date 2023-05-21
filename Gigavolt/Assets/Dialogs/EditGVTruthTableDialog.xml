@@ -1,38 +1,38 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 
-  <CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-    <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
-    <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
-      
-      <LabelWidget  Text="[EditGVTruthTableDialog:1]" HorizontalAlignment="Center"/>
+	<CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
+		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 
-      <CanvasWidget Size="0, 5" />
+			<LabelWidget Text="[EditGVTruthTableDialog:1]" HorizontalAlignment="Center"/>
 
-      <CanvasWidget Size="Infinity, 50">
-        <LabelWidget  Color="128, 128, 128" Text="[EditGVTruthTableDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
-      </CanvasWidget>
+			<CanvasWidget Size="0, 5"/>
 
-      <CanvasWidget Size="0, 15" />
+			<CanvasWidget Size="Infinity, 50">
+				<LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
+			</CanvasWidget>
 
-      <StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
-        <CanvasWidget Size="0, Infinity" />
-        <LabelWidget  Color="128, 128, 128" Text="[EditGVTruthTableDialog:20]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" />
-        <CanvasWidget Size="0, 10" />
-        <CanvasWidget Size="504, 54" HorizontalAlignment="Center">
-          <RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1" />
-          <TextBoxWidget Name="EditGVTruthTableDialog.LinearText" Size="500, 50" MaximumLength="1000000" TextureLinearFilter="false" Margin="2, 2" />
-        </CanvasWidget>
-        <CanvasWidget Size="0, Infinity" />
-      </StackPanelWidget>
-      
-      <CanvasWidget Size="0, 15" />
+			<CanvasWidget Size="0, 15"/>
 
-      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-        <BevelledButtonWidget Name="EditGVTruthTableDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVTruthTableDialog:21]" Margin="20, 0" />
-        <BevelledButtonWidget Name="EditGVTruthTableDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVTruthTableDialog:22]"/>
-      </StackPanelWidget>
-      
-    </StackPanelWidget>
-  </CanvasWidget>
+			<StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
+				<CanvasWidget Size="0, Infinity"/>
+				<LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:20]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
+				<CanvasWidget Size="0, 10"/>
+				<CanvasWidget Size="504, 54" HorizontalAlignment="Center">
+					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+					<TextBoxWidget Name="EditGVTruthTableDialog.LinearText" Size="500, 50" MaximumLength="1000000" TextureLinearFilter="false" Margin="2, 2"/>
+				</CanvasWidget>
+				<CanvasWidget Size="0, Infinity"/>
+			</StackPanelWidget>
+
+			<CanvasWidget Size="0, 15"/>
+
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<BevelledButtonWidget Name="EditGVTruthTableDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVTruthTableDialog:21]" Margin="20, 0"/>
+				<BevelledButtonWidget Name="EditGVTruthTableDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVTruthTableDialog:22]"/>
+			</StackPanelWidget>
+
+		</StackPanelWidget>
+	</CanvasWidget>
 
 </CanvasWidget>

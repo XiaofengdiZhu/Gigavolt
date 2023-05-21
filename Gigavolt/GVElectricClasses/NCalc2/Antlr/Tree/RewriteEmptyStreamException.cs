@@ -30,43 +30,27 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime.Tree
-{
-    using Exception = System.Exception;
-    using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
-    using StreamingContext = System.Runtime.Serialization.StreamingContext;
+using System;
+using System.Runtime.Serialization;
 
-    /** <summary>Ref to ID or expr but no tokens in ID stream or subtrees in expr stream</summary> */
-    [System.Serializable]
-    public class RewriteEmptyStreamException : RewriteCardinalityException
-    {
-        public RewriteEmptyStreamException()
-        {
-        }
+namespace Antlr.Runtime.Tree {
+    /**
+     * <summary>Ref to ID or expr but no tokens in ID stream or subtrees in expr stream</summary>
+     */
+    [Serializable]
+    public class RewriteEmptyStreamException : RewriteCardinalityException {
+        public RewriteEmptyStreamException() { }
 
-        public RewriteEmptyStreamException(string elementDescription)
-            : base(elementDescription)
-        {
-        }
-        
-        public RewriteEmptyStreamException(string elementDescription, Exception innerException)
-            : base(elementDescription, innerException)
-        {
-        }
+        public RewriteEmptyStreamException(string elementDescription) : base(elementDescription) { }
 
-        public RewriteEmptyStreamException(string message, string elementDescription)
-            : base(message, elementDescription)
-        {
-        }
+        public RewriteEmptyStreamException(string elementDescription, Exception innerException) : base(elementDescription, innerException) { }
 
-        public RewriteEmptyStreamException(string message, string elementDescription, Exception innerException)
-            : base(message, elementDescription, innerException)
-        {
-        }
+        public RewriteEmptyStreamException(string message, string elementDescription) : base(message, elementDescription) { }
+
+        public RewriteEmptyStreamException(string message, string elementDescription, Exception innerException) : base(message, elementDescription, innerException) { }
 
         protected RewriteEmptyStreamException(SerializationInfo info, StreamingContext context)
             //: base(info, context)
-        {
-        }
+        { }
     }
 }

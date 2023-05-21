@@ -1,12 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace XamariNES.Common.Extensions
-{
+namespace XamariNES.Common.Extensions {
     /// <summary>
     ///     Extension Methods for typical functions performed on int values in XamariNES
     /// </summary>
-    public static class IntExtensions
-    {
+    public static class IntExtensions {
         /// <summary>
         ///     Returns if the specified bit was set
         /// </summary>

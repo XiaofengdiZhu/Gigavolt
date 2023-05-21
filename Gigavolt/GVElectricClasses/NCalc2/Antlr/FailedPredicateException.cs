@@ -30,100 +30,62 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime
-{
-    using ArgumentNullException = System.ArgumentNullException;
-    using Exception = System.Exception;
-    using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
-    using StreamingContext = System.Runtime.Serialization.StreamingContext;
+using System;
+using System.Runtime.Serialization;
 
-    /** <summary>
-     *  A semantic predicate failed during validation.  Validation of predicates
-     *  occurs when normally parsing the alternative just like matching a token.
-     *  Disambiguating predicate evaluation occurs when we hoist a predicate into
-     *  a prediction decision.
-     *  </summary>
+namespace Antlr.Runtime {
+    /**
+     * <summary>
+     *     A semantic predicate failed during validation.  Validation of predicates
+     *     occurs when normally parsing the alternative just like matching a token.
+     *     Disambiguating predicate evaluation occurs when we hoist a predicate into
+     *     a prediction decision.
+     * </summary>
      */
-    [System.Serializable]
-    public class FailedPredicateException : RecognitionException
-    {
-        private readonly string _ruleName;
-        private readonly string _predicateText;
+    [Serializable]
+    public class FailedPredicateException : RecognitionException {
+        public FailedPredicateException() { }
 
-        public FailedPredicateException()
-        {
+        public FailedPredicateException(string message) : base(message) { }
+
+        public FailedPredicateException(string message, Exception innerException) : base(message, innerException) { }
+
+        public FailedPredicateException(IIntStream input, string ruleName, string predicateText) : base(input) {
+            RuleName = ruleName;
+            PredicateText = predicateText;
         }
 
-        public FailedPredicateException(string message)
-            : base(message)
-        {
+        public FailedPredicateException(string message, IIntStream input, string ruleName, string predicateText) : base(message, input) {
+            RuleName = ruleName;
+            PredicateText = predicateText;
         }
 
-        public FailedPredicateException(string message, Exception innerException)
-            : base(message, innerException)
-        {
+        public FailedPredicateException(string message, IIntStream input, string ruleName, string predicateText, Exception innerException) : base(message, input, innerException) {
+            RuleName = ruleName;
+            PredicateText = predicateText;
         }
 
-        public FailedPredicateException(IIntStream input, string ruleName, string predicateText)
-            : base(input)
-        {
-            this._ruleName = ruleName;
-            this._predicateText = predicateText;
-        }
-
-        public FailedPredicateException(string message, IIntStream input, string ruleName, string predicateText)
-            : base(message, input)
-        {
-            this._ruleName = ruleName;
-            this._predicateText = predicateText;
-        }
-
-        public FailedPredicateException(string message, IIntStream input, string ruleName, string predicateText, Exception innerException)
-            : base(message, input, innerException)
-        {
-            this._ruleName = ruleName;
-            this._predicateText = predicateText;
-        }
-
-        protected FailedPredicateException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            if (info == null)
+        protected FailedPredicateException(SerializationInfo info, StreamingContext context) : base(info, context) {
+            if (info == null) {
                 throw new ArgumentNullException("info");
-
-            this._ruleName = info.GetString("RuleName");
-            this._predicateText = info.GetString("PredicateText");
-        }
-
-        public string RuleName
-        {
-            get
-            {
-                return _ruleName;
             }
+            RuleName = info.GetString("RuleName");
+            PredicateText = info.GetString("PredicateText");
         }
 
-        public string PredicateText
-        {
-            get
-            {
-                return _predicateText;
-            }
-        }
+        public string RuleName { get; }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
+        public string PredicateText { get; }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+            if (info == null) {
                 throw new ArgumentNullException("info");
-
+            }
             base.GetObjectData(info, context);
-            info.AddValue("RuleName", _ruleName);
-            info.AddValue("PredicateText", _predicateText);
+            info.AddValue("RuleName", RuleName);
+            info.AddValue("PredicateText", PredicateText);
         }
 
-        public override string ToString()
-        {
-            return "FailedPredicateException(" + RuleName + ",{" + PredicateText + "}?)";
-        }
+        public override string ToString() => "FailedPredicateException(" + RuleName + ",{" + PredicateText + "}?)";
     }
 }

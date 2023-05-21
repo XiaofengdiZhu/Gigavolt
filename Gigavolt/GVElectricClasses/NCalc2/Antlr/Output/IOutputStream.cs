@@ -16,38 +16,36 @@
 // You should have received a copy of the GNU General Public License
 // along with OsmSharp. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Antlr3.Runtime.PCL.Output
-{
+namespace Antlr3.Runtime.PCL.Output {
     /// <summary>
-    /// Interface representing a listener that can be used to listen to output.
+    ///     Interface representing a listener that can be used to listen to output.
     /// </summary>
-    public interface IOutputStream
-    {
+    public interface IOutputStream {
         /// <summary>
-        /// Writes a line to the output stream.
+        ///     Writes a line to the output stream.
         /// </summary>
         void WriteLine();
 
         /// <summary>
-        /// Writes a line of text to the output stream.
+        ///     Writes a line of text to the output stream.
         /// </summary>
         /// <param name="text"></param>
         void WriteLine(string text);
 
         /// <summary>
-        /// Writes a line of text to the output stream.
+        ///     Writes a line of text to the output stream.
         /// </summary>
         /// <param name="someObject"></param>
         void WriteLine(object someObject);
 
         /// <summary>
-        /// Writes text to the output stream.
+        ///     Writes text to the output stream.
         /// </summary>
         /// <param name="text"></param>
         void Write(string text);
 
         /// <summary>
-        /// Reports progress to the output stream.
+        ///     Reports progress to the output stream.
         /// </summary>
         /// <param name="progress"></param>
         /// <param name="key"></param>

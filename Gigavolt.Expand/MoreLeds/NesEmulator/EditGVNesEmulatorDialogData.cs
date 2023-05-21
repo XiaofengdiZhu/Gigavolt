@@ -1,26 +1,13 @@
-﻿namespace Game
-{
-    public class EditGVNesEmulatorDialogData : IEditableItemData
-    {
-
+﻿namespace Game {
+    public class EditGVNesEmulatorDialogData : IEditableItemData {
         public string Data = "nestest";
 
-        public IEditableItemData Copy()
-        {
-            return new EditGVNesEmulatorDialogData
-            {
-                Data = Data
-            };
-        }
+        public IEditableItemData Copy() => new EditGVNesEmulatorDialogData { Data = Data };
 
-        public void LoadString(string data)
-        {
+        public void LoadString(string data) {
             Data = data;
         }
 
-        public string SaveString()
-        {
-            return Data;
-        }
+        public string SaveString() => Data;
     }
 }

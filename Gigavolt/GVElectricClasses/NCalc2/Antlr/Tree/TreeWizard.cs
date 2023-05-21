@@ -33,111 +33,88 @@
 // TODO: build indexes for wizard
 //#define BUILD_INDEXES
 
-namespace Antlr.Runtime.Tree
-{
-    using System.Collections.Generic;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
-    using IList = System.Collections.IList;
+namespace Antlr.Runtime.Tree {
 #if BUILD_INDEXES
     using IDictionary = System.Collections.IDictionary;
 #endif
 
-    /** <summary>
-     *  Build and navigate trees with this object.  Must know about the names
-     *  of tokens so you have to pass in a map or array of token names (from which
-     *  this class can build the map).  I.e., Token DECL means nothing unless the
-     *  class can translate it to a token type.
-     *  </summary>
-     *
-     *  <remarks>
-     *  In order to create nodes and navigate, this class needs a TreeAdaptor.
-     *
-     *  This class can build a token type -> node index for repeated use or for
-     *  iterating over the various nodes with a particular type.
-     *
-     *  This class works in conjunction with the TreeAdaptor rather than moving
-     *  all this functionality into the adaptor.  An adaptor helps build and
-     *  navigate trees using methods.  This class helps you do it with string
-     *  patterns like "(A B C)".  You can create a tree from that pattern or
-     *  match subtrees against it.
-     *  </remarks>
+    /**
+     * <summary>
+     *     Build and navigate trees with this object.  Must know about the names
+     *     of tokens so you have to pass in a map or array of token names (from which
+     *     this class can build the map).  I.e., Token DECL means nothing unless the
+     *     class can translate it to a token type.
+     * </summary>
+     * <remarks>
+     *     In order to create nodes and navigate, this class needs a TreeAdaptor.
+     *     This class can build a token type -> node index for repeated use or for
+     *     iterating over the various nodes with a particular type.
+     *     This class works in conjunction with the TreeAdaptor rather than moving
+     *     all this functionality into the adaptor.  An adaptor helps build and
+     *     navigate trees using methods.  This class helps you do it with string
+     *     patterns like "(A B C)".  You can create a tree from that pattern or
+     *     match subtrees against it.
+     * </remarks>
      */
-    public class TreeWizard
-    {
+    public class TreeWizard {
         protected ITreeAdaptor adaptor;
         protected IDictionary<string, int> tokenNameToTypeMap;
 
-        public interface IContextVisitor
-        {
+        public interface IContextVisitor {
             // TODO: should this be called visit or something else?
-            void Visit( object t, object parent, int childIndex, IDictionary<string, object> labels );
+            void Visit(object t, object parent, int childIndex, IDictionary<string, object> labels);
         }
 
-        public abstract class Visitor : IContextVisitor
-        {
-            public virtual void Visit( object t, object parent, int childIndex, IDictionary<string, object> labels )
-            {
-                Visit( t );
+        public abstract class Visitor : IContextVisitor {
+            public virtual void Visit(object t, object parent, int childIndex, IDictionary<string, object> labels) {
+                Visit(t);
             }
-            public abstract void Visit( object t );
+
+            public abstract void Visit(object t);
         }
 
-        class ActionVisitor : Visitor
-        {
-            System.Action<object> _action;
+        class ActionVisitor : Visitor {
+            readonly Action<object> _action;
 
-            public ActionVisitor( System.Action<object> action )
-            {
-                _action = action;
-            }
+            public ActionVisitor(Action<object> action) => _action = action;
 
-            public override void Visit( object t )
-            {
-                _action( t );
+            public override void Visit(object t) {
+                _action(t);
             }
         }
 
-        /** <summary>
-         *  When using %label:TOKENNAME in a tree for parse(), we must
-         *  track the label.
-         *  </summary>
+        /**
+         * <summary>
+         *     When using %label:TOKENNAME in a tree for parse(), we must
+         *     track the label.
+         * </summary>
          */
-        public class TreePattern : CommonTree
-        {
+        public class TreePattern : CommonTree {
             public string label;
             public bool hasTextArg;
-            public TreePattern( IToken payload ) :
-                base( payload )
-            {
-            }
-            public override string ToString()
-            {
-                if ( label != null )
-                {
+            public TreePattern(IToken payload) : base(payload) { }
+
+            public override string ToString() {
+                if (label != null) {
                     return "%" + label + ":"; //+ base.ToString();
                 }
-                else
-                {
-                    return base.ToString();
-                }
+                return base.ToString();
             }
         }
 
-        public class WildcardTreePattern : TreePattern
-        {
-            public WildcardTreePattern( IToken payload ) :
-                base( payload )
-            {
-            }
+        public class WildcardTreePattern : TreePattern {
+            public WildcardTreePattern(IToken payload) : base(payload) { }
         }
 
-        /** <summary>This adaptor creates TreePattern objects for use during scan()</summary> */
-        public class TreePatternTreeAdaptor : CommonTreeAdaptor
-        {
-            public override object Create( IToken payload )
-            {
-                return new TreePattern( payload );
-            }
+        /**
+         * <summary>This adaptor creates TreePattern objects for use during scan()</summary>
+         */
+        public class TreePatternTreeAdaptor : CommonTreeAdaptor {
+            public override object Create(IToken payload) => new TreePattern(payload);
         }
 
 #if BUILD_INDEXES
@@ -171,432 +148,383 @@ namespace Antlr.Runtime.Tree
         protected HashSet<int> tokenTypesToReverseIndex = null;
 #endif
 
-        public TreeWizard( ITreeAdaptor adaptor )
-        {
-            this.adaptor = adaptor;
-        }
+        public TreeWizard(ITreeAdaptor adaptor) => this.adaptor = adaptor;
 
-        public TreeWizard( ITreeAdaptor adaptor, IDictionary<string, int> tokenNameToTypeMap )
-        {
+        public TreeWizard(ITreeAdaptor adaptor, IDictionary<string, int> tokenNameToTypeMap) {
             this.adaptor = adaptor;
             this.tokenNameToTypeMap = tokenNameToTypeMap;
         }
 
-        public TreeWizard( ITreeAdaptor adaptor, string[] tokenNames )
-        {
+        public TreeWizard(ITreeAdaptor adaptor, string[] tokenNames) {
             this.adaptor = adaptor;
-            this.tokenNameToTypeMap = ComputeTokenTypes( tokenNames );
+            tokenNameToTypeMap = ComputeTokenTypes(tokenNames);
         }
 
-        public TreeWizard( string[] tokenNames )
-            : this( new CommonTreeAdaptor(), tokenNames )
-        {
-        }
+        public TreeWizard(string[] tokenNames) : this(new CommonTreeAdaptor(), tokenNames) { }
 
-        /** <summary>
-         *  Compute a Map&lt;String, Integer&gt; that is an inverted index of
-         *  tokenNames (which maps int token types to names).
-         *  </summary>
+        /**
+         * <summary>
+         *     Compute a Map&lt;String, Integer&gt; that is an inverted index of
+         *     tokenNames (which maps int token types to names).
+         * </summary>
          */
-        public virtual IDictionary<string, int> ComputeTokenTypes( string[] tokenNames )
-        {
+        public virtual IDictionary<string, int> ComputeTokenTypes(string[] tokenNames) {
             IDictionary<string, int> m = new Dictionary<string, int>();
-            if ( tokenNames == null )
-            {
+            if (tokenNames == null) {
                 return m;
             }
-            for ( int ttype = TokenTypes.Min; ttype < tokenNames.Length; ttype++ )
-            {
+            for (int ttype = TokenTypes.Min; ttype < tokenNames.Length; ttype++) {
                 string name = tokenNames[ttype];
                 m[name] = ttype;
             }
             return m;
         }
 
-        /** <summary>Using the map of token names to token types, return the type.</summary> */
-        public virtual int GetTokenType( string tokenName )
-        {
-            if ( tokenNameToTypeMap == null )
-            {
+        /**
+         * <summary>Using the map of token names to token types, return the type.</summary>
+         */
+        public virtual int GetTokenType(string tokenName) {
+            if (tokenNameToTypeMap == null) {
                 return TokenTypes.Invalid;
             }
-
             int value;
-            if ( tokenNameToTypeMap.TryGetValue( tokenName, out value ) )
+            if (tokenNameToTypeMap.TryGetValue(tokenName, out value)) {
                 return value;
-
+            }
             return TokenTypes.Invalid;
         }
 
-        /** <summary>
-         *  Walk the entire tree and make a node name to nodes mapping.
-         *  For now, use recursion but later nonrecursive version may be
-         *  more efficient.  Returns Map&lt;Integer, List&gt; where the List is
-         *  of your AST node type.  The Integer is the token type of the node.
-         *  </summary>
-         *
-         *  <remarks>
-         *  TODO: save this index so that find and visit are faster
-         *  </remarks>
+        /**
+         * <summary>
+         *     Walk the entire tree and make a node name to nodes mapping.
+         *     For now, use recursion but later nonrecursive version may be
+         *     more efficient.  Returns Map&lt;Integer, List&gt; where the List is
+         *     of your AST node type.  The Integer is the token type of the node.
+         * </summary>
+         * <remarks>
+         *     TODO: save this index so that find and visit are faster
+         * </remarks>
          */
-        public IDictionary<int, IList> Index( object t )
-        {
+        public IDictionary<int, IList> Index(object t) {
             IDictionary<int, IList> m = new Dictionary<int, IList>();
-            IndexCore( t, m );
+            IndexCore(t, m);
             return m;
         }
 
-        /** <summary>Do the work for index</summary> */
-        protected virtual void IndexCore( object t, IDictionary<int, IList> m )
-        {
-            if ( t == null )
-            {
+        /**
+         * <summary>Do the work for index</summary>
+         */
+        protected virtual void IndexCore(object t, IDictionary<int, IList> m) {
+            if (t == null) {
                 return;
             }
-            int ttype = adaptor.GetType( t );
+            int ttype = adaptor.GetType(t);
             IList elements;
-            if ( !m.TryGetValue( ttype, out elements ) || elements == null )
-            {
+            if (!m.TryGetValue(ttype, out elements)
+                || elements == null) {
                 elements = new List<object>();
                 m[ttype] = elements;
             }
-            elements.Add( t );
-            int n = adaptor.GetChildCount( t );
-            for ( int i = 0; i < n; i++ )
-            {
-                object child = adaptor.GetChild( t, i );
-                IndexCore( child, m );
+            elements.Add(t);
+            int n = adaptor.GetChildCount(t);
+            for (int i = 0; i < n; i++) {
+                object child = adaptor.GetChild(t, i);
+                IndexCore(child, m);
             }
         }
 
-        class FindTreeWizardVisitor : TreeWizard.Visitor
-        {
-            IList _nodes;
-            public FindTreeWizardVisitor( IList nodes )
-            {
-                _nodes = nodes;
-            }
-            public override void Visit( object t )
-            {
-                _nodes.Add( t );
+        class FindTreeWizardVisitor : Visitor {
+            readonly IList _nodes;
+            public FindTreeWizardVisitor(IList nodes) => _nodes = nodes;
+
+            public override void Visit(object t) {
+                _nodes.Add(t);
             }
         }
-        class FindTreeWizardContextVisitor : TreeWizard.IContextVisitor
-        {
-            TreeWizard _outer;
-            TreePattern _tpattern;
-            IList _subtrees;
-            public FindTreeWizardContextVisitor( TreeWizard outer, TreePattern tpattern, IList subtrees )
-            {
+
+        class FindTreeWizardContextVisitor : IContextVisitor {
+            readonly TreeWizard _outer;
+            readonly TreePattern _tpattern;
+            readonly IList _subtrees;
+
+            public FindTreeWizardContextVisitor(TreeWizard outer, TreePattern tpattern, IList subtrees) {
                 _outer = outer;
                 _tpattern = tpattern;
                 _subtrees = subtrees;
             }
 
-            public void Visit( object t, object parent, int childIndex, IDictionary<string, object> labels )
-            {
-                if ( _outer.ParseCore( t, _tpattern, null ) )
-                {
-                    _subtrees.Add( t );
+            public void Visit(object t, object parent, int childIndex, IDictionary<string, object> labels) {
+                if (_outer.ParseCore(t, _tpattern, null)) {
+                    _subtrees.Add(t);
                 }
             }
         }
 
-        /** <summary>Return a List of tree nodes with token type ttype</summary> */
-        public virtual IList Find( object t, int ttype )
-        {
+        /**
+         * <summary>Return a List of tree nodes with token type ttype</summary>
+         */
+        public virtual IList Find(object t, int ttype) {
             IList nodes = new List<object>();
-            Visit( t, ttype, new FindTreeWizardVisitor( nodes ) );
+            Visit(t, ttype, new FindTreeWizardVisitor(nodes));
             return nodes;
         }
 
-        /** <summary>Return a List of subtrees matching pattern.</summary> */
-        public virtual IList Find( object t, string pattern )
-        {
+        /**
+         * <summary>Return a List of subtrees matching pattern.</summary>
+         */
+        public virtual IList Find(object t, string pattern) {
             IList subtrees = new List<object>();
             // Create a TreePattern from the pattern
-            TreePatternLexer tokenizer = new TreePatternLexer( pattern );
-            TreePatternParser parser =
-                new TreePatternParser( tokenizer, this, new TreePatternTreeAdaptor() );
+            TreePatternLexer tokenizer = new TreePatternLexer(pattern);
+            TreePatternParser parser = new TreePatternParser(tokenizer, this, new TreePatternTreeAdaptor());
             TreePattern tpattern = (TreePattern)parser.Pattern();
             // don't allow invalid patterns
-            if ( tpattern == null ||
-                 tpattern.IsNil ||
-                 tpattern.GetType() == typeof( WildcardTreePattern ) )
-            {
+            if (tpattern == null
+                || tpattern.IsNil
+                || tpattern.GetType() == typeof(WildcardTreePattern)) {
                 return null;
             }
             int rootTokenType = tpattern.Type;
-            Visit( t, rootTokenType, new FindTreeWizardContextVisitor( this, tpattern, subtrees ) );
+            Visit(t, rootTokenType, new FindTreeWizardContextVisitor(this, tpattern, subtrees));
             return subtrees;
         }
 
-        public virtual object FindFirst( object t, int ttype )
-        {
-            return null;
-        }
+        public virtual object FindFirst(object t, int ttype) => null;
 
-        public virtual object FindFirst( object t, string pattern )
-        {
-            return null;
-        }
+        public virtual object FindFirst(object t, string pattern) => null;
 
-        /** <summary>
-         *  Visit every ttype node in t, invoking the visitor.  This is a quicker
-         *  version of the general visit(t, pattern) method.  The labels arg
-         *  of the visitor action method is never set (it's null) since using
-         *  a token type rather than a pattern doesn't let us set a label.
-         *  </summary>
+        /**
+         * <summary>
+         *     Visit every ttype node in t, invoking the visitor.  This is a quicker
+         *     version of the general visit(t, pattern) method.  The labels arg
+         *     of the visitor action method is never set (it's null) since using
+         *     a token type rather than a pattern doesn't let us set a label.
+         * </summary>
          */
-        public void Visit( object t, int ttype, IContextVisitor visitor )
-        {
-            VisitCore( t, null, 0, ttype, visitor );
+        public void Visit(object t, int ttype, IContextVisitor visitor) {
+            VisitCore(
+                t,
+                null,
+                0,
+                ttype,
+                visitor
+            );
         }
 
-        public void Visit( object t, int ttype, System.Action<object> action )
-        {
-            Visit( t, ttype, new ActionVisitor( action ) );
+        public void Visit(object t, int ttype, Action<object> action) {
+            Visit(t, ttype, new ActionVisitor(action));
         }
 
-        /** <summary>Do the recursive work for visit</summary> */
-        protected virtual void VisitCore( object t, object parent, int childIndex, int ttype, IContextVisitor visitor )
-        {
-            if ( t == null )
-            {
+        /**
+         * <summary>Do the recursive work for visit</summary>
+         */
+        protected virtual void VisitCore(object t, object parent, int childIndex, int ttype, IContextVisitor visitor) {
+            if (t == null) {
                 return;
             }
-            if ( adaptor.GetType( t ) == ttype )
-            {
-                visitor.Visit( t, parent, childIndex, null );
+            if (adaptor.GetType(t) == ttype) {
+                visitor.Visit(t, parent, childIndex, null);
             }
-            int n = adaptor.GetChildCount( t );
-            for ( int i = 0; i < n; i++ )
-            {
-                object child = adaptor.GetChild( t, i );
-                VisitCore( child, t, i, ttype, visitor );
+            int n = adaptor.GetChildCount(t);
+            for (int i = 0; i < n; i++) {
+                object child = adaptor.GetChild(t, i);
+                VisitCore(
+                    child,
+                    t,
+                    i,
+                    ttype,
+                    visitor
+                );
             }
         }
 
-        class VisitTreeWizardContextVisitor : TreeWizard.IContextVisitor
-        {
-            TreeWizard _outer;
-            IContextVisitor _visitor;
-            IDictionary<string, object> _labels;
-            TreePattern _tpattern;
+        class VisitTreeWizardContextVisitor : IContextVisitor {
+            readonly TreeWizard _outer;
+            readonly IContextVisitor _visitor;
+            readonly IDictionary<string, object> _labels;
+            readonly TreePattern _tpattern;
 
-            public VisitTreeWizardContextVisitor( TreeWizard outer, IContextVisitor visitor, IDictionary<string, object> labels, TreePattern tpattern )
-            {
+            public VisitTreeWizardContextVisitor(TreeWizard outer, IContextVisitor visitor, IDictionary<string, object> labels, TreePattern tpattern) {
                 _outer = outer;
                 _visitor = visitor;
                 _labels = labels;
                 _tpattern = tpattern;
             }
 
-            public void Visit( object t, object parent, int childIndex, IDictionary<string, object> unusedlabels )
-            {
+            public void Visit(object t, object parent, int childIndex, IDictionary<string, object> unusedlabels) {
                 // the unusedlabels arg is null as visit on token type doesn't set.
                 _labels.Clear();
-                if ( _outer.ParseCore( t, _tpattern, _labels ) )
-                {
-                    _visitor.Visit( t, parent, childIndex, _labels );
+                if (_outer.ParseCore(t, _tpattern, _labels)) {
+                    _visitor.Visit(t, parent, childIndex, _labels);
                 }
             }
         }
 
-        /** <summary>
-         *  For all subtrees that match the pattern, execute the visit action.
-         *  The implementation uses the root node of the pattern in combination
-         *  with visit(t, ttype, visitor) so nil-rooted patterns are not allowed.
-         *  Patterns with wildcard roots are also not allowed.
-         *  </summary>
+        /**
+         * <summary>
+         *     For all subtrees that match the pattern, execute the visit action.
+         *     The implementation uses the root node of the pattern in combination
+         *     with visit(t, ttype, visitor) so nil-rooted patterns are not allowed.
+         *     Patterns with wildcard roots are also not allowed.
+         * </summary>
          */
-        public void Visit( object t, string pattern, IContextVisitor visitor )
-        {
+        public void Visit(object t, string pattern, IContextVisitor visitor) {
             // Create a TreePattern from the pattern
-            TreePatternLexer tokenizer = new TreePatternLexer( pattern );
-            TreePatternParser parser =
-                new TreePatternParser( tokenizer, this, new TreePatternTreeAdaptor() );
+            TreePatternLexer tokenizer = new TreePatternLexer(pattern);
+            TreePatternParser parser = new TreePatternParser(tokenizer, this, new TreePatternTreeAdaptor());
             TreePattern tpattern = (TreePattern)parser.Pattern();
             // don't allow invalid patterns
-            if ( tpattern == null ||
-                 tpattern.IsNil ||
-                 tpattern.GetType() == typeof( WildcardTreePattern ) )
-            {
+            if (tpattern == null
+                || tpattern.IsNil
+                || tpattern.GetType() == typeof(WildcardTreePattern)) {
                 return;
             }
             IDictionary<string, object> labels = new Dictionary<string, object>(); // reused for each _parse
             int rootTokenType = tpattern.Type;
-            Visit( t, rootTokenType, new VisitTreeWizardContextVisitor( this, visitor, labels, tpattern ) );
+            Visit(t, rootTokenType, new VisitTreeWizardContextVisitor(this, visitor, labels, tpattern));
         }
 
-        /** <summary>
-         *  Given a pattern like (ASSIGN %lhs:ID %rhs:.) with optional labels
-         *  on the various nodes and '.' (dot) as the node/subtree wildcard,
-         *  return true if the pattern matches and fill the labels Map with
-         *  the labels pointing at the appropriate nodes.  Return false if
-         *  the pattern is malformed or the tree does not match.
-         *  </summary>
-         *
-         *  <remarks>
-         *  If a node specifies a text arg in pattern, then that must match
-         *  for that node in t.
-         *
-         *  TODO: what's a better way to indicate bad pattern? Exceptions are a hassle 
-         *  </remarks>
+        /**
+         * <summary>
+         *     Given a pattern like (ASSIGN %lhs:ID %rhs:.) with optional labels
+         *     on the various nodes and '.' (dot) as the node/subtree wildcard,
+         *     return true if the pattern matches and fill the labels Map with
+         *     the labels pointing at the appropriate nodes.  Return false if
+         *     the pattern is malformed or the tree does not match.
+         * </summary>
+         * <remarks>
+         *     If a node specifies a text arg in pattern, then that must match
+         *     for that node in t.
+         *     TODO: what's a better way to indicate bad pattern? Exceptions are a hassle
+         * </remarks>
          */
-        public bool Parse( object t, string pattern, IDictionary<string, object> labels )
-        {
-            TreePatternLexer tokenizer = new TreePatternLexer( pattern );
-            TreePatternParser parser =
-                new TreePatternParser( tokenizer, this, new TreePatternTreeAdaptor() );
+        public bool Parse(object t, string pattern, IDictionary<string, object> labels) {
+            TreePatternLexer tokenizer = new TreePatternLexer(pattern);
+            TreePatternParser parser = new TreePatternParser(tokenizer, this, new TreePatternTreeAdaptor());
             TreePattern tpattern = (TreePattern)parser.Pattern();
             /*
             System.out.println("t="+((Tree)t).toStringTree());
             System.out.println("scant="+tpattern.toStringTree());
             */
-            bool matched = ParseCore( t, tpattern, labels );
+            bool matched = ParseCore(t, tpattern, labels);
             return matched;
         }
 
-        public bool Parse( object t, string pattern )
-        {
-            return Parse( t, pattern, null );
-        }
+        public bool Parse(object t, string pattern) => Parse(t, pattern, null);
 
-        /** <summary>
-         *  Do the work for parse. Check to see if the t2 pattern fits the
-         *  structure and token types in t1.  Check text if the pattern has
-         *  text arguments on nodes.  Fill labels map with pointers to nodes
-         *  in tree matched against nodes in pattern with labels.
-         *  </summary>
+        /**
+         * <summary>
+         *     Do the work for parse. Check to see if the t2 pattern fits the
+         *     structure and token types in t1.  Check text if the pattern has
+         *     text arguments on nodes.  Fill labels map with pointers to nodes
+         *     in tree matched against nodes in pattern with labels.
+         * </summary>
          */
-        protected virtual bool ParseCore( object t1, TreePattern tpattern, IDictionary<string, object> labels )
-        {
+        protected virtual bool ParseCore(object t1, TreePattern tpattern, IDictionary<string, object> labels) {
             // make sure both are non-null
-            if ( t1 == null || tpattern == null )
-            {
+            if (t1 == null
+                || tpattern == null) {
                 return false;
             }
             // check roots (wildcard matches anything)
-            if ( tpattern.GetType() != typeof( WildcardTreePattern ) )
-            {
-                if ( adaptor.GetType( t1 ) != tpattern.Type )
-                {
+            if (tpattern.GetType() != typeof(WildcardTreePattern)) {
+                if (adaptor.GetType(t1) != tpattern.Type) {
                     return false;
                 }
                 // if pattern has text, check node text
-                if ( tpattern.hasTextArg && !adaptor.GetText( t1 ).Equals( tpattern.Text ) )
-                {
+                if (tpattern.hasTextArg
+                    && !adaptor.GetText(t1).Equals(tpattern.Text)) {
                     return false;
                 }
             }
-            if ( tpattern.label != null && labels != null )
-            {
+            if (tpattern.label != null
+                && labels != null) {
                 // map label in pattern to node in t1
                 labels[tpattern.label] = t1;
             }
             // check children
-            int n1 = adaptor.GetChildCount( t1 );
+            int n1 = adaptor.GetChildCount(t1);
             int n2 = tpattern.ChildCount;
-            if ( n1 != n2 )
-            {
+            if (n1 != n2) {
                 return false;
             }
-            for ( int i = 0; i < n1; i++ )
-            {
-                object child1 = adaptor.GetChild( t1, i );
-                TreePattern child2 = (TreePattern)tpattern.GetChild( i );
-                if ( !ParseCore( child1, child2, labels ) )
-                {
+            for (int i = 0; i < n1; i++) {
+                object child1 = adaptor.GetChild(t1, i);
+                TreePattern child2 = (TreePattern)tpattern.GetChild(i);
+                if (!ParseCore(child1, child2, labels)) {
                     return false;
                 }
             }
             return true;
         }
 
-        /** <summary>
-         *  Create a tree or node from the indicated tree pattern that closely
-         *  follows ANTLR tree grammar tree element syntax:
-         *
-         *      (root child1 ... child2).
-         *  </summary>
-         *
-         *  <remarks>
-         *  You can also just pass in a node: ID
-         * 
-         *  Any node can have a text argument: ID[foo]
-         *  (notice there are no quotes around foo--it's clear it's a string).
-         *
-         *  nil is a special name meaning "give me a nil node".  Useful for
-         *  making lists: (nil A B C) is a list of A B C.
-         *  </remarks>
+        /**
+         * <summary>
+         *     Create a tree or node from the indicated tree pattern that closely
+         *     follows ANTLR tree grammar tree element syntax:
+         *     (root child1 ... child2).
+         * </summary>
+         * <remarks>
+         *     You can also just pass in a node: ID
+         *     Any node can have a text argument: ID[foo]
+         *     (notice there are no quotes around foo--it's clear it's a string).
+         *     nil is a special name meaning "give me a nil node".  Useful for
+         *     making lists: (nil A B C) is a list of A B C.
+         * </remarks>
          */
-        public virtual object Create( string pattern )
-        {
-            TreePatternLexer tokenizer = new TreePatternLexer( pattern );
-            TreePatternParser parser = new TreePatternParser( tokenizer, this, adaptor );
+        public virtual object Create(string pattern) {
+            TreePatternLexer tokenizer = new TreePatternLexer(pattern);
+            TreePatternParser parser = new TreePatternParser(tokenizer, this, adaptor);
             object t = parser.Pattern();
             return t;
         }
 
-        /** <summary>
-         *  Compare t1 and t2; return true if token types/text, structure match exactly.
-         *  The trees are examined in their entirety so that (A B) does not match
-         *  (A B C) nor (A (B C)). 
-         *  </summary>
-         *
-         *  <remarks>
-         *  TODO: allow them to pass in a comparator
-         *  TODO: have a version that is nonstatic so it can use instance adaptor
-         *
-         *  I cannot rely on the tree node's equals() implementation as I make
-         *  no constraints at all on the node types nor interface etc... 
-         *  </remarks>
+        /**
+         * <summary>
+         *     Compare t1 and t2; return true if token types/text, structure match exactly.
+         *     The trees are examined in their entirety so that (A B) does not match
+         *     (A B C) nor (A (B C)).
+         * </summary>
+         * <remarks>
+         *     TODO: allow them to pass in a comparator
+         *     TODO: have a version that is nonstatic so it can use instance adaptor
+         *     I cannot rely on the tree node's equals() implementation as I make
+         *     no constraints at all on the node types nor interface etc...
+         * </remarks>
          */
-        public static bool Equals( object t1, object t2, ITreeAdaptor adaptor )
-        {
-            return EqualsCore( t1, t2, adaptor );
-        }
+        public static bool Equals(object t1, object t2, ITreeAdaptor adaptor) => EqualsCore(t1, t2, adaptor);
 
-        /** <summary>
-         *  Compare type, structure, and text of two trees, assuming adaptor in
-         *  this instance of a TreeWizard.
-         *  </summary>
+        /**
+         * <summary>
+         *     Compare type, structure, and text of two trees, assuming adaptor in
+         *     this instance of a TreeWizard.
+         * </summary>
          */
-        public new bool Equals( object t1, object t2 )
-        {
-            return EqualsCore( t1, t2, adaptor );
-        }
+        public new bool Equals(object t1, object t2) => EqualsCore(t1, t2, adaptor);
 
-        protected static bool EqualsCore( object t1, object t2, ITreeAdaptor adaptor )
-        {
+        protected static bool EqualsCore(object t1, object t2, ITreeAdaptor adaptor) {
             // make sure both are non-null
-            if ( t1 == null || t2 == null )
-            {
+            if (t1 == null
+                || t2 == null) {
                 return false;
             }
             // check roots
-            if ( adaptor.GetType( t1 ) != adaptor.GetType( t2 ) )
-            {
+            if (adaptor.GetType(t1) != adaptor.GetType(t2)) {
                 return false;
             }
-            if ( !adaptor.GetText( t1 ).Equals( adaptor.GetText( t2 ) ) )
-            {
+            if (!adaptor.GetText(t1).Equals(adaptor.GetText(t2))) {
                 return false;
             }
             // check children
-            int n1 = adaptor.GetChildCount( t1 );
-            int n2 = adaptor.GetChildCount( t2 );
-            if ( n1 != n2 )
-            {
+            int n1 = adaptor.GetChildCount(t1);
+            int n2 = adaptor.GetChildCount(t2);
+            if (n1 != n2) {
                 return false;
             }
-            for ( int i = 0; i < n1; i++ )
-            {
-                object child1 = adaptor.GetChild( t1, i );
-                object child2 = adaptor.GetChild( t2, i );
-                if ( !EqualsCore( child1, child2, adaptor ) )
-                {
+            for (int i = 0; i < n1; i++) {
+                object child1 = adaptor.GetChild(t1, i);
+                object child2 = adaptor.GetChild(t2, i);
+                if (!EqualsCore(child1, child2, adaptor)) {
                     return false;
                 }
             }
@@ -731,6 +659,5 @@ namespace Antlr.Runtime.Tree
             return -1;
         }
 #endif
-
     }
 }

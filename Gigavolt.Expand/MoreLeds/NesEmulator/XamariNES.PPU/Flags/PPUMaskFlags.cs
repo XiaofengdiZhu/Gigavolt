@@ -1,12 +1,9 @@
-﻿namespace XamariNES.PPU.Flags
-{
+﻿namespace XamariNES.PPU.Flags {
     /// <summary>
     ///     Defined Flags for the PPUMASK Register
-    ///
     ///     https://wiki.nesdev.com/w/index.php/PPU_registers#PPUMASK
     /// </summary>
-    static class PPUMaskFlags
-    {
+    static class PPUMaskFlags {
         public const byte Greyscale = 1;
         public const byte ShowBackgroundInLeftMost = 1 << 1;
         public const byte ShowSpritesInLeftMost = 1 << 2;

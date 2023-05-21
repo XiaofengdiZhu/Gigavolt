@@ -1,11 +1,11 @@
 ﻿<Screen xmlns="runtime-namespace:Game">
 
-	<PanoramaWidget />
+	<PanoramaWidget/>
 
 	<StackPanelWidget Direction="Horizontal">
 
-		<CanvasWidget Style="{Widgets/TopBarContents}" >
-			<LabelWidget Name="TopBar.Label" Text="[GVMBExternalContentScreen:1]" />
+		<CanvasWidget Style="{Widgets/TopBarContents}">
+			<LabelWidget Name="TopBar.Label" Text="[GVMBExternalContentScreen:1]"/>
 		</CanvasWidget>
 
 		<StackPanelWidget Direction="Vertical" VerticalAlignment="Center">
@@ -13,7 +13,7 @@
 			<CanvasWidget Size="0, 8"/>
 
 			<CanvasWidget Margin="10, 0">
-				<RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+				<RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128"/>
 				<ListPanelWidget Name="DirectoryList" Direction="Vertical" Margin="3, 3" ItemSize="70" SelectionColor="10, 70, 0, 90"/>
 			</CanvasWidget>
 

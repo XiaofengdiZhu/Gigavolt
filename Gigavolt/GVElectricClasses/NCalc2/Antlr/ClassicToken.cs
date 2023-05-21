@@ -30,36 +30,35 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime
-{
-    /** <summary>
-     *  A Token object like we'd use in ANTLR 2.x; has an actual string created
-     *  and associated with this object.  These objects are needed for imaginary
-     *  tree nodes that have payload objects.  We need to create a Token object
-     *  that has a string; the tree node will point at this token.  CommonToken
-     *  has indexes into a char stream and hence cannot be used to introduce
-     *  new strings.
-     *  </summary>
+using System;
+
+namespace Antlr.Runtime {
+    /**
+     * <summary>
+     *     A Token object like we'd use in ANTLR 2.x; has an actual string created
+     *     and associated with this object.  These objects are needed for imaginary
+     *     tree nodes that have payload objects.  We need to create a Token object
+     *     that has a string; the tree node will point at this token.  CommonToken
+     *     has indexes into a char stream and hence cannot be used to introduce
+     *     new strings.
+     * </summary>
      */
-    [System.Serializable]
-    public class ClassicToken : IToken
-    {
+    [Serializable]
+    public class ClassicToken : IToken {
         string text;
         int type;
         int line;
         int charPositionInLine;
         int channel = TokenChannels.Default;
 
-        /** <summary>What token number is this from 0..n-1 tokens</summary> */
+        /**
+         * <summary>What token number is this from 0..n-1 tokens</summary>
+         */
         int index;
 
-        public ClassicToken( int type )
-        {
-            this.type = type;
-        }
+        public ClassicToken(int type) => this.type = type;
 
-        public ClassicToken( IToken oldToken )
-        {
+        public ClassicToken(IToken oldToken) {
             text = oldToken.Text;
             type = oldToken.Type;
             line = oldToken.Line;
@@ -67,143 +66,78 @@ namespace Antlr.Runtime
             channel = oldToken.Channel;
         }
 
-        public ClassicToken( int type, string text )
-        {
+        public ClassicToken(int type, string text) {
             this.type = type;
             this.text = text;
         }
 
-        public ClassicToken( int type, string text, int channel )
-        {
+        public ClassicToken(int type, string text, int channel) {
             this.type = type;
             this.text = text;
             this.channel = channel;
         }
 
         #region IToken Members
-        public string Text
-        {
-            get
-            {
-                return text;
-            }
-            set
-            {
-                text = value;
-            }
+
+        public string Text {
+            get => text;
+            set => text = value;
         }
 
-        public int Type
-        {
-            get
-            {
-                return type;
-            }
-            set
-            {
-                type = value;
-            }
+        public int Type {
+            get => type;
+            set => type = value;
         }
 
-        public int Line
-        {
-            get
-            {
-                return line;
-            }
-            set
-            {
-                line = value;
-            }
+        public int Line {
+            get => line;
+            set => line = value;
         }
 
-        public int CharPositionInLine
-        {
-            get
-            {
-                return charPositionInLine;
-            }
-            set
-            {
-                charPositionInLine = value;
-            }
+        public int CharPositionInLine {
+            get => charPositionInLine;
+            set => charPositionInLine = value;
         }
 
-        public int Channel
-        {
-            get
-            {
-                return channel;
-            }
-            set
-            {
-                channel = value;
-            }
+        public int Channel {
+            get => channel;
+            set => channel = value;
         }
 
-        public int StartIndex
-        {
-            get
-            {
-                return -1;
-            }
-            set
-            {
-            }
+        public int StartIndex {
+            get => -1;
+            set { }
         }
 
-        public int StopIndex
-        {
-            get
-            {
-                return -1;
-            }
-            set
-            {
-            }
+        public int StopIndex {
+            get => -1;
+            set { }
         }
 
-        public int TokenIndex
-        {
-            get
-            {
-                return index;
-            }
-            set
-            {
-                index = value;
-            }
+        public int TokenIndex {
+            get => index;
+            set => index = value;
         }
 
-        public ICharStream InputStream
-        {
-            get
-            {
-                return null;
-            }
-            set
-            {
-            }
+        public ICharStream InputStream {
+            get => null;
+            set { }
         }
 
         #endregion
 
-        public override string ToString()
-        {
+        public override string ToString() {
             string channelStr = "";
-            if ( channel > 0 )
-            {
+            if (channel > 0) {
                 channelStr = ",channel=" + channel;
             }
             string txt = Text;
-            if ( txt != null )
-            {
-                txt = txt.Replace( "\n", "\\\\n" );
-                txt = txt.Replace( "\r", "\\\\r" );
-                txt = txt.Replace( "\t", "\\\\t" );
+            if (txt != null) {
+                txt = txt.Replace("\n", "\\\\n");
+                txt = txt.Replace("\r", "\\\\r");
+                txt = txt.Replace("\t", "\\\\t");
             }
-            else
-            {
+            else {
                 txt = "<no text>";
             }
             return "[@" + TokenIndex + ",'" + txt + "',<" + type + ">" + channelStr + "," + line + ":" + CharPositionInLine + "]";

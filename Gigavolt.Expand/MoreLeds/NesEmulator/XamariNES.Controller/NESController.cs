@@ -1,48 +1,32 @@
-﻿using XamariNES.Controller.Enums;
-using XamariNES.Common.Extensions;
+﻿using XamariNES.Common.Extensions;
+using XamariNES.Controller.Enums;
 
-namespace XamariNES.Controller
-{
+namespace XamariNES.Controller {
     /// <summary>
     ///     Standard NES Controller
-    ///
     ///     https://wiki.nesdev.com/w/index.php/Controller_reading
     ///     https://wiki.nesdev.com/w/index.php/Standard_controller
     /// </summary>
-    public class NESController : IController
-    {
-        private byte _buttonStates;
-        private byte _buttonStatusShift;
-        private bool _isPolling;
+    public class NESController : IController {
+        byte _buttonStatusShift;
+        bool _isPolling;
 
-        public byte ButtonStates
-        {
-            get
-            {
-                return _buttonStates;
-            }
-            set
-            {
-                _buttonStates = value;
-            }
-        }
+        public byte ButtonStates { get; set; }
+
         /// <summary>
         ///     Sets the flag for the given button as pressed
         /// </summary>
         /// <param name="button"></param>
-        public void ButtonPress(enumButtons button)
-        {
-            _buttonStates |= (byte) button;
-
+        public void ButtonPress(enumButtons button) {
+            ButtonStates |= (byte)button;
         }
 
         /// <summary>
         ///     Sets the flag for the given button as released
         /// </summary>
         /// <param name="button"></param>
-        public void ButtonRelease(enumButtons button)
-        {
-            _buttonStates &= (byte) ~button;
+        public void ButtonRelease(enumButtons button) {
+            ButtonStates &= (byte)~button;
         }
 
         /// <summary>
@@ -50,15 +34,12 @@ namespace XamariNES.Controller
         ///     for button status, or that it is done polling
         /// </summary>
         /// <param name="input"></param>
-        public void SignalController(byte input)
-        {
-            if (input.IsBitSet(0))
-            {
+        public void SignalController(byte input) {
+            if (input.IsBitSet(0)) {
                 _isPolling = false;
                 _buttonStatusShift = 0;
             }
-            else
-            {
+            else {
                 _isPolling = true;
             }
         }
@@ -67,16 +48,16 @@ namespace XamariNES.Controller
         ///     Poll the controller for the next button state in the sequence
         /// </summary>
         /// <returns></returns>
-        public byte ReadController()
-        {
+        public byte ReadController() {
             //Non-Standard NES remotes support values beyond 7 bits, for those
             //we'll just return 1 for now.
-            if (_buttonStatusShift > 7)
+            if (_buttonStatusShift > 7) {
                 return 1;
-
-            var buttonState = (byte)(_buttonStates.IsBitSet(_buttonStatusShift) ? 1 : 0);
-            if (_isPolling) _buttonStatusShift++;
-
+            }
+            byte buttonState = (byte)(ButtonStates.IsBitSet(_buttonStatusShift) ? 1 : 0);
+            if (_isPolling) {
+                _buttonStatusShift++;
+            }
             return buttonState;
         }
     }

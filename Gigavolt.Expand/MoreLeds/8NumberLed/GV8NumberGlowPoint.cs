@@ -1,9 +1,7 @@
 using Engine;
 
-namespace Game
-{
-    public class GV8NumberGlowPoint
-    {
+namespace Game {
+    public class GV8NumberGlowPoint {
         public Vector3 Position;
 
         public Vector3 Right;

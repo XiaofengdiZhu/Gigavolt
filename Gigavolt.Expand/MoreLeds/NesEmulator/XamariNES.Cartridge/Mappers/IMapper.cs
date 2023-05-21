@@ -1,13 +1,11 @@
 ﻿using XamariNES.Cartridge.Mappers.Enums;
 using XamariNES.Cartridge.Mappers.impl;
 
-namespace XamariNES.Cartridge.Mappers
-{
+namespace XamariNES.Cartridge.Mappers {
     /// <summary>
     ///     Public Interface for XamariNES.Cartridge Mappers
     /// </summary>
-    public interface IMapper
-    {
+    public interface IMapper {
         byte ReadByte(int offset);
 
         void WriteByte(int offset, byte data);

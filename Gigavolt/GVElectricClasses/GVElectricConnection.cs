@@ -1,7 +1,5 @@
-namespace Game
-{
-    public class GVElectricConnection
-    {
+namespace Game {
+    public class GVElectricConnection {
         public CellFace CellFace;
 
         public int ConnectorFace;

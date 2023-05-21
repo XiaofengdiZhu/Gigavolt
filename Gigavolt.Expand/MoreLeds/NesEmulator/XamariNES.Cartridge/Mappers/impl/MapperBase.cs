@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace XamariNES.Cartridge.Mappers.impl
-{
+namespace XamariNES.Cartridge.Mappers.impl {
     /// <summary>
     ///     Base Class for Mappers
     /// </summary>
-    public abstract class MapperBase
-    {
+    public abstract class MapperBase {
         //Interceptor Delegates
         public delegate byte ReadInterceptor(int offset);
+
         public delegate void WriteInterceptor(int offset, byte value);
 
         //Dictionary of Interceptors
@@ -19,15 +18,12 @@ namespace XamariNES.Cartridge.Mappers.impl
         protected ReadInterceptor currentReadInterceptor;
         protected WriteInterceptor currentWriteInterceptor;
 
-        protected MapperBase() { }
-
         /// <summary>
         ///     Registers a Read Interceptor at the specified offset
         /// </summary>
         /// <param name="readInterceptor"></param>
         /// <param name="offset"></param>
-        public void RegisterReadInterceptor(ReadInterceptor readInterceptor, int offset)
-        {
+        public void RegisterReadInterceptor(ReadInterceptor readInterceptor, int offset) {
             ReadInterceptors.Add(offset, readInterceptor);
         }
 
@@ -37,10 +33,10 @@ namespace XamariNES.Cartridge.Mappers.impl
         /// <param name="readInterceptor"></param>
         /// <param name="offsetStart"></param>
         /// <param name="offsetEnd"></param>
-        public void RegisterReadInterceptor(ReadInterceptor readInterceptor, int offsetStart, int offsetEnd)
-        {
-            for (var i = offsetStart; i <= offsetEnd; i++)
+        public void RegisterReadInterceptor(ReadInterceptor readInterceptor, int offsetStart, int offsetEnd) {
+            for (int i = offsetStart; i <= offsetEnd; i++) {
                 RegisterReadInterceptor(readInterceptor, i);
+            }
         }
 
         /// <summary>
@@ -48,8 +44,7 @@ namespace XamariNES.Cartridge.Mappers.impl
         /// </summary>
         /// <param name="writeInterceptor"></param>
         /// <param name="offset"></param>
-        public void RegisterWriteInterceptor(WriteInterceptor writeInterceptor, int offset)
-        {
+        public void RegisterWriteInterceptor(WriteInterceptor writeInterceptor, int offset) {
             WriteInterceptors.Add(offset, writeInterceptor);
         }
 
@@ -59,12 +54,10 @@ namespace XamariNES.Cartridge.Mappers.impl
         /// <param name="writeInterceptor"></param>
         /// <param name="offsetStart"></param>
         /// <param name="offsetEnd"></param>
-        public void RegisterWriteInterceptor(WriteInterceptor writeInterceptor, int offsetStart, int offsetEnd)
-        {
-            for (var i = offsetStart; i <= offsetEnd; i++)
+        public void RegisterWriteInterceptor(WriteInterceptor writeInterceptor, int offsetStart, int offsetEnd) {
+            for (int i = offsetStart; i <= offsetEnd; i++) {
                 RegisterWriteInterceptor(writeInterceptor, i);
+            }
         }
-
-        
     }
 }

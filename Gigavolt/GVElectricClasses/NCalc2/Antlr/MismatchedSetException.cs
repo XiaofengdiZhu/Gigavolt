@@ -30,79 +30,41 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime
-{
-    using ArgumentNullException = System.ArgumentNullException;
-    using Exception = System.Exception;
-    using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
-    using StreamingContext = System.Runtime.Serialization.StreamingContext;
+using System;
+using System.Runtime.Serialization;
 
-    [System.Serializable]
-    public class MismatchedSetException : RecognitionException
-    {
-        private readonly BitSet _expecting;
+namespace Antlr.Runtime {
+    [Serializable]
+    public class MismatchedSetException : RecognitionException {
+        public MismatchedSetException() { }
 
-        public MismatchedSetException()
-        {
-        }
+        public MismatchedSetException(string message) : base(message) { }
 
-        public MismatchedSetException(string message)
-            : base(message)
-        {
-        }
+        public MismatchedSetException(string message, Exception innerException) : base(message, innerException) { }
 
-        public MismatchedSetException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+        public MismatchedSetException(BitSet expecting, IIntStream input) : base(input) => Expecting = expecting;
 
-        public MismatchedSetException( BitSet expecting, IIntStream input )
-            : base( input )
-        {
-            this._expecting = expecting;
-        }
+        public MismatchedSetException(string message, BitSet expecting, IIntStream input) : base(message, input) => Expecting = expecting;
 
-        public MismatchedSetException(string message, BitSet expecting, IIntStream input)
-            : base(message, input)
-        {
-            this._expecting = expecting;
-        }
+        public MismatchedSetException(string message, BitSet expecting, IIntStream input, Exception innerException) : base(message, input, innerException) => Expecting = expecting;
 
-        public MismatchedSetException(string message, BitSet expecting, IIntStream input, Exception innerException)
-            : base(message, input, innerException)
-        {
-            this._expecting = expecting;
-        }
-
-        protected MismatchedSetException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            if (info == null)
+        protected MismatchedSetException(SerializationInfo info, StreamingContext context) : base(info, context) {
+            if (info == null) {
                 throw new ArgumentNullException("info");
-
-            this._expecting = (BitSet)info.GetValue("Expecting", typeof(BitSet));
-        }
-
-        public BitSet Expecting
-        {
-            get
-            {
-                return _expecting;
             }
+            Expecting = (BitSet)info.GetValue("Expecting", typeof(BitSet));
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
+        public BitSet Expecting { get; }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+            if (info == null) {
                 throw new ArgumentNullException("info");
-
+            }
             base.GetObjectData(info, context);
-            info.AddValue("Expecting", _expecting);
+            info.AddValue("Expecting", Expecting);
         }
 
-        public override string ToString()
-        {
-            return "MismatchedSetException(" + UnexpectedType + "!=" + Expecting + ")";
-        }
+        public override string ToString() => "MismatchedSetException(" + UnexpectedType + "!=" + Expecting + ")";
     }
 }

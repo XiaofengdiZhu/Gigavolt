@@ -30,112 +30,72 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Antlr3.Runtime.PCL;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Runtime.Serialization;
 
-namespace Antlr.Runtime
-{
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using ArgumentNullException = System.ArgumentNullException;
-    using Exception = System.Exception;
-    using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
-    using StreamingContext = System.Runtime.Serialization.StreamingContext;
+namespace Antlr.Runtime {
+    /**
+     * <summary>A mismatched char or Token or tree node</summary>
+     */
+    [Serializable]
+    public class MismatchedTokenException : RecognitionException {
+        public MismatchedTokenException() { }
 
-    /** <summary>A mismatched char or Token or tree node</summary> */
-    [System.Serializable]
-    public class MismatchedTokenException : RecognitionException
-    {
-        private readonly int _expecting = TokenTypes.Invalid;
-        private readonly ReadOnlyCollection<string> _tokenNames;
+        public MismatchedTokenException(string message) : base(message) { }
 
-        public MismatchedTokenException()
-        {
-        }
+        public MismatchedTokenException(string message, Exception innerException) : base(message, innerException) { }
 
-        public MismatchedTokenException(string message)
-            : base(message)
-        {
-        }
+        public MismatchedTokenException(int expecting, IIntStream input) : this(expecting, input, null) { }
 
-        public MismatchedTokenException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        public MismatchedTokenException(int expecting, IIntStream input)
-            : this(expecting, input, null)
-        {
-        }
-
-        public MismatchedTokenException(int expecting, IIntStream input, IList<string> tokenNames)
-            : base(input)
-        {
-            this._expecting = expecting;
-
-            if (tokenNames != null)
-                this._tokenNames = tokenNames.ToList().AsReadOnly();
-        }
-
-        public MismatchedTokenException(string message, int expecting, IIntStream input, IList<string> tokenNames)
-            : base(message, input)
-        {
-            this._expecting = expecting;
-
-            if (tokenNames != null)
-                this._tokenNames = tokenNames.ToList().AsReadOnly();
-        }
-
-        public MismatchedTokenException(string message, int expecting, IIntStream input, IList<string> tokenNames, Exception innerException)
-            : base(message, input, innerException)
-        {
-            this._expecting = expecting;
-
-            if (tokenNames != null)
-                this._tokenNames = tokenNames.ToList().AsReadOnly();
-        }
-
-        protected MismatchedTokenException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            if (info == null)
-                throw new ArgumentNullException("info");
-
-            this._expecting = info.GetInt32("Expecting");
-            this._tokenNames = new ReadOnlyCollection<string>((string[])info.GetValue("TokenNames", typeof(string[])));
-        }
-
-        public int Expecting
-        {
-            get
-            {
-                return _expecting;
+        public MismatchedTokenException(int expecting, IIntStream input, IList<string> tokenNames) : base(input) {
+            Expecting = expecting;
+            if (tokenNames != null) {
+                TokenNames = tokenNames.ToList().AsReadOnly();
             }
         }
 
-        public ReadOnlyCollection<string> TokenNames
-        {
-            get
-            {
-                return _tokenNames;
+        public MismatchedTokenException(string message, int expecting, IIntStream input, IList<string> tokenNames) : base(message, input) {
+            Expecting = expecting;
+            if (tokenNames != null) {
+                TokenNames = tokenNames.ToList().AsReadOnly();
             }
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-                throw new ArgumentNullException("info");
+        public MismatchedTokenException(string message, int expecting, IIntStream input, IList<string> tokenNames, Exception innerException) : base(message, input, innerException) {
+            Expecting = expecting;
+            if (tokenNames != null) {
+                TokenNames = tokenNames.ToList().AsReadOnly();
+            }
+        }
 
+        protected MismatchedTokenException(SerializationInfo info, StreamingContext context) : base(info, context) {
+            if (info == null) {
+                throw new ArgumentNullException("info");
+            }
+            Expecting = info.GetInt32("Expecting");
+            TokenNames = new ReadOnlyCollection<string>((string[])info.GetValue("TokenNames", typeof(string[])));
+        }
+
+        public int Expecting { get; } = TokenTypes.Invalid;
+
+        public ReadOnlyCollection<string> TokenNames { get; }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+            if (info == null) {
+                throw new ArgumentNullException("info");
+            }
             base.GetObjectData(info, context);
-            info.AddValue("Expecting", _expecting);
-            info.AddValue("TokenNames", (_tokenNames != null) ? _tokenNames.ToArray() : default(string[]));
+            info.AddValue("Expecting", Expecting);
+            info.AddValue("TokenNames", TokenNames != null ? TokenNames.ToArray() : default);
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             int unexpectedType = UnexpectedType;
-            string unexpected = ( TokenNames != null && unexpectedType >= 0 && unexpectedType < TokenNames.Count ) ? TokenNames[unexpectedType] : unexpectedType.ToString();
-            string expected = ( TokenNames != null && Expecting >= 0 && Expecting < TokenNames.Count ) ? TokenNames[Expecting] : Expecting.ToString();
+            string unexpected = TokenNames != null && unexpectedType >= 0 && unexpectedType < TokenNames.Count ? TokenNames[unexpectedType] : unexpectedType.ToString();
+            string expected = TokenNames != null && Expecting >= 0 && Expecting < TokenNames.Count ? TokenNames[Expecting] : Expecting.ToString();
             return "MismatchedTokenException(" + unexpected + "!=" + expected + ")";
         }
     }

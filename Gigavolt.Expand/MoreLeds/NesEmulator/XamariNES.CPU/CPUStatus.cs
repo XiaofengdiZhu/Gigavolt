@@ -1,15 +1,12 @@
 ﻿using XamariNES.Common.Extensions;
 
-namespace XamariNES.CPU
-{
+namespace XamariNES.CPU {
     /// <summary>
     ///     6502 CPU Status Register Helper Class
-    ///
     ///     This class allows us to easily encode/decode/access the values within the
-    ///     6502 status register. 
+    ///     6502 status register.
     /// </summary>
-    public class CPUStatus
-    {
+    public class CPUStatus {
         /// <summary>
         ///     Carry: 1 if last addition or shift resulted in a carry, or if last subtraction resulted in no borrow
         /// </summary>
@@ -54,11 +51,9 @@ namespace XamariNES.CPU
 
         /// <summary>
         ///     Default Constructor
-        ///
         ///     Sets default Power-on state for the Status Register
         /// </summary>
-        public CPUStatus()
-        {
+        public CPUStatus() {
             //Default CPU Status State
             InterruptDisable = true;
             Bit5 = true;
@@ -69,39 +64,36 @@ namespace XamariNES.CPU
         ///     Returns value representing this instance of the CPU Status register as a byte
         /// </summary>
         /// <returns></returns>
-        public byte ToByte()
-        {
+        public byte ToByte() {
             byte output = 0x00;
-
-            if (Negative)
+            if (Negative) {
                 output = output.SetFlag(1 << 7);
-
-            if (Overflow)
+            }
+            if (Overflow) {
                 output = output.SetFlag(1 << 6);
-
-            if (Bit5)
+            }
+            if (Bit5) {
                 output = output.SetFlag(1 << 5);
-
-            if (DecimalMode)
+            }
+            if (DecimalMode) {
                 output = output.SetFlag(1 << 3);
-
-            if (InterruptDisable)
+            }
+            if (InterruptDisable) {
                 output = output.SetFlag(1 << 2);
-
-            if (Zero)
+            }
+            if (Zero) {
                 output = output.SetFlag(1 << 1);
-
-            if (Carry)
+            }
+            if (Carry) {
                 output = output.SetFlag(1);
-
+            }
             return output;
         }
 
         /// <summary>
         ///     Sets the processor status flags by values in specified byte
         /// </summary>
-        public void FromByte(byte value)
-        {
+        public void FromByte(byte value) {
             Carry = value.IsBitSet(0);
             Zero = value.IsBitSet(1);
             InterruptDisable = value.IsBitSet(2);
@@ -114,7 +106,6 @@ namespace XamariNES.CPU
 
         /// <summary>
         ///     Override - ToString()
-        ///
         ///     Calls helper class, passing in this instance byte to decode and output
         /// </summary>
         /// <returns></returns>
@@ -122,14 +113,10 @@ namespace XamariNES.CPU
 
         /// <summary>
         ///     Overload - ToString()
-        ///
         ///     Takes the given Status Register Byte and returns it as a human readable string
         /// </summary>
         /// <param name="statusByte"></param>
         /// <returns></returns>
-        public string ToString(byte statusByte)
-        {
-            return $"{(statusByte.IsBitSet(7) ? "N" : "n")}{(statusByte.IsBitSet(6) ? "O" : "o")}{(statusByte.IsBitSet(3) ? "D" : "d")}{(statusByte.IsBitSet(2) ? "I" : "i")}{(statusByte.IsBitSet(1) ? "Z" : "z")}{(statusByte.IsBitSet(0) ? "C" : "c")}";
-        }
+        public string ToString(byte statusByte) => $"{(statusByte.IsBitSet(7) ? "N" : "n")}{(statusByte.IsBitSet(6) ? "O" : "o")}{(statusByte.IsBitSet(3) ? "D" : "d")}{(statusByte.IsBitSet(2) ? "I" : "i")}{(statusByte.IsBitSet(1) ? "Z" : "z")}{(statusByte.IsBitSet(0) ? "C" : "c")}";
     }
 }

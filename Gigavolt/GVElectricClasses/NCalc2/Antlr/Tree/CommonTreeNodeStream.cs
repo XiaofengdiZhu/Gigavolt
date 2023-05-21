@@ -30,145 +30,118 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime.Tree
-{
-    using System.Collections.Generic;
-    using Antlr.Runtime.Misc;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Antlr.Runtime.Misc;
 
-    using StringBuilder = System.Text.StringBuilder;
-    using NotSupportedException = System.NotSupportedException;
-
-    [System.Serializable]
-    public class CommonTreeNodeStream : LookaheadStream<object>, ITreeNodeStream
-    {
+namespace Antlr.Runtime.Tree {
+    [Serializable]
+    public class CommonTreeNodeStream : LookaheadStream<object>, ITreeNodeStream {
         public const int DEFAULT_INITIAL_BUFFER_SIZE = 100;
         public const int INITIAL_CALL_STACK_SIZE = 10;
 
-        /** <summary>Pull nodes from which tree?</summary> */
+        /**
+         * <summary>Pull nodes from which tree?</summary>
+         */
         object _root;
 
-        /** <summary>If this tree (root) was created from a token stream, track it.</summary> */
+        /**
+         * <summary>If this tree (root) was created from a token stream, track it.</summary>
+         */
         protected ITokenStream tokens;
 
-        /** <summary>What tree adaptor was used to build these trees</summary> */
-        [System.NonSerialized]
-        ITreeAdaptor _adaptor;
+        /**
+         * <summary>What tree adaptor was used to build these trees</summary>
+         */
+        [NonSerialized] ITreeAdaptor _adaptor;
 
-        /** The tree iterator we are using */
+        /**
+         * The tree iterator we are using
+         */
         TreeIterator _it;
 
-        /** <summary>Stack of indexes used for push/pop calls</summary> */
+        /**
+         * <summary>Stack of indexes used for push/pop calls</summary>
+         */
         Stack<int> _calls;
 
-        /** <summary>Tree (nil A B C) trees like flat A B C streams</summary> */
-        bool _hasNilRoot = false;
+        /**
+         * <summary>Tree (nil A B C) trees like flat A B C streams</summary>
+         */
+        bool _hasNilRoot;
 
-        /** <summary>Tracks tree depth.  Level=0 means we're at root node level.</summary> */
-        int _level = 0;
+        /**
+         * <summary>Tracks tree depth.  Level=0 means we're at root node level.</summary>
+         */
+        int _level;
 
-        public CommonTreeNodeStream( object tree )
-            : this( new CommonTreeAdaptor(), tree )
-        {
-        }
+        public CommonTreeNodeStream(object tree) : this(new CommonTreeAdaptor(), tree) { }
 
-        public CommonTreeNodeStream( ITreeAdaptor adaptor, object tree )
-        {
-            this._root = tree;
-            this._adaptor = adaptor;
-            _it = new TreeIterator( adaptor, _root );
+        public CommonTreeNodeStream(ITreeAdaptor adaptor, object tree) {
+            _root = tree;
+            _adaptor = adaptor;
+            _it = new TreeIterator(adaptor, _root);
         }
 
         #region Properties
 
-        public virtual string SourceName
-        {
-            get
-            {
-                if ( TokenStream == null )
+        public virtual string SourceName {
+            get {
+                if (TokenStream == null) {
                     return null;
-
+                }
                 return TokenStream.SourceName;
             }
         }
 
-        public virtual ITokenStream TokenStream
-        {
-            get
-            {
-                return tokens;
-            }
-            set
-            {
-                tokens = value;
-            }
+        public virtual ITokenStream TokenStream {
+            get => tokens;
+            set => tokens = value;
         }
 
-        public virtual ITreeAdaptor TreeAdaptor
-        {
-            get
-            {
-                return _adaptor;
-            }
+        public virtual ITreeAdaptor TreeAdaptor {
+            get => _adaptor;
 
-            set
-            {
-                _adaptor = value;
-            }
+            set => _adaptor = value;
         }
 
-        public virtual object TreeSource
-        {
-            get
-            {
-                return _root;
-            }
-        }
+        public virtual object TreeSource => _root;
 
-        public virtual bool UniqueNavigationNodes
-        {
-            get
-            {
-                return false;
-            }
+        public virtual bool UniqueNavigationNodes {
+            get => false;
 
-            set
-            {
-            }
+            set { }
         }
 
         #endregion
 
-        public virtual void Reset()
-        {
+        public virtual void Reset() {
             base.Clear();
             _it.Reset();
             _hasNilRoot = false;
             _level = 0;
-            if ( _calls != null )
+            if (_calls != null) {
                 _calls.Clear();
+            }
         }
 
-        public override object NextElement()
-        {
+        public override object NextElement() {
             _it.MoveNext();
             object t = _it.Current;
             //System.out.println("pulled "+adaptor.getType(t));
-            if ( t == _it.up )
-            {
+            if (t == _it.up) {
                 _level--;
-                if ( _level == 0 && _hasNilRoot )
-                {
+                if (_level == 0 && _hasNilRoot) {
                     _it.MoveNext();
                     return _it.Current; // don't give last UP; get EOF
                 }
             }
-            else if ( t == _it.down )
-            {
+            else if (t == _it.down) {
                 _level++;
             }
-
-            if ( _level == 0 && TreeAdaptor.IsNil( t ) )
-            {
+            if (_level == 0
+                && TreeAdaptor.IsNil(t)) {
                 // if nil root, scarf nil, DOWN
                 _hasNilRoot = true;
                 _it.MoveNext();
@@ -177,76 +150,64 @@ namespace Antlr.Runtime.Tree
                 _it.MoveNext();
                 t = _it.Current;
             }
-
             return t;
         }
 
-        public override bool IsEndOfFile(object o)
-        {
-            return TreeAdaptor.GetType(o) == CharStreamConstants.EndOfFile;
-        }
+        public override bool IsEndOfFile(object o) => TreeAdaptor.GetType(o) == CharStreamConstants.EndOfFile;
 
-        public virtual int LA( int i )
-        {
-            return TreeAdaptor.GetType( LT( i ) );
-        }
+        public virtual int LA(int i) => TreeAdaptor.GetType(LT(i));
 
-        /** Make stream jump to a new location, saving old location.
-         *  Switch back with pop().
+        /**
+         * Make stream jump to a new location, saving old location.
+         * Switch back with pop().
          */
-        public virtual void Push( int index )
-        {
-            if ( _calls == null )
-            {
+        public virtual void Push(int index) {
+            if (_calls == null) {
                 _calls = new Stack<int>();
             }
-            _calls.Push( _p ); // save current index
-            Seek( index );
+            _calls.Push(_p); // save current index
+            Seek(index);
         }
 
-        /** Seek back to previous index saved during last push() call.
-         *  Return top of stack (return index).
+        /**
+         * Seek back to previous index saved during last push() call.
+         * Return top of stack (return index).
          */
-        public virtual int Pop()
-        {
+        public virtual int Pop() {
             int ret = _calls.Pop();
-            Seek( ret );
+            Seek(ret);
             return ret;
         }
 
         #region Tree rewrite interface
 
-        public virtual void ReplaceChildren( object parent, int startChildIndex, int stopChildIndex, object t )
-        {
-            if ( parent != null )
-            {
-                TreeAdaptor.ReplaceChildren( parent, startChildIndex, stopChildIndex, t );
+        public virtual void ReplaceChildren(object parent, int startChildIndex, int stopChildIndex, object t) {
+            if (parent != null) {
+                TreeAdaptor.ReplaceChildren(parent, startChildIndex, stopChildIndex, t);
             }
         }
 
         #endregion
 
-        public virtual string ToString( object start, object stop )
-        {
+        public virtual string ToString(object start, object stop) =>
             // we'll have to walk from start to stop in tree; we're not keeping
             // a complete node stream buffer
-            return "n/a";
-        }
+            "n/a";
 
-        /** <summary>For debugging; destructive: moves tree iterator to end.</summary> */
-        public virtual string ToTokenTypeString()
-        {
+        /**
+         * <summary>For debugging; destructive: moves tree iterator to end.</summary>
+         */
+        public virtual string ToTokenTypeString() {
             Reset();
             StringBuilder buf = new StringBuilder();
-            object o = LT( 1 );
-            int type = TreeAdaptor.GetType( o );
-            while ( type != TokenTypes.EndOfFile )
-            {
-                buf.Append( " " );
-                buf.Append( type );
+            object o = LT(1);
+            int type = TreeAdaptor.GetType(o);
+            while (type != TokenTypes.EndOfFile) {
+                buf.Append(" ");
+                buf.Append(type);
                 Consume();
-                o = LT( 1 );
-                type = TreeAdaptor.GetType( o );
+                o = LT(1);
+                type = TreeAdaptor.GetType(o);
             }
             return buf.ToString();
         }

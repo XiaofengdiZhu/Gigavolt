@@ -1,10 +1,8 @@
 using System;
 using System.Xml.Linq;
 
-namespace Game
-{
-    public class EditGVPistonDialog : Dialog
-    {
+namespace Game {
+    public class EditGVPistonDialog : Dialog {
         public LabelWidget m_title;
 
         public TextBoxWidget m_maxExtensionWidget;
@@ -25,32 +23,13 @@ namespace Game
 
         public int m_speed;
 
-        public static string[] m_speedNames = new string[7]
-        {
-            "Very Slow",
-            "Slow",
-            "Medium",
-            "Fast",
-            "2xFast",
-            "3xFast",
-            "4xFast"
-        };
+        public static string[] m_speedNames = new string[7] { "Very Slow", "Slow", "Medium", "Fast", "2xFast", "3xFast", "4xFast" };
 
-        public static string[] m_speedCNNames = new string[7]
-        {
-            "·Ç³£Âı",
-            "Âı",
-            "ÖĞ",
-            "¿ì",
-            "2x¿ì",
-            "3x¿ì",
-            "4x¿ì"
-        };
+        public static string[] m_speedCNNames = new string[7] { "éå¸¸æ…¢", "æ…¢", "ä¸­", "å¿«", "2xå¿«", "3xå¿«", "4xå¿«" };
 
         public string m_languageType;
 
-        public EditGVPistonDialog(PistonMode mode, GVPistonData pistonData, Action handler)
-        {
+        public EditGVPistonDialog(PistonMode mode, GVPistonData pistonData, Action handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVPistonDialog");
             LoadContents(this, node);
             m_title = Children.Find<LabelWidget>("EditGVPistonDialog.Title");
@@ -61,64 +40,73 @@ namespace Game
             m_okButton = Children.Find<ButtonWidget>("EditGVPistonDialog.OK");
             m_cancelButton = Children.Find<ButtonWidget>("EditGVPistonDialog.Cancel");
             m_handler = handler;
-            m_pistonData= pistonData;
+            m_pistonData = pistonData;
             m_speed = m_pistonData.Speed;
-            m_languageType = (ModsManager.Configs.ContainsKey("Language")) ? ModsManager.Configs["Language"] : "zh-CN";
+            m_languageType = ModsManager.Configs.ContainsKey("Language") ? ModsManager.Configs["Language"] : "zh-CN";
             m_title.Text = GVPistonBlock.Mode2Name(mode);
             m_maxExtensionWidget.Text = (pistonData.MaxExtension + 1).ToString();
             m_pullCountWidget.Text = (pistonData.PullCount + 1).ToString();
             m_slider3.Granularity = 1f;
             m_slider3.MinValue = 0f;
             m_slider3.MaxValue = 6f;
-            m_panel2.IsVisible = mode!=PistonMode.Pushing;
+            m_panel2.IsVisible = mode != PistonMode.Pushing;
             UpdateControls();
         }
 
-        public override void Update()
-        {
-            if (m_slider3.IsSliding)
-            {
+        public override void Update() {
+            if (m_slider3.IsSliding) {
                 m_speed = (int)m_slider3.Value;
             }
-            if (m_okButton.IsClicked)
-            {
-                if(int.TryParse(m_maxExtensionWidget.Text,out int m))
-                {
+            if (m_okButton.IsClicked) {
+                if (int.TryParse(m_maxExtensionWidget.Text, out int m)) {
                     m_pistonData.MaxExtension = m - 1;
-                    if(int.TryParse(m_pullCountWidget.Text, out int p)){
+                    if (int.TryParse(m_pullCountWidget.Text, out int p)) {
                         m_pistonData.PullCount = p - 1;
                         m_pistonData.Speed = m_speed;
                         m_pistonData.SaveString();
                         Dismiss(true);
                     }
-                    else
-                    {
-                        DialogsManager.ShowDialog(null, new MessageDialog("·¢Éú´íÎó", "×î´óÍÆÀ­Êı²»ÄÜ×ª»»ÎªÕûÊı", "OK", null, null));
+                    else {
+                        DialogsManager.ShowDialog(
+                            null,
+                            new MessageDialog(
+                                "å‘ç”Ÿé”™è¯¯",
+                                "æœ€å¤§æ¨æ‹‰æ•°ä¸èƒ½è½¬æ¢ä¸ºæ•´æ•°",
+                                "OK",
+                                null,
+                                null
+                            )
+                        );
                     }
                 }
-                else
-                {
-                    DialogsManager.ShowDialog(null, new MessageDialog("·¢Éú´íÎó", "×î´óÑÓÉìÊı²»ÄÜ×ª»»ÎªÕûÊı", "OK", null, null));
+                else {
+                    DialogsManager.ShowDialog(
+                        null,
+                        new MessageDialog(
+                            "å‘ç”Ÿé”™è¯¯",
+                            "æœ€å¤§å»¶ä¼¸æ•°ä¸èƒ½è½¬æ¢ä¸ºæ•´æ•°",
+                            "OK",
+                            null,
+                            null
+                        )
+                    );
                 }
             }
-            if (Input.Cancel || m_cancelButton.IsClicked)
-            {
+            if (Input.Cancel
+                || m_cancelButton.IsClicked) {
                 Dismiss(false);
             }
             UpdateControls();
         }
 
-        public void UpdateControls()
-        {
+        public void UpdateControls() {
             m_slider3.Value = m_speed;
-            m_slider3.Text = (m_languageType == "zh-CN") ? m_speedCNNames[m_speed] : m_speedNames[m_speed];
+            m_slider3.Text = m_languageType == "zh-CN" ? m_speedCNNames[m_speed] : m_speedNames[m_speed];
         }
 
-        public void Dismiss(bool result)
-        {
+        public void Dismiss(bool result) {
             DialogsManager.HideDialog(this);
-            if (m_handler != null && result)
-            {
+            if (m_handler != null && result) {
                 m_handler();
             }
         }

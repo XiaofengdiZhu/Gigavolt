@@ -1,70 +1,56 @@
 using System;
 using System.Collections.Generic;
+using Engine;
 
-namespace Game
-{
-    public class TruthTableCircuitGVElectricElement : RotateableGVElectricElement
-    {
+namespace Game {
+    public class TruthTableCircuitGVElectricElement : RotateableGVElectricElement {
         public SubsystemGVTruthTableCircuitBlockBehavior m_subsystemTruthTableCircuitBlockBehavior;
 
         public uint m_voltage;
-        public List<GVTruthTableData.SectionInput> lastInputs = new List<GVTruthTableData.SectionInput>() { Capacity=20};
+        public List<GVTruthTableData.SectionInput> lastInputs = new List<GVTruthTableData.SectionInput> { Capacity = 20 };
 
-        public TruthTableCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
-            : base(subsystemGVElectricity, cellFace)
-        {
-            m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitBlockBehavior>(throwOnError: true);
-        }
+        public TruthTableCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitBlockBehavior>(true);
 
-        public override uint GetOutputVoltage(int face)
-        {
-            return m_voltage;
-        }
+        public override uint GetOutputVoltage(int face) => m_voltage;
 
-        public override bool Simulate()
-        {
+        public override bool Simulate() {
             uint voltage = m_voltage;
             int rotation = Rotation;
             GVTruthTableData.SectionInput sectionInput = new GVTruthTableData.SectionInput();
-            foreach (GVElectricConnection connection in Connections)
-            {
-                if (connection.ConnectorType != GVElectricConnectorType.Output && connection.NeighborConnectorType != 0)
-                {
+            foreach (GVElectricConnection connection in Connections) {
+                if (connection.ConnectorType != GVElectricConnectorType.Output
+                    && connection.NeighborConnectorType != 0) {
                     GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
-                    if (connectorDirection.HasValue)
-                    {
-                        if (connectorDirection == GVElectricConnectorDirection.Top)
-                        {
+                    if (connectorDirection.HasValue) {
+                        if (connectorDirection == GVElectricConnectorDirection.Top) {
                             sectionInput.i1 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
-                        else if (connectorDirection == GVElectricConnectorDirection.Right)
-                        {
+                        else if (connectorDirection == GVElectricConnectorDirection.Right) {
                             sectionInput.i2 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
-                        else if (connectorDirection == GVElectricConnectorDirection.Bottom)
-                        {
+                        else if (connectorDirection == GVElectricConnectorDirection.Bottom) {
                             sectionInput.i3 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
-                        else if (connectorDirection == GVElectricConnectorDirection.Left)
-                        {
+                        else if (connectorDirection == GVElectricConnectorDirection.Left) {
                             sectionInput.i4 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
                     }
                 }
             }
-            try
-            {
-                if (lastInputs.Count==0||sectionInput != lastInputs[lastInputs.Count - 1])
-                {
+            try {
+                if (lastInputs.Count == 0
+                    || sectionInput != lastInputs[lastInputs.Count - 1]) {
                     lastInputs.Add(sectionInput);
-                    if (lastInputs.Count > 16)
-                    {
+                    if (lastInputs.Count > 16) {
                         lastInputs = lastInputs.GetRange(lastInputs.Count - 16, 16);
                     }
                     GVTruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
-                    m_voltage = (blockData != null) ? (blockData.Exe(lastInputs)) : 0u;
+                    m_voltage = blockData != null ? blockData.Exe(lastInputs) : 0u;
                 }
-            }catch (Exception e) { Engine.Log.Error(e); }
+            }
+            catch (Exception e) {
+                Log.Error(e);
+            }
             return m_voltage != voltage;
         }
     }

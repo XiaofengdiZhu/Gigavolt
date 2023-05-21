@@ -1,7 +1,5 @@
-﻿namespace XamariNES.Emulator.Enums
-{
-    public enum enumEmulatorSpeed
-    {
+﻿namespace XamariNES.Emulator.Enums {
+    public enum enumEmulatorSpeed {
         /// <summary>
         ///     Caps the Emulator at 30fps
         /// </summary>

@@ -1,12 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace XamariNES.Common.Extensions
-{
+namespace XamariNES.Common.Extensions {
     /// <summary>
     ///     Extension Methods for typical functions performed on byte values in XamariNES
     /// </summary>
-    public static class ByteExtension
-    {
+    public static class ByteExtension {
         /// <summary>
         ///     Helper Method just to see if Bit 7 is set denoting a negative value of a signed byte
         /// </summary>
@@ -49,6 +47,6 @@ namespace XamariNES.Common.Extensions
         /// <param name="bitMask"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte RemoveFlag(this byte b, byte bitMask) => (byte) (b & ~bitMask);
+        public static byte RemoveFlag(this byte b, byte bitMask) => (byte)(b & ~bitMask);
     }
 }

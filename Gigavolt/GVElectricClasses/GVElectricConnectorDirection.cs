@@ -1,7 +1,5 @@
-namespace Game
-{
-    public enum GVElectricConnectorDirection
-    {
+namespace Game {
+    public enum GVElectricConnectorDirection {
         Top,
         Left,
         Bottom,

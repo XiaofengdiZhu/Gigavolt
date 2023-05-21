@@ -30,28 +30,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime
-{
-    using Attribute = System.Attribute;
-    using AttributeTargets = System.AttributeTargets;
-    using AttributeUsageAttribute = System.AttributeUsageAttribute;
+using System;
 
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public sealed class GrammarRuleAttribute : Attribute
-    {
-        private readonly string _name;
+namespace Antlr.Runtime {
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class GrammarRuleAttribute : Attribute {
+        public GrammarRuleAttribute(string name) => Name = name;
 
-        public GrammarRuleAttribute(string name)
-        {
-            this._name = name;
-        }
-
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
+        public string Name { get; }
     }
 }

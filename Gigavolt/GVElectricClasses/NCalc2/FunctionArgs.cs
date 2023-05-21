@@ -1,16 +1,12 @@
 ﻿using System;
 
-namespace NCalc
-{
-    public class FunctionArgs : EventArgs
-    {
+namespace NCalc {
+    public class FunctionArgs : EventArgs {
+        object _result;
 
-        private object _result;
-        public object Result
-        {
-            get { return _result; }
-            set 
-            { 
+        public object Result {
+            get => _result;
+            set {
                 _result = value;
                 HasResult = true;
             }
@@ -18,22 +14,13 @@ namespace NCalc
 
         public bool HasResult { get; set; }
 
-        private Expression[] _parameters = new Expression[0];
+        public Expression[] Parameters { get; set; } = new Expression[0];
 
-        public Expression[] Parameters
-        {
-            get { return _parameters; }
-            set { _parameters = value; }
-        }
-
-        public object[] EvaluateParameters()
-        {
-            var values = new object[_parameters.Length];
-            for (int i = 0; i < values.Length; i++)
-            {
-                values[i] = _parameters[i].Evaluate();
+        public object[] EvaluateParameters() {
+            object[] values = new object[Parameters.Length];
+            for (int i = 0; i < values.Length; i++) {
+                values[i] = Parameters[i].Evaluate();
             }
-
             return values;
         }
     }

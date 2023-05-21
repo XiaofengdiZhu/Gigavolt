@@ -30,10 +30,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime.Tree
-{
-    public static class TreeConstants
-    {
-        public static readonly ITree INVALID_NODE = new CommonTree( Tokens.Invalid );
+namespace Antlr.Runtime.Tree {
+    public static class TreeConstants {
+        public static readonly ITree INVALID_NODE = new CommonTree(Tokens.Invalid);
     }
 }

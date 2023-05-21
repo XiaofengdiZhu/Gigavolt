@@ -1,7 +1,5 @@
-﻿namespace XamariNES.PPU.Flags
-{
-    public static class ScanLineStateFlags
-    {
+﻿namespace XamariNES.PPU.Flags {
+    public static class ScanLineStateFlags {
         public const int Visible = 1 << 0;
         public const int PostRender = 1 << 1;
         public const int PreRender = 1 << 2;

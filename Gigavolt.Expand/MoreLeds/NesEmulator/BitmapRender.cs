@@ -2,22 +2,19 @@
 using Engine;
 using Engine.Media;
 
-namespace Game
-{
+namespace Game {
     /// <summary>
     ///     Renderer that generates SKBitmaps from input data
     /// </summary>
-    public class BitmapRenderer
-    {
-        private readonly Image _bitmap;
-        private readonly Color[] _colorPalette;
-        private readonly System.Random _random = new System.Random(DateTime.Now.GetHashCode());
+    public class BitmapRenderer {
+        readonly Image _bitmap;
+        readonly Color[] _colorPalette;
+        readonly System.Random _random = new System.Random(DateTime.Now.GetHashCode());
 
         /// <summary>
         ///     Default Constructor
         /// </summary>
-        public BitmapRenderer()
-        {
+        public BitmapRenderer() {
             //Set Palette based on NES 2C02 Palette
             //More Info: https://wiki.nesdev.com/w/index.php/PPU_palettes
             _colorPalette = new Color[0x40];
@@ -96,12 +93,9 @@ namespace Game
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
-        public Image Render(byte[] bitmap)
-        {
-            for (var y = 0; y < 240; y++)
-            {
-                for (var x = 0; x < 256; x++)
-                {
+        public Image Render(byte[] bitmap) {
+            for (int y = 0; y < 240; y++) {
+                for (int x = 0; x < 256; x++) {
                     _bitmap.SetPixel(x, y, _colorPalette[bitmap[y * 256 + x]]);
                 }
             }
@@ -112,11 +106,9 @@ namespace Game
         ///     Renders a black/white noise pattern
         /// </summary>
         /// <returns></returns>
-        public byte[] GenerateNoise()
-        {
-            var output = new byte[256 * 240];
-            for (var i = 0; i < output.Length; i++)
-            {
+        public byte[] GenerateNoise() {
+            byte[] output = new byte[256 * 240];
+            for (int i = 0; i < output.Length; i++) {
                 output[i] = _random.Next(0, 10) <= 5 ? (byte)0xd : (byte)0x30;
             }
             return output;

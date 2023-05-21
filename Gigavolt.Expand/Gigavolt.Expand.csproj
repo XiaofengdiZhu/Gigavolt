@@ -1,299 +1,299 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{27AAF39A-72D9-4836-91CA-181BBEDFD7A0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gigavolt.Expand</RootNamespace>
-    <AssemblyName>Gigavolt.Expand</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Engine">
-      <HintPath>..\Gigavolt\reference\Engine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EntitySystem">
-      <HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Survivalcraft">
-      <HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="JumpWire\GVJumpWireBlock.cs" />
-    <Compile Include="JumpWire\JumpWireGVElectricElement.cs" />
-    <Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs" />
-    <Compile Include="MoreLeds\8NumberLed\GV8NumberGlowPoint.cs" />
-    <Compile Include="MoreLeds\8NumberLed\GV8NumberLedBlock.cs" />
-    <Compile Include="MoreLeds\8NumberLed\SubsystemGV8NumberLedGlow.cs" />
-    <Compile Include="MoreLeds\8NumberLed\_8NumberLedGVElectricElement.cs" />
-    <Compile Include="MoreLeds\DisplayBlockLed\DisplayLedGVElectricElement.cs" />
-    <Compile Include="MoreLeds\DisplayBlockLed\GVBlockDisplayPoint.cs" />
-    <Compile Include="MoreLeds\DisplayBlockLed\GVDisplayLedBlock.cs" />
-    <Compile Include="MoreLeds\DisplayBlockLed\SubsystemGVDisplayLedGlow.cs" />
-    <Compile Include="MoreLeds\NesEmulator\BitmapRender.cs" />
-    <Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialog.cs" />
-    <Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialogData.cs" />
-    <Compile Include="MoreLeds\NesEmulator\GVNesEmulatorBlock.cs" />
-    <Compile Include="MoreLeds\NesEmulator\GVNesEmulatorGlowPoint.cs" />
-    <Compile Include="MoreLeds\NesEmulator\NesEmulatorGVElectricElement.cs" />
-    <Compile Include="MoreLeds\NesEmulator\SubsystemNesEmulatorBlockBehavior.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Flags\Byte6Flags.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Flags\Byte7Flags.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\ICartridge.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\Enums\enumNametableMirroring.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\IMapper.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\CNROM.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\MapperBase.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\MMC1.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\NROM.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\UxROM.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\NESCartridge.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Common\Extensions\ByteExtension.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Common\Extensions\IntExtensions.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\Enums\enumButtons.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\IController.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\NESController.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Core.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\CPUInstruction.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\CPUStatus.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Enums\EnumAddressingMode.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Enums\EnumOpcode.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Memory.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Emulator\Enums\enumEmulatorSpeed.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.Emulator\NESEmulator.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Core.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\CycleStateFlags.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUCtrlFlags.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUMaskFlags.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs" />
-    <Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Memory.cs" />
-    <Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs" />
-    <Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs" />
-    <Compile Include="MoreSensors\EnhancedRealTimeClock\EnhancedRealTimeClockGVElectricElement.cs" />
-    <Compile Include="MoreSensors\EnhancedRealTimeClock\GVEnhancedRealTimeClockBlock.cs" />
-    <Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs" />
-    <Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs" />
-    <Compile Include="Multiplexer\MultiplexerGVElectricElement.cs" />
-    <Compile Include="Multiplexer\GVMultiplexerBlock.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WireThrough\GVEWireThroughBlock.cs" />
-    <Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs" />
-    <Compile Include="WireThrough\GVCopperHammerBlock.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Gigavolt.Expand.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Gigavolt.Expand.xdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Lang\zh-CN.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Models\GVMoreTwoInTwoOutBlock.dae">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="modinfo.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
-      <Project>{77e3e4a0-32d2-423e-9014-5aef2b450f14}</Project>
-      <Name>Gigavolt</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Dialogs\EditGVNesEmulatorDialog.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Adder.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Divider.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Multiplier.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Subtracter.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Equaler.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Greater.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\LeftShifter.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Lesser.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Logarithmer.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Maximumer.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Minimumer.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoGreater.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoLesser.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Power.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Remainder.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\RightShifter.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Textures\GVMultiplexerBlock.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Textures\GVJumpWireBlock.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Textures\GV8NumberLed\0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\10.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\11.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\12.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\13.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\14.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\15.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\7.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\8.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GV8NumberLed\9.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Models\GVOneSurfaceBlock.dae">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Textures\GVNesEmulatorBlock.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Textures\GVDisplayLedBlock0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVDisplayLedBlock1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVDisplayLedBlock2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVDisplayLedBlock3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVDisplayLedBlock4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVDisplayLedBlock5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<ProjectGuid>{27AAF39A-72D9-4836-91CA-181BBEDFD7A0}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>Gigavolt.Expand</RootNamespace>
+		<AssemblyName>Gigavolt.Expand</AssemblyName>
+		<TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+		<FileAlignment>512</FileAlignment>
+		<Deterministic>true</Deterministic>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Debug\</OutputPath>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>none</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\Release\</OutputPath>
+		<DefineConstants>TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="Engine">
+			<HintPath>..\Gigavolt\reference\Engine.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="EntitySystem">
+			<HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Survivalcraft">
+			<HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="System"/>
+		<Reference Include="System.Core"/>
+		<Reference Include="System.Xml.Linq"/>
+		<Reference Include="System.Data.DataSetExtensions"/>
+		<Reference Include="Microsoft.CSharp"/>
+		<Reference Include="System.Data"/>
+		<Reference Include="System.Xml"/>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="JumpWire\GVJumpWireBlock.cs"/>
+		<Compile Include="JumpWire\JumpWireGVElectricElement.cs"/>
+		<Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs"/>
+		<Compile Include="MoreLeds\8NumberLed\GV8NumberGlowPoint.cs"/>
+		<Compile Include="MoreLeds\8NumberLed\GV8NumberLedBlock.cs"/>
+		<Compile Include="MoreLeds\8NumberLed\SubsystemGV8NumberLedGlow.cs"/>
+		<Compile Include="MoreLeds\8NumberLed\_8NumberLedGVElectricElement.cs"/>
+		<Compile Include="MoreLeds\DisplayBlockLed\DisplayLedGVElectricElement.cs"/>
+		<Compile Include="MoreLeds\DisplayBlockLed\GVBlockDisplayPoint.cs"/>
+		<Compile Include="MoreLeds\DisplayBlockLed\GVDisplayLedBlock.cs"/>
+		<Compile Include="MoreLeds\DisplayBlockLed\SubsystemGVDisplayLedGlow.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\BitmapRender.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialog.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialogData.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\GVNesEmulatorBlock.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\GVNesEmulatorGlowPoint.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\NesEmulatorGVElectricElement.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\SubsystemNesEmulatorBlockBehavior.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Flags\Byte6Flags.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Flags\Byte7Flags.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\ICartridge.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\Enums\enumNametableMirroring.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\IMapper.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\CNROM.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\MapperBase.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\MMC1.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\NROM.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\UxROM.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\NESCartridge.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Common\Extensions\ByteExtension.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Common\Extensions\IntExtensions.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\Enums\enumButtons.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\IController.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\NESController.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Core.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\CPUInstruction.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\CPUStatus.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Enums\EnumAddressingMode.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Enums\EnumOpcode.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Memory.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Emulator\Enums\enumEmulatorSpeed.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.Emulator\NESEmulator.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Core.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\CycleStateFlags.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUCtrlFlags.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUMaskFlags.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs"/>
+		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Memory.cs"/>
+		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
+		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\EnhancedRealTimeClock\EnhancedRealTimeClockGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\EnhancedRealTimeClock\GVEnhancedRealTimeClockBlock.cs"/>
+		<Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs"/>
+		<Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs"/>
+		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
+		<Compile Include="Multiplexer\GVMultiplexerBlock.cs"/>
+		<Compile Include="Properties\AssemblyInfo.cs"/>
+		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
+		<Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs"/>
+		<Compile Include="WireThrough\GVCopperHammerBlock.cs"/>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Gigavolt.Expand.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Gigavolt.Expand.xdb">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Lang\zh-CN.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Models\GVMoreTwoInTwoOutBlock.dae">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="modinfo.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
+			<Project>{77e3e4a0-32d2-423e-9014-5aef2b450f14}</Project>
+			<Name>Gigavolt</Name>
+			<Private>False</Private>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Dialogs\EditGVNesEmulatorDialog.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="icon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Adder.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Divider.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Multiplier.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Subtracter.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Equaler.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Greater.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\LeftShifter.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Lesser.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Logarithmer.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Maximumer.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Minimumer.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoGreater.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoLesser.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Power.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Remainder.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\RightShifter.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVMultiplexerBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVJumpWireBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GV8NumberLed\0.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\1.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\10.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\11.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\12.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\13.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\14.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\15.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\2.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\3.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\4.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\5.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\6.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\7.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\8.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GV8NumberLed\9.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Models\GVOneSurfaceBlock.dae">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVNesEmulatorBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes"/>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVDisplayLedBlock0.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVDisplayLedBlock1.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVDisplayLedBlock2.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVDisplayLedBlock3.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVDisplayLedBlock4.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVDisplayLedBlock5.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>

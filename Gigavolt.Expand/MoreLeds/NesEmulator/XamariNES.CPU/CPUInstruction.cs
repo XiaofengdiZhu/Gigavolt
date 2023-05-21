@@ -1,14 +1,12 @@
 ﻿using System;
 using XamariNES.CPU.Enums;
 
-namespace XamariNES.CPU
-{
+namespace XamariNES.CPU {
     /// <summary>
     ///     We use the Opcode class to set specific details for a Opcode
     ///     such as Cycles, Addressing Mode, etc.
     /// </summary>
-    public class CPUInstruction
-    {
+    public class CPUInstruction {
         /// <summary>
         ///     Enumeration of the actual Operation to be performed
         /// </summary>

@@ -1,10 +1,8 @@
-﻿namespace XamariNES.CPU.Enums
-{
+﻿namespace XamariNES.CPU.Enums {
     /// <summary>
     ///     Enumerator where we list the available Opcodes in XamariNES
     /// </summary>
-    public enum EnumOpcode
-    { 
+    public enum EnumOpcode {
         //Official 6502 Opcodes
         ADC,
         AND,

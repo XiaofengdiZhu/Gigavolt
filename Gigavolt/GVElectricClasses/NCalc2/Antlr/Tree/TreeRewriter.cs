@@ -30,110 +30,92 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using System;
 using Antlr3.Runtime.PCL.Output;
 
-namespace Antlr.Runtime.Tree
-{
+namespace Antlr.Runtime.Tree {
     using Console = OutputStreamHost;
 
-    public class TreeRewriter : TreeParser
-    {
+    public class TreeRewriter : TreeParser {
         protected bool showTransformations;
 
         protected ITokenStream originalTokenStream;
         protected ITreeAdaptor originalAdaptor;
 
-        System.Func<IAstRuleReturnScope> topdown_func;
-        System.Func<IAstRuleReturnScope> bottomup_func;
+        readonly Func<IAstRuleReturnScope> topdown_func;
+        readonly Func<IAstRuleReturnScope> bottomup_func;
 
-        public TreeRewriter( ITreeNodeStream input )
-            : this( input, new RecognizerSharedState() )
-        {
-        }
-        public TreeRewriter( ITreeNodeStream input, RecognizerSharedState state )
-            : base( input, state )
-        {
+        public TreeRewriter(ITreeNodeStream input) : this(input, new RecognizerSharedState()) { }
+
+        public TreeRewriter(ITreeNodeStream input, RecognizerSharedState state) : base(input, state) {
             originalAdaptor = input.TreeAdaptor;
             originalTokenStream = input.TokenStream;
             topdown_func = () => Topdown();
             bottomup_func = () => Bottomup();
         }
 
-        public virtual object ApplyOnce( object t, System.Func<IAstRuleReturnScope> whichRule )
-        {
-            if ( t == null )
+        public virtual object ApplyOnce(object t, Func<IAstRuleReturnScope> whichRule) {
+            if (t == null) {
                 return null;
-
-            try
-            {
+            }
+            try {
                 // share TreeParser object but not parsing-related state
                 state = new RecognizerSharedState();
-                input = new CommonTreeNodeStream( originalAdaptor, t );
-                ( (CommonTreeNodeStream)input ).TokenStream = originalTokenStream;
+                input = new CommonTreeNodeStream(originalAdaptor, t);
+                ((CommonTreeNodeStream)input).TokenStream = originalTokenStream;
                 BacktrackingLevel = 1;
                 IAstRuleReturnScope r = whichRule();
                 BacktrackingLevel = 0;
-                if ( Failed )
+                if (Failed) {
                     return t;
-
-                if (showTransformations && r != null && !t.Equals(r.Tree) && r.Tree != null)
+                }
+                if (showTransformations
+                    && r != null
+                    && !t.Equals(r.Tree)
+                    && r.Tree != null) {
                     ReportTransformation(t, r.Tree);
-
-                if ( r != null && r.Tree != null )
+                }
+                if (r != null
+                    && r.Tree != null) {
                     return r.Tree;
-                else
-                    return t;
+                }
+                return t;
             }
-            catch ( RecognitionException )
-            {
-            }
-
+            catch (RecognitionException) { }
             return t;
         }
 
-        public virtual object ApplyRepeatedly( object t, System.Func<IAstRuleReturnScope> whichRule )
-        {
+        public virtual object ApplyRepeatedly(object t, Func<IAstRuleReturnScope> whichRule) {
             bool treeChanged = true;
-            while ( treeChanged )
-            {
-                object u = ApplyOnce( t, whichRule );
-                treeChanged = !t.Equals( u );
+            while (treeChanged) {
+                object u = ApplyOnce(t, whichRule);
+                treeChanged = !t.Equals(u);
                 t = u;
             }
             return t;
         }
 
-        public virtual object Downup( object t )
-        {
-            return Downup( t, false );
-        }
+        public virtual object Downup(object t) => Downup(t, false);
 
-        public virtual object Downup( object t, bool showTransformations )
-        {
+        public virtual object Downup(object t, bool showTransformations) {
             this.showTransformations = showTransformations;
-            TreeVisitor v = new TreeVisitor( new CommonTreeAdaptor() );
-            t = v.Visit( t, ( o ) => ApplyOnce( o, topdown_func ), ( o ) => ApplyRepeatedly( o, bottomup_func ) );
+            TreeVisitor v = new TreeVisitor(new CommonTreeAdaptor());
+            t = v.Visit(t, o => ApplyOnce(o, topdown_func), o => ApplyRepeatedly(o, bottomup_func));
             return t;
         }
 
         // methods the downup strategy uses to do the up and down rules.
         // to override, just define tree grammar rule topdown and turn on
         // filter=true.
-        public virtual IAstRuleReturnScope Topdown()
-        {
-            return null;
-        }
+        public virtual IAstRuleReturnScope Topdown() => null;
 
-        public virtual IAstRuleReturnScope Bottomup()
-        {
-            return null;
-        }
+        public virtual IAstRuleReturnScope Bottomup() => null;
 
-        /** Override this if you need transformation tracing to go somewhere
-         *  other than stdout or if you're not using ITree-derived trees.
+        /**
+         * Override this if you need transformation tracing to go somewhere
+         * other than stdout or if you're not using ITree-derived trees.
          */
-        protected virtual void ReportTransformation(object oldTree, object newTree)
-        {
+        protected virtual void ReportTransformation(object oldTree, object newTree) {
             ITree old = oldTree as ITree;
             ITree @new = newTree as ITree;
             string oldMessage = old != null ? old.ToStringTree() : "??";

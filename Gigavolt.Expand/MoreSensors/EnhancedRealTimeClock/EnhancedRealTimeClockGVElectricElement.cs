@@ -2,81 +2,59 @@ using System;
 using System.Linq;
 using Engine;
 
-namespace Game
-{
-    public class EnhancedRealTimeClockGVElectricElement : RotateableGVElectricElement
-    {
+namespace Game {
+    public class EnhancedRealTimeClockGVElectricElement : RotateableGVElectricElement {
         public uint m_input;
         public readonly uint[] m_outputs = { 0u, 0u, 0u, 0u };
         public int circuitAdd = 1;
         public readonly SubsystemWeather m_subsystemWeather;
         public readonly SubsystemGameInfo m_subsystemGameInfo;
 
-        public EnhancedRealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace)
-            : base(subsystemGVElectricity, cellFace)
-        {
+        public EnhancedRealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemWeather = subsystemGVElectricity.Project.FindSubsystem<SubsystemWeather>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
         }
 
-        public override uint GetOutputVoltage(int face)
-        {
+        public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
-            if (connectorDirection.HasValue)
-            {
-                if (connectorDirection.Value == GVElectricConnectorDirection.Top)
-                {
+            if (connectorDirection.HasValue) {
+                if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
                     return m_outputs[0];
                 }
-
-                if (connectorDirection.Value == GVElectricConnectorDirection.Right)
-                {
+                if (connectorDirection.Value == GVElectricConnectorDirection.Right) {
                     return m_outputs[1];
                 }
-
-                if (connectorDirection.Value == GVElectricConnectorDirection.Bottom)
-                {
+                if (connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
                     return m_outputs[2];
                 }
-
-                if (connectorDirection.Value == GVElectricConnectorDirection.Left)
-                {
+                if (connectorDirection.Value == GVElectricConnectorDirection.Left) {
                     return m_outputs[3];
                 }
             }
-
             return 0u;
         }
 
-        public override bool Simulate()
-        {
+        public override bool Simulate() {
             bool noInput = true;
             uint input = m_input;
             uint[] outputs = (uint[])m_outputs.Clone();
             int rotation = Rotation;
-            foreach (GVElectricConnection connection in Connections)
-            {
-                if (connection.ConnectorType != GVElectricConnectorType.Output && connection.NeighborConnectorType != GVElectricConnectorType.Input)
-                {
+            foreach (GVElectricConnection connection in Connections) {
+                if (connection.ConnectorType != GVElectricConnectorType.Output
+                    && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
                     GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
-                    if (connectorDirection == GVElectricConnectorDirection.In)
-                    {
+                    if (connectorDirection == GVElectricConnectorDirection.In) {
                         noInput = false;
                         m_input = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                     }
                 }
             }
-
             DateTime now = DateTime.Now;
-            if (noInput)
-            {
+            if (noInput) {
                 m_input = 0u;
             }
-
-            if (m_input != input)
-            {
-                switch (m_input)
-                {
+            if (m_input != input) {
+                switch (m_input) {
                     case 1:
                         circuitAdd = (int)MathUtils.Ceiling((DateTime.Today.AddDays(1) - now).TotalSeconds / SubsystemGVElectricity.CircuitStepDuration);
                         break;
@@ -88,11 +66,8 @@ namespace Game
                         break;
                 }
             }
-
             SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, MathUtils.Max(SubsystemGVElectricity.FrameStartCircuitStep + circuitAdd, SubsystemGVElectricity.CircuitStep + 1));
-
-            switch (m_input)
-            {
+            switch (m_input) {
                 case 0:
                     m_outputs[0] = (uint)now.Hour;
                     m_outputs[1] = (uint)now.Minute;
@@ -126,7 +101,6 @@ namespace Game
                     m_outputs[3] = 0u;
                     break;
             }
-
             return m_outputs.SequenceEqual(outputs);
         }
     }
