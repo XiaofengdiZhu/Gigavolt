@@ -1,19 +1,19 @@
 ﻿<Mod>
 	<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
 		<MemberSubsystemTemplate Name="NesEmulatorBlockBehavior" Guid="e75dafb1-e62a-19f0-868d-5ebe47faf54e" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
-			<Parameter Name="Class" Guid="9dd0d325-33d3-1ca5-3185-2e0c5079668e" Value="Game.SubsystemNesEmulatorBlockBehavior" Type="string" />
+			<Parameter Name="Class" Guid="9dd0d325-33d3-1ca5-3185-2e0c5079668e" Value="Game.SubsystemNesEmulatorBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVCopperHammerBlockBehavior" Guid="0834f755-7751-cb90-e722-0abc9e3d4c7f" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
-			<Parameter Name="Class" Guid="7ae560a4-5458-1959-3e8a-022526aff3a6" Value="Game.SubsystemGVCopperHammerBlockBehavior" Type="string" />
+			<Parameter Name="Class" Guid="7ae560a4-5458-1959-3e8a-022526aff3a6" Value="Game.SubsystemGVCopperHammerBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVJumpWireBlockBehavior" Guid="d36194b1-aad0-4535-ac62-8da306f80334" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
-			<Parameter Name="Class" Guid="950c0d34-ff5f-4a20-b960-0f7556220231" Value="Game.SubsystemGVJumpWireBlockBehavior" Type="string" />
+			<Parameter Name="Class" Guid="950c0d34-ff5f-4a20-b960-0f7556220231" Value="Game.SubsystemGVJumpWireBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GV8NumberLedGlow" Guid="d801a01a-78c7-4f84-bde4-30befff42f3a" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
-			<Parameter Name="Class" Guid="d4a518cf-3f5e-43c1-b948-2c8484fadd33" Value="Game.SubsystemGV8NumberLedGlow" Type="string" />
+			<Parameter Name="Class" Guid="d4a518cf-3f5e-43c1-b948-2c8484fadd33" Value="Game.SubsystemGV8NumberLedGlow" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVDisplayBlockLedGlow" Guid="a3ec5953-6388-41e4-b9df-dcba507c4b21" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
-			<Parameter Name="Class" Guid="f2fa61d4-faaa-4eb9-9bee-95a8d0b68bcf" Value="Game.SubsystemGVDisplayBlockLedGlow" Type="string" />
+		<MemberSubsystemTemplate Name="GVDisplayLedGlow" Guid="a3ec5953-6388-41e4-b9df-dcba507c4b21" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="f2fa61d4-faaa-4eb9-9bee-95a8d0b68bcf" Value="Game.SubsystemGVDisplayLedGlow" Type="string"/>
 		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

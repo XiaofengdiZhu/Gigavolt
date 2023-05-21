@@ -1,10 +1,12 @@
-﻿using Engine;
-using Engine.Graphics;
-using GameEntitySystem;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Reflection;
+using Engine;
+using Engine.Graphics;
 using TemplatesDatabase;
+using XamariNES.Controller;
 using XamariNES.Emulator;
 
 namespace Game
@@ -16,47 +18,43 @@ namespace Game
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
         public Dictionary<GVNesEmulatorGlowPoint, bool> m_glowPoints = new Dictionary<GVNesEmulatorGlowPoint, bool>();
         public readonly NESEmulator _emu;
-        private readonly BitmapRenderer _renderer;
-        private byte[] _frame = new byte[256 * 240];
-        public bool EmuStarted = false;
-        public bool RomValid = false;
+        readonly BitmapRenderer _renderer;
+        byte[] _frame = new byte[256 * 240];
+        public bool EmuStarted;
+        public bool RomValid;
+
         public SubsystemNesEmulatorBlockBehavior() : base(GVNesEmulatorBlock.Index)
         {
-            _emu = new NESEmulator(GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes")), GetFrameFromEmulator, XamariNES.Emulator.Enums.enumEmulatorSpeed.Normal);
+            _emu = new NESEmulator(GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.MoreLeds.NesEmulator.nestest.nes")), GetFrameFromEmulator);
             RomValid = true;
             _renderer = new BitmapRenderer();
         }
+
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(true);
             EditGVNesEmulatorDialogData data = GetBlockData(new Point3(-GVNesEmulatorBlock.Index));
-            if(data != null && data.Data.Length > 0)
-            {
-                try
-                {
-                    LoadRomFromPath(data.Data);
-                }catch(Exception ex)
-                {
-                    Log.Error(ex);
-                }
-            }
+            if (data != null
+                && data.Data.Length > 0)
+                try { LoadRomFromPath(data.Data); }
+                catch (Exception ex) { Log.Error(ex); }
         }
+
         public override int[] HandledBlocks => new int[1]
         {
             GVNesEmulatorBlock.Index
         };
+
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
         {
             if (componentPlayer.DragHostWidget.IsDragInProgress) return false;
             EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-GVNesEmulatorBlock.Index)) ?? new EditGVNesEmulatorDialogData();
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVNesEmulatorDialog(Data, this, delegate
-            {
-                SetBlockData(new Point3(-GVNesEmulatorBlock.Index), Data);
-            }));
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVNesEmulatorDialog(Data, this, delegate { SetBlockData(new Point3(-GVNesEmulatorBlock.Index), Data); }));
             return true;
         }
+
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer)
         {
             EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-GVNesEmulatorBlock.Index)) ?? new EditGVNesEmulatorDialogData();
@@ -64,22 +62,23 @@ namespace Game
             {
                 SetBlockData(new Point3(-GVNesEmulatorBlock.Index), Data);
                 int face = ((GVNesEmulatorBlock)BlocksManager.Blocks[GVNesEmulatorBlock.Index]).GetFace(value);
-                SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(throwOnError: true);
+                SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                 GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
-                if (GVElectricElement != null)
-                {
-                    subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
-                }
+                if (GVElectricElement != null) subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
             }));
             return true;
         }
-        private DateTime _lastUpdatedTime = DateTime.MinValue;
+
+        DateTime _lastUpdatedTime = DateTime.MinValue;
+
         public static int[] m_drawOrders = new int[1]
         {
             110
         };
+
         public TexturedBatch3D cachedBatch;
         public int[] DrawOrders => m_drawOrders;
+
         public void Draw(Camera camera, int drawOrder)
         {
             bool powerOn = false;
@@ -88,14 +87,8 @@ namespace Game
             byte controler2 = 0;
             foreach (GVNesEmulatorGlowPoint key in m_glowPoints.Keys)
             {
-                if (key.GetPowerOn())
-                {
-                    powerOn = true;
-                }
-                if (key.GetReset())
-                {
-                    reset = true;
-                }
+                if (key.GetPowerOn()) powerOn = true;
+                if (key.GetReset()) reset = true;
                 controler1 |= key.GetControler1();
                 controler2 |= key.GetControler2();
             }
@@ -108,35 +101,28 @@ namespace Game
             {
                 if (powerOn)
                 {
-                    if (EmuStarted)
-                    {
-                        _emu.Continue();
-                    }
+                    if (EmuStarted) { _emu.Continue(); }
                     else
                     {
                         _emu.Start();
                         EmuStarted = true;
                     }
-                    ((XamariNES.Controller.NESController)(_emu.Controller1)).ButtonStates = controler1;
+                    ((NESController)_emu.Controller1).ButtonStates = controler1;
                 }
                 else
                 {
-                    if (EmuStarted)
-                    {
-                        _emu.Stop();
-                    }
+                    if (EmuStarted) _emu.Stop();
                 }
             }
-            if (!reset && powerOn && m_glowPoints.Count > 0)
+            if (!reset
+                && powerOn
+                && m_glowPoints.Count > 0)
             {
                 DateTime now = DateTime.Now;
                 if ((now - _lastUpdatedTime).TotalMilliseconds > 33)
                 {
                     _lastUpdatedTime = now;
-                    if (!RomValid)
-                    {
-                        _frame = _renderer.GenerateNoise();
-                    }
+                    if (!RomValid) _frame = _renderer.GenerateNoise();
                     cachedBatch = m_primitivesRenderer.TexturedBatch(Texture2D.Load(_renderer.Render(_frame)), false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.PointClamp);
                 }
                 foreach (GVNesEmulatorGlowPoint key in m_glowPoints.Keys)
@@ -150,7 +136,7 @@ namespace Game
                             float num2 = vector.Length();
                             if (num2 < m_subsystemSky.ViewFogRange.Y)
                             {
-                                float num3 = (float)key.GetSize()*0.5f;
+                                float num3 = key.GetSize() * 0.5f;
                                 Vector3 v = (0f - (0.01f + 0.02f * num)) / num2 * vector;
                                 Vector3 p = key.Position + num3 * (-key.Right - key.Up * 0.9375f) + v;
                                 Vector3 p2 = key.Position + num3 * (key.Right - key.Up * 0.9375f) + v;
@@ -178,10 +164,11 @@ namespace Game
                 m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
             }
         }
+
         public GVNesEmulatorGlowPoint AddGlowPoint()
         {
-            var glowPoint = new GVNesEmulatorGlowPoint();
-            m_glowPoints.Add(glowPoint, value: true);
+            GVNesEmulatorGlowPoint glowPoint = new GVNesEmulatorGlowPoint();
+            m_glowPoints.Add(glowPoint, true);
             return glowPoint;
         }
 
@@ -189,14 +176,13 @@ namespace Game
         {
             m_glowPoints.Remove(glowPoint);
         }
+
         public void LoadRomFromPath(string path)
         {
             byte[] bytes;
-            if (path == "nestest")
-            {
-                bytes = SubsystemNesEmulatorBlockBehavior.GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes"));
-            }
-            else if (uint.TryParse(path, System.Globalization.NumberStyles.HexNumber, null, out uint uintResult) && GVStaticStorage.GVMBIDDataDictionary.TryGetValue(uintResult, out GVMemoryBankData data))
+            if (path == "nestest") { bytes = GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes")); }
+            else if (uint.TryParse(path, NumberStyles.HexNumber, null, out uint uintResult)
+                     && GVStaticStorage.GVMBIDDataDictionary.TryGetValue(uintResult, out GVMemoryBankData data))
             {
                 if (data.m_worldDirectory == null)
                 {
@@ -205,32 +191,30 @@ namespace Game
                 }
                 bytes = GVMemoryBankData.Image2Bytes(data.Data);
             }
-            else
-            {
-                bytes = SubsystemNesEmulatorBlockBehavior.GetByteFromStream(Storage.OpenFile(path, OpenFileMode.Read));
-            }
+            else { bytes = GetByteFromStream(Storage.OpenFile(path, OpenFileMode.Read)); }
             _emu._cartridge.LoadROM(bytes);
             _emu.LoadRom(bytes);
         }
+
         /// <summary>
         ///     Delegate to receive frame that's ready from the emulator and
         ///     trigger a draw event.
-        ///
         ///     TODO: Because this isn't thread safe, this might lead to some
         ///     screen tearing. Probably need to refactor this.
         /// </summary>
         /// <param name="frame"></param>
-        private void GetFrameFromEmulator(byte[] frame)
+        void GetFrameFromEmulator(byte[] frame)
         {
             _frame = frame;
             //MessagingCenter.Send(this, "InvalidateEmulatorSurface");
         }
+
         /// <summary>
         ///     Reads an stream resource to a byte array
         /// </summary>
         /// <param name="resource"></param>
         /// <returns></returns>
-        public static byte[] GetByteFromStream(System.IO.Stream stream)
+        public static byte[] GetByteFromStream(Stream stream)
         {
             byte[] output = new byte[stream.Length];
             stream.Read(output, 0, (int)stream.Length);

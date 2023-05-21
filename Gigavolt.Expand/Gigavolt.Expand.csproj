@@ -59,10 +59,10 @@
     <Compile Include="MoreLeds\8NumberLed\GV8NumberLedBlock.cs" />
     <Compile Include="MoreLeds\8NumberLed\SubsystemGV8NumberLedGlow.cs" />
     <Compile Include="MoreLeds\8NumberLed\_8NumberLedGVElectricElement.cs" />
-    <Compile Include="MoreLeds\DisplayBlockLed\DisplayBlockLedGVElectricElement.cs" />
+    <Compile Include="MoreLeds\DisplayBlockLed\DisplayLedGVElectricElement.cs" />
     <Compile Include="MoreLeds\DisplayBlockLed\GVBlockDisplayPoint.cs" />
-    <Compile Include="MoreLeds\DisplayBlockLed\GVDisplayBlockLedBlock.cs" />
-    <Compile Include="MoreLeds\DisplayBlockLed\SubsystemGVDisplayBlockLedGlow.cs" />
+    <Compile Include="MoreLeds\DisplayBlockLed\GVDisplayLedBlock.cs" />
+    <Compile Include="MoreLeds\DisplayBlockLed\SubsystemGVDisplayLedGlow.cs" />
     <Compile Include="MoreLeds\NesEmulator\BitmapRender.cs" />
     <Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialog.cs" />
     <Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialogData.cs" />
@@ -273,18 +273,27 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Textures\GVDisplayBlockLedBlock.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Textures\GVDisplayBlockLedBlock1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MoreLeds\DisplayMemoryBankLed\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Textures\GVDisplayLedBlock0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Textures\GVDisplayLedBlock1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Textures\GVDisplayLedBlock2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Textures\GVDisplayLedBlock3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Textures\GVDisplayLedBlock4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Textures\GVDisplayLedBlock5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
