@@ -14,7 +14,7 @@ namespace Game {
         public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
             GigaVoltageLevelData blockData = m_subsystemGVCounterBlockBehavior.GetBlockData(cellFace.Point);
-            uint overflowVoltage = blockData == null ? 0u : blockData.Data;
+            uint overflowVoltage = blockData?.Data ?? 0u;
             uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point);
             if (num.HasValue) {
                 if (num.Value == overflowVoltage - 0x12345678) {
@@ -53,7 +53,7 @@ namespace Game {
             bool flag3 = false;
             int rotation = Rotation;
             GigaVoltageLevelData blockData = m_subsystemGVCounterBlockBehavior.GetBlockData(CellFaces[0].Point);
-            uint overflowVoltage = blockData == null ? 0u : blockData.Data;
+            uint overflowVoltage = blockData?.Data ?? 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
@@ -85,7 +85,7 @@ namespace Game {
             else if (flag2 && m_minusAllowed) {
                 m_minusAllowed = false;
                 if (m_counter > 0u
-                    && m_counter < overflowVoltage) {
+                    && (overflowVoltage == 0u || m_counter < overflowVoltage)) {
                     m_counter--;
                     m_overflow = false;
                 }
@@ -109,7 +109,7 @@ namespace Game {
             }
             if (m_counter != counter
                 || m_overflow != overflow) {
-                uint storeVoltage = m_counter;
+                uint storeVoltage;
                 if (m_counter == 0 && m_overflow) {
                     storeVoltage = overflowVoltage - 0x12345678u;
                 }

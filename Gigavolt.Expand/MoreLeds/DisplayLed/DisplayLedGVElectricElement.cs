@@ -69,17 +69,17 @@ namespace Game {
                             else if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
                                 m_inputTop = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                                 if (m_inputTop != inputTop) {
-                                    m_glowPoint.Size = (m_inputTop & 0xFFFFu) * 0.1f;
+                                    m_glowPoint.Size = (m_inputTop & 0xFFFFu) /8f;
                                     m_glowPoint.Position = m_originalPosition;
-                                    m_glowPoint.Position.Y += ((m_inputTop >> 16) & 0x7FFFu) * (((m_inputTop >> 31) & 1u) == 1u ? -0.1f : 0.1f);
+                                    m_glowPoint.Position.Y += ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f);
                                 }
                             }
                             else if (connectorDirection.Value == GVElectricConnectorDirection.Right) {
                                 m_inputRight = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                                 if (m_inputRight != inputRight) {
                                     m_glowPoint.Position = m_originalPosition;
-                                    m_glowPoint.Position.X += (m_inputRight & 0x7FFFu) * (((m_inputRight >> 15) & 1u) == 1u ? -0.1f : 0.1f);
-                                    m_glowPoint.Position.Z += ((m_inputRight >> 16) & 0x7FFFu) * (((m_inputRight >> 31) & 1u) == 1u ? -0.1f : 0.1f);
+                                    m_glowPoint.Position.X += (m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f);
+                                    m_glowPoint.Position.Z += ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f);
                                 }
                             }
                             else if (connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
