@@ -43,7 +43,7 @@ namespace Game {
             }
         }
 
-        public override int[] HandledBlocks => new int[1] { GVNesEmulatorBlock.Index };
+        public override int[] HandledBlocks => new[] { GVNesEmulatorBlock.Index };
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
@@ -77,7 +77,7 @@ namespace Game {
 
         DateTime _lastUpdatedTime = DateTime.MinValue;
 
-        public static int[] m_drawOrders = new int[1] { 110 };
+        public static int[] m_drawOrders = { 110 };
 
         public TexturedBatch3D cachedBatch;
         public int[] DrawOrders => m_drawOrders;
@@ -85,8 +85,8 @@ namespace Game {
         public void Draw(Camera camera, int drawOrder) {
             bool powerOn = false;
             bool reset = false;
-            byte controler1 = 0;
-            byte controler2 = 0;
+            byte controller1 = 0;
+            //byte controller2 = 0;
             foreach (GVNesEmulatorGlowPoint key in m_glowPoints.Keys) {
                 if (key.GetPowerOn()) {
                     powerOn = true;
@@ -94,8 +94,8 @@ namespace Game {
                 if (key.GetReset()) {
                     reset = true;
                 }
-                controler1 |= key.GetControler1();
-                controler2 |= key.GetControler2();
+                controller1 |= key.GetController1();
+                //controller2 |= key.GetController2();
             }
             if (reset) {
                 _emu.Reset();
@@ -110,7 +110,7 @@ namespace Game {
                         _emu.Start();
                         EmuStarted = true;
                     }
-                    ((NESController)_emu.Controller1).ButtonStates = controler1;
+                    ((NESController)_emu.Controller1).ButtonStates = controller1;
                 }
                 else {
                     if (EmuStarted) {
@@ -257,7 +257,7 @@ namespace Game {
         /// <summary>
         ///     Reads an stream resource to a byte array
         /// </summary>
-        /// <param name="resource"></param>
+        /// <param name="stream"></param>
         /// <returns></returns>
         public static byte[] GetByteFromStream(Stream stream) {
             byte[] output = new byte[stream.Length];

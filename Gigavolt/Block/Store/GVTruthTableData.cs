@@ -66,7 +66,7 @@ namespace Game {
 
         public IEditableItemData Copy() {
             GVTruthTableData result = new GVTruthTableData { LastLoadedString = LastLoadedString, LastOutput = LastOutput };
-            result.LoadString(LastLoadedString, out string error);
+            result.LoadString(LastLoadedString);
             return result;
         }
 
@@ -85,7 +85,7 @@ namespace Game {
         public void LoadString(string data, out string error) {
             error = null;
             List<Line> newData = new List<Line>();
-            data = hexRegex.Replace(data, m => { return long.Parse(m.Value.Substring(2), NumberStyles.HexNumber).ToString(); });
+            data = hexRegex.Replace(data, m => long.Parse(m.Value.Substring(2), NumberStyles.HexNumber).ToString());
             data = data.Replace("\n", "");
             string[] linesString = data.Split(new[] { "::" }, StringSplitOptions.None);
             foreach (string lineString in linesString) {

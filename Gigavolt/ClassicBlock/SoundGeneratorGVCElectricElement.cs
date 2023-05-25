@@ -1,5 +1,7 @@
 using Engine;
 
+// ReSharper disable RedundantExplicitArraySize
+
 namespace Game {
     public class SoundGeneratorGVCElectricElement : RotateableGVElectricElement {
         public SubsystemNoise m_subsystemNoise;
@@ -65,8 +67,7 @@ namespace Game {
                 string text2 = null;
                 if (text == "Drums") {
                     num5 = 1f;
-                    if (num >= 0
-                        && num < m_drums.Length) {
+                    if (num < m_drums.Length) {
                         text2 = $"Audio/SoundGenerator/Drums{m_drums[num]}";
                     }
                 }

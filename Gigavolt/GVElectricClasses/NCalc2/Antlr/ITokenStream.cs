@@ -31,11 +31,11 @@
  */
 
 namespace Antlr.Runtime {
- /**
+    /**
      * <summary>A stream of tokens accessing tokens from a TokenSource</summary>
      */
- public interface ITokenStream : IIntStream {
-  /**
+    public interface ITokenStream : IIntStream {
+           /**
          * <summary>
          *     Get Token at current input pointer + i ahead where i=1 is next Token.
          *     i&lt;0 indicates tokens in the past.  So -1 is previous token and -2 is
@@ -44,15 +44,15 @@ namespace Antlr.Runtime {
          *     that is negative.
          * </summary>
          */
-  IToken LT(int k);
+           IToken LT(int k);
 
-  /// <summary>
-  ///     How far ahead has the stream been asked to look?  The return
-  ///     value is a valid index from 0..n-1.
-  /// </summary>
-  int Range { get; }
+           /// <summary>
+           ///     How far ahead has the stream been asked to look?  The return
+           ///     value is a valid index from 0..n-1.
+           /// </summary>
+           int Range { get; }
 
-  /**
+           /**
          * <summary>
          *     Get a token at an absolute index i; 0..n-1.  This is really only
          *     needed for profiling and debugging and token stream rewriting.
@@ -62,17 +62,17 @@ namespace Antlr.Runtime {
          *     this method, removing the dependency.
          * </summary>
          */
-  IToken Get(int i);
+           IToken Get(int i);
 
-  /**
+           /**
          * <summary>
          *     Where is this stream pulling tokens from?  This is not the name, but
          *     the object that provides Token objects.
          * </summary>
          */
-  ITokenSource TokenSource { get; }
+           ITokenSource TokenSource { get; }
 
-  /**
+           /**
          * <summary>
          *     Return the text of all tokens from start to stop, inclusive.
          *     If the stream does not buffer all the tokens then it can just
@@ -80,9 +80,9 @@ namespace Antlr.Runtime {
          *     an action of course in that case.
          * </summary>
          */
-  string ToString(int start, int stop);
+           string ToString(int start, int stop);
 
-  /**
+           /**
          * <summary>
          *     Because the user is not required to use a token with an index stored
          *     in it, we must provide a means for two token objects themselves to
@@ -91,6 +91,6 @@ namespace Antlr.Runtime {
          *     the TreeNodeStream.toString(Object,Object).
          * </summary>
          */
-  string ToString(IToken start, IToken stop);
+           string ToString(IToken start, IToken stop);
     }
 }

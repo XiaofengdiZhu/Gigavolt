@@ -10,7 +10,6 @@
                     if (element.m_playing) {
                         element.m_sound.Stop();
                     }
-                    ;
                     element.m_sound.Dispose();
                 }
             }

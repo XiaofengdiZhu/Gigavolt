@@ -42,7 +42,7 @@ namespace Game {
                         false,
                         Color.White
                     );
-                    m_collisionBoxesByIndex[num] = new BoundingBox[1] { m_blockMeshesByIndex[num].CalculateBoundingBox() };
+                    m_collisionBoxesByIndex[num] = new[] { m_blockMeshesByIndex[num].CalculateBoundingBox() };
                 }
             }
             Matrix matrix3 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);

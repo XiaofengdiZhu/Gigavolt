@@ -7,6 +7,7 @@ namespace Game {
     public class GVLedBlock : MountedGVElectricElementBlock {
         public const int Index = 852;
 
+        // ReSharper disable once RedundantExplicitArraySize
         public static readonly Color[] LedColors = new Color[8] { new Color(255, 255, 255), new Color(0, 255, 255), new Color(255, 0, 0), new Color(0, 0, 255), new Color(255, 240, 0), new Color(0, 255, 0), new Color(255, 120, 0), new Color(255, 0, 255) };
 
 
@@ -72,7 +73,7 @@ namespace Game {
                         false,
                         color
                     );
-                    m_collisionBoxesByData[num] = new BoundingBox[1] { m_blockMeshesByData[num].CalculateBoundingBox() };
+                    m_collisionBoxesByData[num] = new[] { m_blockMeshesByData[num].CalculateBoundingBox() };
                 }
             }
         }

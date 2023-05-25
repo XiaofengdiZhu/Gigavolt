@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class SubsystemGVBatteryBlockBehavior : SubsystemEditableItemBehavior<GigaVoltageLevelData> {
-        public override int[] HandledBlocks => new int[1] { GVBatteryBlock.Index };
+        public override int[] HandledBlocks => new[] { GVBatteryBlock.Index };
         public SubsystemGVBatteryBlockBehavior() : base(GVBatteryBlock.Index) { }
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {

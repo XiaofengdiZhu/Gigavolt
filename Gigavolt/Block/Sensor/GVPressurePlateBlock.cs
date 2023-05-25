@@ -13,11 +13,11 @@ namespace Game {
 
         public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[16][];
 
-        public string[] m_displayNamesByMaterial = new string[2] { "木质GV压力板", "石质GV压力板" };
+        public string[] m_displayNamesByMaterial = { "木质GV压力板", "石质GV压力板" };
 
-        public int[] m_creativeValuesByMaterial = new int[2] { Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, 1) };
+        public int[] m_creativeValuesByMaterial = { Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, 1) };
 
-        public int[] m_textureSlotsByMaterial = new int[2] { 4, 1 };
+        public int[] m_textureSlotsByMaterial = { 4, 1 };
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/PressurePlate");
@@ -48,7 +48,7 @@ namespace Game {
                     vector2.X = MathUtils.Round(vector2.X * 100f) / 100f;
                     vector2.Y = MathUtils.Round(vector2.Y * 100f) / 100f;
                     vector2.Z = MathUtils.Round(vector2.Z * 100f) / 100f;
-                    m_collisionBoxesByData[num2] = new BoundingBox[1] { new BoundingBox(new Vector3(MathUtils.Min(vector.X, vector2.X), MathUtils.Min(vector.Y, vector2.Y), MathUtils.Min(vector.Z, vector2.Z)), new Vector3(MathUtils.Max(vector.X, vector2.X), MathUtils.Max(vector.Y, vector2.Y), MathUtils.Max(vector.Z, vector2.Z))) };
+                    m_collisionBoxesByData[num2] = new[] { new BoundingBox(new Vector3(MathUtils.Min(vector.X, vector2.X), MathUtils.Min(vector.Y, vector2.Y), MathUtils.Min(vector.Z, vector2.Z)), new Vector3(MathUtils.Max(vector.X, vector2.X), MathUtils.Max(vector.Y, vector2.Y), MathUtils.Max(vector.Z, vector2.Z))) };
                 }
                 Matrix identity = Matrix.Identity;
                 m_standaloneBlockMeshesByMaterial[i] = new BlockMesh();

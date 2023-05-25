@@ -1,4 +1,6 @@
-﻿namespace Game {
+﻿// ReSharper disable IntVariableOverflowInUncheckedContext
+
+namespace Game {
     public class CounterGVCElectricElement : RotateableGVElectricElement {
         public SubsystemGVCounterBlockBehavior m_subsystemGVCounterBlockBehavior;
         public bool m_plusAllowed = true;

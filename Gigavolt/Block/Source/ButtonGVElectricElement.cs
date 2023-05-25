@@ -8,7 +8,7 @@ namespace Game {
 
         public bool m_wasPressed;
 
-        public ButtonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) => m_subsystemGVButtonBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVButtonBlockBehavior>(true);
+        public ButtonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGVButtonBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVButtonBlockBehavior>(true);
 
         public void Press() {
             if (!m_wasPressed

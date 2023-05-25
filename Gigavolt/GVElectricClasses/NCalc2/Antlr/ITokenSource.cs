@@ -31,7 +31,7 @@
  */
 
 namespace Antlr.Runtime {
-    /**
+ /**
      * <summary>
      *     A source of tokens must provide a sequence of tokens via nextToken()
      *     and also must reveal it's source of characters; CommonToken's text is
@@ -48,23 +48,23 @@ namespace Antlr.Runtime {
      *     errors and keep going, looking for a valid token.
      *     </summary>
      */
-    public interface ITokenSource {
-        /**
+ public interface ITokenSource {
+  /**
          * <summary>
          *     Return a Token object from your input stream (usually a CharStream).
          *     Do not fail/return upon lexing error; keep chewing on the characters
          *     until you get a good one; errors are not passed through to the parser.
          * </summary>
          */
-        IToken NextToken();
+  IToken NextToken();
 
-        /**
+  /**
          * <summary>
          *     Where are you getting tokens from? normally the implication will simply
          *     ask lexers input stream.
          * </summary>
          */
-        string SourceName { get; }
+  string SourceName { get; }
 
         string[] TokenNames { get; }
     }

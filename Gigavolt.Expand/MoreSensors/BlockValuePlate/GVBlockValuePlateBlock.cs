@@ -40,7 +40,7 @@ namespace Game {
                 vector2.X = MathUtils.Round(vector2.X * 100f) / 100f;
                 vector2.Y = MathUtils.Round(vector2.Y * 100f) / 100f;
                 vector2.Z = MathUtils.Round(vector2.Z * 100f) / 100f;
-                m_collisionBoxesByData[num2] = new BoundingBox[1] { new BoundingBox(new Vector3(MathUtils.Min(vector.X, vector2.X), MathUtils.Min(vector.Y, vector2.Y), MathUtils.Min(vector.Z, vector2.Z)), new Vector3(MathUtils.Max(vector.X, vector2.X), MathUtils.Max(vector.Y, vector2.Y), MathUtils.Max(vector.Z, vector2.Z))) };
+                m_collisionBoxesByData[num2] = new[] { new BoundingBox(new Vector3(MathUtils.Min(vector.X, vector2.X), MathUtils.Min(vector.Y, vector2.Y), MathUtils.Min(vector.Z, vector2.Z)), new Vector3(MathUtils.Max(vector.X, vector2.X), MathUtils.Max(vector.Y, vector2.Y), MathUtils.Max(vector.Z, vector2.Z))) };
             }
             Matrix identity = Matrix.Identity;
             m_standaloneBlockMeshesByMaterial = new BlockMesh();

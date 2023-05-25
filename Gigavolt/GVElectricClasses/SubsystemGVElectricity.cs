@@ -8,6 +8,8 @@ using Engine.Input;
 using GameEntitySystem;
 using TemplatesDatabase;
 
+// ReSharper disable RedundantExplicitArraySize
+
 namespace Game {
     public class SubsystemGVElectricity : Subsystem, IUpdateable {
         public static GVElectricConnectionPath[] m_connectionPathsTable = new GVElectricConnectionPath[120] {
@@ -1163,7 +1165,7 @@ namespace Game {
             SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             SubsystemTime = Project.FindSubsystem<SubsystemTime>(true);
             SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
-            string[] array = valuesDictionary.GetValue<string>("GigaVoltagesByCell").Split(new char[1] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] array = valuesDictionary.GetValue<string>("GigaVoltagesByCell").Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             int num = 0;
             while (true) {
                 if (num < array.Length) {

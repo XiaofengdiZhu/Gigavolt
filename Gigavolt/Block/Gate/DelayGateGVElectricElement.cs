@@ -4,7 +4,7 @@ namespace Game {
 
         public int m_lastDelayCalculationStep;
 
-        public static int[] m_delaysByPredecessorsCount = new int[3] { 20, 80, 400 };
+        public static int[] m_delaysByPredecessorsCount = { 20, 80, 400 };
 
         public override int DelaySteps {
             get {

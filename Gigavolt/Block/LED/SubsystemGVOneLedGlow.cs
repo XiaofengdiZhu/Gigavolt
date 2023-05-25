@@ -14,7 +14,7 @@ namespace Game {
 
         public FlatBatch3D m_batche;
 
-        public static int[] m_drawOrders = new int[1] { 110 };
+        public static int[] m_drawOrders = { 110 };
 
         public int[] DrawOrders => m_drawOrders;
 

@@ -57,7 +57,6 @@ namespace XamariNES.Cartridge.Mappers.impl {
         /// <summary>
         ///     Reads one byte from the specified bank, at the specified offset
         /// </summary>
-        /// <param name="memoryType"></param>
         /// <param name="offset"></param>
         /// <returns></returns>
         public byte ReadByte(int offset) {
@@ -81,7 +80,6 @@ namespace XamariNES.Cartridge.Mappers.impl {
         /// <summary>
         ///     Writes one byte to the specified bank, at the specified offset
         /// </summary>
-        /// <param name="memoryType"></param>
         /// <param name="offset"></param>
         /// <param name="data"></param>
         public void WriteByte(int offset, byte data) {

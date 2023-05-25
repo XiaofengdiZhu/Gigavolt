@@ -76,7 +76,7 @@ namespace Game {
 
         public static PistonMode GetMode(int data) => (PistonMode)(data & 3);
 
-        public static int SetMode(int data, PistonMode mode) => (data & -4) | (int)(mode & (PistonMode)3);
+        public static int SetMode(int data, PistonMode mode) => (data & -4) | ((int)mode & 3);
 
         public static bool GetIsShaft(int data) => (data & 4) != 0;
 

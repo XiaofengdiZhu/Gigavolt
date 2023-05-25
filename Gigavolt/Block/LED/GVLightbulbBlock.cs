@@ -63,7 +63,7 @@ namespace Game {
                     Color.White
                 );
                 m_sidesBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(0.9375f, 0.1875f, 0f));
-                m_collisionBoxes[i] = new BoundingBox[1] { m_sidesBlockMeshes[i].CalculateBoundingBox() };
+                m_collisionBoxes[i] = new[] { m_sidesBlockMeshes[i].CalculateBoundingBox() };
             }
             Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
             m_standaloneBulbBlockMesh.AppendModelMeshPart(

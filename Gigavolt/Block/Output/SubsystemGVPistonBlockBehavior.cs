@@ -83,7 +83,6 @@ namespace Game {
         }
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
-            int contents = Terrain.ExtractContents(value);
             int data = Terrain.ExtractData(value);
             GVPistonData blockData = GetBlockData(new Point3(x, y, z)) ?? new GVPistonData();
             DialogsManager.ShowDialog(

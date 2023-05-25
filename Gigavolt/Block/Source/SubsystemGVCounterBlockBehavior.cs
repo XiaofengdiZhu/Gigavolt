@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class SubsystemGVCounterBlockBehavior : SubsystemEditableItemBehavior<GigaVoltageLevelData> {
-        public override int[] HandledBlocks => new int[1] { GVCounterBlock.Index };
+        public override int[] HandledBlocks => new[] { GVCounterBlock.Index };
 
         public SubsystemGVCounterBlockBehavior() : base(GVCounterBlock.Index) { }
 

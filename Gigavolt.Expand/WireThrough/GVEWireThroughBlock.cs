@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Engine;
 
 namespace Game {
-    public class GVEWireThroughBlock : CubeBlock, IGVElectricWireElementBlock, IGVElectricElementBlock, IPaintableBlock {
+    public class GVEWireThroughBlock : CubeBlock, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 1021;
         public int[] m_wiredTextureSlot = { 168, 184, 152, 136, 216 };
         public int[] m_unwiredTextureSlot = { 4, 1, 70, 16, 78 };

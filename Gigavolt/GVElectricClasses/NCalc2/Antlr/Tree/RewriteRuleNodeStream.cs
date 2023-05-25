@@ -34,13 +34,13 @@ using System;
 using System.Collections;
 
 namespace Antlr.Runtime.Tree {
-    /**
+ /**
      * <summary>
      *     Queues up nodes matched on left side of -> in a tree parser. This is
      *     the analog of RewriteRuleTokenStream for normal parsers.
      * </summary>
      */
-    [Serializable]
+ [Serializable]
     public class RewriteRuleNodeStream : RewriteRuleElementStream {
         public RewriteRuleNodeStream(ITreeAdaptor adaptor, string elementDescription) : base(adaptor, elementDescription) { }
 

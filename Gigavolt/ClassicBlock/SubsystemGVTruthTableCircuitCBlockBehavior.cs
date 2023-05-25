@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class SubsystemGVTruthTableCircuitCBlockBehavior : SubsystemEditableItemBehavior<TruthTableData> {
-        public override int[] HandledBlocks => new int[1] { GVTruthTableCircuitCBlock.Index };
+        public override int[] HandledBlocks => new[] { GVTruthTableCircuitCBlock.Index };
 
         public SubsystemGVTruthTableCircuitCBlockBehavior() : base(GVTruthTableCircuitCBlock.Index) { }
 

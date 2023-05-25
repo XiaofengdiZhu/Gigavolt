@@ -20,8 +20,6 @@ namespace Game {
             m_subsystemNoise = subsystemGVElectricity.Project.FindSubsystem<SubsystemNoise>(true);
             m_subsystemAudio = subsystemGVElectricity.Project.FindSubsystem<SubsystemAudio>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
-            Vector3 vector = CellFace.FaceToVector3(cellFace.Face);
-            Vector3 position = new Vector3(cellFace.Point) + new Vector3(0.5f) - 0.2f * vector;
             GVStaticStorage.GVSGCFEEList.Add(this);
         }
 
@@ -141,7 +139,6 @@ namespace Game {
                 if (m_playing) {
                     m_sound.Stop();
                 }
-                ;
                 m_sound.Dispose();
             }
             GVStaticStorage.GVSGCFEEList.Remove(this);

@@ -214,7 +214,7 @@ namespace NCalc {
             }
             string functionName = function.Identifier.Name.ToLowerInvariant();
             if (functionName == "if") {
-                Type[] numberTypePriority = new[] { typeof(double), typeof(float), typeof(long), typeof(int), typeof(short) };
+                Type[] numberTypePriority = { typeof(double), typeof(float), typeof(long), typeof(int), typeof(short) };
                 int index1 = Array.IndexOf(numberTypePriority, args[1].Type);
                 int index2 = Array.IndexOf(numberTypePriority, args[2].Type);
                 if (index1 >= 0

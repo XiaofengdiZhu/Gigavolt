@@ -15,8 +15,6 @@ namespace Game {
             Speed = int.Parse(arr[2], NumberStyles.HexNumber, null);
         }
 
-        public string SaveString() {
-            return string.Join(",", MaxExtension.ToString("X", null), PullCount.ToString("X", null), Speed.ToString("X", null));
-        }
+        public string SaveString() => string.Join(",", MaxExtension.ToString("X", null), PullCount.ToString("X", null), Speed.ToString("X", null));
     }
 }

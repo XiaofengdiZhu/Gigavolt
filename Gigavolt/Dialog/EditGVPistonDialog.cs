@@ -1,6 +1,8 @@
 using System;
 using System.Xml.Linq;
 
+// ReSharper disable RedundantExplicitArraySize
+
 namespace Game {
     public class EditGVPistonDialog : Dialog {
         public LabelWidget m_title;
@@ -42,7 +44,7 @@ namespace Game {
             m_handler = handler;
             m_pistonData = pistonData;
             m_speed = m_pistonData.Speed;
-            m_languageType = ModsManager.Configs.ContainsKey("Language") ? ModsManager.Configs["Language"] : "zh-CN";
+            m_languageType = ModsManager.Configs.TryGetValue("Language", out string config) ? config : "zh-CN";
             m_title.Text = GVPistonBlock.Mode2Name(mode);
             m_maxExtensionWidget.Text = (pistonData.MaxExtension + 1).ToString();
             m_pullCountWidget.Text = (pistonData.PullCount + 1).ToString();

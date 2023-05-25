@@ -27,7 +27,7 @@ namespace Game {
 
         public override void Update() {
             if (m_okButton.IsClicked) {
-                if (uint.TryParse(m_voltageLevelTextBox.Text, NumberStyles.HexNumber, null, out uint v)) {
+                if (uint.TryParse(m_voltageLevelTextBox.Text, NumberStyles.HexNumber, null, out uint _)) {
                     m_blockData.Data = uint.Parse(m_voltageLevelTextBox.Text, NumberStyles.HexNumber, null);
                     m_blockData.SaveString();
                     Dismiss(true);

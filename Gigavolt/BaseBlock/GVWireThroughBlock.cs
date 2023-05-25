@@ -1,10 +1,10 @@
 using Engine;
 
 namespace Game {
-    public abstract class GVWireThroughBlock : CubeBlock, IGVElectricWireElementBlock, IGVElectricElementBlock {
+    public abstract class GVWireThroughBlock : CubeBlock, IGVElectricWireElementBlock {
         public int m_wiredTextureSlot;
 
-        public int m_unwiredTextureSlot;
+        public readonly int m_unwiredTextureSlot;
 
         public GVWireThroughBlock(int wiredTextureSlot, int unwiredTextureSlot) {
             m_wiredTextureSlot = wiredTextureSlot;

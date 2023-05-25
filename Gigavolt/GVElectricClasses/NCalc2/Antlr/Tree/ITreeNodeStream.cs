@@ -35,16 +35,16 @@ namespace Antlr.Runtime.Tree {
      * <summary>A stream of tree nodes, accessing nodes from a tree of some kind</summary>
      */
     public interface ITreeNodeStream : IIntStream {
-        /**
+     /**
          * <summary>
          *     Get a tree node at an absolute index i; 0..n-1.
          *     If you don't want to buffer up nodes, then this method makes no
          *     sense for you.
          * </summary>
          */
-        object this[int i] { get; }
+     object this[int i] { get; }
 
-        /**
+     /**
          * <summary>
          *     Get tree node at current input pointer + i ahead where i=1 is next node.
          *     i&lt;0 indicates nodes in the past.  So LT(-1) is previous node, but
@@ -59,17 +59,17 @@ namespace Antlr.Runtime.Tree {
          *     for both parser and tree grammars. :)
          * </remarks>
          */
-        object LT(int k);
+     object LT(int k);
 
-        /**
+     /**
          * <summary>
          *     Where is this stream pulling nodes from?  This is not the name, but
          *     the object that provides node objects.
          * </summary>
          */
-        object TreeSource { get; }
+     object TreeSource { get; }
 
-        /**
+     /**
          * <summary>
          *     If the tree associated with this stream was created from a TokenStream,
          *     you can specify it here.  Used to do rule $text attribute in tree
@@ -77,17 +77,17 @@ namespace Antlr.Runtime.Tree {
          *     or output=template and rewrite=true options.
          * </summary>
          */
-        ITokenStream TokenStream { get; }
+     ITokenStream TokenStream { get; }
 
-        /**
+     /**
          * <summary>
          *     What adaptor can tell me how to interpret/navigate nodes and
          *     trees.  E.g., get text of a node.
          * </summary>
          */
-        ITreeAdaptor TreeAdaptor { get; }
+     ITreeAdaptor TreeAdaptor { get; }
 
-        /**
+     /**
          * <summary>
          *     As we flatten the tree, we use UP, DOWN nodes to represent
          *     the tree structure.  When debugging we need unique nodes
@@ -96,9 +96,9 @@ namespace Antlr.Runtime.Tree {
          *     navigation nodes.  Default should be false;
          * </summary>
          */
-        bool UniqueNavigationNodes { get; set; }
+     bool UniqueNavigationNodes { get; set; }
 
-        /**
+     /**
          * <summary>
          *     Return the text of all nodes from start to stop, inclusive.
          *     If the stream does not buffer all the nodes then it can still
@@ -107,7 +107,7 @@ namespace Antlr.Runtime.Tree {
          *     an action of course in that case.
          * </summary>
          */
-        string ToString(object start, object stop);
+     string ToString(object start, object stop);
 
 
         #region REWRITING TREES (used by tree parser)

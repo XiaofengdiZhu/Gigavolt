@@ -33,7 +33,7 @@
 using System.Collections.Generic;
 
 namespace Antlr.Runtime.Tree {
-    /**
+ /**
      * <summary>
      *     What does a tree look like?  ANTLR has a number of support classes
      *     such as CommonTreeNodeStream that work on these kinds of trees.  You
@@ -46,7 +46,7 @@ namespace Antlr.Runtime.Tree {
      *     This is a tree node without any payload; just navigation and factory stuff.
      * </remarks>
      */
-    public interface ITree {
+ public interface ITree {
         ITree GetChild(int i);
 
         int ChildCount { get; }

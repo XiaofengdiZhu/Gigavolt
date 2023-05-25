@@ -28,7 +28,7 @@ namespace Game {
                     false,
                     Color.White
                 );
-                m_collisionBoxesByFace[i] = new BoundingBox[1] { m_blockMeshesByFace[i].CalculateBoundingBox() };
+                m_collisionBoxesByFace[i] = new[] { m_blockMeshesByFace[i].CalculateBoundingBox() };
             }
             Matrix matrix2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
             m_standaloneBlockMesh.AppendModelMeshPart(
@@ -97,7 +97,7 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new ButtonGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)), value);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new ButtonGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
 
         public override GVElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
             int face2 = GetFace(value);

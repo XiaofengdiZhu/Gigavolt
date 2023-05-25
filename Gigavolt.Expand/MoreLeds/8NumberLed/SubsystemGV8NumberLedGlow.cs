@@ -16,7 +16,7 @@ namespace Game {
         public Dictionary<uint, TexturedBatch3D> batchCache;
         public static List<Point2>[] number2Pixels = new List<Point2>[16];
 
-        public static int[] m_drawOrders = new int[1] { 110 };
+        public static int[] m_drawOrders = { 110 };
 
         public int[] DrawOrders => m_drawOrders;
 

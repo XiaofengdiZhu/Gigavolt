@@ -39,7 +39,7 @@ namespace Game {
             }
             try {
                 if (lastInputs.Count == 0
-                    || sectionInput != lastInputs[lastInputs.Count - 1]) {
+                    || !sectionInput.Equals(lastInputs[lastInputs.Count - 1])) {
                     lastInputs.Add(sectionInput);
                     if (lastInputs.Count > 16) {
                         lastInputs = lastInputs.GetRange(lastInputs.Count - 16, 16);

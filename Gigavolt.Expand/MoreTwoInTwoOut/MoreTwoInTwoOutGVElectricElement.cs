@@ -25,8 +25,8 @@ namespace Game {
 
         public override bool Simulate() {
             try {
-                uint output = m_output;
-                uint overflow = m_overflow;
+                uint output;
+                uint overflow;
                 uint leftInput = 0u;
                 uint rightInput = 0u;
                 int rotation = Rotation;
@@ -57,12 +57,12 @@ namespace Game {
                     }
                         break;
                     case 3: {
-                        output = leftInput / rightInput;
+                        output = rightInput == 0u ? 0u : leftInput / rightInput;
                         overflow = 0u;
                     }
                         break;
                     case 4: {
-                        output = leftInput % rightInput;
+                        output = rightInput == 0u ? 0u : leftInput % rightInput;
                         overflow = 0u;
                     }
                         break;

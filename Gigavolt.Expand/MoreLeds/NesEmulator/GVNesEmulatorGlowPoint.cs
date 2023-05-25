@@ -16,8 +16,8 @@ namespace Game {
         public bool GetReset() => ((Voltage >> 1) & 1u) == 1u;
         public uint GetRotation() => (Voltage >> 2) & 3u;
 
-        public byte GetControler1() => (byte)((Voltage >> 8) & 255u);
-        public byte GetControler2() => (byte)((Voltage >> 16) & 255u);
+        public byte GetController1() => (byte)((Voltage >> 8) & 255u);
+        public byte GetController2() => (byte)((Voltage >> 16) & 255u);
 
         public byte GetSize() {
             byte size = (byte)((Voltage >> 24) & 127u);

@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class SubsystemGVButtonBlockBehavior : SubsystemEditableItemBehavior<GigaVoltageLevelData> {
-        public override int[] HandledBlocks => new int[1] { GVButtonBlock.Index };
+        public override int[] HandledBlocks => new[] { GVButtonBlock.Index };
 
         public SubsystemGVButtonBlockBehavior() : base(GVButtonBlock.Index) { }
 

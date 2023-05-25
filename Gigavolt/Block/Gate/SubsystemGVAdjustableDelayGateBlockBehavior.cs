@@ -1,6 +1,6 @@
 namespace Game {
     public class SubsystemGVAdjustableDelayGateBlockBehavior : SubsystemBlockBehavior {
-        public override int[] HandledBlocks => new int[1] { GVAdjustableDelayGateBlock.Index };
+        public override int[] HandledBlocks => new[] { GVAdjustableDelayGateBlock.Index };
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             int value = inventory.GetSlotValue(slotIndex);

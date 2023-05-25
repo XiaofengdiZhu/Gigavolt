@@ -16,7 +16,7 @@ namespace Game {
         public ListPanelWidget m_directoryList;
 
         public ButtonWidget m_upDirectoryButton;
-        public ButtonWidget m_exportButtion;
+        public ButtonWidget m_exportButton;
         public ButtonWidget m_actionButton;
 
         public string m_path;
@@ -33,7 +33,7 @@ namespace Game {
             m_directoryLabel = Children.Find<LabelWidget>("TopBar.Label");
             m_directoryList = Children.Find<ListPanelWidget>("DirectoryList");
             m_upDirectoryButton = Children.Find<ButtonWidget>("UpDirectory");
-            m_exportButtion = Children.Find<ButtonWidget>("Export");
+            m_exportButton = Children.Find<ButtonWidget>("Export");
             m_actionButton = Children.Find<ButtonWidget>("Action");
             m_directoryList.ItemWidgetFactory = delegate(object item) {
                 ExternalContentEntry externalContentEntry2 = (ExternalContentEntry)item;
@@ -65,8 +65,7 @@ namespace Game {
             };
             m_directoryList.ItemClicked += delegate(object item) {
                 if (m_directoryList.SelectedItem == item) {
-                    ExternalContentEntry externalContentEntry = item as ExternalContentEntry;
-                    if (externalContentEntry != null
+                    if (item is ExternalContentEntry externalContentEntry
                         && externalContentEntry.Type == ExternalContentType.Directory) {
                         SetPath(externalContentEntry.Path);
                     }
@@ -113,7 +112,7 @@ namespace Game {
                 string directoryName = Storage.GetDirectoryName(m_path);
                 SetPath(directoryName);
             }
-            if (m_exportButtion.IsClicked) {
+            if (m_exportButton.IsClicked) {
                 ExportImage($"{m_path}/{m_dialog.m_memoryBankData.m_ID.ToString("X", null)}.png", m_dialog.m_memoryBankData.Data);
             }
             if (m_actionButton.IsClicked
@@ -163,7 +162,7 @@ namespace Game {
                     busyDialog.Progress,
                     delegate(ExternalContentEntry entry) {
                         DialogsManager.HideDialog(busyDialog);
-                        List<ExternalContentEntry> list = new List<ExternalContentEntry>(entry.ChildEntries.Where(e => EntryFilter(e)).Take(1000));
+                        List<ExternalContentEntry> list = new List<ExternalContentEntry>(entry.ChildEntries.Where(EntryFilter).Take(1000));
                         m_directoryList.ClearItems();
                         list.Sort(
                             delegate(ExternalContentEntry e1, ExternalContentEntry e2) {
@@ -171,7 +170,7 @@ namespace Game {
                                     && e2.Type != ExternalContentType.Directory) {
                                     return -1;
                                 }
-                                return e1.Type != ExternalContentType.Directory && e2.Type == ExternalContentType.Directory ? 1 : string.Compare(e1.Path, e2.Path);
+                                return e1.Type != ExternalContentType.Directory && e2.Type == ExternalContentType.Directory ? 1 : string.CompareOrdinal(e1.Path, e2.Path);
                             }
                         );
                         foreach (ExternalContentEntry item in list) {
@@ -199,8 +198,7 @@ namespace Game {
             CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 13), false);
             DialogsManager.ShowDialog(null, busyDialog);
             try {
-                FileStream fileStream = null;
-                fileStream = File.OpenWrite(path);
+                FileStream fileStream = File.OpenWrite(path);
                 Image.Save(image, fileStream, ImageFileFormat.Png, true);
                 fileStream.Close();
                 DialogsManager.HideDialog(busyDialog);

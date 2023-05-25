@@ -5,7 +5,7 @@ namespace Game {
     public class GVTargetBlock : MountedGVElectricElementBlock {
         public const int Index = 899;
 
-        public BoundingBox[][] m_boundingBoxes = new BoundingBox[4][] { new BoundingBox[1] { new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.0625f)) }, new BoundingBox[1] { new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.0625f, 1f, 1f)) }, new BoundingBox[1] { new BoundingBox(new Vector3(0f, 0f, 0.9375f), new Vector3(1f, 1f, 1f)) }, new BoundingBox[1] { new BoundingBox(new Vector3(0.9375f, 0f, 0f), new Vector3(1f, 1f, 1f)) } };
+        public readonly BoundingBox[][] m_boundingBoxes = { new[] { new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.0625f)) }, new[] { new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.0625f, 1f, 1f)) }, new[] { new BoundingBox(new Vector3(0f, 0f, 0.9375f), new Vector3(1f, 1f, 1f)) }, new[] { new BoundingBox(new Vector3(0.9375f, 0f, 0f), new Vector3(1f, 1f, 1f)) } };
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {
             int mountingFace = GetMountingFace(Terrain.ExtractData(value));

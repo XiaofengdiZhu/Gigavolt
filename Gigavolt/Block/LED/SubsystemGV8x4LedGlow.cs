@@ -15,7 +15,7 @@ namespace Game {
 
         public Dictionary<uint, TexturedBatch3D>[] batchCache;
 
-        public static int[] m_drawOrders = new int[1] { 110 };
+        public static int[] m_drawOrders = { 110 };
 
         public int[] DrawOrders => m_drawOrders;
 
@@ -83,7 +83,7 @@ namespace Game {
 
         public override void Load(ValuesDictionary valuesDictionary) {
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
-            batchCache = new Dictionary<uint, TexturedBatch3D>[3] { new Dictionary<uint, TexturedBatch3D>(), new Dictionary<uint, TexturedBatch3D>(), new Dictionary<uint, TexturedBatch3D>() };
+            batchCache = new[] { new Dictionary<uint, TexturedBatch3D>(), new Dictionary<uint, TexturedBatch3D>(), new Dictionary<uint, TexturedBatch3D>() };
         }
 
         public static TexturedBatch3D generateBatch(PrimitivesRenderer3D renderer, int type, uint voltage) {

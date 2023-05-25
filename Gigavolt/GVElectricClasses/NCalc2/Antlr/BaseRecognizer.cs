@@ -39,6 +39,7 @@ using Antlr.Runtime.Debug;
 
 namespace Antlr.Runtime {
     using Conditional = ConditionalAttribute;
+
     //using StackFrame = System.Diagnostics.StackFrame;
     //using StackTrace = System.Diagnostics.StackTrace;
 

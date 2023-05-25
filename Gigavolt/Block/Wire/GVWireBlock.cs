@@ -3,7 +3,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVWireBlock : GenerateGVWireVerticesBlock, IGVElectricWireElementBlock, IGVElectricElementBlock, IPaintableBlock {
+    public class GVWireBlock : GenerateGVWireVerticesBlock, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 833;
 
         public BlockMesh m_standaloneBlockMesh = new BlockMesh();

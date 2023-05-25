@@ -17,7 +17,7 @@ namespace Game {
             }
         }
 
-        public override int[] HandledBlocks => new int[1] { GVDebugBlock.Index };
+        public override int[] HandledBlocks => new[] { GVDebugBlock.Index };
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {

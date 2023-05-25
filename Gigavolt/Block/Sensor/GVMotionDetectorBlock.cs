@@ -29,7 +29,7 @@ namespace Game {
                     false,
                     Color.White
                 );
-                m_collisionBoxesByData[num] = new BoundingBox[1] { m_blockMeshesByData[num].CalculateBoundingBox() };
+                m_collisionBoxesByData[num] = new[] { m_blockMeshesByData[num].CalculateBoundingBox() };
             }
             Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
             m_standaloneBlockMesh.AppendModelMeshPart(

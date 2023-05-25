@@ -1,5 +1,7 @@
 using Engine;
 
+// ReSharper disable RedundantExplicitArraySize
+
 namespace Game {
     public class SevenSegmentDisplayGVElectricElement : MountedGVElectricElement {
         public SubsystemGlow m_subsystemGlow;

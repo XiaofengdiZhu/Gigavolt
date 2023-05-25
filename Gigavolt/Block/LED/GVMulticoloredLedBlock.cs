@@ -63,7 +63,7 @@ namespace Game {
                     false,
                     new Color(48, 48, 48)
                 );
-                m_collisionBoxesByData[num] = new BoundingBox[1] { m_blockMeshesByData[num].CalculateBoundingBox() };
+                m_collisionBoxesByData[num] = new[] { m_blockMeshesByData[num].CalculateBoundingBox() };
             }
         }
 
