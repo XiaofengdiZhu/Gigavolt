@@ -18,7 +18,7 @@ namespace Game {
         public override void OnAdded() {
             CellFace cellFace = CellFaces[0];
             int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
-            int mountingFace = GVDisplayLedBlock.StaticGetFace(data);
+            int mountingFace = RotateableMountedGVElectricElementBlock.StaticGetFace(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
             m_type = GVDisplayLedBlock.GetType(data);
             m_glowPoint = m_subsystemGVDisplayLedGlow.AddGlowPoint();
@@ -69,7 +69,7 @@ namespace Game {
                             else if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
                                 m_inputTop = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                                 if (m_inputTop != inputTop) {
-                                    m_glowPoint.Size = (m_inputTop & 0xFFFFu) /8f;
+                                    m_glowPoint.Size = (m_inputTop & 0xFFFFu) / 8f;
                                     m_glowPoint.Position = m_originalPosition;
                                     m_glowPoint.Position.Y += ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f);
                                 }

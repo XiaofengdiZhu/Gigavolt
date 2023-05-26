@@ -1,4 +1,4 @@
-{
+﻿{
   "Language": {
     "Name": "中文"
   },
@@ -48,6 +48,10 @@
     "GVDisplayBlockLedBlock:0": {
       "DisplayName": "GV方块展示板",
       "Description": "用于展示方块"
+    },
+    "GVTerrainRaycastDetectorBlock:0": {
+      "DisplayName": "GV地形射线探测器",
+      "Description": "向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {

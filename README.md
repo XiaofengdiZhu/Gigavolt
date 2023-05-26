@@ -194,6 +194,63 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 ### 复杂图片和地层显示器 Complex Image and Stratum Display
 和复杂方块展示板类似，但背端需要输入存储板的ID，之后它就会以指定的方式显示图片或地层（地层也是以图片的形式显示）。  
 另外，对于复杂方块展示板来说下端无作用的一位（从低到高第28位），可用于指定图片的缩放方式，为0时将以各向异性过滤方式缩放，为1时将以保留硬边缘方式缩放。
+### GV地形射线探测器 Terrain Raycast Detector
+向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见下表
+<table>
+    <thead align="center">
+        <tr>
+            <th colspan="2">端口</th>
+            <th colspan="4">作用</th>
+        </tr>
+    </thead>
+    <tbody align="center">
+        <tr>
+            <td rowspan="4">输入</td>
+            <td rowspan=2>左端</td>
+            <td>18位 检测指定方块数据</td>
+            <td>4位 空</td>
+            <td>10位 检测指定方块ID</td>
+        </tr>
+        <tr>
+            <td>如果该部分大于0，且“是否同时检测方块数据”位为1，且“检测指定方块ID”部分大于0，则探测方块时同时检测方块数据是否与该部分相等</td>
+            <td>无作用</td>
+            <td>如果该部分大于0，将只探测方块ID与该部分相等的方块</td>
+        </tr>
+        <tr>
+            <td rowspan="2">右端</td>
+            <td>12位 探测距离</td>
+            <td>1位 是否同时检测方块数据</td>
+            <td>1位 是否跳过液体</td>
+        </tr>
+        <tr>
+            <td>最多探测多少格</td>
+            <td>详见“检测指定方块数据”的说明</td>
+            <td>如果为1，探测时将跳过水和岩浆方块，该设置优先级高于检测指定方块ID</td>
+        </tr>
+        <tr>
+            <td rowspan="6">输出</td>
+            <td rowspan="2">上端</td>
+            <td colspan="3">32位 方块值</td>
+        </tr>
+        <tr>
+            <td colspan="3">探测到最近的符合条件的方块的值（最低10位为方块ID，11到13位是亮度，14位以上为方块数据）</td>
+        </tr>
+        <tr>
+            <td rowspan="2">下端</td>
+            <td  colspan="3">32位 距离</td>
+        </tr>
+        <tr>
+            <td  colspan="3">探测到最近的符合条件的方块的距离，单位格</td>
+        </tr>
+        <tr>
+            <td rowspan=2>后端</td>
+            <td colspan="3">32位 连续方块数量</td>
+        </tr>
+        <tr>
+            <td colspan="3">探测到符合条件的方块后，输出当前方向连续出现了多少个该方块</td>
+        </tr>
+    </tbody>
+</table>
 
 ### 红白机模拟器 Nes Emulator
 可以模拟红白机的模拟器，使用的库是[XamariNES](https://github.com/enusbaum/XamariNES)，纯软件模拟（CPU运算），不支持声音输出，仅支持CNROM、MMC1、NROM、UxROM四种ROM格式的游戏，可能能够支持的游戏有超级玛丽、双截龙、恶魔城、冒险岛、勇者斗恶龙、合金装备、魂斗罗  

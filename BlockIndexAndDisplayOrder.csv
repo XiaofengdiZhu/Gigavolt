@@ -62,3 +62,4 @@ GV8NumberLedBlock,1017,1016
 GVEnhancedRealTimeClockBlock,1016,1017
 GVBlockValuePlateBlock,1015,1018
 GVDisplayLedBlock,1014,1019
+GVTerrainRaycastDetectorBlock,1013,1020

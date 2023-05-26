@@ -94,7 +94,6 @@ namespace Game {
             }
         }
 
-        public static int StaticGetFace(int data) => (data >> 2) & 7;
         public static bool GetComplex(int data) => ((data >> 5) & 1) == 1;
         public static int SetComplex(int data, bool complex) => (data & -33) | ((complex ? 1 : 0) << 5);
 
