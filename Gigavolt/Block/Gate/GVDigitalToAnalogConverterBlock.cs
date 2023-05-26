@@ -75,10 +75,10 @@ namespace Game {
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int type = GetType(Terrain.ExtractData(value));
             switch (type) {
-                case 1: return "GV 2λ�ϲ�8λ��";
-                case 2: return "GV 4λ�ϲ�16λ��";
-                case 3: return "GV 8λ�ϲ�32λ��";
-                default: return "GV 1λ�ϲ�4λ��";
+                case 1: return "GV 2位合并8位器";
+                case 2: return "GV 4位合并16位器";
+                case 3: return "GV 8位合并32位器";
+                default: return "GV 1位合并4位器";
             }
         }
 

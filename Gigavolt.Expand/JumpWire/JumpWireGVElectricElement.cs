@@ -19,9 +19,13 @@ namespace Game {
                 uint output = m_output;
                 m_output = 0u;
                 uint tag = m_tag;
+                m_tag = 0u;
                 uint bottomInput = m_bottomInput;
+                m_bottomInput = 0u;
                 bool allowBottomInput = m_allowBottomInput;
+                m_allowBottomInput = false;
                 bool allowTagInput = m_allowTagInput;
+                m_allowTagInput = false;
                 bool flag = false;
                 int rotation = Rotation;
                 foreach (GVElectricConnection connection in Connections) {
