@@ -8,16 +8,17 @@
 
 			<CanvasWidget Size="0, 5"/>
 
-			<CanvasWidget Size="Infinity, 50">
-				<LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
+			<CanvasWidget Size="Infinity, 50" Margin="30, 10">
+				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
+					<LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
+					<LinkWidget Name="Link" Text="https://github.com/XiaofengdiZhu/Gigavolt#真值表-truth-table" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#真值表-truth-table"/>
+				</StackPanelWidget>
 			</CanvasWidget>
 
 			<CanvasWidget Size="0, 15"/>
 
 			<StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
 				<CanvasWidget Size="0, Infinity"/>
-				<LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:20]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
-				<CanvasWidget Size="0, 10"/>
 				<CanvasWidget Size="504, 54" HorizontalAlignment="Center">
 					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 					<TextBoxWidget Name="EditGVTruthTableDialog.LinearText" Size="500, 50" MaximumLength="1000000" TextureLinearFilter="false" Margin="2, 2"/>

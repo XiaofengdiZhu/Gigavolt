@@ -35,11 +35,13 @@ namespace Game {
                 componentPlayer.GuiWidget,
                 new EditGigaVoltageLevelDialog(
                     blockData,
-                    delegate {
+                    voltage => {
                         SetBlockData(new Point3(x, y, z), blockData);
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, 4);
+                        BatteryGVElectricElement electricElement = (BatteryGVElectricElement)subsystemGVElectricity.GetGVElectricElement(x, y, z, 4);
                         if (electricElement != null) {
+                            electricElement.m_voltage = voltage;
+                            electricElement.m_edited = true;
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
                         }
                     }

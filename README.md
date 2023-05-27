@@ -9,7 +9,7 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 |--|------------------------------|------------------------------------------------------------------------------------------------|
 |SR锁存器| S端高压才储存                      | S端非0即储存                                                                                        |
 |开关、按钮、电池| 默认输出1.5V                     | 默认输出0xFFFFFFFF V，其他原本默认输出1.5V的也改为默认输出此电压，不提供经典版                                                |
-|计数器| 默认溢出电压为0x10V，上限为0xF V        | 默认溢出电压为0V，上限0xFFFFFFFF V，可设置溢出电压                                                               |
+|计数器| 默认溢出电压为0x10V，上限为0xF V        | 默认溢出电压为0V，上限0xFFFFFFFF V，可设置溢出电压，还能直接调整当前电压                                                    |
 |真值表| 略                            | 详见[详细-真值表](#真值表-truth-table)                                                                   |
 |存储器| 略                            | 详见[详细-存储器](#存储器-memory-band)                                                                   |
 |数模转换器| 略                            | 变更为4个合并器，分别是4个1位合并成4位、4个2位合并成8位、4个4位合并成16位，4个8位合并成32位，对于要被合并的输入，会在合并前分别取它们最低的1、2、4、8位后，按顺序进行合并 |
@@ -55,9 +55,9 @@ png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的
 > **注意**：规则对大小写敏感！
 
 如果想了解更多，请参见以下链接：
-* [操作符](https://github.com/ncalc/ncalc/wiki/Operators)
-* [函数](https://github.com/ncalc/ncalc/wiki/Functions)
-* [值](https://github.com/ncalc/ncalc/wiki/Values)
+* [操作符](https://github.com/ncalc/ncalc/wiki/Operators)`= > < + - * / 等`
+* [函数](https://github.com/ncalc/ncalc/wiki/Functions)`if Max Min Sin Cos 等`
+* [值](https://github.com/ncalc/ncalc/wiki/Values)`9876 1.23e9 true false 等`
 ### 声音发生器 Sound Generator
 可以从存储器加载WAV格式音频数据并播放的声音发生器  
 #### 端口定义 Input Definition
@@ -195,7 +195,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 和复杂方块展示板类似，但背端需要输入存储板的ID，之后它就会以指定的方式显示图片或地层（地层也是以图片的形式显示）。  
 另外，对于复杂方块展示板来说下端无作用的一位（从低到高第28位），可用于指定图片的缩放方式，为0时将以各向异性过滤方式缩放，为1时将以保留硬边缘方式缩放。
 ### 地形射线探测器 Terrain Raycast Detector
-向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见下表
+每次输入变化后，向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见下表
 <table>
     <thead align="center">
         <tr>

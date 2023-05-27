@@ -13,7 +13,9 @@ namespace Game {
 
         public TextBoxWidget m_linearTextBox;
         public TextBoxWidget m_rowCountTextBox;
+        public LabelWidget m_rowCountTextLabel;
         public TextBoxWidget m_colCountTextBox;
+        public LabelWidget m_colCountTextLabel;
         public LabelWidget m_IDLabel;
 
         public GVMemoryBankData m_memoryBankData;
@@ -28,7 +30,9 @@ namespace Game {
             m_moreButton = Children.Find<ButtonWidget>("EditGVMemoryBankDialog.More");
             m_linearTextBox = Children.Find<TextBoxWidget>("EditGVMemoryBankDialog.LinearText");
             m_rowCountTextBox = Children.Find<TextBoxWidget>("EditGVMemoryBankDialog.RowCount");
+            m_rowCountTextLabel = Children.Find<LabelWidget>("EditGVMemoryBankDialog.RowCountLabel");
             m_colCountTextBox = Children.Find<TextBoxWidget>("EditGVMemoryBankDialog.ColCount");
+            m_colCountTextLabel = Children.Find<LabelWidget>("EditGVMemoryBankDialog.ColCountLabel");
             m_IDLabel = Children.Find<LabelWidget>("EditGVMemoryBankDialog.ID");
             m_IDLabel.Text += $"ID: {memoryBankData.m_ID.ToString("X", null)}";
             m_handler = handler;
@@ -40,8 +44,10 @@ namespace Game {
             if (!(m_memoryBankData.Data == null)) {
                 m_rowCountTextBox.IsEnabled = false;
                 m_rowCountTextBox.Text = m_memoryBankData.Data.Height.ToString();
+                m_rowCountTextLabel.Color = Color.Gray;
                 m_colCountTextBox.IsEnabled = false;
                 m_colCountTextBox.Text = m_memoryBankData.Data.Width.ToString();
+                m_colCountTextLabel.Color = Color.Gray;
                 if (m_memoryBankData.Data.Pixels.LongLength > 1000000) {
                     m_linearTextBox.Text = LanguageControl.Get(GetType().Name, 1);
                     m_linearTextBox.IsEnabled = false;

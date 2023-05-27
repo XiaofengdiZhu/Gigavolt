@@ -10,6 +10,7 @@ namespace Game {
         public uint m_counter;
 
         public bool m_overflow;
+        public bool m_edited;
 
         public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
@@ -46,6 +47,10 @@ namespace Game {
         }
 
         public override bool Simulate() {
+            if (m_edited) {
+                m_edited = false;
+                return true;
+            }
             uint counter = m_counter;
             bool overflow = m_overflow;
             bool flag = false;

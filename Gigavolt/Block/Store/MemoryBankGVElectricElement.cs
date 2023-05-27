@@ -21,7 +21,7 @@ namespace Game {
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
-            float voltage = m_voltage;
+            uint voltage = m_voltage;
             bool flag = false;
             bool flag2 = false;
             bool flag3 = false;

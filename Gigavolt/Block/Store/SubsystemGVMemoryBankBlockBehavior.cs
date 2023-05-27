@@ -65,8 +65,7 @@ namespace Game {
                         int face = ((GVMemoryBankBlock)BlocksManager.Blocks[GVMemoryBankBlock.Index]).GetFace(value);
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                         GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
-                        bool flag2 = GVElectricElement != null;
-                        if (flag2) {
+                        if (GVElectricElement != null) {
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
                         }
                     }

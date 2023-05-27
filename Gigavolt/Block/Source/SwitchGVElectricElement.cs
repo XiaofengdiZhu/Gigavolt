@@ -4,6 +4,7 @@ namespace Game {
     public class SwitchGVElectricElement : MountedGVElectricElement {
         public SubsystemGVSwitchBlockBehavior m_subsystemGVSwitchBlockBehavior;
         public uint m_voltage;
+        public bool m_edited;
 
         public SwitchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) {
             m_subsystemGVSwitchBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSwitchBlockBehavior>(true);
@@ -27,6 +28,14 @@ namespace Game {
                 true
             );
             return true;
+        }
+
+        public override bool Simulate() {
+            if (m_edited) {
+                m_edited = false;
+                return true;
+            }
+            return false;
         }
     }
 }

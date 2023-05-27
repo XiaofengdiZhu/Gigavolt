@@ -8,8 +8,11 @@
 
 			<CanvasWidget Size="0, 5"/>
 
-			<CanvasWidget Size="Infinity, 50">
-				<LabelWidget Color="128, 128, 128" Text="[EditGVMemoryBankDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
+			<CanvasWidget Size="Infinity, 70" Margin="30, 10">
+				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
+					<LabelWidget Color="128, 128, 128" Text="[EditGVMemoryBankDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
+					<LinkWidget Name="Link" Text="https://github.com/XiaofengdiZhu/Gigavolt#存储器-memory-band" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#存储器-memory-band"/>
+				</StackPanelWidget>
 			</CanvasWidget>
 
 			<CanvasWidget Size="0, 15"/>
@@ -21,13 +24,13 @@
 			<StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
 				<CanvasWidget Size="0, Infinity"/>
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-					<LabelWidget Text="[EditGVMemoryBankDialog:3]"/>
+					<LabelWidget Name="EditGVMemoryBankDialog.RowCountLabel" Text="[EditGVMemoryBankDialog:3]"/>
 					<CanvasWidget Size="104, 34">
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 						<TextBoxWidget Name="EditGVMemoryBankDialog.RowCount" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 					<CanvasWidget Size="20, 34"/>
-					<LabelWidget Text="[EditGVMemoryBankDialog:4]"/>
+					<LabelWidget Name="EditGVMemoryBankDialog.ColCountLabel" Text="[EditGVMemoryBankDialog:4]"/>
 					<CanvasWidget Size="104, 34">
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 						<TextBoxWidget Name="EditGVMemoryBankDialog.ColCount" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>

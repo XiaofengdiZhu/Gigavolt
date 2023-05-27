@@ -60,6 +60,7 @@
 		<Reference Include="System.Xml"/>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="Dialog\EditGVCounterDialog.cs"/>
 		<Compile Include="Widget\GVStepFloatingButtons.cs"/>
 		<Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs"/>
 		<Compile Include="BaseBlock\GVWireThroughBlock.cs"/>
@@ -314,6 +315,9 @@
 		<Compile Include="Screen\GVMBExternalContentScreen.cs"/>
 	</ItemGroup>
 	<ItemGroup>
+		<None Include="Assets\Dialogs\EditGVCounterDialog.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Include="Assets\Gigavolt.csv">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

@@ -18,7 +18,7 @@ namespace Game {
                 componentPlayer.GuiWidget,
                 new EditGigaVoltageLevelDialog(
                     blockData,
-                    delegate {
+                    _ => {
                         int data = StoreItemDataAtUniqueId(blockData);
                         int value2 = Terrain.ReplaceData(value, data << 1);
                         inventory.RemoveSlotItems(slotIndex, count);
@@ -35,12 +35,16 @@ namespace Game {
                 componentPlayer.GuiWidget,
                 new EditGigaVoltageLevelDialog(
                     blockData,
-                    delegate {
+                    voltage => {
                         SetBlockData(new Point3(x, y, z), blockData);
                         int face = ((GVSwitchBlock)BlocksManager.Blocks[GVSwitchBlock.Index]).GetFace(value);
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
+                        SwitchGVElectricElement electricElement = (SwitchGVElectricElement)subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                         if (electricElement != null) {
+                            if (GVSwitchBlock.GetLeverState(value)) {
+                                electricElement.m_voltage = voltage;
+                                electricElement.m_edited = true;
+                            }
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
                         }
                     }

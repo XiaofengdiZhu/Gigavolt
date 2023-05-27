@@ -4,17 +4,17 @@ using System.Xml.Linq;
 
 namespace Game {
     public class EditGigaVoltageLevelDialog : Dialog {
-        public Action m_handler;
+        public readonly Action<uint> m_handler;
 
-        public ButtonWidget m_okButton;
+        public readonly ButtonWidget m_okButton;
 
-        public ButtonWidget m_cancelButton;
+        public readonly ButtonWidget m_cancelButton;
 
-        public TextBoxWidget m_voltageLevelTextBox;
+        public readonly TextBoxWidget m_voltageLevelTextBox;
 
-        public GigaVoltageLevelData m_blockData;
+        public readonly GigaVoltageLevelData m_blockData;
 
-        public EditGigaVoltageLevelDialog(GigaVoltageLevelData blockData, Action handler) {
+        public EditGigaVoltageLevelDialog(GigaVoltageLevelData blockData, Action<uint> handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGigaVoltageLevelDialog");
             LoadContents(this, node);
             m_okButton = Children.Find<ButtonWidget>("EditGigaVoltageLevelDialog.OK");
@@ -27,10 +27,10 @@ namespace Game {
 
         public override void Update() {
             if (m_okButton.IsClicked) {
-                if (uint.TryParse(m_voltageLevelTextBox.Text, NumberStyles.HexNumber, null, out uint _)) {
-                    m_blockData.Data = uint.Parse(m_voltageLevelTextBox.Text, NumberStyles.HexNumber, null);
+                if (uint.TryParse(m_voltageLevelTextBox.Text, NumberStyles.HexNumber, null, out uint voltage)) {
+                    m_blockData.Data = voltage;
                     m_blockData.SaveString();
-                    Dismiss(true);
+                    Dismiss(true, voltage);
                 }
                 else {
                     DialogsManager.ShowDialog(
@@ -51,10 +51,10 @@ namespace Game {
             }
         }
 
-        public void Dismiss(bool result) {
+        public void Dismiss(bool result, uint voltage = 0u) {
             DialogsManager.HideDialog(this);
             if (m_handler != null && result) {
-                m_handler();
+                m_handler(voltage);
             }
         }
     }
