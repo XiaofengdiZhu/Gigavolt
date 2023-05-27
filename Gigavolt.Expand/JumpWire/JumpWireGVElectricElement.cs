@@ -5,12 +5,17 @@ using Engine;
 namespace Game {
     public class JumpWireGVElectricElement : RotateableGVElectricElement {
         public SubsystemGVJumpWireBlockBehavior m_subsystem;
+        public Vector3 m_position;
         public uint m_output;
         public uint m_tag;
         public bool m_allowBottomInput;
         public bool m_allowTagInput;
         public uint m_bottomInput;
-        public JumpWireGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystem = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJumpWireBlockBehavior>(true);
+
+        public JumpWireGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+            m_subsystem = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJumpWireBlockBehavior>(true);
+            m_position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) - CellFace.FaceToVector3(cellFace.Face) * 0.48f;
+        }
 
         public override uint GetOutputVoltage(int face) => SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face) == GVElectricConnectorDirection.Top ? m_output : 0u;
 
