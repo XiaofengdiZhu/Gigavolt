@@ -72,7 +72,7 @@ namespace Game {
                 detectData = false;
             }
             Point3 originPosition = CellFaces[0].Point;
-            Point3 direction = -CellFace.FaceToPoint3(RotateableMountedGVElectricElementBlock.StaticGetFace(Terrain.ExtractData(m_terrain.GetCellValue(originPosition.X, originPosition.Y, originPosition.Z))));
+            Point3 direction = CellFace.FaceToPoint3(CellFaces[0].Face);
             int notZeroValue = 0;
             int detected = 0;
             int i = 1;
@@ -103,7 +103,7 @@ namespace Game {
                             notZeroValue = value;
                         }
                     }
-                    else if (!detectData) {
+                    else if (detected > 0) {
                         break;
                     }
                 }

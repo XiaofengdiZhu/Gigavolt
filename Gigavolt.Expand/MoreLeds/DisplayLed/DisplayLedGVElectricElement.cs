@@ -18,7 +18,7 @@ namespace Game {
         public override void OnAdded() {
             CellFace cellFace = CellFaces[0];
             int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
-            int mountingFace = RotateableMountedGVElectricElementBlock.StaticGetFace(data);
+            int mountingFace = cellFace.Face;
             m_complex = GVDisplayLedBlock.GetComplex(data);
             m_type = GVDisplayLedBlock.GetType(data);
             m_glowPoint = m_subsystemGVDisplayLedGlow.AddGlowPoint();
@@ -33,7 +33,7 @@ namespace Game {
             }
             else {
                 m_glowPoint.Type = m_type;
-                Vector3 forward = -CellFace.FaceToVector3(mountingFace);
+                Vector3 forward = CellFace.FaceToVector3(mountingFace);
                 Vector3 up = mountingFace < 4 ? Vector3.UnitY : Vector3.UnitX;
                 Vector3 right = Vector3.Cross(forward, up);
                 Matrix matrix = Matrix.Zero;

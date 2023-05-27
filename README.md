@@ -233,7 +233,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
             <td colspan="3">32位 方块值</td>
         </tr>
         <tr>
-            <td colspan="3">探测到最近的符合条件的方块的值（最低10位为方块ID，11到13位是亮度，14位以上为方块数据）</td>
+            <td colspan="3">探测到最近的符合条件的方块的值（最低10位为方块ID，14位以上为方块数据）</td>
         </tr>
         <tr>
             <td rowspan="2">下端</td>

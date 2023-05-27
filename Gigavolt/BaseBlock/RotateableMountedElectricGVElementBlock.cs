@@ -71,7 +71,6 @@ namespace Game {
         }
 
         public override int GetFace(int value) => (Terrain.ExtractData(value) >> 2) & 7;
-        public static int StaticGetFace(int value) => (Terrain.ExtractData(value) >> 2) & 7;
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
