@@ -46,5 +46,9 @@
 		<MemberSubsystemTemplate Name="GVDebugBlockBehavior" Guid="582755a2-4eff-8e15-2d6a-0dbf707b86d1" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="5521435b-7620-000c-1fb7-d246fd2d7f2e" Value="Game.SubsystemGVDebugBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVSignBlockCBehavior" Guid="7b0e72b0-38ec-4dac-9358-7f7e933b8d08" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<ParameterSet Name="Texts" Description="Contains sign texts" Guid="f378e257-a493-40d5-b979-8daa8df04182"/>
+			<Parameter Name="Class" Guid="1ba2d658-7097-48b6-80db-f65a3b91535c" Value="Game.SubsystemGVSignBlockCBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

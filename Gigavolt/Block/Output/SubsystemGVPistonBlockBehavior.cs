@@ -607,6 +607,10 @@ namespace Game {
                         isEnd = true;
                         return pistonFace == AttachedSignBlock.GetFace(data);
                     }
+                    if (block is GVAttachedSignCBlock) {
+                        isEnd = true;
+                        return pistonFace == GVAttachedSignCBlock.GetFace(data);
+                    }
                     if (block.IsNonDuplicable_(value)) {
                         return false;
                     }

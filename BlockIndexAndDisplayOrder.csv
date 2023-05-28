@@ -63,3 +63,7 @@ GVEnhancedRealTimeClockBlock,1016,1017
 GVBlockValuePlateBlock,1015,1018
 GVDisplayLedBlock,1014,1019
 GVTerrainRaycastDetectorBlock,1013,1020
+GVWoodenPostedSignCBlock,597,127
+GVWoodenAttachedSignCBlock,598,128
+GVIronPostedSignCBlock,710,129
+GVIronAttachedSignCBlock,711,130

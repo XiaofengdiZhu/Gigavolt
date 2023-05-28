@@ -11,7 +11,7 @@
 			<CanvasWidget Size="Infinity, 50" Margin="30, 10">
 				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
 					<LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
-					<LinkWidget Name="Link" Text="https://github.com/XiaofengdiZhu/Gigavolt#真值表-truth-table" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#真值表-truth-table"/>
+					<LinkWidget Color="128, 128, 128" Text="https://github.com/XiaofengdiZhu/Gigavolt#真值表-truth-table" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#真值表-truth-table"/>
 				</StackPanelWidget>
 			</CanvasWidget>
 
