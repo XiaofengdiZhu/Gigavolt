@@ -40,8 +40,7 @@
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Survivalcraft">
-			<HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
-			<Private>False</Private>
+		  <HintPath>..\Gigavolt\reference\Survivalcraft.exe</HintPath>
 		</Reference>
 		<Reference Include="System" />
 		<Reference Include="System.Core" />

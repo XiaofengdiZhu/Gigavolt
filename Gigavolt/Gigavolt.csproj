@@ -47,9 +47,9 @@
 			<HintPath>reference\EntitySystem.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="Survivalcraft">
-			<HintPath>reference\Survivalcraft.dll</HintPath>
-			<Private>False</Private>
+		<Reference Include="Survivalcraft, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>reference\Survivalcraft.exe</HintPath>
 		</Reference>
 		<Reference Include="System"/>
 		<Reference Include="System.Core"/>
@@ -60,7 +60,34 @@
 		<Reference Include="System.Xml"/>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="Block\LED\8x4Led\8x4LedGVElectricElement.cs"/>
+		<Compile Include="Block\LED\8x4Led\GV8x4GlowPoint.cs"/>
+		<Compile Include="Block\LED\8x4Led\GV8x4LedBlock.cs"/>
+		<Compile Include="Block\LED\8x4Led\SubsystemGV8x4LedGlow.cs"/>
+		<Compile Include="Block\LED\FourLed\FourLedGVElectricElement.cs"/>
+		<Compile Include="Block\LED\FourLed\GVFourLedBlock.cs"/>
+		<Compile Include="Block\LED\Led\GVLedBlock.cs"/>
+		<Compile Include="Block\LED\Led\LedGVElectricElement.cs"/>
+		<Compile Include="Block\LED\Lightbulb\GVLightbulbBlock.cs"/>
+		<Compile Include="Block\LED\Lightbulb\LightBulbGVElectricElement.cs"/>
+		<Compile Include="Block\LED\MulticoloredLed\GVMulticoloredLedBlock.cs"/>
+		<Compile Include="Block\LED\MulticoloredLed\MulticoloredLedGVElectricElement.cs"/>
+		<Compile Include="Block\LED\OneLed\GVOneLedBlock.cs"/>
+		<Compile Include="Block\LED\OneLed\OneLedGVElectricElement.cs"/>
+		<Compile Include="Block\LED\OneLed\SubsystemGVOneLedGlow.cs"/>
+		<Compile Include="Block\LED\SevenSegmentDisplay\GVSevenSegmentDisplayBlock.cs"/>
+		<Compile Include="Block\LED\SevenSegmentDisplay\SevenSegmentDisplayGVElectricElement.cs"/>
+		<Compile Include="ClassicBlock\Sign\GVAttachedSignCBlock.cs"/>
+		<Compile Include="ClassicBlock\Sign\GVIronAttachedSignCBlock.cs"/>
+		<Compile Include="ClassicBlock\Sign\GVIronPostedSignCBlock.cs"/>
+		<Compile Include="ClassicBlock\Sign\GVPostedSignCBlock.cs"/>
+		<Compile Include="ClassicBlock\Sign\GVSignCBlock.cs"/>
+		<Compile Include="ClassicBlock\Sign\SignGVCElectricElement.cs"/>
+		<Compile Include="ClassicBlock\Sign\GVWoodenAttachedSignCBlock.cs"/>
+		<Compile Include="ClassicBlock\Sign\GVWoodenPostedSignCBlock.cs"/>
+		<Compile Include="ClassicBlock\Sign\SubsystemGVSignBlockCBehavior.cs"/>
 		<Compile Include="Dialog\EditGVCounterDialog.cs"/>
+		<Compile Include="Dialog\EditGVSignCDialog.cs"/>
 		<Compile Include="Widget\GVStepFloatingButtons.cs"/>
 		<Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs"/>
 		<Compile Include="BaseBlock\GVWireThroughBlock.cs"/>
@@ -91,20 +118,7 @@
 		<Compile Include="Block\Gate\OrGateGVElectricElement.cs"/>
 		<Compile Include="Block\Gate\SubsystemGVAdjustableDelayGateBlockBehavior.cs"/>
 		<Compile Include="Block\Gate\XorGateGVElectricElement.cs"/>
-		<Compile Include="Block\LED\GV8x4LedBlock.cs"/>
-		<Compile Include="Block\LED\GV8x4GlowPoint.cs"/>
 		<Compile Include="Block\LED\GVGlowPoint.cs"/>
-		<Compile Include="Block\LED\GVLedBlock.cs"/>
-		<Compile Include="Block\LED\GVLightbulbBlock.cs"/>
-		<Compile Include="Block\LED\GVMulticoloredLedBlock.cs"/>
-		<Compile Include="Block\LED\GVSevenSegmentDisplayBlock.cs"/>
-		<Compile Include="Block\LED\LedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\LightBulbGVElectricElement.cs"/>
-		<Compile Include="Block\LED\MulticoloredLedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\8x4LedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\SevenSegmentDisplayGVElectricElement.cs"/>
-		<Compile Include="Block\LED\SubsystemGV8x4LedGlow.cs"/>
-		<Compile Include="Block\LED\SubsystemGVOneLedGlow.cs"/>
 		<Compile Include="Dialog\EditGVDebugDialog.cs"/>
 		<Compile Include="Block\Other\GVDebugData.cs"/>
 		<Compile Include="Block\Other\GVDebugBlock.cs"/>
@@ -130,14 +144,11 @@
 		<Compile Include="Block\Sensor\TargetGVElectricElement.cs"/>
 		<Compile Include="Block\Source\BatteryGVElectricElement.cs"/>
 		<Compile Include="Block\Source\ButtonGVElectricElement.cs"/>
-		<Compile Include="Block\LED\FourLedGVElectricElement.cs"/>
 		<Compile Include="Block\Gate\GVAndGateBlock.cs"/>
 		<Compile Include="Block\Source\CounterGVElectricElement.cs"/>
 		<Compile Include="Block\Source\GVBatteryBlock.cs"/>
 		<Compile Include="Block\Source\GVButtonBlock.cs"/>
 		<Compile Include="Block\Source\GigaVoltageLevelData.cs"/>
-		<Compile Include="Block\LED\GVFourLedBlock.cs"/>
-		<Compile Include="Block\LED\GVOneLedBlock.cs"/>
 		<Compile Include="Block\Source\GVCounterBlock.cs"/>
 		<Compile Include="Block\Source\GVRandomGeneratorBlock.cs"/>
 		<Compile Include="Block\Sensor\GVRealTimeClockBlock.cs"/>
@@ -158,7 +169,6 @@
 		<Compile Include="Block\Store\GVMemoryBankBlock.cs"/>
 		<Compile Include="Block\Store\GVMemoryBankData.cs"/>
 		<Compile Include="Block\Store\MemoryBankGVElectricElement.cs"/>
-		<Compile Include="Block\LED\OneLedGVElectricElement.cs"/>
 		<Compile Include="Block\Source\SubsystemGVButtonBlockBehavior.cs"/>
 		<Compile Include="Block\Store\SubsystemGVMemoryBankBlockBehavior.cs"/>
 		<Compile Include="Block\Wire\GVWireThroughBricksBlock.cs"/>

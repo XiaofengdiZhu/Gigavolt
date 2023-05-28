@@ -4,11 +4,11 @@ using Engine;
 
 namespace Game {
     public class SevenSegmentDisplayGVElectricElement : MountedGVElectricElement {
-        public SubsystemGlow m_subsystemGlow;
+        public readonly SubsystemGlow m_subsystemGlow;
 
         public uint m_voltage;
 
-        public GlowPoint[] m_glowPoints = new GlowPoint[7];
+        public readonly GlowPoint[] m_glowPoints = new GlowPoint[7];
 
         public Color m_color;
 
@@ -16,7 +16,7 @@ namespace Game {
 
         public Vector2[] m_sizes = new Vector2[7] { new Vector2(3.2f, 1f), new Vector2(1f, 2.3f), new Vector2(1f, 2.3f), new Vector2(3.2f, 1f), new Vector2(1f, 2.3f), new Vector2(1f, 2.3f), new Vector2(3.2f, 1f) };
 
-        public int[] m_patterns = new int[16] { 63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113 };
+        public readonly int[] m_patterns = new int[16] { 63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113 };
 
         public SevenSegmentDisplayGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(true);
 
@@ -62,11 +62,6 @@ namespace Game {
                 uint num = m_voltage & 0xfu;
                 for (int i = 0; i < 7; i++) {
                     m_glowPoints[i].Color = (m_patterns[num] & (1 << i)) != 0 ? m_color : Color.Transparent;
-                }
-                if (m_voltage > 0) {
-                    foreach (ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
-                        componentPlayer.ComponentGui.DisplaySmallMessage(m_voltage.ToString("X", null), Color.White, false, false);
-                    }
                 }
             }
             return false;
