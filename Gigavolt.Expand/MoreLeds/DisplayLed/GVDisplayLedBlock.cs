@@ -94,6 +94,12 @@ namespace Game {
             }
         }
 
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+            int data = Terrain.ExtractData(oldValue);
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetComplex(SetType(data, GetType(data)), GetComplex(data))), Count = 1 });
+            showDebris = true;
+        }
+
         public static bool GetComplex(int data) => ((data >> 5) & 1) == 1;
         public static int SetComplex(int data, bool complex) => (data & -33) | ((complex ? 1 : 0) << 5);
 

@@ -77,10 +77,19 @@ namespace Game {
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int? paintColor = GetPaintColor(oldValue);
-            for (int i = 0; i < 6; i++) {
-                if (WireExistsOnFace(oldValue, i)
-                    && !WireExistsOnFace(newValue, i)) {
-                    dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GVWireBlock.Index, 0, SetColor(0, paintColor)), Count = 1 });
+            int data = Terrain.ExtractData(oldValue);
+            int type = GetType(data);
+            int bitmask = GetWireFacesBitmask(data);
+            if (bitmask == 63
+                && type == 4) {
+                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, 63 | (4 << 11)), Count = 1 });
+            }
+            else {
+                for (int i = 0; i < 6; i++) {
+                    if (WireExistsOnFace(oldValue, i)
+                        && !WireExistsOnFace(newValue, i)) {
+                        dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GVWireBlock.Index, 0, SetColor(0, paintColor)), Count = 1 });
+                    }
                 }
             }
             showDebris = dropValues.Count > 0;

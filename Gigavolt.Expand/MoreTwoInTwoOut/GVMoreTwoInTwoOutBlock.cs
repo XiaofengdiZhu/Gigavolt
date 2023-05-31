@@ -101,6 +101,12 @@ namespace Game {
             }
         }
 
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+            int data = Terrain.ExtractData(oldValue);
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetType(data, GetType(data))), Count = 1 });
+            showDebris = true;
+        }
+
         public static int GetType(int data) => (data >> 5) & 15;
 
         public static int SetType(int data, int type) => (data & -481) | ((type & 15) << 5);
