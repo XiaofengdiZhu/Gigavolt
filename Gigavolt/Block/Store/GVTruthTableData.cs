@@ -80,14 +80,17 @@ namespace Game {
             return 0u;
         }
 
-        public Regex hexRegex = new Regex(@"0x[\dabcdefABCDEF]+");
+        public Regex hexRegex = new Regex(@"0[xX][\dabcdefABCDEF]+");
+        public Regex binRegex = new Regex(@"0[bB][01]+");
 
-        public void LoadString(string data, out string error) {
+        public void LoadString(string str, out string error) {
             error = null;
             List<Line> newData = new List<Line>();
-            data = hexRegex.Replace(data, m => long.Parse(m.Value.Substring(2), NumberStyles.HexNumber).ToString());
-            data = data.Replace("\n", "");
-            string[] linesString = data.Split(new[] { "::" }, StringSplitOptions.None);
+            string replacedString = str;
+            replacedString = hexRegex.Replace(replacedString, m => long.Parse(m.Value.Substring(2), NumberStyles.HexNumber).ToString());
+            replacedString = binRegex.Replace(replacedString, m => Convert.ToUInt32(m.Value.Substring(2), 2).ToString());
+            replacedString = replacedString.Replace("\n", "");
+            string[] linesString = replacedString.Split(new[] { "::" }, StringSplitOptions.None);
             foreach (string lineString in linesString) {
                 Line line = new Line();
                 string[] temp = lineString.Split(':');
@@ -96,9 +99,12 @@ namespace Game {
                     Log.Error(error);
                     return;
                 }
-                Expression oe = new Expression(CookForExpression(temp[1], "o"));
-                if (oe.HasErrors()) {
-                    error = $"{temp[1]}存在错误:\n{oe.Error}";
+                Expression oe;
+                try {
+                    oe = new Expression(CookForExpression(temp[1], "o"));
+                }
+                catch (Exception e) {
+                    error = $"{temp[1]}存在错误:\n{e}";
                     Log.Error(error);
                     return;
                 }
@@ -137,7 +143,7 @@ namespace Game {
                 newData.Add(line);
             }
             Data = newData;
-            LastLoadedString = data;
+            LastLoadedString = str;
         }
 
         public Regex addBracketRegex = new Regex(@"(i\d)");
