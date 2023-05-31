@@ -19,8 +19,10 @@ namespace XamariNES.Emulator {
         PPU.Core _ppu;
         public readonly NESCartridge _cartridge;
         public readonly IController Controller1;
+
         readonly enumEmulatorSpeed _enumEmulatorSpeed;
-        Task _emulatorTask;
+
+        //Task _emulatorTask;
         bool _powerOn;
         byte[] _romData;
 
@@ -62,7 +64,8 @@ namespace XamariNES.Emulator {
             _cpu.Reset();
             _ppu.Reset();
             _powerOn = true;
-            _emulatorTask = new TaskFactory().StartNew(Run, TaskCreationOptions.LongRunning);
+            //_emulatorTask = new TaskFactory().StartNew(Run, TaskCreationOptions.LongRunning);
+            new TaskFactory().StartNew(Run, TaskCreationOptions.LongRunning);
         }
 
         /// <summary>
@@ -73,7 +76,8 @@ namespace XamariNES.Emulator {
         public void Continue() {
             if (!_powerOn) {
                 _powerOn = true;
-                _emulatorTask = new TaskFactory().StartNew(Run, TaskCreationOptions.LongRunning);
+                //_emulatorTask = new TaskFactory().StartNew(Run, TaskCreationOptions.LongRunning);
+                new TaskFactory().StartNew(Run, TaskCreationOptions.LongRunning);
             }
         }
 
@@ -121,9 +125,9 @@ namespace XamariNES.Emulator {
 
             //CPU startup state is always at 4 cycles
             _cpu.Cycles = 4;
-            int cpuTicks;
             while (_powerOn) {
                 //If we're not idling (DMA), tick the CPU
+                int cpuTicks;
                 if (_cpuIdleCycles == 0) {
                     cpuTicks = _cpu.Tick();
                 }

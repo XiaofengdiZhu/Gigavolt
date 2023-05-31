@@ -61,12 +61,12 @@ namespace Antlr.Runtime.Tree {
         protected int cursor;
 
         /**
-         * <summary>Track single elements w/o creating a list.  Upon 2nd add, alloc list
+         * <summary>Track single elements w/o creating a list.  Upon 2nd add, alloc list</summary>
          */
         protected object singleElement;
 
         /**
-         * <summary>The list of tokens or subtrees we are tracking
+         * <summary>The list of tokens or subtrees we are tracking</summary>
          */
         protected IList elements;
 
@@ -78,6 +78,7 @@ namespace Antlr.Runtime.Tree {
          *     If dirty, then next() always returns a dup.
          *     I wanted to use "naughty bit" here, but couldn't think of a way
          *     to use "naughty".
+         * </summary>
          */
         protected bool dirty;
 

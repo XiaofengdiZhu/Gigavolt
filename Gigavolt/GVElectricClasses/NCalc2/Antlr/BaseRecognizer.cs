@@ -284,7 +284,7 @@ namespace Antlr.Runtime {
                     tokenName = tokenNames[mtne.Expecting];
                 }
                 // workaround for a .NET framework bug (NullReferenceException)
-                string nodeText = mtne.Node != null ? mtne.Node.ToString() ?? string.Empty : string.Empty;
+                string nodeText = mtne.Node != null ? mtne.Node.ToString() : string.Empty;
                 msg = "mismatched tree node: " + nodeText + " expecting " + tokenName;
             }
             else if (e is NoViableAltException) {
@@ -753,7 +753,7 @@ namespace Antlr.Runtime {
         //}
 
         /// **
-        /// <summary>
+        // * <summary>
         // *  A more general version of GetRuleInvocationStack where you can
         // *  pass in the StackTrace of, for example, a RecognitionException
         // *  to get it's rule stack trace.
@@ -811,7 +811,7 @@ namespace Antlr.Runtime {
         /**
          * <summary>
          *     A convenience method for use most often with template rewrites.
-         *     Convert a List<Token> to List<String>
+         *     Convert a List<Token /> to List<String />
          * </summary>
          */
         public virtual List<string> ToStrings(ICollection<IToken> tokens) {

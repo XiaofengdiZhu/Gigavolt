@@ -204,7 +204,7 @@ namespace NCalc {
                 foreach (object parameter in Parameters.Values) {
                     if (parameter is IEnumerable) {
                         int localsize = 0;
-                        foreach (object o in (IEnumerable)parameter) {
+                        foreach (object unused in (IEnumerable)parameter) {
                             localsize++;
                         }
                         if (size == -1) {

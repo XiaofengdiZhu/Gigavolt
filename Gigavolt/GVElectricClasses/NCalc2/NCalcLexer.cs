@@ -1759,10 +1759,15 @@ public partial class NCalcLexer : Lexer {
     }
     // $ANTLR end "LETTER"
 
+/*
     partial void Enter_DIGIT();
+*/
+/*
     partial void Leave_DIGIT();
+*/
 
     // $ANTLR start "DIGIT"
+/*
     [GrammarRule("DIGIT")]
     void mDIGIT() {
         Enter_DIGIT();
@@ -1792,6 +1797,7 @@ public partial class NCalcLexer : Lexer {
             Leave_DIGIT();
         }
     }
+*/
     // $ANTLR end "DIGIT"
 
     partial void Enter_EscapeSequence();

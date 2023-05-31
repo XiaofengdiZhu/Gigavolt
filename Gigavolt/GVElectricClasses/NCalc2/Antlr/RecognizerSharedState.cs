@@ -105,7 +105,7 @@ namespace Antlr.Runtime {
         /**
          * <summary>
          *     An array[size num rules] of Map
-         *     <Integer, Integer>
+         *     <Integer, Integer/>
          *         that tracks
          *         the stop token index for each rule.  ruleMemo[ruleIndex] is
          *         the memoization table for ruleIndex.  For key ruleStartIndex, you

@@ -5,7 +5,7 @@ namespace NCalc.Domain {
     public class EvaluationVisitor : LogicalExpressionVisitor {
         delegate T Func<T>();
 
-        readonly EvaluateOptions _options = EvaluateOptions.None;
+        readonly EvaluateOptions _options;
 
         bool IgnoreCase => (_options & EvaluateOptions.IgnoreCase) == EvaluateOptions.IgnoreCase;
         bool Ordinal => (_options & EvaluateOptions.MatchStringsOrdinal) == EvaluateOptions.MatchStringsOrdinal;

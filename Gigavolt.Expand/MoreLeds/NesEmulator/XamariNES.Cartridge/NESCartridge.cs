@@ -22,7 +22,6 @@ namespace XamariNES.Cartridge {
         byte _prgRomBanks;
         byte[] _chrRom;
         byte _chrRomBanks;
-        byte[] _prgRam;
         bool UsesCHRRAM;
         enumNametableMirroring _nametableMirroring;
 
@@ -93,8 +92,8 @@ namespace XamariNES.Cartridge {
 
             //Set Flags7
             Flags7 = ROM[7];
-            int prgRAMSize = ROM[8] == 0 ? 8192 : ROM[8] * 8192; //0 denoted default 8k
-            _prgRam = new byte[prgRAMSize];
+            //int prgRAMSize = ROM[8] == 0 ? 8192 : ROM[8] * 8192; //0 denoted default 8k
+            //_prgRam = new byte[prgRAMSize];
 
             //Load PRG ROM
             Array.Copy(

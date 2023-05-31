@@ -31,7 +31,6 @@
  */
 
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace Antlr.Runtime.Tree {
     /**
@@ -46,10 +45,10 @@ namespace Antlr.Runtime.Tree {
         public const int UP = TokenTypes.Up;
 
         // precompiled regex used by inContext
-        static readonly string dotdot = ".*[^.]\\.\\.[^.].*";
-        static readonly string doubleEtc = ".*\\.\\.\\.\\s+\\.\\.\\..*";
-        static Regex dotdotPattern = new Regex(dotdot);
-        static Regex doubleEtcPattern = new Regex(doubleEtc);
+        //static readonly string dotdot = ".*[^.]\\.\\.[^.].*";
+        //static readonly string doubleEtc = ".*\\.\\.\\.\\s+\\.\\.\\..*";
+        //static Regex dotdotPattern = new Regex(dotdot);
+        //static Regex doubleEtcPattern = new Regex(doubleEtc);
 
         protected ITreeNodeStream input;
 

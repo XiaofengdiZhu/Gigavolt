@@ -57,12 +57,12 @@ namespace Antlr.Runtime {
         protected List<IToken> tokens;
 
         /**
-         * <summary>Map<tokentype, channel> to override some Tokens' channel numbers</summary>
+         * <summary>Map<tokentype, channel /> to override some Tokens' channel numbers</summary>
          */
         protected IDictionary<int, int> channelOverrideMap;
 
         /**
-         * <summary>Set<tokentype>; discard any tokens with this type</summary>
+         * <summary>Set<tokentype />; discard any tokens with this type</summary>
          */
         protected Dictionary<int, int> discardSet;
 

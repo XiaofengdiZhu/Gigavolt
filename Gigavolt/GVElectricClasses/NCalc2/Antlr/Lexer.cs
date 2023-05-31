@@ -288,14 +288,14 @@ namespace Antlr.Runtime {
                 msg = "mismatched character " + GetCharErrorDisplay(e.Character) + " expecting " + GetCharErrorDisplay(mte.Expecting);
             }
             else if (e is NoViableAltException) {
-                NoViableAltException nvae = (NoViableAltException)e;
+                //NoViableAltException nvae = (NoViableAltException)e;
                 // for development, can add "decision=<<"+nvae.grammarDecisionDescription+">>"
                 // and "(decision="+nvae.decisionNumber+") and
                 // "state "+nvae.stateNumber
                 msg = "no viable alternative at character " + GetCharErrorDisplay(e.Character);
             }
             else if (e is EarlyExitException) {
-                EarlyExitException eee = (EarlyExitException)e;
+                //EarlyExitException eee = (EarlyExitException)e;
                 // for development, can add "(decision="+eee.decisionNumber+")"
                 msg = "required (...)+ loop did not match anything at character " + GetCharErrorDisplay(e.Character);
             }

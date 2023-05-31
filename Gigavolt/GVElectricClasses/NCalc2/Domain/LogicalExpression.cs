@@ -1,10 +1,10 @@
-using System;
-using System.Text;
+
 
 namespace NCalc.Domain {
     public abstract class LogicalExpression {
         const char BS = '\\';
 
+/*
         static string extractString(string text) {
             StringBuilder sb = new StringBuilder(text);
             int startIndex = 1; // Skip initial quote
@@ -41,6 +41,7 @@ namespace NCalc.Domain {
             sb.Remove(sb.Length - 1, 1);
             return sb.ToString();
         }
+*/
 
         public BinaryExpression And(LogicalExpression operand) => new BinaryExpression(BinaryExpressionType.And, this, operand);
 

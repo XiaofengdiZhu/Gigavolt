@@ -57,7 +57,7 @@ namespace Antlr.Runtime {
 
         public BitSet Expecting { get; }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+        public new void GetObjectData(SerializationInfo info, StreamingContext context) {
             if (info == null) {
                 throw new ArgumentNullException("info");
             }

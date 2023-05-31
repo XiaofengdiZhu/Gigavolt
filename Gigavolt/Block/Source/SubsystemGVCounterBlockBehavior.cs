@@ -55,7 +55,6 @@ namespace Game {
                     )
                 );
             }
-            ;
             return true;
         }
     }

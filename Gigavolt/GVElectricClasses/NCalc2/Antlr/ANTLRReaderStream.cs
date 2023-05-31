@@ -56,7 +56,7 @@ namespace Antlr.Runtime {
             Load(r, size, readChunkSize);
         }
 
-        public virtual void Load(TextReader r, int size, int readChunkSize) {
+        public void Load(TextReader r, int size, int readChunkSize) {
             if (r == null) {
                 return;
             }

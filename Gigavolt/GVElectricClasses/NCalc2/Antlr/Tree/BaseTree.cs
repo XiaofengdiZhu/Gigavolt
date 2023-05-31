@@ -328,7 +328,7 @@ namespace Antlr.Runtime.Tree {
                 for (int j = 0; j < replacingHowMany; j++) {
                     Children[startChildIndex + j] = newChildren[j];
                 }
-                int numToInsert = replacingWithHowMany - replacingHowMany;
+                //int numToInsert = replacingWithHowMany - replacingHowMany;
                 for (int j = replacingHowMany; j < replacingWithHowMany; j++) {
                     Children.Insert(startChildIndex + j, newChildren[j]);
                 }
