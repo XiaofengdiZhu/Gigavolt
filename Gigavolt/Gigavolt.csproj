@@ -23,8 +23,7 @@
 		<DefineConstants>DEBUG;TRACE</DefineConstants>
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
-		<NoWarn>
-		</NoWarn>
+		<NoWarn></NoWarn>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Prefer32Bit>false</Prefer32Bit>
 	</PropertyGroup>
@@ -353,7 +352,6 @@
 		</None>
 		<None Include="reference\Engine.dll"/>
 		<None Include="reference\EntitySystem.dll"/>
-		<None Include="reference\Survivalcraft.dll"/>
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Assets\Dialogs\EditGVPistonDialog.xml">
@@ -410,6 +408,9 @@
 		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock8-32.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="reference\Survivalcraft.exe"/>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 	<ProjectExtensions/>

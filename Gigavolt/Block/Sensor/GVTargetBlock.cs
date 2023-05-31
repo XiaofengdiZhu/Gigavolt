@@ -34,7 +34,7 @@ namespace Game {
             int num = Terrain.ExtractLight(value);
             int mountingFace = GetMountingFace(data);
             float s = LightingManager.LightIntensityByLightValueAndFace[num + 16 * mountingFace];
-            Color color = Color.White * s;
+            Color color = Color.MultiplyColorOnly(Color.White, s);
             switch (mountingFace) {
                 case 2:
                     vertices.Count += 4;
