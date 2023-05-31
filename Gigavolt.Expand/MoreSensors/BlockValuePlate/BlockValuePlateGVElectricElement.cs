@@ -20,17 +20,6 @@ namespace Game {
                 SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 10);
             }
             else {
-                if (m_voltage > 0) {
-                    CellFace cellFace = CellFaces[0];
-                    SubsystemGVElectricity.SubsystemAudio.PlaySound(
-                        "Audio/BlockPlaced",
-                        0.6f,
-                        -0.1f,
-                        new Vector3(cellFace.X, cellFace.Y, cellFace.Z),
-                        2.5f,
-                        true
-                    );
-                }
                 m_voltage = 0u;
                 m_value = 0;
             }

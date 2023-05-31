@@ -10,7 +10,6 @@ namespace Game {
         public override int[] HandledBlocks => new[] { GVJumpWireBlock.Index };
 
         public void Draw(Camera camera, int drawOrder) {
-            Dictionary<JumpWireGVElectricElement, List<JumpWireGVElectricElement>> dictionary = new Dictionary<JumpWireGVElectricElement, List<JumpWireGVElectricElement>>();
             foreach (List<JumpWireGVElectricElement> elements in m_tagsDictionary.Values) {
                 for (int i = 0; i < elements.Count; i++) {
                     for (int j = i + 1; j < elements.Count; j++) {
