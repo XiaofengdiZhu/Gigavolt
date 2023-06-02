@@ -12,6 +12,7 @@ namespace Game {
         public uint m_inputRight;
         public uint m_inputBottom;
         public uint m_inputLeft;
+        public static readonly Vector3[] m_upVector3 = { Vector3.UnitY, Vector3.UnitX, -Vector3.UnitY, -Vector3.UnitX, Vector3.UnitY, -Vector3.UnitZ, -Vector3.UnitY, Vector3.UnitZ, Vector3.UnitY, -Vector3.UnitX, -Vector3.UnitY, Vector3.UnitX, Vector3.UnitY, Vector3.UnitZ, -Vector3.UnitY, -Vector3.UnitZ, -Vector3.UnitZ, Vector3.UnitX, Vector3.UnitZ, -Vector3.UnitX, Vector3.UnitZ, Vector3.UnitX, -Vector3.UnitZ, -Vector3.UnitX };
 
         public DisplayLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGVDisplayLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDisplayLedGlow>(true);
 
@@ -19,6 +20,7 @@ namespace Game {
             CellFace cellFace = CellFaces[0];
             int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             int mountingFace = cellFace.Face;
+            int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
             m_type = GVDisplayLedBlock.GetType(data);
             m_glowPoint = m_subsystemGVDisplayLedGlow.AddGlowPoint();
@@ -33,14 +35,20 @@ namespace Game {
             }
             else {
                 m_glowPoint.Type = m_type;
-                Vector3 forward = CellFace.FaceToVector3(mountingFace);
-                Vector3 up = mountingFace < 4 ? Vector3.UnitY : Vector3.UnitX;
+                Vector3 forward = -CellFace.FaceToVector3(mountingFace);
+                if (forward.Y != 0) {
+                    forward.Z += 0.0001f;
+                }
+                Vector3 up = m_upVector3[mountingFace * 4 + rotation];
                 Vector3 right = Vector3.Cross(forward, up);
                 Matrix matrix = Matrix.Zero;
                 matrix.Forward = forward;
                 matrix.Up = up;
                 matrix.Right = right;
                 m_glowPoint.Rotation = matrix.ToYawPitchRoll();
+                if (mountingFace > 3) {
+                    Log.Information(up + " " + right + " " + m_glowPoint.Rotation);
+                }
                 m_glowPoint.Color = Color.White;
             }
         }

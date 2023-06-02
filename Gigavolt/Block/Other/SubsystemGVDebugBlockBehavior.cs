@@ -33,5 +33,13 @@ namespace Game {
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVDebugDialog(Data, m_subsystemGVElectricity, delegate { SetBlockData(new Point3(-GVDebugBlock.Index), Data); }));
             return true;
         }
+
+        public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
+            GVDebugData Data = GetBlockData(new Point3(-GVDebugBlock.Index)) ?? new GVDebugData();
+            if (componentMiner.ComponentPlayer != null) {
+                DialogsManager.ShowDialog(componentMiner.ComponentPlayer.GuiWidget, new EditGVDebugDialog(Data, m_subsystemGVElectricity, delegate { SetBlockData(new Point3(-GVDebugBlock.Index), Data); }));
+            }
+            return true;
+        }
     }
 }

@@ -50,6 +50,7 @@ namespace Game {
 
         public override bool Simulate() {
             uint[] inputs = (uint[])m_inputsVoltage.Clone();
+            m_inputsVoltage = new uint[] { 0, 0, 0, 0, 0 };
             bool flag = false;
             int rotation = Rotation;
             foreach (GVElectricConnection connection in Connections) {
@@ -75,29 +76,22 @@ namespace Game {
                         }
                         else if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
                             m_inputsVoltage[0] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (!flag) {
-                                flag = m_inputsVoltage[0] != inputs[0];
-                            }
                         }
                         else if (connectorDirection.Value == GVElectricConnectorDirection.Right) {
                             m_inputsVoltage[1] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (!flag) {
-                                flag = m_inputsVoltage[1] != inputs[1];
-                            }
                         }
                         else if (connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
                             m_inputsVoltage[2] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (!flag) {
-                                flag = m_inputsVoltage[2] != inputs[2];
-                            }
                         }
                         else if (connectorDirection.Value == GVElectricConnectorDirection.Left) {
                             m_inputsVoltage[3] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (!flag) {
-                                flag = m_inputsVoltage[3] != inputs[3];
-                            }
                         }
                     }
+                }
+            }
+            for (int i = 0; i < 5; i++) {
+                if (!flag) {
+                    flag = m_inputsVoltage[i] != inputs[i];
                 }
             }
             if (flag) {

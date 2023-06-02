@@ -85,10 +85,6 @@ namespace Game {
                         try {
                             if (!GVStaticStorage.GVMBIDDataDictionary.TryGetValue(key.Value, out GVMemoryBankData data)
                                 || data == null) {
-                                /*if (key.Value > 0)
-                                {
-                                    Log.Error(key.Value.ToString("X"));
-                                }*/
                                 continue;
                             }
                             float halfWidth;
@@ -104,16 +100,18 @@ namespace Game {
                                 halfHeight = 0.5f;
                             }
                             Color color = key.Color;
+                            Vector3 forward;
                             if (key.Complex) {
                                 halfWidth *= key.Size;
                                 halfHeight *= key.Size;
+                                forward = Vector3.Zero;
                             }
                             else {
                                 color = Color.MultiplyColorOnly(color, LightingManager.LightIntensityByLightValue[m_subsystemTerrain.Terrain.GetCellLightFast((int)MathUtils.Floor(position.X), (int)MathUtils.Floor(position.Y), (int)MathUtils.Floor(position.Z))]);
+                                forward = matrix.Forward * 0.435f;
                             }
                             Vector3 right = matrix.Right * halfWidth;
                             Vector3 up = matrix.Up * halfHeight;
-                            Vector3 forward = matrix.Forward * 0.435f;
                             if (key.Type == 2) {
                                 for (int y = 0; y < dataHeight; y++) {
                                     for (int x = 0; x < dataWidth; x++) {
@@ -131,10 +129,10 @@ namespace Game {
                                         float floatDataWidth = dataWidth;
                                         float floatDataHeight = dataHeight;
                                         Vector3 v = key.Position + forward;
-                                        Vector3 r0 = (x * 2 / floatDataWidth - 1) * right;
-                                        Vector3 r1 = ((x + 1) * 2 / floatDataWidth - 1) * right;
-                                        Vector3 u0 = (y * 2 / floatDataHeight - 1) * up;
-                                        Vector3 u1 = ((y + 1) * 2 / floatDataHeight - 1) * up;
+                                        Vector3 r0 = -(x * 2 / floatDataWidth - 1) * right;
+                                        Vector3 r1 = -((x + 1) * 2 / floatDataWidth - 1) * right;
+                                        Vector3 u0 = -(y * 2 / floatDataHeight - 1) * up;
+                                        Vector3 u1 = -((y + 1) * 2 / floatDataHeight - 1) * up;
                                         Vector3 p1 = v + r1 + u0;
                                         if (camera.ViewFrustum.Intersection(p1)) {
                                             m_batches[key.CustomBit ? 1 : 0]
@@ -143,10 +141,10 @@ namespace Game {
                                                 v + r0 + u0,
                                                 v + r0 + u1,
                                                 v + r1 + u1,
-                                                new Vector2((slotX + 1) / 16, (slotY + 1) / 16),
-                                                new Vector2(slotX / 16, (slotY + 1) / 16),
                                                 new Vector2(slotX / 16, slotY / 16),
                                                 new Vector2((slotX + 1) / 16, slotY / 16),
+                                                new Vector2((slotX + 1) / 16, (slotY + 1) / 16),
+                                                new Vector2(slotX / 16, (slotY + 1) / 16),
                                                 color
                                             );
                                         }

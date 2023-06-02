@@ -266,6 +266,7 @@ namespace Game {
                         }
                         Image.Save(GVMBData.Data, $"{GVMBData.m_worldDirectory}/GVMB/{GVMBData.m_ID.ToString("X", null)}.png", ImageFileFormat.Png, true);
                         m_dialog.UpdateFromData();
+                        m_dialog.Dismiss(true, false);
                         DialogsManager.HideDialog(busyDialog);
                         DialogsManager.ShowDialog(
                             null,

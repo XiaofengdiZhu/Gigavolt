@@ -37,7 +37,6 @@ namespace Game {
             uint bottomOutput = m_bottomOutput;
             uint inOutput = m_inOutput;
             int rotation = Rotation;
-            bool flag = false;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
@@ -45,14 +44,12 @@ namespace Game {
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Right) {
                             m_rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            flag = flag || m_rightInput != rightInput;
                             length = m_rightInput & 0xFFFu;
                             detectData = m_rightInput >> 12 == 1u;
                             skipFluid = m_rightInput >> 13 == 1u;
                         }
                         else if (connectorDirection == GVElectricConnectorDirection.Left) {
                             m_leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            flag = flag || m_leftInput != leftInput;
                             specifiedContent = Terrain.ExtractContents((int)m_leftInput);
                             specifiedData = Terrain.ExtractData((int)m_leftInput);
                         }
@@ -65,7 +62,8 @@ namespace Game {
                 m_bottomOutput = 0u;
                 return m_inOutput != inOutput || m_topOutput != topOutput || m_bottomOutput != bottomOutput;
             }
-            if (!flag) {
+            if (m_rightInput == rightInput
+                && m_leftInput == leftInput) {
                 return false;
             }
             if (specifiedContent == 0) {
