@@ -41,7 +41,7 @@ namespace Game {
         }
 
         public void UpdateFromData() {
-            if (!(m_memoryBankData.Data == null)) {
+            if (m_memoryBankData.Data != null) {
                 m_rowCountTextBox.IsEnabled = false;
                 m_rowCountTextBox.Text = m_memoryBankData.Data.Height.ToString();
                 m_rowCountTextLabel.Color = Color.Gray;
@@ -110,8 +110,10 @@ namespace Game {
             }
         }
 
-        public void Dismiss(bool result) {
-            DialogsManager.HideDialog(this);
+        public void Dismiss(bool result, bool hide = true) {
+            if (hide) {
+                DialogsManager.HideDialog(this);
+            }
             if (m_handler != null && result) {
                 m_handler();
             }

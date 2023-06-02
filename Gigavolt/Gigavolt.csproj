@@ -76,6 +76,10 @@
 		<Compile Include="Block\LED\OneLed\SubsystemGVOneLedGlow.cs"/>
 		<Compile Include="Block\LED\SevenSegmentDisplay\GVSevenSegmentDisplayBlock.cs"/>
 		<Compile Include="Block\LED\SevenSegmentDisplay\SevenSegmentDisplayGVElectricElement.cs"/>
+		<Compile Include="Block\LED\Sign\DisplayLedGVElectricElement.cs"/>
+		<Compile Include="Block\LED\Sign\GVSignBlock.cs"/>
+		<Compile Include="Block\LED\Sign\GVSignTextData.cs"/>
+		<Compile Include="Block\LED\Sign\SubsystemGVSignBlockBehavior.cs"/>
 		<Compile Include="ClassicBlock\Sign\GVAttachedSignCBlock.cs"/>
 		<Compile Include="ClassicBlock\Sign\GVIronAttachedSignCBlock.cs"/>
 		<Compile Include="ClassicBlock\Sign\GVIronPostedSignCBlock.cs"/>
@@ -87,6 +91,7 @@
 		<Compile Include="ClassicBlock\Sign\SubsystemGVSignBlockCBehavior.cs"/>
 		<Compile Include="Dialog\EditGVCounterDialog.cs"/>
 		<Compile Include="Dialog\EditGVSignCDialog.cs"/>
+		<Compile Include="Dialog\EditGVSignDialog.cs"/>
 		<Compile Include="Widget\GVStepFloatingButtons.cs"/>
 		<Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs"/>
 		<Compile Include="BaseBlock\GVWireThroughBlock.cs"/>
@@ -411,6 +416,11 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="reference\Survivalcraft.exe"/>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Dialogs\EditGVSignDialog.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 	<ProjectExtensions/>

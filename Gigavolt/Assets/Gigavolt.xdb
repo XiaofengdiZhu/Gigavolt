@@ -50,5 +50,9 @@
 			<ParameterSet Name="Texts" Description="Contains sign texts" Guid="f378e257-a493-40d5-b979-8daa8df04182"/>
 			<Parameter Name="Class" Guid="1ba2d658-7097-48b6-80db-f65a3b91535c" Value="Game.SubsystemGVSignBlockCBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVSignBlockBehavior" Guid="fe35671f-f5d3-4c53-9650-831179e307f3" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<ParameterSet Name="Texts" Description="Contains sign texts" Guid="7f899bea-68d8-432e-8141-1ddf6d329af6"/>
+			<Parameter Name="Class" Guid="9164da3a-70ed-4d99-bd66-f3d914d4e4e6" Value="Game.SubsystemGVSignBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>
