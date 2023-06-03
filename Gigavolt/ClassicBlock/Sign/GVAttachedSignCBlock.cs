@@ -198,7 +198,7 @@ namespace Game {
 
         public override Vector3 GetSignSurfaceNormal(int data) => m_surfaceNormals[GetFace(data)];
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemElectricity, int value, int x, int y, int z) {
+        public virtual GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemElectricity, int value, int x, int y, int z) {
             int data = Terrain.ExtractData(value);
             return new SignGVCElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(data)));
         }

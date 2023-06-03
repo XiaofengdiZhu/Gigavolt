@@ -36,7 +36,9 @@ namespace Game {
             m_drawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
             m_drawBlockEnvironmentData.InWorldMatrix = Matrix.Identity;
             foreach (GVDisplayPoint key in m_points.Keys) {
-                if (key.Value == 0) {
+                if (key.Value == 0
+                    || key.Color.A == 0
+                    || key.Size == 0) {
                     continue;
                 }
                 Vector3 position = key.Position;
@@ -82,110 +84,107 @@ namespace Game {
                         );
                     }
                     else {
-                        try {
-                            if (!GVStaticStorage.GVMBIDDataDictionary.TryGetValue(key.Value, out GVMemoryBankData data)
-                                || data == null) {
-                                continue;
-                            }
-                            float halfWidth;
-                            float halfHeight;
-                            int dataWidth = data.Data.Width;
-                            int dataHeight = data.Data.Height;
-                            if (dataWidth > dataHeight) {
-                                halfWidth = 0.5f;
-                                halfHeight = dataHeight / (float)dataWidth * 0.5f;
-                            }
-                            else {
-                                halfWidth = dataWidth / (float)dataHeight * 0.5f;
-                                halfHeight = 0.5f;
-                            }
-                            Color color = key.Color;
-                            Vector3 forward;
-                            if (key.Complex) {
-                                halfWidth *= key.Size;
-                                halfHeight *= key.Size;
-                                forward = Vector3.Zero;
-                            }
-                            else {
-                                color = Color.MultiplyColorOnly(color, LightingManager.LightIntensityByLightValue[m_subsystemTerrain.Terrain.GetCellLightFast((int)MathUtils.Floor(position.X), (int)MathUtils.Floor(position.Y), (int)MathUtils.Floor(position.Z))]);
-                                forward = matrix.Forward * 0.435f;
-                            }
-                            Vector3 right = matrix.Right * halfWidth;
-                            Vector3 up = matrix.Up * halfHeight;
-                            if (key.Type == 2) {
-                                for (int y = 0; y < dataHeight; y++) {
-                                    for (int x = 0; x < dataWidth; x++) {
-                                        int id = Terrain.ExtractContents((int)data.Data.GetPixel(x, y).PackedValue);
-                                        if (id == 0) {
-                                            continue;
-                                        }
-                                        Block block = BlocksManager.Blocks[id];
-                                        if (block is AirBlock) {
-                                            continue;
-                                        }
-                                        int slotIndex = BlocksManager.Blocks[id].DefaultTextureSlot;
-                                        float slotX = slotIndex % 16;
-                                        float slotY = slotIndex / 16;
-                                        float floatDataWidth = dataWidth;
-                                        float floatDataHeight = dataHeight;
-                                        Vector3 v = key.Position + forward;
-                                        Vector3 r0 = -(x * 2 / floatDataWidth - 1) * right;
-                                        Vector3 r1 = -((x + 1) * 2 / floatDataWidth - 1) * right;
-                                        Vector3 u0 = -(y * 2 / floatDataHeight - 1) * up;
-                                        Vector3 u1 = -((y + 1) * 2 / floatDataHeight - 1) * up;
-                                        Vector3 p1 = v + r1 + u0;
-                                        if (camera.ViewFrustum.Intersection(p1)) {
-                                            m_batches[key.CustomBit ? 1 : 0]
-                                            .QueueQuad(
-                                                p1,
-                                                v + r0 + u0,
-                                                v + r0 + u1,
-                                                v + r1 + u1,
-                                                new Vector2(slotX / 16, slotY / 16),
-                                                new Vector2((slotX + 1) / 16, slotY / 16),
-                                                new Vector2((slotX + 1) / 16, (slotY + 1) / 16),
-                                                new Vector2(slotX / 16, (slotY + 1) / 16),
-                                                color
-                                            );
-                                        }
+                        if (!GVStaticStorage.GVMBIDDataDictionary.TryGetValue(key.Value, out GVMemoryBankData data)
+                            || data == null) {
+                            continue;
+                        }
+                        float halfWidth;
+                        float halfHeight;
+                        int dataWidth = data.Data.Width;
+                        int dataHeight = data.Data.Height;
+                        if (dataWidth > dataHeight) {
+                            halfWidth = 0.5f;
+                            halfHeight = dataHeight / (float)dataWidth * 0.5f;
+                        }
+                        else {
+                            halfWidth = dataWidth / (float)dataHeight * 0.5f;
+                            halfHeight = 0.5f;
+                        }
+                        int lightValue;
+                        Vector3 forward;
+                        if (key.Complex) {
+                            lightValue = key.Light;
+                            halfWidth *= key.Size;
+                            halfHeight *= key.Size;
+                            forward = Vector3.Zero;
+                        }
+                        else {
+                            lightValue = m_subsystemTerrain.Terrain.GetCellLightFast((int)MathUtils.Floor(position.X), (int)MathUtils.Floor(position.Y), (int)MathUtils.Floor(position.Z));
+                            forward = matrix.Forward * 0.435f;
+                        }
+                        Color color = Color.MultiplyColorOnly(key.Color, LightingManager.LightIntensityByLightValue[lightValue]);
+                        Vector3 right = matrix.Right * halfWidth;
+                        Vector3 up = matrix.Up * halfHeight;
+                        if (key.Type == 2) {
+                            for (int y = 0; y < dataHeight; y++) {
+                                for (int x = 0; x < dataWidth; x++) {
+                                    int id = Terrain.ExtractContents((int)data.Data.GetPixel(x, y).PackedValue);
+                                    if (id == 0) {
+                                        continue;
+                                    }
+                                    Block block = BlocksManager.Blocks[id];
+                                    if (block is AirBlock) {
+                                        continue;
+                                    }
+                                    int slotIndex = BlocksManager.Blocks[id].DefaultTextureSlot;
+                                    float slotX = slotIndex % 16;
+                                    float slotY = slotIndex / 16;
+                                    float floatDataWidth = dataWidth;
+                                    float floatDataHeight = dataHeight;
+                                    Vector3 v = position + forward;
+                                    Vector3 r0 = -(x * 2 / floatDataWidth - 1) * right;
+                                    Vector3 r1 = -((x + 1) * 2 / floatDataWidth - 1) * right;
+                                    Vector3 u0 = -(y * 2 / floatDataHeight - 1) * up;
+                                    Vector3 u1 = -((y + 1) * 2 / floatDataHeight - 1) * up;
+                                    Vector3 p1 = v + r1 + u0;
+                                    if (camera.ViewFrustum.Intersection(p1)) {
+                                        m_batches[key.CustomBit ? 1 : 0]
+                                        .QueueQuad(
+                                            p1,
+                                            v + r0 + u0,
+                                            v + r0 + u1,
+                                            v + r1 + u1,
+                                            new Vector2(slotX / 16, slotY / 16),
+                                            new Vector2((slotX + 1) / 16, slotY / 16),
+                                            new Vector2((slotX + 1) / 16, (slotY + 1) / 16),
+                                            new Vector2(slotX / 16, (slotY + 1) / 16),
+                                            color
+                                        );
                                     }
                                 }
-                            }
-                            else {
-                                if (m_updateTimes.TryGetValue(key.Value, out DateTime updateTime)) {
-                                    if (updateTime != data.m_updateTime) {
-                                        m_updateTimes[key.Value] = data.m_updateTime;
-                                        m_textures[key.Value] = Texture2D.Load(data.Data);
-                                    }
-                                }
-                                else {
-                                    m_updateTimes.Add(key.Value, data.m_updateTime);
-                                    m_textures[key.Value] = Texture2D.Load(data.Data);
-                                }
-                                m_primitivesRenderer.TexturedBatch(
-                                        m_textures[key.Value],
-                                        false,
-                                        0,
-                                        DepthStencilState.DepthRead,
-                                        RasterizerState.CullCounterClockwiseScissor,
-                                        BlendState.AlphaBlend,
-                                        key.CustomBit ? SamplerState.PointClamp : SamplerState.AnisotropicClamp
-                                    )
-                                    .QueueQuad(
-                                        key.Position + right - up + forward,
-                                        key.Position - right - up + forward,
-                                        key.Position - right + up + forward,
-                                        key.Position + right + up + forward,
-                                        new Vector2(1f, 1f),
-                                        new Vector2(0f, 1f),
-                                        new Vector2(0f, 0f),
-                                        new Vector2(1f, 0f),
-                                        color
-                                    );
                             }
                         }
-                        catch (Exception ex) {
-                            Log.Error(ex);
+                        else {
+                            if (m_updateTimes.TryGetValue(key.Value, out DateTime updateTime)) {
+                                if (updateTime != data.m_updateTime) {
+                                    m_updateTimes[key.Value] = data.m_updateTime;
+                                    m_textures[key.Value] = Texture2D.Load(data.Data);
+                                }
+                            }
+                            else {
+                                m_updateTimes.Add(key.Value, data.m_updateTime);
+                                m_textures[key.Value] = Texture2D.Load(data.Data);
+                            }
+                            m_primitivesRenderer.TexturedBatch(
+                                    m_textures[key.Value],
+                                    false,
+                                    0,
+                                    DepthStencilState.DepthRead,
+                                    RasterizerState.CullCounterClockwiseScissor,
+                                    BlendState.AlphaBlend,
+                                    key.CustomBit ? SamplerState.PointClamp : SamplerState.AnisotropicClamp
+                                )
+                                .QueueQuad(
+                                    position + right - up + forward,
+                                    position - right - up + forward,
+                                    position - right + up + forward,
+                                    position + right + up + forward,
+                                    new Vector2(1f, 1f),
+                                    new Vector2(0f, 1f),
+                                    new Vector2(0f, 0f),
+                                    new Vector2(1f, 0f),
+                                    color
+                                );
                         }
                     }
                 }

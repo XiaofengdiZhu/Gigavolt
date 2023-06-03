@@ -90,7 +90,7 @@ namespace Game {
             switch (type) {
                 case 1: return "输入等于存储了图形数据的存储板ID的电压，就会在其面前显示图片";
                 case 2: return "输入等于存储了地层数据的存储板ID的电压，就会在其面前显示地层";
-                default: return "输入等于存储了方块数据的存储板ID的电压，就会在其面前显示方块";
+                default: return "输入等于要显示的方块值的电压，就会在其面前显示方块";
             }
         }
 

@@ -172,9 +172,9 @@ namespace Game {
             return string.Join(";", result);
         }
 
-        public static byte[] Image2Bytes(Image image) {
+        public static byte[] Image2Bytes(Image image, int startIndex = 0, int length = int.MaxValue) {
             byte[] bytes = new byte[image.Pixels.Length * 4];
-            for (int i = 0; i < image.Pixels.Length; i++) {
+            for (int i = startIndex; i < MathUtils.Min(image.Pixels.Length, length); i++) {
                 bytes[i * 4 + 3] = (byte)(image.Pixels[i].PackedValue & 0xFF);
                 bytes[i * 4 + 2] = (byte)((image.Pixels[i].PackedValue >> 8) & 0xFF);
                 bytes[i * 4 + 1] = (byte)((image.Pixels[i].PackedValue >> 16) & 0xFF);

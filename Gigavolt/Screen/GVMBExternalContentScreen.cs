@@ -332,8 +332,8 @@ namespace Game {
         public static Image Stream2Image(Stream stream) {
             int width = (int)Math.Ceiling(Math.Sqrt(stream.Length / 4 + 1));
             Image image = new Image(width, width);
-            byte[] fourBytes = new byte[4];
             for (int i = 0; i < stream.Length / 4 + 1; i++) {
+                byte[] fourBytes = new byte[4];
                 if (stream.Read(fourBytes, 0, 4) > 0) {
                     Color color = new Color(fourBytes[3] | ((uint)fourBytes[2] << 8) | ((uint)fourBytes[1] << 16) | ((uint)fourBytes[0] << 24));
                     image.SetPixel(i % width, i / width, color);

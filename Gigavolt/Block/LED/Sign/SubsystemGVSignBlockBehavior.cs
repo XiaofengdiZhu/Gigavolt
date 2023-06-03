@@ -30,7 +30,7 @@ namespace Game {
 
         public PrimitivesRenderer3D m_primitivesRenderer3D = new PrimitivesRenderer3D();
 
-        public static int[] m_drawOrders = { 50 };
+        public static int[] m_drawOrders = { 51 };
 
         public override int[] HandledBlocks => new[] { 801 };
 
@@ -39,16 +39,29 @@ namespace Game {
 
         public int[] DrawOrders => m_drawOrders;
 
-        public GVSignTextData GetSignData(Point3 point) {
-            if (m_textsByPoint.TryGetValue(point, out GVSignTextData value)) {
-                return new GVSignTextData { Line = value.Line, Color = value.Color, Url = value.Url };
-            }
-            return null;
-        }
+        public GVSignTextData GetSignData(Point3 point) => m_textsByPoint.TryGetValue(point, out GVSignTextData value) ? value : null;
 
         public void SetSignData(Point3 point, string line, Color color, string url) {
-            GVSignTextData textData = new GVSignTextData { Point = point, Line = line, Color = color, Url = url };
-            m_textsByPoint[point] = textData;
+            if (m_textsByPoint.TryGetValue(point, out GVSignTextData value)) {
+                value.Point = point;
+                value.Line = line;
+                value.Color = color;
+                value.Url = url;
+                value.TextureLocation = null;
+            }
+            else {
+                m_textsByPoint[point] = new GVSignTextData {
+                    Point = point,
+                    Line = line,
+                    Color = color,
+                    Url = url,
+                    FloatPosition = new Vector3(point) + new Vector3(0.5f),
+                    FloatColor = Color.White,
+                    FloatSize = 0,
+                    FloatRotation = Vector3.Zero,
+                    FloatLight = 0
+                };
+            }
             m_lastUpdatePositions.Clear();
         }
 
@@ -252,12 +265,9 @@ namespace Game {
             foreach (GVSignTextData value in m_textsByPoint.Values) {
                 m_nearTexts.Add(value);
             }
-            foreach (GVSignTextData nearText in m_nearTexts) {
-                nearText.ToBeRenderedFrame = Time.FrameIndex;
-            }
             bool flag3 = false;
-            for (int i = 0; i < MathUtils.Min(m_nearTexts.Count, 32); i++) {
-                GVSignTextData textData = m_nearTexts[i];
+            foreach (GVSignTextData textData in m_nearTexts) {
+                textData.ToBeRenderedFrame = Time.FrameIndex;
                 if (textData.TextureLocation.HasValue) {
                     continue;
                 }
@@ -335,45 +345,66 @@ namespace Game {
                         && chunkAtCell.State >= TerrainChunkState.InvalidVertices1) {
                         nearText.Light = Terrain.ExtractLight(cellValue);
                     }
-                    float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
-                    Color color = new Color(num2, num2, num2);
                     float x = 0f;
                     float x2 = nearText.UsedTextureWidth / (m_font.GlyphHeight * 16f);
                     float x3 = nearText.TextureLocation.Value / 32f;
                     float x4 = (nearText.TextureLocation.Value + nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f)) / 32f;
-                    Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
                     Vector3 vector = new Vector3(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
-                    float num3 = Vector3.Dot(camera.ViewPosition - (vector + new Vector3(0.5f)), signSurfaceNormal);
-                    Vector3 vector2 = MathUtils.Max(0.01f * num3, 0.005f) * signSurfaceNormal;
-                    for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++) {
-                        BlockMeshVertex blockMeshVertex = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3]];
-                        BlockMeshVertex blockMeshVertex2 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 1]];
-                        BlockMeshVertex blockMeshVertex3 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 2]];
-                        Vector3 p = blockMeshVertex.Position + vector + vector2;
-                        Vector3 p2 = blockMeshVertex2.Position + vector + vector2;
-                        Vector3 p3 = blockMeshVertex3.Position + vector + vector2;
-                        Vector2 textureCoordinates = blockMeshVertex.TextureCoordinates;
-                        Vector2 textureCoordinates2 = blockMeshVertex2.TextureCoordinates;
-                        Vector2 textureCoordinates3 = blockMeshVertex3.TextureCoordinates;
-                        textureCoordinates.X = MathUtils.Lerp(x, x2, textureCoordinates.X);
-                        textureCoordinates2.X = MathUtils.Lerp(x, x2, textureCoordinates2.X);
-                        textureCoordinates3.X = MathUtils.Lerp(x, x2, textureCoordinates3.X);
-                        textureCoordinates.Y = MathUtils.Lerp(x3, x4, textureCoordinates.Y);
-                        textureCoordinates2.Y = MathUtils.Lerp(x3, x4, textureCoordinates2.Y);
-                        textureCoordinates3.Y = MathUtils.Lerp(x3, x4, textureCoordinates3.Y);
-                        texturedBatch3D.QueueTriangle(
-                            p,
-                            p2,
-                            p3,
-                            textureCoordinates,
-                            textureCoordinates2,
-                            textureCoordinates3,
-                            color
+                    if (camera.ViewFrustum.Intersection(vector + new Vector3(0.5f))) {
+                        Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
+                        Vector3 vector2 = MathUtils.Max(0.01f * Vector3.Dot(camera.ViewPosition - (vector + new Vector3(0.5f)), signSurfaceNormal), 0.005f) * signSurfaceNormal;
+                        float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
+                        Color color = new Color(num2, num2, num2);
+                        for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++) {
+                            BlockMeshVertex blockMeshVertex = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3]];
+                            BlockMeshVertex blockMeshVertex2 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 1]];
+                            BlockMeshVertex blockMeshVertex3 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 2]];
+                            Vector3 p = blockMeshVertex.Position + vector + vector2;
+                            Vector3 p2 = blockMeshVertex2.Position + vector + vector2;
+                            Vector3 p3 = blockMeshVertex3.Position + vector + vector2;
+                            Vector2 textureCoordinates = blockMeshVertex.TextureCoordinates;
+                            Vector2 textureCoordinates2 = blockMeshVertex2.TextureCoordinates;
+                            Vector2 textureCoordinates3 = blockMeshVertex3.TextureCoordinates;
+                            textureCoordinates.X = MathUtils.Lerp(x, x2, textureCoordinates.X);
+                            textureCoordinates2.X = MathUtils.Lerp(x, x2, textureCoordinates2.X);
+                            textureCoordinates3.X = MathUtils.Lerp(x, x2, textureCoordinates3.X);
+                            textureCoordinates.Y = MathUtils.Lerp(x3, x4, textureCoordinates.Y);
+                            textureCoordinates2.Y = MathUtils.Lerp(x3, x4, textureCoordinates2.Y);
+                            textureCoordinates3.Y = MathUtils.Lerp(x3, x4, textureCoordinates3.Y);
+                            texturedBatch3D.QueueTriangle(
+                                p,
+                                p2,
+                                p3,
+                                textureCoordinates,
+                                textureCoordinates2,
+                                textureCoordinates3,
+                                color
+                            );
+                        }
+                    }
+                    Vector3 position = nearText.FloatPosition;
+                    if (camera.ViewFrustum.Intersection(position)
+                        && nearText.FloatSize > 0
+                        && nearText.FloatColor.A > 0) {
+                        Matrix matrix = Matrix.CreateFromYawPitchRoll(nearText.FloatRotation.X, nearText.FloatRotation.Y, nearText.FloatRotation.Z);
+                        matrix.Translation = position;
+                        Vector3 right = matrix.Right * x2 * 2 * nearText.FloatSize;
+                        Vector3 up = matrix.Up * (x4 - x3) * 20 * nearText.FloatSize;
+                        texturedBatch3D.QueueQuad(
+                            position + right - up,
+                            position - right - up,
+                            position - right + up,
+                            position + right + up,
+                            new Vector2(x2, x4),
+                            new Vector2(x, x4),
+                            new Vector2(x, x3),
+                            new Vector2(x2, x3),
+                            Color.MultiplyColorOnly(nearText.FloatColor, nearText.FloatLight)
                         );
                     }
+                    m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
                 }
             }
-            m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
         }
     }
 }
