@@ -37,8 +37,7 @@ namespace Game {
             m_drawBlockEnvironmentData.InWorldMatrix = Matrix.Identity;
             foreach (GVDisplayPoint key in m_points.Keys) {
                 if (key.Value == 0
-                    || key.Color.A == 0
-                    || key.Size == 0) {
+                    || (key.Complex && (key.Color.A == 0 || key.Size == 0))) {
                     continue;
                 }
                 Vector3 position = key.Position;

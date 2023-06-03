@@ -96,7 +96,8 @@ namespace Game {
                         }
                     }
                 }
-                else if (tag > 0) {
+                if (m_tag != tag
+                    && tag > 0) {
                     foreach (JumpWireGVElectricElement element in m_subsystem.m_tagsDictionary[tag]) {
                         if (element.m_allowTagInput) {
                             SubsystemGVElectricity.QueueGVElectricElementForSimulation(element, SubsystemGVElectricity.CircuitStep + 1);

@@ -196,7 +196,7 @@ namespace Game {
             if (blockData != null) {
                 int num = FindFreeItemId();
                 m_itemsData.Add(num, (GVPistonData)blockData.Copy());
-                dropValue.Value = Terrain.ReplaceData(dropValue.Value, (num & 1023) << 6);
+                dropValue.Value = Terrain.ReplaceData(dropValue.Value, GVPistonBlock.SetMode((num & 1023) << 6, GVPistonBlock.GetMode(Terrain.ExtractData(blockValue))));
             }
         }
 
