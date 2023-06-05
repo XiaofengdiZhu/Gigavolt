@@ -102,13 +102,13 @@ namespace Game {
                 Expression oe;
                 try {
                     oe = new Expression(CookForExpression(temp[1], "o"));
+                    line.o = oe.ToLambda<SectionInput, uint>();
                 }
                 catch (Exception e) {
                     error = $"{temp[1]}存在错误:\n{e}";
                     Log.Error(error);
                     return;
                 }
-                line.o = oe.ToLambda<SectionInput, uint>();
                 string[] sectionStrings = temp[0].Split(new[] { ";;" }, StringSplitOptions.None);
                 if (sectionStrings.Length > 16) {
                     error = "其中一套输入规则参试获取15次输入变化前的输入";
@@ -129,13 +129,15 @@ namespace Game {
                                 iF[j] = u => true;
                                 continue;
                             }
-                            Expression ie = new Expression(CookForExpression(inputString, $"i{j + 1}"));
-                            if (ie.HasErrors()) {
-                                error = $"{inputString}存在错误:\n{ie.Error}";
+                            try {
+                                Expression ie = new Expression(CookForExpression(inputString, $"i{j + 1}"));
+                                iF[j] = ie.ToLambda<SectionInput, bool>();
+                            }
+                            catch (Exception e) {
+                                error = $"{inputString}存在错误:\n{e}";
                                 Log.Error(error);
                                 return;
                             }
-                            iF[j] = ie.ToLambda<SectionInput, bool>();
                         }
                     }
                     line.i.Add(iF);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Engine;
 using TemplatesDatabase;
@@ -30,15 +31,9 @@ namespace Game {
 
         public const string IdString = "Piston";
 
-        public const int PistonMaxMovedBlocks = int.MaxValue;
-
-        public const int PistonMaxExtension = int.MaxValue;
-
-        public const int PistonMaxSpeedSetting = int.MaxValue;
-
         public UpdateOrder UpdateOrder => m_subsystemMovingBlocks.UpdateOrder + 1;
 
-        public override int[] HandledBlocks => new int[0];
+        public override int[] HandledBlocks => Array.Empty<int>();
         public SubsystemGVPistonBlockBehavior() : base(GVPistonBlock.Index) { }
 
         public void AdjustPiston(Point3 position, int length) {
@@ -185,7 +180,7 @@ namespace Game {
             DynamicArray<IMovingBlockSet> dynamicArray = new DynamicArray<IMovingBlockSet>();
             m_subsystemMovingBlocks.FindMovingBlocks(boundingBox, false, dynamicArray);
             foreach (IMovingBlockSet item in dynamicArray) {
-                if (item.Id == "Piston") {
+                if (item.Id == IdString) {
                     StopPiston((Point3)item.Tag);
                 }
             }
@@ -241,7 +236,7 @@ namespace Game {
                 if (value2.Move.HasValue
                     && !value2.Stop
                     && Time.FrameIndex != value2.StoppedFrame
-                    && m_subsystemMovingBlocks.FindMovingBlocks("Piston", key2) == null) {
+                    && m_subsystemMovingBlocks.FindMovingBlocks(IdString, key2) == null) {
                     bool flag = true;
                     for (int i = -1; i <= 1; i++) {
                         for (int j = -1; j <= 1; j++) {
@@ -269,7 +264,7 @@ namespace Game {
 
         public void UpdateMovableBlocks() {
             foreach (IMovingBlockSet movingBlockSet in m_subsystemMovingBlocks.MovingBlockSets) {
-                if (movingBlockSet.Id == "Piston") {
+                if (movingBlockSet.Id == IdString) {
                     Point3 point = (Point3)movingBlockSet.Tag;
                     int cellValue = m_subsystemTerrain.Terrain.GetCellValue(point.X, point.Y, point.Z);
                     if (Terrain.ExtractContents(cellValue) == GVPistonBlock.Index) {
@@ -393,7 +388,7 @@ namespace Game {
                             0f,
                             smoothness,
                             m_movingBlocks,
-                            "Piston",
+                            IdString,
                             position,
                             true
                         )
@@ -455,7 +450,7 @@ namespace Game {
                         0f,
                         smoothness2,
                         m_movingBlocks,
-                        "Piston",
+                        IdString,
                         position,
                         true
                     )
@@ -484,7 +479,7 @@ namespace Game {
         }
 
         public void StopPiston(Point3 position) {
-            IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.FindMovingBlocks("Piston", position);
+            IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.FindMovingBlocks(IdString, position);
             if (movingBlockSet != null) {
                 int cellValue = m_subsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z);
                 int num = Terrain.ExtractContents(cellValue);
@@ -521,7 +516,7 @@ namespace Game {
         }
 
         public void MovingBlocksCollidedWithTerrain(IMovingBlockSet movingBlockSet, Point3 p) {
-            if (!(movingBlockSet.Id == "Piston")) {
+            if (movingBlockSet.Id != IdString) {
                 return;
             }
             Point3 point = (Point3)movingBlockSet.Tag;
@@ -551,11 +546,10 @@ namespace Game {
         }
 
         public void MovingBlocksStopped(IMovingBlockSet movingBlockSet) {
-            if (!(movingBlockSet.Id == "Piston")
-                || !(movingBlockSet.Tag is Point3)) {
+            if (movingBlockSet.Id != IdString
+                || !(movingBlockSet.Tag is Point3 key)) {
                 return;
             }
-            Point3 key = (Point3)movingBlockSet.Tag;
             if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z)) == GVPistonBlock.Index) {
                 if (!m_actions.TryGetValue(key, out QueuedAction value)) {
                     value = new QueuedAction();
@@ -570,54 +564,45 @@ namespace Game {
             int num = Terrain.ExtractContents(value);
             int data = Terrain.ExtractData(value);
             switch (num) {
-                case 27:
-                case 45:
-                case 64:
-                case 65:
-                case 216: return false;
-                case 227: return true;
+                case CraftingTableBlock.Index:
+                case ChestBlock.Index:
+                case FurnaceBlock.Index:
+                case LitFurnaceBlock.Index:
+                case RottenPumpkinBlock.Index:
+                case CactusBlock.Index:
+                case DiamondBlock.Index:
+                case PumpkinBlock.Index:
+                case JackOLanternBlock.Index:
+                case DispenserBlock.Index: return false;
+                case FurnitureBlock.Index: return true;
                 case PistonBlock.Index: return !PistonBlock.GetIsExtended(data);
-                case PistonHeadBlock.Index: return false;
                 case GVPistonBlock.Index: return !GVPistonBlock.GetIsExtended(data);
+                case PistonHeadBlock.Index:
                 case GVPistonHeadBlock.Index: return false;
-                case 131:
-                case 132:
-                case 244: return false;
-                case 127: return false;
-                case 126: return false;
-                case 1: return y > 1;
+                case BedrockBlock.Index: return y > 1;
                 default: {
                     Block block = BlocksManager.Blocks[num];
-                    if (block is BottomSuckerBlock) {
-                        return false;
+                    switch (block) {
+                        case DoorBlock _:
+                        case TrapdoorBlock _:
+                        case BottomSuckerBlock _: return false;
+                        case MountedElectricElementBlock elementBlock:
+                            isEnd = true;
+                            return elementBlock.GetFace(value) == pistonFace;
+                        case MountedGVElectricElementBlock GVelementBlock:
+                            isEnd = true;
+                            return GVelementBlock.GetFace(value) == pistonFace;
+                        case LadderBlock _:
+                            isEnd = true;
+                            return pistonFace == LadderBlock.GetFace(data);
+                        case AttachedSignBlock _:
+                            isEnd = true;
+                            return pistonFace == AttachedSignBlock.GetFace(data);
+                        case GVAttachedSignCBlock _:
+                            isEnd = true;
+                            return pistonFace == GVAttachedSignCBlock.GetFace(data);
                     }
-                    if (block is MountedElectricElementBlock) {
-                        isEnd = true;
-                        return ((MountedElectricElementBlock)block).GetFace(value) == pistonFace;
-                    }
-                    if (block is DoorBlock
-                        || block is TrapdoorBlock) {
-                        return false;
-                    }
-                    if (block is LadderBlock) {
-                        isEnd = true;
-                        return pistonFace == LadderBlock.GetFace(data);
-                    }
-                    if (block is AttachedSignBlock) {
-                        isEnd = true;
-                        return pistonFace == AttachedSignBlock.GetFace(data);
-                    }
-                    if (block is GVAttachedSignCBlock) {
-                        isEnd = true;
-                        return pistonFace == GVAttachedSignCBlock.GetFace(data);
-                    }
-                    if (block.IsNonDuplicable_(value)) {
-                        return false;
-                    }
-                    if (block.IsCollidable_(value)) {
-                        return true;
-                    }
-                    return false;
+                    return !block.IsNonDuplicable_(value) && block.IsCollidable_(value);
                 }
             }
         }
