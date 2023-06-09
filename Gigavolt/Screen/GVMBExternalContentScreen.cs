@@ -113,7 +113,7 @@ namespace Game {
                 SetPath(directoryName);
             }
             if (m_exportButton.IsClicked) {
-                ExportImage($"{m_path}/{m_dialog.m_memoryBankData.m_ID.ToString("X", null)}.png", m_dialog.m_memoryBankData.Data2Image());
+                ExportImage($"{m_path}/{m_dialog.m_memoryBankData.m_ID.ToString("X", null)}.png", m_dialog.m_memoryBankData.GetImage());
             }
             if (m_actionButton.IsClicked
                 && externalContentEntry != null) {

@@ -116,7 +116,7 @@ namespace Game {
             }
             if (m_isDataInitialized && m_dataChanged) {
                 try {
-                    Image.Save(Data2Image(), $"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", ImageFileFormat.Png, true);
+                    Image.Save(GetImage(), $"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", ImageFileFormat.Png, true);
                     m_dataChanged = false;
                 }
                 catch (Exception ex) {
@@ -252,12 +252,7 @@ namespace Game {
             return string.Join(";", result);
         }
 
-        public override string Data2String() {
-            if (m_isDataInitialized) {
-                return UintArray2String(Data, m_width, m_height);
-            }
-            return null;
-        }
+        public override string Data2String() => UintArray2String(Data, m_width, m_height);
 
         public static byte[] Image2Bytes(Image image, int startIndex = 0, int length = int.MaxValue) {
             byte[] bytes = new byte[image.Pixels.Length * 4];
@@ -282,10 +277,7 @@ namespace Game {
         }
 
         public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) {
-            if (m_isDataInitialized) {
-                return UintArray2Bytes(m_data);
-            }
-            return null;
+            return m_cachedBytes = UintArray2Bytes(Data, startIndex, length);
         }
 
         public static short[] Image2Shorts(Image image) {
@@ -306,12 +298,7 @@ namespace Game {
             return shorts;
         }
 
-        public override short[] Data2Shorts() {
-            if (m_isDataInitialized) {
-                return UintArray2Shorts(m_data);
-            }
-            return null;
-        }
+        public override short[] Data2Shorts() => UintArray2Shorts(Data);
 
         public static uint[] Shorts2UintArray(short[] shorts, out uint width) {
             width = (uint)Math.Ceiling(Math.Sqrt(shorts.Length / 2 + 1));
@@ -342,12 +329,7 @@ namespace Game {
             return image;
         }
 
-        public override Image Data2Image() {
-            if (m_isDataInitialized) {
-                return UintArray2Image(Data, m_width, m_height);
-            }
-            return null;
-        }
+        public override Image Data2Image() => UintArray2Image(Data, m_width, m_height);
 
         public static uint[] Image2UintArray(Image image) {
             return image.Pixels.Select(color => color.PackedValue).ToArray();

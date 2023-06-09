@@ -234,7 +234,7 @@ namespace Game {
                         data.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
                         data.LoadData();
                     }
-                    bytes = data.Data2Bytes();
+                    bytes = data.GetBytes();
                 }
                 else {
                     bytes = GetByteFromStream(Storage.OpenFile(path, OpenFileMode.Read));

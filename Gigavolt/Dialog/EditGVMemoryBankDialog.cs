@@ -53,7 +53,7 @@ namespace Game {
                     m_okButton.IsEnabled = false;
                 }
                 else {
-                    m_linearTextBox.Text = m_memoryBankData.Data2String();
+                    m_linearTextBox.Text = m_memoryBankData.GetString();
                     m_enterString = m_linearTextBox.Text;
                 }
             }

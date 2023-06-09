@@ -71,7 +71,7 @@ namespace Game {
                                     GVMBData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
                                     GVMBData.LoadData();
                                 }
-                                short[] shorts = GVMBData.Data2Shorts();
+                                short[] shorts = GVMBData.GetShorts();
                                 int startIndex = MathUint.ToInt(topInput);
                                 int itemsCount = MathUint.ToInt(rightInput);
                                 if (itemsCount > shorts.Length

@@ -14,8 +14,6 @@ namespace Game {
         public readonly Dictionary<GVDisplayPoint, bool> m_points = new Dictionary<GVDisplayPoint, bool>();
         public Texture2D BlocksTexture;
         public TexturedBatch3D[] m_batches = new TexturedBatch3D[2];
-        public Dictionary<uint, DateTime> m_updateTimes = new Dictionary<uint, DateTime>();
-        public Dictionary<uint, Texture2D> m_textures = new Dictionary<uint, Texture2D>();
 
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
@@ -90,7 +88,7 @@ namespace Game {
                         }
                         float halfWidth;
                         float halfHeight;
-                        Image imageData = data.Data2Image();
+                        Image imageData = data.GetImage();
                         if (imageData == null) {
                             continue;
                         }
@@ -159,18 +157,8 @@ namespace Game {
                             }
                         }
                         else {
-                            if (m_updateTimes.TryGetValue(key.Value, out DateTime updateTime)) {
-                                if (updateTime != data.m_updateTime) {
-                                    m_updateTimes[key.Value] = data.m_updateTime;
-                                    m_textures[key.Value] = Texture2D.Load(imageData);
-                                }
-                            }
-                            else {
-                                m_updateTimes.Add(key.Value, data.m_updateTime);
-                                m_textures[key.Value] = Texture2D.Load(imageData);
-                            }
                             m_primitivesRenderer.TexturedBatch(
-                                    m_textures[key.Value],
+                                    data.GetTexture2D(),
                                     false,
                                     0,
                                     DepthStencilState.DepthRead,

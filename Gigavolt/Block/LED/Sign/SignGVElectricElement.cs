@@ -102,7 +102,7 @@ namespace Game {
                     && data != null) {
                     string str;
                     try {
-                        byte[] byteArray = data.Data2Bytes(0, 64);
+                        byte[] byteArray = data.GetBytes(0, 64);
                         List<byte> byteList = new List<byte>(64);
                         for (int i = 0; i < byteArray.Length; i++) {
                             byte b = byteArray[i];

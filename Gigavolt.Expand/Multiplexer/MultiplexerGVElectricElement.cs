@@ -64,20 +64,6 @@ namespace Game {
                     if (connectorDirection.HasValue) {
                         if (connectorDirection.Value == GVElectricConnectorDirection.In) {
                             m_inputsVoltage[4] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (m_inputsVoltage[4] != inputs[4]) {
-                                flag = true;
-                                if (m_inputsVoltage[4] == 0) {
-                                    m_noInInput = true;
-                                    m_nodesVoltage = (uint[])default_nodesVoltage.Clone();
-                                    m_switches = (bool[])default_switched.Clone();
-                                    m_nodesRelations = new List<int>[10];
-                                }
-                                else {
-                                    m_noInInput = false;
-                                    UpdateSwitches();
-                                    UpdateNodesRelations();
-                                }
-                            }
                         }
                         else if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
                             m_inputsVoltage[0] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
@@ -92,6 +78,20 @@ namespace Game {
                             m_inputsVoltage[3] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
                     }
+                }
+            }
+            if (m_inputsVoltage[4] != inputs[4]) {
+                flag = true;
+                if (m_inputsVoltage[4] == 0) {
+                    m_noInInput = true;
+                    m_nodesVoltage = (uint[])default_nodesVoltage.Clone();
+                    m_switches = (bool[])default_switched.Clone();
+                    m_nodesRelations = new List<int>[10];
+                }
+                else {
+                    m_noInInput = false;
+                    UpdateSwitches();
+                    UpdateNodesRelations();
                 }
             }
             for (int i = 0; i < 5; i++) {
