@@ -3,30 +3,31 @@ using System.Collections.Generic;
 namespace Game {
     public class MultiplexerGVElectricElement : RotateableGVElectricElement {
         //ABCDIn
-        public uint[] m_inputsVoltage = { 0, 0, 0, 0, 0 };
+        public uint[] m_inputsVoltage;
 
-        //ABCDabcdO
-        public uint[] default_nodesVoltage = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
+        //abcdO
         public uint[] m_nodesVoltage;
+
+        public uint[] default_nodesVoltage = { 0, 0, 0, 0, 0 };
 
         //1~20常断，21~28常通
         public bool[] default_switched = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true };
 
         public bool[] m_switches;
-        public List<uint>[] m_nodesRelations;
-        public Queue<uint> m_nodesToUpdate;
+        public List<int>[] m_nodesRelations;
+        public Queue<int> m_nodesToUpdate;
 
         //1 parent A child a, 2 parent a child A...
-        public uint[] switch2parentChildNode = { 0, 4, 4, 0, 1, 5, 5, 1, 2, 6, 6, 2, 3, 7, 7, 3, 4, 6, 6, 4, 5, 7, 7, 5, 4, 5, 5, 4, 5, 6, 6, 5, 6, 7, 7, 6, 7, 4, 4, 7, 4, 8, 8, 4, 5, 8, 8, 5, 6, 8, 8, 6, 7, 8, 8, 7 };
+        public int[] switch2parentChildNode = { -1, 0, 0, -1, -2, 1, 1, -2, -3, 2, 2, -3, -4, 3, 3, -4, 0, 2, 2, 0, 1, 3, 3, 1, 0, 1, 1, 0, 1, 2, 2, 1, 2, 3, 3, 4, 3, 0, 0, 3, 0, 4, 4, 0, 1, 4, 4, 1, 2, 4, 4, 2, 3, 4, 4, 3 };
 
         public bool m_noInInput = true;
 
         public MultiplexerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_nodesVoltage = (uint[])default_nodesVoltage.Clone();
+            m_inputsVoltage = (uint[])default_nodesVoltage.Clone();
             m_switches = (bool[])default_switched.Clone();
-            m_nodesRelations = new List<uint>[18];
-            m_nodesToUpdate = new Queue<uint>();
+            m_nodesRelations = new List<int>[10];
+            m_nodesToUpdate = new Queue<int>();
         }
 
         public override uint GetOutputVoltage(int face) {
@@ -54,7 +55,7 @@ namespace Game {
 
         public override bool Simulate() {
             uint[] inputs = (uint[])m_inputsVoltage.Clone();
-            m_inputsVoltage = new uint[] { 0, 0, 0, 0, 0 };
+            m_inputsVoltage = (uint[])default_nodesVoltage.Clone();
             bool flag = false;
             int rotation = Rotation;
             foreach (GVElectricConnection connection in Connections) {
@@ -69,7 +70,7 @@ namespace Game {
                                     m_noInInput = true;
                                     m_nodesVoltage = (uint[])default_nodesVoltage.Clone();
                                     m_switches = (bool[])default_switched.Clone();
-                                    m_nodesRelations = new List<uint>[18];
+                                    m_nodesRelations = new List<int>[10];
                                 }
                                 else {
                                     m_noInInput = false;
@@ -116,7 +117,7 @@ namespace Game {
         }
 
         public void UpdateNodesRelations() {
-            m_nodesRelations = new List<uint>[18];
+            m_nodesRelations = new List<int>[10];
             if (!(m_switches[1] || m_switches[3] || m_switches[5] || m_switches[7])) {
                 m_nodesVoltage = (uint[])default_nodesVoltage.Clone();
             }
@@ -134,17 +135,19 @@ namespace Game {
                 m_nodesToUpdate.Clear();
             }
             m_nodesVoltage = (uint[])default_nodesVoltage.Clone();
-            for (uint i = 0; i < 4; i++) {
-                SetNodeVoltage(i, m_inputsVoltage[i]);
+            for (int i = 0; i < 4; i++) {
+                if (m_switches[i * 2]) {
+                    SetNodeVoltage(i, m_inputsVoltage[i]);
+                }
             }
             while (m_nodesToUpdate.Count > 0) {
                 UpdateNodeVoltage(m_nodesToUpdate.Dequeue());
             }
         }
 
-        public void UpdateNodeVoltage(uint node) {
+        public void UpdateNodeVoltage(int node) {
             uint newVoltage = 0u;
-            foreach (uint i in m_nodesRelations[node * 2]) {
+            foreach (int i in m_nodesRelations[node * 2]) {
                 newVoltage |= m_nodesVoltage[i];
             }
             if (newVoltage != m_nodesVoltage[node]) {
@@ -152,22 +155,26 @@ namespace Game {
             }
         }
 
-        public void SetNodeVoltage(uint node, uint voltage) {
+        public void SetNodeVoltage(int node, uint voltage) {
             m_nodesVoltage[node] = voltage;
             if (m_nodesRelations[node * 2 + 1] != null) {
-                foreach (uint i in m_nodesRelations[node * 2 + 1]) {
+                foreach (int i in m_nodesRelations[node * 2 + 1]) {
                     m_nodesToUpdate.Enqueue(i);
                 }
             }
         }
 
-        public void AddNodesRelation(uint parent, uint child) {
+        public void AddNodesRelation(int parent, int child) {
+            if (parent < 0
+                || child < 0) {
+                return;
+            }
             if (m_nodesRelations[child * 2] == null) {
-                m_nodesRelations[child * 2] = new List<uint>();
+                m_nodesRelations[child * 2] = new List<int>();
             }
             m_nodesRelations[child * 2].Add(parent);
             if (m_nodesRelations[parent * 2 + 1] == null) {
-                m_nodesRelations[parent * 2 + 1] = new List<uint>();
+                m_nodesRelations[parent * 2 + 1] = new List<int>();
             }
             m_nodesRelations[parent * 2 + 1].Add(child);
         }
