@@ -100,6 +100,10 @@
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs" />
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs" />
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Memory.cs" />
+		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankBlock.cs" />
+		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankData.cs" />
+		<Compile Include="MoreMemoryBanks\VolatileMemory\SubsystemGVVolatileMemoryBankBlockBehavior.cs" />
+		<Compile Include="MoreMemoryBanks\VolatileMemory\VolatileMemoryBankGVElectricElement.cs" />
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs" />
 		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs" />
 		<Compile Include="MoreSensors\EnhancedRealTimeClock\EnhancedRealTimeClockGVElectricElement.cs" />

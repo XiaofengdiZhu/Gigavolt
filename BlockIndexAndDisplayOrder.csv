@@ -68,3 +68,4 @@ GVWoodenAttachedSignCBlock,598,128
 GVIronPostedSignCBlock,710,129
 GVIronAttachedSignCBlock,711,130
 GVSignBlock,801,1021
+GVVolatileMemoryBankBlock,1012,1022

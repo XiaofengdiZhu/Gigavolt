@@ -52,6 +52,10 @@
     "GVTerrainRaycastDetectorBlock:0": {
       "DisplayName": "GV地形射线探测器",
       "Description": "向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见本Mod Github页面的介绍"
+    },
+    "GVVolatileMemoryBankBlock:0": {
+      "DisplayName": "GV易失性存储器",
+      "Description": "和存储器相似，但退出游戏后数据会丢失，不过ID保持不变"
     }
   },
   "ContentWidgets": {

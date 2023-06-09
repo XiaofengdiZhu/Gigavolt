@@ -45,7 +45,7 @@ namespace Game {
             m_updateTime = DateTime.Now;
         }
 
-        public uint LastOutput { get; set; }
+        public virtual uint LastOutput { get; set; }
 
         public override uint Read(uint index) {
             if (m_isDataInitialized && index < Data.Length) {
