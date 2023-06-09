@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
+using Engine.Media;
 using GameEntitySystem;
 using TemplatesDatabase;
 
@@ -83,14 +84,18 @@ namespace Game {
                         );
                     }
                     else {
-                        if (!GVStaticStorage.GVMBIDDataDictionary.TryGetValue(key.Value, out GVMemoryBankData data)
+                        if (!GVStaticStorage.GVMBIDDataDictionary.TryGetValue(key.Value, out GVArrayData data)
                             || data == null) {
                             continue;
                         }
                         float halfWidth;
                         float halfHeight;
-                        int dataWidth = data.Data.Width;
-                        int dataHeight = data.Data.Height;
+                        Image imageData = data.Data2Image();
+                        if (imageData == null) {
+                            continue;
+                        }
+                        int dataWidth = imageData.Width;
+                        int dataHeight = imageData.Height;
                         if (dataWidth > dataHeight) {
                             halfWidth = 0.5f;
                             halfHeight = dataHeight / (float)dataWidth * 0.5f;
@@ -117,7 +122,7 @@ namespace Game {
                         if (key.Type == 2) {
                             for (int y = 0; y < dataHeight; y++) {
                                 for (int x = 0; x < dataWidth; x++) {
-                                    int id = Terrain.ExtractContents((int)data.Data.GetPixel(x, y).PackedValue);
+                                    int id = Terrain.ExtractContents((int)imageData.GetPixel(x, y).PackedValue);
                                     if (id == 0) {
                                         continue;
                                     }
@@ -157,12 +162,12 @@ namespace Game {
                             if (m_updateTimes.TryGetValue(key.Value, out DateTime updateTime)) {
                                 if (updateTime != data.m_updateTime) {
                                     m_updateTimes[key.Value] = data.m_updateTime;
-                                    m_textures[key.Value] = Texture2D.Load(data.Data);
+                                    m_textures[key.Value] = Texture2D.Load(imageData);
                                 }
                             }
                             else {
                                 m_updateTimes.Add(key.Value, data.m_updateTime);
-                                m_textures[key.Value] = Texture2D.Load(data.Data);
+                                m_textures[key.Value] = Texture2D.Load(imageData);
                             }
                             m_primitivesRenderer.TexturedBatch(
                                     m_textures[key.Value],

@@ -2,7 +2,7 @@
 
 namespace Game {
     public static class GVStaticStorage {
-        public static Dictionary<uint, GVMemoryBankData> GVMBIDDataDictionary = new Dictionary<uint, GVMemoryBankData>();
+        public static Dictionary<uint, GVArrayData> GVMBIDDataDictionary = new Dictionary<uint, GVArrayData>();
 
         public static uint GetUniqueGVMBID() {
             Random random = new Random();

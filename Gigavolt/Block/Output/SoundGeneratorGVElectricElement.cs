@@ -65,13 +65,13 @@ namespace Game {
                         m_sound.Dispose();
                     }
                     if (inInput > 0) {
-                        if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(inInput, out GVMemoryBankData GVMBData)) {
+                        if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(inInput, out GVArrayData GVMBData)) {
                             try {
                                 if (GVMBData.m_worldDirectory == null) {
                                     GVMBData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
                                     GVMBData.LoadData();
                                 }
-                                short[] shorts = GVMemoryBankData.Image2Shorts(GVMBData.Data);
+                                short[] shorts = GVMBData.Data2Shorts();
                                 int startIndex = MathUint.ToInt(topInput);
                                 int itemsCount = MathUint.ToInt(rightInput);
                                 if (itemsCount > shorts.Length

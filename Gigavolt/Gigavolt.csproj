@@ -14,6 +14,7 @@
 		<Deterministic>true</Deterministic>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<TargetFrameworkProfile />
+		<LangVersion>8</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<DebugSymbols>true</DebugSymbols>
@@ -80,6 +81,15 @@
 		<Compile Include="Block\LED\Sign\GVSignBlock.cs" />
 		<Compile Include="Block\LED\Sign\GVSignTextData.cs" />
 		<Compile Include="Block\LED\Sign\SubsystemGVSignBlockBehavior.cs" />
+		<Compile Include="Block\Store\GVArrayData.cs" />
+		<Compile Include="Block\Store\MemoryBank\GVMemoryBankBlock.cs" />
+		<Compile Include="Block\Store\MemoryBank\GVMemoryBankData.cs" />
+		<Compile Include="Block\Store\MemoryBank\MemoryBankGVElectricElement.cs" />
+		<Compile Include="Block\Store\MemoryBank\SubsystemGVMemoryBankBlockBehavior.cs" />
+		<Compile Include="Block\Store\TruthTable\GVTruthTableCircuitBlock.cs" />
+		<Compile Include="Block\Store\TruthTable\GVTruthTableData.cs" />
+		<Compile Include="Block\Store\TruthTable\SubsystemGVTruthTableCircuitBlockBehavior.cs" />
+		<Compile Include="Block\Store\TruthTable\TruthTableCircuitGVElectricElement.cs" />
 		<Compile Include="ClassicBlock\Sign\GVAttachedSignCBlock.cs" />
 		<Compile Include="ClassicBlock\Sign\GVIronAttachedSignCBlock.cs" />
 		<Compile Include="ClassicBlock\Sign\GVIronPostedSignCBlock.cs" />
@@ -164,17 +174,9 @@
 		<Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs" />
 		<Compile Include="Block\Source\SwitchGVElectricElement.cs" />
 		<Compile Include="Block\Store\GVSRLatchBlock.cs" />
-		<Compile Include="Block\Store\GVTruthTableCircuitBlock.cs" />
-		<Compile Include="Block\Store\GVTruthTableData.cs" />
 		<Compile Include="Block\Store\SRLatchGVElectricElement.cs" />
-		<Compile Include="Block\Store\SubsystemGVTruthTableCircuitBlockBehavior.cs" />
-		<Compile Include="Block\Store\TruthTableCircuitGVElectricElement.cs" />
 		<Compile Include="Block\Wire\GVWireBlock.cs" />
-		<Compile Include="Block\Store\GVMemoryBankBlock.cs" />
-		<Compile Include="Block\Store\GVMemoryBankData.cs" />
-		<Compile Include="Block\Store\MemoryBankGVElectricElement.cs" />
 		<Compile Include="Block\Source\SubsystemGVButtonBlockBehavior.cs" />
-		<Compile Include="Block\Store\SubsystemGVMemoryBankBlockBehavior.cs" />
 		<Compile Include="Block\Wire\GVWireThroughBricksBlock.cs" />
 		<Compile Include="Block\Wire\GVWireThroughCobblestoneBlock.cs" />
 		<Compile Include="Block\Wire\GVWireThroughPlanksBlock.cs" />

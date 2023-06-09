@@ -98,11 +98,11 @@ namespace Game {
             }
             if (m_inputIn != inputIn
                 && m_inputIn > 0) {
-                if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inputIn, out GVMemoryBankData data)
+                if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inputIn, out GVArrayData data)
                     && data != null) {
                     string str;
                     try {
-                        byte[] byteArray = GVMemoryBankData.Image2Bytes(data.Data, 0, 64);
+                        byte[] byteArray = data.Data2Bytes(0, 64);
                         List<byte> byteList = new List<byte>(64);
                         for (int i = 0; i < byteArray.Length; i++) {
                             byte b = byteArray[i];

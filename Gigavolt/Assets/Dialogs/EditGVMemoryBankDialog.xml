@@ -41,7 +41,7 @@
 				<CanvasWidget Size="0, 10"/>
 				<CanvasWidget Size="504, 34" HorizontalAlignment="Center">
 					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-					<TextBoxWidget Name="EditGVMemoryBankDialog.LinearText" Size="500, 30" MaximumLength="10000000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+					<TextBoxWidget Name="EditGVMemoryBankDialog.LinearText" Size="500, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 				</CanvasWidget>
 				<CanvasWidget Size="0, Infinity"/>
 			</StackPanelWidget>

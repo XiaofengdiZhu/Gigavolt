@@ -223,23 +223,30 @@ namespace Game {
         }
 
         public void LoadRomFromPath(string path) {
-            byte[] bytes;
-            if (path == "nestest") {
-                bytes = GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes"));
-            }
-            else if (uint.TryParse(path, NumberStyles.HexNumber, null, out uint uintResult)
-                && GVStaticStorage.GVMBIDDataDictionary.TryGetValue(uintResult, out GVMemoryBankData data)) {
-                if (data.m_worldDirectory == null) {
-                    data.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
-                    data.LoadData();
+            byte[] bytes = null;
+            try {
+                if (path == "nestest") {
+                    bytes = GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes"));
                 }
-                bytes = GVMemoryBankData.Image2Bytes(data.Data);
+                else if (uint.TryParse(path, NumberStyles.HexNumber, null, out uint uintResult)
+                    && GVStaticStorage.GVMBIDDataDictionary.TryGetValue(uintResult, out GVArrayData data)) {
+                    if (data.m_worldDirectory == null) {
+                        data.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
+                        data.LoadData();
+                    }
+                    bytes = data.Data2Bytes();
+                }
+                else {
+                    bytes = GetByteFromStream(Storage.OpenFile(path, OpenFileMode.Read));
+                }
             }
-            else {
-                bytes = GetByteFromStream(Storage.OpenFile(path, OpenFileMode.Read));
+            catch (Exception e) {
+                Log.Error(e);
             }
-            _emu._cartridge.LoadROM(bytes);
-            _emu.LoadRom(bytes);
+            if (bytes != null) {
+                _emu._cartridge.LoadROM(bytes);
+                _emu.LoadRom(bytes);
+            }
         }
 
         /// <summary>

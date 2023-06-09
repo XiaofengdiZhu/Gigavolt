@@ -1,7 +1,6 @@
 using System;
 using System.Xml.Linq;
 using Engine;
-using Engine.Media;
 
 namespace Game {
     public class EditGVMemoryBankDialog : Dialog {
@@ -43,18 +42,18 @@ namespace Game {
         public void UpdateFromData() {
             if (m_memoryBankData.Data != null) {
                 m_rowCountTextBox.IsEnabled = false;
-                m_rowCountTextBox.Text = m_memoryBankData.Data.Height.ToString();
+                m_rowCountTextBox.Text = m_memoryBankData.m_height.ToString();
                 m_rowCountTextLabel.Color = Color.Gray;
                 m_colCountTextBox.IsEnabled = false;
-                m_colCountTextBox.Text = m_memoryBankData.Data.Width.ToString();
+                m_colCountTextBox.Text = m_memoryBankData.m_width.ToString();
                 m_colCountTextLabel.Color = Color.Gray;
-                if (m_memoryBankData.Data.Pixels.LongLength > 1000000) {
+                if (m_memoryBankData.Data.LongLength > 100000) {
                     m_linearTextBox.Text = LanguageControl.Get(GetType().Name, 1);
                     m_linearTextBox.IsEnabled = false;
                     m_okButton.IsEnabled = false;
                 }
                 else {
-                    m_linearTextBox.Text = GVMemoryBankData.Image2String(m_memoryBankData.Data);
+                    m_linearTextBox.Text = m_memoryBankData.Data2String();
                     m_enterString = m_linearTextBox.Text;
                 }
             }
@@ -63,36 +62,27 @@ namespace Game {
         public override void Update() {
             if (m_okButton.IsClicked) {
                 if (m_enterString != m_linearTextBox.Text) {
-                    int width = 0;
-                    int height = 0;
-                    int.TryParse(m_colCountTextBox.Text, out width);
-                    int.TryParse(m_rowCountTextBox.Text, out height);
-                    string error = null;
-                    Image image = null;
+                    int.TryParse(m_colCountTextBox.Text, out int width);
+                    int.TryParse(m_rowCountTextBox.Text, out int height);
                     try {
-                        image = GVMemoryBankData.String2Image(m_linearTextBox.Text, width, height);
+                        m_memoryBankData.String2Data(m_linearTextBox.Text, width, height);
                     }
                     catch (Exception ex) {
-                        error = ex.ToString();
+                        string error = ex.ToString();
                         Log.Error(error);
-                    }
-                    if (image == null) {
                         DialogsManager.ShowDialog(
                             null,
                             new MessageDialog(
                                 LanguageControl.Error,
-                                error ?? LanguageControl.Get(GetType().Name, 2),
+                                LanguageControl.Get(GetType().Name, 2),
                                 "OK",
                                 null,
                                 null
                             )
                         );
                     }
-                    else {
-                        m_memoryBankData.Data = image;
-                        m_memoryBankData.SaveString();
-                        Dismiss(true);
-                    }
+                    m_memoryBankData.SaveString();
+                    Dismiss(true);
                 }
                 else {
                     Dismiss(false);
