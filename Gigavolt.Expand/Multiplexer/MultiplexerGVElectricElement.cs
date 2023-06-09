@@ -32,16 +32,20 @@ namespace Game {
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
             if (connectorDirection.HasValue) {
-                if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
+                if (connectorDirection.Value == GVElectricConnectorDirection.Top
+                    && m_switches[1]) {
                     return m_nodesVoltage[0];
                 }
-                if (connectorDirection.Value == GVElectricConnectorDirection.Right) {
+                if (connectorDirection.Value == GVElectricConnectorDirection.Right
+                    && m_switches[3]) {
                     return m_nodesVoltage[1];
                 }
-                if (connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
+                if (connectorDirection.Value == GVElectricConnectorDirection.Bottom
+                    && m_switches[5]) {
                     return m_nodesVoltage[2];
                 }
-                if (connectorDirection.Value == GVElectricConnectorDirection.Left) {
+                if (connectorDirection.Value == GVElectricConnectorDirection.Left
+                    && m_switches[7]) {
                     return m_nodesVoltage[3];
                 }
             }
