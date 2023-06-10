@@ -11,13 +11,13 @@ namespace Game {
             m_updateTime = DateTime.Now;
         }
 
-        public GVVolatileMemoryBankData(uint ID, uint[] image = null) {
+        public GVVolatileMemoryBankData(uint ID, uint[] image = null, uint width = 0, uint height = 0) {
             m_ID = ID;
             m_data = image;
+            m_width = width;
+            m_height = height;
             m_isDataInitialized = image != null;
-            if (!GVStaticStorage.GVMBIDDataDictionary.ContainsKey(m_ID)) {
-                GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
-            }
+            GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             m_updateTime = DateTime.Now;
         }
 
@@ -26,12 +26,14 @@ namespace Game {
             set { }
         }
 
+        public override IEditableItemData Copy() => new GVVolatileMemoryBankData(m_ID, m_isDataInitialized ? (uint[])Data.Clone() : null, m_width, m_height);
+
         public override void LoadString(string data) {
             string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             if (array.Length >= 1) {
                 string text = array[0];
                 m_ID = uint.Parse(text, NumberStyles.HexNumber, null);
-                GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
+                GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             }
         }
 

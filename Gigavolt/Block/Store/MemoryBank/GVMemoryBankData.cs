@@ -33,15 +33,15 @@ namespace Game {
             m_updateTime = DateTime.Now;
         }
 
-        public GVMemoryBankData(uint ID, string worldDirectory, uint[] image = null, uint lastOutput = 0) {
+        public GVMemoryBankData(uint ID, string worldDirectory, uint[] image = null, uint width = 0, uint height = 0, uint lastOutput = 0) {
             m_ID = ID;
             m_worldDirectory = worldDirectory;
             m_data = image;
+            m_width = width;
+            m_height = height;
             m_isDataInitialized = image != null;
             LastOutput = lastOutput;
-            if (!GVStaticStorage.GVMBIDDataDictionary.ContainsKey(m_ID)) {
-                GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
-            }
+            GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             m_updateTime = DateTime.Now;
         }
 
@@ -79,7 +79,14 @@ namespace Game {
             }
         }
 
-        public override IEditableItemData Copy() => new GVMemoryBankData(m_ID, m_worldDirectory, m_isDataInitialized ? null : (uint[])Data.Clone(), LastOutput);
+        public override IEditableItemData Copy() => new GVMemoryBankData(
+            m_ID,
+            m_worldDirectory,
+            m_isDataInitialized ? (uint[])Data.Clone() : null,
+            m_width,
+            m_height,
+            LastOutput
+        );
 
         public override void LoadData() {
             if (m_worldDirectory != null) {
@@ -98,7 +105,7 @@ namespace Game {
                 string text = array[0];
                 m_ID = uint.Parse(text, NumberStyles.HexNumber, null);
                 LoadData();
-                GVStaticStorage.GVMBIDDataDictionary.Add(m_ID, this);
+                GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             }
             if (array.Length >= 2) {
                 LastOutput = uint.Parse(array[1], NumberStyles.HexNumber, null);

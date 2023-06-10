@@ -27,7 +27,7 @@ namespace Game {
             int count = inventory.GetSlotCount(slotIndex);
             int id = Terrain.ExtractData(value);
             GVMemoryBankData memoryBankData = GetItemData(id);
-            memoryBankData = memoryBankData != null ? (GVMemoryBankData)memoryBankData.Copy() : new GVMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), m_subsystemGameInfo.DirectoryName);
+            memoryBankData = memoryBankData ?? new GVMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), m_subsystemGameInfo.DirectoryName);
             if (memoryBankData.m_worldDirectory == null) {
                 memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
                 memoryBankData.LoadData();

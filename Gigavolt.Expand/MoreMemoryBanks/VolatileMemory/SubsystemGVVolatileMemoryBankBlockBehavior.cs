@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using System;
+using Engine;
 
 namespace Game {
     public class SubsystemGVVolatileMemoryBankBlockBehavior : SubsystemEditableItemBehavior<GVVolatileMemoryBankData> {
@@ -7,27 +8,32 @@ namespace Game {
         public SubsystemGVVolatileMemoryBankBlockBehavior() : base(GVVolatileMemoryBankBlock.Index) { }
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
-            bool isDragInProgress = componentPlayer.DragHostWidget.IsDragInProgress;
-            if (isDragInProgress) {
-                return false;
+            try {
+                bool isDragInProgress = componentPlayer.DragHostWidget.IsDragInProgress;
+                if (isDragInProgress) {
+                    return false;
+                }
+                int value = inventory.GetSlotValue(slotIndex);
+                int count = inventory.GetSlotCount(slotIndex);
+                int id = Terrain.ExtractData(value);
+                GVVolatileMemoryBankData memoryBankData = GetItemData(id);
+                memoryBankData = memoryBankData ?? new GVVolatileMemoryBankData(GVStaticStorage.GetUniqueGVMBID());
+                DialogsManager.ShowDialog(
+                    componentPlayer.GuiWidget,
+                    new EditGVMemoryBankDialog(
+                        memoryBankData,
+                        delegate {
+                            int data = StoreItemDataAtUniqueId(memoryBankData);
+                            int value2 = Terrain.ReplaceData(value, data);
+                            inventory.RemoveSlotItems(slotIndex, count);
+                            inventory.AddSlotItems(slotIndex, value2, count);
+                        }
+                    )
+                );
             }
-            int value = inventory.GetSlotValue(slotIndex);
-            int count = inventory.GetSlotCount(slotIndex);
-            int id = Terrain.ExtractData(value);
-            GVVolatileMemoryBankData memoryBankData = GetItemData(id);
-            memoryBankData = memoryBankData != null ? (GVVolatileMemoryBankData)memoryBankData.Copy() : new GVVolatileMemoryBankData(GVStaticStorage.GetUniqueGVMBID());
-            DialogsManager.ShowDialog(
-                componentPlayer.GuiWidget,
-                new EditGVMemoryBankDialog(
-                    memoryBankData,
-                    delegate {
-                        int data = StoreItemDataAtUniqueId(memoryBankData);
-                        int value2 = Terrain.ReplaceData(value, data);
-                        inventory.RemoveSlotItems(slotIndex, count);
-                        inventory.AddSlotItems(slotIndex, value2, count);
-                    }
-                )
-            );
+            catch (Exception e) {
+                Log.Error(e);
+            }
             return true;
         }
 
