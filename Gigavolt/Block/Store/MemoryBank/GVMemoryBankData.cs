@@ -54,7 +54,7 @@ namespace Game {
             return 0u;
         }
 
-        public uint Read(uint col, uint row) {
+        public virtual uint Read(uint col, uint row) {
             if (m_isDataInitialized
                 && col < m_width
                 && row < m_height) {
@@ -71,7 +71,7 @@ namespace Game {
             }
         }
 
-        public void Write(uint col, uint row, uint data) {
+        public virtual void Write(uint col, uint row, uint data) {
             if (m_isDataInitialized
                 && col < m_width
                 && row < m_height) {

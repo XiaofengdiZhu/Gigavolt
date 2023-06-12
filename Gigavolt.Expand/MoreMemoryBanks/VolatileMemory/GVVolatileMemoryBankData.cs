@@ -26,6 +26,45 @@ namespace Game {
             set { }
         }
 
+        public override void Write(uint index, uint data) {
+            if (m_isDataInitialized && index < Data.Length) {
+                Data[index] = data;
+                m_updateTime = DateTime.Now;
+                m_dataChanged = true;
+            }
+        }
+
+        public override void Write(uint col, uint row, uint data) {
+            if (m_isDataInitialized) {
+                if (col >= m_width) {
+                    uint[] newData = new uint[(col + 1) * m_height];
+                    for (int y = 0; y < m_height; y++) {
+                        Array.Copy(
+                            Data,
+                            y * m_width,
+                            newData,
+                            y * col,
+                            m_width
+                        );
+                    }
+                    Data = newData;
+                    m_width = col + 1;
+                }
+                if (row >= m_height) {
+                    uint[] newData = new uint[m_width * (row + 1)];
+                    Array.Copy(Data, newData, Data.Length);
+                    Data = newData;
+                    m_height = row + 1;
+                }
+            }
+            else {
+                Data = new uint[(col + 1) * (row + 1)];
+                m_width = col + 1;
+                m_height = row + 1;
+            }
+            Write(row * m_width + col, data);
+        }
+
         public override IEditableItemData Copy() => new GVVolatileMemoryBankData(m_ID, m_isDataInitialized ? (uint[])Data.Clone() : null, m_width, m_height);
 
         public override void LoadString(string data) {
