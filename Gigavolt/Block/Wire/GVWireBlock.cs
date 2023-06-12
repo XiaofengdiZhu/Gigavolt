@@ -135,7 +135,7 @@ namespace Game {
             int num2 = wireFacesBitmask | (1 << raycastResult.CellFace.Face);
             BlockPlacementData result;
             if (num2 != wireFacesBitmask
-                || !(block is WireBlock)) {
+                || !(block is GVWireBlock)) {
                 result = default;
                 result.Value = SetWireFacesBitmask(value, num2);
                 result.CellFace = raycastResult.CellFace;
