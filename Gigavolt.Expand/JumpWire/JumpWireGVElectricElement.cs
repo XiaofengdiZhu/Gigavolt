@@ -19,6 +19,10 @@ namespace Game {
 
         public override uint GetOutputVoltage(int face) => SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face) == GVElectricConnectorDirection.Top ? m_output : 0u;
 
+        public override void OnRemoved() {
+            m_subsystem.m_tagsDictionary[m_tag].Remove(this);
+        }
+
         public override bool Simulate() {
             try {
                 uint output = m_output;
@@ -67,19 +71,19 @@ namespace Game {
                                 }
                             }
                             else if (connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
-                                if (m_allowBottomInput) {
-                                    m_bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                    m_output = m_bottomInput;
-                                }
-                                else {
-                                    m_bottomInput = 0u;
-                                }
-                                if (m_bottomInput != bottomInput) {
-                                    flag = true;
-                                }
+                                m_bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                             }
                         }
                     }
+                }
+                if (m_allowBottomInput) {
+                    m_output = m_bottomInput;
+                    if (m_bottomInput != bottomInput) {
+                        flag = true;
+                    }
+                }
+                else {
+                    m_bottomInput = 0u;
                 }
                 if (m_tag > 0) {
                     if (m_allowTagInput) {

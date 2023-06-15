@@ -12,6 +12,7 @@ namespace Game {
         public uint[] m_data;
         public uint m_width;
         public uint m_height;
+        public bool m_dataChanged;
 
         public uint[] Data {
             get => m_data;
@@ -22,8 +23,6 @@ namespace Game {
                 m_isDataInitialized = value != null;
             }
         }
-
-        public bool m_dataChanged;
 
         public GVMemoryBankData() {
             m_ID = GVStaticStorage.GetUniqueGVMBID();
@@ -91,7 +90,10 @@ namespace Game {
         public override void LoadData() {
             if (m_worldDirectory != null) {
                 try {
-                    Image2Data(Image.Load($"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", ImageFileFormat.Png));
+                    string path = $"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png";
+                    if (Storage.FileExists(path)) {
+                        Image2Data(Image.Load(path, ImageFileFormat.Png));
+                    }
                 }
                 catch (Exception ex) {
                     Log.Error(ex);
@@ -199,14 +201,11 @@ namespace Game {
             return image;
         }
 
-        public override void String2Data(string data, int width = 0, int height = 0) {
+        public override void String2Data(string str, int width = 0, int height = 0) {
             int w = width;
             int h = height;
-            uint[] image = String2UintArray(data, ref w, ref h);
-            if (image == null) {
-                throw new Exception("该文本无法转换为指定数据");
-            }
-            Data = String2UintArray(data, ref w, ref h);
+            uint[] image = String2UintArray(str, ref w, ref h);
+            Data = image ?? throw new Exception("该文本无法转换为指定数据");
             m_width = (uint)w;
             m_height = (uint)h;
         }
@@ -326,11 +325,14 @@ namespace Game {
 
         public override void Shorts2Data(short[] shorts) {
             Data = Shorts2UintArray(shorts, out m_width);
+            m_height = m_width;
         }
 
         public static Image UintArray2Image(uint[] array, uint width = 0, uint height = 0) {
             Image image = new Image(width == 0 ? array.Length : (int)width, height == 0 ? 1 : (int)height);
+            int j = 0;
             for (int i = 0; i < array.Length; i++) {
+                j = i;
                 image.Pixels[i].PackedValue = array[i];
             }
             return image;
@@ -362,6 +364,7 @@ namespace Game {
 
         public override void Stream2Data(Stream stream) {
             Data = Stream2UintArray(stream, out m_width);
+            m_height = m_width;
         }
     }
 }

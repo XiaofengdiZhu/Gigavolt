@@ -1,3 +1,5 @@
+using Engine;
+
 namespace Game {
     public class GVSignBlock : GVAttachedSignCBlock {
         public const int Index = 801;
@@ -19,6 +21,47 @@ namespace Game {
                 return result;
             }
             return default;
+        }
+
+        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
+            int data = Terrain.ExtractData(value);
+            int face = GetFace(data);
+            int? color = GetColor(data);
+            if (color.HasValue) {
+                generator.GenerateMeshVertices(
+                    this,
+                    x,
+                    y,
+                    z,
+                    m_coloredBlockMeshes[face],
+                    SubsystemPalette.GetColor(generator, color),
+                    null,
+                    geometry.SubsetOpaque
+                );
+            }
+            else {
+                generator.GenerateMeshVertices(
+                    this,
+                    x,
+                    y,
+                    z,
+                    m_blockMeshes[face],
+                    new Color(204, 204, 204, 255),
+                    null,
+                    geometry.SubsetOpaque
+                );
+            }
+            GenerateGVWireVertices(
+                generator,
+                value,
+                x,
+                y,
+                z,
+                GetFace(data),
+                0.375f,
+                Vector2.Zero,
+                geometry.SubsetOpaque
+            );
         }
     }
 }

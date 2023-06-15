@@ -46,9 +46,13 @@ namespace Game {
             uint inputIn = m_inputIn;
             m_inputIn = 0u;
             uint inputTop = m_inputTop;
+            m_inputTop = 0u;
             uint inputRight = m_inputRight;
+            m_inputRight = 0u;
             uint inputBottom = m_inputBottom;
+            m_inputBottom = 0u;
             uint inputLeft = m_inputLeft;
+            m_inputLeft = 0u;
             float deltaY = 0f;
             float deltaX = 0f;
             float deltaZ = 0f;

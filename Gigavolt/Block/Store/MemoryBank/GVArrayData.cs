@@ -28,7 +28,7 @@ namespace Game {
         public abstract void LoadString(string data);
 
         public abstract string SaveString();
-        public virtual void String2Data(string data, int width = 0, int height = 0) { }
+        public virtual void String2Data(string str, int width = 0, int height = 0) { }
         public virtual string Data2String() => null;
 
         public string GetString() {

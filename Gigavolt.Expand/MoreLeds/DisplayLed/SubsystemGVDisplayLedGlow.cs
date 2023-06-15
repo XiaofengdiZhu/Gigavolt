@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
@@ -40,7 +39,7 @@ namespace Game {
                     continue;
                 }
                 Vector3 position = key.Position;
-                if (camera.ViewFrustum.Intersection(position)) {
+                if (camera.ViewFrustum.Intersection(position + camera.ViewDirection)) {
                     Matrix matrix = Matrix.CreateFromYawPitchRoll(key.Rotation.X, key.Rotation.Y, key.Rotation.Z);
                     matrix.Translation = position;
                     if (key.Type == 0) {

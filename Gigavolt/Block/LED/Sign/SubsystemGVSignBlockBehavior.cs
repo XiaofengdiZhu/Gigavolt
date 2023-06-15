@@ -350,7 +350,7 @@ namespace Game {
                     float x3 = nearText.TextureLocation.Value / 32f;
                     float x4 = (nearText.TextureLocation.Value + nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f)) / 32f;
                     Vector3 vector = new Vector3(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
-                    if (camera.ViewFrustum.Intersection(vector + new Vector3(0.5f))) {
+                    if (camera.ViewFrustum.Intersection(vector + new Vector3(0.5f) + camera.ViewDirection)) {
                         Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
                         Vector3 vector2 = MathUtils.Max(0.01f * Vector3.Dot(camera.ViewPosition - (vector + new Vector3(0.5f)), signSurfaceNormal), 0.005f) * signSurfaceNormal;
                         float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
@@ -383,7 +383,7 @@ namespace Game {
                         }
                     }
                     Vector3 position = nearText.FloatPosition;
-                    if (camera.ViewFrustum.Intersection(position)
+                    if (camera.ViewFrustum.Intersection(position + camera.ViewDirection)
                         && nearText.FloatSize > 0
                         && nearText.FloatColor.A > 0) {
                         Matrix matrix = Matrix.CreateFromYawPitchRoll(nearText.FloatRotation.X, nearText.FloatRotation.Y, nearText.FloatRotation.Z);
