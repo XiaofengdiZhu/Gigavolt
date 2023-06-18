@@ -16,8 +16,10 @@
 			</CanvasWidget>
 
 			<CanvasWidget Size="0, 15"/>
-
-			<LabelWidget Name="EditGVMemoryBankDialog.ID" HorizontalAlignment="Center"/>
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<LabelWidget Name="EditGVMemoryBankDialog.ID" HorizontalAlignment="Center"/>
+				<BitmapButtonWidget Name="EditGVMemoryBankDialog.CopyID" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+			</StackPanelWidget>
 
 			<CanvasWidget Size="0, 15"/>
 
@@ -39,11 +41,14 @@
 				<CanvasWidget Size="0, 10"/>
 				<LabelWidget Name="EditGVMemoryBankDialog.ImageLocation" Color="128, 128, 128" Text="[EditGVMemoryBankDialog:20]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
 				<CanvasWidget Size="0, 10"/>
-				<CanvasWidget Size="504, 34" HorizontalAlignment="Center">
-					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-					<TextBoxWidget Name="EditGVMemoryBankDialog.LinearText" Size="500, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
-				</CanvasWidget>
-				<CanvasWidget Size="0, Infinity"/>
+				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<CanvasWidget Size="504, 34" HorizontalAlignment="Center">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVMemoryBankDialog.LinearText" Size="500, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<BitmapButtonWidget Name="EditGVMemoryBankDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+					<CanvasWidget Size="0, Infinity"/>
+				</StackPanelWidget>
 			</StackPanelWidget>
 
 			<CanvasWidget Size="0, 15"/>

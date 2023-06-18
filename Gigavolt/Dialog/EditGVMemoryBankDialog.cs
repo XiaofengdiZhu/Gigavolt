@@ -16,6 +16,8 @@ namespace Game {
         public TextBoxWidget m_colCountTextBox;
         public LabelWidget m_colCountTextLabel;
         public LabelWidget m_IDLabel;
+        public BitmapButtonWidget m_copyIDButton;
+        public BitmapButtonWidget m_copyDataButton;
 
         public GVMemoryBankData m_memoryBankData;
 
@@ -34,6 +36,8 @@ namespace Game {
             m_colCountTextLabel = Children.Find<LabelWidget>("EditGVMemoryBankDialog.ColCountLabel");
             m_IDLabel = Children.Find<LabelWidget>("EditGVMemoryBankDialog.ID");
             m_IDLabel.Text += $"ID: {memoryBankData.m_ID.ToString("X", null)}";
+            m_copyIDButton = Children.Find<BitmapButtonWidget>("EditGVMemoryBankDialog.CopyID");
+            m_copyDataButton = Children.Find<BitmapButtonWidget>("EditGVMemoryBankDialog.CopyData");
             m_handler = handler;
             m_memoryBankData = memoryBankData;
             UpdateFromData();
@@ -87,6 +91,12 @@ namespace Game {
                 else {
                     Dismiss(false);
                 }
+            }
+            if (m_copyIDButton.IsClicked) {
+                ClipboardManager.ClipboardString = m_memoryBankData.m_ID.ToString("X");
+            }
+            if (m_copyDataButton.IsClicked) {
+                ClipboardManager.ClipboardString = m_linearTextBox.Text;
             }
             if (m_moreButton.IsClicked) {
                 if (!ScreensManager.m_screens.ContainsKey("GVMBExternalContent")) {
