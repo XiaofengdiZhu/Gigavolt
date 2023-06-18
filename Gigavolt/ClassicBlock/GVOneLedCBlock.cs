@@ -44,7 +44,7 @@ namespace Game {
             );
         }
 
-        public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes() {
+        /*public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes() {
             CraftingRecipe craftingRecipe = new CraftingRecipe { ResultCount = 4, ResultValue = Terrain.MakeBlockValue(Index, 0, 0), RequiredHeatLevel = 0f, Description = LanguageControl.Get(GetType().Name, 1) };
             craftingRecipe.Ingredients[0] = "glass";
             craftingRecipe.Ingredients[1] = "glass";
@@ -54,7 +54,7 @@ namespace Game {
             craftingRecipe.Ingredients[7] = "copperingot";
             craftingRecipe.Ingredients[8] = "copperingot";
             yield return craftingRecipe;
-        }
+        }*/
 
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) {
             int mountingFace = GetMountingFace(Terrain.ExtractData(value));

@@ -256,7 +256,7 @@ namespace Game {
                                     entry.Path,
                                     soundData.SamplingFrequency,
                                     soundData.Data.Length / 2,
-                                    soundData.Data.Length / (double)soundData.SamplingFrequency / 2
+                                    (soundData.Data.Length / (double)soundData.SamplingFrequency / 2).ToString("F2", null)
                                 );
                                 break;
                             default:

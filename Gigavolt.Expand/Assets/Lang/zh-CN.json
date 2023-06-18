@@ -5,7 +5,7 @@
   "Blocks": {
     "GVNesEmulatorBlock:0": {
       "DisplayName": "GV红白机模拟器",
-      "Description": "无",
+      "Description": "可以模拟红白机的模拟器，详见本Mod Github页面的介绍",
       "CRDescription:0": "无"
     },
     "GVCopperHammerBlock:0": {

@@ -8,7 +8,10 @@ namespace Game {
         public SubsystemAudio m_subsystemAudio;
         public SubsystemGameInfo m_subsystemGameInfo;
 
+        public uint m_lastTopInput;
+        public uint m_lastRightInput;
         public uint m_lastBottomInput;
+        public uint m_lastLeftInput;
         public uint m_lastInInput;
 
         public Sound m_sound;
@@ -60,20 +63,23 @@ namespace Game {
                         m_playing = false;
                     }
                 }
-                if (inInput != m_lastInInput) {
+                if (inInput != m_lastInInput
+                    || topInput != m_lastTopInput
+                    || rightInput != m_lastRightInput
+                    || leftInput != m_lastLeftInput) {
                     if (m_sound != null) {
                         m_sound.Dispose();
                     }
                     if (inInput > 0) {
                         if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(inInput, out GVArrayData GVMBData)) {
+                            int startIndex = MathUint.ToInt(topInput);
+                            int itemsCount = MathUint.ToInt(rightInput);
                             try {
                                 if (GVMBData.m_worldDirectory == null) {
                                     GVMBData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
                                     GVMBData.LoadData();
                                 }
                                 short[] shorts = GVMBData.GetShorts();
-                                int startIndex = MathUint.ToInt(topInput);
-                                int itemsCount = MathUint.ToInt(rightInput);
                                 if (itemsCount > shorts.Length
                                     || startIndex + itemsCount > shorts.Length) {
                                     itemsCount = shorts.Length - startIndex;
@@ -96,7 +102,7 @@ namespace Game {
                                 foreach (ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
                                     componentPlayer.ComponentGui.DisplaySmallMessage(error, Color.White, true, true);
                                 }
-                                Log.Error($"{error}，加载起始位置为{topInput}（均为十进制），加载short数量为{rightInput}，声道数为2，采样率为{leftInput}，详细报错：\n{ex}");
+                                Log.Error($"{error}，加载起始位置为{startIndex}（均为十进制），加载short数量为{itemsCount}，声道数为2，采样率为{MathUint.ToInt(leftInput)}，详细报错：\n{ex}");
                             }
                         }
                         else {
@@ -108,6 +114,10 @@ namespace Game {
                             }
                         }
                     }
+                    m_lastTopInput = topInput;
+                    m_lastRightInput = rightInput;
+                    m_lastBottomInput = bottomInput;
+                    m_lastLeftInput = leftInput;
                     m_lastInInput = inInput;
                 }
                 m_lastBottomInput = 0;
