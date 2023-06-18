@@ -890,6 +890,7 @@ namespace Game {
         public bool debugMode;
         public bool keyboardDebug = false;
         public Dictionary<ComponentPlayer, GVStepFloatingButtons> m_debugButtonsDictionary = new Dictionary<ComponentPlayer, GVStepFloatingButtons>();
+        public DateTime lastUpdate;
         public Queue<DateTime> last1000Updates = new Queue<DateTime>(1002);
 
         public SubsystemTime SubsystemTime { get; set; }
@@ -1073,10 +1074,12 @@ namespace Game {
                         }
                         ReturnListToCache(value);
                     }
-                    while (last1000Updates.Count >= 1000) {
+                    while (last1000Updates.Count >= 1001) {
                         last1000Updates.Dequeue();
                     }
-                    last1000Updates.Enqueue(DateTime.Now);
+                    DateTime now = DateTime.Now;
+                    lastUpdate = now;
+                    last1000Updates.Enqueue(now);
                 }
             }
             if (DebugDrawGVElectrics) {
@@ -1101,10 +1104,12 @@ namespace Game {
                     }
                     ReturnListToCache(value);
                 }
-                while (last1000Updates.Count >= 1000) {
+                while (last1000Updates.Count >= 1001) {
                     last1000Updates.Dequeue();
                 }
-                last1000Updates.Enqueue(DateTime.Now);
+                DateTime now = DateTime.Now;
+                lastUpdate = now;
+                last1000Updates.Enqueue(now);
             }
         }
 
