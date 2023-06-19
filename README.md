@@ -3,7 +3,12 @@
 这是一个为生存战争游戏带来十亿伏特电力系统的mod，将原版的16个电压级别（0\~1.5V）扩展到2^32个（0\~2^32-1V）  
 This is a mod for Survivalcraft that take a new Electric system with Gigavolt to the game. The original Electric system has 16 voltage level(0\~1.5V), then Gigavolt expands it to 2^32 voltage level(0\~2^32-1V).
 ## 看板娘 Yuru-chara
+<details>
+<summary>点开查看</summary>
+
 ![](DocRes/GigavoltPosterGirl.webp)
+</details>
+
 ## 区别 Differences
 | 方块          | 原版                           | 十亿伏特版                                                                                          |
 |-------------|------------------------------|------------------------------------------------------------------------------------------------|
@@ -135,7 +140,12 @@ png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的
 这是一个为生存战争游戏十亿伏特mod带来更多电路板和功能的mod  
 This is a mod for Survivalcraft Gigavolt mod that take more circuit components and functions to the mod.
 ## 看板娘 Yuru-chara
+<details>
+<summary>点开查看</summary>
+
 ![](DocRes/GigavoltExpandPosterGirl.webp)
+</details>
+
 ## 简单方块 Simple Blocks
 | 名称      | 特性                                                                                                                                                                                                                                              |
 |---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

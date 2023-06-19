@@ -3,7 +3,6 @@
 namespace Game {
     public class SubsystemGVMemoryBankCBlockBehavior : SubsystemEditableItemBehavior<MemoryBankData> {
         public override int[] HandledBlocks => new[] { GVMemoryBankCBlock.Index };
-        public static string fName = "GVMemoryBankCBlockBehavior";
 
         public SubsystemGVMemoryBankCBlockBehavior() : base(GVMemoryBankCBlock.Index) { }
 

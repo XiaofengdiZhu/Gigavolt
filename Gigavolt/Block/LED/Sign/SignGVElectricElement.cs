@@ -61,41 +61,22 @@ namespace Game {
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
                     GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, 0, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
-                        if (connectorDirection.Value == GVElectricConnectorDirection.In) {
-                            m_inputIn = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                        }
-                        else if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
-                            m_inputTop = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (m_inputTop != inputTop) {
-                                m_glowPoint.FloatSize = (m_inputTop & 0xFFFFu) / 8f;
-                                deltaY = ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f);
-                            }
-                        }
-                        else if (connectorDirection.Value == GVElectricConnectorDirection.Right) {
-                            m_inputRight = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (m_inputRight != inputRight) {
-                                deltaX = (m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f);
-                                deltaZ = ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f);
-                            }
-                        }
-                        else if (connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
-                            m_inputBottom = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (m_inputBottom != inputBottom) {
-                                float yaw = (m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f);
-                                float pitch = ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f);
-                                float roll = ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f);
-                                m_glowPoint.FloatRotation = new Vector3(yaw, pitch, roll);
-                                m_glowPoint.FloatLight = (int)((m_inputBottom >> 28) & 0xFu);
-                            }
-                        }
-                        else if (connectorDirection.Value == GVElectricConnectorDirection.Left) {
-                            m_inputLeft = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            if (m_inputLeft != inputLeft) {
-                                m_glowPoint.FloatColor = new Color(m_inputLeft);
-                            }
-                        }
-                        else {
-                            m_inputIn = MathUint.Max(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace), m_inputIn);
+                        switch (connectorDirection.Value) {
+                            case GVElectricConnectorDirection.In:
+                                m_inputIn = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                break;
+                            case GVElectricConnectorDirection.Top:
+                                m_inputTop = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                break;
+                            case GVElectricConnectorDirection.Right:
+                                m_inputRight = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                break;
+                            case GVElectricConnectorDirection.Bottom:
+                                m_inputBottom = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                break;
+                            case GVElectricConnectorDirection.Left:
+                                m_inputLeft = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                break;
                         }
                     }
                 }
@@ -125,6 +106,24 @@ namespace Game {
                         Log.Error(e);
                     }
                 }
+            }
+            if (m_inputTop != inputTop) {
+                m_glowPoint.FloatSize = (m_inputTop & 0xFFFFu) / 8f;
+                deltaY = ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f);
+            }
+            if (m_inputRight != inputRight) {
+                deltaX = (m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f);
+                deltaZ = ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f);
+            }
+            if (m_inputBottom != inputBottom) {
+                float yaw = (m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f);
+                float pitch = ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f);
+                float roll = ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f);
+                m_glowPoint.FloatRotation = new Vector3(yaw, pitch, roll);
+                m_glowPoint.FloatLight = (int)((m_inputBottom >> 28) & 0xFu);
+            }
+            if (m_inputLeft != inputLeft) {
+                m_glowPoint.FloatColor = new Color(m_inputLeft);
             }
             uint customBit = (m_inputBottom >> 27) & 1;
             if (customBit == 1

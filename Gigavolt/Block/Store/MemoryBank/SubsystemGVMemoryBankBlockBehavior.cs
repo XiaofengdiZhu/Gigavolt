@@ -4,7 +4,6 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVMemoryBankBlockBehavior : SubsystemEditableItemBehavior<GVMemoryBankData> {
         public SubsystemGameInfo m_subsystemGameInfo;
-        public static string fName = "GVMemoryBankBlockBehavior";
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);

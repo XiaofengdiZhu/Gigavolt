@@ -30,6 +30,9 @@
     "GV Electrics": "十亿伏特电路",
     "GV Electrics Classic": "十亿伏特经典"
   },
+  "GVLightbulbBlock": {
+    "1": "GV电灯"
+  },
   "Blocks": {
     "GVWireBlock:0": {
       "DisplayName": "GV导线",

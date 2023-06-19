@@ -100,6 +100,7 @@ namespace Game {
                     }
                 }
             }
+            //Log.Information($"m_inputIn={m_inputIn:X} inputIn={inputIn:X} m_inputTop={m_inputTop:X} inputTop={inputTop:X} m_inputRight={m_inputRight:X} inputRight={inputRight:X} m_inputBottom={m_inputBottom:X} inputBottom={inputBottom:X} m_inputLeft={m_inputLeft:X} inputLeft={inputLeft:X}");
             if (m_inputIn != inputIn) {
                 m_glowPoint.Value = m_inputIn;
             }
