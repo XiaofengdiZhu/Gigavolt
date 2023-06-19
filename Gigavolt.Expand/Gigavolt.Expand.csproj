@@ -40,8 +40,8 @@
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Survivalcraft">
-		  <HintPath>..\Gigavolt\reference\Survivalcraft.exe</HintPath>
-		  <Private>False</Private>
+			<HintPath>..\Gigavolt\reference\Survivalcraft.exe</HintPath>
+			<Private>False</Private>
 		</Reference>
 		<Reference Include="System" />
 		<Reference Include="System.Core" />
@@ -101,6 +101,11 @@
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs" />
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs" />
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Memory.cs" />
+		<Compile Include="MoreMemoryBanks\ListMemory\EditGVListMemoryBankDialog.cs" />
+		<Compile Include="MoreMemoryBanks\ListMemory\GVListMemoryBankData.cs" />
+		<Compile Include="MoreMemoryBanks\ListMemory\GVListMemoryBankBlock.cs" />
+		<Compile Include="MoreMemoryBanks\ListMemory\ListMemoryBankGVElectricElement.cs" />
+		<Compile Include="MoreMemoryBanks\ListMemory\SubsystemGVListMemoryBankBlockBehavior.cs" />
 		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankBlock.cs" />
 		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankData.cs" />
 		<Compile Include="MoreMemoryBanks\VolatileMemory\SubsystemGVVolatileMemoryBankBlockBehavior.cs" />
@@ -121,6 +126,9 @@
 		<Compile Include="WireThrough\GVCopperHammerBlock.cs" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Include="Assets\Dialogs\EditGVListMemoryBankDialog.xml">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Include="Assets\Gigavolt.Expand.csv">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -302,9 +310,9 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-	  <None Include="Assets\Textures\GVTerrainRaycastDetectorBlock.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<None Include="Assets\Textures\GVTerrainRaycastDetectorBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

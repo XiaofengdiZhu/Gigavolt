@@ -18,5 +18,8 @@
 		<MemberSubsystemTemplate Name="GVVolatileMemoryBankBlockBehavior" Guid="095c4cc2-2064-453e-8b46-13aee174f144" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="b28ff894-ed25-490e-b341-942310361adf" Value="Game.SubsystemGVVolatileMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVListMemoryBankBlockBehavior" Guid="8bfcf9dc-4e2d-443d-b02e-6f70079f77b5" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<Parameter Name="Class" Guid="003607e2-97cc-4389-838a-faf393ed370c" Value="Game.SubsystemGVListMemoryBankBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

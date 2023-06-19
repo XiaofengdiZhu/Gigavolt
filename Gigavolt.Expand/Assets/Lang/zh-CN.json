@@ -55,7 +55,11 @@
     },
     "GVVolatileMemoryBankBlock:0": {
       "DisplayName": "GV易失性存储器",
-      "Description": "和存储器相似，但退出游戏后数据会丢失，不过ID保持不变"
+      "Description": "和存储器相似，但退出游戏后数据会丢失，不过ID保持不变，无需初始化即可使用"
+    },
+    "GVListMemoryBankBlock:0": {
+      "DisplayName": "GV一维存储器",
+      "Description": "和存储器相似，但只能存储一行数据，不过多了很多实用功能，无需初始化即可使用，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {
@@ -63,6 +67,15 @@
       "1": "ROM路径",
       "2": "确定",
       "3": "取消"
+    },
+    "EditGVListMemoryBankDialog": {
+      "1": "编辑一维内存数据",
+      "2": "一维存储器以List列表形式储存32位二进制数字(十六进制0到FFFFFFFF)，每个数字用英文逗号,分开，更多说明详见",
+      "3": "指定新长度：",
+      "20": "最多可以输入十万个字符，要处理更多数据，请导出后编辑",
+      "21": "确定",
+      "22": "取消",
+      "23": "导入/导出"
     }
   }
 }
