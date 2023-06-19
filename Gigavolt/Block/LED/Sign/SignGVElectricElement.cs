@@ -53,9 +53,6 @@ namespace Game {
             m_inputBottom = 0u;
             uint inputLeft = m_inputLeft;
             m_inputLeft = 0u;
-            float deltaY = 0f;
-            float deltaX = 0f;
-            float deltaZ = 0f;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
@@ -109,11 +106,6 @@ namespace Game {
             }
             if (m_inputTop != inputTop) {
                 m_glowPoint.FloatSize = (m_inputTop & 0xFFFFu) / 8f;
-                deltaY = ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f);
-            }
-            if (m_inputRight != inputRight) {
-                deltaX = (m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f);
-                deltaZ = ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f);
             }
             if (m_inputBottom != inputBottom) {
                 float yaw = (m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f);
@@ -125,6 +117,10 @@ namespace Game {
             if (m_inputLeft != inputLeft) {
                 m_glowPoint.FloatColor = new Color(m_inputLeft);
             }
+            if (m_inputTop != inputTop
+                || m_inputRight != inputRight) {
+                m_glowPoint.FloatPosition = m_originalPosition + new Vector3((m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f), ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f), ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f));
+            }
             uint customBit = (m_inputBottom >> 27) & 1;
             if (customBit == 1
                 && ((inputBottom >> 27) & 1) == 0) {
@@ -134,7 +130,6 @@ namespace Game {
                     componentPlayer.ComponentGui.DisplaySmallMessage(m_glowPoint.Line, color, true, true);
                 }
             }
-            m_glowPoint.FloatPosition = m_originalPosition + new Vector3(deltaX, deltaY, deltaZ);
             return false;
         }
     }

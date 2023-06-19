@@ -20,7 +20,9 @@ namespace Game {
         public override uint GetOutputVoltage(int face) => SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face) == GVElectricConnectorDirection.Top ? m_output : 0u;
 
         public override void OnRemoved() {
-            m_subsystem.m_tagsDictionary[m_tag].Remove(this);
+            if (m_subsystem.m_tagsDictionary.TryGetValue(m_tag, out List<JumpWireGVElectricElement> value)) {
+                value.Remove(this);
+            }
         }
 
         public override bool Simulate() {

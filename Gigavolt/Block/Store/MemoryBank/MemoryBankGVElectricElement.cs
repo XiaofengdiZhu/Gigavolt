@@ -53,33 +53,30 @@ namespace Game {
                 }
             }
             GVMemoryBankData memoryBankData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
-            if (memoryBankData != null
-                && memoryBankData.m_worldDirectory == null) {
-                memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
-                memoryBankData.LoadData();
-            }
-            if (flag2) {
-                if (flag && m_clockAllowed) {
-                    m_clockAllowed = false;
-                    m_voltage = memoryBankData != null ? memoryBankData.Read(num2, num3) : 0;
+            if (memoryBankData != null) {
+                if (memoryBankData.m_worldDirectory == null) {
+                    memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
+                    memoryBankData.LoadData();
                 }
-                else if (flag3 && m_writeAllowed) {
-                    m_writeAllowed = false;
-                    if (memoryBankData != null) {
+                if (flag2) {
+                    if (flag && m_clockAllowed) {
+                        m_clockAllowed = false;
+                        m_voltage = memoryBankData.Read(num2, num3);
+                    }
+                    else if (flag3 && m_writeAllowed) {
+                        m_writeAllowed = false;
                         memoryBankData.Write(num2, num3, num);
                     }
                 }
-            }
-            else {
-                m_voltage = memoryBankData != null ? memoryBankData.Read(num2, num3) : 0;
-            }
-            if (!flag) {
-                m_clockAllowed = true;
-            }
-            if (!flag3) {
-                m_writeAllowed = true;
-            }
-            if (memoryBankData != null) {
+                else {
+                    m_voltage = memoryBankData.Read(num2, num3);
+                }
+                if (!flag) {
+                    m_clockAllowed = true;
+                }
+                if (!flag3) {
+                    m_writeAllowed = true;
+                }
                 memoryBankData.LastOutput = m_voltage;
             }
             return m_voltage != voltage;
