@@ -42,22 +42,25 @@ namespace Game {
         public virtual uint LastOutput { get; set; }
 
         public override uint Read(uint index) {
-            if (m_isDataInitialized && index < Data.Count) {
-                return Data[(int)index];
+            int intIndex = MathUint.ToInt(index);
+            if (m_isDataInitialized && intIndex < Data.Count) {
+                return Data[intIndex];
             }
             return 0u;
         }
 
         public override void Write(uint index, uint data) {
             if (m_isDataInitialized) {
+                int intIndex = MathUint.ToInt(index);
                 if (index < Data.Count) {
-                    Data[(int)index] = data;
+                    Data[intIndex] = data;
                 }
                 else {
-                    Data.Capacity = (int)index + 1;
-                    for (int i = Data.Count; i < index; i++) {
+                    Data.Capacity = intIndex + 1;
+                    for (int i = Data.Count; i < intIndex; i++) {
                         Data.Add(0u);
                     }
+                    Data.AddRange(Enumerable.Repeat(0u, intIndex - Data.Count));
                     Data.Add(data);
                 }
                 m_updateTime = DateTime.Now;

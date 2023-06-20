@@ -47,8 +47,9 @@ namespace Game {
         public virtual uint LastOutput { get; set; }
 
         public override uint Read(uint index) {
-            if (m_isDataInitialized && index < Data.Length) {
-                return Data[index];
+            int intIndex = MathUint.ToInt(index);
+            if (m_isDataInitialized && intIndex < Data.Length) {
+                return Data[intIndex];
             }
             return 0u;
         }
@@ -63,8 +64,9 @@ namespace Game {
         }
 
         public override void Write(uint index, uint data) {
-            if (m_isDataInitialized && index < Data.Length) {
-                Data[index] = data;
+            int intIndex = MathUint.ToInt(index);
+            if (m_isDataInitialized && intIndex < Data.Length) {
+                Data[intIndex] = data;
                 m_updateTime = DateTime.Now;
                 m_dataChanged = true;
             }

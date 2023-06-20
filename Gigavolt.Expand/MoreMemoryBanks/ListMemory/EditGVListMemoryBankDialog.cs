@@ -87,7 +87,9 @@ namespace Game {
                 ClipboardManager.ClipboardString = m_memoryBankData.m_ID.ToString("X");
             }
             if (m_copyDataButton.IsClicked) {
-                ClipboardManager.ClipboardString = m_linearTextBox.Text;
+                if (m_linearTextBox.Text.Length > 0) {
+                    ClipboardManager.ClipboardString = m_linearTextBox.Text;
+                }
             }
             if (m_moreButton.IsClicked) {
                 if (!ScreensManager.m_screens.ContainsKey("GVMBExternalContent")) {
