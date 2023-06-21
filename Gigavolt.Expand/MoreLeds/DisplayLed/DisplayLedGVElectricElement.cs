@@ -46,9 +46,6 @@ namespace Game {
                 matrix.Up = up;
                 matrix.Right = right;
                 m_glowPoint.Rotation = matrix.ToYawPitchRoll();
-                if (mountingFace > 3) {
-                    Log.Information(up + " " + right + " " + m_glowPoint.Rotation);
-                }
                 m_glowPoint.Color = Color.White;
             }
         }

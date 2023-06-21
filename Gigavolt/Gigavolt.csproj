@@ -82,6 +82,7 @@
 		<Compile Include="Block\LED\Sign\GVSignBlock.cs" />
 		<Compile Include="Block\LED\Sign\GVSignTextData.cs" />
 		<Compile Include="Block\LED\Sign\SubsystemGVSignBlockBehavior.cs" />
+		<Compile Include="Block\Output\SubsystemGVMovingBlocks.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVArrayData.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVMemoryBankBlock.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVMemoryBankData.cs" />

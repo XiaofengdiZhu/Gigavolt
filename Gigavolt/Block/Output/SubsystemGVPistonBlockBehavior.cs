@@ -20,6 +20,9 @@ namespace Game {
         public SubsystemAudio m_subsystemAudio;
 
         public SubsystemMovingBlocks m_subsystemMovingBlocks;
+        public Terrain m_movingTerrain;
+        public int m_allocatedX = 1;
+        public int m_allocatedZ = 1;
 
         public bool m_allowPistonHeadRemove;
 
@@ -29,7 +32,7 @@ namespace Game {
 
         public DynamicArray<MovingBlock> m_movingBlocks = new DynamicArray<MovingBlock>();
 
-        public const string IdString = "Piston";
+        public const string IdString = "GVPiston";
 
         public UpdateOrder UpdateOrder => m_subsystemMovingBlocks.UpdateOrder + 1;
 
@@ -211,6 +214,24 @@ namespace Game {
             m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(true);
             m_subsystemMovingBlocks.Stopped += MovingBlocksStopped;
             m_subsystemMovingBlocks.CollidedWithTerrain += MovingBlocksCollidedWithTerrain;
+            if (m_subsystemMovingBlocks.m_blockGeometryGenerator == null) {
+                int x = 2;
+                x = (int)MathUtils.NextPowerOf2((uint)x);
+                m_subsystemMovingBlocks.m_blockGeometryGenerator = new BlockGeometryGenerator(
+                    new Terrain(),
+                    m_subsystemTerrain,
+                    null,
+                    Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(true),
+                    null,
+                    Project.FindSubsystem<SubsystemPalette>(true)
+                );
+                for (int i = 0; i < x; i++) {
+                    for (int j = 0; j < x; j++) {
+                        m_subsystemMovingBlocks.m_blockGeometryGenerator.Terrain.AllocateChunk(i, j);
+                    }
+                }
+            }
+            m_movingTerrain = m_subsystemMovingBlocks.m_blockGeometryGenerator.Terrain;
         }
 
         public void ProcessQueuedActions() {
@@ -380,6 +401,23 @@ namespace Game {
                 if (!IsBlockBlocking(terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z))) {
                     GetSpeedAndSmoothness(speed, out float speed2, out Vector2 smoothness);
                     Point3 p = position + (length - num) * point;
+                    if (length > 30) {
+                        int count = (length + 1) / 16;
+                        for (int i = 2; i <= count; i++) {
+                            if (Math.Abs(point.X) > 0) {
+                                if (i > m_allocatedX) {
+                                    m_movingTerrain.AllocateChunk(i, 0);
+                                    m_allocatedX = i;
+                                }
+                            }
+                            else if (Math.Abs(point.Z) > 0) {
+                                if (i > m_allocatedZ) {
+                                    m_movingTerrain.AllocateChunk(0, i);
+                                    m_allocatedZ = i;
+                                }
+                            }
+                        }
+                    }
                     if (m_subsystemMovingBlocks.AddMovingBlockSet(
                             new Vector3(position) + 0.01f * new Vector3(point),
                             new Vector3(p),
@@ -442,6 +480,23 @@ namespace Game {
                 GetSpeedAndSmoothness(speed, out float speed3, out Vector2 smoothness2);
                 float s = length == 0 ? 0.01f : 0f;
                 Vector3 targetPosition = new Vector3(position) + (length - num) * new Vector3(point) + s * new Vector3(point);
+                if (length > 30) {
+                    int count = (length + 1) / 16;
+                    for (int i = 2; i <= count; i++) {
+                        if (Math.Abs(point.X) > 0) {
+                            if (i > m_allocatedX) {
+                                m_movingTerrain.AllocateChunk(i, 0);
+                                m_allocatedX = i;
+                            }
+                        }
+                        else if (Math.Abs(point.Z) > 0) {
+                            if (i > m_allocatedZ) {
+                                m_movingTerrain.AllocateChunk(0, i);
+                                m_allocatedZ = i;
+                            }
+                        }
+                    }
+                }
                 if (m_subsystemMovingBlocks.AddMovingBlockSet(
                         new Vector3(position),
                         targetPosition,
