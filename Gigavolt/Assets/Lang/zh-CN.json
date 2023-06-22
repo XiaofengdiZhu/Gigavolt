@@ -330,6 +330,14 @@
     "GVSignBlock:0": {
       "DisplayName": "GV告示牌",
       "Description": "告示牌最多可以包含1行黑色或彩色文本。它们可以固定在垂直的表面上。通过指定URL(URL仅在冒险模式下有效)，可以使符号充当互联网链接。当连接到铜线上时，可以额外悬浮显示存储的文字。可以染色。详细的电路使用方法详见本Mod Github页面的介绍。"
+    },
+    "GV2OTransformerBlock:0": {
+      "DisplayName": "十亿伏特转原版变压器",
+      "Description": "尾端连接十亿伏特元件或导线，输入十亿伏特电压，取二进制最低4位转换为原版电压，向前端输出"
+    },
+    "O2GVTransformerBlock:0": {
+      "DisplayName": "原版转十亿伏特变压器",
+      "Description": "尾端连接原版元件或导线，输入原版二进制4位电压，向前端输出等值的十亿伏特电压"
     }
   },
   "ContentWidgets": {

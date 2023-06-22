@@ -957,7 +957,7 @@ namespace Game {
                     if (GVElectricConnectionPath == null) {
                         break;
                     }
-                    GVElectricConnectorType? connectorType = GVElectricElementBlock.GetConnectorType(
+                    GVElectricConnectorType? connectorType = GVElectricElementBlock.GetGVConnectorType(
                         SubsystemTerrain,
                         cellValue,
                         mountingFace,
@@ -977,7 +977,7 @@ namespace Game {
                     if (GVElectricElementBlock2 == null) {
                         continue;
                     }
-                    GVElectricConnectorType? connectorType2 = GVElectricElementBlock2.GetConnectorType(
+                    GVElectricConnectorType? connectorType2 = GVElectricElementBlock2.GetGVConnectorType(
                         SubsystemTerrain,
                         cellValue2,
                         GVElectricConnectionPath.NeighborFace,
@@ -1237,7 +1237,7 @@ namespace Game {
                         && value != GVElectricElement) {
                         int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
                         int num = Terrain.ExtractContents(cellValue);
-                        GVElectricConnectorType value2 = ((IGVElectricElementBlock)BlocksManager.Blocks[num]).GetConnectorType(
+                        GVElectricConnectorType value2 = ((IGVElectricElementBlock)BlocksManager.Blocks[num]).GetGVConnectorType(
                                 SubsystemTerrain,
                                 cellValue,
                                 cellFace2.Face,
@@ -1249,7 +1249,7 @@ namespace Game {
                             .Value;
                         int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
                         int num2 = Terrain.ExtractContents(cellValue2);
-                        GVElectricConnectorType value3 = ((IGVElectricElementBlock)BlocksManager.Blocks[num2]).GetConnectorType(
+                        GVElectricConnectorType value3 = ((IGVElectricElementBlock)BlocksManager.Blocks[num2]).GetGVConnectorType(
                                 SubsystemTerrain,
                                 cellValue2,
                                 cellFace.Face,

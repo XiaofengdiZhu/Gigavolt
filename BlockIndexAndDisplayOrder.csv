@@ -70,3 +70,5 @@ GVIronAttachedSignCBlock,711,130
 GVSignBlock,801,1021
 GVVolatileMemoryBankBlock,1012,1022
 GVListMemoryBankBlock,1011,1022
+GV2OTransformerBlock,802,1023
+O2GVTransformerBlock,803,1023

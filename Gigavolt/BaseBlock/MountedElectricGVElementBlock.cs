@@ -4,7 +4,7 @@ namespace Game {
 
         public abstract GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectric, int value, int x, int y, int z);
 
-        public abstract GVElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z);
+        public abstract GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z);
 
         public virtual int GetConnectionMask(int value) => int.MaxValue;
     }

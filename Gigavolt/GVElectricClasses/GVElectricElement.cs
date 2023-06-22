@@ -17,7 +17,7 @@ namespace Game {
 
         public GVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : this(subsystemGVElectric, new List<CellFace> { cellFace }) { }
 
-        public virtual uint GetOutputVoltage(int face) => 0;
+        public virtual uint GetOutputVoltage(int face) => 0u;
 
         public virtual bool Simulate() => false;
 
