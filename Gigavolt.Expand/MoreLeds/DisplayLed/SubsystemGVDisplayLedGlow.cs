@@ -16,7 +16,7 @@ namespace Game {
 
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
-        public static int[] m_drawOrders = { 110 };
+        public static int[] m_drawOrders = { 112 };
 
         public int[] DrawOrders => m_drawOrders;
 

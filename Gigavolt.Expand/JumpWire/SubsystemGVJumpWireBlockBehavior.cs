@@ -6,7 +6,7 @@ namespace Game {
     public class SubsystemGVJumpWireBlockBehavior : SubsystemBlockBehavior, IDrawable {
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
         public Dictionary<uint, List<JumpWireGVElectricElement>> m_tagsDictionary = new Dictionary<uint, List<JumpWireGVElectricElement>>();
-        public static int[] m_drawOrders = { 110 };
+        public static int[] m_drawOrders = { 113 };
         public override int[] HandledBlocks => new[] { GVJumpWireBlock.Index };
 
         public void Draw(Camera camera, int drawOrder) {

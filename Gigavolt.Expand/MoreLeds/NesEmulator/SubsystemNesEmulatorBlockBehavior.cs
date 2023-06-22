@@ -77,7 +77,7 @@ namespace Game {
 
         DateTime _lastUpdatedTime = DateTime.MinValue;
 
-        public static int[] m_drawOrders = { 110 };
+        public static int[] m_drawOrders = { 111 };
 
         public TexturedBatch3D cachedBatch;
         public int[] DrawOrders => m_drawOrders;
@@ -126,6 +126,9 @@ namespace Game {
                     _lastUpdatedTime = now;
                     if (!RomValid) {
                         _frame = _renderer.GenerateNoise();
+                    }
+                    if (cachedBatch != null) {
+                        cachedBatch.Texture.Dispose();
                     }
                     cachedBatch = m_primitivesRenderer.TexturedBatch(
                         Texture2D.Load(_renderer.Render(_frame)),
