@@ -15,7 +15,6 @@
 				</StackPanelWidget>
 			</CanvasWidget>
 
-			<CanvasWidget Size="0, 15"/>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 				<LabelWidget Name="EditGVListMemoryBankDialog.ID" HorizontalAlignment="Center"/>
 				<BitmapButtonWidget Name="EditGVListMemoryBankDialog.CopyID" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
@@ -33,6 +32,20 @@
 					</CanvasWidget>
 				</StackPanelWidget>
 				<CanvasWidget Size="0, 10"/>
+				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+					<LabelWidget Text="[EditGVListMemoryBankDialog:4]"/>
+					<CanvasWidget Size="104, 34">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVListMemoryBankDialog.Width" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<CanvasWidget Size="20, 34"/>
+					<LabelWidget Name="EditGVListMemoryBankDialog.HeightCountLabel" Text="[EditGVListMemoryBankDialog:5]"/>
+					<CanvasWidget Size="104, 34">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVListMemoryBankDialog.Height" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+				</StackPanelWidget>
+				<CanvasWidget Size="0, 10"/>
 				<LabelWidget Name="EditGVListMemoryBankDialog.ImageLocation" Color="128, 128, 128" Text="[EditGVListMemoryBankDialog:20]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
 				<CanvasWidget Size="0, 10"/>
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -41,7 +54,6 @@
 						<TextBoxWidget Name="EditGVListMemoryBankDialog.LinearText" Size="500, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 					<BitmapButtonWidget Name="EditGVListMemoryBankDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
-					<CanvasWidget Size="0, Infinity"/>
 				</StackPanelWidget>
 			</StackPanelWidget>
 

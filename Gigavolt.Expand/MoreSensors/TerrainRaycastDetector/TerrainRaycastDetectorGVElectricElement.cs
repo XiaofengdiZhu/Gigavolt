@@ -44,18 +44,18 @@ namespace Game {
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Right) {
                             m_rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            length = m_rightInput & 0xFFFu;
-                            detectData = m_rightInput >> 12 == 1u;
-                            skipFluid = m_rightInput >> 13 == 1u;
                         }
                         else if (connectorDirection == GVElectricConnectorDirection.Left) {
                             m_leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            specifiedContent = Terrain.ExtractContents((int)m_leftInput);
-                            specifiedData = Terrain.ExtractData((int)m_leftInput);
                         }
                     }
                 }
             }
+            length = m_rightInput & 0xFFFu;
+            detectData = m_rightInput >> 12 == 1u;
+            skipFluid = m_rightInput >> 13 == 1u;
+            specifiedContent = Terrain.ExtractContents((int)m_leftInput);
+            specifiedData = Terrain.ExtractData((int)m_leftInput);
             if (length == 0) {
                 m_inOutput = 0u;
                 m_topOutput = 0u;

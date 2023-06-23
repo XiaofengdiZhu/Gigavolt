@@ -19,6 +19,16 @@ namespace Game {
         public static int[] m_drawOrders = { 112 };
 
         public int[] DrawOrders => m_drawOrders;
+        public Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);
+        public Color grassColor = BlockColorsMap.GrassColorsMap.Lookup(8, 8);
+        public Color ivyColor = BlockColorsMap.IvyColorsMap.Lookup(8, 8);
+        public Color kelpColor = BlockColorsMap.KelpColorsMap.Lookup(8, 8);
+        public Color mimosaLeavesColor = BlockColorsMap.MimosaLeavesColorsMap.Lookup(8, 8);
+        public Color oakLeavesColor = BlockColorsMap.OakLeavesColorsMap.Lookup(8, 8);
+        public Color seagrassColor = BlockColorsMap.SeagrassColorsMap.Lookup(8, 8);
+        public Color spruceLeavesColor = BlockColorsMap.SpruceLeavesColorsMap.Lookup(8, 8);
+        public Color tallSpruceLeavesColor = BlockColorsMap.TallSpruceLeavesColorsMap.Lookup(8, 8);
+        public Color waterColor = BlockColorsMap.WaterColorsMap.Lookup(8, 8);
 
         public GVDisplayPoint AddGlowPoint() {
             GVDisplayPoint glowPoint = new GVDisplayPoint();
@@ -39,10 +49,10 @@ namespace Game {
                     continue;
                 }
                 Vector3 position = key.Position;
-                if (camera.ViewFrustum.Intersection(position + camera.ViewDirection)) {
-                    Matrix matrix = Matrix.CreateFromYawPitchRoll(key.Rotation.X, key.Rotation.Y, key.Rotation.Z);
-                    matrix.Translation = position;
-                    if (key.Type == 0) {
+                Matrix matrix = Matrix.CreateFromYawPitchRoll(key.Rotation.X, key.Rotation.Y, key.Rotation.Z);
+                matrix.Translation = position;
+                if (key.Type == 0) {
+                    if (camera.ViewFrustum.Intersection(position + camera.ViewDirection)) {
                         int x = Terrain.ToCell(position.X);
                         int y = Terrain.ToCell(position.Y);
                         int z = Terrain.ToCell(position.Z);
@@ -80,46 +90,58 @@ namespace Game {
                             m_drawBlockEnvironmentData
                         );
                     }
+                }
+                else {
+                    if (!GVStaticStorage.GVMBIDDataDictionary.TryGetValue(key.Value, out GVArrayData data)
+                        || data == null) {
+                        continue;
+                    }
+                    float halfWidth;
+                    float halfHeight;
+                    Image imageData = data.GetImage();
+                    if (imageData == null) {
+                        continue;
+                    }
+                    int dataWidth = imageData.Width;
+                    int dataHeight = imageData.Height;
+                    if (dataWidth > dataHeight) {
+                        halfWidth = 0.5f;
+                        halfHeight = dataHeight / (float)dataWidth * 0.5f;
+                    }
                     else {
-                        if (!GVStaticStorage.GVMBIDDataDictionary.TryGetValue(key.Value, out GVArrayData data)
-                            || data == null) {
-                            continue;
+                        halfWidth = dataWidth / (float)dataHeight * 0.5f;
+                        halfHeight = 0.5f;
+                    }
+                    int lightValue;
+                    Vector3 forward;
+                    if (key.Complex) {
+                        lightValue = key.Light;
+                        halfWidth *= key.Size;
+                        halfHeight *= key.Size;
+                        forward = Vector3.Zero;
+                    }
+                    else {
+                        lightValue = m_subsystemTerrain.Terrain.GetCellLightFast((int)MathUtils.Floor(position.X), (int)MathUtils.Floor(position.Y), (int)MathUtils.Floor(position.Z));
+                        forward = matrix.Forward * 0.435f;
+                    }
+                    Color color = Color.MultiplyColorOnly(key.Color, LightingManager.LightIntensityByLightValue[lightValue]);
+                    Vector3 right = matrix.Right * halfWidth;
+                    Vector3 up = matrix.Up * halfHeight;
+                    Vector3 tempVector3 = position + forward + camera.ViewDirection;
+                    bool inView = false;
+                    Vector3[] offsets = { Vector3.Zero, right - up, right + up, -right - up, -right + up };
+                    foreach (Vector3 offset in offsets) {
+                        if (camera.ViewFrustum.Intersection(tempVector3 + offset * 0.875f)) {
+                            inView = true;
+                            break;
                         }
-                        float halfWidth;
-                        float halfHeight;
-                        Image imageData = data.GetImage();
-                        if (imageData == null) {
-                            continue;
-                        }
-                        int dataWidth = imageData.Width;
-                        int dataHeight = imageData.Height;
-                        if (dataWidth > dataHeight) {
-                            halfWidth = 0.5f;
-                            halfHeight = dataHeight / (float)dataWidth * 0.5f;
-                        }
-                        else {
-                            halfWidth = dataWidth / (float)dataHeight * 0.5f;
-                            halfHeight = 0.5f;
-                        }
-                        int lightValue;
-                        Vector3 forward;
-                        if (key.Complex) {
-                            lightValue = key.Light;
-                            halfWidth *= key.Size;
-                            halfHeight *= key.Size;
-                            forward = Vector3.Zero;
-                        }
-                        else {
-                            lightValue = m_subsystemTerrain.Terrain.GetCellLightFast((int)MathUtils.Floor(position.X), (int)MathUtils.Floor(position.Y), (int)MathUtils.Floor(position.Z));
-                            forward = matrix.Forward * 0.435f;
-                        }
-                        Color color = Color.MultiplyColorOnly(key.Color, LightingManager.LightIntensityByLightValue[lightValue]);
-                        Vector3 right = matrix.Right * halfWidth;
-                        Vector3 up = matrix.Up * halfHeight;
+                    }
+                    if (inView) {
                         if (key.Type == 2) {
                             for (int y = 0; y < dataHeight; y++) {
                                 for (int x = 0; x < dataWidth; x++) {
-                                    int id = Terrain.ExtractContents((int)imageData.GetPixel(x, y).PackedValue);
+                                    int value = (int)imageData.GetPixel(x, y).PackedValue;
+                                    int id = Terrain.ExtractContents(value);
                                     if (id == 0) {
                                         continue;
                                     }
@@ -133,12 +155,55 @@ namespace Game {
                                     float floatDataWidth = dataWidth;
                                     float floatDataHeight = dataHeight;
                                     Vector3 v = position + forward;
-                                    Vector3 r0 = -(x * 2 / floatDataWidth - 1) * right;
                                     Vector3 r1 = -((x + 1) * 2 / floatDataWidth - 1) * right;
                                     Vector3 u0 = -(y * 2 / floatDataHeight - 1) * up;
-                                    Vector3 u1 = -((y + 1) * 2 / floatDataHeight - 1) * up;
                                     Vector3 p1 = v + r1 + u0;
                                     if (camera.ViewFrustum.Intersection(p1)) {
+                                        Vector3 r0 = -(x * 2 / floatDataWidth - 1) * right;
+                                        Vector3 u1 = -((y + 1) * 2 / floatDataHeight - 1) * up;
+                                        Color maskColor = Color.Transparent;
+                                        int blockData = Terrain.ExtractContents(value);
+                                        switch (id) {
+                                            case BirchLeavesBlock.Index:
+                                                maskColor = birchLeavesColor;
+                                                break;
+                                            case GrassBlock.Index:
+                                            case GrassTrapBlock.Index:
+                                            case TallGrassBlock.Index:
+                                                maskColor = grassColor;
+                                                break;
+                                            case CottonBlock.Index:
+                                            case RyeBlock.Index:
+                                                if (CottonBlock.GetIsWild(blockData)) {
+                                                    maskColor = grassColor;
+                                                }
+                                                break;
+                                            case IvyBlock.Index:
+                                                maskColor = ivyColor;
+                                                break;
+                                            case KelpBlock.Index:
+                                                maskColor = kelpColor;
+                                                break;
+                                            case MimosaLeavesBlock.Index:
+                                                maskColor = mimosaLeavesColor;
+                                                break;
+                                            case OakLeavesBlock.Index:
+                                                maskColor = oakLeavesColor;
+                                                break;
+                                            case SeagrassBlock.Index:
+                                                maskColor = seagrassColor;
+                                                break;
+                                            case ChristmasTreeBlock.Index:
+                                            case SpruceLeavesBlock.Index:
+                                                maskColor = spruceLeavesColor;
+                                                break;
+                                            case TallSpruceLeavesBlock.Index:
+                                                maskColor = tallSpruceLeavesColor;
+                                                break;
+                                            case WaterBlock.Index:
+                                                maskColor = waterColor;
+                                                break;
+                                        }
                                         m_batches[key.CustomBit ? 1 : 0]
                                         .QueueQuad(
                                             p1,
@@ -149,7 +214,7 @@ namespace Game {
                                             new Vector2((slotX + 1) / 16, slotY / 16),
                                             new Vector2((slotX + 1) / 16, (slotY + 1) / 16),
                                             new Vector2(slotX / 16, (slotY + 1) / 16),
-                                            color
+                                            maskColor.PackedValue == 0 ? color : color * maskColor
                                         );
                                     }
                                 }

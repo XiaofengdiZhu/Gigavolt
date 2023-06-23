@@ -12,6 +12,8 @@ namespace Game {
 
         public TextBoxWidget m_linearTextBox;
         public TextBoxWidget m_colCountTextBox;
+        public TextBoxWidget m_widthTextBox;
+        public TextBoxWidget m_heightTextBox;
         public LabelWidget m_colCountTextLabel;
         public LabelWidget m_IDLabel;
         public BitmapButtonWidget m_copyIDButton;
@@ -30,6 +32,8 @@ namespace Game {
             m_linearTextBox = Children.Find<TextBoxWidget>("EditGVListMemoryBankDialog.LinearText");
             m_colCountTextBox = Children.Find<TextBoxWidget>("EditGVListMemoryBankDialog.ColCount");
             m_colCountTextLabel = Children.Find<LabelWidget>("EditGVListMemoryBankDialog.ColCountLabel");
+            m_widthTextBox = Children.Find<TextBoxWidget>("EditGVListMemoryBankDialog.Width");
+            m_heightTextBox = Children.Find<TextBoxWidget>("EditGVListMemoryBankDialog.Height");
             m_IDLabel = Children.Find<LabelWidget>("EditGVListMemoryBankDialog.ID");
             m_IDLabel.Text += $"ID: {memoryBankData.m_ID.ToString("X", null)}";
             m_copyIDButton = Children.Find<BitmapButtonWidget>("EditGVListMemoryBankDialog.CopyID");
@@ -44,23 +48,46 @@ namespace Game {
                 m_colCountTextBox.Text = m_memoryBankData.Data.Count.ToString();
                 if (m_memoryBankData.Data.Count > 100000) {
                     m_linearTextBox.Text = LanguageControl.Get(GetType().Name, 1);
+                    m_enterString = m_linearTextBox.Text;
                     m_linearTextBox.IsEnabled = false;
                     m_colCountTextLabel.Color = Color.Gray;
-                    m_okButton.IsEnabled = false;
                 }
                 else {
                     m_linearTextBox.Text = m_memoryBankData.GetString();
                     m_enterString = m_linearTextBox.Text;
                 }
+                m_widthTextBox.Text = m_memoryBankData.m_width.ToString();
+                m_heightTextBox.Text = m_memoryBankData.m_height.ToString();
             }
         }
 
         public override void Update() {
             if (m_okButton.IsClicked) {
+                if (uint.TryParse(m_widthTextBox.Text, out uint width)
+                    && uint.TryParse(m_heightTextBox.Text, out uint height)
+                    && int.TryParse(m_colCountTextBox.Text, out int length)
+                    && length > 0) {
+                    m_memoryBankData.m_width = width;
+                    m_memoryBankData.m_height = height;
+                }
+                else {
+                    DialogsManager.ShowDialog(
+                        null,
+                        new MessageDialog(
+                            LanguageControl.Error,
+                            LanguageControl.Get(GetType().Name, 2),
+                            "OK",
+                            null,
+                            null
+                        )
+                    );
+                    return;
+                }
                 if (m_enterString != m_linearTextBox.Text) {
-                    int.TryParse(m_colCountTextBox.Text, out int width);
                     try {
-                        m_memoryBankData.String2Data(m_linearTextBox.Text, width);
+                        m_memoryBankData.String2Data(m_linearTextBox.Text, length);
+                        m_memoryBankData.SaveString();
+                        Dismiss(true);
                     }
                     catch (Exception ex) {
                         string error = ex.ToString();
@@ -76,11 +103,16 @@ namespace Game {
                             )
                         );
                     }
-                    m_memoryBankData.SaveString();
-                    Dismiss(true);
                 }
                 else {
-                    Dismiss(false);
+                    if (m_memoryBankData.Data.Count > length) {
+                        m_memoryBankData.Data.RemoveRange(length, m_memoryBankData.Data.Count - length);
+                        m_memoryBankData.m_updateTime = DateTime.Now;
+                        m_memoryBankData.m_dataChanged = true;
+                    }
+                    else {
+                        Dismiss(false);
+                    }
                 }
             }
             if (m_copyIDButton.IsClicked) {

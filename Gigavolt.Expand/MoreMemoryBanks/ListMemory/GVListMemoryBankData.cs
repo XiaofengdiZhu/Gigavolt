@@ -1,15 +1,18 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Engine;
+using Engine.Media;
 
 namespace Game {
     public class GVListMemoryBankData : GVArrayData, IEditableItemData {
         public List<uint> m_data;
         public bool m_dataChanged;
+        public uint m_width;
+        public uint m_height;
 
         public List<uint> Data {
             get => m_data;
@@ -92,8 +95,10 @@ namespace Game {
                 LoadData();
                 GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             }
-            if (array.Length >= 2) {
-                LastOutput = uint.Parse(array[1], NumberStyles.HexNumber, null);
+            if (array.Length >= 4) {
+                m_width = uint.Parse(array[1]);
+                m_height = uint.Parse(array[2]);
+                LastOutput = uint.Parse(array[3], NumberStyles.HexNumber, null);
             }
         }
 
@@ -102,6 +107,7 @@ namespace Game {
         public string SaveString(bool saveLastOutput) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(m_ID.ToString("X", null));
+            stringBuilder.Append($";{m_width};{m_height}");
             if (saveLastOutput) {
                 stringBuilder.Append(';');
                 stringBuilder.Append(LastOutput.ToString("X", null));
@@ -183,6 +189,56 @@ namespace Game {
             }
             stringBuilder.Append(array[maxCount - 1].ToString("X", null));
             return stringBuilder.ToString();
+        }
+
+        public static List<uint> Shorts2UintList(short[] shorts) {
+            List<uint> image = new List<uint>(shorts.Length / 2 + 1);
+            for (int i = 0; i < image.Count; i++) {
+                if (i * 2 >= shorts.Length) {
+                    break;
+                }
+                if (i * 2 == shorts.Length - 1) {
+                    image.Add((uint)(ushort)shorts[i * 2] << 16);
+                }
+                else {
+                    image.Add((ushort)shorts[i * 2 + 1] | ((uint)(ushort)shorts[i * 2] << 16));
+                }
+            }
+            return image;
+        }
+
+        public override void Shorts2Data(short[] shorts) {
+            Data = Shorts2UintList(shorts);
+        }
+
+        public static Image UintList2Image(List<uint> list, uint width = 0u, uint height = 0u) {
+            if (width > 0
+                && height > 0) {
+                Image image = new Image(MathUint.ToInt(width), MathUint.ToInt(height));
+                for (int i = 0; i < Math.Min(list.Count, image.Pixels.Length); i++) {
+                    image.Pixels[i].PackedValue = list[i];
+                }
+                return image;
+            }
+            return null;
+        }
+
+        public override Image Data2Image() => UintList2Image(Data, m_width, m_height);
+
+        public static List<uint> Image2UintList(Image image) {
+            return image.Pixels.Select(color => color.PackedValue).ToList();
+        }
+
+        public override void Image2Data(Image image) {
+            Data = Image2UintList(image);
+            m_width = (uint)image.Width;
+            m_height = (uint)image.Height;
+        }
+
+        public override void UintArray2Data(uint[] uints, int width = 0, int height = 0) {
+            m_width = (uint)width;
+            m_height = (uint)height;
+            Data = uints.ToList();
         }
     }
 }

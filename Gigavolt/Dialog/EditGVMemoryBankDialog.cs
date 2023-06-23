@@ -66,27 +66,42 @@ namespace Game {
         public override void Update() {
             if (m_okButton.IsClicked) {
                 if (m_enterString != m_linearTextBox.Text) {
-                    int.TryParse(m_colCountTextBox.Text, out int width);
-                    int.TryParse(m_rowCountTextBox.Text, out int height);
-                    try {
-                        m_memoryBankData.String2Data(m_linearTextBox.Text, width, height);
+                    if (int.TryParse(m_colCountTextBox.Text, out int width)
+                        && width > 0
+                        && int.TryParse(m_rowCountTextBox.Text, out int height)
+                        && height > 0) {
+                        try {
+                            m_memoryBankData.String2Data(m_linearTextBox.Text, width, height);
+                            m_memoryBankData.SaveString();
+                            Dismiss(true);
+                        }
+                        catch (Exception ex) {
+                            string error = ex.ToString();
+                            Log.Error(error);
+                            DialogsManager.ShowDialog(
+                                null,
+                                new MessageDialog(
+                                    LanguageControl.Error,
+                                    LanguageControl.Get(GetType().Name, 2),
+                                    "OK",
+                                    null,
+                                    null
+                                )
+                            );
+                        }
                     }
-                    catch (Exception ex) {
-                        string error = ex.ToString();
-                        Log.Error(error);
+                    else {
                         DialogsManager.ShowDialog(
                             null,
                             new MessageDialog(
                                 LanguageControl.Error,
-                                LanguageControl.Get(GetType().Name, 2),
+                                LanguageControl.Get(GetType().Name, 3),
                                 "OK",
                                 null,
                                 null
                             )
                         );
                     }
-                    m_memoryBankData.SaveString();
-                    Dismiss(true);
                 }
                 else {
                     Dismiss(false);

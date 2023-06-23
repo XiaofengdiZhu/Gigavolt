@@ -319,6 +319,12 @@ namespace Game {
                                 memoryBankData.Write(i, (uint)Math.Log(inInput, memoryBankData.Read(i)));
                             }
                             break;
+                        case 48u:
+                            memoryBankData.m_width = inInput;
+                            break;
+                        case 49u:
+                            memoryBankData.m_height = inInput;
+                            break;
                     }
                 }
             }

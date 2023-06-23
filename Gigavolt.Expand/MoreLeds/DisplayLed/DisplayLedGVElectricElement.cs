@@ -107,7 +107,7 @@ namespace Game {
                 float roll = ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f);
                 m_glowPoint.Rotation = new Vector3(yaw, pitch, roll);
                 m_glowPoint.Light = (int)((m_inputBottom >> 28) & 0xFu);
-                m_glowPoint.CustomBit = m_inputBottom >> 27 == 1u;
+                m_glowPoint.CustomBit = ((m_inputBottom >> 27) & 1u) == 1u;
             }
             if (m_inputLeft != inputLeft) {
                 m_glowPoint.Color = new Color(m_inputLeft);

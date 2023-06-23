@@ -366,5 +366,11 @@ namespace Game {
             Data = Stream2UintArray(stream, out m_width);
             m_height = m_width;
         }
+
+        public override void UintArray2Data(uint[] uints, int width = 0, int height = 0) {
+            m_width = (uint)width;
+            m_height = (uint)height;
+            Data = uints;
+        }
     }
 }
