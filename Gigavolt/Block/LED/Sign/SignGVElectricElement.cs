@@ -121,9 +121,8 @@ namespace Game {
                 || m_inputRight != inputRight) {
                 m_glowPoint.FloatPosition = m_originalPosition + new Vector3((m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f), ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f), ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f));
             }
-            uint customBit = (m_inputBottom >> 27) & 1;
-            if (customBit == 1
-                && ((inputBottom >> 27) & 1) == 0) {
+            if (((m_inputBottom >> 27) & 1u) == 1u
+                && ((inputBottom >> 27) & 1) == 0u) {
                 foreach (ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
                     Color color = m_glowPoint.Color == Color.Black ? Color.White : m_glowPoint.Color;
                     color *= 255f / MathUtils.Max(color.R, color.G, color.B);

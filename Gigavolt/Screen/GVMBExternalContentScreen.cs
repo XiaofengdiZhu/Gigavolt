@@ -25,7 +25,8 @@ namespace Game {
 
         public IExternalContentProvider m_externalContentProvider = ExternalContentManager.DefaultProvider;
 
-        EditGVMemoryBankDialog m_dialog;
+        BaseEditGVMemoryBankDialog m_dialog;
+        GVArrayData m_arrayData;
 
         public GVMBExternalContentScreen() {
             XElement node = ContentManager.Get<XElement>("Screens/GVMBExternalContentScreen");
@@ -77,7 +78,8 @@ namespace Game {
             if (m_previousScreen == null) {
                 m_previousScreen = ScreensManager.PreviousScreen;
             }
-            m_dialog = (EditGVMemoryBankDialog)parameters[0];
+            m_dialog = (BaseEditGVMemoryBankDialog)parameters[0];
+            m_arrayData = m_dialog.GetArrayData();
             m_directoryList.ClearItems();
             SetPath(null);
             m_listDirty = true;
@@ -113,7 +115,7 @@ namespace Game {
                 SetPath(directoryName);
             }
             if (m_exportButton.IsClicked) {
-                ExportImage($"{m_path}/{m_dialog.m_memoryBankData.m_ID.ToString("X", null)}.png", m_dialog.m_memoryBankData.GetImage());
+                ExportImage($"{m_path}/{m_arrayData.m_ID.ToString("X", null)}.png", m_arrayData.GetImage());
             }
             if (m_actionButton.IsClicked
                 && externalContentEntry != null) {
@@ -236,21 +238,21 @@ namespace Game {
                 busyDialog.Progress,
                 delegate(Stream stream) {
                     busyDialog.LargeMessage = LanguageControl.Get(GetType().Name, 12);
-                    GVMemoryBankData GVMBData = m_dialog.m_memoryBankData;
                     try {
                         string extension = Storage.GetExtension(entry.Path).ToLower();
                         string result;
                         switch (extension) {
                             case ".png":
-                                GVMBData.Image2Data(Image.Load(stream, ImageFileFormat.Png));
-                                result = string.Format(LanguageControl.Get(GetType().Name, 6), entry.Path, GVMBData.m_width, GVMBData.m_height);
+                                Image image = Image.Load(stream, ImageFileFormat.Png);
+                                m_arrayData.Image2Data(image);
+                                result = string.Format(LanguageControl.Get(GetType().Name, 6), entry.Path, image.Width, image.Height);
                                 break;
                             case ".wav":
                                 SoundData soundData = Wav.Load(stream);
                                 if (soundData.ChannelsCount != 2) {
                                     throw new Exception(string.Format(LanguageControl.Get(GetType().Name, 7), entry.Path));
                                 }
-                                GVMBData.Shorts2Data(soundData.Data);
+                                m_arrayData.Shorts2Data(soundData.Data);
                                 result = string.Format(
                                     LanguageControl.Get(GetType().Name, 8),
                                     entry.Path,
@@ -260,12 +262,11 @@ namespace Game {
                                 );
                                 break;
                             default:
-                                GVMBData.Stream2Data(stream);
+                                m_arrayData.Stream2Data(stream);
                                 result = string.Format(LanguageControl.Get(GetType().Name, 11), entry.Path, stream.Length);
                                 break;
                         }
-                        GVMBData.SaveString();
-                        //Image.Save(GVMBData.Data, $"{GVMBData.m_worldDirectory}/GVMB/{GVMBData.m_ID.ToString("X", null)}.png", ImageFileFormat.Png, true);
+                        m_arrayData.SaveString();
                         m_dialog.UpdateFromData();
                         m_dialog.Dismiss(true, false);
                         DialogsManager.HideDialog(busyDialog);

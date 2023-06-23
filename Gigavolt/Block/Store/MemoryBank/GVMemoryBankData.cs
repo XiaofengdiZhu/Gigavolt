@@ -332,9 +332,7 @@ namespace Game {
 
         public static Image UintArray2Image(uint[] array, uint width = 0, uint height = 0) {
             Image image = new Image(width == 0 ? array.Length : (int)width, height == 0 ? 1 : (int)height);
-            int j = 0;
             for (int i = 0; i < array.Length; i++) {
-                j = i;
                 image.Pixels[i].PackedValue = array[i];
             }
             return image;

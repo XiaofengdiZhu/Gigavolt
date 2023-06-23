@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -34,9 +34,9 @@ namespace Game {
             m_worldDirectory = worldDirectory;
             m_data = image;
             m_isDataInitialized = image != null;
-            LastOutput = lastOutput;
             GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             m_updateTime = DateTime.Now;
+            LastOutput = lastOutput;
         }
 
         public virtual uint LastOutput { get; set; }

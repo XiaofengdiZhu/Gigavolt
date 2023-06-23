@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using Engine;
 
 namespace Game {
-    public class EditGVMemoryBankDialog : Dialog {
+    public class EditGVMemoryBankDialog : BaseEditGVMemoryBankDialog {
         public Action m_handler;
 
         public ButtonWidget m_okButton;
@@ -43,7 +43,7 @@ namespace Game {
             UpdateFromData();
         }
 
-        public void UpdateFromData() {
+        public override void UpdateFromData() {
             if (m_memoryBankData.Data != null) {
                 m_rowCountTextBox.IsEnabled = false;
                 m_rowCountTextBox.Text = m_memoryBankData.m_height.ToString();
@@ -112,7 +112,7 @@ namespace Game {
             }
         }
 
-        public void Dismiss(bool result, bool hide = true) {
+        public override void Dismiss(bool result, bool hide = true) {
             if (hide) {
                 DialogsManager.HideDialog(this);
             }
@@ -120,5 +120,7 @@ namespace Game {
                 m_handler();
             }
         }
+
+        public override GVArrayData GetArrayData() => m_memoryBankData;
     }
 }
