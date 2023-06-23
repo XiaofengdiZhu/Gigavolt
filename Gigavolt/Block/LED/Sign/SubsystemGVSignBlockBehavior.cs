@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -382,25 +383,36 @@ namespace Game {
                             );
                         }
                     }
-                    Vector3 position = nearText.FloatPosition;
-                    if (camera.ViewFrustum.Intersection(position + camera.ViewDirection)
-                        && nearText.FloatSize > 0
+                    if (nearText.FloatSize > 0
                         && nearText.FloatColor.A > 0) {
+                        Vector3 position = nearText.FloatPosition;
                         Matrix matrix = Matrix.CreateFromYawPitchRoll(nearText.FloatRotation.X, nearText.FloatRotation.Y, nearText.FloatRotation.Z);
-                        matrix.Translation = position;
                         Vector3 right = matrix.Right * x2 * 2 * nearText.FloatSize;
                         Vector3 up = matrix.Up * (x4 - x3) * 20 * nearText.FloatSize;
-                        texturedBatch3D.QueueQuad(
-                            position + right - up,
-                            position - right - up,
-                            position - right + up,
-                            position + right + up,
-                            new Vector2(x2, x4),
-                            new Vector2(x, x4),
-                            new Vector2(x, x3),
-                            new Vector2(x2, x3),
-                            Color.MultiplyColorOnly(nearText.FloatColor, nearText.FloatLight)
-                        );
+                        Vector3[] offsets = { right - up, right + up, -right - up, -right + up };
+                        Vector3 min = Vector3.Zero;
+                        Vector3 max = Vector3.Zero;
+                        foreach (Vector3 offset in offsets) {
+                            min.X = Math.Min(min.X, offset.X);
+                            min.Y = Math.Min(min.Y, offset.Y);
+                            min.Z = Math.Min(min.Z, offset.Z);
+                            max.X = Math.Max(max.X, offset.X);
+                            max.Y = Math.Max(max.Y, offset.Y);
+                            max.Z = Math.Max(max.Z, offset.Z);
+                        }
+                        if (camera.ViewFrustum.Intersection(new BoundingBox(position + min, position + max))) {
+                            texturedBatch3D.QueueQuad(
+                                position + right - up,
+                                position - right - up,
+                                position - right + up,
+                                position + right + up,
+                                new Vector2(x2, x4),
+                                new Vector2(x, x4),
+                                new Vector2(x, x3),
+                                new Vector2(x2, x3),
+                                Color.MultiplyColorOnly(nearText.FloatColor, nearText.FloatLight)
+                            );
+                        }
                     }
                     m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
                 }

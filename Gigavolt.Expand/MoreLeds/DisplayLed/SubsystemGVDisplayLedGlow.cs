@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
@@ -52,16 +53,17 @@ namespace Game {
                 Matrix matrix = Matrix.CreateFromYawPitchRoll(key.Rotation.X, key.Rotation.Y, key.Rotation.Z);
                 matrix.Translation = position;
                 if (key.Type == 0) {
-                    if (camera.ViewFrustum.Intersection(position + camera.ViewDirection)) {
+                    int value = (int)key.Value;
+                    int id = Terrain.ExtractContents(value);
+                    if (id == 0) {
+                        continue;
+                    }
+                    Block block = BlocksManager.Blocks[id];
+                    float size = key.Complex ? key.Size : block.InHandScale;
+                    if (key.Complex ? camera.ViewFrustum.Intersection(new BoundingSphere(position, size)) : camera.ViewFrustum.Intersection(position + camera.ViewDirection)) {
                         int x = Terrain.ToCell(position.X);
                         int y = Terrain.ToCell(position.Y);
                         int z = Terrain.ToCell(position.Z);
-                        int value = (int)key.Value;
-                        int id = Terrain.ExtractContents(value);
-                        if (id == 0) {
-                            continue;
-                        }
-                        Block block = BlocksManager.Blocks[id];
                         TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(x, z);
                         if (chunkAtCell != null
                             && chunkAtCell.State >= TerrainChunkState.InvalidVertices1
@@ -70,15 +72,7 @@ namespace Game {
                             m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
                             m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
                         }
-                        float size;
-                        if (key.Complex) {
-                            m_drawBlockEnvironmentData.Light = key.Light;
-                            size = key.Size;
-                        }
-                        else {
-                            m_drawBlockEnvironmentData.Light = m_subsystemTerrain.Terrain.GetCellLightFast(x, y, z);
-                            size = block.InHandScale;
-                        }
+                        m_drawBlockEnvironmentData.Light = key.Complex ? key.Light : m_subsystemTerrain.Terrain.GetCellLightFast(x, y, z);
                         m_drawBlockEnvironmentData.BillboardDirection = camera.ViewDirection;
                         m_drawBlockEnvironmentData.InWorldMatrix.Translation = position;
                         block.DrawBlock(
@@ -127,16 +121,18 @@ namespace Game {
                     Color color = Color.MultiplyColorOnly(key.Color, LightingManager.LightIntensityByLightValue[lightValue]);
                     Vector3 right = matrix.Right * halfWidth;
                     Vector3 up = matrix.Up * halfHeight;
-                    Vector3 tempVector3 = position + forward + camera.ViewDirection;
-                    bool inView = false;
-                    Vector3[] offsets = { Vector3.Zero, right - up, right + up, -right - up, -right + up };
+                    Vector3[] offsets = { right - up, right + up, -right - up, -right + up };
+                    Vector3 min = Vector3.Zero;
+                    Vector3 max = Vector3.Zero;
                     foreach (Vector3 offset in offsets) {
-                        if (camera.ViewFrustum.Intersection(tempVector3 + offset * 0.875f)) {
-                            inView = true;
-                            break;
-                        }
+                        min.X = Math.Min(min.X, offset.X);
+                        min.Y = Math.Min(min.Y, offset.Y);
+                        min.Z = Math.Min(min.Z, offset.Z);
+                        max.X = Math.Max(max.X, offset.X);
+                        max.Y = Math.Max(max.Y, offset.Y);
+                        max.Z = Math.Max(max.Z, offset.Z);
                     }
-                    if (inView) {
+                    if (camera.ViewFrustum.Intersection(new BoundingBox(position + forward + min, position + forward + max))) {
                         if (key.Type == 2) {
                             for (int y = 0; y < dataHeight; y++) {
                                 for (int x = 0; x < dataWidth; x++) {
