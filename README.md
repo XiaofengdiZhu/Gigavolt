@@ -253,20 +253,84 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
         </tr>
         <tr>
             <td rowspan="2">下端</td>
-            <td  colspan="3">32位 距离</td>
+            <td  colspan="4">32位 距离</td>
         </tr>
         <tr>
-            <td  colspan="3">探测到最近的符合条件的方块的距离，单位格</td>
+            <td  colspan="4">探测到最近的符合条件的方块的距离，单位格</td>
         </tr>
         <tr>
-            <td rowspan=2>后端</td>
-            <td colspan="3">32位 连续方块数量</td>
+            <td rowspan=4>后端</td>
+            <td colspan="4">32位 连续方块数量</td>
         </tr>
         <tr>
-            <td colspan="3">探测到符合条件的方块后，输出当前方向连续出现了多少个该方块</td>
+            <td colspan="4">探测到符合条件的方块后，输出当前方向连续出现了多少个该方块</td>
         </tr>
     </tbody>
 </table>
+
+### 地形扫描仪 Terrain Scanner
+向扫描仪面对的面平行扫描方块，将结果保存到指定存储器，可指定起始距离和范围
+<table>
+    <thead align="center">
+        <tr>
+            <th colspan="">端口</th>
+            <th colspan="4">作用</th>
+        </tr>
+    </thead>
+    <tbody align="center">
+        <tr>
+            <td rowspan=2>上端</td>
+            <td>15位 空</td>
+            <td>1位 是否存储方块数据</td>
+            <td>16位 起始距离</td>
+        </tr>
+        <tr>
+            <td>无作用</td>
+            <td>为0时只保存方块ID，为1时方块ID和数据一并保存</td>
+            <td>每加1，扫描起始位置距离扫描仪面向的方向加1格，最高位为1时向背面</td>
+        </tr>
+        <tr>
+            <td rowspan="2">右端</td>
+            <td colspan="2">16位 起始横向偏移</td>
+            <td>16位 起始纵向偏移</td>
+        </tr>
+        <tr>
+            <td colspan="2">每加1，扫描起始位置横向偏移1格，最高位为1时取反方向，正方向的定义另见下表</td>
+            <td>每加1，扫描起始位置纵向偏移1格，最高位为1时取反方向，正方向的定义另见下表</td>
+        </tr>
+        <tr>
+            <td rowspan="2">左端</td>
+            <td colspan="2">16位 横向扫描宽度</td>
+            <td>16位 纵向扫描高度</td>
+        </tr>
+        <tr>
+            <td colspan="2">每加1，扫描的宽度加1格，扫描方向的定义另见下表</td>
+            <td>每加1，扫描的高度加1格，扫描方向的定义另见下表</td>
+        </tr>
+        <tr>
+            <td rowspan="2">后端</td>
+            <td colspan="3">32位 存储器ID</td>
+        </tr>
+        <tr>
+            <td colspan="3">指定要保存到的存储器的ID</td>
+        </tr>
+        <tr>
+            <td rowspan="2">下端</td>
+            <td colspan="3">32位 启动</td>
+        </tr>
+        <tr>
+            <td colspan="3">从0变为非0时启动扫描并将结果保存到指定ID的存储器</td>
+        </tr>
+    </tbody>
+</table>
+
+> **注意** 扫描成功将直接覆盖存储器原始数据！
+
+| 扫描仪面对方向 | 起始横向偏移正方向 | 起始纵向偏移正方向 | 横向扫描方向  | 纵向扫描方向  |
+|---------|-----------|-----------|---------|---------|
+| Y轴-上或下  | X轴正方向-北   | Z轴正方向-西   | X轴正方向-北 | Z轴正方向-西 |
+| X轴-北或南  | Z轴正方向-西   | Y轴正方向-上   | Z轴正方向-西 | Y轴负方向-下 |
+| Z轴-东或西  | X轴正方向-北   | Y轴正方向-上   | X轴正方向-北 | Y轴负方向-下 |
 
 ### 一维存储器 List Memory
 和存储器相似，但只能存储一行数据，不过多了很多实用功能，无需初始化即可使用

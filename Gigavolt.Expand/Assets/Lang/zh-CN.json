@@ -1,4 +1,4 @@
-{
+﻿{
   "Language": {
     "Name": "中文"
   },
@@ -65,6 +65,10 @@
     "GVListMemoryBankBlock:0": {
       "DisplayName": "GV一维存储器",
       "Description": "和存储器相似，但只能存储一行数据，不过多了很多实用功能，无需初始化即可使用，详见本Mod Github页面的介绍"
+    },
+    "GVTerrainScannerBlock:0": {
+      "DisplayName": "GV地形扫描仪",
+      "Description": "向扫描仪面对的面平行扫描方块，将结果保存到指定存储器，可指定距离和范围，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {

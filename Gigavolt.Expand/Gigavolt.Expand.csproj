@@ -116,6 +116,8 @@
 		<Compile Include="MoreSensors\EnhancedRealTimeClock\GVEnhancedRealTimeClockBlock.cs" />
 		<Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs" />
 		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs" />
+		<Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs" />
+		<Compile Include="MoreSensors\TerrainScanner\TerrainScannerGVElectricElement.cs" />
 		<Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs" />
 		<Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs" />
 		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs" />
@@ -310,6 +312,11 @@
 		<None Include="Assets\Textures\GVTerrainRaycastDetectorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Assets\Textures\GVTerrainScanner.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
