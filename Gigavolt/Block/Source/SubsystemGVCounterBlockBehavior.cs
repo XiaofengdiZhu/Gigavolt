@@ -9,6 +9,7 @@ namespace Game {
         public SubsystemGVCounterBlockBehavior() : base(GVCounterBlock.Index) { }
 
         public override void Load(ValuesDictionary valuesDictionary) {
+            base.Load(valuesDictionary);
             m_subsystemGVElectricity = Project.FindSubsystem<SubsystemGVElectricity>(true);
         }
 

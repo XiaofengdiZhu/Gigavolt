@@ -18,6 +18,15 @@ namespace Game {
             }
         }
 
+        public override void OnAdded() {
+            GVMemoryBankData memoryBankData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
+            if (memoryBankData != null
+                && memoryBankData.m_worldDirectory == null) {
+                memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
+                memoryBankData.LoadData();
+            }
+        }
+
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {

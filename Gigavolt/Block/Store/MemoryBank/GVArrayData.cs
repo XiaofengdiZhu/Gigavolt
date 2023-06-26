@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
+using Engine;
 using Engine.Graphics;
 using Engine.Media;
 
@@ -19,6 +20,22 @@ namespace Game {
         public DateTime m_cachedImageTime;
         public Texture2D m_cachedTexture2D;
         public DateTime m_cachedTexture2DTime;
+        public RenderTarget2D m_cachedTerrainTexture2D;
+        public DateTime m_cachedTerrainTexture2DTime;
+        public PrimitivesRenderer2D m_primitivesRenderer2D = new PrimitivesRenderer2D();
+
+        public SamplerState m_samplerState;
+
+        public Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);
+        public Color grassColor = BlockColorsMap.GrassColorsMap.Lookup(8, 8);
+        public Color ivyColor = BlockColorsMap.IvyColorsMap.Lookup(8, 8);
+        public Color kelpColor = BlockColorsMap.KelpColorsMap.Lookup(8, 8);
+        public Color mimosaLeavesColor = BlockColorsMap.MimosaLeavesColorsMap.Lookup(8, 8);
+        public Color oakLeavesColor = BlockColorsMap.OakLeavesColorsMap.Lookup(8, 8);
+        public Color seagrassColor = BlockColorsMap.SeagrassColorsMap.Lookup(8, 8);
+        public Color spruceLeavesColor = BlockColorsMap.SpruceLeavesColorsMap.Lookup(8, 8);
+        public Color tallSpruceLeavesColor = BlockColorsMap.TallSpruceLeavesColorsMap.Lookup(8, 8);
+        public Color waterColor = BlockColorsMap.WaterColorsMap.Lookup(8, 8);
 
         public abstract uint Read(uint index);
         public abstract void Write(uint index, uint data);
@@ -99,10 +116,151 @@ namespace Game {
             if (m_isDataInitialized) {
                 if (m_cachedTexture2D == null
                     || m_updateTime != m_cachedTexture2DTime) {
+                    m_cachedTexture2D?.Dispose();
                     m_cachedTexture2D = Data2Texture2D();
                     m_cachedTexture2DTime = m_updateTime;
                 }
                 return m_cachedTexture2D;
+            }
+            return null;
+        }
+
+        public RenderTarget2D Data2TerrainTexture2D(SamplerState samplerState) {
+            Image image = GetImage();
+            int dataWidth = image.Width;
+            int dataHeight = image.Height;
+            int maxSide = Math.Max(dataWidth, dataHeight);
+            if (maxSide > 8192) {
+                return null;
+            }
+            int multiplier = 4;
+            if (maxSide > 4096) {
+                multiplier = 1;
+            }
+            else if (maxSide > 2048) {
+                multiplier = 2;
+            }
+            else if (maxSide > 1024) {
+                multiplier = 3;
+            }
+            int slotSide = 1 << multiplier;
+            RenderTarget2D originRenderTarget = Display.RenderTarget;
+            RenderTarget2D renderTarget = new RenderTarget2D(
+                dataWidth << multiplier,
+                dataHeight << multiplier,
+                1,
+                ColorFormat.Rgba8888,
+                DepthFormat.None
+            );
+            Display.RenderTarget = renderTarget;
+            TexturedBatch2D texturedBatch = m_primitivesRenderer2D.TexturedBatch(
+                GameManager.Project.FindSubsystem<SubsystemBlocksTexture>(true).BlocksTexture,
+                false,
+                0,
+                DepthStencilState.None,
+                null,
+                BlendState.AlphaBlend,
+                samplerState
+            );
+            for (int y = 0; y < dataHeight; y++) {
+                for (int x = 0; x < dataWidth; x++) {
+                    int value = (int)image.GetPixel(x, y).PackedValue;
+                    int id = Terrain.ExtractContents(value);
+                    if (id == 0) {
+                        continue;
+                    }
+                    Block block = BlocksManager.Blocks[id];
+                    if (block is AirBlock) {
+                        continue;
+                    }
+                    int slotIndex = block.DefaultTextureSlot;
+                    if (block is WoodBlock woodBlock) {
+                        slotIndex = woodBlock.m_sideTextureSlot;
+                    }
+                    float slotX = slotIndex % 16;
+                    float slotY = slotIndex / 16;
+                    Color maskColor = Color.Transparent;
+                    int blockData = Terrain.ExtractContents(value);
+                    switch (id) {
+                        case BirchLeavesBlock.Index:
+                            maskColor = birchLeavesColor;
+                            break;
+                        case GrassBlock.Index:
+                        case GrassTrapBlock.Index:
+                        case TallGrassBlock.Index:
+                            maskColor = grassColor;
+                            break;
+                        case CottonBlock.Index:
+                        case RyeBlock.Index:
+                            if (CottonBlock.GetIsWild(blockData)) {
+                                maskColor = grassColor;
+                            }
+                            break;
+                        case IvyBlock.Index:
+                            maskColor = ivyColor;
+                            break;
+                        case KelpBlock.Index:
+                            maskColor = kelpColor;
+                            break;
+                        case MimosaLeavesBlock.Index:
+                            maskColor = mimosaLeavesColor;
+                            break;
+                        case OakLeavesBlock.Index:
+                            maskColor = oakLeavesColor;
+                            break;
+                        case SeagrassBlock.Index:
+                            maskColor = seagrassColor;
+                            break;
+                        case ChristmasTreeBlock.Index:
+                        case SpruceLeavesBlock.Index:
+                            maskColor = spruceLeavesColor;
+                            break;
+                        case TallSpruceLeavesBlock.Index:
+                            maskColor = tallSpruceLeavesColor;
+                            break;
+                        case WaterBlock.Index:
+                            maskColor = waterColor;
+                            break;
+                    }
+                    texturedBatch.QueueQuad(
+                        new Vector2(x * slotSide, y * slotSide),
+                        new Vector2((x + 1) * slotSide, (y + 1) * slotSide),
+                        0f,
+                        new Vector2(slotX / 16, slotY / 16),
+                        new Vector2((slotX + 1) / 16, (slotY + 1) / 16),
+                        maskColor.PackedValue == 0 ? Color.White : maskColor
+                    );
+                }
+            }
+            texturedBatch.QueueQuad(
+                new Vector2(0, 0),
+                new Vector2(1, 1),
+                0f,
+                new Vector2(0, 0),
+                new Vector2(1, 1),
+                Color.White
+            );
+            m_primitivesRenderer2D.Flush();
+            Display.RenderTarget = originRenderTarget;
+            return renderTarget;
+        }
+
+        public RenderTarget2D GetTerrainTexture2D(SamplerState samplerState) {
+            try {
+                if (m_isDataInitialized) {
+                    if (m_cachedTerrainTexture2D == null
+                        || m_updateTime != m_cachedTerrainTexture2DTime
+                        || samplerState != m_samplerState) {
+                        m_cachedTerrainTexture2D?.Dispose();
+                        m_cachedTerrainTexture2D = Data2TerrainTexture2D(samplerState);
+                        m_cachedTerrainTexture2DTime = m_updateTime;
+                        m_samplerState = samplerState;
+                    }
+                    return m_cachedTerrainTexture2D;
+                }
+            }
+            catch (Exception e) {
+                Log.Error(e);
             }
             return null;
         }

@@ -14,6 +14,7 @@ namespace Game {
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
         }
 
+        public override void OnAdded() { }
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
