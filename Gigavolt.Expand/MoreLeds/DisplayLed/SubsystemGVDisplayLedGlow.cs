@@ -108,7 +108,6 @@ namespace Game {
                         lightValue = m_subsystemTerrain.Terrain.GetCellLightFast((int)MathUtils.Floor(position.X), (int)MathUtils.Floor(position.Y), (int)MathUtils.Floor(position.Z));
                         forward = matrix.Forward * 0.435f;
                     }
-                    Color color = Color.MultiplyColorOnly(key.Color, LightingManager.LightIntensityByLightValue[lightValue]);
                     Vector3 right = matrix.Right * halfWidth;
                     Vector3 up = matrix.Up * halfHeight;
                     Vector3[] offsets = { right - up, right + up, -right - up, -right + up };
@@ -124,6 +123,7 @@ namespace Game {
                     }
                     if (camera.ViewFrustum.Intersection(new BoundingBox(position + forward + min, position + forward + max))) {
                         SamplerState samplerState = key.CustomBit ? SamplerState.PointClamp : SamplerState.AnisotropicClamp;
+                        Color color = Color.MultiplyColorOnly(key.Color, LightingManager.LightIntensityByLightValue[lightValue]);
                         if (key.Type == 2) {
                             m_primitivesRenderer.TexturedBatch(
                                     data.GetTerrainTexture2D(samplerState),

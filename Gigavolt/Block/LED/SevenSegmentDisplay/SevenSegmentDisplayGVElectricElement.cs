@@ -16,7 +16,7 @@ namespace Game {
 
         public Vector2[] m_sizes = new Vector2[7] { new Vector2(3.2f, 1f), new Vector2(1f, 2.3f), new Vector2(1f, 2.3f), new Vector2(3.2f, 1f), new Vector2(1f, 2.3f), new Vector2(1f, 2.3f), new Vector2(3.2f, 1f) };
 
-        public readonly int[] m_patterns = new int[16] { 63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113 };
+        public readonly int[] m_patterns = new int[16] { 0, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113 };
 
         public SevenSegmentDisplayGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(true);
 

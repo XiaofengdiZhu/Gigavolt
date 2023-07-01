@@ -48,7 +48,7 @@ namespace Game {
                             null,
                             new MessageDialog(
                                 "发生错误",
-                                "当前电压大于等于溢出电压",
+                                "不能设置当前电压大于等于溢出电压",
                                 "OK",
                                 null,
                                 null
@@ -57,7 +57,6 @@ namespace Game {
                     }
                     else {
                         m_blockData.Data = newOverflow;
-                        m_blockData.SaveString();
                         Dismiss(true, newCurrent);
                     }
                 }

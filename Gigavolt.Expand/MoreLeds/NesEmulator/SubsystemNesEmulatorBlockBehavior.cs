@@ -142,71 +142,78 @@ namespace Game {
                 }
                 foreach (GVNesEmulatorGlowPoint key in m_glowPoints.Keys) {
                     if (key.GetPowerOn()) {
-                        Vector3 vector = key.Position - camera.ViewPosition;
-                        float num = Vector3.Dot(vector, camera.ViewDirection);
-                        if (num > 0.01f) {
-                            float num2 = vector.Length();
-                            if (num2 < m_subsystemSky.ViewFogRange.Y) {
-                                float num3 = key.GetSize() * 0.5f;
-                                Vector3 v = (0f - (0.01f + 0.02f * num)) / num2 * vector;
-                                Vector3 p = key.Position + num3 * (-key.Right - key.Up * 0.9375f) + v;
-                                Vector3 p2 = key.Position + num3 * (key.Right - key.Up * 0.9375f) + v;
-                                Vector3 p3 = key.Position + num3 * (key.Right + key.Up * 0.9375f) + v;
-                                Vector3 p4 = key.Position + num3 * (-key.Right + key.Up * 0.9375f) + v;
-                                switch (key.GetRotation()) {
-                                    case 1:
-                                        cachedBatch.QueueQuad(
-                                            p,
-                                            p2,
-                                            p3,
-                                            p4,
-                                            new Vector2(1f, 0f),
-                                            new Vector2(1f, 1f),
-                                            new Vector2(0f, 1f),
-                                            new Vector2(0f, 0f),
-                                            Color.White
-                                        );
-                                        break;
-                                    case 2:
-                                        cachedBatch.QueueQuad(
-                                            p,
-                                            p2,
-                                            p3,
-                                            p4,
-                                            new Vector2(0f, 0f),
-                                            new Vector2(1f, 0f),
-                                            new Vector2(1f, 1f),
-                                            new Vector2(0f, 1f),
-                                            Color.White
-                                        );
-                                        break;
-                                    case 3:
-                                        cachedBatch.QueueQuad(
-                                            p,
-                                            p2,
-                                            p3,
-                                            p4,
-                                            new Vector2(0f, 1f),
-                                            new Vector2(0f, 0f),
-                                            new Vector2(1f, 0f),
-                                            new Vector2(1f, 1f),
-                                            Color.White
-                                        );
-                                        break;
-                                    default:
-                                        cachedBatch.QueueQuad(
-                                            p,
-                                            p2,
-                                            p3,
-                                            p4,
-                                            new Vector2(1f, 1f),
-                                            new Vector2(0f, 1f),
-                                            new Vector2(0f, 0f),
-                                            new Vector2(1f, 0f),
-                                            Color.White
-                                        );
-                                        break;
-                                }
+                        float halfSize = key.GetSize() * 0.5f;
+                        Vector3 right = key.Right * halfSize;
+                        Vector3 up = key.Up * halfSize * 0.9375f;
+                        Vector3[] offsets = { right - up, right + up, -right - up, -right + up };
+                        Vector3 min = Vector3.Zero;
+                        Vector3 max = Vector3.Zero;
+                        foreach (Vector3 offset in offsets) {
+                            min.X = Math.Min(min.X, offset.X);
+                            min.Y = Math.Min(min.Y, offset.Y);
+                            min.Z = Math.Min(min.Z, offset.Z);
+                            max.X = Math.Max(max.X, offset.X);
+                            max.Y = Math.Max(max.Y, offset.Y);
+                            max.Z = Math.Max(max.Z, offset.Z);
+                        }
+                        if (camera.ViewFrustum.Intersection(new BoundingBox(key.Position + min, key.Position + max))) {
+                            Vector3 p = key.Position - right - up;
+                            Vector3 p2 = key.Position + right - up;
+                            Vector3 p3 = key.Position + right + up;
+                            Vector3 p4 = key.Position - right + up;
+                            switch (key.GetRotation()) {
+                                case 1:
+                                    cachedBatch.QueueQuad(
+                                        p,
+                                        p2,
+                                        p3,
+                                        p4,
+                                        new Vector2(1f, 0f),
+                                        new Vector2(1f, 1f),
+                                        new Vector2(0f, 1f),
+                                        new Vector2(0f, 0f),
+                                        Color.White
+                                    );
+                                    break;
+                                case 2:
+                                    cachedBatch.QueueQuad(
+                                        p,
+                                        p2,
+                                        p3,
+                                        p4,
+                                        new Vector2(0f, 0f),
+                                        new Vector2(1f, 0f),
+                                        new Vector2(1f, 1f),
+                                        new Vector2(0f, 1f),
+                                        Color.White
+                                    );
+                                    break;
+                                case 3:
+                                    cachedBatch.QueueQuad(
+                                        p,
+                                        p2,
+                                        p3,
+                                        p4,
+                                        new Vector2(0f, 1f),
+                                        new Vector2(0f, 0f),
+                                        new Vector2(1f, 0f),
+                                        new Vector2(1f, 1f),
+                                        Color.White
+                                    );
+                                    break;
+                                default:
+                                    cachedBatch.QueueQuad(
+                                        p,
+                                        p2,
+                                        p3,
+                                        p4,
+                                        new Vector2(1f, 1f),
+                                        new Vector2(0f, 1f),
+                                        new Vector2(0f, 0f),
+                                        new Vector2(1f, 0f),
+                                        Color.White
+                                    );
+                                    break;
                             }
                         }
                     }

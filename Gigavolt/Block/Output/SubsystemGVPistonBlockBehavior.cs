@@ -365,7 +365,7 @@ namespace Game {
             m_movingBlocks.Clear();
             Point3 offset = point;
             MovingBlock item;
-            while (m_movingBlocks.Count < maxExtension + 1) {
+            while (m_movingBlocks.Count < MathUtils.Max(pullCount, maxExtension) + 1) {
                 int cellValue = terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z);
                 int num2 = Terrain.ExtractContents(cellValue);
                 int face2 = GVPistonHeadBlock.GetFace(Terrain.ExtractData(cellValue));
@@ -384,7 +384,7 @@ namespace Game {
                 item = new MovingBlock { Offset = Point3.Zero, Value = Terrain.MakeBlockValue(GVPistonHeadBlock.Index, 0, GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetMode(GVPistonHeadBlock.SetIsShaft(0, num > 0), mode), face)) };
                 movingBlocks2.Add(item);
                 int num3 = 0;
-                while (num3 < maxExtension + 1) {
+                while (num3 < MathUtils.Max(pullCount, maxExtension) + 1) {
                     int cellValue2 = terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z);
                     if (!IsBlockMovable(cellValue2, face, position.Y + offset.Y, out bool isEnd)) {
                         break;
