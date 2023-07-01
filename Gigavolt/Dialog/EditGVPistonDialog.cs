@@ -60,9 +60,11 @@ namespace Game {
                 m_speed = (int)m_slider3.Value;
             }
             if (m_okButton.IsClicked) {
-                if (int.TryParse(m_maxExtensionWidget.Text, out int m)) {
+                if (int.TryParse(m_maxExtensionWidget.Text, out int m)
+                    && m >= 0) {
                     m_pistonData.MaxExtension = m - 1;
-                    if (int.TryParse(m_pullCountWidget.Text, out int p)) {
+                    if (int.TryParse(m_pullCountWidget.Text, out int p)
+                        && p >= 0) {
                         m_pistonData.PullCount = p - 1;
                         m_pistonData.Speed = m_speed;
                         m_pistonData.SaveString();
@@ -73,7 +75,7 @@ namespace Game {
                             null,
                             new MessageDialog(
                                 "发生错误",
-                                "最大推拉数不能转换为整数",
+                                "最大推拉数不能转换为自然数",
                                 "OK",
                                 null,
                                 null
@@ -86,7 +88,7 @@ namespace Game {
                         null,
                         new MessageDialog(
                             "发生错误",
-                            "最大延伸数不能转换为整数",
+                            "最大延伸数不能转换为自然数",
                             "OK",
                             null,
                             null

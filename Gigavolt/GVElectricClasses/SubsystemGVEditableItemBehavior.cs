@@ -10,6 +10,7 @@ namespace Game {
         public int m_contents;
 
         public Dictionary<int, T> m_itemsData = new Dictionary<int, T>();
+        public List<int> m_existingIds = new List<int>();
 
         public SubsystemGVEditableItemBehavior(int contents) => m_contents = contents;
 
@@ -26,7 +27,8 @@ namespace Game {
         public int StoreItemDataAtUniqueId(T t, int oldId = 0) {
             int num = FindFreeItemId();
             m_itemsData[num] = t;
-            if (oldId > 0) {
+            if (oldId > 0
+                && num != oldId) {
                 m_itemsData.Remove(oldId);
             }
             return num;
@@ -62,6 +64,18 @@ namespace Game {
             return 0;
         }
 
+        public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) {
+            m_existingIds.Add(GetIdFromValue(value));
+        }
+
+        public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded) {
+            m_existingIds.Add(GetIdFromValue(value));
+        }
+
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) {
+            m_existingIds.Remove(GetIdFromValue(value));
+        }
+
         public void GarbageCollectItems(ReadOnlyList<ScannedItemData> allExistingItems) {
             HashSet<int> hashSet = new HashSet<int>();
             foreach (ScannedItemData item in allExistingItems) {
@@ -71,7 +85,8 @@ namespace Game {
             }
             List<int> list = new List<int>();
             foreach (KeyValuePair<int, T> itemsDatum in m_itemsData) {
-                if (!hashSet.Contains(itemsDatum.Key)) {
+                if (!hashSet.Contains(itemsDatum.Key)
+                    && !m_existingIds.Contains(itemsDatum.Key)) {
                     list.Add(itemsDatum.Key);
                 }
             }
