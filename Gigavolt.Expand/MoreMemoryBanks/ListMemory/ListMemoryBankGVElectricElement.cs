@@ -37,6 +37,7 @@ namespace Game {
             uint rightInput = 0u;
             uint leftInput = 0u;
             uint bottomInput = 0u;
+            bool hasInput = false;
             int rotation = Rotation;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
@@ -46,17 +47,21 @@ namespace Game {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Right:
                                 rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                hasInput = true;
                                 break;
                             case GVElectricConnectorDirection.Left:
                                 leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                hasInput = true;
                                 break;
                             case GVElectricConnectorDirection.Bottom: {
                                 bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                                 bottomConnected = true;
+                                hasInput = true;
                                 break;
                             }
                             case GVElectricConnectorDirection.In:
                                 inInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                hasInput = true;
                                 break;
                         }
                     }
@@ -341,6 +346,9 @@ namespace Game {
                 m_voltage = memoryBankData.Read(leftInput);
             }
             memoryBankData.LastOutput = m_voltage;
+            if (!hasInput) {
+                m_voltage = memoryBankData.m_ID;
+            }
             return m_voltage != voltage;
         }
     }

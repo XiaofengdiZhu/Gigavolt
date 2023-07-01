@@ -38,6 +38,7 @@ namespace Game {
             uint num2 = 0u;
             uint num3 = 0u;
             int rotation = Rotation;
+            bool hasInput = false;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
@@ -45,18 +46,22 @@ namespace Game {
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Right) {
                             num2 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                            hasInput = true;
                         }
                         else if (connectorDirection == GVElectricConnectorDirection.Left) {
                             num3 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                            hasInput = true;
                         }
                         else if (connectorDirection == GVElectricConnectorDirection.Bottom) {
                             uint num4 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                             flag = num4 >= 8u;
                             flag3 = num4 > 0u && num4 < 8u;
                             flag2 = true;
+                            hasInput = true;
                         }
                         else if (connectorDirection == GVElectricConnectorDirection.In) {
                             num = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                            hasInput = true;
                         }
                     }
                 }
@@ -87,6 +92,9 @@ namespace Game {
                     m_writeAllowed = true;
                 }
                 memoryBankData.LastOutput = m_voltage;
+                if (!hasInput) {
+                    m_voltage = memoryBankData.m_ID;
+                }
             }
             return m_voltage != voltage;
         }
