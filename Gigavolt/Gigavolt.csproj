@@ -111,6 +111,7 @@
 		<Compile Include="Dialog\EditGVCounterDialog.cs" />
 		<Compile Include="Dialog\EditGVSignCDialog.cs" />
 		<Compile Include="Dialog\EditGVSignDialog.cs" />
+		<Compile Include="GVElectricClasses\SubsystemGVEditableItemBehavior.cs" />
 		<Compile Include="Widget\GVStepFloatingButtons.cs" />
 		<Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs" />
 		<Compile Include="BaseBlock\GVWireThroughBlock.cs" />

@@ -4,7 +4,7 @@ using Engine;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemGVPistonBlockBehavior : SubsystemEditableItemBehavior<GVPistonData>, IUpdateable {
+    public class SubsystemGVPistonBlockBehavior : SubsystemGVEditableItemBehavior<GVPistonData>, IUpdateable {
         public class QueuedAction {
             public int StoppedFrame;
 
@@ -54,6 +54,9 @@ namespace Game {
             UpdateMovableBlocks();
         }
 
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 6) & 4095;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262081) | ((id & 4095) << 6));
+
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
                 return false;
@@ -61,19 +64,16 @@ namespace Game {
             int value = inventory.GetSlotValue(slotIndex);
             int count = inventory.GetSlotCount(slotIndex);
             int data = Terrain.ExtractData(value);
-            int id = (Terrain.ExtractData(value) >> 6) & 1023;
-            GVPistonData blockData = GetItemData(id);
-            blockData = blockData != null ? (GVPistonData)blockData.Copy() : new GVPistonData();
+            int id = GetIdFromValue(value);
+            GVPistonData blockData = GetItemData(id) ?? new GVPistonData();
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditGVPistonDialog(
                     GVPistonBlock.GetMode(data),
                     blockData,
                     delegate {
-                        int newData = (data & -65473) | ((StoreItemDataAtUniqueId(blockData) & 1023) << 6);
-                        int value2 = Terrain.ReplaceData(value, newData);
                         inventory.RemoveSlotItems(slotIndex, count);
-                        inventory.AddSlotItems(slotIndex, value2, count);
+                        inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)), count);
                     }
                 )
             );
@@ -82,14 +82,15 @@ namespace Game {
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int data = Terrain.ExtractData(value);
-            GVPistonData blockData = GetBlockData(new Point3(x, y, z)) ?? new GVPistonData();
+            int id = GetIdFromValue(value);
+            GVPistonData blockData = GetItemData(id) ?? new GVPistonData();
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditGVPistonDialog(
                     GVPistonBlock.GetMode(data),
                     blockData,
                     delegate {
-                        SetBlockData(new Point3(x, y, z), blockData);
+                        SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                         GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, 0);
                         if (electricElement != null) {
@@ -175,7 +176,6 @@ namespace Game {
                     }
                     break;
             }
-            m_blocksData.Remove(new Point3(x, y, z));
         }
 
         public override void OnChunkDiscarding(TerrainChunk chunk) {
@@ -186,23 +186,6 @@ namespace Game {
                 if (item.Id == IdString) {
                     StopPiston((Point3)item.Tag);
                 }
-            }
-        }
-
-        public override void OnItemHarvested(int x, int y, int z, int blockValue, ref BlockDropValue dropValue, ref int newBlockValue) {
-            GVPistonData blockData = GetBlockData(new Point3(x, y, z));
-            if (blockData != null) {
-                int num = FindFreeItemId();
-                m_itemsData.Add(num, (GVPistonData)blockData.Copy());
-                dropValue.Value = Terrain.ReplaceData(dropValue.Value, GVPistonBlock.SetMode((num & 1023) << 6, GVPistonBlock.GetMode(Terrain.ExtractData(blockValue))));
-            }
-        }
-
-        public override void OnItemPlaced(int x, int y, int z, ref BlockPlacementData placementData, int itemValue) {
-            int id = Terrain.ExtractData(itemValue);
-            GVPistonData itemData = GetItemData((id >> 6) & 1023);
-            if (itemData != null) {
-                m_blocksData[new Point3(x, y, z)] = (GVPistonData)itemData.Copy();
             }
         }
 
@@ -352,10 +335,12 @@ namespace Game {
 
         public bool MovePiston(Point3 position, int length) {
             Terrain terrain = m_subsystemTerrain.Terrain;
-            int data = Terrain.ExtractData(terrain.GetCellValue(position.X, position.Y, position.Z));
+            int value = terrain.GetCellValue(position.X, position.Y, position.Z);
+            int data = Terrain.ExtractData(value);
             int face = GVPistonBlock.GetFace(data);
             PistonMode mode = GVPistonBlock.GetMode(data);
-            GVPistonData pistonData = GetBlockData(position) ?? new GVPistonData();
+            int id = GetIdFromValue(value);
+            GVPistonData pistonData = GetItemData(id) ?? new GVPistonData();
             int maxExtension = pistonData.MaxExtension;
             int pullCount = pistonData.PullCount;
             int speed = pistonData.Speed;
@@ -365,7 +350,7 @@ namespace Game {
             m_movingBlocks.Clear();
             Point3 offset = point;
             MovingBlock item;
-            while (m_movingBlocks.Count < MathUtils.Max(pullCount, maxExtension) + 1) {
+            while (m_movingBlocks.Count < maxExtension + 1) {
                 int cellValue = terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z);
                 int num2 = Terrain.ExtractContents(cellValue);
                 int face2 = GVPistonHeadBlock.GetFace(Terrain.ExtractData(cellValue));
@@ -384,7 +369,7 @@ namespace Game {
                 item = new MovingBlock { Offset = Point3.Zero, Value = Terrain.MakeBlockValue(GVPistonHeadBlock.Index, 0, GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetMode(GVPistonHeadBlock.SetIsShaft(0, num > 0), mode), face)) };
                 movingBlocks2.Add(item);
                 int num3 = 0;
-                while (num3 < MathUtils.Max(pullCount, maxExtension) + 1) {
+                while (num3 < pullCount + 1) {
                     int cellValue2 = terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z);
                     if (!IsBlockMovable(cellValue2, face, position.Y + offset.Y, out bool isEnd)) {
                         break;

@@ -3,7 +3,7 @@ using System.Globalization;
 namespace Game {
     public class GVPistonData : IEditableItemData {
         public int MaxExtension = 7;
-        public int PullCount;
+        public int PullCount = 7;
         public int Speed = 3;
 
         public IEditableItemData Copy() => new GVPistonData { MaxExtension = MaxExtension, PullCount = PullCount, Speed = Speed };

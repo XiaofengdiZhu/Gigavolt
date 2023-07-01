@@ -11,7 +11,7 @@ namespace Game {
 
         public TextBoxWidget m_pullCountWidget;
 
-        public ContainerWidget m_panel2;
+        public LabelWidget m_label2;
 
         public SliderWidget m_slider3;
 
@@ -36,7 +36,7 @@ namespace Game {
             LoadContents(this, node);
             m_title = Children.Find<LabelWidget>("EditGVPistonDialog.Title");
             m_maxExtensionWidget = Children.Find<TextBoxWidget>("EditGVPistonDialog.MaxExtension");
-            m_panel2 = Children.Find<ContainerWidget>("EditGVPistonDialog.Panel2");
+            m_label2 = Children.Find<LabelWidget>("EditGVPistonDialog.Label2");
             m_pullCountWidget = Children.Find<TextBoxWidget>("EditGVPistonDialog.PullCount");
             m_slider3 = Children.Find<SliderWidget>("EditGVPistonDialog.Slider3");
             m_okButton = Children.Find<ButtonWidget>("EditGVPistonDialog.OK");
@@ -51,7 +51,7 @@ namespace Game {
             m_slider3.Granularity = 1f;
             m_slider3.MinValue = 0f;
             m_slider3.MaxValue = 6f;
-            m_panel2.IsVisible = mode != PistonMode.Pushing;
+            m_label2.Text = mode == PistonMode.Pushing ? LanguageControl.Get(GetType().Name, 3) : LanguageControl.Get(GetType().Name, 2);
             UpdateControls();
         }
 
