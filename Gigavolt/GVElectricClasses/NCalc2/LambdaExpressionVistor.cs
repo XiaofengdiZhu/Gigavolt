@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -207,8 +207,9 @@ namespace NCalc {
         }
 
         public override void Visit(Function function) {
-            L.Expression[] args = new L.Expression[function.Expressions.Length];
-            for (int i = 0; i < function.Expressions.Length; i++) {
+            int argCount = function.Expressions.Length;
+            L.Expression[] args = new L.Expression[argCount];
+            for (int i = 0; i < argCount; i++) {
                 function.Expressions[i].Accept(this);
                 args[i] = Result;
             }
@@ -240,24 +241,111 @@ namespace NCalc {
                 Result = L.Expression.Call(_context, mi.BaseMethodInfo, mi.PreparedArguments);
                 return;
             }
+            if (argCount == 0) {
+                throw new TargetParameterCountException();
+            }
+            L.UnaryExpression arg0 = L.Expression.Convert(args[0], typeof(double));
+            L.UnaryExpression arg1 = argCount >= 2 ? L.Expression.Convert(args[1], typeof(double)) : null;
             switch (functionName) {
                 case "min":
-                    L.UnaryExpression minArg0 = L.Expression.Convert(args[0], typeof(double));
-                    L.UnaryExpression minArg1 = L.Expression.Convert(args[1], typeof(double));
-                    Result = L.Expression.Condition(L.Expression.LessThan(minArg0, minArg1), minArg0, minArg1);
+                    if (argCount < 2) {
+                        throw new TargetParameterCountException();
+                    }
+                    Result = L.Expression.Condition(L.Expression.LessThan(arg0, arg1), arg0, arg1);
                     break;
                 case "max":
-                    L.UnaryExpression maxArg0 = L.Expression.Convert(args[0], typeof(double));
-                    L.UnaryExpression maxArg1 = L.Expression.Convert(args[1], typeof(double));
-                    Result = L.Expression.Condition(L.Expression.GreaterThan(maxArg0, maxArg1), maxArg0, maxArg1);
+                    if (argCount < 2) {
+                        throw new TargetParameterCountException();
+                    }
+                    Result = L.Expression.Condition(L.Expression.GreaterThan(arg0, arg1), arg0, arg1);
                     break;
                 case "pow":
-                    L.UnaryExpression powArg0 = L.Expression.Convert(args[0], typeof(double));
-                    L.UnaryExpression powArg1 = L.Expression.Convert(args[1], typeof(double));
-                    Result = L.Expression.Power(powArg0, powArg1);
+                    if (argCount < 2) {
+                        throw new TargetParameterCountException();
+                    }
+                    Result = L.Expression.Power(arg0, arg1);
+                    break;
+                case "abs":
+                    Result = MethExpressionWithOneParameter("Abs", arg0);
+                    break;
+                case "acos":
+                    Result = MethExpressionWithOneParameter("Acos", arg0);
+                    break;
+                case "asin":
+                    Result = MethExpressionWithOneParameter("Asin", arg0);
+                    break;
+                case "atan":
+                    Result = MethExpressionWithOneParameter("Atan", arg0);
+                    break;
+                case "atan2":
+                    Result = MethExpressionWithOneParameter("Atan2", arg0);
+                    break;
+                case "ceiling":
+                    Result = MethExpressionWithOneParameter("Ceiling", arg0);
+                    break;
+                case "cos":
+                    Result = MethExpressionWithOneParameter("Cos", arg0);
+                    break;
+                case "cosh":
+                    Result = MethExpressionWithOneParameter("Cosh", arg0);
+                    break;
+                case "exp":
+                    Result = MethExpressionWithOneParameter("Exp", arg0);
+                    break;
+                case "floor":
+                    Result = MethExpressionWithOneParameter("Floor", arg0);
+                    break;
+                case "ieeremainder":
+                    if (argCount < 2) {
+                        throw new TargetParameterCountException();
+                    }
+                    Result = MethExpressionWithTwoParameter("IEEERemainder", arg0, arg1);
+                    break;
+                case "log":
+                    Result = argCount >= 2 ? MethExpressionWithTwoParameter("Log", arg0, arg1) : MethExpressionWithOneParameter("Log", arg0);
+                    break;
+                case "log10":
+                    Result = MethExpressionWithOneParameter("Log10", arg0);
+                    break;
+                case "round":
+                    if (argCount >= 2) {
+                        L.Expression.Call(typeof(Math).GetRuntimeMethod("Round", new[] { typeof(double), typeof(int) }), arg0, L.Expression.Convert(args[1], typeof(int)));
+                    }
+                    else {
+                        Result = MethExpressionWithOneParameter("Round", arg0);
+                    }
+                    break;
+                case "sign":
+                    Result = MethExpressionWithOneParameter("Sign", arg0);
+                    break;
+                case "sin":
+                    Result = MethExpressionWithOneParameter("Sin", arg0);
+                    break;
+                case "sinh":
+                    Result = MethExpressionWithOneParameter("Sinh", arg0);
+                    break;
+                case "sqrt":
+                    Result = MethExpressionWithOneParameter("Sqrt", arg0);
+                    break;
+                case "tan":
+                    Result = MethExpressionWithOneParameter("Tan", arg0);
+                    break;
+                case "tanh":
+                    Result = MethExpressionWithOneParameter("Tanh", arg0);
+                    break;
+                case "truncate":
+                    Result = MethExpressionWithOneParameter("Truncate", arg0);
                     break;
                 default: throw new MissingMethodException($"method not found: {functionName}");
             }
+        }
+
+        public L.MethodCallExpression MethExpressionWithOneParameter(string methodName, L.Expression arg) {
+            return L.Expression.Call(typeof(Math).GetRuntimeMethod(methodName, new[] { typeof(double) }), arg);
+        }
+
+        public L.MethodCallExpression MethExpressionWithTwoParameter(string methodName, L.Expression arg1, L.Expression arg2) {
+            return L.Expression.Call(typeof(Math).GetRuntimeMethod(methodName, new[] { typeof(double), typeof(double) }), arg1, arg2);
         }
 
         public override void Visit(Identifier function) {

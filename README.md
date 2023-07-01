@@ -65,8 +65,10 @@ png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的
 
 如果想了解更多，请参见以下链接：
 * [操作符](https://github.com/ncalc/ncalc/wiki/Operators) `= > < + - * /`等
-* [函数](https://github.com/ncalc/ncalc/wiki/Functions) 仅`if in Max Min Pow`可用，其余均不可用
-* [值](https://github.com/ncalc/ncalc/wiki/Values) `9876 1.23e9 true false`等
+* [函数](https://github.com/ncalc/ncalc/wiki/Functions) `if Max Sin`等  
+额外提供`Atan2 Cosh Sinh Tanh`，此类函数计算过程中将把数字转换为双精度浮点数进行计算，计算完成后自动去除小数部分输出电压，其中`Round`使用两个参数会得出奇怪结果未能解决
+* [值](https://github.com/ncalc/ncalc/wiki/Values) `9876 1.23e9 true false`等  
+额外提供`PI() E()`来获取圆周率π、自然常数e
 ### 声音发生器 Sound Generator
 可以从存储器加载WAV格式音频数据并播放的声音发生器  
 #### 端口定义 Input Definition
