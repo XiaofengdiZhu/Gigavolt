@@ -14,7 +14,7 @@ namespace Game {
 
         public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
-            GigaVoltageLevelData blockData = m_subsystemGVCounterBlockBehavior.GetBlockData(cellFace.Point);
+            GigaVoltageLevelData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(cellFace.Point);
             uint overflowVoltage = blockData?.Data ?? 0u;
             uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point);
             if (num.HasValue) {
@@ -57,7 +57,7 @@ namespace Game {
             bool flag2 = false;
             bool flag3 = false;
             int rotation = Rotation;
-            GigaVoltageLevelData blockData = m_subsystemGVCounterBlockBehavior.GetBlockData(CellFaces[0].Point);
+            GigaVoltageLevelData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(CellFaces[0].Point);
             uint overflowVoltage = blockData?.Data ?? 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output

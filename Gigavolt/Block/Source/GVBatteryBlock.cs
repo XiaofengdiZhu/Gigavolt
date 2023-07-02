@@ -92,5 +92,6 @@ namespace Game {
         }
 
         public int GetConnectionMask(int value) => int.MaxValue;
+        public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 1) & 4095) > 0;
     }
 }

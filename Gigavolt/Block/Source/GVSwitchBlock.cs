@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
@@ -71,12 +72,19 @@ namespace Game {
         public static int SetLeverState(int value, bool state) => Terrain.ReplaceData(value, state ? Terrain.ExtractData(value) | 1 : Terrain.ExtractData(value) & -2);
 
         public override int GetFace(int value) => (Terrain.ExtractData(value) >> 1) & 7;
+        public static int SetFace(int value, int face) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -15) | ((face & 7) << 1));
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
-            result.Value = Terrain.ReplaceData(value, raycastResult.CellFace.Face << 1);
+            result.Value = SetFace(value, raycastResult.CellFace.Face);
             result.CellFace = raycastResult.CellFace;
             return result;
+        }
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+            int data = Terrain.ExtractData(oldValue);
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetFace(SetLeverState(data, false), 0)), Count = 1 });
+            showDebris = true;
         }
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {
@@ -141,5 +149,7 @@ namespace Game {
             bool leverState = GetLeverState(value);
             return (face << 1) | (leverState ? 1 : 0);
         }
+
+        public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 4) & 4095) > 0;
     }
 }

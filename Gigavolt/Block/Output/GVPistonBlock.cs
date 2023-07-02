@@ -158,6 +158,8 @@ namespace Game {
             showDebris = true;
         }
 
+        public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 6) & 4095) > 0;
+
         public static bool GetIsExtended(int data) => (data & 1) != 0;
 
         public static int SetIsExtended(int data, bool isExtended) => (data & -2) | (isExtended ? 1 : 0);

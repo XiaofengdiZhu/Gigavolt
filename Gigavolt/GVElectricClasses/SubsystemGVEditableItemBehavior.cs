@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Serialization;
@@ -6,6 +7,7 @@ using TemplatesDatabase;
 namespace Game {
     public abstract class SubsystemGVEditableItemBehavior<T> : SubsystemBlockBehavior where T : IEditableItemData, new() {
         public SubsystemItemsScanner m_subsystemItemsScanner;
+        public SubsystemTerrain m_subsystemTerrain;
 
         public int m_contents;
 
@@ -19,10 +21,27 @@ namespace Game {
 
         public virtual int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, id & 4095);
 
-        public T GetItemData(int id) {
+        public T GetItemData(int id, bool returnNew = false) {
             m_itemsData.TryGetValue(id, out T value);
+            if (value == null && returnNew) {
+                return new T();
+            }
             return value;
         }
+
+        public T GetItemData(int x, int y, int z, bool returnNew = false) {
+            int value = m_subsystemTerrain.Terrain.GetCellValue(x, y, z);
+            if (Array.IndexOf(HandledBlocks, Terrain.ExtractContents(value)) == -1) {
+                if (returnNew) {
+                    return new T();
+                }
+                return default;
+            }
+            int id = GetIdFromValue(value);
+            return GetItemData(id, returnNew);
+        }
+
+        public T GetItemData(Point3 position, bool returnNew = false) => GetItemData(position.X, position.Y, position.Z, returnNew);
 
         public int StoreItemDataAtUniqueId(T t, int oldId = 0) {
             int num = FindFreeItemId();
@@ -37,6 +56,7 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
             m_subsystemItemsScanner = Project.FindSubsystem<SubsystemItemsScanner>(true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             foreach (KeyValuePair<string, object> item2 in valuesDictionary.GetValue<ValuesDictionary>("Items")) {
                 int key2 = HumanReadableConverter.ConvertFromString<int>(item2.Key);
                 T value2 = new T();

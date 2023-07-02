@@ -22,5 +22,7 @@ namespace Game {
             }
             return null;
         }
+
+        public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 5) & 4095) > 0;
     }
 }

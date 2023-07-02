@@ -1,10 +1,11 @@
-using Engine;
-
 namespace Game {
-    public class SubsystemGVButtonBlockBehavior : SubsystemEditableItemBehavior<GigaVoltageLevelData> {
+    public class SubsystemGVButtonBlockBehavior : SubsystemGVEditableItemBehavior<GigaVoltageLevelData> {
         public override int[] HandledBlocks => new[] { GVButtonBlock.Index };
 
         public SubsystemGVButtonBlockBehavior() : base(GVButtonBlock.Index) { }
+
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 3) & 4095;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -32761) | ((id & 4095) << 3));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
@@ -12,18 +13,15 @@ namespace Game {
             }
             int value = inventory.GetSlotValue(slotIndex);
             int count = inventory.GetSlotCount(slotIndex);
-            int id = Terrain.ExtractData(value);
-            GigaVoltageLevelData blockData = GetItemData(id);
-            blockData = blockData != null ? (GigaVoltageLevelData)blockData.Copy() : new GigaVoltageLevelData();
+            int id = GetIdFromValue(value);
+            GigaVoltageLevelData blockData = GetItemData(id, true);
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditGigaVoltageLevelDialog(
                     blockData,
                     delegate {
-                        int data = StoreItemDataAtUniqueId(blockData);
-                        int value2 = Terrain.ReplaceData(value, data);
                         inventory.RemoveSlotItems(slotIndex, count);
-                        inventory.AddSlotItems(slotIndex, value2, count);
+                        inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)), count);
                     }
                 )
             );
@@ -31,13 +29,14 @@ namespace Game {
         }
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
-            GigaVoltageLevelData blockData = GetBlockData(new Point3(x, y, z)) ?? new GigaVoltageLevelData();
+            int id = GetIdFromValue(value);
+            GigaVoltageLevelData blockData = GetItemData(id, true);
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditGigaVoltageLevelDialog(
                     blockData,
                     delegate {
-                        SetBlockData(new Point3(x, y, z), blockData);
+                        SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
                         int face = ((GVButtonBlock)BlocksManager.Blocks[GVButtonBlock.Index]).GetFace(value);
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                         GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);

@@ -43,10 +43,11 @@ namespace Game {
         }
 
         public override int GetFace(int value) => Terrain.ExtractData(value) & 7;
+        public static int SetFace(int value, int face) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -8) | (face & 7));
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
-            result.Value = Terrain.ReplaceData(value, raycastResult.CellFace.Face);
+            result.Value = SetFace(value, raycastResult.CellFace.Face);
             result.CellFace = raycastResult.CellFace;
             return result;
         }
@@ -107,5 +108,7 @@ namespace Game {
             }
             return null;
         }
+
+        public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 3) & 4095) > 0;
     }
 }

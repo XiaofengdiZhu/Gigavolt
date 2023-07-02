@@ -6,7 +6,7 @@ namespace Game {
 
         public BatteryGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemGVBatteryBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVBatteryBlockBehavior>(true);
-            GigaVoltageLevelData blockdata = m_subsystemGVBatteryBlockBehavior.GetBlockData(cellFace.Point);
+            GigaVoltageLevelData blockdata = m_subsystemGVBatteryBlockBehavior.GetItemData(cellFace.Point, true);
             m_voltage = blockdata?.Data ?? uint.MaxValue;
         }
 
@@ -35,7 +35,7 @@ namespace Game {
                 return true;
             }
             uint voltage = m_voltage;
-            GigaVoltageLevelData blockdata = m_subsystemGVBatteryBlockBehavior.GetBlockData(CellFaces[0].Point);
+            GigaVoltageLevelData blockdata = m_subsystemGVBatteryBlockBehavior.GetItemData(CellFaces[0].Point);
             m_voltage = blockdata?.Data ?? uint.MaxValue;
             if (voltage != m_voltage) {
                 SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 10);

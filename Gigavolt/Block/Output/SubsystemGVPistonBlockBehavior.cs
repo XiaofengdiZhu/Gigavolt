@@ -15,8 +15,6 @@ namespace Game {
 
         public SubsystemTime m_subsystemTime;
 
-        public SubsystemTerrain m_subsystemTerrain;
-
         public SubsystemAudio m_subsystemAudio;
 
         public SubsystemMovingBlocks m_subsystemMovingBlocks;
@@ -65,7 +63,7 @@ namespace Game {
             int count = inventory.GetSlotCount(slotIndex);
             int data = Terrain.ExtractData(value);
             int id = GetIdFromValue(value);
-            GVPistonData blockData = GetItemData(id) ?? new GVPistonData();
+            GVPistonData blockData = GetItemData(id, true);
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditGVPistonDialog(
@@ -83,7 +81,7 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int data = Terrain.ExtractData(value);
             int id = GetIdFromValue(value);
-            GVPistonData blockData = GetItemData(id) ?? new GVPistonData();
+            GVPistonData blockData = GetItemData(id, true);
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditGVPistonDialog(
@@ -192,7 +190,6 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
             m_subsystemTime = Project.FindSubsystem<SubsystemTime>(true);
-            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
             m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(true);
             m_subsystemMovingBlocks.Stopped += MovingBlocksStopped;
@@ -340,7 +337,7 @@ namespace Game {
             int face = GVPistonBlock.GetFace(data);
             PistonMode mode = GVPistonBlock.GetMode(data);
             int id = GetIdFromValue(value);
-            GVPistonData pistonData = GetItemData(id) ?? new GVPistonData();
+            GVPistonData pistonData = GetItemData(id, true);
             int maxExtension = pistonData.MaxExtension;
             int pullCount = pistonData.PullCount;
             int speed = pistonData.Speed;

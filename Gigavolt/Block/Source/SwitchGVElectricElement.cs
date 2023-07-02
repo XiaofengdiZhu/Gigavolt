@@ -8,8 +8,8 @@ namespace Game {
 
         public SwitchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) {
             m_subsystemGVSwitchBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSwitchBlockBehavior>(true);
-            GigaVoltageLevelData blockData = m_subsystemGVSwitchBlockBehavior.GetBlockData(cellFace.Point);
-            m_voltage = GVSwitchBlock.GetLeverState(value) ? blockData == null ? uint.MaxValue : blockData.Data : 0;
+            GigaVoltageLevelData blockData = m_subsystemGVSwitchBlockBehavior.GetItemData(cellFace.Point);
+            m_voltage = GVSwitchBlock.GetLeverState(value) ? blockData?.Data ?? uint.MaxValue : 0;
         }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
