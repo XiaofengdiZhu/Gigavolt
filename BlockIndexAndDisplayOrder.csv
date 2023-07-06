@@ -1,75 +1,85 @@
-ClassName,Index,DisplayOrder
-GVWireBlock,833,927
-GVNotGateBlock,840,928
-GVAndGateBlock,837,929
-GVOrGateBlock,843,930
-GVXorGateBlock,856,931
-GVNandGateBlock,834,932
-GVNorGateBlock,835,933
-GVDelayGateBlock,845,934
-GVAdjustableDelayGateBlock,924,935
-GVSRLatchBlock,846,936
-GVCounterBlock,884,937
-GVMemoryBankBlock,886,938
-GVTruthTableCircuitBlock,888,939
-GVRealTimeClockBlock,887,940
-GVRandomGeneratorBlock,857,941
-GVDigitalToAnalogConverterBlock,880,942
-GVAnalogToDigitalConverterBlock,881,943
-GVSoundGeneratorBlock,883,944
-GVBatteryBlock,838,945
-GVLightbulbBlock,839,946
-GVSwitchBlock,841,947
-GVButtonBlock,842,948
-GVPressurePlateBlock,844,949
-GVMotionDetectorBlock,879,950
-GVPistonBlock,937,951
-GVPistonHeadBlock,938,952
-GVWireThroughPlanksBlock,853,953
-GVWireThroughStoneBlock,854,954
-GVWireThroughBricksBlock,923,955
-GVWireThroughSemiconductorBlock,855,956
-GVWireThroughCobblestoneBlock,943,957
-GVLedBlock,852,958
-GVFourLedBlock,882,959
-GVSevenSegmentDisplayBlock,885,960
-GVMulticoloredLedBlock,954,961
-GVOneLedBlock,953,962
-GVPhotodiodeBlock,851,963
-GVTargetBlock,899,964
-GVDetonatorBlock,847,965
-GV8x4LedBlock,955,966
-GVSRLatchCBlock,646,1000
-GVMemoryBankCBlock,686,1001
-GVCounterCBlock,684,1002
-GVTruthTableCircuitCBlock,688,1003
-GVDigitalToAnalogConverterCBlock,680,1004
-GVAnalogToDigitalConverterCBlock,681,1005
-GVSoundGeneratorCBlock,683,1006
-GVPressurePlateCBlock,644,1007
-GVMulticoloredLedCBlock,654,1008
-GVOneLedCBlock,653,1009
-GVTargetCBlock,699,1010
-GVDetonatorCBlock,647,1011
-GVMoreTwoInTwoOutBlock,1022,1012
-GVNesEmulatorBlock,1023,1023
-GVDebugBlock,800,800
-GVCopperHammerBlock,1020,801
-GVEWireThroughBlock,1021,1013
-GVMultiplexerBlock,1019,1015
-GVJumpWireBlock,1018,1014
-GV8NumberLedBlock,1017,1016
-GVEnhancedRealTimeClockBlock,1016,1017
-GVBlockValuePlateBlock,1015,1018
-GVDisplayLedBlock,1014,1019
-GVTerrainRaycastDetectorBlock,1013,1020
-GVWoodenPostedSignCBlock,597,127
-GVWoodenAttachedSignCBlock,598,128
-GVIronPostedSignCBlock,710,129
-GVIronAttachedSignCBlock,711,130
-GVSignBlock,801,1021
-GVVolatileMemoryBankBlock,1012,1022
-GVListMemoryBankBlock,1011,1022
-GV2OTransformerBlock,802,1023
-O2GVTransformerBlock,803,1023
-GVTerrainScannerBlock,1010,1020
+ClassName,OldIndex,OldDisplayOrder,Category,Index,DisplayOrder,SlotsCount,Note
+GVWireBlock,833,927,GV Electrics Regular,800,1,8,
+GVNotGateBlock,840,928,GV Electrics Regular,801,2,1,
+GVAndGateBlock,837,929,GV Electrics Regular,802,3,1,
+GVOrGateBlock,843,930,GV Electrics Regular,803,4,1,
+GVXorGateBlock,856,931,GV Electrics Regular,804,5,1,
+GVNandGateBlock,834,932,GV Electrics Regular,805,6,1,
+GVNorGateBlock,835,933,GV Electrics Regular,806,7,1,
+GVDelayGateBlock,845,934,GV Electrics Regular,807,8,1,
+GVAdjustableDelayGateBlock,924,935,GV Electrics Regular,808,9,1,
+GVSRLatchCBlock,646,1000,GV Electrics Regular,809,10,1,
+GVCounterCBlock,684,1002,GV Electrics Regular,810,11,1,
+GVMemoryBankCBlock,686,1001,GV Electrics Regular,811,12,1,
+GVTruthTableCircuitCBlock,688,1003,GV Electrics Regular,812,13,1,
+GVRealTimeClockBlock,887,940,GV Electrics Regular,813,14,1,
+GVRandomGeneratorBlock,857,941,GV Electrics Regular,814,15,1,
+GVDigitalToAnalogConverterCBlock,680,1004,GV Electrics Regular,815,16,1,
+GVAnalogToDigitalConverterCBlock,681,1005,GV Electrics Regular,816,17,1,
+GVSoundGeneratorCBlock,683,1006,GV Electrics Regular,817,18,1,
+GVBatteryBlock,838,945,GV Electrics Regular,818,19,1,
+GVLightbulbBlock,839,946,GV Electrics Regular,819,20,1,
+GVSwitchBlock,841,947,GV Electrics Regular,820,21,1,
+GVButtonBlock,842,948,GV Electrics Regular,821,22,1,
+GVPressurePlateCBlock,644,1007,GV Electrics Regular,822,23,2,
+GVMotionDetectorBlock,879,950,GV Electrics Regular,823,24,1,
+GVWireThroughPlanksBlock,853,953,GV Electrics Regular,824,25,1,
+GVWireThroughStoneBlock,854,954,GV Electrics Regular,825,26,1,
+GVWireThroughBricksBlock,923,955,GV Electrics Regular,826,27,1,
+GVWireThroughSemiconductorBlock,855,956,GV Electrics Regular,827,28,1,
+GVWireThroughCobblestoneBlock,943,957,GV Electrics Regular,828,29,1,
+GVPhotodiodeBlock,851,963,GV Electrics Regular,829,30,1,
+GVMulticoloredLedCBlock,654,1008,GV Electrics Regular,830,31,1,
+GVOneLedCBlock,653,1009,GV Electrics Regular,831,32,1,
+GVLedBlock,852,958,GV Electrics Regular,832,33,8,
+GVFourLedBlock,882,959,GV Electrics Regular,833,34,8,
+GVSevenSegmentDisplayBlock,885,960,GV Electrics Regular,834,35,8,
+GVTargetCBlock,699,1010,GV Electrics Regular,835,36,1,
+GVDetonatorCBlock,647,1011,GV Electrics Regular,836,37,1,
+GVWoodenPostedSignCBlock,597,127,GV Electrics Regular,837,38,1,
+GVWoodenAttachedSignCBlock,598,128,GV Electrics Regular,838,39,0,
+GVIronPostedSignCBlock,710,129,GV Electrics Regular,839,40,1,
+GVIronAttachedSignCBlock,711,130,GV Electrics Regular,840,41,0,
+GVDispenserCBlock,,,GV Electrics Regular,841,42,1,未开发
+GVDebugBlock,800,800,GV Electrics Shift,842,1,1,
+GV2OTransformerBlock,802,1023,GV Electrics Shift,843,2,1,
+O2GVTransformerBlock,803,1023,GV Electrics Shift,844,3,1,
+GVSRLatchBlock,846,936,GV Electrics Shift,845,4,1,
+GVCounterBlock,884,937,GV Electrics Shift,846,5,1,
+GVMemoryBankBlock,886,938,GV Electrics Shift,847,6,1,
+GVTruthTableCircuitBlock,888,939,GV Electrics Shift,848,7,1,
+GVEnhancedRealTimeClockBlock,1016,1017,GV Electrics Shift,849,8,1,
+GVDigitalToAnalogConverterBlock,880,942,GV Electrics Shift,850,9,4,
+GVAnalogToDigitalConverterBlock,881,943,GV Electrics Shift,851,10,4,
+GVSoundGeneratorBlock,883,944,GV Electrics Shift,852,11,1,
+GVPressurePlateBlock,844,949,GV Electrics Shift,853,12,2,
+GVPistonBlock,937,951,GV Electrics Shift,854,13,3,
+GVPistonHeadBlock,938,952,GV Electrics Shift,855,14,0,
+GVMulticoloredLedBlock,954,961,GV Electrics Shift,856,15,1,
+GV8x4LedBlock,955,966,GV Electrics Shift,857,16,1,
+GV8NumberLedBlock,1017,1016,GV Electrics Shift,858,17,1,
+GVOneLedBlock,953,962,GV Electrics Shift,859,18,1,
+GVTargetBlock,899,964,GV Electrics Shift,860,19,1,
+GVDetonatorBlock,847,965,GV Electrics Shift,861,20,1,
+GVSignBlock,801,1021,GV Electrics Shift,862,21,1,
+GVDispenserBlock,,,GV Electrics Shift,863,22,1,未开发
+GVWoodenDoorBlock,,,GV Electrics Shift,864,23,1,未开发
+GVIronDoorBlock,,,GV Electrics Shift,865,24,1,未开发
+GVCellDoorBlock,,,GV Electrics Shift,866,25,1,未开发
+GVWoodenTrapdoorBlock,,,GV Electrics Shift,867,26,1,未开发
+GVCellTrapdoorBlock,,,GV Electrics Shift,868,27,1,未开发
+GVWoodenFenceGateBlock,,,GV Electrics Shift,869,28,1,未开发
+GVIronFenceGateBlock,,,GV Electrics Shift,870,29,1,未开发
+GVCopperHammerBlock,1020,801,GV Electrics Expand,871,1,1,
+GVEWireThroughBlock,1021,1013,GV Electrics Expand,872,2,2,
+GVMultiplexerBlock,1019,1015,GV Electrics Expand,873,3,1,
+GVJumpWireBlock,1018,1014,GV Electrics Expand,874,4,1,
+GVVolatileMemoryBankBlock,1012,1022,GV Electrics Expand,875,5,1,
+GVListMemoryBankBlock,1011,1022,GV Electrics Expand,876,6,1,
+GVVolatileListMemoryBankBlock,,,,877,7,1,未开发
+GVDisplayLedBlock,1014,1019,GV Electrics Expand,878,8,6,
+GVNesEmulatorBlock,1023,1023,GV Electrics Expand,879,9,1,
+GVBlockValuePlateBlock,1015,1018,GV Electrics Expand,880,10,1,
+GVTerrainRaycastDetectorBlock,1013,1020,GV Electrics Expand,881,11,1,
+GVTerrainScannerBlock,1010,1020,GV Electrics Expand,882,12,1,
+GVMoreTwoInTwoOutBlock,1022,1012,GV Electrics Multiple,883,1,16,
