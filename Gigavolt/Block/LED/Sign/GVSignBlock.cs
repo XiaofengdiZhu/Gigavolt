@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class GVSignBlock : GVAttachedSignCBlock {
-        public const int Index = 801;
+        public const int Index = 862;
 
         public GVSignBlock() : base("Models/IronSign", 78, Index) { }
 

@@ -1,12 +1,12 @@
 using Engine;
 
 namespace Game {
-    public class RealTimeClockGVElectricElement : RotateableGVElectricElement {
+    public class RealTimeClockGVCElectricElement : RotateableGVElectricElement {
         public SubsystemTimeOfDay m_subsystemTimeOfDay;
 
         public uint m_lastClockValue;
 
-        public RealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemTimeOfDay = SubsystemGVElectricity.Project.FindSubsystem<SubsystemTimeOfDay>(true);
+        public RealTimeClockGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemTimeOfDay = SubsystemGVElectricity.Project.FindSubsystem<SubsystemTimeOfDay>(true);
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);

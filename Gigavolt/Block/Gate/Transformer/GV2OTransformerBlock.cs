@@ -3,7 +3,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GV2OTransformerBlock : RotateableMountedGVElectricElementBlock, IElectricElementBlock {
-        public const int Index = 802;
+        public const int Index = 843;
         public readonly Texture2D texture;
 
         public GV2OTransformerBlock() : base("Models/GigavoltGates", "AndGate", 0.5f) => texture = ContentManager.Get<Texture2D>("Textures/GV2OTransformer");

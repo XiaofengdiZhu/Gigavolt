@@ -4,7 +4,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVMoreTwoInTwoOutBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 1022;
+        public const int Index = 879;
         public Texture2D[] textures = new Texture2D[16];
         public string[] textureNames = { "Adder", "Subtracter", "Multiplier", "Divider", "Remainder", "Equaler", "Greater", "NoLesser", "Lesser", "NoGreater", "Maximumer", "Minimumer", "LeftShifter", "RightShifter", "Power", "Logarithmer" };
 

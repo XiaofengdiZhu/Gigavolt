@@ -1,6 +1,6 @@
 namespace Game {
     public class GVDelayGateBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 845;
+        public const int Index = 807;
 
         public GVDelayGateBlock() : base("Models/Gates", "DelayGate", 0.375f) { }
 

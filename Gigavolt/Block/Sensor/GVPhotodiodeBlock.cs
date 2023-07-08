@@ -4,7 +4,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVPhotodiodeBlock : MountedGVElectricElementBlock {
-        public const int Index = 851;
+        public const int Index = 829;
 
         public BlockMesh m_standaloneBlockMesh = new BlockMesh();
 

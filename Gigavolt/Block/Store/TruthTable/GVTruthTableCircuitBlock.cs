@@ -1,6 +1,6 @@
 namespace Game {
     public class GVTruthTableCircuitBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 888;
+        public const int Index = 848;
 
         public GVTruthTableCircuitBlock() : base("Models/Gates", "TruthTableCircuit", 0.5f) { }
 

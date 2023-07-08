@@ -3,7 +3,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVTerrainRaycastDetectorBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 1013;
+        public const int Index = 877;
         Texture2D texture;
 
         public override void Initialize() {

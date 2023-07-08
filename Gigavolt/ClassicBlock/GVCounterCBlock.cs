@@ -1,6 +1,6 @@
 ﻿namespace Game {
     public class GVCounterCBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 684;
+        public const int Index = 810;
 
         public GVCounterCBlock() : base("Models/Gates", "Counter", 0.5f) { }
 

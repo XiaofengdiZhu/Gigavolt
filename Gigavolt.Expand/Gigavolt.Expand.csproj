@@ -55,10 +55,6 @@
 		<Compile Include="JumpWire\GVJumpWireBlock.cs" />
 		<Compile Include="JumpWire\JumpWireGVElectricElement.cs" />
 		<Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs" />
-		<Compile Include="MoreLeds\8NumberLed\GV8NumberGlowPoint.cs" />
-		<Compile Include="MoreLeds\8NumberLed\GV8NumberLedBlock.cs" />
-		<Compile Include="MoreLeds\8NumberLed\SubsystemGV8NumberLedGlow.cs" />
-		<Compile Include="MoreLeds\8NumberLed\_8NumberLedGVElectricElement.cs" />
 		<Compile Include="MoreLeds\DisplayLed\DisplayLedGVElectricElement.cs" />
 		<Compile Include="MoreLeds\DisplayLed\GVDisplayPoint.cs" />
 		<Compile Include="MoreLeds\DisplayLed\GVDisplayLedBlock.cs" />
@@ -112,8 +108,6 @@
 		<Compile Include="MoreMemoryBanks\VolatileMemory\VolatileMemoryBankGVElectricElement.cs" />
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs" />
 		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs" />
-		<Compile Include="MoreSensors\EnhancedRealTimeClock\EnhancedRealTimeClockGVElectricElement.cs" />
-		<Compile Include="MoreSensors\EnhancedRealTimeClock\GVEnhancedRealTimeClockBlock.cs" />
 		<Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs" />
 		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs" />
 		<Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs" />

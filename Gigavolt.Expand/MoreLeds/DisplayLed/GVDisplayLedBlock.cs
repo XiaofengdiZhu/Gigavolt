@@ -4,7 +4,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVDisplayLedBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 1014;
+        public const int Index = 874;
         readonly Texture2D[] textures = new Texture2D[6];
         readonly string[] names = { "方块展示板", "图片显示器", "地层显示器" };
 

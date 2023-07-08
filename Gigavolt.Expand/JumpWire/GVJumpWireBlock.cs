@@ -3,7 +3,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVJumpWireBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 1018;
+        public const int Index = 870;
         public readonly Texture2D texture;
 
         public GVJumpWireBlock() : base("Models/GigavoltGates", "AndGate", 0.5f) => texture = ContentManager.Get<Texture2D>("Textures/GVJumpWireBlock");

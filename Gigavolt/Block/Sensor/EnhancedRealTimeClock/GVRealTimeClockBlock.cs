@@ -1,6 +1,6 @@
 namespace Game {
     public class GVRealTimeClockBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 887;
+        public const int Index = 849;
 
         public GVRealTimeClockBlock() : base("Models/Gates", "RealTimeClock", 0.5f) { }
 
@@ -13,9 +13,11 @@ namespace Game {
                 if (connectorDirection == GVElectricConnectorDirection.Top
                     || connectorDirection == GVElectricConnectorDirection.Right
                     || connectorDirection == GVElectricConnectorDirection.Left
-                    || connectorDirection == GVElectricConnectorDirection.Bottom
-                    || connectorDirection == GVElectricConnectorDirection.In) {
+                    || connectorDirection == GVElectricConnectorDirection.Bottom) {
                     return GVElectricConnectorType.Output;
+                }
+                if (connectorDirection == GVElectricConnectorDirection.In) {
+                    return GVElectricConnectorType.Input;
                 }
             }
             return null;

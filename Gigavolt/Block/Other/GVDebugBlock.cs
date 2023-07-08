@@ -6,7 +6,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVDebugBlock : Block {
-        public const int Index = 800;
+        public const int Index = 842;
 
         public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[2];
 

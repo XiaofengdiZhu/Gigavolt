@@ -1,6 +1,6 @@
 namespace Game {
     public class GVAnalogToDigitalConverterCBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 681;
+        public const int Index = 816;
 
         public GVAnalogToDigitalConverterCBlock() : base("Models/Gates", "AnalogToDigitalConverter", 0.375f) { }
 

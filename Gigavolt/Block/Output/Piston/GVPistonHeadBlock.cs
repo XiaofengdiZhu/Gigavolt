@@ -4,7 +4,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVPistonHeadBlock : Block {
-        public const int Index = 938;
+        public const int Index = 855;
 
         public BlockMesh[] m_blockMeshesByData = new BlockMesh[48];
 

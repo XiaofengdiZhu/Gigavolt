@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Game {
     public class GVAdjustableDelayGateBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 924;
+        public const int Index = 808;
 
         public GVAdjustableDelayGateBlock() : base("Models/Gates", "AdjustableDelayGate", 0.375f) { }
 

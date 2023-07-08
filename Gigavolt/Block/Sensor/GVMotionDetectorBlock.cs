@@ -4,7 +4,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVMotionDetectorBlock : MountedGVElectricElementBlock {
-        public const int Index = 879;
+        public const int Index = 823;
 
         public BlockMesh m_standaloneBlockMesh = new BlockMesh();
 

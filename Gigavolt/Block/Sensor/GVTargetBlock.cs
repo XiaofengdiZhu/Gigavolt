@@ -3,7 +3,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVTargetBlock : MountedGVElectricElementBlock {
-        public const int Index = 899;
+        public const int Index = 860;
 
         public readonly BoundingBox[][] m_boundingBoxes = { new[] { new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.0625f)) }, new[] { new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.0625f, 1f, 1f)) }, new[] { new BoundingBox(new Vector3(0f, 0f, 0.9375f), new Vector3(1f, 1f, 1f)) }, new[] { new BoundingBox(new Vector3(0.9375f, 0f, 0f), new Vector3(1f, 1f, 1f)) } };
 

@@ -1,6 +1,6 @@
 namespace Game {
     public class GVOrGateBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 843;
+        public const int Index = 803;
 
         public GVOrGateBlock() : base("Models/Gates", "OrGate", 0.375f) { }
 

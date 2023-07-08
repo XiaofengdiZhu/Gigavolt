@@ -1,6 +1,6 @@
 namespace Game {
     public class GVSRLatchBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 846;
+        public const int Index = 845;
 
         public GVSRLatchBlock() : base("Models/Gates", "SRLatch", 0.375f) { }
 

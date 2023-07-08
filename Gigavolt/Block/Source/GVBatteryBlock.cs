@@ -4,7 +4,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVBatteryBlock : GenerateGVWireVerticesBlock, IGVElectricElementBlock {
-        public const int Index = 838;
+        public const int Index = 818;
 
         public BlockMesh m_standaloneBlockMesh = new BlockMesh();
 

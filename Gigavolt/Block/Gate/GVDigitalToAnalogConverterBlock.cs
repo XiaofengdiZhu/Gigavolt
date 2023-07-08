@@ -4,7 +4,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVDigitalToAnalogConverterBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 880;
+        public const int Index = 850;
         readonly Texture2D[] textures = new Texture2D[4];
 
         public override void Initialize() {

@@ -1,6 +1,6 @@
 namespace Game {
     public class GVMemoryBankBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 886;
+        public const int Index = 847;
 
         public GVMemoryBankBlock() : base("Models/Gates", "MemoryBank", 0.875f) { }
 

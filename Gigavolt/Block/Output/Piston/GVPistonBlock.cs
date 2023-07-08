@@ -5,7 +5,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVPistonBlock : Block, IGVElectricElementBlock {
-        public const int Index = 937;
+        public const int Index = 854;
 
         public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[4];
 

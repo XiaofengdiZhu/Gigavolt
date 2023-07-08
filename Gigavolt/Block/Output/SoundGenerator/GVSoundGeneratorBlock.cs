@@ -1,6 +1,6 @@
 namespace Game {
     public class GVSoundGeneratorBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 883;
+        public const int Index = 852;
 
         public GVSoundGeneratorBlock() : base("Models/Gates", "SoundGenerator", 0.5f) { }
 

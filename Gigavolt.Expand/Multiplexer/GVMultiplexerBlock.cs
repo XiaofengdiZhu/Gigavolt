@@ -3,7 +3,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVMultiplexerBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 1019;
+        public const int Index = 869;
         Texture2D texture;
 
         public override void Initialize() {

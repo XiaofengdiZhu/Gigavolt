@@ -67,6 +67,10 @@
 		<Compile Include="Block\Gate\Transformer\O2GVTransformerBlock.cs" />
 		<Compile Include="Block\Gate\Transformer\O2GVTransformerElectricElement.cs" />
 		<Compile Include="Block\Gate\Transformer\O2GVTransformerGVElectricElement.cs" />
+		<Compile Include="Block\LED\8NumberLed\GV8NumberGlowPoint.cs" />
+		<Compile Include="Block\LED\8NumberLed\GV8NumberLedBlock.cs" />
+		<Compile Include="Block\LED\8NumberLed\SubsystemGV8NumberLedGlow.cs" />
+		<Compile Include="Block\LED\8NumberLed\_8NumberLedGVElectricElement.cs" />
 		<Compile Include="Block\LED\8x4Led\8x4LedGVElectricElement.cs" />
 		<Compile Include="Block\LED\8x4Led\GV8x4GlowPoint.cs" />
 		<Compile Include="Block\LED\8x4Led\GV8x4LedBlock.cs" />
@@ -101,6 +105,8 @@
 		<Compile Include="Block\Output\Piston\SubsystemGVPistonBlockBehavior.cs" />
 		<Compile Include="Block\Output\SoundGenerator\GVSoundGeneratorBlock.cs" />
 		<Compile Include="Block\Output\SoundGenerator\SoundGeneratorGVElectricElement.cs" />
+		<Compile Include="Block\Sensor\EnhancedRealTimeClock\RealTimeClockGVElectricElement.cs" />
+		<Compile Include="Block\Sensor\EnhancedRealTimeClock\GVRealTimeClockBlock.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVArrayData.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVMemoryBankBlock.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVMemoryBankData.cs" />
@@ -110,6 +116,8 @@
 		<Compile Include="Block\Store\TruthTable\GVTruthTableData.cs" />
 		<Compile Include="Block\Store\TruthTable\SubsystemGVTruthTableCircuitBlockBehavior.cs" />
 		<Compile Include="Block\Store\TruthTable\TruthTableCircuitGVElectricElement.cs" />
+		<Compile Include="ClassicBlock\GVRealTimeClockCBlock.cs" />
+		<Compile Include="ClassicBlock\RealTimeClockGVCElectricElement.cs" />
 		<Compile Include="ClassicBlock\Sign\GVAttachedSignCBlock.cs" />
 		<Compile Include="ClassicBlock\Sign\GVIronAttachedSignCBlock.cs" />
 		<Compile Include="ClassicBlock\Sign\GVIronPostedSignCBlock.cs" />
@@ -178,10 +186,8 @@
 		<Compile Include="Block\Source\GigaVoltageLevelData.cs" />
 		<Compile Include="Block\Source\GVCounterBlock.cs" />
 		<Compile Include="Block\Source\GVRandomGeneratorBlock.cs" />
-		<Compile Include="Block\Sensor\GVRealTimeClockBlock.cs" />
 		<Compile Include="Block\Source\GVSwitchBlock.cs" />
 		<Compile Include="Block\Source\RandomGeneratorGVElectricElement.cs" />
-		<Compile Include="Block\Sensor\RealTimeClockGVElectricElement.cs" />
 		<Compile Include="Block\Source\SubsystemGVCounterBlockBehavior.cs" />
 		<Compile Include="Block\Source\SubsystemGVBatteryBlockBehavior.cs" />
 		<Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs" />

@@ -5,7 +5,7 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVLightbulbBlock : MountedGVElectricElementBlock, IPaintableBlock {
-        public const int Index = 839;
+        public const int Index = 819;
 
         public BlockMesh m_standaloneBulbBlockMesh = new BlockMesh();
 

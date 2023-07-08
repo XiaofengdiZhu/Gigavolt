@@ -1,6 +1,6 @@
 namespace Game {
     public class GVRandomGeneratorBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 857;
+        public const int Index = 814;
 
         public GVRandomGeneratorBlock() : base("Models/Gates", "RandomGenerator", 0.375f) { }
 
