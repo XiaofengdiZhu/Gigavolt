@@ -98,6 +98,7 @@
 		<Compile Include="Block\Output\Dispenser\DispenserGVElectricElement.cs" />
 		<Compile Include="Block\Output\Dispenser\GVDispenserBlock.cs" />
 		<Compile Include="Block\Output\Dispenser\SubsystemGVDispenserBlockBehavior.cs" />
+		<Compile Include="Block\Output\Dispenser\SubsystemGVProjectiles.cs" />
 		<Compile Include="Block\Output\Door\DoorGVElectricElement.cs" />
 		<Compile Include="Block\Output\Door\GVDoorBlock.cs" />
 		<Compile Include="Block\Output\Door\SubsystemGVDoorBlockBehavior.cs" />

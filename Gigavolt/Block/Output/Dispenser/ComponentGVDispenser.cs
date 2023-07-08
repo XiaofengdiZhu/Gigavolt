@@ -11,6 +11,7 @@ namespace Game {
 
         public SubsystemPickables m_subsystemPickables;
 
+        public SubsystemGVProjectiles m_subsystemGVProjectiles;
         public SubsystemProjectiles m_subsystemProjectiles;
 
         public ComponentBlockEntity m_componentBlockEntity;
@@ -21,9 +22,9 @@ namespace Game {
             int face = GVDispenserBlock.GetDirection(data);
             int slotIndex = 0;
             int slotValue = 0;
-            bool specifiedSlotIndex = ((param >> 26) & 1u) == 1u;
+            bool specifiedSlotIndex = ((param >> 24) & 1u) == 1u;
             if (specifiedSlotIndex) {
-                slotIndex = (int)((param >> 27) & 7u);
+                slotIndex = (int)((param >> 25) & 7u);
                 slotValue = GetSlotValue(slotIndex);
                 if (slotValue == 0) {
                     return;
@@ -55,12 +56,12 @@ namespace Game {
             }
             GVDispenserBlock.Mode mode = GVDispenserBlock.GetMode(data);
             if (mode == GVDispenserBlock.Mode.Shoot) {
-                float velocity = param & 0x3FFu;
+                float velocity = param & 0xFFu;
                 if (velocity <= 0) {
                     return;
                 }
-                double radiusX = MathUtils.DegToRad((double)MathUint.Min((param >> 10) & 0x7Fu, 90) * (((param >> 24) & 1u) == 1u ? -1 : 1));
-                double radiusY = MathUtils.DegToRad((double)MathUint.Min((param >> 17) & 0x7Fu, 90) * (((param >> 25) & 1u) == 1u ? -1 : 1));
+                double radiusX = MathUtils.DegToRad((double)MathUint.Min((param >> 8) & 0x7Fu, 90) * (((param >> 15) & 1u) == 1u ? -1 : 1));
+                double radiusY = MathUtils.DegToRad((double)MathUint.Min((param >> 16) & 0x7Fu, 90) * (((param >> 23) & 1u) == 1u ? -1 : 1));
                 Vector3 direction = Vector3.Zero;
                 Vector3 forward = CellFace.FaceToVector3(face);
                 if (forward.Y != 0) {
@@ -79,10 +80,18 @@ namespace Game {
                     direction.Y = (float)Math.Tan(radiusY);
                 }
                 direction = Vector3.Normalize(direction) * velocity;
-                bool disableGravity = ((param >> 30) & 1u) == 1u;
-                bool transform = ((param >> 31) & 1u) == 1u;
-                Log.Information($"velocity:{velocity}, radiusX:{radiusX}, radiusY:{radiusY}, direction:{direction}");
-                ShootItem(coordinates, face, slotValue, direction);
+                bool disableGravity = ((param >> 28) & 1u) == 1u;
+                bool disableDamping = ((param >> 29) & 1u) == 1u;
+                bool transform = ((param >> 30) & 1u) == 1u;
+                ShootItem(
+                    coordinates,
+                    face,
+                    slotValue,
+                    direction,
+                    disableGravity,
+                    disableDamping,
+                    transform
+                );
             }
             else {
                 for (int i = 0; i < removedCount; i++) {
@@ -96,6 +105,7 @@ namespace Game {
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
             m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(true);
+            m_subsystemGVProjectiles = Project.FindSubsystem<SubsystemGVProjectiles>(true);
             m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(true);
             m_componentBlockEntity = Entity.FindComponent<ComponentBlockEntity>(true);
         }
@@ -120,16 +130,35 @@ namespace Game {
             );
         }
 
-        public void ShootItem(Point3 point, int face, int value, Vector3 velocity) {
+        public void ShootItem(Point3 point, int face, int value, Vector3 velocity, bool disableGravity, bool disableDamping, bool transform) {
             Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + 0.6f * CellFace.FaceToVector3(face);
-            if (m_subsystemProjectiles.FireProjectile(
-                    value,
-                    position,
-                    velocity,
-                    Vector3.Zero,
-                    null
-                )
-                != null) {
+            bool flag = false;
+            if (disableGravity
+                || disableDamping
+                || transform) {
+                flag = m_subsystemGVProjectiles.FireProjectile(
+                        value,
+                        position,
+                        velocity,
+                        Vector3.Zero,
+                        null,
+                        disableGravity,
+                        disableDamping,
+                        transform
+                    )
+                    != null;
+            }
+            else {
+                flag = m_subsystemProjectiles.FireProjectile(
+                        value,
+                        position,
+                        velocity,
+                        Vector3.Zero,
+                        null
+                    )
+                    != null;
+            }
+            if (flag) {
                 m_subsystemAudio.PlaySound(
                     "Audio/DispenserShoot",
                     1f,

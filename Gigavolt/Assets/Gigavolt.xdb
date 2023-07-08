@@ -65,6 +65,10 @@
 		<MemberSubsystemTemplate Name="GVDispenserBlockBehavior" Guid="e44c0ac1-0b83-44ed-8269-4cc339edf69b" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="a5e3567a-3b9d-44ab-9beb-d7ca92ceedcd" Value="Game.SubsystemGVDispenserBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVProjectiles" Description="Manages projectiles" Guid="100861fd-74ab-4439-8f5e-daf12ce8c3df" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<ParameterSet Name="GVProjectiles" Description="Contains projectiles, each one in a separate parameter set" Guid="a9840369-bc10-4346-a570-9824051ea9f8"/>
+			<Parameter Name="Class" Guid="0d873c45-7512-46ab-bcb4-13c4bb393615" Value="Game.SubsystemGVProjectiles" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 	<Folder Name="Entities" Guid="5fcdf35f-7001-442c-883e-e0502b15d291">
 		<EntityTemplate Name="GVDispenser" Guid="1aedd10b-0e97-4b83-bdf1-e723a1ae09ce">
