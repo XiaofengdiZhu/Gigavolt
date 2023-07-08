@@ -30,8 +30,10 @@
     "16": "导入成功"
   },
   "BlocksManager": {
-    "GV Electrics": "十亿伏特电路",
-    "GV Electrics Classic": "十亿伏特经典"
+    "GV Electrics Regular": "十亿伏特 常规",
+    "GV Electrics Shift": "十亿伏特 变体",
+    "GV Electrics Expand": "十亿伏特 扩展",
+    "GV Electrics Multiple": "十亿伏特 多态"
   },
   "GVLightbulbBlock": {
     "1": "GV电灯"
@@ -341,6 +343,10 @@
     "O2GVTransformerBlock:0": {
       "DisplayName": "原版转十亿伏特变压器",
       "Description": "尾端连接原版元件或导线，输入原版二进制4位电压，向前端输出等值的十亿伏特电压"
+    },
+    "GVDoorBlock:0": {
+      "DisplayName": "GV门",
+      "Description": "门用于进出建筑物。单击它们可以打开和关闭它们。当连接到铜线上时，门将根据电压强度打开或部分打开，0V关门，0x2D V打开45度，0x5A V及以上完全打开。连上电路后，铁门、铁栅门无法手动操作。"
     }
   },
   "ContentWidgets": {

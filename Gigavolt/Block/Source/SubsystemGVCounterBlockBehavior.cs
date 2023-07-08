@@ -48,7 +48,7 @@ namespace Game {
                         blockData,
                         electricElement,
                         current => {
-                            SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                            SubsystemTerrain.Terrain.SetCellValueFast(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
                             electricElement.m_counter = current;
                             electricElement.m_edited = true;
                             m_subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, m_subsystemGVElectricity.CircuitStep + 1);

@@ -140,7 +140,7 @@ namespace Game {
             return box;
         }
 
-        public override bool ShouldAvoid(int value) => GetOpen(Terrain.ExtractData(value)) > 0;
+        public override bool ShouldAvoid(int value) => GetOpen(Terrain.ExtractData(value)) > 11;
 
         public override bool IsHeatBlocker(int value) => GetOpen(Terrain.ExtractData(value)) >= 90;
 

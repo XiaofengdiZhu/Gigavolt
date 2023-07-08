@@ -35,7 +35,7 @@ namespace Game {
                 new EditGigaVoltageLevelDialog(
                     blockData,
                     voltage => {
-                        SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                        SubsystemTerrain.Terrain.SetCellValueFast(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
                         int face = ((GVSwitchBlock)BlocksManager.Blocks[GVSwitchBlock.Index]).GetFace(value);
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                         SwitchGVElectricElement electricElement = (SwitchGVElectricElement)subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
