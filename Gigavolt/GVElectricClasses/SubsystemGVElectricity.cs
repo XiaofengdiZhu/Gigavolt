@@ -898,6 +898,9 @@ namespace Game {
         public SubsystemTerrain SubsystemTerrain { get; set; }
 
         public SubsystemAudio SubsystemAudio { get; set; }
+        public SubsystemPlayers m_subsystemPlayers;
+        public bool m_isCreativeMode;
+
 
         public int FrameStartCircuitStep { get; set; }
 
@@ -1085,6 +1088,20 @@ namespace Game {
             if (DebugDrawGVElectrics) {
                 DebugDraw();
             }
+            if (m_isCreativeMode) {
+                foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers) {
+                    if (componentPlayer.ComponentGui.ModalPanelWidget is CreativeInventoryWidget widget) {
+                        foreach (CreativeInventoryWidget.Category c in widget.m_categories) {
+                            if (c.Name.StartsWith("GV ")) {
+                                if (c.Color.B == 107) {
+                                    break;
+                                }
+                                c.Color = new Color(255, 203, 107);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public void JumpUpdate() {
@@ -1170,6 +1187,10 @@ namespace Game {
             SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             SubsystemTime = Project.FindSubsystem<SubsystemTime>(true);
             SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
+            m_isCreativeMode = Project.FindSubsystem<SubsystemGameInfo>(true).WorldSettings.GameMode == GameMode.Creative;
+            if (m_isCreativeMode) {
+                m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(true);
+            }
             string[] array = valuesDictionary.GetValue<string>("GigaVoltagesByCell").Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             int num = 0;
             while (true) {
@@ -1328,17 +1349,15 @@ namespace Game {
                 }
                 else {
                     IGVElectricElementBlock GVElectricElementBlock = BlocksManager.Blocks[num] as IGVElectricElementBlock;
-                    if (GVElectricElementBlock != null) {
-                        GVElectricElement GVElectricElement2 = GVElectricElementBlock.CreateGVElectricElement(
-                            this,
-                            cellValue,
-                            key.X,
-                            key.Y,
-                            key.Z
-                        );
-                        if (GVElectricElement2 != null) {
-                            m_GVElectricElementsToAdd[key] = GVElectricElement2;
-                        }
+                    GVElectricElement GVElectricElement2 = GVElectricElementBlock?.CreateGVElectricElement(
+                        this,
+                        cellValue,
+                        key.X,
+                        key.Y,
+                        key.Z
+                    );
+                    if (GVElectricElement2 != null) {
+                        m_GVElectricElementsToAdd[key] = GVElectricElement2;
                     }
                 }
             }
@@ -1394,8 +1413,7 @@ namespace Game {
         }
 
         public void ScanWireDomain(CellFace startCellFace, Dictionary<CellFace, bool> visited, Dictionary<CellFace, bool> result) {
-            DynamicArray<CellFace> dynamicArray = new DynamicArray<CellFace>();
-            dynamicArray.Add(startCellFace);
+            DynamicArray<CellFace> dynamicArray = new DynamicArray<CellFace> { startCellFace };
             while (dynamicArray.Count > 0) {
                 CellFace key = dynamicArray.Array[--dynamicArray.Count];
                 if (visited.ContainsKey(key)) {
