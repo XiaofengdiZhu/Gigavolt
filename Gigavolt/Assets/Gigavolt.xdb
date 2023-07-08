@@ -62,5 +62,17 @@
 		<MemberSubsystemTemplate Name="GVDoorBlockBehavior" Guid="551cf220-2d44-45cd-ac5c-bc14ed45b4ac" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="55c7a663-552c-49f8-be52-81f5a75843d1" Value="Game.SubsystemGVDoorBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVDispenserBlockBehavior" Guid="e44c0ac1-0b83-44ed-8269-4cc339edf69b" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<Parameter Name="Class" Guid="a5e3567a-3b9d-44ab-9beb-d7ca92ceedcd" Value="Game.SubsystemGVDispenserBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
+	<Folder Name="Entities" Guid="5fcdf35f-7001-442c-883e-e0502b15d291">
+		<EntityTemplate Name="GVDispenser" Guid="1aedd10b-0e97-4b83-bdf1-e723a1ae09ce">
+			<MemberComponentTemplate Name="BlockEntity" Guid="62b7660d-5d04-4ab6-b221-9952bf79b399" InheritanceParent="09a85cba-d94e-41b8-9497-f20ed942c17e"/>
+			<MemberComponentTemplate Name="GVDispenser" Description="A dispenser that dispenses items" Guid="66eddf9f-7c2d-4ebc-9d00-32b68eaa13e0" InheritanceParent="81a44c6a-c30a-4f53-8d64-0c30aabab8f9">
+				<Parameter Name="SlotsCount" Guid="be8026a6-7edf-4303-a3c3-ff804b0f0088" Value="8" Type="int"/>
+				<Parameter Name="Class" Guid="9d157488-e945-45dd-91cb-d92a2a3b35d1" Value="Game.ComponentGVDispenser" Type="string"/>
+			</MemberComponentTemplate>
+		</EntityTemplate>
+	</Folder>
 </Mod>

@@ -1216,9 +1216,6 @@ namespace Game {
             int num = 0;
             StringBuilder stringBuilder = new StringBuilder();
             foreach (KeyValuePair<Point3, uint> persistentElementsVoltage in m_persistentElementsVoltages) {
-                if (num > 500) {
-                    break;
-                }
                 stringBuilder.Append(persistentElementsVoltage.Key.X.ToString("X", null));
                 stringBuilder.Append(',');
                 stringBuilder.Append(persistentElementsVoltage.Key.Y.ToString("X", null));

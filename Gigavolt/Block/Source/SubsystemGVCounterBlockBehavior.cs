@@ -1,3 +1,4 @@
+using Engine;
 using TemplatesDatabase;
 
 namespace Game {
@@ -50,6 +51,7 @@ namespace Game {
                         current => {
                             SubsystemTerrain.Terrain.SetCellValueFast(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
                             electricElement.m_counter = current;
+                            m_subsystemGVElectricity.WritePersistentVoltage(new Point3(x, y, z), current);
                             electricElement.m_edited = true;
                             m_subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, m_subsystemGVElectricity.CircuitStep + 1);
                         }

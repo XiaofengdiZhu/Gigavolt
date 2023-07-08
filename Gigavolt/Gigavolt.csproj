@@ -94,6 +94,10 @@
 		<Compile Include="Block\LED\Sign\SubsystemGVSignBlockBehavior.cs" />
 		<Compile Include="Block\Output\Detonator\DetonatorGVElectricElement.cs" />
 		<Compile Include="Block\Output\Detonator\GVDetonatorBlock.cs" />
+		<Compile Include="Block\Output\Dispenser\ComponentGVDispenser.cs" />
+		<Compile Include="Block\Output\Dispenser\DispenserGVElectricElement.cs" />
+		<Compile Include="Block\Output\Dispenser\GVDispenserBlock.cs" />
+		<Compile Include="Block\Output\Dispenser\SubsystemGVDispenserBlockBehavior.cs" />
 		<Compile Include="Block\Output\Door\DoorGVElectricElement.cs" />
 		<Compile Include="Block\Output\Door\GVDoorBlock.cs" />
 		<Compile Include="Block\Output\Door\SubsystemGVDoorBlockBehavior.cs" />
@@ -116,6 +120,8 @@
 		<Compile Include="Block\Store\TruthTable\GVTruthTableData.cs" />
 		<Compile Include="Block\Store\TruthTable\SubsystemGVTruthTableCircuitBlockBehavior.cs" />
 		<Compile Include="Block\Store\TruthTable\TruthTableCircuitGVElectricElement.cs" />
+		<Compile Include="ClassicBlock\Dispenser\GVDispenserCBlock.cs" />
+		<Compile Include="ClassicBlock\Dispenser\DispenserGVCElectricElement.cs" />
 		<Compile Include="ClassicBlock\GVRealTimeClockCBlock.cs" />
 		<Compile Include="ClassicBlock\RealTimeClockGVCElectricElement.cs" />
 		<Compile Include="ClassicBlock\Sign\GVAttachedSignCBlock.cs" />
@@ -132,6 +138,7 @@
 		<Compile Include="Dialog\EditGVSignCDialog.cs" />
 		<Compile Include="Dialog\EditGVSignDialog.cs" />
 		<Compile Include="GVElectricClasses\SubsystemGVEditableItemBehavior.cs" />
+		<Compile Include="Widget\GVDispenserWidget.cs" />
 		<Compile Include="Widget\GVStepFloatingButtons.cs" />
 		<Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs" />
 		<Compile Include="BaseBlock\GVWireThroughBlock.cs" />
@@ -455,6 +462,11 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <None Include="Assets\Textures\O2GVTransformer.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Assets\Widgets\GVDispenserWidget.xml">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
