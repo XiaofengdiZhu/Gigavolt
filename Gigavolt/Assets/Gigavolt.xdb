@@ -59,5 +59,8 @@
 			<ParameterSet Name="MovingBlockSets" Guid="034e8093-eda8-4e45-8c3c-6a6bc605f6b1"/>
 			<Parameter Name="Class" Guid="23012304-e3b9-4fab-be04-c7512078d0c1" Value="Game.SubsystemGVMovingBlocks" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVDoorBlockBehavior" Guid="551cf220-2d44-45cd-ac5c-bc14ed45b4ac" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<Parameter Name="Class" Guid="55c7a663-552c-49f8-be52-81f5a75843d1" Value="Game.SubsystemGVDoorBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>
