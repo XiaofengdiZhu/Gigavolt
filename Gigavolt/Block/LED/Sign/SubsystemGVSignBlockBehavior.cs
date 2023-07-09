@@ -33,7 +33,7 @@ namespace Game {
 
         public static int[] m_drawOrders = { 51 };
 
-        public override int[] HandledBlocks => new[] { 801 };
+        public override int[] HandledBlocks => new[] { GVSignBlock.Index };
 
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;

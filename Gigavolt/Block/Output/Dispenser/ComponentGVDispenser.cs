@@ -16,15 +16,15 @@ namespace Game {
 
         public ComponentBlockEntity m_componentBlockEntity;
 
-        public virtual void Dispense(uint param) {
+        public void Dispense(uint param) {
             Point3 coordinates = m_componentBlockEntity.Coordinates;
             int data = Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(coordinates.X, coordinates.Y, coordinates.Z));
             int face = GVDispenserBlock.GetDirection(data);
             int slotIndex = 0;
             int slotValue = 0;
-            bool specifiedSlotIndex = ((param >> 24) & 1u) == 1u;
+            bool specifiedSlotIndex = ((param >> 28) & 1u) == 1u;
             if (specifiedSlotIndex) {
-                slotIndex = (int)((param >> 25) & 7u);
+                slotIndex = (int)((param >> 29) & 7u);
                 slotValue = GetSlotValue(slotIndex);
                 if (slotValue == 0) {
                     return;
@@ -80,18 +80,21 @@ namespace Game {
                     direction.Y = (float)Math.Tan(radiusY);
                 }
                 direction = Vector3.Normalize(direction) * velocity;
-                bool disableGravity = ((param >> 28) & 1u) == 1u;
-                bool disableDamping = ((param >> 29) & 1u) == 1u;
-                bool transform = ((param >> 30) & 1u) == 1u;
-                ShootItem(
-                    coordinates,
-                    face,
-                    slotValue,
-                    direction,
-                    disableGravity,
-                    disableDamping,
-                    transform
-                );
+                bool disableGravity = ((param >> 24) & 1u) == 1u;
+                bool disableDamping = ((param >> 25) & 1u) == 1u;
+                bool transform = ((param >> 27) & 1u) == 1u;
+                for (int i = 0; i < removedCount; i++) {
+                    ShootItem(
+                        coordinates,
+                        face,
+                        slotValue,
+                        direction,
+                        disableGravity,
+                        disableDamping,
+                        transform,
+                        new Point3(0, -1, 0)
+                    );
+                }
             }
             else {
                 for (int i = 0; i < removedCount; i++) {
@@ -130,7 +133,7 @@ namespace Game {
             );
         }
 
-        public void ShootItem(Point3 point, int face, int value, Vector3 velocity, bool disableGravity, bool disableDamping, bool transform) {
+        public void ShootItem(Point3 point, int face, int value, Vector3 velocity, bool disableGravity, bool disableDamping, bool transform, Point3 stopAt) {
             Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + 0.6f * CellFace.FaceToVector3(face);
             bool flag = false;
             if (disableGravity
@@ -144,7 +147,8 @@ namespace Game {
                         null,
                         disableGravity,
                         disableDamping,
-                        transform
+                        transform,
+                        stopAt
                     )
                     != null;
             }

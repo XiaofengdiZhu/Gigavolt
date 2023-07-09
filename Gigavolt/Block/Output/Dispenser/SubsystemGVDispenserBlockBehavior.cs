@@ -12,7 +12,7 @@ namespace Game {
 
         public SubsystemAudio m_subsystemAudio;
 
-        public override int[] HandledBlocks => new int[1] { 863 };
+        public override int[] HandledBlocks => new int[1] { GVDispenserBlock.Index };
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);

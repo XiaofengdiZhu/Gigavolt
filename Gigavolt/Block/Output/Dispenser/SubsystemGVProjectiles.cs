@@ -13,6 +13,7 @@ namespace Game {
             public bool DisableGravity;
             public bool DisableDamping;
             public bool Transform;
+            public Point3 StopAt;
         }
 
         public SubsystemAudio m_subsystemAudio;
@@ -67,7 +68,7 @@ namespace Game {
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity = false, bool disableDamping = false, bool transform = false) {
+        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity = false, bool disableDamping = false, bool transform = false, Point3 stopAt = default) {
             Projectile projectile = new Projectile {
                 Value = value,
                 Position = position,
@@ -80,7 +81,8 @@ namespace Game {
                 ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable,
                 DisableGravity = disableGravity,
                 DisableDamping = disableDamping,
-                Transform = transform
+                Transform = transform,
+                StopAt = stopAt
             };
             m_projectiles.Add(projectile);
             ProjectileAdded?.Invoke(projectile);
@@ -91,7 +93,7 @@ namespace Game {
             return projectile;
         }
 
-        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity, bool disableDamping, bool transform) {
+        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity, bool disableDamping, bool transform, Point3 stopAt) {
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
             Vector3 v = Vector3.Normalize(velocity);
@@ -126,7 +128,8 @@ namespace Game {
                     owner,
                     disableGravity,
                     disableDamping,
-                    transform
+                    transform,
+                    stopAt
                 );
                 SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
                 for (int i = 0; i < blockBehaviors.Length; i++) {
@@ -226,6 +229,28 @@ namespace Game {
                         Vector3 position = projectile.Position;
                         Vector3 vector = position + projectile.Velocity * dt;
                         Vector3 v = block.ProjectileTipOffset * Vector3.Normalize(projectile.Velocity);
+                        if (projectile.Transform
+                            && block.IsPlaceable
+                            && projectile.StopAt.Y > 0) {
+                            int x = (int)position.X - 1;
+                            int y = (int)position.Y;
+                            int z = (int)position.Z;
+                            if (projectile.StopAt.X == x
+                                && projectile.StopAt.Y == y
+                                && projectile.StopAt.Z == z) {
+                                m_subsystemTerrain.ChangeCell(x, y, z, projectile.Value);
+                                m_subsystemAudio.PlaySound(
+                                    "Audio/BlockPlaced",
+                                    1f,
+                                    0f,
+                                    position,
+                                    5f,
+                                    false
+                                );
+                                projectile.ToRemove = true;
+                                continue;
+                            }
+                        }
                         BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(position + v, vector + v, 0.2f, (body, distance) => true);
                         TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(
                             position + v,
@@ -499,7 +524,8 @@ namespace Game {
                     CreationTime = item.GetValue<double>("CreationTime"),
                     DisableGravity = item.GetValue<bool>("DisableGravity"),
                     DisableDamping = item.GetValue<bool>("DisableDamping"),
-                    Transform = item.GetValue<bool>("Transform")
+                    Transform = item.GetValue<bool>("Transform"),
+                    StopAt = item.GetValue<Point3>("StopAt")
                 };
                 projectile.ProjectileStoppedAction = item.GetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
                 m_projectiles.Add(projectile);
@@ -520,6 +546,7 @@ namespace Game {
                 valuesDictionary3.SetValue("DisableGravity", projectile.DisableGravity);
                 valuesDictionary3.SetValue("DisableDamping", projectile.DisableDamping);
                 valuesDictionary3.SetValue("Transform", projectile.Transform);
+                valuesDictionary3.SetValue("StopAt", projectile.StopAt);
                 valuesDictionary3.SetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
                 num++;
             }

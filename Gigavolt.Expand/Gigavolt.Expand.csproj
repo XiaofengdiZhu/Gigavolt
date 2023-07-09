@@ -52,6 +52,8 @@
 		<Reference Include="System.Xml" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="GuidedDispenser\GuidedDispenserGVElectricElement.cs" />
+		<Compile Include="GuidedDispenser\GVGuidedDispenserBlock.cs" />
 		<Compile Include="JumpWire\GVJumpWireBlock.cs" />
 		<Compile Include="JumpWire\JumpWireGVElectricElement.cs" />
 		<Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs" />

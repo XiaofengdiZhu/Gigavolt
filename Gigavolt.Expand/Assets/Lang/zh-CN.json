@@ -61,6 +61,10 @@
     "GVTerrainScannerBlock:0": {
       "DisplayName": "GV地形扫描仪",
       "Description": "向扫描仪面对的面平行扫描方块，将结果保存到指定存储器，可指定距离和范围，详见本Mod Github页面的介绍"
+    },
+    "GVGuidedDispenserBlock:0": {
+      "DisplayName": "GV制导发射器",
+      "Description": "和发射器类似，但不是指定速度和角度，而是直接指定要投射到的位置，而且能设置抵达指定位置时是否将投射物放置到世界中，不受空气阻力影响，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {

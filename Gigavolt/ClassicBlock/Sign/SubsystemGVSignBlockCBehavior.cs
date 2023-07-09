@@ -70,7 +70,7 @@ namespace Game {
 
         public static int[] m_drawOrders = { 50 };
 
-        public override int[] HandledBlocks => new[] { 597, 598, 710, 711 };
+        public override int[] HandledBlocks => new[] { GVWoodenPostedSignCBlock.Index, GVWoodenAttachedSignCBlock.Index, GVIronPostedSignCBlock.Index, GVIronAttachedSignCBlock.Index };
 
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
