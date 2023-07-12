@@ -49,7 +49,22 @@ namespace Game {
                         blockData,
                         electricElement,
                         current => {
-                            SubsystemTerrain.Terrain.SetCellValueFast(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                            int newValue = StoreItemDataAtUniqueId(blockData, id);
+                            OnBlockRemoved(
+                                value,
+                                newValue,
+                                x,
+                                y,
+                                z
+                            );
+                            SubsystemTerrain.Terrain.SetCellValueFast(x, y, z, SetIdToValue(value, newValue));
+                            OnBlockAdded(
+                                newValue,
+                                value,
+                                x,
+                                y,
+                                z
+                            );
                             electricElement.m_counter = current;
                             m_subsystemGVElectricity.WritePersistentVoltage(new Point3(x, y, z), current);
                             electricElement.m_edited = true;

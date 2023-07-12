@@ -9,9 +9,6 @@
 		<MemberSubsystemTemplate Name="GVJumpWireBlockBehavior" Guid="d36194b1-aad0-4535-ac62-8da306f80334" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="950c0d34-ff5f-4a20-b960-0f7556220231" Value="Game.SubsystemGVJumpWireBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GV8NumberLedGlow" Guid="d801a01a-78c7-4f84-bde4-30befff42f3a" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
-			<Parameter Name="Class" Guid="d4a518cf-3f5e-43c1-b948-2c8484fadd33" Value="Game.SubsystemGV8NumberLedGlow" Type="string"/>
-		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVDisplayLedGlow" Guid="a3ec5953-6388-41e4-b9df-dcba507c4b21" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="f2fa61d4-faaa-4eb9-9bee-95a8d0b68bcf" Value="Game.SubsystemGVDisplayLedGlow" Type="string"/>
 		</MemberSubsystemTemplate>

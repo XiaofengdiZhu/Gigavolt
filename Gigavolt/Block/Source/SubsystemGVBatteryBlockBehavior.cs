@@ -30,22 +30,7 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GigaVoltageLevelData blockData = GetItemData(id, true);
-            DialogsManager.ShowDialog(
-                componentPlayer.GuiWidget,
-                new EditGigaVoltageLevelDialog(
-                    blockData,
-                    voltage => {
-                        SubsystemTerrain.Terrain.SetCellValueFast(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
-                        SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        BatteryGVElectricElement electricElement = (BatteryGVElectricElement)subsystemGVElectricity.GetGVElectricElement(x, y, z, 4);
-                        if (electricElement != null) {
-                            electricElement.m_voltage = voltage;
-                            electricElement.m_edited = true;
-                            subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
-                        }
-                    }
-                )
-            );
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGigaVoltageLevelDialog(blockData, voltage => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id))); }));
             return true;
         }
     }

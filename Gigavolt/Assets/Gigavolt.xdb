@@ -69,6 +69,9 @@
 			<ParameterSet Name="GVProjectiles" Description="Contains projectiles, each one in a separate parameter set" Guid="a9840369-bc10-4346-a570-9824051ea9f8"/>
 			<Parameter Name="Class" Guid="0d873c45-7512-46ab-bcb4-13c4bb393615" Value="Game.SubsystemGVProjectiles" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GV8NumberLedGlow" Guid="d801a01a-78c7-4f84-bde4-30befff42f3a" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="d4a518cf-3f5e-43c1-b948-2c8484fadd33" Value="Game.SubsystemGV8NumberLedGlow" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 	<Folder Name="Entities" Guid="5fcdf35f-7001-442c-883e-e0502b15d291">
 		<EntityTemplate Name="GVDispenser" Guid="1aedd10b-0e97-4b83-bdf1-e723a1ae09ce">

@@ -88,7 +88,7 @@ namespace Game {
                     GVPistonBlock.GetMode(data),
                     blockData,
                     delegate {
-                        SubsystemTerrain.Terrain.SetCellValueFast(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                        SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                         GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, 0);
                         if (electricElement != null) {

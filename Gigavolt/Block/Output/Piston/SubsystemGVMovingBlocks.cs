@@ -46,7 +46,7 @@ namespace Game {
                             int num2 = Terrain.ExtractContents(cellValue);
                             int light = Terrain.ExtractLight(cellValue);
                             int shadowStrength = BlocksManager.Blocks[num2].GetShadowStrength(cellValue);
-                            int value = Terrain.MakeBlockValue(257, light, ShadowBlock.SetShadowStrength(0, shadowStrength));
+                            int value = Terrain.MakeBlockValue(ShadowBlock.Index, light, ShadowBlock.SetShadowStrength(0, shadowStrength));
                             m_blockGeometryGenerator.Terrain.SetCellValueFast(k, m + num, l, value);
                         }
                     }

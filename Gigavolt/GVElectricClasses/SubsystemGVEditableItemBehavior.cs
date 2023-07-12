@@ -85,15 +85,24 @@ namespace Game {
         }
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) {
-            m_existingIds.Add(GetIdFromValue(value));
+            int id = GetIdFromValue(value);
+            if (id > 0) {
+                m_existingIds.Add(id);
+            }
         }
 
         public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded) {
-            m_existingIds.Add(GetIdFromValue(value));
+            int id = GetIdFromValue(value);
+            if (id > 0) {
+                m_existingIds.Add(GetIdFromValue(value));
+            }
         }
 
         public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) {
-            m_existingIds.Remove(GetIdFromValue(value));
+            int id = GetIdFromValue(value);
+            if (id > 0) {
+                m_existingIds.Remove(id);
+            }
         }
 
         public void GarbageCollectItems(ReadOnlyList<ScannedItemData> allExistingItems) {
