@@ -76,7 +76,7 @@ namespace Game {
         public override void LoadData() {
             if (m_worldDirectory != null) {
                 try {
-                    string path = $"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.bin";
+                    string path = $"{m_worldDirectory}/GVLMB/{m_ID.ToString("X", null)}.bin";
                     if (Storage.FileExists(path)) {
                         Stream2Data(Storage.OpenFile(path, OpenFileMode.Read));
                     }
@@ -114,7 +114,7 @@ namespace Game {
             }
             if (m_isDataInitialized && m_dataChanged) {
                 try {
-                    Stream stream = Storage.OpenFile($"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.bin", OpenFileMode.CreateOrOpen);
+                    Stream stream = Storage.OpenFile($"{m_worldDirectory}/GVLMB/{m_ID.ToString("X", null)}.bin", OpenFileMode.CreateOrOpen);
                     byte[] bytes = GetBytes();
                     stream.Write(bytes, 0, bytes.Length);
                     stream.Flush();

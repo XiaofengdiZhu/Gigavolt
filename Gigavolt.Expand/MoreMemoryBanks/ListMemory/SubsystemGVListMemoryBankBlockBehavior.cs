@@ -1,4 +1,8 @@
-﻿using Engine;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Engine;
 using TemplatesDatabase;
 
 namespace Game {
@@ -66,6 +70,41 @@ namespace Game {
                 )
             );
             return true;
+        }
+
+        public override void Dispose() {
+            try {
+                IEnumerable<uint> worldIDList = m_itemsData.Values.Select(d => d.m_ID).Concat(m_blocksData.Values.Select(d => d.m_ID));
+                Log.Information(string.Join(",", worldIDList.Select(n => n.ToString("X"))));
+                List<string> fileList = Storage.ListFileNames($"{m_subsystemGameInfo.DirectoryName}/GVLMB/").ToList();
+                Log.Information(string.Join(",", fileList));
+                uint[] fileNumberList = fileList.Select(
+                        fileName => {
+                            int index = fileName.LastIndexOf('.');
+                            if (index >= 0) {
+                                fileName = fileName.Substring(0, index);
+                            }
+                            if (uint.TryParse(fileName, NumberStyles.HexNumber, null, out uint number)) {
+                                return number;
+                            }
+                            return 0u;
+                        }
+                    )
+                    .ToArray();
+                IEnumerable<uint> deleteList = fileNumberList.Except(worldIDList);
+                Log.Information(string.Join(",", deleteList.Select(n => n.ToString("X"))));
+                foreach (uint id in deleteList) {
+                    if (id == 0) {
+                        continue;
+                    }
+                    string fileName = fileList[Array.IndexOf(fileNumberList, id)];
+                    Storage.DeleteFile($"{m_subsystemGameInfo.DirectoryName}/GVLMB/{fileName}");
+                }
+            }
+            catch (Exception ex) {
+                Log.Error(ex);
+            }
+            base.Dispose();
         }
     }
 }
