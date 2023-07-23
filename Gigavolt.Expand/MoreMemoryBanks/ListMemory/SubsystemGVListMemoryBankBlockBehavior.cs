@@ -12,6 +12,9 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(true);
+            if (!Storage.DirectoryExists(m_subsystemGameInfo.DirectoryName + "/GVLMB")) {
+                Storage.CreateDirectory(m_subsystemGameInfo.DirectoryName + "/GVLMB");
+            }
         }
 
         public override int[] HandledBlocks => new[] { GVListMemoryBankBlock.Index };
@@ -75,9 +78,9 @@ namespace Game {
         public override void Dispose() {
             try {
                 IEnumerable<uint> worldIDList = m_itemsData.Values.Select(d => d.m_ID).Concat(m_blocksData.Values.Select(d => d.m_ID));
-                Log.Information(string.Join(",", worldIDList.Select(n => n.ToString("X"))));
+                //Log.Information(string.Join(",", worldIDList.Select(n => n.ToString("X"))));
                 List<string> fileList = Storage.ListFileNames($"{m_subsystemGameInfo.DirectoryName}/GVLMB/").ToList();
-                Log.Information(string.Join(",", fileList));
+                //Log.Information(string.Join(",", fileList));
                 uint[] fileNumberList = fileList.Select(
                         fileName => {
                             int index = fileName.LastIndexOf('.');
@@ -92,7 +95,7 @@ namespace Game {
                     )
                     .ToArray();
                 IEnumerable<uint> deleteList = fileNumberList.Except(worldIDList);
-                Log.Information(string.Join(",", deleteList.Select(n => n.ToString("X"))));
+                //Log.Information(string.Join(",", deleteList.Select(n => n.ToString("X"))));
                 foreach (uint id in deleteList) {
                     if (id == 0) {
                         continue;

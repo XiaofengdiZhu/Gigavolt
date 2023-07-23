@@ -104,6 +104,10 @@
 		<Compile Include="MoreMemoryBanks\ListMemory\GVListMemoryBankBlock.cs"/>
 		<Compile Include="MoreMemoryBanks\ListMemory\ListMemoryBankGVElectricElement.cs"/>
 		<Compile Include="MoreMemoryBanks\ListMemory\SubsystemGVListMemoryBankBlockBehavior.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileListMemory\GVVolatileListMemoryBankBlock.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileListMemory\GVVolatileListMemoryBankData.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileListMemory\VolatileListMemoryBankGVElectricElement.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileListMemory\SubsystemGVVolatileListMemoryBankBlockBehavior.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankBlock.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankData.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileMemory\SubsystemGVVolatileMemoryBankBlockBehavior.cs"/>

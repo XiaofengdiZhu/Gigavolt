@@ -1,6 +1,6 @@
 namespace Game {
     public class VolatileMemoryBankGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
+        public SubsystemGVVolatileMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
         public SubsystemGameInfo m_subsystemGameInfo;
 
         public uint m_voltage;
@@ -10,7 +10,7 @@ namespace Game {
         public bool m_clockAllowed;
 
         public VolatileMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
-            m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVMemoryBankBlockBehavior>(true);
+            m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
         }
 
@@ -54,7 +54,7 @@ namespace Game {
                     }
                 }
             }
-            GVVolatileMemoryBankData memoryBankData = (GVVolatileMemoryBankData)m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
+            GVVolatileMemoryBankData memoryBankData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
             if (memoryBankData == null) {
                 memoryBankData = new GVVolatileMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), new uint[] { 0 }, 1, 1);
                 m_SubsystemGVMemoryBankBlockBehavior.SetBlockData(CellFaces[0].Point, memoryBankData);
@@ -78,7 +78,6 @@ namespace Game {
             if (!flag3) {
                 m_writeAllowed = true;
             }
-            memoryBankData.LastOutput = m_voltage;
             if (!hasInput) {
                 m_voltage = memoryBankData.m_ID;
             }
