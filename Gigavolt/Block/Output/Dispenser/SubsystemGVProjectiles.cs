@@ -12,6 +12,7 @@ namespace Game {
         public class Projectile : Game.Projectile {
             public bool DisableGravity;
             public bool DisableDamping;
+            public bool Safe;
             public bool Transform;
             public Point3 StopAt;
         }
@@ -68,7 +69,7 @@ namespace Game {
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity = false, bool disableDamping = false, bool transform = false, Point3 stopAt = default) {
+        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity = false, bool disableDamping = false, bool safe = false, bool transform = false, Point3 stopAt = default) {
             Projectile projectile = new Projectile {
                 Value = value,
                 Position = position,
@@ -81,6 +82,7 @@ namespace Game {
                 ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable,
                 DisableGravity = disableGravity,
                 DisableDamping = disableDamping,
+                Safe = safe,
                 Transform = transform,
                 StopAt = stopAt
             };
@@ -93,7 +95,7 @@ namespace Game {
             return projectile;
         }
 
-        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity, bool disableDamping, bool transform, Point3 stopAt) {
+        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity, bool disableDamping, bool safe, bool transform, Point3 stopAt) {
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
             Vector3 v = Vector3.Normalize(velocity);
@@ -128,12 +130,15 @@ namespace Game {
                     owner,
                     disableGravity,
                     disableDamping,
+                    safe,
                     transform,
                     stopAt
                 );
-                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
-                for (int i = 0; i < blockBehaviors.Length; i++) {
-                    blockBehaviors[i].OnFiredAsProjectile(projectile);
+                if (!safe) {
+                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
+                    for (int i = 0; i < blockBehaviors.Length; i++) {
+                        blockBehaviors[i].OnFiredAsProjectile(projectile);
+                    }
                 }
                 return projectile;
             }
@@ -260,8 +265,8 @@ namespace Game {
                             (value, distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)
                         );
                         bool flag = block.DisintegratesOnHit;
-                        if (terrainRaycastResult.HasValue
-                            || bodyRaycastResult.HasValue) {
+                        if (!projectile.Safe
+                            && (terrainRaycastResult.HasValue || bodyRaycastResult.HasValue)) {
                             CellFace? cellFace = terrainRaycastResult.HasValue ? new CellFace?(terrainRaycastResult.Value.CellFace) : null;
                             ComponentBody componentBody = bodyRaycastResult?.ComponentBody;
                             SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(projectile.Value));
@@ -317,7 +322,8 @@ namespace Game {
                                 );
                                 m_subsystemSoundMaterials.PlayImpactSound(cellValue, position, 1f);
                             }
-                            if (projectile.IsIncendiary) {
+                            if (!projectile.Safe
+                                && projectile.IsIncendiary) {
                                 m_subsystemFireBlockBehavior.SetCellOnFire(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z, 1f);
                                 Vector3 vector3 = projectile.Position - 0.75f * Vector3.Normalize(projectile.Velocity);
                                 for (int k = 0; k < 8; k++) {
@@ -335,7 +341,8 @@ namespace Game {
                                 }
                             }
                             if (projectile.Transform
-                                && block.IsPlaceable) {
+                                && block.IsPlaceable
+                                && !projectile.ToRemove) {
                                 m_subsystemTerrain.ChangeCell((int)position.X - 1, (int)position.Y, (int)position.Z, projectile.Value);
                                 m_subsystemAudio.PlaySound(
                                     "Audio/BlockPlaced",
@@ -378,7 +385,7 @@ namespace Game {
                         }
                         if (terrainRaycastResult.HasValue
                             || bodyRaycastResult.HasValue) {
-                            if (flag) {
+                            if (flag && !projectile.Safe) {
                                 m_subsystemParticles.AddParticleSystem(block.CreateDebrisParticleSystem(m_subsystemTerrain, projectile.Position, projectile.Value, 1f));
                             }
                             else if (!projectile.ToRemove

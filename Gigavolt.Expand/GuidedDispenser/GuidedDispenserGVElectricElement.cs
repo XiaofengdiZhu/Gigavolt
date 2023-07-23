@@ -96,7 +96,7 @@ namespace Game {
                         direction.Z = (float)(vx * Math.Cos(angle) * (targetV.Z > origin.Z ? 1 : -1));
                     }
                     bool transform = ((m_voltage >> 27) & 1u) == 1u;
-                    Log.Information($"l: {l}, angle: {angle}, h: {targetV.Y - origin.Y}, direction: {direction}");
+                    //Log.Information($"l: {l}, angle: {angle}, h: {targetV.Y - origin.Y}, direction: {direction}");
                     for (int i = 0; i < removedCount; i++) {
                         component.ShootItem(
                             position,
@@ -105,6 +105,7 @@ namespace Game {
                             direction,
                             false,
                             true,
+                            transform,
                             transform,
                             target
                         );

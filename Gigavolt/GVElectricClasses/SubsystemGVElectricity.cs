@@ -1045,62 +1045,67 @@ namespace Game {
         }
 
         public void Update(float dt) {
-            if (keyboardDebug) {
-                if (Keyboard.IsKeyDownOnce(Key.F5)) {
-                    debugMode = !debugMode;
-                }
-                if (debugMode) {
-                    if (Keyboard.IsKeyDownOnce(Key.F7)) {
-                        JumpUpdate();
+            try {
+                if (keyboardDebug) {
+                    if (Keyboard.IsKeyDownOnce(Key.F5)) {
+                        debugMode = !debugMode;
                     }
-                    else if (Keyboard.IsKeyDownOnce(Key.F6)) {
-                        StepUpdate();
-                    }
-                }
-            }
-            if (!debugMode) {
-                StepUpdateSkip();
-                FrameStartCircuitStep = CircuitStep;
-                SimulatedGVElectricElements = 0;
-                m_remainingSimulationTime = MathUtils.Min(m_remainingSimulationTime + dt, 0.1f);
-                while (m_remainingSimulationTime >= CircuitStepDuration) {
-                    UpdateGVElectricElements();
-                    m_remainingSimulationTime -= CircuitStepDuration;
-                    m_nextStepSimulateList = null;
-                    if (m_futureSimulateLists.TryGetValue(++CircuitStep, out Dictionary<GVElectricElement, bool> value)) {
-                        m_futureSimulateLists.Remove(CircuitStep);
-                        SimulatedGVElectricElements += value.Count;
-                        foreach (GVElectricElement key in value.Keys) {
-                            if (m_GVElectricElements.ContainsKey(key)) {
-                                SimulateGVElectricElement(key);
-                            }
+                    if (debugMode) {
+                        if (Keyboard.IsKeyDownOnce(Key.F7)) {
+                            JumpUpdate();
                         }
-                        ReturnListToCache(value);
+                        else if (Keyboard.IsKeyDownOnce(Key.F6)) {
+                            StepUpdate();
+                        }
                     }
-                    while (last1000Updates.Count >= 1001) {
-                        last1000Updates.Dequeue();
-                    }
-                    DateTime now = DateTime.Now;
-                    lastUpdate = now;
-                    last1000Updates.Enqueue(now);
                 }
-            }
-            if (DebugDrawGVElectrics) {
-                DebugDraw();
-            }
-            if (m_isCreativeMode) {
-                foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers) {
-                    if (componentPlayer.ComponentGui.ModalPanelWidget is CreativeInventoryWidget widget) {
-                        foreach (CreativeInventoryWidget.Category c in widget.m_categories) {
-                            if (c.Name.StartsWith("GV ")) {
-                                if (c.Color.B == 107) {
-                                    break;
+                if (!debugMode) {
+                    StepUpdateSkip();
+                    FrameStartCircuitStep = CircuitStep;
+                    SimulatedGVElectricElements = 0;
+                    m_remainingSimulationTime = MathUtils.Min(m_remainingSimulationTime + dt, 0.1f);
+                    while (m_remainingSimulationTime >= CircuitStepDuration) {
+                        UpdateGVElectricElements();
+                        m_remainingSimulationTime -= CircuitStepDuration;
+                        m_nextStepSimulateList = null;
+                        if (m_futureSimulateLists.TryGetValue(++CircuitStep, out Dictionary<GVElectricElement, bool> value)) {
+                            m_futureSimulateLists.Remove(CircuitStep);
+                            SimulatedGVElectricElements += value.Count;
+                            foreach (GVElectricElement key in value.Keys) {
+                                if (m_GVElectricElements.ContainsKey(key)) {
+                                    SimulateGVElectricElement(key);
                                 }
-                                c.Color = new Color(255, 203, 107);
+                            }
+                            ReturnListToCache(value);
+                        }
+                        while (last1000Updates.Count >= 1001) {
+                            last1000Updates.Dequeue();
+                        }
+                        DateTime now = DateTime.Now;
+                        lastUpdate = now;
+                        last1000Updates.Enqueue(now);
+                    }
+                }
+                if (DebugDrawGVElectrics) {
+                    DebugDraw();
+                }
+                if (m_isCreativeMode) {
+                    foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers) {
+                        if (componentPlayer.ComponentGui.ModalPanelWidget is CreativeInventoryWidget widget) {
+                            foreach (CreativeInventoryWidget.Category c in widget.m_categories) {
+                                if (c.Name.StartsWith("GV ")) {
+                                    if (c.Color.B == 107) {
+                                        break;
+                                    }
+                                    c.Color = new Color(255, 203, 107);
+                                }
                             }
                         }
                     }
                 }
+            }
+            catch (Exception e) {
+                Log.Error(e);
             }
         }
 

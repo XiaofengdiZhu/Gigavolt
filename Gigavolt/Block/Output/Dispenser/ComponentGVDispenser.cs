@@ -82,6 +82,7 @@ namespace Game {
                 direction = Vector3.Normalize(direction) * velocity;
                 bool disableGravity = ((param >> 24) & 1u) == 1u;
                 bool disableDamping = ((param >> 25) & 1u) == 1u;
+                bool safe = ((param >> 26) & 1u) == 1u;
                 bool transform = ((param >> 27) & 1u) == 1u;
                 for (int i = 0; i < removedCount; i++) {
                     ShootItem(
@@ -91,6 +92,7 @@ namespace Game {
                         direction,
                         disableGravity,
                         disableDamping,
+                        safe,
                         transform,
                         new Point3(0, -1, 0)
                     );
@@ -133,7 +135,7 @@ namespace Game {
             );
         }
 
-        public void ShootItem(Point3 point, int face, int value, Vector3 velocity, bool disableGravity, bool disableDamping, bool transform, Point3 stopAt) {
+        public void ShootItem(Point3 point, int face, int value, Vector3 velocity, bool disableGravity, bool disableDamping, bool safe, bool transform, Point3 stopAt) {
             Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + 0.6f * CellFace.FaceToVector3(face);
             bool flag = false;
             if (disableGravity
@@ -147,6 +149,7 @@ namespace Game {
                         null,
                         disableGravity,
                         disableDamping,
+                        safe,
                         transform,
                         stopAt
                     )
