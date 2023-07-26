@@ -102,6 +102,9 @@
 		<Compile Include="Block\Output\Door\DoorGVElectricElement.cs" />
 		<Compile Include="Block\Output\Door\GVDoorBlock.cs" />
 		<Compile Include="Block\Output\Door\SubsystemGVDoorBlockBehavior.cs" />
+		<Compile Include="Block\Output\Door\GVTrapdoorBlock.cs" />
+		<Compile Include="Block\Output\Door\SubsystemTrapdoorBlockBehavior.cs" />
+		<Compile Include="Block\Output\Door\TrapDoorElectricElement.cs" />
 		<Compile Include="Block\Output\Piston\GVPistonBlock.cs" />
 		<Compile Include="Block\Output\Piston\GVPistonData.cs" />
 		<Compile Include="Block\Output\Piston\GVPistonHeadBlock.cs" />

@@ -62,6 +62,9 @@
 		<MemberSubsystemTemplate Name="GVDoorBlockBehavior" Guid="551cf220-2d44-45cd-ac5c-bc14ed45b4ac" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="55c7a663-552c-49f8-be52-81f5a75843d1" Value="Game.SubsystemGVDoorBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVTrapdoorBlockBehavior" Guid="75f4d71d-01e8-411f-b632-3dec415b5b57" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<Parameter Name="Class" Guid="72a14faa-e81e-44da-9f8c-63b49f72a4f4" Value="Game.SubsystemGVTrapdoorBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVDispenserBlockBehavior" Guid="e44c0ac1-0b83-44ed-8269-4cc339edf69b" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="a5e3567a-3b9d-44ab-9beb-d7ca92ceedcd" Value="Game.SubsystemGVDispenserBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
