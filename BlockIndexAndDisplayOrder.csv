@@ -40,7 +40,7 @@ GVWoodenPostedSignCBlock,GV Electrics Regular,597,837,38,1,
 GVWoodenAttachedSignCBlock,GV Electrics Regular,598,838,39,0,
 GVIronPostedSignCBlock,GV Electrics Regular,710,839,40,1,
 GVIronAttachedSignCBlock,GV Electrics Regular,711,840,41,0,
-GVDispenserCBlock,GV Electrics Regular,,841,42,1,""
+GVDispenserCBlock,GV Electrics Regular,,841,42,1,
 GVDebugBlock,GV Electrics Shift,800,842,1,1,
 GV2OTransformerBlock,GV Electrics Shift,802,843,2,1,
 O2GVTransformerBlock,GV Electrics Shift,803,844,3,1,
@@ -62,10 +62,10 @@ GVOneLedBlock,GV Electrics Shift,953,859,18,1,
 GVTargetBlock,GV Electrics Shift,899,860,19,1,
 GVDetonatorBlock,GV Electrics Shift,847,861,20,1,
 GVSignBlock,GV Electrics Shift,801,862,21,1,
-GVDispenserBlock,GV Electrics Shift,,863,22,1,""
+GVDispenserBlock,GV Electrics Shift,,863,22,1,
 GVDoorBlock,GV Electrics Shift,,864,23,3,
-GVTrapdoorBlock,GV Electrics Shift,,865,24,2,未开发
-GVFenceGateBlock,GV Electrics Shift,,866,25,1,未开发
+GVTrapdoorBlock,GV Electrics Shift,,865,24,2,
+GVFenceGateBlock,GV Electrics Shift,,866,25,1,
 GVCopperHammerBlock,GV Electrics Expand,1020,867,1,1,
 GVEWireThroughBlock,GV Electrics Expand,1021,868,2,2,
 GVMultiplexerBlock,GV Electrics Expand,1019,869,3,1,

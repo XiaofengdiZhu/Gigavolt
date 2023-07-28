@@ -100,7 +100,10 @@
 		<Compile Include="Block\Output\Dispenser\SubsystemGVDispenserBlockBehavior.cs" />
 		<Compile Include="Block\Output\Dispenser\SubsystemGVProjectiles.cs" />
 		<Compile Include="Block\Output\Door\DoorGVElectricElement.cs" />
+		<Compile Include="Block\Output\Door\GVFenceGateBlock.cs" />
+		<Compile Include="Block\Output\Door\FenceGateGVElectricElement.cs" />
 		<Compile Include="Block\Output\Door\GVDoorBlock.cs" />
+		<Compile Include="Block\Output\Door\SubsystemGVFenceGateBlockBehavior.cs" />
 		<Compile Include="Block\Output\Door\SubsystemGVDoorBlockBehavior.cs" />
 		<Compile Include="Block\Output\Door\GVTrapdoorBlock.cs" />
 		<Compile Include="Block\Output\Door\SubsystemTrapdoorBlockBehavior.cs" />
