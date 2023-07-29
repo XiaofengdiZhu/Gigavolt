@@ -7,12 +7,12 @@ namespace Game {
     public class GVTrapdoorBlock : GenerateGVWireVerticesBlock, IGVElectricElementBlock {
         public const int Index = 865;
 
-        public BlockMesh[] m_standaloneBlockMesh = new BlockMesh[3];
-        public Matrix[] m_boneAbsoluteTransform = new Matrix[3];
-        public ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[3];
+        public BlockMesh[] m_standaloneBlockMesh = new BlockMesh[2];
+        public Matrix[] m_boneAbsoluteTransform = new Matrix[2];
+        public ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[2];
         public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new Dictionary<int, BlockMesh>();
         public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new Dictionary<int, BoundingBox[]>();
-        public string[] m_displayNamesByModel = { "GV木门", "GV铁门", "GV铁栅门" };
+        public string[] m_displayNamesByModel = { "GV木活板门", "GV铁活板门" };
         public int[] m_creativeValuesByModel = { Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1)) };
 
         public override void Initialize() {

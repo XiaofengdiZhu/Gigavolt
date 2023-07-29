@@ -278,7 +278,10 @@ namespace NCalc {
                     Result = MethExpressionWithOneParameter("Atan", arg0);
                     break;
                 case "atan2":
-                    Result = MethExpressionWithOneParameter("Atan2", arg0);
+                    if (argCount < 2) {
+                        throw new TargetParameterCountException();
+                    }
+                    Result = MethExpressionWithTwoParameter("Atan2", arg0, arg1);
                     break;
                 case "ceiling":
                     Result = MethExpressionWithOneParameter("Ceiling", arg0);

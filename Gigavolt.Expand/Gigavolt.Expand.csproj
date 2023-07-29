@@ -112,6 +112,8 @@
 		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankData.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileMemory\SubsystemGVVolatileMemoryBankBlockBehavior.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileMemory\VolatileMemoryBankGVElectricElement.cs"/>
+		<Compile Include="MoreOneInOneOut\GVMoreOneInOneOutBlock.cs"/>
+		<Compile Include="MoreOneInOneOut\MoreOneInOneOutGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs"/>
@@ -265,6 +267,58 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Assets\Textures\GVTerrainScanner.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cos.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sin.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Acos.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Asin.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Atan.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cosh.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cot.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Csc.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Deg2Rad.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Rad2Deg.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sec.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sinh.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\SMR.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tan.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tanh.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\TCR.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
