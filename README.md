@@ -15,7 +15,7 @@
       * [音频转换 Sound Conversion](#音频转换-sound-conversion)
     * [发射器 Dispenser](#发射器-dispenser)
     * [告示牌 Sign](#告示牌-sign)
-* [GigaVoltage.Expand 十亿伏特·扩展](#gigavoltageexpand-十亿伏特扩展)
+* [十亿伏特·扩展 GigaVoltage.Expand](#十亿伏特扩展-gigavoltageexpand)
   * [简介 Introduction](#简介-introduction-1)
   * [看板娘 Yuru-chara](#看板娘-yuru-chara-1)
   * [简单方块 Simple Blocks](#简单方块-simple-blocks)
@@ -49,7 +49,7 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
   * **经典** 与原版使用方法和效果彻底相同的类别，会在方块名后面强调`经典`
   * **无后缀** 具有额外特性但不影响按原版的16个电压级别设计电路的方块，可以称之为`十亿伏特版`
 * **变体** 这个分类中的方块最大地发挥了2^32个电压级别的特长，既然与原版不同，当然都是十亿伏特版
-> `大门、栅栏门、活板门、活塞`仅有变体版而没有经典版。  
+> `大门、栅栏门、活板门、活塞`仅有变体版而没有经典版，可使用变压器操作原版。  
 > 原版可与电路交互的`木刺陷阱、圣诞树、火药桶、温度计、湿度计、家具`同时未提供经典版或十亿伏特版，请使用变压器转换十亿伏特电压为原版电压后连接使用
 
 | 方块            | 原版                            | 十亿伏特版                                                                                          |
@@ -210,7 +210,7 @@ png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的
     </tbody>
 </table>
 
-# GigaVoltage.Expand 十亿伏特·扩展
+# 十亿伏特·扩展 GigaVoltage.Expand
 ## 简介 Introduction
 这是一个为生存战争游戏十亿伏特mod带来更多电路板和功能的mod，具有两个分类：  
 This is a mod for Survivalcraft Gigavolt mod that take more circuit components and functions to the mod. Two categories:

@@ -76,14 +76,13 @@ namespace Game {
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
-            result.Value = SetFace(value, raycastResult.CellFace.Face);
+            result.Value = SetFace(SetLeverState(value, false), raycastResult.CellFace.Face);
             result.CellFace = raycastResult.CellFace;
             return result;
         }
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
-            int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetFace(SetLeverState(data, false), 0)), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, Terrain.ExtractData(SetFace(SetLeverState(oldValue, false), 0))), Count = 1 });
             showDebris = true;
         }
 

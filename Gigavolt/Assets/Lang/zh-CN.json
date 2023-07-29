@@ -38,6 +38,9 @@
   "GVLightbulbBlock": {
     "1": "GV电灯"
   },
+  "DetonatorGVElectricElement": {
+    "1": "愚蠢！\n以玩家的生命为代价，避免了世界毁灭"
+  },
   "Blocks": {
     "GVWireBlock:0": {
       "DisplayName": "GV导线",

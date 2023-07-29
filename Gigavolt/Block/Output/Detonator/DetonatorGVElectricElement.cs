@@ -1,11 +1,14 @@
+using System.Collections.Generic;
+using Engine;
+
 namespace Game {
     public class DetonatorGVElectricElement : MountedGVElectricElement {
         public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
 
-        public void Detonate(uint presure) {
+        public void Detonate(uint pressure) {
             SubsystemExplosions m_subsystemExplosions = SubsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true);
             CellFace cellFace = CellFaces[0];
-            if (presure == 0) {
+            if (pressure == 0) {
                 int value = Terrain.MakeBlockValue(847);
                 m_subsystemExplosions.TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
             }
@@ -15,7 +18,7 @@ namespace Game {
                     cellFace.X,
                     cellFace.Y,
                     cellFace.Z,
-                    presure,
+                    pressure,
                     false,
                     false
                 );
@@ -24,14 +27,38 @@ namespace Game {
 
         public override bool Simulate() {
             uint num = 0u;
+            HashSet<Point3> points = new HashSet<Point3>();
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    num = MathUint.Max(num, connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+                    uint input = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                    num |= input;
+                    if (input == uint.MaxValue) {
+                        points.Add(connection.NeighborCellFace.Point);
+                    }
                 }
             }
             if (num > 0u) {
-                Detonate(num);
+                if (num == uint.MaxValue) {
+                    foreach (ComponentPlayer player in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
+                        player.ComponentHealth.Injure(float.MaxValue, null, true, LanguageControl.Get(GetType().Name, 1));
+                        SubsystemTerrain subsystemTerrain = SubsystemGVElectricity.Project.FindSubsystem<SubsystemTerrain>(true);
+                        foreach (Point3 point in points) {
+                            subsystemTerrain.DestroyCell(
+                                int.MaxValue,
+                                point.X,
+                                point.Y,
+                                point.Z,
+                                0,
+                                false,
+                                false
+                            );
+                        }
+                    }
+                }
+                else {
+                    Detonate(num);
+                }
             }
             return false;
         }
