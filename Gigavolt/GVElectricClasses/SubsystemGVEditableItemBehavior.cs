@@ -12,7 +12,7 @@ namespace Game {
         public int m_contents;
 
         public Dictionary<int, T> m_itemsData = new Dictionary<int, T>();
-        public List<int> m_existingIds = new List<int>();
+        public HashSet<int> m_existingIds = new HashSet<int>();
 
         public SubsystemGVEditableItemBehavior(int contents) => m_contents = contents;
 
@@ -24,6 +24,7 @@ namespace Game {
         public T GetItemData(int id, bool returnNew = false) {
             m_itemsData.TryGetValue(id, out T value);
             if (value == null && returnNew) {
+                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.GetItemData: 未找到{id}，完整ID列表：{string.Join(",", m_itemsData.Keys)}\n");
                 return new T();
             }
             return value;
@@ -88,6 +89,15 @@ namespace Game {
             int id = GetIdFromValue(value);
             if (id > 0) {
                 m_existingIds.Add(id);
+                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.OnBlockAdded: {id}\n");
+            }
+        }
+
+        public override void OnBlockModified(int value, int oldValue, int x, int y, int z) {
+            int id = GetIdFromValue(value);
+            if (id > 0) {
+                m_existingIds.Add(id);
+                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.OnBlockModified: {id}\n");
             }
         }
 
@@ -95,6 +105,7 @@ namespace Game {
             int id = GetIdFromValue(value);
             if (id > 0) {
                 m_existingIds.Add(GetIdFromValue(value));
+                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.OnBlockGenerated: {id}\n");
             }
         }
 
@@ -102,6 +113,7 @@ namespace Game {
             int id = GetIdFromValue(value);
             if (id > 0) {
                 m_existingIds.Remove(id);
+                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.OnBlockRemoved: {id}\n");
             }
         }
 
@@ -112,6 +124,8 @@ namespace Game {
                     hashSet.Add(GetIdFromValue(item.Value));
                 }
             }
+            //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.GarbageCollectItems: 背包有以下ID: {string.Join(",", hashSet)}\n");
+            //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.GarbageCollectItems: 世界有以下ID: {string.Join(",", m_existingIds)}\n");
             List<int> list = new List<int>();
             foreach (KeyValuePair<int, T> itemsDatum in m_itemsData) {
                 if (!hashSet.Contains(itemsDatum.Key)
@@ -119,6 +133,7 @@ namespace Game {
                     list.Add(itemsDatum.Key);
                 }
             }
+            //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.GarbageCollectItems: 移除以下ID: {string.Join(",", list)}\n");
             foreach (int item2 in list) {
                 m_itemsData.Remove(item2);
             }
