@@ -83,7 +83,7 @@ namespace Game {
                         midleOutput = Math.Sin(radius);
                         break;
                 }
-                output = double2uint(midleOutput);
+                output = Double2Uint(midleOutput);
             }
             else if (m_type == 14) {
                 output = input ^ (1u << 31);
@@ -102,6 +102,6 @@ namespace Game {
             return flag;
         }
 
-        public static uint double2uint(double num) => ((num < 0 ? 1u : 0u) << 31) | (((uint)Math.Truncate(num) & 0x7fff) << 16) | (uint)Math.Round(num % 1 * 0xffff);
+        public static uint Double2Uint(double num) => ((num < 0 ? 1u : 0u) << 31) | (((uint)Math.Truncate(num) & 0x7fff) << 16) | (uint)Math.Round(num % 1 * 0xffff);
     }
 }

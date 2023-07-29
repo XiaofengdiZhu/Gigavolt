@@ -243,7 +243,6 @@ namespace Game {
             blockMesh.GenerateSidesData();
             m_cachedBlockMeshes.Add(data, blockMesh);
             BoundingBox boundingBox = blockMesh.CalculateBoundingBox();
-            boundingBox.Max.Y = 1f;
             box = new[] { boundingBox };
             m_cachedCollisionBoxes.Add(data, box);
         }

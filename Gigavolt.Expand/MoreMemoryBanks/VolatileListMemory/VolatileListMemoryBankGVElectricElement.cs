@@ -67,7 +67,7 @@ namespace Game {
                     m_lastBottomInput = bottomInput;
                     m_voltage = 0u;
                 }
-                else if (bottomInput != m_lastBottomInput) {
+                if (bottomInput != m_lastBottomInput) {
                     m_lastBottomInput = bottomInput;
                     uint smallIndex = MathUint.Min(leftInput, rightInput);
                     uint bigIndex = MathUint.Max(leftInput, rightInput);
@@ -316,9 +316,108 @@ namespace Game {
                             }
                             break;
                         case 48u:
-                            memoryBankData.m_width = inInput;
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Sin(Uint2Double(memoryBankData.Read(i)))));
+                            }
                             break;
                         case 49u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Cos(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 50u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Tan(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 51u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Tan(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 52u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Cos(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 53u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Sin(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 54u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Asin(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 55u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Acos(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 56u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Atan(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 57u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Sinh(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 58u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Cosh(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 59u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Tanh(Uint2Double(memoryBankData.Read(i)))));
+                            }
+                            break;
+                        case 60u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Uint2Double(memoryBankData.Read(i)) * Math.PI / 180));
+                            }
+                            break;
+                        case 61u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Uint2Double(memoryBankData.Read(i)) * 180 / Math.PI));
+                            }
+                            break;
+                        case 62u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                memoryBankData.Write(i, memoryBankData.Read(i) ^ (1u << 31));
+                            }
+                            break;
+                        case 63u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                uint input = memoryBankData.Read(i);
+                                memoryBankData.Write(i, input >> 31 == 0u ? ~input + 1 : ~(input - 1));
+                            }
+                            break;
+                        case 64u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                uint input = memoryBankData.Read(i);
+                                memoryBankData.Write(i, ~memoryBankData.Read(i));
+                            }
+                            break;
+                        case 65u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                uint input = memoryBankData.Read(i);
+                                memoryBankData.Write(i, memoryBankData.Read(i) + 1);
+                            }
+                            break;
+                        case 66u:
+                            for (uint i = smallIndex; i < bigIndex; i++) {
+                                uint input = memoryBankData.Read(i);
+                                memoryBankData.Write(i, memoryBankData.Read(i) - 1);
+                            }
+                            break;
+                        case 256u:
+                            memoryBankData.m_width = inInput;
+                            break;
+                        case 257u:
                             memoryBankData.m_height = inInput;
                             break;
                     }
@@ -332,5 +431,7 @@ namespace Game {
             }
             return m_voltage != voltage;
         }
+
+        public static double Uint2Double(uint num) => (num >> 31 == 1 ? -1 : 1) * (((num >> 16) & 0x7fffu) + (double)(num & 0xffffu) / 0xffff);
     }
 }
