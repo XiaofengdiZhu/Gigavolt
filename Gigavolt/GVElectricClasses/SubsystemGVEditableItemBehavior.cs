@@ -60,10 +60,20 @@ namespace Game {
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             foreach (KeyValuePair<string, object> item2 in valuesDictionary.GetValue<ValuesDictionary>("Items")) {
                 int key2 = HumanReadableConverter.ConvertFromString<int>(item2.Key);
-                T value2 = new T();
-                value2.LoadString((string)item2.Value);
-                m_itemsData[key2] = value2;
+                if (key2 == 0) {
+                    foreach (string item in ((string)item2.Value).Split(',')) {
+                        if (int.TryParse(item, out int number)) {
+                            m_existingIds.Add(number);
+                        }
+                    }
+                }
+                else {
+                    T value2 = new T();
+                    value2.LoadString((string)item2.Value);
+                    m_itemsData[key2] = value2;
+                }
             }
+            //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.Load: 世界有以下ID: {string.Join(",", m_existingIds)}\n");
             m_subsystemItemsScanner.ItemsScanned += GarbageCollectItems;
         }
 
@@ -74,6 +84,7 @@ namespace Game {
             foreach (KeyValuePair<int, T> itemsDatum in m_itemsData) {
                 valuesDictionary3.SetValue(HumanReadableConverter.ConvertToString(itemsDatum.Key), itemsDatum.Value.SaveString());
             }
+            valuesDictionary3.SetValue(HumanReadableConverter.ConvertToString(0), string.Join(",", m_existingIds));
         }
 
         public int FindFreeItemId() {
