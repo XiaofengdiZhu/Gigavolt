@@ -527,6 +527,25 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Assets\Textures\GV8NumberLedBlockFull.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Include="Assets\Textures\GVOneLedBlockEmpty.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Assets\Textures\GV4x2LedBlockFull.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Include="Assets\Textures\GV4x4LedBlockFull.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Include="Assets\Textures\GV8x4LedBlockFull.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 	<ProjectExtensions />
 </Project>

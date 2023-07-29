@@ -1,3 +1,37 @@
+<!-- TOC -->
+* [十亿伏特 GigaVoltage](#十亿伏特-gigavoltage)
+  * [简介 Introduction](#简介-introduction)
+  * [看板娘 Yuru-chara](#看板娘-yuru-chara)
+  * [区别 Differences](#区别-differences)
+  * [新增 New](#新增-new)
+  * [详细 Details](#详细-details)
+    * [存储器 Memory Band](#存储器-memory-band)
+    * [真值表 Truth Table](#真值表-truth-table)
+      * [例子 Examples](#例子-examples)
+      * [规则 Rules](#规则-rules)
+    * [实时钟 Real Time Clock](#实时钟-real-time-clock)
+    * [声音发生器 Sound Generator](#声音发生器-sound-generator)
+      * [端口定义 Input Definition](#端口定义-input-definition)
+      * [音频转换 Sound Conversion](#音频转换-sound-conversion)
+    * [发射器 Dispenser](#发射器-dispenser)
+    * [告示牌 Sign](#告示牌-sign)
+* [GigaVoltage.Expand 十亿伏特·扩展](#gigavoltageexpand-十亿伏特扩展)
+  * [简介 Introduction](#简介-introduction-1)
+  * [看板娘 Yuru-chara](#看板娘-yuru-chara-1)
+  * [简单方块 Simple Blocks](#简单方块-simple-blocks)
+  * [复杂方块 Complex Blocks](#复杂方块-complex-blocks)
+    * [路选器 Multiplexer](#路选器-multiplexer)
+    * [一维存储器 List Memory](#一维存储器-list-memory)
+      * [端口定义 Input&Output Definition](#端口定义-inputoutput-definition)
+      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input)
+    * [地形射线探测器 Terrain Raycast Detector](#地形射线探测器-terrain-raycast-detector)
+    * [地形扫描仪 Terrain Scanner](#地形扫描仪-terrain-scanner)
+    * [红白机模拟器 Nes Emulator](#红白机模拟器-nes-emulator)
+    * [制导发射器 Guided Dispenser](#制导发射器-guided-dispenser)
+  * [复数方块 Multiple Blocks](#复数方块-multiple-blocks)
+    * [更多两入两出电路板 More Two In Two Out Electrics](#更多两入两出电路板-more-two-in-two-out-electrics)
+    * [更多单入单出电路板 More One In One Out Electrics](#更多单入单出电路板-more-one-in-one-out-electrics)
+<!-- TOC -->
 # 十亿伏特 GigaVoltage
 ## 简介 Introduction
 这是一个为生存战争游戏带来十亿伏特电力系统的mod，将原版的16个电压级别（0\~1.5V）扩展到2^32个（0\~2^32-1V）  
@@ -45,7 +79,7 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 | 8数字LED灯  | 和7段显示器类似，但它一次显示8位16进制数，只提供白光                  |
 | 变压器      | 将原版电压和十亿伏特电压互相转换的变压器，十亿伏特电压转原版电压时将取二进制最低4位输出  |
 ## 详细 Details
-下面介绍的都是十亿伏特版元件
+> 下面介绍的都是十亿伏特版元件
 ### 存储器 Memory Band
 为存储远超原版的数据量，该Mod将数据无损保存为了[PNG](https://www.w3.org/TR/png/)图片格式，因此需要先手动设置长宽，而且之后不可在编辑界面修改，长宽上限均为2^31-1，但为了避免不可预知的错误，请不要设置过于巨大的矩阵  
 编辑界面用文字编辑时，每个数据用英文逗号`,`分开，每行数据用英文分号`;`分开  

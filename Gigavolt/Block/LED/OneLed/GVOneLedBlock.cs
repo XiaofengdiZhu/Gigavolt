@@ -12,6 +12,8 @@ namespace Game {
         public BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
 
         public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+        public DateTime lastColorUpdateTime;
+        public int lastColorIndex;
 
         public override void Initialize() {
             ModelMesh modelMesh = ContentManager.Get<Model>("Models/Leds").FindMesh("OneLed");
@@ -42,6 +44,7 @@ namespace Game {
                 false,
                 Color.White
             );
+            lastColorUpdateTime = DateTime.Now;
         }
 
         /*public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes()
@@ -120,10 +123,18 @@ namespace Game {
         }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+            DateTime now = DateTime.Now;
+            if ((now - lastColorUpdateTime).TotalMilliseconds > 1000) {
+                if (++lastColorIndex >= 16) {
+                    lastColorIndex = 0;
+                }
+                lastColorUpdateTime = now;
+            }
+            Color customColor = SubsystemPalette.GetColor(environmentData, lastColorIndex);
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
-                color,
+                customColor,
                 2f * size,
                 ref matrix,
                 environmentData

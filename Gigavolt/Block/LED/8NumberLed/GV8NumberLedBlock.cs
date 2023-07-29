@@ -11,9 +11,11 @@ namespace Game {
         public BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
 
         public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+        Texture2D emptyTexture;
+        Texture2D fullTexture;
 
         public override void Initialize() {
-            ModelMesh modelMesh = ContentManager.Get<Model>("Models/Leds").FindMesh("OneLed");
+            ModelMesh modelMesh = ContentManager.Get<Model>("Models/GigavoltGates").FindMesh("OneLed");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(modelMesh.ParentBone);
             for (int i = 0; i < 6; i++) {
                 Matrix m = i >= 4 ? i != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
@@ -41,6 +43,8 @@ namespace Game {
                 false,
                 Color.White
             );
+            emptyTexture = ContentManager.Get<Texture2D>("Textures/GVOneLedBlockEmpty");
+            fullTexture = ContentManager.Get<Texture2D>("Textures/GV8NumberLedBlockFull");
         }
 
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) {
@@ -78,7 +82,7 @@ namespace Game {
                     m_blockMeshesByFace[mountingFace],
                     Color.White,
                     null,
-                    geometry.SubsetOpaque
+                    geometry.GetGeometry(emptyTexture).SubsetOpaque
                 );
                 GenerateGVWireVertices(
                     generator,
@@ -98,6 +102,7 @@ namespace Game {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
+                fullTexture,
                 color,
                 2f * size,
                 ref matrix,

@@ -228,11 +228,6 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="Assets\Models\GVOneSurfaceBlock.dae">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVNesEmulatorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

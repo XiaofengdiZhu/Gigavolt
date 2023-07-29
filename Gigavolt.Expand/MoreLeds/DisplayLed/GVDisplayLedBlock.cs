@@ -7,6 +7,7 @@ namespace Game {
         public const int Index = 874;
         readonly Texture2D[] textures = new Texture2D[6];
         readonly string[] names = { "方块展示板", "图片显示器", "地层显示器" };
+        public Color topColor = new Color(4281917775);
 
         public override void Initialize() {
             base.Initialize();
@@ -15,7 +16,7 @@ namespace Game {
             }
         }
 
-        public GVDisplayLedBlock() : base("Models/GVOneSurfaceBlock", "OneLed", 0.5f) { }
+        public GVDisplayLedBlock() : base("Models/GigavoltGates", "OneLed", 0.5f) { }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             int data = Terrain.ExtractData(value);
@@ -28,6 +29,19 @@ namespace Game {
                 ref matrix,
                 environmentData
             );
+            int type = GetType(data);
+            if (type == 0) {
+                Matrix matrix2 = Matrix.CreateTranslation(new Vector3(-0.65f, 0.33f, 0.2f));
+                BlocksManager.DrawCubeBlock(
+                    primitivesRenderer,
+                    GrassBlock.Index,
+                    new Vector3(0.4f),
+                    ref matrix2,
+                    Color.White,
+                    topColor,
+                    environmentData
+                );
+            }
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {

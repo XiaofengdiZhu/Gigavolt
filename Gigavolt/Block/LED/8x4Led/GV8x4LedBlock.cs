@@ -12,9 +12,11 @@ namespace Game {
         public BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
 
         public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+        public Texture2D emptyTexture;
+        readonly Texture2D[] fullTexture = new Texture2D[3];
 
         public override void Initialize() {
-            ModelMesh modelMesh = ContentManager.Get<Model>("Models/Leds").FindMesh("OneLed");
+            ModelMesh modelMesh = ContentManager.Get<Model>("Models/GigavoltGates").FindMesh("OneLed");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(modelMesh.ParentBone);
             for (int i = 0; i < 6; i++) {
                 Matrix m = i >= 4 ? i != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
@@ -42,6 +44,10 @@ namespace Game {
                 false,
                 Color.White
             );
+            emptyTexture = ContentManager.Get<Texture2D>("Textures/GVOneLedBlockEmpty");
+            fullTexture[0] = ContentManager.Get<Texture2D>("Textures/GV4x2LedBlockFull");
+            fullTexture[1] = ContentManager.Get<Texture2D>("Textures/GV4x4LedBlockFull");
+            fullTexture[2] = ContentManager.Get<Texture2D>("Textures/GV8x4LedBlockFull");
         }
 
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) {
@@ -79,7 +85,7 @@ namespace Game {
                     m_blockMeshesByFace[mountingFace],
                     Color.White,
                     null,
-                    geometry.SubsetOpaque
+                    geometry.GetGeometry(emptyTexture).SubsetOpaque
                 );
                 GenerateGVWireVertices(
                     generator,
@@ -99,6 +105,7 @@ namespace Game {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
+                fullTexture[GetType(Terrain.ExtractData(value))],
                 color,
                 2f * size,
                 ref matrix,
