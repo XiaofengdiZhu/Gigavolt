@@ -11,6 +11,7 @@ namespace Game {
 
         public bool[] m_doubleSidedAndUseAlphaTest = { false, true };
 
+        public int[] _m_defaultTextureSlot = { 4, 58 };
         public int[] _m_coloredTextureSlot = { 23, 58 };
 
         public Color[] _m_postColor = { Color.White, new Color(192, 192, 192) };
@@ -69,7 +70,7 @@ namespace Game {
                 }
                 BlockMesh blockMesh2 = new BlockMesh();
                 blockMesh2.AppendBlockMesh(blockMesh);
-                blockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+                blockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(_m_defaultTextureSlot[i] % 16 / 16f, _m_defaultTextureSlot[i] / 16 / 16f, 0f));
                 blockMesh2.TransformTextureCoordinates(Matrix.CreateTranslation(_m_coloredTextureSlot[i] % 16 / 16f, _m_coloredTextureSlot[i] / 16 / 16f, 0f));
                 _m_standaloneBlockMesh[i] = blockMesh;
                 _m_standaloneColoredBlockMesh[i] = blockMesh2;
@@ -107,6 +108,70 @@ namespace Game {
             int model = GetModel(data);
             int? color = GetColor(data);
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetModel(SetColor(0, color), model)), Count = 1 });
+        }
+
+        public override float GetDensity(int value) {
+            int model = GetModel(Terrain.ExtractData(value));
+            return model switch {
+                0 => 0.5f,
+                _ => 3f
+            };
+        }
+
+        public override float GetFuelFireDuration(int value) {
+            int model = GetModel(Terrain.ExtractData(value));
+            return model switch {
+                0 => 5f,
+                _ => 0f
+            };
+        }
+
+        public override string GetSoundMaterialName(SubsystemTerrain subsystemTerrain, int value) {
+            int model = GetModel(Terrain.ExtractData(value));
+            return model switch {
+                0 => "Wood",
+                _ => "Metal"
+            };
+        }
+
+        public override float GetFireDuration(int value) {
+            int model = GetModel(Terrain.ExtractData(value));
+            return model switch {
+                0 => 15f,
+                _ => 0f
+            };
+        }
+
+        public override float GetExplosionResilience(int value) {
+            int model = GetModel(Terrain.ExtractData(value));
+            return model switch {
+                0 => 3f,
+                _ => 20f
+            };
+        }
+
+        public override BlockDigMethod GetBlockDigMethod(int value) {
+            int model = GetModel(Terrain.ExtractData(value));
+            return model switch {
+                0 => BlockDigMethod.Hack,
+                _ => BlockDigMethod.Quarry
+            };
+        }
+
+        public override float GetDigResilience(int value) {
+            int model = GetModel(Terrain.ExtractData(value));
+            return model switch {
+                0 => 5f,
+                _ => 10f
+            };
+        }
+
+        public override int GetFaceTextureSlot(int face, int value) {
+            int model = GetModel(Terrain.ExtractData(value));
+            return model switch {
+                0 => 4,
+                _ => 58
+            };
         }
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
@@ -164,6 +229,7 @@ namespace Game {
         public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
             int data = Terrain.ExtractData(value);
             int? color = GetColor(data);
+            int model = GetModel(data);
             if (color.HasValue) {
                 return new BlockDebrisParticleSystem(
                     subsystemTerrain,
@@ -171,7 +237,7 @@ namespace Game {
                     strength,
                     DestructionDebrisScale,
                     SubsystemPalette.GetColor(subsystemTerrain, color),
-                    _m_coloredTextureSlot[GetModel(data)]
+                    _m_coloredTextureSlot[model]
                 );
             }
             return new BlockDebrisParticleSystem(
@@ -180,7 +246,7 @@ namespace Game {
                 strength,
                 DestructionDebrisScale,
                 Color.White,
-                DefaultTextureSlot
+                _m_defaultTextureSlot[model]
             );
         }
 
@@ -240,9 +306,9 @@ namespace Game {
             }
         }
 
-        public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
+        public new int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
-        public int Paint(SubsystemTerrain terrain, int value, int? color) {
+        public new int Paint(SubsystemTerrain terrain, int value, int? color) {
             int data = Terrain.ExtractData(value);
             return Terrain.ReplaceData(value, SetColor(data, color));
         }
@@ -306,14 +372,14 @@ namespace Game {
             return num;
         }
 
-        public static int? GetColor(int data) {
+        public new static int? GetColor(int data) {
             if ((data & 0x10) != 0) {
                 return (data >> 5) & 0xF;
             }
             return null;
         }
 
-        public static int SetColor(int data, int? color) {
+        public new static int SetColor(int data, int? color) {
             if (color.HasValue) {
                 return (data & -497) | 0x10 | ((color.Value & 0xF) << 5);
             }
@@ -361,7 +427,7 @@ namespace Game {
                     Color.White
                 );
             }
-            blockMesh.TransformTextureCoordinates(color.HasValue ? Matrix.CreateTranslation(_m_coloredTextureSlot[model] % 16 / 16f, _m_coloredTextureSlot[model] / 16 / 16f, 0f) : Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+            blockMesh.TransformTextureCoordinates(color.HasValue ? Matrix.CreateTranslation(_m_coloredTextureSlot[model] % 16 / 16f, _m_coloredTextureSlot[model] / 16 / 16f, 0f) : Matrix.CreateTranslation(_m_defaultTextureSlot[model] % 16 / 16f, _m_defaultTextureSlot[model] / 16 / 16f, 0f));
             m_cachedBlockMeshes.Add(data, blockMesh);
             BoundingBox boundingBox = blockMesh.CalculateBoundingBox();
             boundingBox.Min.X = MathUtils.Saturate(boundingBox.Min.X);
