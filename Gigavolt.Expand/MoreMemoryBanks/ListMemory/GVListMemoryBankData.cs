@@ -13,6 +13,7 @@ namespace Game {
         public bool m_dataChanged;
         public uint m_width;
         public uint m_height;
+        public uint m_offset;
 
         public List<uint> Data {
             get => m_data;
@@ -95,10 +96,11 @@ namespace Game {
                 LoadData();
                 GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             }
-            if (array.Length >= 4) {
+            if (array.Length >= 5) {
                 m_width = uint.Parse(array[1]);
                 m_height = uint.Parse(array[2]);
-                LastOutput = uint.Parse(array[3], NumberStyles.HexNumber, null);
+                m_offset = uint.Parse(array[3]);
+                LastOutput = uint.Parse(array[4], NumberStyles.HexNumber, null);
             }
         }
 
@@ -107,7 +109,7 @@ namespace Game {
         public string SaveString(bool saveLastOutput) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(m_ID.ToString("X", null));
-            stringBuilder.Append($";{m_width};{m_height}");
+            stringBuilder.Append($";{m_width};{m_height};{m_offset}");
             if (saveLastOutput) {
                 stringBuilder.Append(';');
                 stringBuilder.Append(LastOutput.ToString("X", null));
@@ -211,11 +213,11 @@ namespace Game {
             Data = Shorts2UintList(shorts);
         }
 
-        public static Image UintList2Image(List<uint> list, uint width = 0u, uint height = 0u) {
+        public static Image UintList2Image(List<uint> list, uint width = 0u, uint height = 0u, uint offset = 0u) {
             if (width > 0
                 && height > 0) {
                 Image image = new Image(MathUint.ToInt(width), MathUint.ToInt(height));
-                for (int i = 0; i < Math.Min(list.Count, image.Pixels.Length); i++) {
+                for (int i = (int)offset; i < Math.Min(list.Count, image.Pixels.Length + (int)offset); i++) {
                     image.Pixels[i].PackedValue = list[i];
                 }
                 return image;
@@ -223,7 +225,7 @@ namespace Game {
             return null;
         }
 
-        public override Image Data2Image() => UintList2Image(Data, m_width, m_height);
+        public override Image Data2Image() => UintList2Image(Data, m_width, m_height, m_offset);
 
         public static List<uint> Image2UintList(Image image) {
             return image.Pixels.Select(color => color.PackedValue).ToList();

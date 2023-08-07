@@ -438,6 +438,9 @@ namespace Game {
                         case 257u:
                             memoryBankData.m_height = inInput;
                             break;
+                        case 258u:
+                            memoryBankData.m_offset = inInput;
+                            break;
                     }
                 }
             }
