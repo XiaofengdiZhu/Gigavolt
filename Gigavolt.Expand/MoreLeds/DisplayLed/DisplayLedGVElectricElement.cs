@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using Engine;
 
 namespace Game {
     public class DisplayLedGVElectricElement : RotateableGVElectricElement {
         public SubsystemGVDisplayLedGlow m_subsystemGVDisplayLedGlow;
-        public GVDisplayPoint m_glowPoint;
+        public List<GVDisplayPoint> m_glowPoints;
         public Vector3 m_originalPosition;
         public int m_type;
         public bool m_complex;
@@ -23,18 +24,10 @@ namespace Game {
             int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
             m_type = GVDisplayLedBlock.GetType(data);
-            m_glowPoint = m_subsystemGVDisplayLedGlow.AddGlowPoint();
+            m_glowPoints = m_subsystemGVDisplayLedGlow.AddGlowPoints();
             m_originalPosition = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
-            m_glowPoint.Position = m_originalPosition;
-            m_glowPoint.Color = Color.White;
-            m_glowPoint.Complex = m_complex;
-            if (m_complex) {
-                m_glowPoint.Type = m_type;
-                m_glowPoint.Size = 0;
-                m_glowPoint.Rotation = Vector3.Zero;
-            }
-            else {
-                m_glowPoint.Type = m_type;
+            if (!m_complex) {
+                GVDisplayPoint point = new GVDisplayPoint { Type = m_type, Position = m_originalPosition, Color = Color.White, Complex = false };
                 Vector3 forward = -CellFace.FaceToVector3(mountingFace);
                 if (forward.Y != 0) {
                     forward.Z += 0.0001f;
@@ -45,26 +38,23 @@ namespace Game {
                 matrix.Forward = forward;
                 matrix.Up = up;
                 matrix.Right = right;
-                m_glowPoint.Rotation = matrix.ToYawPitchRoll();
-                m_glowPoint.Color = Color.White;
+                point.Rotation = matrix.ToYawPitchRoll();
+                m_glowPoints.Add(point);
             }
         }
 
         public override void OnRemoved() {
-            m_subsystemGVDisplayLedGlow.RemoveGlowPoint(m_glowPoint);
+            m_subsystemGVDisplayLedGlow.RemoveGlowPoints(m_glowPoints);
+            m_glowPoints.Clear();
+            m_glowPoints = null;
         }
 
         public override bool Simulate() {
             int electricRotation = Rotation;
-            uint inputIn = m_inputIn;
             m_inputIn = 0u;
-            uint inputTop = m_inputTop;
             m_inputTop = 0u;
-            uint inputRight = m_inputRight;
             m_inputRight = 0u;
-            uint inputBottom = m_inputBottom;
             m_inputBottom = 0u;
-            uint inputLeft = m_inputLeft;
             m_inputLeft = 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
@@ -94,27 +84,31 @@ namespace Game {
                     }
                 }
             }
-            //Log.Information($"m_inputIn={m_inputIn:X} inputIn={inputIn:X} m_inputTop={m_inputTop:X} inputTop={inputTop:X} m_inputRight={m_inputRight:X} inputRight={inputRight:X} m_inputBottom={m_inputBottom:X} inputBottom={inputBottom:X} m_inputLeft={m_inputLeft:X} inputLeft={inputLeft:X}");
-            if (m_inputIn != inputIn) {
-                m_glowPoint.Value = m_inputIn;
-            }
-            if (m_inputTop != inputTop) {
-                m_glowPoint.Size = (m_inputTop & 0xFFFFu) / 8f;
-            }
-            if (m_inputBottom != inputBottom) {
+            if (m_complex) {
+                if (((m_inputBottom >> 28) & 1u) == 0u) {
+                    m_glowPoints.Clear();
+                }
+                GVDisplayPoint glowPoint = new GVDisplayPoint {
+                    Complex = true,
+                    Type = m_type,
+                    Rotation = Vector3.Zero,
+                    Value = m_inputIn,
+                    Size = (m_inputTop & 0xFFFFu) / 8f,
+                    CustomBit = ((m_inputBottom >> 27) & 1u) == 1u,
+                    Color = new Color(m_inputLeft),
+                    Position = m_originalPosition + new Vector3((m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f), ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f), ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f))
+                };
                 float yaw = (m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f);
                 float pitch = ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f);
                 float roll = ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f);
-                m_glowPoint.Rotation = new Vector3(yaw, pitch, roll);
-                m_glowPoint.Light = (int)((m_inputBottom >> 28) & 0xFu);
-                m_glowPoint.CustomBit = ((m_inputBottom >> 27) & 1u) == 1u;
+                glowPoint.Rotation = new Vector3(yaw, pitch, roll);
+                if (glowPoint.isValid()
+                    && !m_glowPoints.Contains(glowPoint)) {
+                    m_glowPoints.Add(glowPoint);
+                }
             }
-            if (m_inputLeft != inputLeft) {
-                m_glowPoint.Color = new Color(m_inputLeft);
-            }
-            if (m_inputTop != inputTop
-                || m_inputRight != inputRight) {
-                m_glowPoint.Position = m_originalPosition + new Vector3((m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f), ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f), ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f));
+            else {
+                m_glowPoints[0].Value = m_inputIn;
             }
             return false;
         }
