@@ -40,6 +40,17 @@ namespace Game {
 
         public override void Update() {
             if (m_okButton.IsClicked) {
+                if (m_overflowTextBox.Text.Length == 0
+                    && m_currentTextBox.Text.Length == 0) {
+                    Dismiss(false);
+                    return;
+                }
+                if (m_overflowTextBox.Text.Length == 0) {
+                    m_overflowTextBox.Text = "0";
+                }
+                if (m_currentTextBox.Text.Length == 0) {
+                    m_currentTextBox.Text = "0";
+                }
                 if (uint.TryParse(m_overflowTextBox.Text, NumberStyles.HexNumber, null, out uint newOverflow)
                     && uint.TryParse(m_currentTextBox.Text, NumberStyles.HexNumber, null, out uint newCurrent)) {
                     if (newOverflow > 0

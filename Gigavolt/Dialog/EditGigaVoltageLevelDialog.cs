@@ -33,6 +33,9 @@ namespace Game {
                     Dismiss(true, voltage);
                 }
                 else {
+                    if (m_voltageLevelTextBox.Text.Length == 0) {
+                        Dismiss(false);
+                    }
                     DialogsManager.ShowDialog(
                         null,
                         new MessageDialog(
