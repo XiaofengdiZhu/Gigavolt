@@ -260,7 +260,7 @@ namespace Game {
             return string.Join(";", result);
         }
 
-        public override string Data2String() => UintArray2String(Data, m_width, m_height);
+        public override string Data2String() => m_isDataInitialized ? UintArray2String(Data, m_width, m_height) : null;
 
         public static byte[] Image2Bytes(Image image, int startIndex = 0, int length = int.MaxValue) {
             byte[] bytes = new byte[image.Pixels.Length * 4];
@@ -284,9 +284,7 @@ namespace Game {
             return bytes;
         }
 
-        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) {
-            return m_cachedBytes = UintArray2Bytes(Data, startIndex, length);
-        }
+        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) => m_isDataInitialized ? UintArray2Bytes(Data, startIndex, length) : null;
 
         public static short[] Image2Shorts(Image image) {
             short[] shorts = new short[image.Pixels.Length * 2];
@@ -306,7 +304,7 @@ namespace Game {
             return shorts;
         }
 
-        public override short[] Data2Shorts() => UintArray2Shorts(Data);
+        public override short[] Data2Shorts() => m_isDataInitialized ? UintArray2Shorts(Data) : null;
 
         public static uint[] Shorts2UintArray(short[] shorts, out uint width) {
             width = (uint)Math.Ceiling(Math.Sqrt(shorts.Length / 2 + 1));
@@ -338,7 +336,7 @@ namespace Game {
             return image;
         }
 
-        public override Image Data2Image() => UintArray2Image(Data, m_width, m_height);
+        public override Image Data2Image() => m_isDataInitialized ? UintArray2Image(Data, m_width, m_height) : null;
 
         public static uint[] Image2UintArray(Image image) {
             return image.Pixels.Select(color => color.PackedValue).ToArray();
@@ -372,5 +370,7 @@ namespace Game {
             m_height = (uint)height;
             Data = uints;
         }
+
+        public override uint[] Data2UintArray() => m_isDataInitialized ? (uint[])m_data.Clone() : null;
     }
 }

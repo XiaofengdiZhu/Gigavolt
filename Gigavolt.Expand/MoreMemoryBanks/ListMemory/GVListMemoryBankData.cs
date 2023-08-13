@@ -143,6 +143,9 @@ namespace Game {
 
         public override void Stream2Data(Stream stream) {
             Data = Stream2UintList(stream);
+            m_width = 0u;
+            m_height = 0u;
+            m_offset = 0u;
         }
 
         public static byte[] UintList2Bytes(List<uint> array, int startIndex = 0, int length = int.MaxValue) {
@@ -156,9 +159,7 @@ namespace Game {
             return bytes;
         }
 
-        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) {
-            return m_cachedBytes = UintList2Bytes(Data, startIndex, length);
-        }
+        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) => m_isDataInitialized ? UintList2Bytes(Data, startIndex, length) : null;
 
         public static short[] UintList2Shorts(List<uint> array) {
             short[] shorts = new short[array.Count * 2];
@@ -169,10 +170,13 @@ namespace Game {
             return shorts;
         }
 
-        public override short[] Data2Shorts() => UintList2Shorts(Data);
+        public override short[] Data2Shorts() => m_isDataInitialized ? UintList2Shorts(Data) : null;
 
         public override void String2Data(string str, int width = int.MaxValue, int _ = 0) {
             Data = String2UintList(str, width);
+            m_width = 0u;
+            m_height = 0u;
+            m_offset = 0u;
         }
 
         public static List<uint> String2UintList(string str, int maxCount = int.MaxValue) {
@@ -180,7 +184,7 @@ namespace Game {
             return strings.Select(number => uint.Parse(number, NumberStyles.HexNumber, null)).ToList().GetRange(0, MathUtils.Min(strings.Length, maxCount));
         }
 
-        public override string Data2String() => UintList2String(Data);
+        public override string Data2String() => m_isDataInitialized ? UintList2String(Data) : null;
 
         public static string UintList2String(List<uint> array, int maxCount = int.MaxValue) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -189,7 +193,9 @@ namespace Game {
                 stringBuilder.Append(array[i].ToString("X", null));
                 stringBuilder.Append(',');
             }
-            stringBuilder.Append(array[maxCount - 1].ToString("X", null));
+            if (maxCount >= 1) {
+                stringBuilder.Append(array[maxCount - 1].ToString("X", null));
+            }
             return stringBuilder.ToString();
         }
 
@@ -211,6 +217,9 @@ namespace Game {
 
         public override void Shorts2Data(short[] shorts) {
             Data = Shorts2UintList(shorts);
+            m_width = 0u;
+            m_height = 0u;
+            m_offset = 0u;
         }
 
         public static Image UintList2Image(List<uint> list, uint width = 0u, uint height = 0u, uint offset = 0u) {
@@ -225,7 +234,7 @@ namespace Game {
             return null;
         }
 
-        public override Image Data2Image() => UintList2Image(Data, m_width, m_height, m_offset);
+        public override Image Data2Image() => m_isDataInitialized ? UintList2Image(Data, m_width, m_height, m_offset) : null;
 
         public static List<uint> Image2UintList(Image image) {
             return image.Pixels.Select(color => color.PackedValue).ToList();
@@ -235,12 +244,16 @@ namespace Game {
             Data = Image2UintList(image);
             m_width = (uint)image.Width;
             m_height = (uint)image.Height;
+            m_offset = 0u;
         }
 
         public override void UintArray2Data(uint[] uints, int width = 0, int height = 0) {
             m_width = (uint)width;
             m_height = (uint)height;
+            m_offset = 0u;
             Data = uints.ToList();
         }
+
+        public override uint[] Data2UintArray() => m_isDataInitialized ? m_data.ToArray() : null;
     }
 }

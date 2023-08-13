@@ -441,6 +441,15 @@ namespace Game {
                         case 258u:
                             memoryBankData.m_offset = inInput;
                             break;
+                        case 272u:
+                            m_voltage = memoryBankData.m_width;
+                            break;
+                        case 273u:
+                            m_voltage = memoryBankData.m_height;
+                            break;
+                        case 274u:
+                            m_voltage = memoryBankData.m_offset;
+                            break;
                     }
                 }
             }

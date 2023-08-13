@@ -4,7 +4,7 @@
 
         public void Detonate() {
             CellFace cellFace = CellFaces[0];
-            int value = Terrain.MakeBlockValue(647);
+            int value = Terrain.MakeBlockValue(GVDetonatorCBlock.Index);
             SubsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true).TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
         }
 

@@ -26,16 +26,16 @@ namespace Game {
 
         public SamplerState m_samplerState;
 
-        public Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);
-        public Color grassColor = BlockColorsMap.GrassColorsMap.Lookup(8, 8);
-        public Color ivyColor = BlockColorsMap.IvyColorsMap.Lookup(8, 8);
-        public Color kelpColor = BlockColorsMap.KelpColorsMap.Lookup(8, 8);
-        public Color mimosaLeavesColor = BlockColorsMap.MimosaLeavesColorsMap.Lookup(8, 8);
-        public Color oakLeavesColor = BlockColorsMap.OakLeavesColorsMap.Lookup(8, 8);
-        public Color seagrassColor = BlockColorsMap.SeagrassColorsMap.Lookup(8, 8);
-        public Color spruceLeavesColor = BlockColorsMap.SpruceLeavesColorsMap.Lookup(8, 8);
-        public Color tallSpruceLeavesColor = BlockColorsMap.TallSpruceLeavesColorsMap.Lookup(8, 8);
-        public Color waterColor = BlockColorsMap.WaterColorsMap.Lookup(8, 8);
+        readonly Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);
+        readonly Color grassColor = BlockColorsMap.GrassColorsMap.Lookup(8, 8);
+        readonly Color ivyColor = BlockColorsMap.IvyColorsMap.Lookup(8, 8);
+        readonly Color kelpColor = BlockColorsMap.KelpColorsMap.Lookup(8, 8);
+        readonly Color mimosaLeavesColor = BlockColorsMap.MimosaLeavesColorsMap.Lookup(8, 8);
+        readonly Color oakLeavesColor = BlockColorsMap.OakLeavesColorsMap.Lookup(8, 8);
+        readonly Color seagrassColor = BlockColorsMap.SeagrassColorsMap.Lookup(8, 8);
+        readonly Color spruceLeavesColor = BlockColorsMap.SpruceLeavesColorsMap.Lookup(8, 8);
+        readonly Color tallSpruceLeavesColor = BlockColorsMap.TallSpruceLeavesColorsMap.Lookup(8, 8);
+        readonly Color waterColor = BlockColorsMap.WaterColorsMap.Lookup(8, 8);
 
         public abstract uint Read(uint index);
         public abstract void Write(uint index, uint data);
@@ -246,25 +246,22 @@ namespace Game {
         }
 
         public RenderTarget2D GetTerrainTexture2D(SamplerState samplerState) {
-            try {
-                if (m_isDataInitialized) {
-                    if (m_cachedTerrainTexture2D == null
-                        || m_updateTime != m_cachedTerrainTexture2DTime
-                        || samplerState != m_samplerState) {
-                        m_cachedTerrainTexture2D?.Dispose();
-                        m_cachedTerrainTexture2D = Data2TerrainTexture2D(samplerState);
-                        m_cachedTerrainTexture2DTime = m_updateTime;
-                        m_samplerState = samplerState;
-                    }
-                    return m_cachedTerrainTexture2D;
+            if (m_isDataInitialized) {
+                if (m_cachedTerrainTexture2D == null
+                    || m_updateTime != m_cachedTerrainTexture2DTime
+                    || samplerState != m_samplerState) {
+                    m_cachedTerrainTexture2D?.Dispose();
+                    m_cachedTerrainTexture2D = Data2TerrainTexture2D(samplerState);
+                    m_cachedTerrainTexture2DTime = m_updateTime;
+                    m_samplerState = samplerState;
                 }
-            }
-            catch (Exception e) {
-                Log.Error(e);
+                return m_cachedTerrainTexture2D;
             }
             return null;
         }
 
         public virtual void UintArray2Data(uint[] uints, int width = 0, int height = 0) { }
+        public virtual uint[] Data2UintArray() => null;
+        public uint[] GetUintArray() => m_isDataInitialized ? Data2UintArray() : null;
     }
 }

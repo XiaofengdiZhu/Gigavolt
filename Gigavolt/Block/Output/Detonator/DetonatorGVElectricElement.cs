@@ -9,7 +9,7 @@ namespace Game {
             SubsystemExplosions m_subsystemExplosions = SubsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true);
             CellFace cellFace = CellFaces[0];
             if (pressure == 0) {
-                int value = Terrain.MakeBlockValue(847);
+                int value = Terrain.MakeBlockValue(GVDetonatorBlock.Index);
                 m_subsystemExplosions.TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
             }
             else {

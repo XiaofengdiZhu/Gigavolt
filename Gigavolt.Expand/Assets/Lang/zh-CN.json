@@ -58,6 +58,10 @@
       "DisplayName": "GV一维存储器",
       "Description": "和存储器相似，但只能存储一行数据，不过多了很多实用功能，无需初始化即可使用，详见本Mod Github页面的介绍"
     },
+    "GVMemoryBanksOperatorBlock:0": {
+      "DisplayName": "GV多存储板操作器",
+      "Description": "左右两边各指定一个存储板ID，按下端输入进行不同操作后，将结果输出到由上端输入指定ID的存储板，详见本Mod Github页面的介绍"
+    },
     "GVVolatileListMemoryBankBlock:0": {
       "DisplayName": "GV易失性一维存储器",
       "Description": "和一维存储器相似，但退出游戏后数据会丢失，不过ID保持不变，无需初始化即可使用"

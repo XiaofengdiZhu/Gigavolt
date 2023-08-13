@@ -57,6 +57,8 @@
 		<Compile Include="JumpWire\GVJumpWireBlock.cs"/>
 		<Compile Include="JumpWire\JumpWireGVElectricElement.cs"/>
 		<Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs"/>
+		<Compile Include="MemoryBanksOperator\GVMemoryBanksOperatorBlock.cs"/>
+		<Compile Include="MemoryBanksOperator\MemoryBanksOperatorGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\DisplayLed\DisplayLedGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\DisplayLed\GVDisplayPoint.cs"/>
 		<Compile Include="MoreLeds\DisplayLed\GVDisplayLedBlock.cs"/>
