@@ -174,13 +174,28 @@ namespace Game {
                         continue;
                     }
                     int slotIndex = block.DefaultTextureSlot;
-                    if (block is WoodBlock woodBlock) {
-                        slotIndex = woodBlock.m_sideTextureSlot;
+                    Color maskColor = Color.Transparent;
+                    int blockData = Terrain.ExtractData(value);
+                    switch (block) {
+                        case WoodBlock woodBlock:
+                            slotIndex = woodBlock.m_sideTextureSlot;
+                            break;
+                        case PaintedCubeBlock paintedCubeBlock: {
+                            int? intColor = PaintedCubeBlock.GetColor(blockData);
+                            if (intColor.HasValue) {
+                                SubsystemPalette subsystemPalette = GameManager.Project.FindSubsystem<SubsystemPalette>(false);
+                                if (subsystemPalette == null) {
+                                    maskColor = WorldPalette.DefaultColors[intColor.Value];
+                                }
+                                else {
+                                    maskColor = subsystemPalette.GetColor(intColor.Value);
+                                }
+                            }
+                            break;
+                        }
                     }
                     float slotX = slotIndex % 16;
                     float slotY = slotIndex / 16;
-                    Color maskColor = Color.Transparent;
-                    int blockData = Terrain.ExtractContents(value);
                     switch (id) {
                         case BirchLeavesBlock.Index:
                             maskColor = birchLeavesColor;

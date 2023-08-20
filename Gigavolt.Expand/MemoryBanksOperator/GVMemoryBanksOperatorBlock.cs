@@ -8,7 +8,7 @@ namespace Game {
 
         public override void Initialize() {
             base.Initialize();
-            texture = ContentManager.Get<Texture2D>("Textures/GVTerrainRaycastDetectorBlock");
+            texture = ContentManager.Get<Texture2D>("Textures/GVMemoryBanksOperatorBlock");
         }
 
         public GVMemoryBanksOperatorBlock() : base("Models/GigavoltGates", "AnalogToDigitalConverter", 0.375f) { }

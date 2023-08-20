@@ -6,8 +6,8 @@ namespace Game {
         public GVVolatileMemoryBankData() {
             m_ID = GVStaticStorage.GetUniqueGVMBID();
             m_worldDirectory = null;
-            m_data = null;
-            m_isDataInitialized = false;
+            m_data = new uint[] { };
+            m_isDataInitialized = true;
             m_updateTime = DateTime.Now;
         }
 

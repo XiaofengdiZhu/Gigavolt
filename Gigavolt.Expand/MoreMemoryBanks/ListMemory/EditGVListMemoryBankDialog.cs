@@ -70,7 +70,7 @@ namespace Game {
                     && uint.TryParse(m_heightTextBox.Text, out uint height)
                     && uint.TryParse(m_offsetTextBox.Text, out uint offset)
                     && int.TryParse(m_colCountTextBox.Text, out int length)
-                    && length > 0) {
+                    && length >= 0) {
                     if (m_enterString != m_linearTextBox.Text) {
                         try {
                             m_memoryBankData.String2Data(m_linearTextBox.Text, length);
@@ -99,9 +99,9 @@ namespace Game {
                         m_memoryBankData.m_width = width;
                         m_memoryBankData.m_height = height;
                         m_memoryBankData.m_offset = offset;
+                        m_memoryBankData.m_updateTime = DateTime.Now;
                         if (m_memoryBankData.Data.Count > length) {
                             m_memoryBankData.Data.RemoveRange(length, m_memoryBankData.Data.Count - length);
-                            m_memoryBankData.m_updateTime = DateTime.Now;
                             m_memoryBankData.m_dataChanged = true;
                             m_memoryBankData.SaveString();
                             Dismiss(true);
