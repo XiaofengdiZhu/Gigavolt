@@ -1,9 +1,11 @@
-﻿using Engine;
+﻿using System.Collections.Generic;
+using Engine;
 using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVDebugBlockBehavior : SubsystemEditableItemBehavior<GVDebugData> {
         public SubsystemGVElectricity m_subsystemGVElectricity;
+        public HashSet<DebugGVElectricElement> m_elementHashSet = new HashSet<DebugGVElectricElement>();
         public SubsystemGVDebugBlockBehavior() : base(GVDebugBlock.Index) { }
 
         public override void Load(ValuesDictionary valuesDictionary) {
@@ -24,20 +26,56 @@ namespace Game {
                 return false;
             }
             GVDebugData Data = GetBlockData(new Point3(-GVDebugBlock.Index)) ?? new GVDebugData();
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVDebugDialog(Data, m_subsystemGVElectricity, delegate { SetBlockData(new Point3(-GVDebugBlock.Index), Data); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVDebugDialog(
+                    Data,
+                    m_subsystemGVElectricity,
+                    delegate {
+                        SetBlockData(new Point3(-GVDebugBlock.Index), Data);
+                        foreach (DebugGVElectricElement element in m_elementHashSet) {
+                            m_subsystemGVElectricity.QueueGVElectricElementForSimulation(element, m_subsystemGVElectricity.CircuitStep + 1);
+                        }
+                    }
+                )
+            );
             return true;
         }
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             GVDebugData Data = GetBlockData(new Point3(-GVDebugBlock.Index)) ?? new GVDebugData();
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVDebugDialog(Data, m_subsystemGVElectricity, delegate { SetBlockData(new Point3(-GVDebugBlock.Index), Data); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVDebugDialog(
+                    Data,
+                    m_subsystemGVElectricity,
+                    delegate {
+                        SetBlockData(new Point3(-GVDebugBlock.Index), Data);
+                        foreach (DebugGVElectricElement element in m_elementHashSet) {
+                            m_subsystemGVElectricity.QueueGVElectricElementForSimulation(element, m_subsystemGVElectricity.CircuitStep + 1);
+                        }
+                    }
+                )
+            );
             return true;
         }
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
             GVDebugData Data = GetBlockData(new Point3(-GVDebugBlock.Index)) ?? new GVDebugData();
             if (componentMiner.ComponentPlayer != null) {
-                DialogsManager.ShowDialog(componentMiner.ComponentPlayer.GuiWidget, new EditGVDebugDialog(Data, m_subsystemGVElectricity, delegate { SetBlockData(new Point3(-GVDebugBlock.Index), Data); }));
+                DialogsManager.ShowDialog(
+                    componentMiner.ComponentPlayer.GuiWidget,
+                    new EditGVDebugDialog(
+                        Data,
+                        m_subsystemGVElectricity,
+                        delegate {
+                            SetBlockData(new Point3(-GVDebugBlock.Index), Data);
+                            foreach (DebugGVElectricElement element in m_elementHashSet) {
+                                m_subsystemGVElectricity.QueueGVElectricElementForSimulation(element, m_subsystemGVElectricity.CircuitStep + 1);
+                            }
+                        }
+                    )
+                );
             }
             return true;
         }

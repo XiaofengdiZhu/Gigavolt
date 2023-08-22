@@ -5,7 +5,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVDebugBlock : Block {
+    public class GVDebugBlock : GenerateGVWireVerticesBlock, IGVElectricElementBlock {
         public const int Index = 842;
 
         public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[2];
@@ -61,6 +61,17 @@ namespace Game {
                     matrix: Matrix.Identity,
                     subset: geometry.SubsetOpaque
                 );
+                GenerateGVWireVertices(
+                    generator,
+                    value,
+                    x,
+                    y,
+                    z,
+                    4,
+                    0.18f,
+                    Vector2.Zero,
+                    geometry.SubsetOpaque
+                );
             }
         }
 
@@ -111,5 +122,17 @@ namespace Game {
         public static int GetRotation(int data) => data & 1;
 
         public static int SetRotation(int data, int rotation) => (data & -2) | (rotation & 1);
+
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new DebugGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, 4));
+
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+            if (face == 4
+                && SubsystemGVElectricity.GetConnectorDirection(4, 0, connectorFace).HasValue) {
+                return GVElectricConnectorType.Output;
+            }
+            return null;
+        }
+
+        public int GetConnectionMask(int value) => int.MaxValue;
     }
 }

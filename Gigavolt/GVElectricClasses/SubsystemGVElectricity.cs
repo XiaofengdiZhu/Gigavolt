@@ -886,6 +886,7 @@ namespace Game {
         public static int SimulatedGVElectricElements;
 
         public float CircuitStepDuration = 0.01f;
+        public float SpeedFactor = 1f;
 
         public bool debugMode;
         public bool keyboardDebug = false;
@@ -1477,6 +1478,7 @@ namespace Game {
         public void DebugDraw() { }
 
         public void SetSpeed(float speed) {
+            SpeedFactor = speed;
             CircuitStepDuration = 0.01f / speed;
         }
     }

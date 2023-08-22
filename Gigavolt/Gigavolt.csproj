@@ -92,6 +92,7 @@
 		<Compile Include="Block\LED\Sign\GVSignBlock.cs" />
 		<Compile Include="Block\LED\Sign\GVSignTextData.cs" />
 		<Compile Include="Block\LED\Sign\SubsystemGVSignBlockBehavior.cs" />
+		<Compile Include="Block\Other\DebugGVElectricElement.cs" />
 		<Compile Include="Block\Output\Detonator\DetonatorGVElectricElement.cs" />
 		<Compile Include="Block\Output\Detonator\GVDetonatorBlock.cs" />
 		<Compile Include="Block\Output\Dispenser\ComponentGVDispenser.cs" />
