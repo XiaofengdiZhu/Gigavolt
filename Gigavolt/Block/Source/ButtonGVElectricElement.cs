@@ -33,9 +33,9 @@ namespace Game {
             uint voltage = m_voltage;
             if (m_wasPressed) {
                 m_wasPressed = false;
-                GigaVoltageLevelData blockData = m_subsystemGVButtonBlockBehavior.GetItemData(CellFaces[0].Point);
-                m_voltage = blockData?.Data ?? uint.MaxValue;
-                SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 10);
+                GVButtonData blockData = m_subsystemGVButtonBlockBehavior.GetItemData(CellFaces[0].Point);
+                m_voltage = blockData?.GigaVoltageLevel ?? uint.MaxValue;
+                SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + (blockData?.Duration ?? 10));
             }
             else {
                 m_voltage = 0u;

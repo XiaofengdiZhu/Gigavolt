@@ -119,6 +119,7 @@
 		<Compile Include="Block\Output\SoundGenerator\SoundGeneratorGVElectricElement.cs" />
 		<Compile Include="Block\Sensor\EnhancedRealTimeClock\RealTimeClockGVElectricElement.cs" />
 		<Compile Include="Block\Sensor\EnhancedRealTimeClock\GVRealTimeClockBlock.cs" />
+		<Compile Include="Block\Source\GVButtonData.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVArrayData.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVMemoryBankBlock.cs" />
 		<Compile Include="Block\Store\MemoryBank\GVMemoryBankData.cs" />
@@ -142,6 +143,7 @@
 		<Compile Include="ClassicBlock\Sign\GVWoodenPostedSignCBlock.cs" />
 		<Compile Include="ClassicBlock\Sign\SubsystemGVSignBlockCBehavior.cs" />
 		<Compile Include="Dialog\BaseEditGVMemoryBankDialog.cs" />
+		<Compile Include="Dialog\EditGVButtonDialog.cs" />
 		<Compile Include="Dialog\EditGVCounterDialog.cs" />
 		<Compile Include="Dialog\EditGVSignCDialog.cs" />
 		<Compile Include="Dialog\EditGVSignDialog.cs" />
@@ -365,6 +367,9 @@
 		<Compile Include="Screen\GVMBExternalContentScreen.cs" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Include="Assets\Dialogs\EditGVButtonDialog.xml">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Include="Assets\Dialogs\EditGVCounterDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
