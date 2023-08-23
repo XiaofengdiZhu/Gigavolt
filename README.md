@@ -240,6 +240,9 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 | 复杂图片显示器 | 接口定义与告示牌几乎相同，存在以下区别：背端应输入等于存储了地层数据的存储板ID的电压；下端第30\~32位无作用；下端第28位用于指定图片的缩放方式，为0时将以各向异性过滤方式缩放，为1时将以保留硬边缘方式缩放；下端第29位为1时保留让之前显示的图片，使其持续显示，一旦为0将清空之前显示的图片，退出存档也清空                                                                                    |
 | 简单地层显示器 | 输入等于存储了地层数据的存储板ID的电压，就会在其面前显示地层（CPU占用高，请勿显示过大的地层）                                                                                                                                                                                               |
 | 复杂地层显示器 | 接口定义与告示牌几乎相同，存在以下区别：背端应输入等于存储了地层数据的存储板ID的电压；下端第30\~32位无作用；下端第28位用于指定方块材质的缩放方式，为0时将以各向异性过滤方式缩放，为1时将以保留硬边缘方式缩放；下端第29位为1时保留让之前显示的地层，使其持续显示，一旦为0将清空之前显示的地层，退出存档也清空                                                                                  |
+| 破坏球     | 破坏投掷出后碰到的方块（必须碰到）。使用GV发射器来发射，并启用不受重力影响或不受空气等阻力影响时，它可破坏非完整一格的方块（仍需碰到）。使用GV制导发射器来发射，顺利抵达指定位置时，即使没碰到方块，也会破坏指定位置的方块                                                                                                                                 |
+| 交互球     | 与破坏球相似，但效果是产生交互                                                                                                                                                                                                                                 |
+| 特殊值修改球  | 与破坏球相似，但效果是修改目标方块的特殊值为自身的特殊值，同时你可以编辑它的特殊值                                                                                                                                                                                                       |
 ## 复杂方块 Complex Blocks
 ### 路选器 Multiplexer
 可以通过背面控制正面四个端点的导通和断开，内部设计如下图  
@@ -331,12 +334,12 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
         <tr>
             <td rowspan="4">输入</td>
             <td rowspan=2>左端</td>
-            <td colspan="2">18位 检测指定方块数据</td>
+            <td colspan="2">18位 检测指定方块特殊值</td>
             <td>4位 空</td>
             <td>10位 检测指定方块ID</td>
         </tr>
         <tr>
-            <td colspan="2">如果该部分大于0，且“是否同时检测方块数据”位为1，且“检测指定方块ID”部分大于0，则探测方块时同时检测方块数据是否与该部分相等</td>
+            <td colspan="2">如果该部分大于0，且“是否同时检测方块特殊值”位为1，且“检测指定方块ID”部分大于0，则探测方块时同时检测方块特殊值是否与该部分相等</td>
             <td>无作用</td>
             <td>如果该部分大于0，将探测方块ID与该部分相等的方块</td>
         </tr>
@@ -344,13 +347,13 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
             <td rowspan="2">右端</td>
             <td>8位 空</td>
             <td>1位 是否跳过液体</td>
-            <td>1位 是否同时检测方块数据</td>
+            <td>1位 是否同时检测方块特殊值</td>
             <td>12位 探测距离</td>
         </tr>
         <tr>
             <td>无作用</td>
             <td>如果为1，探测时将跳过水和岩浆方块，该设置优先级高于检测指定方块ID</td>
-            <td>详见“检测指定方块数据”的说明</td>
+            <td>详见“检测指定方块特殊值”的说明</td>
             <td>最多探测多少格</td>
         </tr>
         <tr>
@@ -359,7 +362,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
             <td colspan="4">32位 方块值</td>
         </tr>
         <tr>
-            <td colspan="4">探测到最近的符合条件的方块的值（最低10位为方块ID，14位以上为方块数据）</td>
+            <td colspan="4">探测到最近的符合条件的方块的值（最低10位为方块ID，14位以上为方块特殊值）</td>
         </tr>
         <tr>
             <td rowspan="2">下端</td>
@@ -391,7 +394,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
         <tr>
             <td rowspan=2>上端</td>
             <td>15位 空</td>
-            <td>1位 是否存储方块数据</td>
+            <td>1位 是否存储方块特殊值</td>
             <td>16位 起始距离</td>
         </tr>
         <tr>

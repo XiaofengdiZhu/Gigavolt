@@ -21,5 +21,11 @@
 		<MemberSubsystemTemplate Name="GVVolatileListMemoryBankBlockBehavior" Guid="b77494ea-c0bf-4ac4-9534-18f4dd49a0b3" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="b78384b3-a2b2-41fe-9e95-2a6dea9d3765" Value="Game.SubsystemGVVolatileListMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVCrusherProjectileBlockBehavior" Guid="f91dbbdc-f15b-48c6-a149-d69b4573c329" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<Parameter Name="Class" Guid="093954f4-3ff1-460c-be05-b4290859769a" Value="Game.SubsystemGVCrusherProjectileBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVDataModifierProjectileBlockBehavior" Guid="8210b070-0f9e-49e5-a382-630f4ba49f15" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<Parameter Name="Class" Guid="b86083be-8f5c-4a53-9876-d971fe70cc82" Value="Game.SubsystemGVDataModifierProjectileBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

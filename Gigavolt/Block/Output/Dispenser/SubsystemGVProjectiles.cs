@@ -68,6 +68,9 @@ namespace Game {
         public virtual Action<Projectile> ProjectileRemoved { get; set; }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
+        public static int? m_crusherBlockValue = null;
+        public static int? m_interactorBlockValue = null;
+        public static int? m_dataModifierBlockContent = null;
 
         public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity = false, bool disableDamping = false, bool safe = false, bool transform = false, Point3 stopAt = default) {
             Projectile projectile = new Projectile {
@@ -234,6 +237,9 @@ namespace Game {
                         Vector3 position = projectile.Position;
                         Vector3 vector = position + projectile.Velocity * dt;
                         Vector3 v = block.ProjectileTipOffset * Vector3.Normalize(projectile.Velocity);
+                        bool isCrusher = m_crusherBlockValue.HasValue && m_crusherBlockValue.Value == projectile.Value;
+                        bool isInteractor = m_interactorBlockValue.HasValue && m_interactorBlockValue.Value == projectile.Value;
+                        bool isDataModifier = m_dataModifierBlockContent.HasValue && m_dataModifierBlockContent.Value == Terrain.ExtractContents(projectile.Value);
                         if (projectile.Transform
                             && block.IsPlaceable
                             && projectile.StopAt.Y > 0) {
@@ -260,9 +266,9 @@ namespace Game {
                         TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(
                             position + v,
                             vector + v,
-                            false,
+                            isInteractor,
                             true,
-                            (value, distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)
+                            (value, distance) => isCrusher || isInteractor || isDataModifier || BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)
                         );
                         bool flag = block.DisintegratesOnHit;
                         if (!projectile.Safe
@@ -341,19 +347,49 @@ namespace Game {
                                 }
                             }
                             if (projectile.Transform
-                                && block.IsPlaceable
                                 && !projectile.ToRemove) {
-                                m_subsystemTerrain.ChangeCell((int)position.X - 1, (int)position.Y, (int)position.Z, projectile.Value);
-                                m_subsystemAudio.PlaySound(
-                                    "Audio/BlockPlaced",
-                                    1f,
-                                    0f,
-                                    position,
-                                    5f,
-                                    false
-                                );
-                                projectile.ToRemove = true;
-                                continue;
+                                int tempX = (int)position.X - 1;
+                                int tempY = (int)position.Y;
+                                int tempZ = (int)position.Z;
+                                if (isCrusher) {
+                                    m_subsystemTerrain.DestroyCell(
+                                        int.MaxValue,
+                                        tempX,
+                                        tempY,
+                                        tempZ,
+                                        0,
+                                        false,
+                                        false
+                                    );
+                                    projectile.ToRemove = true;
+                                }
+                                else if (isInteractor) {
+                                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(tempX, tempY, tempZ)));
+                                    for (int i = 0; i < blockBehaviors.Length; i++) {
+                                        blockBehaviors[i].OnInteract(new TerrainRaycastResult { CellFace = new CellFace(tempX, tempY, tempZ, 0) }, null);
+                                    }
+                                    projectile.ToRemove = true;
+                                }
+                                else if (isDataModifier) {
+                                    int tempContent = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(tempX, tempY, tempZ));
+                                    if (tempContent != 0) {
+                                        m_subsystemTerrain.ChangeCell(tempX, tempY, tempZ, Terrain.MakeBlockValue(tempContent, m_subsystemTerrain.Terrain.GetCellLightFast(tempX, tempY, tempZ), Terrain.ExtractData(projectile.Value)));
+                                    }
+                                    projectile.ToRemove = true;
+                                }
+                                else if (block.IsPlaceable) {
+                                    m_subsystemTerrain.ChangeCell(tempX, tempY, tempZ, projectile.Value);
+                                    m_subsystemAudio.PlaySound(
+                                        "Audio/BlockPlaced",
+                                        1f,
+                                        0f,
+                                        position,
+                                        5f,
+                                        false
+                                    );
+                                    projectile.ToRemove = true;
+                                    continue;
+                                }
                             }
                             if (num2 > 5f) {
                                 m_subsystemSoundMaterials.PlayImpactSound(cellValue, position, 1f);
