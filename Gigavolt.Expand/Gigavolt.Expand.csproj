@@ -52,8 +52,6 @@
 		<Reference Include="System.Xml"/>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="GuidedDispenser\GuidedDispenserGVElectricElement.cs"/>
-		<Compile Include="GuidedDispenser\GVGuidedDispenserBlock.cs"/>
 		<Compile Include="JumpWire\GVJumpWireBlock.cs"/>
 		<Compile Include="JumpWire\JumpWireGVElectricElement.cs"/>
 		<Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs"/>
@@ -116,10 +114,6 @@
 		<Compile Include="MoreMemoryBanks\VolatileMemory\VolatileMemoryBankGVElectricElement.cs"/>
 		<Compile Include="MoreOneInOneOut\GVMoreOneInOneOutBlock.cs"/>
 		<Compile Include="MoreOneInOneOut\MoreOneInOneOutGVElectricElement.cs"/>
-		<Compile Include="MoreProjectiles\EditGVDataModifierProjectileDialog.cs"/>
-		<Compile Include="MoreProjectiles\GVDataModifierProjectileBlock.cs"/>
-		<Compile Include="MoreProjectiles\SubsystemGVCrusherProjectileBlockBehavior.cs"/>
-		<Compile Include="MoreProjectiles\SubsystemGVDataModifierProjectileBlockBehavior.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs"/>
@@ -131,6 +125,15 @@
 		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
 		<Compile Include="Multiplexer\GVMultiplexerBlock.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
+		<Compile Include="Transportation\Fetcher\FetcherGVElectricElement.cs"/>
+		<Compile Include="Transportation\Fetcher\GVFetcherBlock.cs"/>
+		<Compile Include="Transportation\GuidedDispenser\GuidedDispenserGVElectricElement.cs"/>
+		<Compile Include="Transportation\GuidedDispenser\GVGuidedDispenserBlock.cs"/>
+		<Compile Include="Transportation\MoreProjectiles\EditGVDataModifierProjectileDialog.cs"/>
+		<Compile Include="Transportation\MoreProjectiles\GVCrusherProjectileBlock.cs"/>
+		<Compile Include="Transportation\MoreProjectiles\GVDataModifierProjectileBlock.cs"/>
+		<Compile Include="Transportation\MoreProjectiles\SubsystemGVCrusherProjectileBlockBehavior.cs"/>
+		<Compile Include="Transportation\MoreProjectiles\SubsystemGVDataModifierProjectileBlockBehavior.cs"/>
 		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
 		<Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs"/>
 		<Compile Include="WireThrough\GVCopperHammerBlock.cs"/>
@@ -332,7 +335,19 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="MoreProjectiles\GVCrusherProjectileBlock.cs"/>
+		<None Include="Assets\Textures\GVFetcherBlock0.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Models\GVFetcher.dae">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVFetcherBlock2.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>
