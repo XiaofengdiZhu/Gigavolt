@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVFetcherBlock : Block, IGVElectricElementBlock {
+    public class GVInventoryFetcherBlock : Block, IGVElectricElementBlock {
         public const int Index = 885;
 
         public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[32];
@@ -143,7 +143,7 @@ namespace Game {
         public static int GetFace(int data) => (data >> 2) & 7;
 
         public static int SetFace(int data, int face) => (data & -57) | ((face & 7) << 2);
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => GetIsShaft(Terrain.ExtractData(value)) ? null : new FetcherGVElectricElement(subsystemGVElectricity, new Point3(x, y, z));
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => GetIsShaft(Terrain.ExtractData(value)) ? null : new InventoryFetcherGVElectricElement(subsystemGVElectricity, new Point3(x, y, z));
 
         public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
             int data = Terrain.ExtractData(value);

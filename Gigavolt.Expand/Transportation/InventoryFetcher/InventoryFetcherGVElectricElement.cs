@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Engine;
 
 namespace Game {
-    public class FetcherGVElectricElement : GVElectricElement {
+    public class InventoryFetcherGVElectricElement : GVElectricElement {
         public SubsystemBlockEntities m_subsystemBlockEntities;
         public SubsystemPickables m_subsystemPickables;
         public uint m_voltage;
 
-        public FetcherGVElectricElement(SubsystemGVElectricity subsystemElectricity, Point3 point) : base(
+        public InventoryFetcherGVElectricElement(SubsystemGVElectricity subsystemElectricity, Point3 point) : base(
             subsystemElectricity,
             new List<CellFace> {
                 new CellFace(point.X, point.Y, point.Z, 0),
@@ -38,8 +38,8 @@ namespace Game {
                     && m_voltage > 0) {
                     CellFace cellFace = CellFaces[0];
                     int originData = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
-                    int originType = GVFetcherBlock.GetType(originData);
-                    int originFace = GVFetcherBlock.GetFace(originData);
+                    int originType = GVInventoryFetcherBlock.GetType(originData);
+                    int originFace = GVInventoryFetcherBlock.GetFace(originData);
                     Point3 originFaceDirection = CellFace.FaceToPoint3(originFace);
                     Log.Information("0");
                     ComponentInventoryBase originInventory = m_subsystemBlockEntities.GetBlockEntity(cellFace.X - originFaceDirection.X, cellFace.Y - originFaceDirection.Y, cellFace.Z - originFaceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
@@ -91,10 +91,10 @@ namespace Game {
                         position += originFaceDirection;
                         int value = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z);
                         int contents = Terrain.ExtractContents(value);
-                        if (contents == GVFetcherBlock.Index) {
+                        if (contents == GVInventoryFetcherBlock.Index) {
                             int data = Terrain.ExtractData(value);
-                            int type = GVFetcherBlock.GetType(data);
-                            int face = GVFetcherBlock.GetFace(data);
+                            int type = GVInventoryFetcherBlock.GetType(data);
+                            int face = GVInventoryFetcherBlock.GetFace(data);
                             int oppositeFace = CellFace.OppositeFace(face);
                             if (type == 1
                                 && (face == originFace || oppositeFace == originFace)) {

@@ -125,8 +125,8 @@
 		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
 		<Compile Include="Multiplexer\GVMultiplexerBlock.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
-		<Compile Include="Transportation\Fetcher\FetcherGVElectricElement.cs"/>
-		<Compile Include="Transportation\Fetcher\GVFetcherBlock.cs"/>
+		<Compile Include="Transportation\InventoryFetcher\InventoryFetcherGVElectricElement.cs"/>
+		<Compile Include="Transportation\InventoryFetcher\GVInventoryFetcherBlock.cs"/>
 		<Compile Include="Transportation\GuidedDispenser\GuidedDispenserGVElectricElement.cs"/>
 		<Compile Include="Transportation\GuidedDispenser\GVGuidedDispenserBlock.cs"/>
 		<Compile Include="Transportation\MoreProjectiles\EditGVDataModifierProjectileDialog.cs"/>
