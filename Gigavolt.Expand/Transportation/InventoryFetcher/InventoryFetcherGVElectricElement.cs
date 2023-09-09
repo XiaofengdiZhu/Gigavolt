@@ -4,8 +4,8 @@ using Engine;
 
 namespace Game {
     public class InventoryFetcherGVElectricElement : GVElectricElement {
-        public SubsystemBlockEntities m_subsystemBlockEntities;
-        public SubsystemPickables m_subsystemPickables;
+        public readonly SubsystemBlockEntities m_subsystemBlockEntities;
+        public readonly SubsystemPickables m_subsystemPickables;
         public uint m_voltage;
 
         public InventoryFetcherGVElectricElement(SubsystemGVElectricity subsystemElectricity, Point3 point) : base(

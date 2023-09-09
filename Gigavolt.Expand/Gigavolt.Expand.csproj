@@ -55,8 +55,6 @@
 		<Compile Include="JumpWire\GVJumpWireBlock.cs"/>
 		<Compile Include="JumpWire\JumpWireGVElectricElement.cs"/>
 		<Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs"/>
-		<Compile Include="MemoryBanksOperator\GVMemoryBanksOperatorBlock.cs"/>
-		<Compile Include="MemoryBanksOperator\MemoryBanksOperatorGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\DisplayLed\DisplayLedGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\DisplayLed\GVDisplayPoint.cs"/>
 		<Compile Include="MoreLeds\DisplayLed\GVDisplayLedBlock.cs"/>
@@ -104,6 +102,8 @@
 		<Compile Include="MoreMemoryBanks\ListMemory\GVListMemoryBankBlock.cs"/>
 		<Compile Include="MoreMemoryBanks\ListMemory\ListMemoryBankGVElectricElement.cs"/>
 		<Compile Include="MoreMemoryBanks\ListMemory\SubsystemGVListMemoryBankBlockBehavior.cs"/>
+		<Compile Include="MoreMemoryBanks\MemoryBanksOperator\GVMemoryBanksOperatorBlock.cs"/>
+		<Compile Include="MoreMemoryBanks\MemoryBanksOperator\MemoryBanksOperatorGVElectricElement.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileListMemory\GVVolatileListMemoryBankBlock.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileListMemory\GVVolatileListMemoryBankData.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileListMemory\VolatileListMemoryBankGVElectricElement.cs"/>
@@ -125,6 +125,9 @@
 		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
 		<Compile Include="Multiplexer\GVMultiplexerBlock.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
+		<Compile Include="Transportation\InventoryController\GVInventoryControllerBlock.cs"/>
+		<Compile Include="Transportation\InventoryController\InventoryControllerGVElectricElement.cs"/>
+		<Compile Include="Transportation\InventoryController\SubsystemGVInventoryControllerBlockBehavior.cs"/>
 		<Compile Include="Transportation\InventoryFetcher\InventoryFetcherGVElectricElement.cs"/>
 		<Compile Include="Transportation\InventoryFetcher\GVInventoryFetcherBlock.cs"/>
 		<Compile Include="Transportation\GuidedDispenser\GuidedDispenserGVElectricElement.cs"/>
@@ -350,7 +353,9 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Transportation\InventoryController\"/>
+		<None Include="Assets\Textures\GVInventoryControllerBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>

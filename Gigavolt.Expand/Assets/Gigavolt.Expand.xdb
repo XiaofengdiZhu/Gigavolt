@@ -27,5 +27,8 @@
 		<MemberSubsystemTemplate Name="GVDataModifierProjectileBlockBehavior" Guid="8210b070-0f9e-49e5-a382-630f4ba49f15" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="b86083be-8f5c-4a53-9876-d971fe70cc82" Value="Game.SubsystemGVDataModifierProjectileBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVInventoryControllerBlockBehavior" Guid="c50d7476-0dac-4210-87e8-6150c4f60246" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="4bd8fb72-d7f7-466d-84be-cbc0a3470cff" Value="Game.SubsystemGVInventoryControllerBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>
