@@ -100,7 +100,7 @@
     },
     "GVInventoryControllerBlock:0": {
       "DisplayName": "GV箱子控制器",
-      "Description": ""
+      "Description": "用于控制箱子、熔炉、发射器等可存储物品的方块中的物品，也可以控制生存模式玩家背包中的物品，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {

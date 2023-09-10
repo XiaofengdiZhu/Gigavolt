@@ -50,8 +50,8 @@ namespace Game {
                 }
                 if (bottomInput != m_lastBottomInput) {
                     m_lastBottomInput = bottomInput;
-                    bool controlPlayerInput = ((rightInput >> 21) & 0x1u) == 1u;
-                    int controlPlayerIndexInput = (int)((rightInput >> 21) & 0x3u);
+                    bool controlPlayerInput = ((rightInput >> 18) & 0x1u) == 1u;
+                    int controlPlayerIndexInput = (int)((rightInput >> 19) & 31u);
                     ComponentInventoryBase inventory = null;
                     if (controlPlayerInput) {
                         ReadOnlyList<ComponentPlayer> players = SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers;
@@ -72,12 +72,8 @@ namespace Game {
                         return m_voltage != voltage;
                     }
                     int sourceSlotInput = (int)(rightInput & 0xffu);
-                    //bool slotIndexInputInRange = sourceSlotInput < (controlPlayerInput ? playerInventory.SlotsCount : m_originInventory.SlotsCount);
                     bool specifyDataInput = ((rightInput >> 16) & 0x1u) == 1u;
                     int countInput = ((rightInput >> 17) & 0x1u) == 1u ? int.MaxValue : (int)((rightInput >> 8) & 0xffu);
-                    bool orderInput = ((rightInput >> 18) & 0x1u) == 1u;
-                    bool orderByValueInput = ((rightInput >> 19) & 0x1u) == 1u;
-                    bool orderByDescInput = ((rightInput >> 20) & 0x1u) == 1u;
                     int targetSlotInput = (int)((rightInput >> 24) & 0xffu);
                     int contentsInput = (int)(leftInput & 0x3ffu);
                     int dataInput = (int)((leftInput >> 14) & 0x3ffffu);
@@ -149,33 +145,68 @@ namespace Game {
                             break;
                         case 16u: {
                             int sourceValue = inventory.GetSlotValue(sourceSlotInput);
-                            int count = Math.Min(countInput, inventory.GetSlotCount(sourceSlotInput));
+                            int sourceCount = inventory.GetSlotCount(sourceSlotInput);
+                            int moveCount = Math.Min(countInput, sourceCount);
                             int targetValue = inventory.GetSlotValue(targetSlotInput);
                             int targetCount = inventory.GetSlotCount(targetSlotInput);
+                            bool sourceSlotShouldRemove = false;
                             if (targetCount > 0) {
                                 if (targetValue == sourceValue) {
-                                    count = Math.Min(count, inventory.GetSlotCapacity(targetSlotInput, targetValue) - targetCount);
+                                    moveCount = Math.Min(moveCount, inventory.GetSlotCapacity(targetSlotInput, targetValue) - targetCount);
                                 }
                                 else {
-                                    return m_voltage != voltage;
+                                    moveCount = Math.Min(moveCount, inventory.GetSlotCapacity(targetSlotInput, targetValue));
+                                    sourceSlotShouldRemove = sourceCount == moveCount;
+                                    int leftCount = targetCount;
+                                    Dictionary<int, int> slotsIndex = new Dictionary<int, int>();
+                                    for (int i = 0; i < inventory.SlotsCount; i++) {
+                                        if ((i != sourceSlotInput || sourceSlotShouldRemove)
+                                            && i != targetSlotInput) {
+                                            int count = inventory.GetSlotCount(i);
+                                            int addCount = 0;
+                                            if (count == 0) {
+                                                addCount = Math.Min(leftCount, inventory.GetSlotCapacity(i, targetValue));
+                                            }
+                                            else if (inventory.GetSlotValue(i) == targetValue) {
+                                                addCount = Math.Min(leftCount, inventory.GetSlotCapacity(i, targetValue) - count);
+                                            }
+                                            slotsIndex.Add(i, addCount);
+                                            leftCount -= addCount;
+                                            if (leftCount <= 0) {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (leftCount > 0) {
+                                        m_voltage = 0u;
+                                        return m_voltage != voltage;
+                                    }
+                                    if (sourceSlotShouldRemove) {
+                                        inventory.RemoveSlotItems(sourceSlotInput, moveCount);
+                                    }
+                                    foreach (KeyValuePair<int, int> pair in slotsIndex) {
+                                        inventory.AddSlotItems(pair.Key, targetValue, pair.Value);
+                                    }
                                 }
                             }
                             else {
-                                count = Math.Min(count, inventory.GetSlotCapacity(targetSlotInput, targetValue));
+                                moveCount = Math.Min(moveCount, inventory.GetSlotCapacity(targetSlotInput, targetValue));
                             }
-                            if (count > 0) {
-                                inventory.RemoveSlotItems(sourceSlotInput, count);
-                                inventory.AddSlotItems(targetSlotInput, sourceValue, count);
+                            if (moveCount > 0) {
+                                if (!sourceSlotShouldRemove) {
+                                    inventory.RemoveSlotItems(sourceSlotInput, moveCount);
+                                }
+                                inventory.AddSlotItems(targetSlotInput, sourceValue, moveCount);
                             }
-                            m_voltage = (uint)count;
+                            m_voltage = (uint)moveCount;
                             break;
                         }
                         case 17u: {
-                            int totalCount = 0;
                             if (valueInput == 0
                                 || targetSlotInput >= inventory.SlotsCount) {
                                 return m_voltage != voltage;
                             }
+                            int totalCount = 0;
                             IEnumerable<int> originalSlotsIndex = inventory.m_slots.Select(
                                     (slot, index) => {
                                         if (slot.Value == valueInput) {
@@ -332,50 +363,80 @@ namespace Game {
                                     }
                                 }
                                 if (leftCount > 0) {
+                                    m_voltage = 0u;
                                     return m_voltage != voltage;
                                 }
                                 inventory.m_slots[sourceSlotInput].Value = newValue;
-                                m_voltage = (uint)inventory.GetSlotCount(sourceSlotInput);
+                                inventory.m_slots[sourceSlotInput].Count = countInput;
+                                foreach (KeyValuePair<int, int> pair in slotsIndex) {
+                                    inventory.AddSlotItems(pair.Key, oldValue, pair.Value);
+                                }
+                                m_voltage = (uint)countInput;
                             }
                             break;
                         }
                         case 32u: {
-                            Dictionary<int, int> allItems = new Dictionary<int, int>();
-                            foreach (ComponentInventoryBase.Slot slot in inventory.m_slots) {
-                                if (slot.Count > 0) {
-                                    if (allItems.TryGetValue(slot.Value, out int count)) {
-                                        allItems[slot.Value] = count + slot.Count;
-                                    }
-                                    else {
-                                        allItems.Add(slot.Value, slot.Count);
-                                    }
-                                }
-                                slot.Value = 0;
-                                slot.Count = 0;
-                            }
-                            int index = 0;
-                            foreach (KeyValuePair<int, int> pair in orderByDescInput ? allItems.OrderByDescending(item => orderByValueInput ? item.Value : item.Key) : allItems.OrderBy(item => orderByValueInput ? item.Value : item.Key)) {
-                                int leftCount = pair.Value;
-                                while (leftCount > 0
-                                    && index < inventory.SlotsCount) {
-                                    int capacity = inventory.GetSlotCapacity(index, pair.Key);
-                                    int add = Math.Min(leftCount, capacity);
-                                    inventory.m_slots[index].Count = add;
-                                    inventory.m_slots[index].Value = pair.Key;
-                                    leftCount -= add;
-                                    index++;
-                                }
-                                if (leftCount > 0) {
-                                    Log.Warning("对不起，没有足够的空间存储物品，部分物品遗失了。");
-                                }
-                            }
+                            m_voltage = OrderInventory(inventory, false, false);
                             break;
                         }
+                        case 33u: {
+                            m_voltage = OrderInventory(inventory, false, true);
+                            break;
+                        }
+                        case 34u: {
+                            m_voltage = OrderInventory(inventory, true, false);
+                            break;
+                        }
+                        case 35u: {
+                            m_voltage = OrderInventory(inventory, true, true);
+                            break;
+                        }
+                        case 48u:
+                            inventory.AddSlotItems(-1, 0, 0);
+                            if (inventory is ComponentCraftingTable
+                                || inventory is ComponentFurnace) {
+                                m_voltage = (uint)inventory.GetSlotCount(inventory.SlotsCount - 2);
+                            }
+                            break;
                     }
                     return m_voltage != voltage;
                 }
             }
             return false;
+        }
+
+        public static uint OrderInventory(ComponentInventoryBase inventory, bool orderByValue, bool desc) {
+            Dictionary<int, int> allItems = new Dictionary<int, int>();
+            foreach (ComponentInventoryBase.Slot slot in inventory.m_slots) {
+                if (slot.Count > 0) {
+                    if (allItems.TryGetValue(slot.Value, out int count)) {
+                        allItems[slot.Value] = count + slot.Count;
+                    }
+                    else {
+                        allItems.Add(slot.Value, slot.Count);
+                    }
+                }
+                slot.Value = 0;
+                slot.Count = 0;
+            }
+            int index = 0;
+            foreach (KeyValuePair<int, int> pair in desc ? allItems.OrderByDescending(item => orderByValue ? item.Value : item.Key) : allItems.OrderBy(item => orderByValue ? item.Value : item.Key)) {
+                int leftCount = pair.Value;
+                while (leftCount > 0
+                    && index < inventory.SlotsCount) {
+                    int capacity = inventory.GetSlotCapacity(index, pair.Key);
+                    int add = Math.Min(leftCount, capacity);
+                    inventory.m_slots[index].Count = add;
+                    inventory.m_slots[index].Value = pair.Key;
+                    leftCount -= add;
+                    index++;
+                }
+                if (leftCount > 0) {
+                    Log.Warning("对不起，没有足够的空间存储物品，部分物品遗失了。");
+                    break;
+                }
+            }
+            return (uint)(index + 1);
         }
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
