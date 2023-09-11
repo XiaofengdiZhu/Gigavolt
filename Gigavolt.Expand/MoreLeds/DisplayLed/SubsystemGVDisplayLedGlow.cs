@@ -134,7 +134,7 @@ namespace Game {
                                         0,
                                         DepthStencilState.DepthRead,
                                         RasterizerState.CullCounterClockwiseScissor,
-                                        BlendState.AlphaBlend,
+                                        BlendState.NonPremultiplied,
                                         samplerState
                                     )
                                     .QueueQuad(
@@ -157,7 +157,7 @@ namespace Game {
                                         0,
                                         DepthStencilState.DepthRead,
                                         RasterizerState.CullCounterClockwiseScissor,
-                                        BlendState.AlphaBlend,
+                                        BlendState.NonPremultiplied,
                                         samplerState
                                     )
                                     .QueueQuad(
@@ -189,7 +189,7 @@ namespace Game {
                 0,
                 DepthStencilState.DepthRead,
                 RasterizerState.CullCounterClockwiseScissor,
-                BlendState.AlphaBlend,
+                BlendState.NonPremultiplied,
                 SamplerState.AnisotropicClamp
             );
             m_batches[1] = m_primitivesRenderer.TexturedBatch(
@@ -198,7 +198,7 @@ namespace Game {
                 0,
                 DepthStencilState.DepthRead,
                 RasterizerState.CullCounterClockwiseScissor,
-                BlendState.AlphaBlend,
+                BlendState.NonPremultiplied,
                 SamplerState.PointClamp
             );
         }
