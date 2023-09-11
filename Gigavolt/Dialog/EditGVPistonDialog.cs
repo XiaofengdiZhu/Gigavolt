@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Linq;
+using Engine;
 
 // ReSharper disable RedundantExplicitArraySize
 
@@ -10,6 +11,7 @@ namespace Game {
         public TextBoxWidget m_maxExtensionWidget;
 
         public TextBoxWidget m_pullCountWidget;
+        public CheckboxWidget m_transparentCheckBoxWidget;
 
         public LabelWidget m_label2;
 
@@ -32,27 +34,34 @@ namespace Game {
         public string m_languageType;
 
         public EditGVPistonDialog(PistonMode mode, GVPistonData pistonData, Action handler) {
-            XElement node = ContentManager.Get<XElement>("Dialogs/EditGVPistonDialog");
-            LoadContents(this, node);
-            m_title = Children.Find<LabelWidget>("EditGVPistonDialog.Title");
-            m_maxExtensionWidget = Children.Find<TextBoxWidget>("EditGVPistonDialog.MaxExtension");
-            m_label2 = Children.Find<LabelWidget>("EditGVPistonDialog.Label2");
-            m_pullCountWidget = Children.Find<TextBoxWidget>("EditGVPistonDialog.PullCount");
-            m_slider3 = Children.Find<SliderWidget>("EditGVPistonDialog.Slider3");
-            m_okButton = Children.Find<ButtonWidget>("EditGVPistonDialog.OK");
-            m_cancelButton = Children.Find<ButtonWidget>("EditGVPistonDialog.Cancel");
-            m_handler = handler;
-            m_pistonData = pistonData;
-            m_speed = m_pistonData.Speed;
-            m_languageType = ModsManager.Configs.TryGetValue("Language", out string config) ? config : "zh-CN";
-            m_title.Text = GVPistonBlock.Mode2Name(mode);
-            m_maxExtensionWidget.Text = (pistonData.MaxExtension + 1).ToString();
-            m_pullCountWidget.Text = (pistonData.PullCount + 1).ToString();
-            m_slider3.Granularity = 1f;
-            m_slider3.MinValue = 0f;
-            m_slider3.MaxValue = 6f;
-            m_label2.Text = mode == PistonMode.Pushing ? LanguageControl.Get(GetType().Name, 3) : LanguageControl.Get(GetType().Name, 2);
-            UpdateControls();
+            try {
+                XElement node = ContentManager.Get<XElement>("Dialogs/EditGVPistonDialog");
+                LoadContents(this, node);
+                m_title = Children.Find<LabelWidget>("EditGVPistonDialog.Title");
+                m_maxExtensionWidget = Children.Find<TextBoxWidget>("EditGVPistonDialog.MaxExtension");
+                m_label2 = Children.Find<LabelWidget>("EditGVPistonDialog.Label2");
+                m_pullCountWidget = Children.Find<TextBoxWidget>("EditGVPistonDialog.PullCount");
+                m_transparentCheckBoxWidget = Children.Find<CheckboxWidget>("EditGVPistonDialog.Transparent");
+                m_slider3 = Children.Find<SliderWidget>("EditGVPistonDialog.Slider3");
+                m_okButton = Children.Find<ButtonWidget>("EditGVPistonDialog.OK");
+                m_cancelButton = Children.Find<ButtonWidget>("EditGVPistonDialog.Cancel");
+                m_handler = handler;
+                m_pistonData = pistonData;
+                m_speed = m_pistonData.Speed;
+                m_languageType = ModsManager.Configs.TryGetValue("Language", out string config) ? config : "zh-CN";
+                m_title.Text = GVPistonBlock.Mode2Name(mode);
+                m_maxExtensionWidget.Text = (pistonData.MaxExtension + 1).ToString();
+                m_pullCountWidget.Text = (pistonData.PullCount + 1).ToString();
+                m_transparentCheckBoxWidget.IsChecked = pistonData.Transparent;
+                m_slider3.Granularity = 1f;
+                m_slider3.MinValue = 0f;
+                m_slider3.MaxValue = 6f;
+                m_label2.Text = mode == PistonMode.Pushing ? LanguageControl.Get(GetType().Name, 3) : LanguageControl.Get(GetType().Name, 2);
+                UpdateControls();
+            }
+            catch (Exception e) {
+                Log.Error(e);
+            }
         }
 
         public override void Update() {
@@ -66,6 +75,7 @@ namespace Game {
                     if (int.TryParse(m_pullCountWidget.Text, out int p)
                         && p >= 0) {
                         m_pistonData.PullCount = p - 1;
+                        m_pistonData.Transparent = m_transparentCheckBoxWidget.IsChecked;
                         m_pistonData.Speed = m_speed;
                         m_pistonData.SaveString();
                         Dismiss(true);

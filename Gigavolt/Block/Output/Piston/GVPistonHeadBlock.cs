@@ -44,11 +44,18 @@ namespace Game {
 
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) {
             int data = Terrain.ExtractData(value);
+            if (GetTransparent(data)) {
+                return true;
+            }
             return face != GetFace(data);
         }
 
         public override int GetShadowStrength(int value) {
-            if (!GetIsShaft(Terrain.ExtractData(value))) {
+            int data = Terrain.ExtractData(value);
+            if (GetTransparent(data)) {
+                return 0;
+            }
+            if (!GetIsShaft(data)) {
                 return base.GetShadowStrength(value);
             }
             return 0;
@@ -56,6 +63,9 @@ namespace Game {
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
             int num = Terrain.ExtractData(value);
+            if (GetTransparent(num)) {
+                return;
+            }
             if (num < m_blockMeshesByData.Length
                 && m_blockMeshesByData[num] != null) {
                 generator.GenerateShadedMeshVertices(
@@ -85,5 +95,7 @@ namespace Game {
         public static int GetFace(int data) => (data >> 3) & 7;
 
         public static int SetFace(int data, int face) => (data & -57) | ((face & 7) << 3);
+        public static bool GetTransparent(int data) => ((data >> 6) & 1) == 1;
+        public static int SetTransparent(int data, bool transparent) => (data & -65) | (transparent ? 64 : 0);
     }
 }

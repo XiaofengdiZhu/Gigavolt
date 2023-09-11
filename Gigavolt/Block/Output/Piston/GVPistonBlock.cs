@@ -171,5 +171,7 @@ namespace Game {
         public static int GetFace(int data) => (data >> 3) & 7;
 
         public static int SetFace(int data, int face) => (data & -57) | ((face & 7) << 3);
+        public static bool GetTransparent(int data) => ((data >> 17) & 1) == 1;
+        public static int SetTransparent(int data, bool transparent) => (data & -131073) | (transparent ? 131072 : 0);
     }
 }

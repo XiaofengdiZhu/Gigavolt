@@ -52,8 +52,8 @@ namespace Game {
             UpdateMovableBlocks();
         }
 
-        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 6) & 4095;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262081) | ((id & 4095) << 6));
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 6) & 2047;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -131009) | ((id & 2047) << 6));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
@@ -71,7 +71,7 @@ namespace Game {
                     blockData,
                     delegate {
                         inventory.RemoveSlotItems(slotIndex, count);
-                        inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)), count);
+                        inventory.AddSlotItems(slotIndex, Terrain.MakeBlockValue(GVPistonBlock.Index, 0, GVPistonBlock.SetTransparent(Terrain.ExtractData(SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id))), blockData.Transparent)), count);
                     }
                 )
             );
@@ -88,7 +88,7 @@ namespace Game {
                     GVPistonBlock.GetMode(data),
                     blockData,
                     delegate {
-                        SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                        SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(GVPistonBlock.Index, 0, GVPistonBlock.SetTransparent(Terrain.ExtractData(SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id))), blockData.Transparent)));
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                         GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, 0);
                         if (electricElement != null) {
@@ -272,6 +272,7 @@ namespace Game {
                         int data = Terrain.ExtractData(cellValue);
                         PistonMode mode = GVPistonBlock.GetMode(data);
                         int face = GVPistonBlock.GetFace(data);
+                        bool transparent = GVPistonBlock.GetTransparent(data);
                         Point3 p = CellFace.FaceToPoint3(face);
                         int num = int.MaxValue;
                         foreach (MovingBlock block in movingBlockSet.Blocks) {
@@ -281,7 +282,7 @@ namespace Game {
                         float num3 = point.X * p.X + point.Y * p.Y + point.Z * p.Z;
                         if (num2 > num3) {
                             if (num + num2 - num3 > 1f) {
-                                movingBlockSet.SetBlock(p * (num - 1), Terrain.MakeBlockValue(GVPistonHeadBlock.Index, 0, GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetIsShaft(GVPistonHeadBlock.SetMode(0, mode), true), face)));
+                                movingBlockSet.SetBlock(p * (num - 1), Terrain.MakeBlockValue(GVPistonHeadBlock.Index, 0, GVPistonHeadBlock.SetTransparent(GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetIsShaft(GVPistonHeadBlock.SetMode(0, mode), true), face), transparent)));
                             }
                         }
                         else if (num2 < num3
@@ -336,6 +337,7 @@ namespace Game {
             int data = Terrain.ExtractData(value);
             int face = GVPistonBlock.GetFace(data);
             PistonMode mode = GVPistonBlock.GetMode(data);
+            bool transparent = GVPistonBlock.GetTransparent(data);
             int id = GetIdFromValue(value);
             GVPistonData pistonData = GetItemData(id, true);
             int maxExtension = pistonData.MaxExtension;
@@ -363,7 +365,7 @@ namespace Game {
             }
             if (length > num) {
                 DynamicArray<MovingBlock> movingBlocks2 = m_movingBlocks;
-                item = new MovingBlock { Offset = Point3.Zero, Value = Terrain.MakeBlockValue(GVPistonHeadBlock.Index, 0, GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetMode(GVPistonHeadBlock.SetIsShaft(0, num > 0), mode), face)) };
+                item = new MovingBlock { Offset = Point3.Zero, Value = Terrain.MakeBlockValue(GVPistonHeadBlock.Index, 0, GVPistonHeadBlock.SetTransparent(GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetMode(GVPistonHeadBlock.SetIsShaft(0, num > 0), mode), face), transparent)) };
                 movingBlocks2.Add(item);
                 int num3 = 0;
                 while (num3 < pullCount + 1) {
