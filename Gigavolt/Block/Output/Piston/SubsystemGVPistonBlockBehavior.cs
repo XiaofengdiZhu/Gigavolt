@@ -641,11 +641,14 @@ namespace Game {
                             isEnd = true;
                             return pistonFace == GVAttachedSignCBlock.GetFace(data);
                     }
-                    return !block.IsNonDuplicable_(value) && block.IsCollidable_(value);
+                    return !block.IsNonDuplicable_(value) && (block.IsCollidable_(value) || (!block.IsDiggingTransparent && block.DestructionDebrisScale == 0f));
                 }
             }
         }
 
-        public static bool IsBlockBlocking(int value) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value);
+        public static bool IsBlockBlocking(int value) {
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+            return block.IsCollidable_(value) || (!block.IsDiggingTransparent && block.DestructionDebrisScale == 0f);
+        }
     }
 }
