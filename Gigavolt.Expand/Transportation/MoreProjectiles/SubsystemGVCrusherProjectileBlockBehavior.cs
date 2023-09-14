@@ -1,4 +1,6 @@
-﻿using TemplatesDatabase;
+﻿using System;
+using Engine;
+using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVCrusherProjectileBlockBehavior : SubsystemBlockBehavior {
@@ -24,9 +26,15 @@ namespace Game {
                     );
                 }
                 else {
-                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z)));
-                    for (int i = 0; i < blockBehaviors.Length; i++) {
-                        blockBehaviors[i].OnInteract(new TerrainRaycastResult { CellFace = cellFace.Value }, null);
+                    try {
+                        ComponentMiner componentMiner = new ComponentMiner();
+                        SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z)));
+                        for (int i = 0; i < blockBehaviors.Length; i++) {
+                            blockBehaviors[i].OnInteract(new TerrainRaycastResult { CellFace = cellFace.Value }, componentMiner);
+                        }
+                    }
+                    catch (Exception e) {
+                        Log.Error(e);
                     }
                 }
                 return true;
