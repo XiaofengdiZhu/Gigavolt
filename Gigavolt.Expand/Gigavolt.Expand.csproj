@@ -360,5 +360,25 @@
 	<ItemGroup>
 		<Compile Include="Transportation\GVSolidifiedAirBlock.cs"/>
 	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVVolatileMemoryBankBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Models\GVMemoryBank.dae">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVListMemoryBankBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVVolatileListMemoryBankBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>
