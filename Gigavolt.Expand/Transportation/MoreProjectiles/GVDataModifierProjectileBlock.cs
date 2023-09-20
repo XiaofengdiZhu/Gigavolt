@@ -8,10 +8,10 @@ namespace Game {
         public BlockMesh m_standaloneBlockMesh = new BlockMesh();
 
         public override void Initialize() {
-            Model model = ContentManager.Get<Model>("Models/Snowball");
-            Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Snowball").ParentBone);
+            Model model = ContentManager.Get<Model>("Models/MoreProjectiles");
+            Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("GVDataModifier").ParentBone);
             m_standaloneBlockMesh.AppendModelMeshPart(
-                model.FindMesh("Snowball").MeshParts[0],
+                model.FindMesh("GVDataModifier").MeshParts[0],
                 boneAbsoluteTransform * Matrix.CreateTranslation(0f, 0f, 0f),
                 false,
                 false,
