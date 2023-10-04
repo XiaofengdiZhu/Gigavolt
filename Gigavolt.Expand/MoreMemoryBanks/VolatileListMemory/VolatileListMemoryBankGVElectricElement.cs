@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine;
 
 namespace Game {
     public class VolatileListMemoryBankGVElectricElement : RotateableGVElectricElement {
@@ -62,11 +63,7 @@ namespace Game {
                 m_SubsystemGVMemoryBankBlockBehavior.SetBlockData(CellFaces[0].Point, memoryBankData);
             }
             if (bottomConnected) {
-                if (bottomInput == 0u
-                    || bottomInput > 2u) {
-                    m_lastBottomInput = bottomInput;
-                    m_voltage = 0u;
-                }
+                m_voltage = 0u;
                 if (bottomInput != m_lastBottomInput) {
                     m_lastBottomInput = bottomInput;
                     uint smallIndex = MathUint.Min(leftInput, rightInput);
@@ -80,6 +77,7 @@ namespace Game {
                     int rightInputInt = MathUint.ToInt(rightInput);
                     int inInputInt = MathUint.ToInt(inInput);
                     List<uint> data = memoryBankData.Data;
+                    Log.Information(bottomInput + " " + inInput);
                     switch (bottomInput) {
                         case 1u:
                             m_voltage = memoryBankData.Read(rightInput);
@@ -439,6 +437,7 @@ namespace Game {
                             m_voltage = memoryBankData.m_offset;
                             break;
                     }
+                    m_lastBottomInput = bottomInput;
                 }
             }
             else {

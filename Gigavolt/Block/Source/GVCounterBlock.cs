@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Game {
     public class GVCounterBlock : RotateableMountedGVElectricElementBlock {
         public const int Index = 846;
@@ -21,6 +23,11 @@ namespace Game {
                 }
             }
             return null;
+        }
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, Terrain.ExtractData(oldValue) & 0x1FFE0), Count = 1 });
+            showDebris = true;
         }
 
         public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 5) & 4095) > 0;

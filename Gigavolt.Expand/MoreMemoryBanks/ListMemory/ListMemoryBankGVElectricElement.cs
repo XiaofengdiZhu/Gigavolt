@@ -80,11 +80,7 @@ namespace Game {
                 }
             }
             if (bottomConnected) {
-                if (bottomInput == 0u
-                    || bottomInput > 2u) {
-                    m_lastBottomInput = bottomInput;
-                    m_voltage = 0u;
-                }
+                m_voltage = 0u;
                 if (bottomInput != m_lastBottomInput) {
                     m_lastBottomInput = bottomInput;
                     uint smallIndex = MathUint.Min(leftInput, rightInput);
@@ -457,6 +453,7 @@ namespace Game {
                             m_voltage = memoryBankData.m_offset;
                             break;
                     }
+                    m_lastBottomInput = bottomInput;
                 }
             }
             else {

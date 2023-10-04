@@ -265,6 +265,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 > 例子：背面输入16进制的21V（二进制100001），开关1、6将闭合，此时在正面1端点输入5V，该电压将从A节点流入，延导线1传导到a，延21传导到O，延26传导到c，延6传导到C，最终从正面3号端点输出5V
 ### 一维存储器 List Memory
 和存储器相似，但只能存储一行数据，不过多了很多实用功能，无需初始化即可使用，同时提供了易失版（退出游戏后数据会丢失，不过ID保持不变）
+> 导出功能将导出指定宽高的图片
 #### 端口定义 Input&Output Definition
 | 端口 | 作用    |
 |----|-------|

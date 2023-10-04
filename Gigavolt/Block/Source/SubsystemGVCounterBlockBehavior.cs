@@ -49,12 +49,10 @@ namespace Game {
                         blockData,
                         electricElement,
                         current => {
-                            int newValue = StoreItemDataAtUniqueId(blockData, id);
-                            SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, newValue));
-                            electricElement.m_counter = current;
                             m_subsystemGVElectricity.WritePersistentVoltage(new Point3(x, y, z), current);
+                            SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                            electricElement.m_counter = current;
                             electricElement.m_edited = true;
-                            m_subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, m_subsystemGVElectricity.CircuitStep + 1);
                         }
                     )
                 );
