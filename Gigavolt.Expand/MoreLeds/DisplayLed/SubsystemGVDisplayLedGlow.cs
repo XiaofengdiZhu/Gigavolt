@@ -108,7 +108,7 @@ namespace Game {
                         }
                         else {
                             lightValue = m_subsystemTerrain.Terrain.GetCellLightFast((int)MathUtils.Floor(position.X), (int)MathUtils.Floor(position.Y), (int)MathUtils.Floor(position.Z));
-                            forward = matrix.Forward * 0.435f;
+                            forward = matrix.Forward * 0.43f;
                         }
                         Vector3 right = matrix.Right * halfWidth;
                         Vector3 up = matrix.Up * halfHeight;

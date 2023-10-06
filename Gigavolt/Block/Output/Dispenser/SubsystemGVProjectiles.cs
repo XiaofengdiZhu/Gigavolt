@@ -242,10 +242,10 @@ namespace Game {
                         bool isDataModifier = m_dataModifierBlockContent.HasValue && m_dataModifierBlockContent.Value == Terrain.ExtractContents(projectile.Value);
                         if (projectile.Transform
                             && block.IsPlaceable
-                            && projectile.StopAt.Y > 0) {
-                            int x = (int)position.X - 1;
-                            int y = (int)position.Y;
-                            int z = (int)position.Z;
+                            && projectile.StopAt.Y >= 0) {
+                            int x = (int)Math.Floor(position.X);
+                            int y = (int)Math.Floor(position.Y);
+                            int z = (int)Math.Floor(position.Z);
                             if (projectile.StopAt.X == x
                                 && projectile.StopAt.Y == y
                                 && projectile.StopAt.Z == z) {
@@ -348,36 +348,74 @@ namespace Game {
                             }
                             if (projectile.Transform
                                 && !projectile.ToRemove) {
-                                int tempX = (int)position.X - 1;
-                                int tempY = (int)position.Y;
-                                int tempZ = (int)position.Z;
+                                int tempX = (int)Math.Floor(position.X);
+                                int tempY = (int)Math.Floor(position.Y);
+                                int tempZ = (int)Math.Floor(position.Z);
                                 if (isCrusher) {
-                                    m_subsystemTerrain.DestroyCell(
-                                        int.MaxValue,
-                                        tempX,
-                                        tempY,
-                                        tempZ,
-                                        0,
-                                        false,
-                                        false
-                                    );
-                                    projectile.ToRemove = true;
-                                }
-                                else if (isInteractor) {
-                                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(tempX, tempY, tempZ)));
-                                    for (int i = 0; i < blockBehaviors.Length; i++) {
-                                        blockBehaviors[i].OnInteract(new TerrainRaycastResult { CellFace = new CellFace(tempX, tempY, tempZ, 0) }, null);
+                                    if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(tempX, tempY, tempZ)) == 0) {
+                                        m_subsystemTerrain.DestroyCell(
+                                            int.MaxValue,
+                                            cellFace2.X,
+                                            cellFace2.Y,
+                                            cellFace2.Z,
+                                            0,
+                                            false,
+                                            false
+                                        );
+                                    }
+                                    else {
+                                        m_subsystemTerrain.DestroyCell(
+                                            int.MaxValue,
+                                            tempX,
+                                            tempY,
+                                            tempZ,
+                                            0,
+                                            false,
+                                            false
+                                        );
                                     }
                                     projectile.ToRemove = true;
+                                    continue;
                                 }
-                                else if (isDataModifier) {
+                                if (isInteractor) {
+                                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(tempX, tempY, tempZ)));
+                                    if (blockBehaviors.Length > 0) {
+                                        foreach (SubsystemBlockBehavior behavior in blockBehaviors) {
+                                            behavior.OnInteract(new TerrainRaycastResult { CellFace = new CellFace(tempX, tempY, tempZ, 0) }, null);
+                                        }
+                                    }
+                                    else {
+                                        blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
+                                        foreach (SubsystemBlockBehavior behavior in blockBehaviors) {
+                                            behavior.OnInteract(new TerrainRaycastResult { CellFace = new CellFace(cellFace2.X, cellFace2.Y, cellFace2.Z, cellFace2.Face) }, null);
+                                        }
+                                    }
+                                    projectile.ToRemove = true;
+                                    continue;
+                                }
+                                if (isDataModifier) {
                                     int tempContent = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(tempX, tempY, tempZ));
-                                    if (tempContent != 0) {
+                                    if (tempContent == 0) {
+                                        m_subsystemTerrain.ChangeCell(cellFace2.X, cellFace2.Y, cellFace2.Z, Terrain.MakeBlockValue(num, m_subsystemTerrain.Terrain.GetCellLightFast(cellFace2.X, cellFace2.Y, cellFace2.Z), Terrain.ExtractData(projectile.Value)));
+                                    }
+                                    else {
                                         m_subsystemTerrain.ChangeCell(tempX, tempY, tempZ, Terrain.MakeBlockValue(tempContent, m_subsystemTerrain.Terrain.GetCellLightFast(tempX, tempY, tempZ), Terrain.ExtractData(projectile.Value)));
                                     }
                                     projectile.ToRemove = true;
+                                    continue;
                                 }
-                                else if (block.IsPlaceable) {
+                                if (block.IsPlaceable) {
+                                    if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(tempX, tempY, tempZ)) > 0) {
+                                        m_subsystemTerrain.DestroyCell(
+                                            int.MaxValue,
+                                            tempX,
+                                            tempY,
+                                            tempZ,
+                                            0,
+                                            false,
+                                            false
+                                        );
+                                    }
                                     m_subsystemTerrain.ChangeCell(tempX, tempY, tempZ, projectile.Value);
                                     m_subsystemAudio.PlaySound(
                                         "Audio/BlockPlaced",
