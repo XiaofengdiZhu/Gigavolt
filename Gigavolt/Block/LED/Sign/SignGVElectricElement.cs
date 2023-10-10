@@ -112,7 +112,7 @@ namespace Game {
                 float pitch = ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f);
                 float roll = ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f);
                 m_glowPoint.FloatRotation = new Vector3(yaw, pitch, roll);
-                m_glowPoint.FloatLight = (int)((m_inputBottom >> 28) & 0xFu);
+                m_glowPoint.FloatLight = ((m_inputBottom >> 28) & 0xFu) / 16f;
             }
             if (m_inputLeft != inputLeft) {
                 m_glowPoint.FloatColor = new Color(m_inputLeft);
