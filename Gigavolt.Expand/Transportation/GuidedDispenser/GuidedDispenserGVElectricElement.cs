@@ -84,10 +84,12 @@ namespace Game {
                     double angle = Math.Atan(Math.Abs((double)(targetV.X - origin.X) / (targetV.Z - origin.Z)));
                     if (targetV.Y >= origin.Y) {
                         double h = targetV.Y - origin.Y;
-                        double vy = l / Math.Sqrt(Math.Abs(l - h) / 5);
+                        double t = Math.Sqrt(h / 5);
+                        double vy = t * 10;
+                        double vx = l / t;
                         direction.Y = (float)vy;
-                        direction.X = (float)(vy * Math.Sin(angle) * (targetV.X > origin.X ? 1 : -1));
-                        direction.Z = (float)(vy * Math.Cos(angle) * (targetV.Z > origin.Z ? 1 : -1));
+                        direction.X = (float)(vx * Math.Sin(angle) * (targetV.X > origin.X ? 1 : -1));
+                        direction.Z = (float)(vx * Math.Cos(angle) * (targetV.Z > origin.Z ? 1 : -1));
                     }
                     else {
                         double h = origin.Y - targetV.Y;
