@@ -43,13 +43,14 @@ namespace Game {
                 }
             }
             if (bottomConnected) {
-                m_voltage = 0xffffffffu;
                 if (bottomInput == 0u) {
-                    m_lastBottomInput = bottomInput;
+                    m_lastBottomInput = 0u;
+                    m_voltage = 0xffffffffu;
                     return m_voltage != voltage;
                 }
                 if (bottomInput != m_lastBottomInput) {
                     m_lastBottomInput = bottomInput;
+                    m_voltage = 0xffffffffu;
                     bool controlPlayerInput = ((rightInput >> 18) & 0x1u) == 1u;
                     int controlPlayerIndexInput = (int)((rightInput >> 19) & 31u);
                     ComponentInventoryBase inventory = null;
@@ -65,8 +66,8 @@ namespace Game {
                             CellFace cellFace = CellFaces[0];
                             Point3 faceDirection = CellFace.FaceToPoint3(cellFace.Face);
                             m_originInventory = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(cellFace.X - faceDirection.X, cellFace.Y - faceDirection.Y, cellFace.Z - faceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
-                            inventory = m_originInventory;
                         }
+                        inventory = m_originInventory;
                     }
                     if (inventory == null) {
                         return m_voltage != voltage;
@@ -449,7 +450,7 @@ namespace Game {
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
                 if ((!block.IsCollidable_(cellValue) || block.IsFaceTransparent(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue))
                     && (cellFace.Face != 4 || !(block is FenceBlock))
-                    && SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(x, y, z)?.Entity.FindComponent<ComponentInventoryBase>() != null) {
+                    && SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(x, y, z)?.Entity.FindComponent<ComponentInventoryBase>() == null) {
                     SubsystemGVElectricity.SubsystemTerrain.DestroyCell(
                         0,
                         cellFace.X,

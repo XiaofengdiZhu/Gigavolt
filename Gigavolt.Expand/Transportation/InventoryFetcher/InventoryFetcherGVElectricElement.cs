@@ -55,18 +55,18 @@ namespace Game {
                         return false;
                     }
                     itemAtSlots.Add(slot);
-                    throwOut = m_voltage >> 17 == 1u;
+                    throwOut = m_voltage >> 17 == 0u;
                 }
                 else if (originType == 2) {
                     bool specifyData = m_voltage >> 10 == 1u;
                     int itemContents = (int)(m_voltage & 0x3ffu);
                     itemValue = Terrain.MakeBlockValue(itemContents, 0, specifyData ? (int)((m_voltage >> 14) & 0x3ffffu) : 0);
                     itemCount = m_voltage >> 11 == 1u ? int.MaxValue : 1;
-                    throwOut = m_voltage >> 12 == 1u;
+                    throwOut = m_voltage >> 12 == 0u;
                     int nowCount = 0;
                     for (int i = 0; i < originInventory.SlotsCount; i++) {
                         int value = originInventory.GetSlotValue(i);
-                        if (specifyData ? value == itemValue : value == itemContents) {
+                        if (specifyData ? value == itemValue : Terrain.ExtractContents(value) == itemContents) {
                             int count = originInventory.GetSlotCount(i);
                             nowCount += count;
                             itemAtSlots.Add(i);
