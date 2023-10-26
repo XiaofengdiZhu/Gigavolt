@@ -1095,10 +1095,16 @@ namespace Game {
                         if (componentPlayer.ComponentGui.ModalPanelWidget is CreativeInventoryWidget widget) {
                             foreach (CreativeInventoryWidget.Category c in widget.m_categories) {
                                 if (c.Name.StartsWith("GV ")) {
-                                    if (c.Color.B == 107) {
+                                    if (c.Color.B == 243) {
                                         break;
                                     }
-                                    c.Color = new Color(255, 203, 107);
+                                    if (c.Name.EndsWith("Expand")
+                                        || c.Name.EndsWith("Multiple")) {
+                                        c.Color = new Color(233, 85, 227);
+                                    }
+                                    else {
+                                        c.Color = new Color(30, 213, 243);
+                                    }
                                 }
                             }
                         }
