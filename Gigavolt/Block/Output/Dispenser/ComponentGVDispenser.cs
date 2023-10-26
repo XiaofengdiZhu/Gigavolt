@@ -140,7 +140,8 @@ namespace Game {
             bool flag = false;
             if (disableGravity
                 || disableDamping
-                || transform) {
+                || transform
+                || safe) {
                 flag = m_subsystemGVProjectiles.FireProjectile(
                         value,
                         position,

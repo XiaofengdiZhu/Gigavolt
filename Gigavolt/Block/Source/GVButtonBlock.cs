@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
@@ -50,6 +51,11 @@ namespace Game {
             result.Value = SetFace(value, raycastResult.CellFace.Face);
             result.CellFace = raycastResult.CellFace;
             return result;
+        }
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, Terrain.ExtractData(SetFace(oldValue, 0))), Count = 1 });
+            showDebris = true;
         }
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {

@@ -244,8 +244,7 @@ namespace Game {
                         bool isInteractor = m_interactorBlockValue.HasValue && m_interactorBlockValue.Value == projectile.Value;
                         bool isDataModifier = m_dataModifierBlockContent.HasValue && m_dataModifierBlockContent.Value == Terrain.ExtractContents(projectile.Value);
                         if (projectile.Transform
-                            && block.IsPlaceable
-                            && projectile.StopAt.Y >= 0) {
+                            && block.IsPlaceable) {
                             stopAtIsAir = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(projectile.StopAt.X, projectile.StopAt.Y, projectile.StopAt.Z)) == 0;
                             if (stopAtIsAir && Vector3.DistanceSquared(position, stopAtVector3) < 3f) {
                                 m_subsystemTerrain.ChangeCell(projectile.StopAt.X, projectile.StopAt.Y, projectile.StopAt.Z, projectile.Value);
@@ -400,8 +399,7 @@ namespace Game {
                             }
                             if (projectile.Transform
                                 && !projectile.ToRemove
-                                && block.IsPlaceable
-                                && projectile.StopAt.Y >= 0) {
+                                && block.IsPlaceable) {
                                 if (stopAtIsAir && Vector3.DistanceSquared(position, stopAtVector3) < 5f) {
                                     m_subsystemTerrain.ChangeCell(projectile.StopAt.X, projectile.StopAt.Y, projectile.StopAt.Z, projectile.Value);
                                     m_subsystemAudio.PlaySound(
