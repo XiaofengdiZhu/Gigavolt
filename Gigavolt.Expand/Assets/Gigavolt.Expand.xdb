@@ -30,5 +30,8 @@
 		<MemberSubsystemTemplate Name="GVInventoryControllerBlockBehavior" Guid="c50d7476-0dac-4210-87e8-6150c4f60246" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="4bd8fb72-d7f7-466d-84be-cbc0a3470cff" Value="Game.SubsystemGVInventoryControllerBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVJavascriptMicrocontrollerBlockBehavior" Guid="75b5af50-ae40-44f0-9ea9-ceeffa984e74" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<Parameter Name="Class" Guid="fdec63d8-84d4-4881-8662-d7dcf41f77ed" Value="Game.SubsystemGVJavascriptMicrocontrollerBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

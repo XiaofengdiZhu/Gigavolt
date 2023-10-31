@@ -12,7 +12,7 @@
 		<TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
 		<FileAlignment>512</FileAlignment>
 		<Deterministic>true</Deterministic>
-		<LangVersion>8</LangVersion>
+		<LangVersion>default</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<DebugSymbols>true</DebugSymbols>
@@ -40,12 +40,38 @@
 			<HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="Esprima, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+			<HintPath>..\packages\Esprima.3.0.0-beta-10\lib\net462\Esprima.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Jint, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+			<HintPath>..\packages\Jint.3.0.0-beta-2046\lib\net462\Jint.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="mscorlib"/>
 		<Reference Include="Survivalcraft">
 			<HintPath>..\Gigavolt\reference\Survivalcraft.exe</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="System"/>
+		<Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+			<HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 		<Reference Include="System.Core"/>
+		<Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+			<HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="System.Numerics"/>
+		<Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+			<HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+			<HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 		<Reference Include="System.Xml.Linq"/>
 		<Reference Include="System.Data.DataSetExtensions"/>
 		<Reference Include="Microsoft.CSharp"/>
@@ -53,6 +79,7 @@
 		<Reference Include="System.Xml"/>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="JavascriptMicrocontroller\EditGVJavascriptMicrocontrollerDialog.cs"/>
 		<Compile Include="JumpWire\GVJumpWireBlock.cs"/>
 		<Compile Include="JumpWire\JumpWireGVElectricElement.cs"/>
 		<Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs"/>
@@ -138,6 +165,10 @@
 		<Compile Include="Transportation\MoreProjectiles\GVDataModifierProjectileBlock.cs"/>
 		<Compile Include="Transportation\MoreProjectiles\SubsystemGVCrusherProjectileBlockBehavior.cs"/>
 		<Compile Include="Transportation\MoreProjectiles\SubsystemGVDataModifierProjectileBlockBehavior.cs"/>
+		<Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerBlock.cs"/>
+		<Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerData.cs"/>
+		<Compile Include="JavascriptMicrocontroller\SubsystemGVJavascriptMicrocontrollerBlockBehavior.cs"/>
+		<Compile Include="JavascriptMicrocontroller\JavascriptMicrocontrollerGVElectricElement.cs"/>
 		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
 		<Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs"/>
 		<Compile Include="WireThrough\GVCopperHammerBlock.cs"/>
@@ -147,6 +178,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Dialogs\EditGVListMemoryBankDialog.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Dialogs\EditGVJavascriptMicrocontrollerDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Gigavolt.Expand.csv">
@@ -161,6 +195,7 @@
 		<None Include="modinfo.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Include="packages.config"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
@@ -385,6 +420,11 @@
 		<None Include="Assets\Models\MoreProjectiles.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Assets\Textures\GVJavascriptMicrocontrollerBlock.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>

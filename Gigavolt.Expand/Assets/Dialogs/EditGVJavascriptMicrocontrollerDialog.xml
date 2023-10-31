@@ -1,0 +1,56 @@
+<CanvasWidget xmlns="runtime-namespace:Game">
+	<CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
+		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
+			<LabelWidget Text="[EditGVJavascriptMicrocontrollerDialog:1]" HorizontalAlignment="Center"/>
+			<CanvasWidget Size="0, 5"/>
+			<CanvasWidget Size="Infinity, 50" Margin="30, 10">
+				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
+					<LabelWidget Color="128, 128, 128" Text="[EditGVJavascriptMicrocontrollerDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
+					<LinkWidget Color="128, 128, 128" Text="https://github.com/XiaofengdiZhu/Gigavolt#js单片机-javascript-microcontroller" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#js单片机-javascript-microcontroller"/>
+				</StackPanelWidget>
+			</CanvasWidget>
+			<CanvasWidget Size="0, 15"/>
+			<StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
+				<CanvasWidget Size="0, Infinity"/>
+				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+					<StackPanelWidget Direction="Vertical" Margin="10, 0">
+						<LabelWidget HorizontalAlignment="Center" Text="[EditGVJavascriptMicrocontrollerDialog:3]"/>
+						<BevelledButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.P0" Style="{Styles/ButtonStyle_70x60}" Margin="0, 10" Text="[EditGVJavascriptMicrocontrollerDialog:8]"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Vertical" Margin="10, 0">
+						<LabelWidget HorizontalAlignment="Center" Text="[EditGVJavascriptMicrocontrollerDialog:4]"/>
+						<BevelledButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.P1" Style="{Styles/ButtonStyle_70x60}" Margin="0, 10" Text="[EditGVJavascriptMicrocontrollerDialog:8]"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Vertical" Margin="10, 0">
+						<LabelWidget HorizontalAlignment="Center" Text="[EditGVJavascriptMicrocontrollerDialog:5]"/>
+						<BevelledButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.P2" Style="{Styles/ButtonStyle_70x60}" Margin="0, 10" Text="[EditGVJavascriptMicrocontrollerDialog:8]"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Vertical" Margin="10, 0">
+						<LabelWidget HorizontalAlignment="Center" Text="[EditGVJavascriptMicrocontrollerDialog:6]"/>
+						<BevelledButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.P3" Style="{Styles/ButtonStyle_70x60}" Margin="0, 10" Text="[EditGVJavascriptMicrocontrollerDialog:8]"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Vertical" Margin="10, 0">
+						<LabelWidget HorizontalAlignment="Center" Text="[EditGVJavascriptMicrocontrollerDialog:7]"/>
+						<BevelledButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.P4" Style="{Styles/ButtonStyle_70x60}" Margin="0, 10" Text="[EditGVJavascriptMicrocontrollerDialog:8]"/>
+					</StackPanelWidget>
+				</StackPanelWidget>
+				<CanvasWidget Size="0, 15"/>
+				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<CanvasWidget Size="474, 34" HorizontalAlignment="Center">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVJavascriptMicrocontrollerDialog.LinearText" Size="470, 30" MaximumLength="1000000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<BitmapButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+					<BitmapButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Delete}" ClickedSubtexture="{Textures/Delete}" Margin="10, 0"/>
+				</StackPanelWidget>
+				<CanvasWidget Size="0, Infinity"/>
+			</StackPanelWidget>
+			<CanvasWidget Size="0, 15"/>
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<BevelledButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVJavascriptMicrocontrollerDialog:21]" Margin="20, 0"/>
+				<BevelledButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVJavascriptMicrocontrollerDialog:22]"/>
+			</StackPanelWidget>
+		</StackPanelWidget>
+	</CanvasWidget>
+</CanvasWidget>
