@@ -32,14 +32,15 @@ namespace Game {
                 delegate(Options options) {
                     options.AllowClr();
                     options.AllowClr(typeof(Program).Assembly, typeof(Matrix).Assembly, typeof(Project).Assembly);
+                    options.TimeoutInterval(TimeSpan.FromSeconds(5));
                 }
             );
             m_jsEngine.Execute(InitJs);
-            m_jsEngine.SetValue("GetPosition", GetPosition);
-            m_jsEngine.SetValue("GetPortState", GetPortState);
-            m_jsEngine.SetValue("SetPortAsDisabled", SetPortAsDisabled);
-            m_jsEngine.SetValue("SetPortAsInput", SetPortAsInput);
-            m_jsEngine.SetValue("SetPortAsOutput", SetPortAsOutput);
+            m_jsEngine.SetValue("getPosition", GetPosition);
+            m_jsEngine.SetValue("getPortState", GetPortState);
+            m_jsEngine.SetValue("setPortDisabled", SetPortDisabled);
+            m_jsEngine.SetValue("setPortInput", SetPortInput);
+            m_jsEngine.SetValue("setPortOutput", SetPortOutput);
         }
 
         public IEditableItemData Copy() {
@@ -54,7 +55,15 @@ namespace Game {
                     m_jsEngine.SetValue($"P{OriginDirection2CustomDirection(i)}", inputs[i]);
                 }
             }
-            m_jsEngine.Execute(m_script);
+            try {
+                m_jsEngine.Execute(m_script);
+            }
+            catch (TimeoutException) {
+                Log.Error("Javascript运行超时（5秒）");
+            }
+            catch (Exception e) {
+                Log.Error(e);
+            }
             uint[] outputs = { 0, 0, 0, 0, 0 };
             for (int i = 0; i < 5; i++) {
                 if (m_portsDefinition[i] == 1) {
@@ -87,7 +96,7 @@ namespace Game {
             return "error";
         }
 
-        public void SetPortAsDisabled(object port) {
+        public void SetPortDisabled(object port) {
             int num = -1;
             try {
                 num = Convert.ToInt32(port);
@@ -100,7 +109,7 @@ namespace Game {
             }
         }
 
-        public void SetPortAsInput(object port) {
+        public void SetPortInput(object port) {
             int num = -1;
             try {
                 num = Convert.ToInt32(port);
@@ -113,7 +122,7 @@ namespace Game {
             }
         }
 
-        public void SetPortAsOutput(object port) {
+        public void SetPortOutput(object port) {
             int num = -1;
             try {
                 num = Convert.ToInt32(port);
@@ -126,9 +135,7 @@ namespace Game {
             }
         }
 
-        public int[] GetPosition() {
-            return new[] { m_position.X, m_position.Y, m_position.Z };
-        }
+        public Point3 GetPosition() => new(m_position.X, m_position.Y, m_position.Z);
 
         public void LoadCode(string code, out string error) {
             error = null;

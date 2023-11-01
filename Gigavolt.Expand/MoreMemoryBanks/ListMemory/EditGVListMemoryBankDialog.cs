@@ -4,23 +4,24 @@ using Engine;
 
 namespace Game {
     public class EditGVListMemoryBankDialog : BaseEditGVMemoryBankDialog {
-        public Action m_handler;
+        public readonly Action m_handler;
 
-        public ButtonWidget m_okButton;
-        public ButtonWidget m_cancelButton;
-        public ButtonWidget m_moreButton;
+        public readonly ButtonWidget m_okButton;
+        public readonly ButtonWidget m_cancelButton;
+        public readonly ButtonWidget m_moreButton;
 
-        public TextBoxWidget m_linearTextBox;
-        public TextBoxWidget m_colCountTextBox;
-        public TextBoxWidget m_offsetTextBox;
-        public TextBoxWidget m_widthTextBox;
-        public TextBoxWidget m_heightTextBox;
-        public LabelWidget m_colCountTextLabel;
-        public LabelWidget m_IDLabel;
-        public BitmapButtonWidget m_copyIDButton;
-        public BitmapButtonWidget m_copyDataButton;
+        public readonly TextBoxWidget m_linearTextBox;
+        public readonly TextBoxWidget m_colCountTextBox;
+        public readonly TextBoxWidget m_offsetTextBox;
+        public readonly TextBoxWidget m_widthTextBox;
+        public readonly TextBoxWidget m_heightTextBox;
+        public readonly LabelWidget m_colCountTextLabel;
+        public readonly LabelWidget m_IDLabel;
+        public readonly BitmapButtonWidget m_copyIDButton;
+        public readonly BitmapButtonWidget m_copyDataButton;
+        public readonly BitmapButtonWidget m_deleteDataButton;
 
-        public GVListMemoryBankData m_memoryBankData;
+        public readonly GVListMemoryBankData m_memoryBankData;
 
         public string m_enterString;
 
@@ -40,6 +41,7 @@ namespace Game {
             m_IDLabel.Text += $"ID: {memoryBankData.m_ID.ToString("X", null)}";
             m_copyIDButton = Children.Find<BitmapButtonWidget>("EditGVListMemoryBankDialog.CopyID");
             m_copyDataButton = Children.Find<BitmapButtonWidget>("EditGVListMemoryBankDialog.CopyData");
+            m_deleteDataButton = Children.Find<BitmapButtonWidget>("EditGVListMemoryBankDialog.DeleteData");
             m_handler = handler;
             m_memoryBankData = memoryBankData;
             UpdateFromData();
@@ -128,10 +130,12 @@ namespace Game {
             if (m_copyIDButton.IsClicked) {
                 ClipboardManager.ClipboardString = m_memoryBankData.m_ID.ToString("X");
             }
-            if (m_copyDataButton.IsClicked) {
-                if (m_linearTextBox.Text.Length > 0) {
-                    ClipboardManager.ClipboardString = m_linearTextBox.Text;
-                }
+            if (m_copyDataButton.IsClicked
+                && m_linearTextBox.Text.Length > 0) {
+                ClipboardManager.ClipboardString = m_linearTextBox.Text;
+            }
+            if (m_deleteDataButton.IsClicked) {
+                m_linearTextBox.Text = string.Empty;
             }
             if (m_moreButton.IsClicked) {
                 if (!ScreensManager.m_screens.ContainsKey("GVMBExternalContent")) {

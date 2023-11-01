@@ -1,39 +1,33 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-
 	<CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
-
 			<LabelWidget Text="[EditGVTruthTableDialog:1]" HorizontalAlignment="Center"/>
-
 			<CanvasWidget Size="0, 5"/>
-
 			<CanvasWidget Size="Infinity, 50" Margin="30, 10">
 				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
 					<LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
 					<LinkWidget Color="128, 128, 128" Text="https://github.com/XiaofengdiZhu/Gigavolt#真值表-truth-table" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#真值表-truth-table"/>
 				</StackPanelWidget>
 			</CanvasWidget>
-
 			<CanvasWidget Size="0, 15"/>
-
 			<StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
 				<CanvasWidget Size="0, Infinity"/>
-				<CanvasWidget Size="504, 54" HorizontalAlignment="Center">
-					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-					<TextBoxWidget Name="EditGVTruthTableDialog.LinearText" Size="500, 50" MaximumLength="1000000" TextureLinearFilter="false" Margin="2, 2"/>
-				</CanvasWidget>
+				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<CanvasWidget Size="474, 34" HorizontalAlignment="Center">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVTruthTableDialog.LinearText" Size="470, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<BitmapButtonWidget Name="EditGVTruthTableDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+					<BitmapButtonWidget Name="EditGVTruthTableDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Delete}" ClickedSubtexture="{Textures/Delete}" Margin="10, 0"/>
+				</StackPanelWidget>
 				<CanvasWidget Size="0, Infinity"/>
 			</StackPanelWidget>
-
 			<CanvasWidget Size="0, 15"/>
-
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 				<BevelledButtonWidget Name="EditGVTruthTableDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVTruthTableDialog:21]" Margin="20, 0"/>
 				<BevelledButtonWidget Name="EditGVTruthTableDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVTruthTableDialog:22]"/>
 			</StackPanelWidget>
-
 		</StackPanelWidget>
 	</CanvasWidget>
-
 </CanvasWidget>

@@ -4,15 +4,15 @@ using Engine;
 
 namespace Game {
     public class EditGVTruthTableDialog : Dialog {
-        public Action<bool> m_handler;
+        public readonly Action<bool> m_handler;
 
-        public ButtonWidget m_okButton;
+        public readonly ButtonWidget m_okButton;
+        public readonly ButtonWidget m_cancelButton;
+        public readonly BitmapButtonWidget m_copyDataButton;
+        public readonly BitmapButtonWidget m_deleteDataButton;
+        public readonly TextBoxWidget m_linearTextBox;
 
-        public ButtonWidget m_cancelButton;
-
-        public TextBoxWidget m_linearTextBox;
-
-        public GVTruthTableData m_truthTableData;
+        public readonly GVTruthTableData m_truthTableData;
 
         public bool m_ignoreTextChanges;
 
@@ -22,6 +22,8 @@ namespace Game {
                 LoadContents(this, node);
                 m_okButton = Children.Find<ButtonWidget>("EditGVTruthTableDialog.OK");
                 m_cancelButton = Children.Find<ButtonWidget>("EditGVTruthTableDialog.Cancel");
+                m_copyDataButton = Children.Find<BitmapButtonWidget>("EditGVTruthTableDialog.CopyData");
+                m_deleteDataButton = Children.Find<BitmapButtonWidget>("EditGVTruthTableDialog.DeleteData");
                 m_linearTextBox = Children.Find<TextBoxWidget>("EditGVTruthTableDialog.LinearText");
                 m_handler = handler;
                 m_truthTableData = truthTableData;
@@ -50,6 +52,13 @@ namespace Game {
                         )
                     );
                 }
+            }
+            if (m_copyDataButton.IsClicked
+                && m_linearTextBox.Text.Length > 0) {
+                ClipboardManager.ClipboardString = m_linearTextBox.Text;
+            }
+            if (m_deleteDataButton.IsClicked) {
+                m_linearTextBox.Text = string.Empty;
             }
             if (Input.Cancel
                 || m_cancelButton.IsClicked) {

@@ -68,7 +68,7 @@ namespace Game {
                 m_subsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, true);
                 m_subsystemTerrain.m_modifiedCells[CellFaces[0].Point] = true;
             }
-            return m_outputs.SequenceEqual(lastOutputs);
+            return !m_outputs.SequenceEqual(lastOutputs);
         }
     }
 }

@@ -580,7 +580,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 | 48(0x30) | 尝试强制刷新合成台、熔炉的合成结果，输出当前合成结果数量                                                                                             |
 ### JS单片机 Javascript Microcontroller
 可以运行Javascript脚本的单片机，理论上可实现一切功能  
-需要先编辑电路板以指定哪些端口为输入，哪些端口为输出，之后每当输入发生变动时都会运行一遍保存其中的Javascript脚本，如运行错误会在游戏日志中报错  
+需要先编辑电路板以指定哪些端口为输入，哪些端口为输出，之后每当输入电压发生变动时，都会运行一遍保存在其中的Javascript脚本，如运行错误会在游戏日志中报错  
 每一个JS单片机的运行环境都是独立的，而一个JS单片机中创建的变量、方法会一直保留（但不会保存进存档），建议在脚本开头判断是否需要初始化后再初始化，否则容易触发重复声明的报错
 
 | 内置变量             | 说明                                                             |
@@ -596,16 +596,16 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 | GameEntitySystem | GameEntitySystem命名空间                                           |
 | Project          | 当前游戏存档的Project对象                                               |
 
-| 内置方法                      | 说明                                                                                |
-|---------------------------|-----------------------------------------------------------------------------------|
-| findSubsystem(string)     | 根据名称返回当前游戏存档的Subsystem，参数开头不要带Subsystem                                           |
-| GetPosition()             | 返回该JS单片机所在位置`[X,Y,Z]`（数组）                                                         |
-| GetPortState(number)      | 获取指定端口的输入输出状态，参数需要输入0到4的整数，如果是输入则返回`input`，输出`output`，禁用`disabled`，参数错误则返回`error` |
-| SetPortAsDisabled(number) | 设置指定端口为禁用，参数需要是0到4的整数                                                             |
-| SetPortAsInput(number)    | 设置指定端口为输入，参数需要是0到4的整数                                                             |
-| SetPortAsOutput(number)   | 设置指定端口为输出，参数需要是0到4的整数                                                             |
-| importNamespace(string)   | 导入并返回命名空间                                                                         |
-
+| 内置方法                    | 说明                                                                                   |
+|-------------------------|--------------------------------------------------------------------------------------|
+| getPosition()           | 返回该JS单片机所在位置，返回类型为`Engine.Point3`，内有`X`、`Y`、`Z`三个字段来表示坐标                             |
+| getPortState(number)    | 返回指定端口的输入输出状态，参数需要输入0到4的整数，如果是输入则返回字符串`input`，输出`output`，禁用`disabled`，参数错误则返回`error` |
+| setPortDisabled(number) | 设置指定端口为禁用，参数需要是0到4的整数                                                                |
+| setPortInput(number)    | 设置指定端口为输入，参数需要是0到4的整数                                                                |
+| setPortOutput(number)   | 设置指定端口为输出，参数需要是0到4的整数                                                                |
+| importNamespace(string) | 导入并返回命名空间                                                                            |
+| findSubsystem(string)   | 根据名称返回当前游戏存档的Subsystem，参数开头不要带Subsystem                                              |
+> 请务必先设置输入端口，否则脚本完全不会运行
 ## 复数方块 Multiple Blocks
 ### 更多两入两出电路板 More Two In Two Out Electrics
 左和右是输入端，上和后是本位输出端，下是溢出/借位等输出端  
