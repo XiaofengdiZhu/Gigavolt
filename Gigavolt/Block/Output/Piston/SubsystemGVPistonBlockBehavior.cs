@@ -24,11 +24,11 @@ namespace Game {
 
         public bool m_allowPistonHeadRemove;
 
-        public Dictionary<Point3, QueuedAction> m_actions = new Dictionary<Point3, QueuedAction>();
+        public Dictionary<Point3, QueuedAction> m_actions = new();
 
-        public List<KeyValuePair<Point3, QueuedAction>> m_tmpActions = new List<KeyValuePair<Point3, QueuedAction>>();
+        public List<KeyValuePair<Point3, QueuedAction>> m_tmpActions = new();
 
-        public DynamicArray<MovingBlock> m_movingBlocks = new DynamicArray<MovingBlock>();
+        public DynamicArray<MovingBlock> m_movingBlocks = new();
 
         public const string IdString = "GVPiston";
 
@@ -177,8 +177,8 @@ namespace Game {
         }
 
         public override void OnChunkDiscarding(TerrainChunk chunk) {
-            BoundingBox boundingBox = new BoundingBox(chunk.BoundingBox.Min - new Vector3(16f), chunk.BoundingBox.Max + new Vector3(16f));
-            DynamicArray<IMovingBlockSet> dynamicArray = new DynamicArray<IMovingBlockSet>();
+            BoundingBox boundingBox = new(chunk.BoundingBox.Min - new Vector3(16f), chunk.BoundingBox.Max + new Vector3(16f));
+            DynamicArray<IMovingBlockSet> dynamicArray = new();
             m_subsystemMovingBlocks.FindMovingBlocks(boundingBox, false, dynamicArray);
             foreach (IMovingBlockSet item in dynamicArray) {
                 if (item.Id == IdString) {
@@ -349,7 +349,7 @@ namespace Game {
             m_movingBlocks.Clear();
             Point3 offset = point;
             MovingBlock item;
-            while (m_movingBlocks.Count < maxExtension + 1) {
+            while (true) {
                 int cellValue = terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z);
                 int num2 = Terrain.ExtractContents(cellValue);
                 int face2 = GVPistonHeadBlock.GetFace(Terrain.ExtractData(cellValue));

@@ -31,9 +31,7 @@ namespace Game {
                     m_counter = num.Value;
                 }
             }
-            CounterGVElectricElement electricElement = (CounterGVElectricElement)SubsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face);
-            if (electricElement != null
-                && electricElement.m_edited) {
+            if (SubsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face) is CounterGVElectricElement { m_edited: true } electricElement) {
                 m_counter = electricElement.m_counter;
                 m_edited = true;
             }
