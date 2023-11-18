@@ -1,5 +1,5 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-	<CanvasWidget Size="960, 540" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<CanvasWidget Size="960, 480" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
 		<StackPanelWidget Direction="Vertical" Margin="20, 0">
 			<StackPanelWidget Direction="Horizontal" Margin="0, 14">
@@ -76,7 +76,7 @@
 						<LabelWidget Text="[EditGVUintDialog:4]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-							<TextBoxWidget Name="EditGVUintDialog.OctTextBox" Text="0" Size="160, 30" MaximumLength="13" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+							<GVTextBoxWidget Name="EditGVUintDialog.OctTextBox" Text="0" Size="160, 30" MaximumLength="13" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyOct" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
 					</StackPanelWidget>
@@ -85,7 +85,7 @@
 						<LabelWidget Text="[EditGVUintDialog:5]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-							<TextBoxWidget Name="EditGVUintDialog.DecTextBox" Text="0" Size="160, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+							<GVTextBoxWidget Name="EditGVUintDialog.DecTextBox" Text="0" Size="160, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyDec" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
 					</StackPanelWidget>
@@ -94,11 +94,16 @@
 						<LabelWidget Text="[EditGVUintDialog:6]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-							<TextBoxWidget Name="EditGVUintDialog.HexTextBox" Text="0" Size="160, 30" MaximumLength="8" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+							<GVTextBoxWidget Name="EditGVUintDialog.HexTextBox" Text="0" Size="160, 30" MaximumLength="8" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyHex" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
 					</StackPanelWidget>
-					<CanvasWidget Size="444, 0"/>
+					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
+						<LabelWidget Text="[EditGVUintDialog:3]"/>
+						<LabelWidget Name="EditGVUintDialog.FixedLabel" Text="0.0" VerticalAlignment="Center"/>
+						<BitmapButtonWidget Name="EditGVUintDialog.CopyFixed" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+					</StackPanelWidget>
+					<CanvasWidget Size="400, 0"/>
 				</StackPanelWidget>
 				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
 					<StackPanelWidget Direction="Horizontal">
@@ -139,10 +144,10 @@
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardRight" Size="70, 50" Text="→" Margin="5, 5"/>
 					</StackPanelWidget>
 				</StackPanelWidget>
-			</StackPanelWidget>
-			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="0, 12">
-				<BevelledButtonWidget Name="EditGVUintDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVUintDialog:1]" Margin="20, 0"/>
-				<BevelledButtonWidget Name="EditGVUintDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVUintDialog:2]"/>
+				<StackPanelWidget Direction="Vertical" VerticalAlignment="Center" HorizontalAlignment="Far" Margin="20, 0">
+					<BevelledButtonWidget Name="EditGVUintDialog.OK" Size="60, 100" Text="[EditGVUintDialog:1]" Margin="0, 10"/>
+					<BevelledButtonWidget Name="EditGVUintDialog.Cancel" Size="60, 100" Text="[EditGVUintDialog:2]" Margin="0, 10"/>
+				</StackPanelWidget>
 			</StackPanelWidget>
 		</StackPanelWidget>
 	</CanvasWidget>

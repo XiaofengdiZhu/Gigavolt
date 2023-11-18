@@ -9,14 +9,16 @@ namespace Game {
         public readonly BevelledButtonWidget[] BinKeyboard = new BevelledButtonWidget[32];
 
         public readonly CheckboxWidget OctCheckbox;
-        public readonly TextBoxWidget OctTextBox;
+        public readonly GVTextBoxWidget OctTextBox;
         public readonly BitmapButtonWidget CopyOct;
         public readonly CheckboxWidget DecCheckbox;
-        public readonly TextBoxWidget DecTextBox;
+        public readonly GVTextBoxWidget DecTextBox;
         public readonly BitmapButtonWidget CopyDec;
         public readonly CheckboxWidget HexCheckbox;
-        public readonly TextBoxWidget HexTextBox;
+        public readonly GVTextBoxWidget HexTextBox;
         public readonly BitmapButtonWidget CopyHex;
+        public readonly LabelWidget FixedLabel;
+        public readonly BitmapButtonWidget CopyFixed;
 
         public readonly BevelledButtonWidget NumberKeyboardShiftLeft;
         public readonly BevelledButtonWidget NumberKeyboardShiftRight;
@@ -43,15 +45,17 @@ namespace Game {
                 BinKeyboard[i] = Children.Find<BevelledButtonWidget>($"EditGVUintDialog.BinKeyboard{i}");
             }
             OctCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.OctCheckbox");
-            OctTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.OctTextBox");
+            OctTextBox = Children.Find<GVTextBoxWidget>("EditGVUintDialog.OctTextBox");
             CopyOct = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyOct");
             DecCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.DecCheckbox");
-            DecTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.DecTextBox");
+            DecTextBox = Children.Find<GVTextBoxWidget>("EditGVUintDialog.DecTextBox");
             CopyDec = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyDec");
             HexCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.HexCheckbox");
             HexCheckbox.IsChecked = true;
-            HexTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.HexTextBox");
+            HexTextBox = Children.Find<GVTextBoxWidget>("EditGVUintDialog.HexTextBox");
             CopyHex = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyHex");
+            FixedLabel = Children.Find<LabelWidget>("EditGVUintDialog.FixedLabel");
+            CopyFixed = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyFixed");
             NumberKeyboardShiftLeft = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardShiftLeft");
             NumberKeyboardShiftRight = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardShiftRight");
             NumberKeyboardNegate = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardNegate");
@@ -72,8 +76,8 @@ namespace Game {
         }
 
         public override void Update() {
-            TextBoxWidget focusedTextBox = OctCheckbox.IsClicked ? OctTextBox :
-                DecCheckbox.IsClicked ? DecTextBox : HexTextBox;
+            GVTextBoxWidget focusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
+                DecCheckbox.IsChecked ? DecTextBox : HexTextBox;
             int lastCaretPosition = focusedTextBox.CaretPosition;
             int lastFocusedLength = focusedTextBox.Text.Length;
             for (int i = 0; i < 32; i++) {
@@ -94,7 +98,6 @@ namespace Game {
                 ApplyNewVoltage(0u);
             }
             if (OctTextBox.Text != m_lastOctString) {
-                Log.Information($"OctTextBox.Text: {OctTextBox.Text} m_lastOctString: {m_lastOctString}");
                 try {
                     uint newVoltage = Convert.ToUInt32(OctTextBox.Text, 8);
                     ApplyNewVoltage(newVoltage);
@@ -138,7 +141,6 @@ namespace Game {
                         NumberKeyboard[i].IsEnabled = false;
                     }
                 }
-                return;
             }
             else if (DecCheckbox.IsClicked
                 || DecTextBox.HasFocus) {
@@ -157,7 +159,6 @@ namespace Game {
                         NumberKeyboard[i].IsEnabled = false;
                     }
                 }
-                return;
             }
             else if (HexCheckbox.IsClicked
                 || HexTextBox.HasFocus) {
@@ -173,16 +174,21 @@ namespace Game {
                         NumberKeyboard[i].IsEnabled = true;
                     }
                 }
-                return;
             }
-            TextBoxWidget newFocusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
+            GVTextBoxWidget newFocusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
                 DecCheckbox.IsChecked ? DecTextBox : HexTextBox;
             if (!newFocusedTextBox.HasFocus) {
                 newFocusedTextBox.HasFocus = true;
             }
             if (newFocusedTextBox == focusedTextBox) {
                 int newFocusedLength = newFocusedTextBox.Text.Length;
-                newFocusedTextBox.CaretPosition = lastCaretPosition + (newFocusedLength - lastFocusedLength);
+                if (newFocusedLength != lastFocusedLength) {
+                    newFocusedTextBox.CaretPosition = lastCaretPosition + (newFocusedLength - lastFocusedLength);
+                }
+            }
+            else {
+                newFocusedTextBox.CaretPosition = newFocusedTextBox.Text.Length;
+                return;
             }
             for (int i = 0; i < 16; i++) {
                 if (NumberKeyboard[i].IsClicked
@@ -224,6 +230,9 @@ namespace Game {
             else if (CopyHex.IsClicked) {
                 ClipboardManager.ClipboardString = HexTextBox.Text;
             }
+            else if (CopyFixed.IsClicked) {
+                ClipboardManager.ClipboardString = FixedLabel.Text;
+            }
             if (ButtonOk.IsClicked) {
                 if (m_lastValidVoltage != m_originalVoltage) {
                     Dismiss(true, m_lastValidVoltage);
@@ -257,6 +266,7 @@ namespace Game {
             DecTextBox.Text = m_lastDecString;
             m_lastHexString = newVoltage.ToString("X");
             HexTextBox.Text = m_lastHexString;
+            FixedLabel.Text = ((newVoltage >> 31 == 1 ? -1 : 1) * (((newVoltage >> 16) & 0x7fffu) + (double)(newVoltage & 0xffffu) / 0xffff)).ToString("G");
             for (int i = 0; i < 32; i++) {
                 bool newBit = ((newVoltage >> i) & 1u) == 1u;
                 bool oldBit = ((m_lastValidVoltage >> i) & 1u) == 1u;
