@@ -1,3 +1,6 @@
+using System;
+using Engine;
+
 namespace Game {
     public class SubsystemGVBatteryBlockBehavior : SubsystemGVEditableItemBehavior<GigaVoltageLevelData> {
         public override int[] HandledBlocks => new[] { GVBatteryBlock.Index };
@@ -14,23 +17,41 @@ namespace Game {
             int count = inventory.GetSlotCount(slotIndex);
             int id = GetIdFromValue(value);
             GigaVoltageLevelData blockData = GetItemData(id, true);
-            DialogsManager.ShowDialog(
-                componentPlayer.GuiWidget,
-                new EditGigaVoltageLevelDialog(
-                    blockData,
-                    delegate {
-                        inventory.RemoveSlotItems(slotIndex, count);
-                        inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)), count);
-                    }
-                )
-            );
+            try {
+                DialogsManager.ShowDialog(
+                    componentPlayer.GuiWidget,
+                    new EditGVUintDialog(
+                        blockData.Data,
+                        newVoltage => {
+                            blockData.Data = newVoltage;
+                            blockData.SaveString();
+                            inventory.RemoveSlotItems(slotIndex, count);
+                            inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)), count);
+                        }
+                    )
+                );
+            }
+            catch (Exception e) {
+                Log.Error(e);
+                return false;
+            }
             return true;
         }
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GigaVoltageLevelData blockData = GetItemData(id, true);
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGigaVoltageLevelDialog(blockData, voltage => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id))); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVUintDialog(
+                    blockData.Data,
+                    newVoltage => {
+                        blockData.Data = newVoltage;
+                        blockData.SaveString();
+                        SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                    }
+                )
+            );
             return true;
         }
     }

@@ -1,0 +1,284 @@
+using System;
+using System.Xml.Linq;
+using Engine;
+
+namespace Game {
+    public class EditGVUintDialog : Dialog {
+        public readonly Action<uint> m_handler;
+
+        public readonly BevelledButtonWidget[] BinKeyboard = new BevelledButtonWidget[32];
+
+        public readonly CheckboxWidget OctCheckbox;
+        public readonly TextBoxWidget OctTextBox;
+        public readonly BitmapButtonWidget CopyOct;
+        public readonly CheckboxWidget DecCheckbox;
+        public readonly TextBoxWidget DecTextBox;
+        public readonly BitmapButtonWidget CopyDec;
+        public readonly CheckboxWidget HexCheckbox;
+        public readonly TextBoxWidget HexTextBox;
+        public readonly BitmapButtonWidget CopyHex;
+
+        public readonly BevelledButtonWidget NumberKeyboardShiftLeft;
+        public readonly BevelledButtonWidget NumberKeyboardShiftRight;
+        public readonly BevelledButtonWidget NumberKeyboardNegate;
+        public readonly BevelledButtonWidget NumberKeyboardBackSpace;
+        public readonly BevelledButtonWidget NumberKeyboardClearEntry;
+        public readonly BevelledButtonWidget[] NumberKeyboard = new BevelledButtonWidget[16];
+        public readonly BevelledButtonWidget NumberKeyboardLeft;
+        public readonly BevelledButtonWidget NumberKeyboardRight;
+
+        public readonly ButtonWidget ButtonOk;
+        public readonly ButtonWidget ButtonCancel;
+
+        public uint m_originalVoltage;
+        public uint m_lastValidVoltage;
+        public string m_lastOctString = "0";
+        public string m_lastDecString = "0";
+        public string m_lastHexString = "0";
+
+        public EditGVUintDialog(uint originalVoltage, Action<uint> handler) {
+            XElement node = ContentManager.Get<XElement>("Dialogs/EditGVUintDialog");
+            LoadContents(this, node);
+            for (int i = 0; i < 32; i++) {
+                BinKeyboard[i] = Children.Find<BevelledButtonWidget>($"EditGVUintDialog.BinKeyboard{i}");
+            }
+            OctCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.OctCheckbox");
+            OctTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.OctTextBox");
+            CopyOct = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyOct");
+            DecCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.DecCheckbox");
+            DecTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.DecTextBox");
+            CopyDec = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyDec");
+            HexCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.HexCheckbox");
+            HexCheckbox.IsChecked = true;
+            HexTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.HexTextBox");
+            CopyHex = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyHex");
+            NumberKeyboardShiftLeft = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardShiftLeft");
+            NumberKeyboardShiftRight = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardShiftRight");
+            NumberKeyboardNegate = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardNegate");
+            NumberKeyboardBackSpace = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardBackSpace");
+            NumberKeyboardClearEntry = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardClearEntry");
+            for (int i = 0; i < 16; i++) {
+                NumberKeyboard[i] = Children.Find<BevelledButtonWidget>($"EditGVUintDialog.NumberKeyboard{i:X}");
+            }
+            NumberKeyboardLeft = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardLeft");
+            NumberKeyboardRight = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardRight");
+            ButtonOk = Children.Find<ButtonWidget>("EditGVUintDialog.OK");
+            ButtonCancel = Children.Find<ButtonWidget>("EditGVUintDialog.Cancel");
+            m_handler = handler;
+            m_originalVoltage = originalVoltage;
+            if (originalVoltage != 0u) {
+                ApplyNewVoltage(originalVoltage);
+            }
+        }
+
+        public override void Update() {
+            TextBoxWidget focusedTextBox = OctCheckbox.IsClicked ? OctTextBox :
+                DecCheckbox.IsClicked ? DecTextBox : HexTextBox;
+            int lastCaretPosition = focusedTextBox.CaretPosition;
+            int lastFocusedLength = focusedTextBox.Text.Length;
+            for (int i = 0; i < 32; i++) {
+                if (BinKeyboard[i].IsClicked) {
+                    ApplyNewVoltage(m_lastValidVoltage ^ (1u << i));
+                }
+            }
+            if (NumberKeyboardShiftLeft.IsClicked) {
+                ApplyNewVoltage(m_lastValidVoltage << 1);
+            }
+            else if (NumberKeyboardShiftRight.IsClicked) {
+                ApplyNewVoltage(m_lastValidVoltage >> 1);
+            }
+            else if (NumberKeyboardNegate.IsClicked) {
+                ApplyNewVoltage(~m_lastValidVoltage);
+            }
+            else if (NumberKeyboardClearEntry.IsClicked) {
+                ApplyNewVoltage(0u);
+            }
+            if (OctTextBox.Text != m_lastOctString) {
+                Log.Information($"OctTextBox.Text: {OctTextBox.Text} m_lastOctString: {m_lastOctString}");
+                try {
+                    uint newVoltage = Convert.ToUInt32(OctTextBox.Text, 8);
+                    ApplyNewVoltage(newVoltage);
+                }
+                catch (Exception e) {
+                    OctTextBox.Text = m_lastOctString;
+                    ShowErrorDialog(e.ToString());
+                }
+            }
+            else if (DecTextBox.Text != m_lastDecString) {
+                try {
+                    uint newVoltage = Convert.ToUInt32(DecTextBox.Text, 10);
+                    ApplyNewVoltage(newVoltage);
+                }
+                catch (Exception e) {
+                    OctTextBox.Text = m_lastOctString;
+                    ShowErrorDialog(e.ToString());
+                }
+            }
+            else if (HexTextBox.Text != m_lastHexString) {
+                try {
+                    uint newVoltage = Convert.ToUInt32(HexTextBox.Text, 16);
+                    ApplyNewVoltage(newVoltage);
+                }
+                catch (Exception e) {
+                    OctTextBox.Text = m_lastOctString;
+                    ShowErrorDialog(e.ToString());
+                }
+            }
+            else if (OctCheckbox.IsClicked
+                || OctTextBox.HasFocus) {
+                if (!OctCheckbox.IsChecked) {
+                    OctCheckbox.IsChecked = true;
+                    if (DecCheckbox.IsChecked) {
+                        DecCheckbox.IsChecked = false;
+                    }
+                    if (HexCheckbox.IsChecked) {
+                        HexCheckbox.IsChecked = false;
+                    }
+                    for (int i = 8; i < 16; i++) {
+                        NumberKeyboard[i].IsEnabled = false;
+                    }
+                }
+                return;
+            }
+            else if (DecCheckbox.IsClicked
+                || DecTextBox.HasFocus) {
+                if (!DecCheckbox.IsChecked) {
+                    DecCheckbox.IsChecked = true;
+                    if (OctCheckbox.IsChecked) {
+                        OctCheckbox.IsChecked = false;
+                    }
+                    if (HexCheckbox.IsChecked) {
+                        HexCheckbox.IsChecked = false;
+                    }
+                    for (int i = 8; i < 10; i++) {
+                        NumberKeyboard[i].IsEnabled = true;
+                    }
+                    for (int i = 10; i < 16; i++) {
+                        NumberKeyboard[i].IsEnabled = false;
+                    }
+                }
+                return;
+            }
+            else if (HexCheckbox.IsClicked
+                || HexTextBox.HasFocus) {
+                if (!HexCheckbox.IsChecked) {
+                    HexCheckbox.IsChecked = true;
+                    if (OctCheckbox.IsChecked) {
+                        OctCheckbox.IsChecked = false;
+                    }
+                    if (DecCheckbox.IsChecked) {
+                        DecCheckbox.IsChecked = false;
+                    }
+                    for (int i = 8; i < 16; i++) {
+                        NumberKeyboard[i].IsEnabled = true;
+                    }
+                }
+                return;
+            }
+            TextBoxWidget newFocusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
+                DecCheckbox.IsChecked ? DecTextBox : HexTextBox;
+            if (!newFocusedTextBox.HasFocus) {
+                newFocusedTextBox.HasFocus = true;
+            }
+            if (newFocusedTextBox == focusedTextBox) {
+                int newFocusedLength = newFocusedTextBox.Text.Length;
+                newFocusedTextBox.CaretPosition = lastCaretPosition + (newFocusedLength - lastFocusedLength);
+            }
+            for (int i = 0; i < 16; i++) {
+                if (NumberKeyboard[i].IsClicked
+                    && newFocusedTextBox.Text.Length < newFocusedTextBox.MaximumLength) {
+                    string newVoltageString = newFocusedTextBox.Text.Insert(newFocusedTextBox.CaretPosition, NumberKeyboard[i].Text);
+                    uint newVoltage = Convert.ToUInt32(
+                        newVoltageString,
+                        OctCheckbox.IsChecked ? 8 :
+                        DecCheckbox.IsChecked ? 10 : 16
+                    );
+                    ApplyNewVoltage(newVoltage);
+                    newFocusedTextBox.CaretPosition++;
+                }
+            }
+            if (NumberKeyboardBackSpace.IsClicked) {
+                if (newFocusedTextBox.CaretPosition > 0) {
+                    string newVoltageString = newFocusedTextBox.Text.Remove(newFocusedTextBox.CaretPosition - 1, 1);
+                    uint newVoltage = Convert.ToUInt32(
+                        newVoltageString,
+                        OctCheckbox.IsChecked ? 8 :
+                        DecCheckbox.IsChecked ? 10 : 16
+                    );
+                    ApplyNewVoltage(newVoltage);
+                    newFocusedTextBox.CaretPosition--;
+                }
+            }
+            else if (NumberKeyboardLeft.IsClicked) {
+                newFocusedTextBox.CaretPosition--;
+            }
+            else if (NumberKeyboardRight.IsClicked) {
+                newFocusedTextBox.CaretPosition++;
+            }
+            else if (CopyOct.IsClicked) {
+                ClipboardManager.ClipboardString = OctTextBox.Text;
+            }
+            else if (CopyDec.IsClicked) {
+                ClipboardManager.ClipboardString = DecTextBox.Text;
+            }
+            else if (CopyHex.IsClicked) {
+                ClipboardManager.ClipboardString = HexTextBox.Text;
+            }
+            if (ButtonOk.IsClicked) {
+                if (m_lastValidVoltage != m_originalVoltage) {
+                    Dismiss(true, m_lastValidVoltage);
+                }
+                else {
+                    Dismiss(false);
+                }
+            }
+            if (Input.Cancel
+                || ButtonCancel.IsClicked
+                || Input.Back) {
+                Dismiss(false);
+            }
+        }
+
+        public void Dismiss(bool result, uint voltage = 0u) {
+            DialogsManager.HideDialog(this);
+            if (m_handler != null && result) {
+                m_handler(voltage);
+            }
+        }
+
+        public void ApplyNewVoltage(uint newVoltage) {
+            if (m_lastValidVoltage == newVoltage) {
+                return;
+            }
+            m_lastOctString = Convert.ToString(newVoltage, 8);
+            OctTextBox.Text = m_lastOctString;
+            Log.Information($"ApplyNewVoltage OctTextBox.Text {OctTextBox.Text} m_lastOctString {m_lastOctString}");
+            m_lastDecString = newVoltage.ToString();
+            DecTextBox.Text = m_lastDecString;
+            m_lastHexString = newVoltage.ToString("X");
+            HexTextBox.Text = m_lastHexString;
+            for (int i = 0; i < 32; i++) {
+                bool newBit = ((newVoltage >> i) & 1u) == 1u;
+                bool oldBit = ((m_lastValidVoltage >> i) & 1u) == 1u;
+                if (newBit != oldBit) {
+                    BinKeyboard[i].Text = newBit ? "1" : "0";
+                    BinKeyboard[i].IsChecked = !newBit;
+                }
+            }
+            m_lastValidVoltage = newVoltage;
+        }
+
+        public static void ShowErrorDialog(string message) {
+            DialogsManager.ShowDialog(
+                null,
+                new MessageDialog(
+                    "发生错误",
+                    message,
+                    "OK",
+                    null,
+                    null
+                )
+            );
+        }
+    }
+}

@@ -1,0 +1,149 @@
+<CanvasWidget xmlns="runtime-namespace:Game">
+	<CanvasWidget Size="960, 540" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
+		<StackPanelWidget Direction="Vertical" Margin="20, 0">
+			<StackPanelWidget Direction="Horizontal" Margin="0, 14">
+				<LabelWidget Text="[EditGVUintDialog:7]" Size="100, 64" VerticalAlignment="Center" TextAnchor="HorizontalCenter"/>
+				<StackPanelWidget Direction="Vertical">
+					<StackPanelWidget Direction="Horizontal">
+						<CanvasWidget Size="Infinity, 16"/>
+						<LabelWidget Size="36, 16" Text="28" FontScale="0.8" Color="128, 128, 128"/>
+						<CanvasWidget Size="Infinity, 16"/>
+						<LabelWidget Size="36, 16" Text="24" FontScale="0.8" Color="128, 128, 128"/>
+						<CanvasWidget Size="Infinity, 16"/>
+						<LabelWidget Size="36, 16" Text="20" FontScale="0.8" Color="128, 128, 128"/>
+						<CanvasWidget Size="Infinity, 16"/>
+						<LabelWidget Size="36, 16" Text="16" FontScale="0.8" Color="128, 128, 128"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal">
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard31" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard30" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard29" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard28" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<CanvasWidget Size="8, 36"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard27" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard26" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard25" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard24" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<CanvasWidget Size="8, 36"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard23" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard22" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard21" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard20" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<CanvasWidget Size="8, 36"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard19" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard18" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard17" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard16" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal">
+						<CanvasWidget Size="Infinity, 16"/>
+						<LabelWidget Size="36, 16" Text="12" FontScale="0.8" Color="128, 128, 128"/>
+						<CanvasWidget Size="Infinity, 16"/>
+						<LabelWidget Size="36, 16" Text=" 8" FontScale="0.8" Color="128, 128, 128"/>
+						<CanvasWidget Size="Infinity, 16"/>
+						<LabelWidget Size="36, 16" Text=" 4" FontScale="0.8" Color="128, 128, 128"/>
+						<CanvasWidget Size="Infinity, 16"/>
+						<LabelWidget Size="36, 16" Text=" 0" FontScale="0.8" Color="128, 128, 128"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal">
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard15" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard14" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard13" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard12" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<CanvasWidget Size="8, 36"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard11" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard10" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard9" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard8" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<CanvasWidget Size="8, 36"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard7" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard6" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard5" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard4" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<CanvasWidget Size="8, 36"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard3" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard2" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard1" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.BinKeyboard0" IsChecked="true" Size="50, 50" Text="0" FontScale="0.8"/>
+					</StackPanelWidget>
+				</StackPanelWidget>
+			</StackPanelWidget>
+			<StackPanelWidget Direction="Horizontal">
+				<StackPanelWidget Direction="Vertical">
+					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
+						<CheckboxWidget Name="EditGVUintDialog.OctCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24" VerticalAlignment="Center"/>
+						<LabelWidget Text="[EditGVUintDialog:4]" Size="100, 34"/>
+						<CanvasWidget Size="164, 34">
+							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+							<TextBoxWidget Name="EditGVUintDialog.OctTextBox" Text="0" Size="160, 30" MaximumLength="13" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+						</CanvasWidget>
+						<BitmapButtonWidget Name="EditGVUintDialog.CopyOct" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
+						<CheckboxWidget Name="EditGVUintDialog.DecCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24" VerticalAlignment="Center"/>
+						<LabelWidget Text="[EditGVUintDialog:5]" Size="100, 34"/>
+						<CanvasWidget Size="164, 34">
+							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+							<TextBoxWidget Name="EditGVUintDialog.DecTextBox" Text="0" Size="160, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+						</CanvasWidget>
+						<BitmapButtonWidget Name="EditGVUintDialog.CopyDec" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
+						<CheckboxWidget Name="EditGVUintDialog.HexCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24" VerticalAlignment="Center"/>
+						<LabelWidget Text="[EditGVUintDialog:6]" Size="100, 34"/>
+						<CanvasWidget Size="164, 34">
+							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+							<TextBoxWidget Name="EditGVUintDialog.HexTextBox" Text="0" Size="160, 30" MaximumLength="8" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+						</CanvasWidget>
+						<BitmapButtonWidget Name="EditGVUintDialog.CopyHex" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+					</StackPanelWidget>
+					<CanvasWidget Size="444, 0"/>
+				</StackPanelWidget>
+				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
+					<StackPanelWidget Direction="Horizontal">
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardShiftLeft" Size="70, 50" Text="&lt;&lt;" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardShiftRight" Size="70, 50" Text="&gt;&gt;" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardNegate" Size="70, 50" Text="~" FontScale="1.2" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardBackSpace" Size="70, 50" Margin="5, 5">
+							<RectangleWidget Size="24, 24" Subtexture="{Textures/Delete}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</BevelledButtonWidget>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardClearEntry" Size="70, 50" Text="CE" Margin="5, 5"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal">
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard7" Size="70, 50" Text="7" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard8" Size="70, 50" Text="8" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard9" Size="70, 50" Text="9" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardA" Size="70, 50" Text="A" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardB" Size="70, 50" Text="B" Margin="5, 5"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal">
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard4" Size="70, 50" Text="4" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard5" Size="70, 50" Text="5" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard6" Size="70, 50" Text="6" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardC" Size="70, 50" Text="C" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardD" Size="70, 50" Text="D" Margin="5, 5"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal">
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard1" Size="70, 50" Text="1" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard2" Size="70, 50" Text="2" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard3" Size="70, 50" Text="3" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardE" Size="70, 50" Text="E" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardF" Size="70, 50" Text="F" Margin="5, 5"/>
+					</StackPanelWidget>
+					<StackPanelWidget Direction="Horizontal">
+						<CanvasWidget Size="70, 50" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard0" Size="70, 50" Text="0" Margin="5, 5"/>
+						<CanvasWidget Size="70, 50" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardLeft" Size="70, 50" Text="←" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardRight" Size="70, 50" Text="→" Margin="5, 5"/>
+					</StackPanelWidget>
+				</StackPanelWidget>
+			</StackPanelWidget>
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="0, 12">
+				<BevelledButtonWidget Name="EditGVUintDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVUintDialog:1]" Margin="20, 0"/>
+				<BevelledButtonWidget Name="EditGVUintDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVUintDialog:2]"/>
+			</StackPanelWidget>
+		</StackPanelWidget>
+	</CanvasWidget>
+</CanvasWidget>

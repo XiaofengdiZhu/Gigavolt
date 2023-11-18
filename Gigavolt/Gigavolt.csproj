@@ -143,6 +143,7 @@
 		<Compile Include="ClassicBlock\Sign\GVWoodenPostedSignCBlock.cs"/>
 		<Compile Include="ClassicBlock\Sign\SubsystemGVSignBlockCBehavior.cs"/>
 		<Compile Include="Dialog\BaseEditGVMemoryBankDialog.cs"/>
+		<Compile Include="Dialog\EditGVUintDialog.cs"/>
 		<Compile Include="Dialog\EditGVButtonDialog.cs"/>
 		<Compile Include="Dialog\EditGVCounterDialog.cs"/>
 		<Compile Include="Dialog\EditGVSignCDialog.cs"/>
@@ -371,6 +372,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Dialogs\EditGVCounterDialog.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\Dialogs\EditGVUintDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Gigavolt.csv">
