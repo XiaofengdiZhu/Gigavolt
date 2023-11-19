@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Linq;
 using Engine;
+using Engine.Input;
 
 namespace Game {
     public class EditGVUintDialog : Dialog {
@@ -103,7 +104,7 @@ namespace Game {
                 }
                 catch (Exception e) {
                     OctTextBox.Text = m_lastOctString;
-                    ShowErrorDialog(e.ToString());
+                    ShowErrorDialog(e, 8);
                 }
             }
             else if (DecTextBox.Text != m_lastDecString) {
@@ -113,7 +114,7 @@ namespace Game {
                 }
                 catch (Exception e) {
                     DecTextBox.Text = m_lastDecString;
-                    ShowErrorDialog(e.ToString());
+                    ShowErrorDialog(e);
                 }
             }
             else if (HexTextBox.Text != m_lastHexString) {
@@ -123,7 +124,7 @@ namespace Game {
                 }
                 catch (Exception e) {
                     HexTextBox.Text = m_lastHexString;
-                    ShowErrorDialog(e.ToString());
+                    ShowErrorDialog(e, 16);
                 }
             }
             else if (OctCheckbox.IsClicked
@@ -194,19 +195,17 @@ namespace Game {
                 if (NumberKeyboard[i].IsClicked
                     && newFocusedTextBox.Text.Length < newFocusedTextBox.MaximumLength) {
                     string newVoltageString = newFocusedTextBox.Text.Insert(newFocusedTextBox.CaretPosition, NumberKeyboard[i].Text);
+                    int fromBase = OctCheckbox.IsChecked ? 8 :
+                        DecCheckbox.IsChecked ? 10 : 16;
                     try {
-                        uint newVoltage = Convert.ToUInt32(
-                            newVoltageString,
-                            OctCheckbox.IsChecked ? 8 :
-                            DecCheckbox.IsChecked ? 10 : 16
-                        );
+                        uint newVoltage = Convert.ToUInt32(newVoltageString, fromBase);
                         ApplyNewVoltage(newVoltage);
                         newFocusedTextBox.CaretPosition++;
                     }
                     catch (Exception e) {
                         newFocusedTextBox.Text = OctCheckbox.IsChecked ? m_lastOctString :
                             DecCheckbox.IsChecked ? m_lastDecString : m_lastHexString;
-                        ShowErrorDialog(e.ToString());
+                        ShowErrorDialog(e, fromBase);
                     }
                 }
             }
@@ -225,10 +224,12 @@ namespace Game {
                     }
                 }
             }
-            else if (NumberKeyboardLeft.IsClicked) {
+            else if (NumberKeyboardLeft.IsClicked
+                || newFocusedTextBox.Input.IsKeyDownOnce(Key.LeftArrow)) {
                 newFocusedTextBox.CaretPosition--;
             }
-            else if (NumberKeyboardRight.IsClicked) {
+            else if (NumberKeyboardRight.IsClicked
+                || newFocusedTextBox.Input.IsKeyDownOnce(Key.RightArrow)) {
                 newFocusedTextBox.CaretPosition++;
             }
             else if (CopyOct.IsClicked) {
@@ -291,12 +292,21 @@ namespace Game {
             m_lastValidVoltage = newVoltage;
         }
 
-        public static void ShowErrorDialog(string message) {
+        public static void ShowErrorDialog(Exception exception, int fromBase = 10) {
             DialogsManager.ShowDialog(
                 null,
                 new MessageDialog(
                     "发生错误",
-                    message,
+                    exception switch {
+                        ArgumentOutOfRangeException => "输入不能为空",
+                        FormatException => $"不能输入0到{(fromBase == 8 ? "7" : "9")}{(fromBase == 16 ? "和A到F" : "")}以外的字符{(fromBase == 16 ? "（不区分大小写）" : "")}",
+                        OverflowException => $"不能输入负数或大于{fromBase switch {
+                            8 => "八进制37777777777",
+                            16 => "十六进制FFFFFFFF",
+                            _ => "十进制4294967295"
+                        }}的数",
+                        _ => exception.ToString()
+                    },
                     "OK",
                     null,
                     null
