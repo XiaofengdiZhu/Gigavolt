@@ -1,7 +1,8 @@
 ﻿namespace Game {
-    class GigavoltModLoader : ModLoader {
+    public class GigavoltModLoader : ModLoader {
         public override void __ModInitialize() {
             ModsManager.RegisterHook("OnProjectDisposed", this);
+            ModsManager.RegisterHook("ToFreeChunks", this);
         }
 
         public override void OnProjectDisposed() {
@@ -14,6 +15,12 @@
                 }
             }
             GVStaticStorage.GVSGCFEEList.Clear();
+            GVStaticStorage.PreventChunkFromBeingFree = false;
+            GVStaticStorage.GVUsingChunks.Clear();
+        }
+
+        public override void ToFreeChunks(TerrainUpdater terrainUpdater, TerrainChunk chunk, out bool KeepWorking) {
+            KeepWorking = GVStaticStorage.PreventChunkFromBeingFree && GVStaticStorage.GVUsingChunks.Contains(chunk.Coords);
         }
     }
 }

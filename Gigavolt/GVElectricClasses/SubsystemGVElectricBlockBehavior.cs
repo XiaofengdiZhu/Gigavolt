@@ -1,3 +1,4 @@
+using Engine;
 using TemplatesDatabase;
 
 namespace Game {
@@ -8,10 +9,12 @@ namespace Game {
 
         public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded) {
             m_subsystemGVElectric.OnGVElectricElementBlockGenerated(x, y, z);
+            GVStaticStorage.GVUsingChunks.Add(new Point2(x >> 4, z >> 4));
         }
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) {
             m_subsystemGVElectric.OnGVElectricElementBlockAdded(x, y, z);
+            GVStaticStorage.GVUsingChunks.Add(new Point2(x >> 4, z >> 4));
         }
 
         public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) {
