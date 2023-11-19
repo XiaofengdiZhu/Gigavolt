@@ -16,9 +16,11 @@ namespace Game {
             GigaVoltageLevelData blockData = GetItemData(id, true);
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
-                new EditGigaVoltageLevelDialog(
-                    blockData,
-                    _ => {
+                new EditGVUintDialog(
+                    blockData.Data,
+                    newVoltage => {
+                        blockData.Data = newVoltage;
+                        blockData.SaveString();
                         inventory.RemoveSlotItems(slotIndex, count);
                         inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)), count);
                     }
@@ -30,7 +32,17 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GigaVoltageLevelData blockData = GetItemData(id, true);
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGigaVoltageLevelDialog(blockData, voltage => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id))); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVUintDialog(
+                    blockData.Data,
+                    newVoltage => {
+                        blockData.Data = newVoltage;
+                        blockData.SaveString();
+                        SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                    }
+                )
+            );
             return true;
         }
     }

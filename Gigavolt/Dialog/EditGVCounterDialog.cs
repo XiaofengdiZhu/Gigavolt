@@ -11,48 +11,45 @@ namespace Game {
 
         public readonly ButtonWidget m_cancelButton;
 
-        public readonly TextBoxWidget m_overflowTextBox;
-        public readonly TextBoxWidget m_currentTextBox;
+        public readonly BevelledButtonWidget m_overflowButton;
+        public readonly BevelledButtonWidget m_currentButton;
         public readonly LabelWidget m_currentLabel;
 
         public readonly GigaVoltageLevelData m_blockData;
+        public uint m_current;
 
         public EditGVCounterDialog(GigaVoltageLevelData blockData, CounterGVElectricElement element, Action<uint> handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVCounterDialog");
             LoadContents(this, node);
             m_okButton = Children.Find<ButtonWidget>("EditGVCounterDialog.OK");
             m_cancelButton = Children.Find<ButtonWidget>("EditGVCounterDialog.Cancel");
-            m_overflowTextBox = Children.Find<TextBoxWidget>("EditGVCounterDialog.Overflow");
-            m_overflowTextBox.Text = blockData.Data.ToString("X");
-            m_currentTextBox = Children.Find<TextBoxWidget>("EditGVCounterDialog.Current");
+            m_overflowButton = Children.Find<BevelledButtonWidget>("EditGVCounterDialog.Overflow");
+            m_overflowButton.Text = blockData.Data.ToString("X");
+            m_currentButton = Children.Find<BevelledButtonWidget>("EditGVCounterDialog.Current");
             m_currentLabel = Children.Find<LabelWidget>("EditGVCounterDialog.CurrentLabel");
             if (element == null) {
-                m_currentTextBox.IsEnabled = false;
-                m_currentTextBox.Text = "0";
+                m_currentButton.IsEnabled = false;
+                m_currentButton.Text = "0";
                 m_currentLabel.Color = Color.Gray;
             }
             else {
-                m_currentTextBox.Text = element.m_counter.ToString("X");
+                m_current = element.m_counter;
+                m_currentButton.Text = m_current.ToString("X");
             }
             m_handler = handler;
             m_blockData = blockData;
         }
 
         public override void Update() {
+            if (m_overflowButton.IsClicked) {
+                DialogsManager.ShowDialog(this, new EditGVUintDialog(m_blockData.Data, newOverflow => m_overflowButton.Text = newOverflow.ToString("X")));
+            }
+            else if (m_currentButton.IsClicked) {
+                DialogsManager.ShowDialog(this, new EditGVUintDialog(m_current, newCurrent => m_currentButton.Text = newCurrent.ToString("X")));
+            }
             if (m_okButton.IsClicked) {
-                if (m_overflowTextBox.Text.Length == 0
-                    && m_currentTextBox.Text.Length == 0) {
-                    Dismiss(false);
-                    return;
-                }
-                if (m_overflowTextBox.Text.Length == 0) {
-                    m_overflowTextBox.Text = "0";
-                }
-                if (m_currentTextBox.Text.Length == 0) {
-                    m_currentTextBox.Text = "0";
-                }
-                if (uint.TryParse(m_overflowTextBox.Text, NumberStyles.HexNumber, null, out uint newOverflow)
-                    && uint.TryParse(m_currentTextBox.Text, NumberStyles.HexNumber, null, out uint newCurrent)) {
+                if (uint.TryParse(m_overflowButton.Text, NumberStyles.HexNumber, null, out uint newOverflow)
+                    && uint.TryParse(m_currentButton.Text, NumberStyles.HexNumber, null, out uint newCurrent)) {
                     if (newOverflow > 0
                         && newCurrent >= newOverflow) {
                         DialogsManager.ShowDialog(

@@ -7,10 +7,9 @@ namespace Game {
         public readonly Action<uint> m_handler;
 
         public readonly ButtonWidget m_okButton;
-
         public readonly ButtonWidget m_cancelButton;
 
-        public readonly TextBoxWidget m_voltageLevelTextBox;
+        public readonly BevelledButtonWidget m_gigaVoltageLevelButton;
         public readonly TextBoxWidget m_durationTextBox;
 
         public readonly GVButtonData m_blockData;
@@ -20,8 +19,8 @@ namespace Game {
             LoadContents(this, node);
             m_okButton = Children.Find<ButtonWidget>("EditGVButtonDialog.OK");
             m_cancelButton = Children.Find<ButtonWidget>("EditGVButtonDialog.Cancel");
-            m_voltageLevelTextBox = Children.Find<TextBoxWidget>("EditGVButtonDialog.GigaVoltageLevel");
-            m_voltageLevelTextBox.Text = blockData.GigaVoltageLevel.ToString("X", null);
+            m_gigaVoltageLevelButton = Children.Find<BevelledButtonWidget>("EditGVButtonDialog.GigaVoltageLevelButton");
+            m_gigaVoltageLevelButton.Text = blockData.GigaVoltageLevel.ToString("X", null);
             m_durationTextBox = Children.Find<TextBoxWidget>("EditGVButtonDialog.Duration");
             m_durationTextBox.Text = blockData.Duration.ToString();
             m_handler = handler;
@@ -29,8 +28,11 @@ namespace Game {
         }
 
         public override void Update() {
+            if (m_gigaVoltageLevelButton.IsClicked) {
+                DialogsManager.ShowDialog(this, new EditGVUintDialog(m_blockData.GigaVoltageLevel, newVoltage => m_gigaVoltageLevelButton.Text = newVoltage.ToString("X", null)));
+            }
             if (m_okButton.IsClicked) {
-                if (uint.TryParse(m_voltageLevelTextBox.Text, NumberStyles.HexNumber, null, out uint voltage)
+                if (uint.TryParse(m_gigaVoltageLevelButton.Text, NumberStyles.HexNumber, null, out uint voltage)
                     && int.TryParse(m_durationTextBox.Text, out int duration)
                     && duration > 0) {
                     m_blockData.GigaVoltageLevel = voltage;
@@ -39,7 +41,7 @@ namespace Game {
                     Dismiss(true, voltage);
                 }
                 else {
-                    if (m_voltageLevelTextBox.Text.Length == 0
+                    if (m_gigaVoltageLevelButton.Text.Length == 0
                         || m_durationTextBox.Text.Length == 0) {
                         Dismiss(false);
                     }

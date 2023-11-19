@@ -37,6 +37,9 @@ namespace Game {
         public string m_lastOctString = "0";
         public string m_lastDecString = "0";
         public string m_lastHexString = "0";
+        GVTextBoxWidget m_lastFocusedTextBox;
+        int m_lastCaretPosition;
+        int m_lastFocusedLength;
 
         public EditGVUintDialog(uint originalVoltage, Action<uint> handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVUintDialog");
@@ -76,10 +79,6 @@ namespace Game {
         }
 
         public override void Update() {
-            GVTextBoxWidget focusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
-                DecCheckbox.IsChecked ? DecTextBox : HexTextBox;
-            int lastCaretPosition = focusedTextBox.CaretPosition;
-            int lastFocusedLength = focusedTextBox.Text.Length;
             for (int i = 0; i < 32; i++) {
                 if (BinKeyboard[i].IsClicked) {
                     ApplyNewVoltage(m_lastValidVoltage ^ (1u << i));
@@ -113,7 +112,7 @@ namespace Game {
                     ApplyNewVoltage(newVoltage);
                 }
                 catch (Exception e) {
-                    OctTextBox.Text = m_lastOctString;
+                    DecTextBox.Text = m_lastDecString;
                     ShowErrorDialog(e.ToString());
                 }
             }
@@ -123,7 +122,7 @@ namespace Game {
                     ApplyNewVoltage(newVoltage);
                 }
                 catch (Exception e) {
-                    OctTextBox.Text = m_lastOctString;
+                    HexTextBox.Text = m_lastHexString;
                     ShowErrorDialog(e.ToString());
                 }
             }
@@ -180,39 +179,50 @@ namespace Game {
             if (!newFocusedTextBox.HasFocus) {
                 newFocusedTextBox.HasFocus = true;
             }
-            if (newFocusedTextBox == focusedTextBox) {
+            if (newFocusedTextBox == m_lastFocusedTextBox) {
                 int newFocusedLength = newFocusedTextBox.Text.Length;
-                if (newFocusedLength != lastFocusedLength) {
-                    newFocusedTextBox.CaretPosition = lastCaretPosition + (newFocusedLength - lastFocusedLength);
+                newFocusedTextBox.CaretPosition = m_lastCaretPosition;
+                if (newFocusedLength != m_lastFocusedLength) {
+                    newFocusedTextBox.CaretPosition += newFocusedLength - m_lastFocusedLength;
                 }
             }
             else {
+                Log.Information($"{(m_lastFocusedTextBox == null ? "null" : m_lastFocusedTextBox.Text)} -> {newFocusedTextBox.Text}");
                 newFocusedTextBox.CaretPosition = newFocusedTextBox.Text.Length;
-                return;
             }
             for (int i = 0; i < 16; i++) {
                 if (NumberKeyboard[i].IsClicked
                     && newFocusedTextBox.Text.Length < newFocusedTextBox.MaximumLength) {
                     string newVoltageString = newFocusedTextBox.Text.Insert(newFocusedTextBox.CaretPosition, NumberKeyboard[i].Text);
-                    uint newVoltage = Convert.ToUInt32(
-                        newVoltageString,
-                        OctCheckbox.IsChecked ? 8 :
-                        DecCheckbox.IsChecked ? 10 : 16
-                    );
-                    ApplyNewVoltage(newVoltage);
-                    newFocusedTextBox.CaretPosition++;
+                    try {
+                        uint newVoltage = Convert.ToUInt32(
+                            newVoltageString,
+                            OctCheckbox.IsChecked ? 8 :
+                            DecCheckbox.IsChecked ? 10 : 16
+                        );
+                        ApplyNewVoltage(newVoltage);
+                        newFocusedTextBox.CaretPosition++;
+                    }
+                    catch (Exception e) {
+                        newFocusedTextBox.Text = OctCheckbox.IsChecked ? m_lastOctString :
+                            DecCheckbox.IsChecked ? m_lastDecString : m_lastHexString;
+                        ShowErrorDialog(e.ToString());
+                    }
                 }
             }
             if (NumberKeyboardBackSpace.IsClicked) {
                 if (newFocusedTextBox.CaretPosition > 0) {
-                    string newVoltageString = newFocusedTextBox.Text.Remove(newFocusedTextBox.CaretPosition - 1, 1);
+                    bool flag = newFocusedTextBox.CaretPosition != newFocusedTextBox.Text.Length;
+                    string newVoltageString = newFocusedTextBox.Text.Remove(newFocusedTextBox.CaretPosition - 1, 1).Trim();
                     uint newVoltage = Convert.ToUInt32(
-                        newVoltageString,
+                        newVoltageString == string.Empty ? "0" : newVoltageString,
                         OctCheckbox.IsChecked ? 8 :
                         DecCheckbox.IsChecked ? 10 : 16
                     );
                     ApplyNewVoltage(newVoltage);
-                    newFocusedTextBox.CaretPosition--;
+                    if (flag) {
+                        newFocusedTextBox.CaretPosition--;
+                    }
                 }
             }
             else if (NumberKeyboardLeft.IsClicked) {
@@ -233,6 +243,10 @@ namespace Game {
             else if (CopyFixed.IsClicked) {
                 ClipboardManager.ClipboardString = FixedLabel.Text;
             }
+            m_lastFocusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
+                DecCheckbox.IsChecked ? DecTextBox : HexTextBox;
+            m_lastCaretPosition = m_lastFocusedTextBox.CaretPosition;
+            m_lastFocusedLength = m_lastFocusedTextBox.Text.Length;
             if (ButtonOk.IsClicked) {
                 if (m_lastValidVoltage != m_originalVoltage) {
                     Dismiss(true, m_lastValidVoltage);
@@ -261,7 +275,6 @@ namespace Game {
             }
             m_lastOctString = Convert.ToString(newVoltage, 8);
             OctTextBox.Text = m_lastOctString;
-            Log.Information($"ApplyNewVoltage OctTextBox.Text {OctTextBox.Text} m_lastOctString {m_lastOctString}");
             m_lastDecString = newVoltage.ToString();
             DecTextBox.Text = m_lastDecString;
             m_lastHexString = newVoltage.ToString("X");
