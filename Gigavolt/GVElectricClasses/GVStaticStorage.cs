@@ -21,5 +21,6 @@ namespace Game {
 
         public static bool PreventChunkFromBeingFree = false;
         public static HashSet<Point2> GVUsingChunks = new();
+        public static bool DisplayVoltage = false;
     }
 }

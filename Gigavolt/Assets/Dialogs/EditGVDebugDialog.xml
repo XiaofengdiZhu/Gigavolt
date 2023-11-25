@@ -1,5 +1,5 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-	<CanvasWidget Size="500, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<CanvasWidget Size="500, 480" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near">
 			<LabelWidget Font="{Fonts/Pericles}" Text="[EditGVDebugDialog:1]" HorizontalAlignment="Center" Margin="0, 15"/>
@@ -10,6 +10,11 @@
 					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 					<TextBoxWidget Name="EditGVDebugDialog.Speed" Size="120, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 				</CanvasWidget>
+			</StackPanelWidget>
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="0, 10">
+				<LabelWidget Text="[EditGVDebugDialog:8]" WordWrap="true"/>
+				<CanvasWidget Size="20, 0"/>
+				<CheckboxWidget Name="EditGVDebugDialog.DisplayVoltage" CheckboxSize="24, 24" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
 			</StackPanelWidget>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="0, 10">
 				<LabelWidget Text="[EditGVDebugDialog:5]" VerticalAlignment="Center"/>

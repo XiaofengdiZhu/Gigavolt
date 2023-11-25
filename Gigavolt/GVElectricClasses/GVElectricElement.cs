@@ -48,5 +48,16 @@ namespace Game {
             }
             return num;
         }
+
+        public uint CalculateAllInputsVoltage() {
+            uint num = 0u;
+            foreach (GVElectricConnection connection in Connections) {
+                if (connection.ConnectorType != GVElectricConnectorType.Output
+                    && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
+                    num |= connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                }
+            }
+            return num;
+        }
     }
 }

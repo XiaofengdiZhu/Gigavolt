@@ -87,5 +87,13 @@
 				<Parameter Name="Class" Guid="9d157488-e945-45dd-91cb-d92a2a3b35d1" Value="Game.ComponentGVDispenser" Type="string"/>
 			</MemberComponentTemplate>
 		</EntityTemplate>
+		<EntityTemplate Name="Player" Guid="4be6c1c5-d65d-4537-8a8b-a391969e6dc2">
+			<MemberComponentTemplate Name="GVDisplayVoltage" Guid="91147cf2-9f94-457c-a4c6-d51add890770" InheritanceParent="81f98c4f-2b04-4461-903d-5b766344b6ba"/>
+		</EntityTemplate>
+	</Folder>
+	<Folder Name="Rendering" Guid="dec469ce-9b77-465f-a2a8-36d2640424db">
+		<ComponentTemplate Name="GVDisplayVoltage" Guid="81f98c4f-2b04-4461-903d-5b766344b6ba" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+			<Parameter Name="Class" Guid="4348fbb0-b11f-401e-b048-644a1a19fa85" Value="Game.ComponentGVDisplayVoltage" Type="string"/>
+		</ComponentTemplate>
 	</Folder>
 </Mod>

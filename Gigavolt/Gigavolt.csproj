@@ -149,6 +149,7 @@
 		<Compile Include="Dialog\EditGVSignCDialog.cs"/>
 		<Compile Include="Dialog\EditGVSignDialog.cs"/>
 		<Compile Include="Dialog\TextBoxWidget.cs"/>
+		<Compile Include="GVElectricClasses\ComponentGVDisplayVoltage.cs"/>
 		<Compile Include="GVElectricClasses\SubsystemGVEditableItemBehavior.cs"/>
 		<Compile Include="Widget\GVDispenserWidget.cs"/>
 		<Compile Include="Widget\GVStepFloatingButtons.cs"/>

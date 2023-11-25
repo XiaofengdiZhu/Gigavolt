@@ -14,6 +14,7 @@ namespace Game {
         public readonly CheckboxWidget m_displayStepFloatingButtonsCheckbox;
         public readonly CheckboxWidget m_keyboardControlCheckbox;
         public readonly CheckboxWidget m_preventChunkFromBeingFreeCheckbox;
+        public readonly CheckboxWidget m_displayVoltageCheckbox;
 
         public readonly GVDebugData m_blockData;
 
@@ -30,6 +31,7 @@ namespace Game {
             m_displayStepFloatingButtonsCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.DisplayStepFloatingButtons");
             m_keyboardControlCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.KeyboardControl");
             m_preventChunkFromBeingFreeCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.PreventChunkFromBeingFree");
+            m_displayVoltageCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.DisplayVoltage");
             m_speedTextBox.Text = blockData.Data;
             m_lastSpeedText = blockData.Data;
             m_handler = handler;
@@ -38,6 +40,7 @@ namespace Game {
             m_displayStepFloatingButtonsCheckbox.IsChecked = m_subsystemGVElectricity.m_debugButtonsDictionary.Count > 0;
             m_keyboardControlCheckbox.IsChecked = m_subsystemGVElectricity.keyboardDebug;
             m_preventChunkFromBeingFreeCheckbox.IsChecked = GVStaticStorage.PreventChunkFromBeingFree;
+            m_displayVoltageCheckbox.IsChecked = GVStaticStorage.DisplayVoltage;
         }
 
         public override void Update() {
@@ -49,6 +52,9 @@ namespace Game {
             }
             if (m_preventChunkFromBeingFreeCheckbox.IsClicked) {
                 m_preventChunkFromBeingFreeCheckbox.IsChecked = !m_preventChunkFromBeingFreeCheckbox.IsChecked;
+            }
+            if (m_displayVoltageCheckbox.IsClicked) {
+                m_displayVoltageCheckbox.IsChecked = !m_displayVoltageCheckbox.IsChecked;
             }
             if (m_okButton.IsClicked) {
                 if (m_displayStepFloatingButtonsCheckbox.IsChecked) {
@@ -107,6 +113,7 @@ namespace Game {
                         )
                     );
                 }
+                GVStaticStorage.DisplayVoltage = m_displayVoltageCheckbox.IsChecked;
                 Dismiss(false);
             }
             if (Input.Cancel

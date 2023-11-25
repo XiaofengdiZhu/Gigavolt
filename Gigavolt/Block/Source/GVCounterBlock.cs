@@ -12,14 +12,12 @@ namespace Game {
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-                if (connectorDirection == GVElectricConnectorDirection.Right
-                    || connectorDirection == GVElectricConnectorDirection.Left
-                    || connectorDirection == GVElectricConnectorDirection.In) {
-                    return GVElectricConnectorType.Input;
-                }
-                if (connectorDirection == GVElectricConnectorDirection.Top
-                    || connectorDirection == GVElectricConnectorDirection.Bottom) {
-                    return GVElectricConnectorType.Output;
+                switch (connectorDirection) {
+                    case GVElectricConnectorDirection.Right:
+                    case GVElectricConnectorDirection.Left:
+                    case GVElectricConnectorDirection.In: return GVElectricConnectorType.Input;
+                    case GVElectricConnectorDirection.Top:
+                    case GVElectricConnectorDirection.Bottom: return GVElectricConnectorType.Output;
                 }
             }
             return null;
