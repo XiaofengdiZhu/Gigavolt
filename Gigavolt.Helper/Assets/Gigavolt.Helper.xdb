@@ -1,0 +1,12 @@
+﻿<Mod>
+	<Folder Name="Entities" Guid="5fcdf35f-7001-442c-883e-e0502b15d291">
+		<EntityTemplate Name="Player" Guid="4be6c1c5-d65d-4537-8a8b-a391969e6dc2">
+			<MemberComponentTemplate Name="GVHelper" Guid="2bc2204f-61b6-45e4-9cb1-6351eabb674b" InheritanceParent="4ff7411b-ce15-48b9-8ca8-5c501961f70f"/>
+		</EntityTemplate>
+	</Folder>
+	<Folder Name="Rendering" Guid="dec469ce-9b77-465f-a2a8-36d2640424db">
+		<ComponentTemplate Name="GVHelper" Guid="4ff7411b-ce15-48b9-8ca8-5c501961f70f" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+			<Parameter Name="Class" Guid="07c3813b-9820-4fe6-8429-98626db405ea" Value="Game.ComponentGVHelper" Type="string"/>
+		</ComponentTemplate>
+	</Folder>
+</Mod>

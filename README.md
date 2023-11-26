@@ -5,7 +5,7 @@
   * [区别 Differences](#区别-differences)
   * [新增 New](#新增-new)
   * [详细 Details](#详细-details)
-    * [存储器 Memory Band](#存储器-memory-band)
+    * [存储器 Memory Bank](#存储器-memory-bank)
     * [真值表 Truth Table](#真值表-truth-table)
       * [例子 Examples](#例子-examples)
       * [规则 Rules](#规则-rules)
@@ -21,7 +21,7 @@
   * [简单方块 Simple Blocks](#简单方块-simple-blocks)
   * [复杂方块 Complex Blocks](#复杂方块-complex-blocks)
     * [路选器 Multiplexer](#路选器-multiplexer)
-    * [一维存储器 List Memory](#一维存储器-list-memory)
+    * [一维存储器 List Memory Bank](#一维存储器-list-memory-bank)
       * [端口定义 Input&Output Definition](#端口定义-inputoutput-definition)
       * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input)
     * [多存储器操作器 Memory Banks Operator](#多存储器操作器-memory-banks-operator)
@@ -80,15 +80,15 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 | 发射器           | 略                             | 详见[详细-发射器](#发射器-dispenser)                                                                     |
 | 告示牌           | 略                             | 详见[详细-告示牌](#告示牌-sign)                                                                          |
 ## 新增 New
-| 名称       | 特性                                                      |
-|----------|---------------------------------------------------------|
-| 调试石碑     | 提供电路运行速率调整、单步运行功能的石碑，输出当前倍速，第17\~32位为整数部分，第1\~16位为小数部分。 |
-| 8x4面LED灯 | 和原版4面LED灯类似，但它有4x2、4x4、8x4三种布局，只提供白光。                   |
-| 8数字LED灯  | 和7段显示器类似，但它一次显示8位16进制数，只提供白光                            |
-| 变压器      | 将原版电压和十亿伏特电压互相转换的变压器，十亿伏特电压转原版电压时将取二进制最低4位输出            |
+| 名称       | 特性                                                                     |
+|----------|------------------------------------------------------------------------|
+| 调试石碑     | 提供电路运行速率调整、屏显元件电压、单步运行、超视距保持运行功能的石碑，输出当前倍速，第17\~32位为整数部分，第1\~16位为小数部分。 |
+| 8x4面LED灯 | 和原版4面LED灯类似，但它有4x2、4x4、8x4三种布局，只提供白光。                                  |
+| 8数字LED灯  | 和7段显示器类似，但它一次显示8位16进制数，只提供白光                                           |
+| 变压器      | 将原版电压和十亿伏特电压互相转换的变压器，十亿伏特电压转原版电压时将取二进制最低4位输出                           |
 ## 详细 Details
 > 下面介绍的都是十亿伏特版元件
-### 存储器 Memory Band
+### 存储器 Memory Bank
 为存储远超原版的数据量，该Mod将数据无损保存为了[PNG](https://www.w3.org/TR/png/)图片格式，因此需要先手动设置长宽，而且之后不可在编辑界面修改，长宽上限均为2^31-1，但为了避免不可预知的错误，请不要设置过于巨大的矩阵  
 编辑界面用文字编辑时，每个数据用英文逗号`,`分开，每行数据用英文分号`;`分开  
 当数据量较大时，不建议继续文本编辑，而建议使用图片编辑工具手动编辑导出的png文件后重新导入  
@@ -265,8 +265,8 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 * 节点电压发生变化后，将向能传导到的其他节点传导新的电压，直到所有节点电压稳定，最后从ABCD节点向正面1234端点输出结果
 * 每次背面和正面输入的电压发生变化时，内部节点都将复位归0，重新计算输出结果
 > 例子：背面输入16进制的21V（二进制100001），开关1、6将闭合，此时在正面1端点输入5V，该电压将从A节点流入，延导线1传导到a，延21传导到O，延26传导到c，延6传导到C，最终从正面3号端点输出5V
-### 一维存储器 List Memory
-和存储器相似，但只能存储一行数据，不过多了很多实用功能，无需初始化即可使用，同时提供了易失版（退出游戏后数据会丢失，不过ID保持不变）
+### 一维存储器 List Memory Bank
+和存储器相似，但只能存储一行数据，不过多了很多实用功能，无需初始化即可使用，保存到存档的形式是二进制文件，可用十六进制编辑器编辑。同时提供了易失版（即退出游戏后数据会丢失，不过ID保持不变）
 > 导出功能将导出指定宽高的图片
 #### 端口定义 Input&Output Definition
 | 端口 | 作用    |
@@ -651,3 +651,8 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 | 弧度转角度器  | 将输入视为弧度并转换为角度                       |
 | 原码正负转换器 | 将输入的最高位取反                           |
 | 补码正负转换器 | 最高位为0时，将输入所有位取反并加1；否则将输入减去1后再对所有位取反 |
+# 十亿伏特·帮助包 Gigavolt.Helper
+这是一个为生存战争游戏十亿伏特mod及其扩展mod带来帮助包的mod，有三种方法打开方块的帮助
+1. 将方块拖到底栏最右一格上
+2. 对着方块点底栏的最右一格
+3. 对着方块按键盘上的F6键

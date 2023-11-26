@@ -1,0 +1,5 @@
+<GVHelperInventorySlotWidget xmlns="runtime-namespace:Game" Size="72, 72" HorizontalAlignment="Far">
+	<BevelledRectangleWidget BevelSize="-2" DirectionalLight="0.15" CenterColor="181, 172, 154"/>
+	<RectangleWidget FillColor="192, 192, 192" OutlineColor="0, 0, 0, 0" Size="56, 56" VerticalAlignment="Center" HorizontalAlignment="Center" Subtexture="{Textures/Atlas/HelpTopicIcon}"/>
+	<ClickableWidget Name="GVHelperInventorySlotWidget.Clickable" SoundName="Audio/UI/ButtonClick"/>
+</GVHelperInventorySlotWidget>

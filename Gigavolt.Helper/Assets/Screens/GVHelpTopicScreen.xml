@@ -1,0 +1,38 @@
+<Screen xmlns="runtime-namespace:Game">
+	<RectangleWidget Size="Infinity, Infinity" OutlineThickness="0"/>
+	<StackPanelWidget Direction="Horizontal">
+		<CanvasWidget Style="{Widgets/TopBarContents}">
+			<LabelWidget Name="TopBar.Label" Text="[GVHelpTopicScreen:1]"/>
+		</CanvasWidget>
+		<StackPanelWidget Direction="Vertical">
+			<StackPanelWidget Direction="Horizontal">
+				<BevelledButtonWidget Name="GVHelpTopicScreen.Copy" Size="140, 60">
+					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0">
+						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="112, 112, 112"/>
+						<StackPanelWidget Direction="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="false">
+							<LabelWidget Name="BevelledButton.Label" Text="[GVHelpTopicScreen:2]"/>
+							<RectangleWidget Name="BevelledButton.Image" Size="16, 18" Subtexture="{Textures/Copy}" IsVisible="true" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" VerticalAlignment="Far"/>
+						</StackPanelWidget>
+						<ClickableWidget Name="BevelledButton.Clickable" SoundName="Audio/UI/ButtonClick"/>
+					</CanvasWidget>
+				</BevelledButtonWidget>
+				<CanvasWidget Size="4,0"/>
+				<BevelledButtonWidget Name="GVHelpTopicScreen.UrlButton" Size="Infinity, 60">
+					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0" HorizontalAlignment="Near">
+						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="112, 112, 112"/>
+						<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Near" VerticalAlignment="Center" IsHitTestVisible="false">
+							<CanvasWidget Size="10,0"/>
+							<LabelWidget Name="GVHelpTopicScreen.UrlLabel" VerticalAlignment="Center" Margin="10, 0"/>
+						</StackPanelWidget>
+						<ClickableWidget Name="BevelledButton.Clickable" SoundName="Audio/UI/ButtonClick"/>
+					</CanvasWidget>
+				</BevelledButtonWidget>
+			</StackPanelWidget>
+			<CanvasWidget Size="Infinity, Infinity" Margin="0, 4">
+				<ScrollPanelWidget Name="ScrollPanel" Direction="Vertical" ClampToBounds="true">
+					<RectangleWidget Name="GVHelpTopicScreen.Image" OutlineThickness="0" FillColor="255, 255, 255"/>
+				</ScrollPanelWidget>
+			</CanvasWidget>
+		</StackPanelWidget>
+	</StackPanelWidget>
+</Screen>
