@@ -17,7 +17,6 @@
             GVStaticStorage.GVSGCFEEList.Clear();
             GVStaticStorage.PreventChunkFromBeingFree = false;
             GVStaticStorage.GVUsingChunks.Clear();
-            GVStaticStorage.DisplayVoltage = false;
         }
 
         public override void ToFreeChunks(TerrainUpdater terrainUpdater, TerrainChunk chunk, out bool KeepWorking) {

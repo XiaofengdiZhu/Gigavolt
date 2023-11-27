@@ -16,6 +16,9 @@ namespace Game {
         public readonly CheckboxWidget m_preventChunkFromBeingFreeCheckbox;
         public readonly CheckboxWidget m_displayVoltageCheckbox;
 
+        public readonly StackPanelWidget m_GVHelperPanel;
+        public readonly CheckboxWidget m_GVHelperSlotActiveCheckbox;
+
         public readonly GVDebugData m_blockData;
 
         public readonly SubsystemGVElectricity m_subsystemGVElectricity;
@@ -32,6 +35,12 @@ namespace Game {
             m_keyboardControlCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.KeyboardControl");
             m_preventChunkFromBeingFreeCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.PreventChunkFromBeingFree");
             m_displayVoltageCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.DisplayVoltage");
+            m_GVHelperPanel = Children.Find<StackPanelWidget>("EditGVDebugDialog.GVHelperPanel");
+            m_GVHelperSlotActiveCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.GVHelperSlotActive");
+            if (GVStaticStorage.GVHelperAvailable) {
+                m_GVHelperPanel.IsVisible = true;
+                m_GVHelperSlotActiveCheckbox.IsChecked = GVStaticStorage.GVHelperSlotActive;
+            }
             m_speedTextBox.Text = blockData.Data;
             m_lastSpeedText = blockData.Data;
             m_handler = handler;
@@ -56,6 +65,9 @@ namespace Game {
             if (m_displayVoltageCheckbox.IsClicked) {
                 m_displayVoltageCheckbox.IsChecked = !m_displayVoltageCheckbox.IsChecked;
             }
+            if (m_GVHelperSlotActiveCheckbox.IsClicked) {
+                m_GVHelperSlotActiveCheckbox.IsChecked = !m_GVHelperSlotActiveCheckbox.IsChecked;
+            }
             if (m_okButton.IsClicked) {
                 if (m_displayStepFloatingButtonsCheckbox.IsChecked) {
                     if (m_subsystemGVElectricity.m_debugButtonsDictionary.Count == 0) {
@@ -76,6 +88,7 @@ namespace Game {
                 }
                 m_subsystemGVElectricity.keyboardDebug = m_keyboardControlCheckbox.IsChecked;
                 GVStaticStorage.PreventChunkFromBeingFree = m_preventChunkFromBeingFreeCheckbox.IsChecked;
+                GVStaticStorage.GVHelperSlotActive = m_GVHelperSlotActiveCheckbox.IsChecked;
                 if (m_speedTextBox.Text.Length > 0) {
                     if (m_speedTextBox.Text == m_lastSpeedText) {
                         Dismiss(false);

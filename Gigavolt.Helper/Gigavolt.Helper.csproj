@@ -56,6 +56,7 @@
 		<Compile Include="GVHelperInventorySlotWidget.cs"/>
 		<Compile Include="GVHelpTopicScreen.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
+		<Compile Include="StaticGVHelper.cs"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Gigavolt.Expand\Gigavolt.Expand.csproj">
@@ -90,6 +91,52 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Assets\GVHelperImages\GVMemoryBankBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\GVHelperImages\GVTruthTableCircuitBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\GVHelperImages\GVDispenserBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVGuidedDispenserBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVInventoryControllerBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVJavascriptMicrocontrollerBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVListMemoryBankBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVMemoryBanksOperatorBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVMultiplexerBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVNesEmulatorBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVRealTimeClockBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVSignBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVSoundGeneratorBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVTerrainRaycastDetectorBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="Assets\GVHelperImages\GVTerrainScannerBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

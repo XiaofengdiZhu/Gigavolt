@@ -7,7 +7,7 @@ namespace Game {
         public const int Index = 874;
         readonly Texture2D[] textures = new Texture2D[6];
         readonly string[] names = { "方块展示板", "图片显示器", "地层显示器" };
-        public Color topColor = new Color(4281917775);
+        public Color topColor = new(4281917775);
 
         public override void Initialize() {
             base.Initialize();
@@ -97,15 +97,9 @@ namespace Game {
             bool complex = GetComplex(data);
             int type = GetType(data);
             if (complex) {
-                string prefix = "和简单";
-                string suffix = "类似，但可以根据电压控制大小、位置、旋转、亮度、颜色，详见本Mod Github页面的介绍";
-                return $"{prefix}{names[type]}{suffix}";
+                return type switch { 1 => "接口定义与告示牌几乎相同，存在以下区别：背端应输入等于存储了地层数据的存储板ID的电压；下端第30\\~32位无作用；下端第28位用于指定图片的缩放方式，为0时将以各向异性过滤方式缩放，为1时将以保留硬边缘方式缩放；下端第29位为1时保留让之前显示的图片，使其持续显示，一旦为0将清空之前显示的图片，退出存档也清空", 2 => "接口定义与告示牌几乎相同，存在以下区别：背端应输入等于存储了地层数据的存储板ID的电压；下端第30~32位无作用；下端第28位用于指定图片的缩放方式，为0时将以各向异性过滤方式缩放，为1时将以保留硬边缘方式缩放；下端第29位为1时保留让之前显示的图片，使其持续显示，一旦为0将清空之前显示的图片，退出存档也清空", _ => "接口定义与告示牌几乎相同，存在以下区别：背端应输入等于要显示的方块值的电压；下端第28、30~32位无作用；下端第29位为1时保留让之前显示的方块，使其持续显示，一旦为0将清空之前显示的方块，退出存档也清空" };
             }
-            switch (type) {
-                case 1: return "输入等于存储了图形数据的存储板ID的电压，就会在其面前显示图片";
-                case 2: return "输入等于存储了地层数据的存储板ID的电压，就会在其面前显示地层";
-                default: return "输入等于要显示的方块值的电压，就会在其面前显示方块";
-            }
+            return type switch { 1 => "输入等于存储了图形数据的存储板ID的电压，就会在其面前显示图片", 2 => "输入等于存储了地层数据的存储板ID的电压，就会在其面前显示地层", _ => "输入等于要显示的方块值的电压，就会在其面前显示方块" };
         }
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
