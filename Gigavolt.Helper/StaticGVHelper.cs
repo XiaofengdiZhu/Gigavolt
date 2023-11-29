@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Game {
@@ -21,18 +22,46 @@ namespace Game {
             { GVJavascriptMicrocontrollerBlock.Index, new[] { "js单片机-javascript-microcontroller", "GVJavascriptMicrocontrollerBlock" } }
         };
 
+        public static readonly Dictionary<int, Func<int, int>> BlockIndex2DataHandler = new() {
+            { GVWireBlock.Index, blockData => GVWireBlock.SetColor(0, GVWireBlock.GetColor(blockData)) },
+            { GVLedBlock.Index, blockData => GVLedBlock.SetColor(0, GVLedBlock.GetColor(blockData)) },
+            { GVFourLedBlock.Index, blockData => GVFourLedBlock.SetColor(0, GVFourLedBlock.GetColor(blockData)) },
+            { GVSevenSegmentDisplayBlock.Index, blockData => GVSevenSegmentDisplayBlock.SetColor(0, GVSevenSegmentDisplayBlock.GetColor(blockData)) },
+            { GVAnalogToDigitalConverterBlock.Index, blockData => GVAnalogToDigitalConverterBlock.SetType(0, GVAnalogToDigitalConverterBlock.GetType(blockData)) },
+            { GVDigitalToAnalogConverterBlock.Index, blockData => GVDigitalToAnalogConverterBlock.SetType(0, GVDigitalToAnalogConverterBlock.GetType(blockData)) },
+            { GVPistonBlock.Index, blockData => GVPistonBlock.SetMode(0, GVPistonBlock.GetMode(blockData)) },
+            { GV8x4LedBlock.Index, blockData => GV8x4LedBlock.SetType(0, GV8x4LedBlock.GetType(blockData)) },
+            { GVDoorBlock.Index, blockData => GVDoorBlock.SetModel(0, GVDoorBlock.GetModel(blockData)) },
+            { GVTrapdoorBlock.Index, blockData => GVTrapdoorBlock.SetModel(0, GVTrapdoorBlock.GetModel(blockData)) },
+            { GVFenceGateBlock.Index, blockData => GVFenceGateBlock.SetModel(GVFenceGateBlock.SetColor(0, GVFenceGateBlock.GetColor(blockData)), GVFenceGateBlock.GetModel(blockData)) },
+            { GVDisplayLedBlock.Index, blockData => GVDisplayLedBlock.SetComplex(GVDisplayLedBlock.SetType(0, GVDisplayLedBlock.GetType(blockData)), GVDisplayLedBlock.GetComplex(blockData)) },
+            { GVMoreTwoInTwoOutBlock.Index, blockData => GVMoreTwoInTwoOutBlock.SetType(0, GVMoreTwoInTwoOutBlock.GetType(blockData)) },
+            { GVMoreOneInOneOutBlock.Index, blockData => GVMoreOneInOneOutBlock.SetType(0, GVMoreOneInOneOutBlock.GetType(blockData)) },
+            { GVInventoryFetcherBlock.Index, blockData => GVInventoryFetcherBlock.SetType(0, GVInventoryFetcherBlock.GetType(blockData)) },
+            { GVEWireThroughBlock.Index, blockData => GVEWireThroughBlock.SetType(0, GVEWireThroughBlock.GetType(blockData)) },
+            { GVPressurePlateBlock.Index, blockData => GVPressurePlateBlock.SetMaterial(0, GVPressurePlateBlock.GetMaterial(blockData)) },
+            { GVPressurePlateCBlock.Index, blockData => GVPressurePlateCBlock.SetMaterial(0, GVPressurePlateCBlock.GetMaterial(blockData)) },
+            { GVLightbulbBlock.Index, blockData => GVLightbulbBlock.SetColor(0, GVLightbulbBlock.GetColor(blockData)) },
+            { GVWoodenPostedSignCBlock.Index, blockData => GVPostedSignCBlock.SetColor(0, GVPostedSignCBlock.GetColor(blockData)) },
+            { GVIronPostedSignCBlock.Index, blockData => GVPostedSignCBlock.SetColor(0, GVPostedSignCBlock.GetColor(blockData)) }
+        };
+
         public static void GotoBlockDescriptionScreen(int blockValue) {
             int blockContent = Terrain.ExtractContents(blockValue);
             if (BlockIndex2HelperInfo.TryGetValue(blockContent, out string[] value)) {
                 GotoGVHelpScreen(value[0], value[1]);
             }
             else {
-                int id = blockContent;
+                int newBlockValue = blockContent;
+                int blockData = Terrain.ExtractData(blockValue);
                 Block block = BlocksManager.Blocks[blockContent];
                 if (block.GetCreativeValues().Contains(blockValue)) {
-                    id = blockValue;
+                    newBlockValue = blockValue;
                 }
-                ScreensManager.SwitchScreen("RecipaediaDescription", id, new List<int> { id });
+                else if (BlockIndex2DataHandler.TryGetValue(blockContent, out Func<int, int> blockIndex2DataHandler)) {
+                    newBlockValue = Terrain.MakeBlockValue(blockContent, 0, blockIndex2DataHandler(blockData));
+                }
+                ScreensManager.SwitchScreen("RecipaediaDescription", newBlockValue, new List<int> { newBlockValue });
             }
         }
 

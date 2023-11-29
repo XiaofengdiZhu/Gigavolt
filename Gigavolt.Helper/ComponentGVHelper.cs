@@ -8,7 +8,10 @@ namespace Game {
         public ComponentPlayer m_componentPlayer;
         public ComponentGui m_componentGui;
         public ComponentBlockHighlight m_componentBlockHighlight;
+
         public GVHelperInventorySlotWidget m_GVHelperInventorySlotWidget;
+        public StackPanelWidget m_shortInventoryPanel;
+
         public bool m_slotAdded;
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -18,8 +21,14 @@ namespace Game {
             m_componentGui = Entity.FindComponent<ComponentGui>(true);
             m_componentBlockHighlight = Entity.FindComponent<ComponentBlockHighlight>(true);
             m_GVHelperInventorySlotWidget = new GVHelperInventorySlotWidget(m_componentBlockHighlight);
+            m_shortInventoryPanel = new StackPanelWidget { Direction = LayoutDirection.Horizontal };
+            m_componentGui.ShortInventoryWidget.AddChildren(m_shortInventoryPanel);
+            GridPanelWidget temp = m_componentGui.ShortInventoryWidget.Children.Find<GridPanelWidget>("InventoryGrid");
+            m_componentGui.ShortInventoryWidget.RemoveChildren(temp);
+            m_shortInventoryPanel.AddChildren(temp);
+            temp.ChangeParent(m_shortInventoryPanel);
             if (GVStaticStorage.GVHelperSlotActive) {
-                m_componentGui.ShortInventoryWidget.AddChildren(m_GVHelperInventorySlotWidget);
+                m_shortInventoryPanel.AddChildren(m_GVHelperInventorySlotWidget);
                 m_slotAdded = true;
             }
         }
@@ -27,13 +36,13 @@ namespace Game {
         public void Update(float dt) {
             if (GVStaticStorage.GVHelperSlotActive) {
                 if (!m_slotAdded) {
-                    m_componentGui.ShortInventoryWidget.AddChildren(m_GVHelperInventorySlotWidget);
+                    m_shortInventoryPanel.AddChildren(m_GVHelperInventorySlotWidget);
                     m_slotAdded = true;
                 }
             }
             else {
                 if (m_slotAdded) {
-                    m_componentGui.ShortInventoryWidget.RemoveChildren(m_GVHelperInventorySlotWidget);
+                    m_shortInventoryPanel.RemoveChildren(m_GVHelperInventorySlotWidget);
                     m_slotAdded = false;
                 }
             }
