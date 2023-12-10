@@ -657,3 +657,9 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 2. 对着方块点底栏的帮助包槽
 3. 对着方块按键盘上的F6键
 > 要在底栏显示帮助包槽，需要通过`调试石碑`来开启
+## 看板娘 Yuru-chara
+<details>
+<summary>点开查看</summary>
+
+![](DocRes/GigavoltHelperPosterGirl.webp)
+</details>
