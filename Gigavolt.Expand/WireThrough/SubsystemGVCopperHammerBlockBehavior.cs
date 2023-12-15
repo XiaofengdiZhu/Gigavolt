@@ -1,10 +1,18 @@
-﻿using Engine;
+﻿using System;
+using System.Collections.Generic;
+using Engine;
+using Engine.Graphics;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemGVCopperHammerBlockBehavior : SubsystemBlockBehavior {
+    public class SubsystemGVCopperHammerBlockBehavior : SubsystemBlockBehavior, IDrawable {
         SubsystemAudio m_subsystemAudio;
-        public override int[] HandledBlocks => new int[0];
+        public PrimitivesRenderer3D m_primitivesRenderer = new();
+        public FlatBatch3D m_flatBatch;
+        public Point3? m_startPoint;
+        public Point3? m_endPoint;
+        public Point3[] m_glowPoints = Array.Empty<Point3>();
+        public override int[] HandledBlocks => Array.Empty<int>();
 
         public override bool OnUse(Ray3 ray, ComponentMiner componentMiner) {
             TerrainRaycastResult? terrainRaycastResult = componentMiner.Raycast<TerrainRaycastResult>(ray, RaycastMode.Digging);
@@ -23,6 +31,47 @@ namespace Game {
                     int type = GVEWireThroughBlock.GetType(data);
                     SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, type < 3 ? Terrain.ReplaceData(value, GVEWireThroughBlock.SetType(data, type + 1)) : Terrain.MakeBlockValue(GVWireBlock.Index, Terrain.ExtractLight(value), GVEWireThroughBlock.SetType(data, 0)));
                 }
+                else {
+                    Point3 point3 = cellFace.Point + CellFace.FaceToPoint3(cellFace.Face);
+                    int content = SubsystemTerrain.Terrain.GetCellContents(point3.X, point3.Y, point3.Z);
+                    if (content == 0) {
+                        flag = true;
+                        if (m_startPoint == null) {
+                            if (m_endPoint == point3) {
+                                m_endPoint = null;
+                                bool isEmpty = true;
+                                foreach (Point3 glowPoint in m_glowPoints) {
+                                    if (SubsystemTerrain.Terrain.GetCellContentsFast(glowPoint.X, glowPoint.Y, glowPoint.Z) != 0) {
+                                        isEmpty = false;
+                                    }
+                                }
+                                if (isEmpty) {
+                                    for (int i = 0; i < m_glowPoints.Length; i++) {
+                                        Point3 glowPoint = m_glowPoints[i];
+                                        int face1 = CellFace.Point3ToFace(i == 0 ? m_glowPoints[1] - glowPoint : glowPoint - m_glowPoints[i - 1], 6);
+                                        int face2 = CellFace.Point3ToFace(i == m_glowPoints.Length - 1 ? m_glowPoints[i - 1] - glowPoint : glowPoint - m_glowPoints[i + 1], 6);
+                                        SubsystemTerrain.ChangeCell(m_glowPoints[i].X, m_glowPoints[i].Y, m_glowPoints[i].Z, GVEWireThroughBlock.SetWireFacesBitmask(GVEWireThroughBlock.Index, (1 << face1) | (1 << face2)));
+                                    }
+                                    m_glowPoints = Array.Empty<Point3>();
+                                }
+                            }
+                            else {
+                                m_startPoint = point3;
+                            }
+                            m_glowPoints = Array.Empty<Point3>();
+                        }
+                        else {
+                            if (point3 != m_startPoint) {
+                                Stack<Point3> path = GVAStar.FindPath(m_startPoint.Value, point3, SubsystemTerrain.Terrain);
+                                if (path != null) {
+                                    m_glowPoints = path.ToArray();
+                                    m_endPoint = point3;
+                                }
+                            }
+                            m_startPoint = null;
+                        }
+                    }
+                }
                 if (flag) {
                     m_subsystemAudio.PlaySound(
                         "Audio/Click",
@@ -40,7 +89,20 @@ namespace Game {
 
         public override void Load(ValuesDictionary valuesDictionary) {
             m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
+            m_flatBatch = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.Additive);
             base.Load(valuesDictionary);
         }
+
+        public void Draw(Camera camera, int drawOrder) {
+            if (m_glowPoints.Length > 0) {
+                foreach (Point3 glowPoint in m_glowPoints) {
+                    Vector3 position = new Vector3(glowPoint) + new Vector3(0.01f);
+                    m_flatBatch.QueueBoundingBox(new BoundingBox(position, position + new Vector3(0.98f)), Color.Green);
+                }
+            }
+            m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
+        }
+
+        public int[] DrawOrders => new[] { 114 };
     }
 }
