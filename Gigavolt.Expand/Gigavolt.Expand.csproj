@@ -169,12 +169,16 @@
 		<Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerData.cs"/>
 		<Compile Include="JavascriptMicrocontroller\SubsystemGVJavascriptMicrocontrollerBlockBehavior.cs"/>
 		<Compile Include="JavascriptMicrocontroller\JavascriptMicrocontrollerGVElectricElement.cs"/>
+		<Compile Include="WireThrough\EditGVCopperHammerDialog.cs" />
 		<Compile Include="WireThrough\GVAStar.cs"/>
 		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
 		<Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs"/>
 		<Compile Include="WireThrough\GVCopperHammerBlock.cs"/>
 	</ItemGroup>
 	<ItemGroup>
+		<None Include="Assets\Dialogs\EditGVCopperHammerDialog.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Include="Assets\Dialogs\EditGVDataModifierProjectileDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

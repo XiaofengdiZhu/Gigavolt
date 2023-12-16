@@ -9,6 +9,7 @@ namespace Game {
         SubsystemAudio m_subsystemAudio;
         public PrimitivesRenderer3D m_primitivesRenderer = new();
         public FlatBatch3D m_flatBatch;
+        public int m_type;
         public Point3? m_startPoint;
         public Point3? m_endPoint;
         public Point3[] m_glowPoints = Array.Empty<Point3>();
@@ -50,7 +51,7 @@ namespace Game {
                                         Point3 glowPoint = m_glowPoints[i];
                                         int face1 = CellFace.Point3ToFace(i == 0 ? m_glowPoints[1] - glowPoint : glowPoint - m_glowPoints[i - 1], 6);
                                         int face2 = CellFace.Point3ToFace(i == m_glowPoints.Length - 1 ? m_glowPoints[i - 1] - glowPoint : glowPoint - m_glowPoints[i + 1], 6);
-                                        SubsystemTerrain.ChangeCell(m_glowPoints[i].X, m_glowPoints[i].Y, m_glowPoints[i].Z, GVEWireThroughBlock.SetWireFacesBitmask(GVEWireThroughBlock.Index, (1 << face1) | (1 << face2)));
+                                        SubsystemTerrain.ChangeCell(m_glowPoints[i].X, m_glowPoints[i].Y, m_glowPoints[i].Z, Terrain.MakeBlockValue(GVEWireThroughBlock.Index, 0, GVEWireThroughBlock.SetWireFacesBitmask(GVEWireThroughBlock.SetType(0, m_type), (1 << face1) | (1 << face2))));
                                     }
                                     m_glowPoints = Array.Empty<Point3>();
                                 }
@@ -94,6 +95,10 @@ namespace Game {
         }
 
         public void Draw(Camera camera, int drawOrder) {
+            if (m_startPoint != null) {
+                Vector3 position = new Vector3(m_startPoint.Value) + new Vector3(0.01f);
+                m_flatBatch.QueueBoundingBox(new BoundingBox(position, position + new Vector3(0.98f)), Color.Green);
+            }
             if (m_glowPoints.Length > 0) {
                 foreach (Point3 glowPoint in m_glowPoints) {
                     Vector3 position = new Vector3(glowPoint) + new Vector3(0.01f);
@@ -101,6 +106,11 @@ namespace Game {
                 }
             }
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
+        }
+
+        public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVCopperHammerDialog(m_type, newType => { m_type = newType; }));
+            return true;
         }
 
         public int[] DrawOrders => new[] { 114 };

@@ -4,9 +4,30 @@ using Engine;
 namespace Game {
     public class GVEWireThroughBlock : CubeBlock, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 868;
-        public int[] m_wiredTextureSlot = { 168, 184, 152, 136, 216 };
-        public int[] m_unwiredTextureSlot = { 4, 1, 70, 16, 78 };
-        public int[] m_coloredTextureSlot = { 23, 24, 39, 69, 78 };
+
+        public readonly int[] m_wiredTextureSlot = {
+            168,
+            184,
+            152,
+            136,
+            216
+        };
+
+        public readonly int[] m_unwiredTextureSlot = {
+            4,
+            1,
+            70,
+            16,
+            78
+        };
+
+        public readonly int[] m_coloredTextureSlot = {
+            23,
+            24,
+            39,
+            69,
+            78
+        };
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => null;
 
@@ -129,11 +150,10 @@ namespace Game {
 
         public static int GetWireFacesBitmask(int data) => data & 0x3F;
 
-        public static int SetWireFacesBitmask(int value, int bitmask) {
-            int num = Terrain.ExtractData(value);
-            num &= -64;
-            num |= bitmask & 0x3F;
-            return Terrain.ReplaceData(Terrain.ReplaceContents(value, Index), num);
+        public static int SetWireFacesBitmask(int data, int bitmask) {
+            data &= -64;
+            data |= bitmask & 0x3F;
+            return data;
         }
 
         public static int? GetColor(int data) {

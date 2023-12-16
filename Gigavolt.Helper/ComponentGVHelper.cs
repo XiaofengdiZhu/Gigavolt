@@ -1,4 +1,4 @@
-﻿using Engine.Input;
+using Engine.Input;
 using GameEntitySystem;
 using TemplatesDatabase;
 
