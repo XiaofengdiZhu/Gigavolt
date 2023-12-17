@@ -23,7 +23,7 @@ namespace Game {
                 }
             }
             if (m_voltage != voltage) {
-                CellFace cellFace = CellFaces[0];
+                GVCellFace cellFace = CellFaces[0];
                 m_subsystem.OpenDoor(cellFace.X, cellFace.Y, cellFace.Z, MathUint.ToInt(m_voltage));
             }
             return false;

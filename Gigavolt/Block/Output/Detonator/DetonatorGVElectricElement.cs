@@ -7,7 +7,7 @@ namespace Game {
 
         public void Detonate(uint pressure) {
             SubsystemExplosions m_subsystemExplosions = SubsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true);
-            CellFace cellFace = CellFaces[0];
+            GVCellFace cellFace = CellFaces[0];
             if (pressure == 0) {
                 int value = Terrain.MakeBlockValue(GVDetonatorBlock.Index);
                 m_subsystemExplosions.TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
@@ -27,7 +27,7 @@ namespace Game {
 
         public override bool Simulate() {
             uint num = 0u;
-            HashSet<Point3> points = new HashSet<Point3>();
+            HashSet<Point3> points = new();
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {

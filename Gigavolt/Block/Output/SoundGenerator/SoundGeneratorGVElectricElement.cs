@@ -127,7 +127,7 @@ namespace Game {
                     if (m_sound != null) {
                         m_volume = bottomInput / (float)uint.MaxValue;
                         if (m_lastBottomInput == 0) {
-                            CellFace cellFace = CellFaces[0];
+                            GVCellFace cellFace = CellFaces[0];
                             m_sound.Volume = m_volume * m_subsystemAudio.CalculateVolume(m_subsystemAudio.CalculateListenerDistance(new Vector3(cellFace.X, cellFace.Y, cellFace.Z)), 0.5f + 5f * m_volume);
                             m_sound.Play();
                             m_playing = true;
@@ -138,7 +138,7 @@ namespace Game {
             }
             if (m_playing && (DateTime.Now - m_lastNoiseTime).TotalSeconds > 1) {
                 m_lastNoiseTime = DateTime.Now;
-                CellFace cellFace = CellFaces[0];
+                GVCellFace cellFace = CellFaces[0];
                 m_subsystemNoise.MakeNoise(new Vector3(cellFace.X, cellFace.Y, cellFace.Z), m_volume < 0.5f ? 0.25f : 0.5f, MathUtils.Lerp(2f, 20f, m_volume));
             }
             return false;

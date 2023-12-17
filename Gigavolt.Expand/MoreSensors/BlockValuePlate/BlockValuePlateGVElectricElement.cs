@@ -30,7 +30,7 @@ namespace Game {
             m_lastPressFrameIndex = Time.FrameIndex;
             if (worldItem.Value != m_value) {
                 m_value = worldItem.Value;
-                CellFace cellFace1 = CellFaces[0];
+                GVCellFace cellFace1 = CellFaces[0];
                 SubsystemGVElectricity.SubsystemAudio.PlaySound(
                     "Audio/BlockPlaced",
                     1f,

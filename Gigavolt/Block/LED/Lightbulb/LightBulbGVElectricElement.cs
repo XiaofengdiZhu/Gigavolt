@@ -27,7 +27,7 @@ namespace Game {
                 m_lastChangeCircuitStep = SubsystemGVElectricity.CircuitStep;
             }
             if (num >= 10) {
-                CellFace cellFace = CellFaces[0];
+                GVCellFace cellFace = CellFaces[0];
                 int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
                 int data = GVLightbulbBlock.SetLightIntensity(Terrain.ExtractData(cellValue), m_intensity);
                 int value = Terrain.ReplaceData(cellValue, data);

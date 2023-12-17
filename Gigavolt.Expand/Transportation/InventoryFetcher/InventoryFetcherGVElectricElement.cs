@@ -11,12 +11,12 @@ namespace Game {
         public InventoryFetcherGVElectricElement(SubsystemGVElectricity subsystemElectricity, Point3 point) : base(
             subsystemElectricity,
             new List<CellFace> {
-                new CellFace(point.X, point.Y, point.Z, 0),
-                new CellFace(point.X, point.Y, point.Z, 1),
-                new CellFace(point.X, point.Y, point.Z, 2),
-                new CellFace(point.X, point.Y, point.Z, 3),
-                new CellFace(point.X, point.Y, point.Z, 4),
-                new CellFace(point.X, point.Y, point.Z, 5)
+                new(point.X, point.Y, point.Z, 0),
+                new(point.X, point.Y, point.Z, 1),
+                new(point.X, point.Y, point.Z, 2),
+                new(point.X, point.Y, point.Z, 3),
+                new(point.X, point.Y, point.Z, 4),
+                new(point.X, point.Y, point.Z, 5)
             }
         ) {
             m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
@@ -34,7 +34,7 @@ namespace Game {
             }
             if (m_voltage != voltage
                 && m_voltage > 0) {
-                CellFace cellFace = CellFaces[0];
+                GVCellFace cellFace = CellFaces[0];
                 int originData = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
                 int originType = GVInventoryFetcherBlock.GetType(originData);
                 int originFace = GVInventoryFetcherBlock.GetFace(originData);
@@ -46,7 +46,7 @@ namespace Game {
                 int itemValue;
                 int itemCount;
                 bool throwOut;
-                HashSet<int> itemAtSlots = new HashSet<int>();
+                HashSet<int> itemAtSlots = new();
                 if (originType == 0) {
                     int slot = (int)(m_voltage & 0xffu);
                     itemValue = originInventory.GetSlotValue(slot);
@@ -83,7 +83,7 @@ namespace Game {
                 else {
                     return false;
                 }
-                Point3 position = new Point3(cellFace.X, cellFace.Y, cellFace.Z);
+                Point3 position = new(cellFace.X, cellFace.Y, cellFace.Z);
                 while (true) {
                     position += originFaceDirection;
                     int value = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z);

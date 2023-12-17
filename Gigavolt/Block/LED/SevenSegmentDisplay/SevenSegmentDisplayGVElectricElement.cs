@@ -12,21 +12,54 @@ namespace Game {
 
         public Color m_color;
 
-        public Vector2[] m_centers = new Vector2[7] { new Vector2(0f, 6f), new Vector2(-4f, 3f), new Vector2(-4f, -3f), new Vector2(0f, -6f), new Vector2(4f, -3f), new Vector2(4f, 3f), new Vector2(0f, 0f) };
+        public Vector2[] m_centers = new Vector2[7] {
+            new(0f, 6f),
+            new(-4f, 3f),
+            new(-4f, -3f),
+            new(0f, -6f),
+            new(4f, -3f),
+            new(4f, 3f),
+            new(0f, 0f)
+        };
 
-        public Vector2[] m_sizes = new Vector2[7] { new Vector2(3.2f, 1f), new Vector2(1f, 2.3f), new Vector2(1f, 2.3f), new Vector2(3.2f, 1f), new Vector2(1f, 2.3f), new Vector2(1f, 2.3f), new Vector2(3.2f, 1f) };
+        public Vector2[] m_sizes = new Vector2[7] {
+            new(3.2f, 1f),
+            new(1f, 2.3f),
+            new(1f, 2.3f),
+            new(3.2f, 1f),
+            new(1f, 2.3f),
+            new(1f, 2.3f),
+            new(3.2f, 1f)
+        };
 
-        public readonly int[] m_patterns = new int[16] { 0, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113 };
+        public readonly int[] m_patterns = new int[16] {
+            0,
+            6,
+            91,
+            79,
+            102,
+            109,
+            125,
+            7,
+            127,
+            111,
+            119,
+            124,
+            57,
+            94,
+            121,
+            113
+        };
 
         public SevenSegmentDisplayGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(true);
 
         public override void OnAdded() {
-            CellFace cellFace = CellFaces[0];
+            GVCellFace cellFace = CellFaces[0];
             int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             int mountingFace = GVSevenSegmentDisplayBlock.GetMountingFace(data);
             m_color = GVLedBlock.LedColors[GVSevenSegmentDisplayBlock.GetColor(data)];
             for (int i = 0; i < 7; i++) {
-                Vector3 v = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
+                Vector3 v = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
                 Vector3 vector = CellFace.FaceToVector3(mountingFace);
                 Vector3 vector2 = mountingFace < 4 ? Vector3.UnitY : Vector3.UnitX;
                 Vector3 v2 = Vector3.Cross(vector, vector2);

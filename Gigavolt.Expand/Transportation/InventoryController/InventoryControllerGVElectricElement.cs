@@ -63,7 +63,7 @@ namespace Game {
                     }
                     else {
                         if (m_originInventory == null) {
-                            CellFace cellFace = CellFaces[0];
+                            GVCellFace cellFace = CellFaces[0];
                             Point3 faceDirection = CellFace.FaceToPoint3(cellFace.Face);
                             m_originInventory = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(cellFace.X - faceDirection.X, cellFace.Y - faceDirection.Y, cellFace.Z - faceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
                         }
@@ -159,7 +159,7 @@ namespace Game {
                                     moveCount = Math.Min(moveCount, inventory.GetSlotCapacity(targetSlotInput, targetValue));
                                     sourceSlotShouldRemove = sourceCount == moveCount;
                                     int leftCount = targetCount;
-                                    Dictionary<int, int> slotsIndex = new Dictionary<int, int>();
+                                    Dictionary<int, int> slotsIndex = new();
                                     for (int i = 0; i < inventory.SlotsCount; i++) {
                                         if ((i != sourceSlotInput || sourceSlotShouldRemove)
                                             && i != targetSlotInput) {
@@ -234,7 +234,7 @@ namespace Game {
                             }
                             toRemoveCount = Math.Min(toRemoveCount, totalCount);
                             totalCount = toRemoveCount;
-                            List<int> toRemoveSlotsIndex = new List<int>();
+                            List<int> toRemoveSlotsIndex = new();
                             foreach (int index in originalSlotsIndex) {
                                 toRemoveCount -= inventory.GetSlotCount(index);
                                 if (toRemoveCount <= 0) {
@@ -242,7 +242,7 @@ namespace Game {
                                 }
                                 toRemoveSlotsIndex.Add(index);
                             }
-                            Dictionary<int, ComponentInventoryBase.Slot> toMoveSlots = new Dictionary<int, ComponentInventoryBase.Slot>();
+                            Dictionary<int, ComponentInventoryBase.Slot> toMoveSlots = new();
                             for (int i = 0; i < toUseSlotsCount; i++) {
                                 int index = targetSlotInput + i;
                                 int value = inventory.GetSlotValue(index);
@@ -255,7 +255,7 @@ namespace Game {
                             int removedCount = 0;
                             foreach (KeyValuePair<int, ComponentInventoryBase.Slot> item in toMoveSlots) {
                                 int newCapacity = inventory.GetSlotCapacity(item.Key, valueInput);
-                                List<int> toRemoveSlotsIndex2 = new List<int>();
+                                List<int> toRemoveSlotsIndex2 = new();
                                 foreach (int index in toRemoveSlotsIndex) {
                                     newCapacity -= inventory.GetSlotCapacity(index, valueInput);
                                     if (newCapacity < 0) {
@@ -265,7 +265,7 @@ namespace Game {
                                 }
                                 int leftCount = item.Value.Count;
                                 int value = item.Value.Value;
-                                Dictionary<int, int> toMoveIntoSlots = new Dictionary<int, int>();
+                                Dictionary<int, int> toMoveIntoSlots = new();
                                 for (int i = 0; i < inventory.SlotsCount; i++) {
                                     if (i >= targetSlotInput
                                         && i < targetSlotInput + toUseSlotsCount) {
@@ -345,7 +345,7 @@ namespace Game {
                             }
                             else if (countInput > 0) {
                                 int leftCount = oldCount - countInput;
-                                Dictionary<int, int> slotsIndex = new Dictionary<int, int>();
+                                Dictionary<int, int> slotsIndex = new();
                                 for (int i = 0; i < inventory.SlotsCount; i++) {
                                     if (i != sourceSlotInput) {
                                         int count = inventory.GetSlotCount(i);
@@ -407,7 +407,7 @@ namespace Game {
         }
 
         public static uint OrderInventory(ComponentInventoryBase inventory, bool orderByValue, bool desc) {
-            Dictionary<int, int> allItems = new Dictionary<int, int>();
+            Dictionary<int, int> allItems = new();
             foreach (ComponentInventoryBase.Slot slot in inventory.m_slots) {
                 if (slot.Count > 0) {
                     if (allItems.TryGetValue(slot.Value, out int count)) {

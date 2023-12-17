@@ -3,7 +3,7 @@
         public DetonatorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
 
         public void Detonate() {
-            CellFace cellFace = CellFaces[0];
+            GVCellFace cellFace = CellFaces[0];
             int value = Terrain.MakeBlockValue(GVDetonatorCBlock.Index);
             SubsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true).TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
         }

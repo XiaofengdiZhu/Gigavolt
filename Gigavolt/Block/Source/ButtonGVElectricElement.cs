@@ -14,7 +14,7 @@ namespace Game {
             if (!m_wasPressed
                 && m_voltage == 0u) {
                 m_wasPressed = true;
-                CellFace cellFace = CellFaces[0];
+                GVCellFace cellFace = CellFaces[0];
                 SubsystemGVElectricity.SubsystemAudio.PlaySound(
                     "Audio/Click",
                     1f,

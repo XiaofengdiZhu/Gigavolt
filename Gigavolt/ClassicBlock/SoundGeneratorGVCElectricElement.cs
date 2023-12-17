@@ -10,17 +10,62 @@ namespace Game {
 
         public SoundParticleSystem m_particleSystem;
 
-        public Random m_random = new Random();
+        public Random m_random = new();
 
         public uint m_lastToneInput;
 
         public double m_playAllowedTime;
 
-        public string[] m_tones = new string[16] { "", "Bell", "Organ", "Ping", "String", "Trumpet", "Voice", "Piano", "PianoLong", "Drums", "", "", "", "", "", "Piano" };
+        public string[] m_tones = new string[16] {
+            "",
+            "Bell",
+            "Organ",
+            "Ping",
+            "String",
+            "Trumpet",
+            "Voice",
+            "Piano",
+            "PianoLong",
+            "Drums",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Piano"
+        };
 
-        public int[] m_maxOctaves = new int[16] { 0, 5, 5, 5, 5, 5, 5, 6, 6, 0, 0, 0, 0, 0, 0, 6 };
+        public int[] m_maxOctaves = new int[16] {
+            0,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            6,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            6
+        };
 
-        public string[] m_drums = new string[10] { "Snare", "BassDrum", "ClosedHiHat", "PedalHiHat", "OpenHiHat", "LowTom", "HighTom", "CrashCymbal", "RideCymbal", "HandClap" };
+        public string[] m_drums = new string[10] {
+            "Snare",
+            "BassDrum",
+            "ClosedHiHat",
+            "PedalHiHat",
+            "OpenHiHat",
+            "LowTom",
+            "HighTom",
+            "CrashCymbal",
+            "RideCymbal",
+            "HandClap"
+        };
 
         public SoundGeneratorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemNoise = subsystemGVElectricity.Project.FindSubsystem<SubsystemNoise>(true);
@@ -86,8 +131,8 @@ namespace Game {
                 }
                 if (num5 != 0f
                     && !string.IsNullOrEmpty(text2)) {
-                    CellFace cellFace = CellFaces[0];
-                    Vector3 position = new Vector3(cellFace.X, cellFace.Y, cellFace.Z);
+                    GVCellFace cellFace = CellFaces[0];
+                    Vector3 position = new(cellFace.X, cellFace.Y, cellFace.Z);
                     float volume = num2 / 15f;
                     float pitch = MathUtils.Clamp(MathUtils.Log(num5) / MathUtils.Log(2f), -1f, 1f);
                     float minDistance = 0.5f + 5f * num2 / 15f;
@@ -105,7 +150,7 @@ namespace Game {
                     if (m_particleSystem.SubsystemParticles == null) {
                         m_subsystemParticles.AddParticleSystem(m_particleSystem);
                     }
-                    Vector3 hsv = new Vector3(22.5f * num + m_random.Float(0f, 22f), 0.5f + num2 / 30f, 1f);
+                    Vector3 hsv = new(22.5f * num + m_random.Float(0f, 22f), 0.5f + num2 / 30f, 1f);
                     m_particleSystem.AddNote(new Color(Color.HsvToRgb(hsv)));
                 }
             }

@@ -1,6 +1,6 @@
 namespace Game {
     public class GVElectricConnection {
-        public CellFace CellFace;
+        public GVCellFace CellFace;
 
         public int ConnectorFace;
 
@@ -8,7 +8,7 @@ namespace Game {
 
         public GVElectricElement NeighborGVElectricElement;
 
-        public CellFace NeighborCellFace;
+        public GVCellFace NeighborCellFace;
 
         public int NeighborConnectorFace;
 

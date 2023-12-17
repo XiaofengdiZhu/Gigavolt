@@ -15,7 +15,7 @@ namespace Game {
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
-            CellFace cellFace = CellFaces[0];
+            GVCellFace cellFace = CellFaces[0];
             int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int value = GVSwitchBlock.SetLeverState(cellValue, !GVSwitchBlock.GetLeverState(cellValue));
             SubsystemGVElectricity.SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, value);

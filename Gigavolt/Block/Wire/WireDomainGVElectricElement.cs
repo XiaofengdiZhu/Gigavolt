@@ -6,19 +6,22 @@ namespace Game {
         public uint m_voltage;
 
         public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectric, IEnumerable<CellFace> cellFaces) : base(subsystemGVElectric, cellFaces) { }
+        public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectric, IEnumerable<GVCellFace> cellFaces) : base(subsystemGVElectric, cellFaces) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
             uint voltage = m_voltage;
-            uint num = 0;
+            m_voltage = 0;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    num |= connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                    if (connection.NeighborGVElectricElement is WireDomainGVElectricElement) {
+                        continue;
+                    }
+                    m_voltage |= connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                 }
             }
-            m_voltage = num;
             return m_voltage != voltage;
         }
 

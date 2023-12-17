@@ -374,6 +374,10 @@
     "GVDispenserCBlock:0": {
       "DisplayName": "GV发射器经典",
       "Description": "发射器以类似于箱子的方式存储物品，但是当电信号的触发发射器时，物品将会从孔弹射出来。根据设置，它既可以轻轻吐出物品，也可以将其大力射出。"
+    },
+    "GVWireHarnessBlock:0": {
+      "DisplayName": "GV导线束",
+      "Description": "将多种颜色的导线接到亮橙色的导线束上，不同颜色导线的电压能互不干扰地在导线束中传输"
     }
   },
   "ContentWidgets": {

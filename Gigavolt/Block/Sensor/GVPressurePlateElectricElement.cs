@@ -15,7 +15,7 @@ namespace Game {
             m_lastPressFrameIndex = Time.FrameIndex;
             if (pressure > m_pressure) {
                 m_pressure = pressure;
-                CellFace cellFace = CellFaces[0];
+                GVCellFace cellFace = CellFaces[0];
                 SubsystemGVElectricity.SubsystemAudio.PlaySound(
                     "Audio/BlockPlaced",
                     1f,
@@ -39,7 +39,7 @@ namespace Game {
             }
             else {
                 if (m_voltage > 0) {
-                    CellFace cellFace = CellFaces[0];
+                    GVCellFace cellFace = CellFaces[0];
                     SubsystemGVElectricity.SubsystemAudio.PlaySound(
                         "Audio/BlockPlaced",
                         0.6f,

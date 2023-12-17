@@ -13,11 +13,11 @@ namespace Game {
         public OneLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGVOneLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVOneLedGlow>(true);
 
         public override void OnAdded() {
-            CellFace cellFace = CellFaces[0];
+            GVCellFace cellFace = CellFaces[0];
             int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             int mountingFace = FourLedBlock.GetMountingFace(data);
             m_color = GVLedBlock.LedColors[FourLedBlock.GetColor(data)];
-            Vector3 v = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
+            Vector3 v = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             Vector3 vector = CellFace.FaceToVector3(mountingFace);
             Vector3 vector2 = mountingFace < 4 ? Vector3.UnitY : Vector3.UnitX;
             Vector3 right = Vector3.Cross(vector, vector2);

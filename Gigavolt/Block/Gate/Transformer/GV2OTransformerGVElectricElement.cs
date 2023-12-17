@@ -19,7 +19,7 @@ namespace Game {
             }
             m_voltage = input & 0xFu;
             if (m_voltage != voltage) {
-                CellFace cellFace = CellFaces[0];
+                GVCellFace cellFace = CellFaces[0];
                 ElectricElement electricElement = subsystemElectricity.GetElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face);
                 if (electricElement != null) {
                     subsystemElectricity.QueueElectricElementForSimulation(electricElement, subsystemElectricity.CircuitStep + 1);

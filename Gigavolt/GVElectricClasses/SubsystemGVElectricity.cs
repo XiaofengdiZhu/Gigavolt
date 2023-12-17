@@ -13,7 +13,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVElectricity : Subsystem, IUpdateable {
         public static GVElectricConnectionPath[] m_connectionPathsTable = new GVElectricConnectionPath[120] {
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 -1,
@@ -21,7 +21,7 @@ namespace Game {
                 4,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 0,
@@ -29,7 +29,7 @@ namespace Game {
                 4,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 -1,
@@ -37,7 +37,7 @@ namespace Game {
                 4,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -45,7 +45,7 @@ namespace Game {
                 4,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 -1,
@@ -53,7 +53,7 @@ namespace Game {
                 3,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 0,
@@ -61,7 +61,7 @@ namespace Game {
                 3,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 -1,
@@ -69,7 +69,7 @@ namespace Game {
                 3,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -77,7 +77,7 @@ namespace Game {
                 3,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 -1,
@@ -85,7 +85,7 @@ namespace Game {
                 5,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 0,
@@ -93,7 +93,7 @@ namespace Game {
                 5,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 -1,
@@ -101,7 +101,7 @@ namespace Game {
                 5,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -109,7 +109,7 @@ namespace Game {
                 5,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 -1,
@@ -117,7 +117,7 @@ namespace Game {
                 1,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 0,
@@ -125,7 +125,7 @@ namespace Game {
                 1,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 -1,
@@ -133,7 +133,7 @@ namespace Game {
                 1,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -141,7 +141,7 @@ namespace Game {
                 1,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 -1,
@@ -152,7 +152,7 @@ namespace Game {
             null,
             null,
             null,
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 1,
                 0,
@@ -160,7 +160,7 @@ namespace Game {
                 4,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 0,
@@ -168,7 +168,7 @@ namespace Game {
                 4,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 1,
                 0,
@@ -176,7 +176,7 @@ namespace Game {
                 4,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -184,7 +184,7 @@ namespace Game {
                 4,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 1,
@@ -192,7 +192,7 @@ namespace Game {
                 0,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 1,
@@ -200,7 +200,7 @@ namespace Game {
                 0,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 1,
@@ -208,7 +208,7 @@ namespace Game {
                 0,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -216,7 +216,7 @@ namespace Game {
                 0,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 -1,
                 0,
@@ -224,7 +224,7 @@ namespace Game {
                 5,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 0,
@@ -232,7 +232,7 @@ namespace Game {
                 5,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 -1,
                 0,
@@ -240,7 +240,7 @@ namespace Game {
                 5,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -248,7 +248,7 @@ namespace Game {
                 5,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 -1,
@@ -256,7 +256,7 @@ namespace Game {
                 2,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 -1,
@@ -264,7 +264,7 @@ namespace Game {
                 2,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 -1,
@@ -272,7 +272,7 @@ namespace Game {
                 2,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -280,7 +280,7 @@ namespace Game {
                 2,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 0,
@@ -291,7 +291,7 @@ namespace Game {
             null,
             null,
             null,
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 1,
@@ -299,7 +299,7 @@ namespace Game {
                 4,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 0,
@@ -307,7 +307,7 @@ namespace Game {
                 4,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 1,
@@ -315,7 +315,7 @@ namespace Game {
                 4,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -323,7 +323,7 @@ namespace Game {
                 4,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 1,
@@ -331,7 +331,7 @@ namespace Game {
                 1,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 0,
@@ -339,7 +339,7 @@ namespace Game {
                 1,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 1,
@@ -347,7 +347,7 @@ namespace Game {
                 1,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -355,7 +355,7 @@ namespace Game {
                 1,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 1,
@@ -363,7 +363,7 @@ namespace Game {
                 5,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 0,
@@ -371,7 +371,7 @@ namespace Game {
                 5,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 1,
@@ -379,7 +379,7 @@ namespace Game {
                 5,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -387,7 +387,7 @@ namespace Game {
                 5,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 1,
@@ -395,7 +395,7 @@ namespace Game {
                 3,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 0,
@@ -403,7 +403,7 @@ namespace Game {
                 3,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 1,
@@ -411,7 +411,7 @@ namespace Game {
                 3,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -419,7 +419,7 @@ namespace Game {
                 3,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 1,
@@ -430,7 +430,7 @@ namespace Game {
             null,
             null,
             null,
-            new GVElectricConnectionPath(
+            new(
                 1,
                 1,
                 0,
@@ -438,7 +438,7 @@ namespace Game {
                 4,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 0,
@@ -446,7 +446,7 @@ namespace Game {
                 4,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 1,
                 0,
@@ -454,7 +454,7 @@ namespace Game {
                 4,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -462,7 +462,7 @@ namespace Game {
                 4,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 -1,
@@ -470,7 +470,7 @@ namespace Game {
                 2,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 -1,
@@ -478,7 +478,7 @@ namespace Game {
                 2,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 -1,
@@ -486,7 +486,7 @@ namespace Game {
                 2,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -494,7 +494,7 @@ namespace Game {
                 2,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 -1,
                 0,
@@ -502,7 +502,7 @@ namespace Game {
                 5,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 0,
@@ -510,7 +510,7 @@ namespace Game {
                 5,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 -1,
                 0,
@@ -518,7 +518,7 @@ namespace Game {
                 5,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -526,7 +526,7 @@ namespace Game {
                 5,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 1,
@@ -534,7 +534,7 @@ namespace Game {
                 0,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 1,
@@ -542,7 +542,7 @@ namespace Game {
                 0,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 1,
@@ -550,7 +550,7 @@ namespace Game {
                 0,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -558,7 +558,7 @@ namespace Game {
                 0,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 0,
@@ -569,7 +569,7 @@ namespace Game {
             null,
             null,
             null,
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 -1,
@@ -577,7 +577,7 @@ namespace Game {
                 2,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 -1,
@@ -585,7 +585,7 @@ namespace Game {
                 2,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 -1,
@@ -593,7 +593,7 @@ namespace Game {
                 2,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -601,7 +601,7 @@ namespace Game {
                 2,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 -1,
                 0,
@@ -609,7 +609,7 @@ namespace Game {
                 3,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 0,
@@ -617,7 +617,7 @@ namespace Game {
                 3,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 -1,
                 0,
@@ -625,7 +625,7 @@ namespace Game {
                 3,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -633,7 +633,7 @@ namespace Game {
                 3,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 1,
@@ -641,7 +641,7 @@ namespace Game {
                 0,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 1,
@@ -649,7 +649,7 @@ namespace Game {
                 0,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 1,
@@ -657,7 +657,7 @@ namespace Game {
                 0,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -665,7 +665,7 @@ namespace Game {
                 0,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 -1,
                 0,
@@ -673,7 +673,7 @@ namespace Game {
                 1,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 0,
@@ -681,7 +681,7 @@ namespace Game {
                 1,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 -1,
                 0,
@@ -689,7 +689,7 @@ namespace Game {
                 1,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -697,7 +697,7 @@ namespace Game {
                 1,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 -1,
                 0,
@@ -708,7 +708,7 @@ namespace Game {
             null,
             null,
             null,
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 -1,
@@ -716,7 +716,7 @@ namespace Game {
                 2,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 -1,
@@ -724,7 +724,7 @@ namespace Game {
                 2,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 -1,
@@ -732,7 +732,7 @@ namespace Game {
                 2,
                 0
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -740,7 +740,7 @@ namespace Game {
                 2,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 1,
                 0,
@@ -748,7 +748,7 @@ namespace Game {
                 1,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 0,
                 0,
@@ -756,7 +756,7 @@ namespace Game {
                 1,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 1,
                 1,
                 0,
@@ -764,7 +764,7 @@ namespace Game {
                 1,
                 3
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -772,7 +772,7 @@ namespace Game {
                 1,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 1,
@@ -780,7 +780,7 @@ namespace Game {
                 0,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 1,
@@ -788,7 +788,7 @@ namespace Game {
                 0,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 1,
@@ -796,7 +796,7 @@ namespace Game {
                 0,
                 2
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -804,7 +804,7 @@ namespace Game {
                 0,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 1,
                 0,
@@ -812,7 +812,7 @@ namespace Game {
                 3,
                 5
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 0,
                 0,
@@ -820,7 +820,7 @@ namespace Game {
                 3,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 -1,
                 1,
                 0,
@@ -828,7 +828,7 @@ namespace Game {
                 3,
                 1
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 0,
                 0,
@@ -836,7 +836,7 @@ namespace Game {
                 3,
                 4
             ),
-            new GVElectricConnectionPath(
+            new(
                 0,
                 1,
                 0,
@@ -849,39 +849,105 @@ namespace Game {
             null
         };
 
-        public static GVElectricConnectorDirection?[] m_connectorDirectionsTable = new GVElectricConnectorDirection?[36] { null, GVElectricConnectorDirection.Right, GVElectricConnectorDirection.In, GVElectricConnectorDirection.Left, GVElectricConnectorDirection.Top, GVElectricConnectorDirection.Bottom, GVElectricConnectorDirection.Left, null, GVElectricConnectorDirection.Right, GVElectricConnectorDirection.In, GVElectricConnectorDirection.Top, GVElectricConnectorDirection.Bottom, GVElectricConnectorDirection.In, GVElectricConnectorDirection.Left, null, GVElectricConnectorDirection.Right, GVElectricConnectorDirection.Top, GVElectricConnectorDirection.Bottom, GVElectricConnectorDirection.Right, GVElectricConnectorDirection.In, GVElectricConnectorDirection.Left, null, GVElectricConnectorDirection.Top, GVElectricConnectorDirection.Bottom, GVElectricConnectorDirection.Bottom, GVElectricConnectorDirection.Right, GVElectricConnectorDirection.Top, GVElectricConnectorDirection.Left, null, GVElectricConnectorDirection.In, GVElectricConnectorDirection.Top, GVElectricConnectorDirection.Right, GVElectricConnectorDirection.Bottom, GVElectricConnectorDirection.Left, GVElectricConnectorDirection.In, null };
+        public static GVElectricConnectorDirection?[] m_connectorDirectionsTable = new GVElectricConnectorDirection?[36] {
+            null,
+            GVElectricConnectorDirection.Right,
+            GVElectricConnectorDirection.In,
+            GVElectricConnectorDirection.Left,
+            GVElectricConnectorDirection.Top,
+            GVElectricConnectorDirection.Bottom,
+            GVElectricConnectorDirection.Left,
+            null,
+            GVElectricConnectorDirection.Right,
+            GVElectricConnectorDirection.In,
+            GVElectricConnectorDirection.Top,
+            GVElectricConnectorDirection.Bottom,
+            GVElectricConnectorDirection.In,
+            GVElectricConnectorDirection.Left,
+            null,
+            GVElectricConnectorDirection.Right,
+            GVElectricConnectorDirection.Top,
+            GVElectricConnectorDirection.Bottom,
+            GVElectricConnectorDirection.Right,
+            GVElectricConnectorDirection.In,
+            GVElectricConnectorDirection.Left,
+            null,
+            GVElectricConnectorDirection.Top,
+            GVElectricConnectorDirection.Bottom,
+            GVElectricConnectorDirection.Bottom,
+            GVElectricConnectorDirection.Right,
+            GVElectricConnectorDirection.Top,
+            GVElectricConnectorDirection.Left,
+            null,
+            GVElectricConnectorDirection.In,
+            GVElectricConnectorDirection.Top,
+            GVElectricConnectorDirection.Right,
+            GVElectricConnectorDirection.Bottom,
+            GVElectricConnectorDirection.Left,
+            GVElectricConnectorDirection.In,
+            null
+        };
 
-        public static int[] m_connectorFacesTable = new int[30] { 4, 3, 5, 1, 2, 4, 0, 5, 2, 3, 4, 1, 5, 3, 0, 4, 2, 5, 0, 1, 2, 1, 0, 3, 5, 0, 1, 2, 3, 4 };
+        public static int[] m_connectorFacesTable = new int[30] {
+            4,
+            3,
+            5,
+            1,
+            2,
+            4,
+            0,
+            5,
+            2,
+            3,
+            4,
+            1,
+            5,
+            3,
+            0,
+            4,
+            2,
+            5,
+            0,
+            1,
+            2,
+            1,
+            0,
+            3,
+            5,
+            0,
+            1,
+            2,
+            3,
+            4
+        };
 
         public float m_remainingSimulationTime;
 
-        public Dictionary<Point3, uint> m_persistentElementsVoltages = new Dictionary<Point3, uint>();
+        public Dictionary<Point3, uint> m_persistentElementsVoltages = new();
 
-        public Dictionary<GVElectricElement, bool> m_GVElectricElements = new Dictionary<GVElectricElement, bool>();
+        public Dictionary<GVElectricElement, bool> m_GVElectricElements = new();
 
-        public Dictionary<CellFace, GVElectricElement> m_GVElectricElementsByCellFace = new Dictionary<CellFace, GVElectricElement>();
+        public Dictionary<GVCellFace, GVElectricElement> m_GVElectricElementsByCellFace = new();
 
-        public Dictionary<Point3, bool> m_pointsToUpdate = new Dictionary<Point3, bool>();
+        public Dictionary<Point3, bool> m_pointsToUpdate = new();
 
-        public Dictionary<Point3, GVElectricElement> m_GVElectricElementsToAdd = new Dictionary<Point3, GVElectricElement>();
+        public Dictionary<Point3, GVElectricElement> m_GVElectricElementsToAdd = new();
 
-        public Dictionary<GVElectricElement, bool> m_GVElectricElementsToRemove = new Dictionary<GVElectricElement, bool>();
+        public Dictionary<GVElectricElement, bool> m_GVElectricElementsToRemove = new();
 
-        public Dictionary<Point3, bool> m_wiresToUpdate = new Dictionary<Point3, bool>();
+        public Dictionary<GVCellFace, bool> m_wiresToUpdate = new();
 
-        public List<Dictionary<GVElectricElement, bool>> m_listsCache = new List<Dictionary<GVElectricElement, bool>>();
+        public List<Dictionary<GVElectricElement, bool>> m_listsCache = new();
 
-        public Dictionary<int, Dictionary<GVElectricElement, bool>> m_futureSimulateLists = new Dictionary<int, Dictionary<GVElectricElement, bool>>();
+        public Dictionary<int, Dictionary<GVElectricElement, bool>> m_futureSimulateLists = new();
 
         public Dictionary<GVElectricElement, bool> m_nextStepSimulateList;
 
-        public DynamicArray<GVElectricConnectionPath> m_tmpConnectionPaths = new DynamicArray<GVElectricConnectionPath>();
+        public DynamicArray<GVElectricConnectionPath> m_tmpConnectionPaths = new();
 
-        public Dictionary<CellFace, bool> m_tmpVisited = new Dictionary<CellFace, bool>();
+        public Dictionary<GVCellFace, bool> m_tmpVisited = new();
 
-        public Dictionary<CellFace, bool> m_tmpResult = new Dictionary<CellFace, bool>();
-
-        public static bool DebugDrawGVElectrics = false;
+        public Dictionary<GVCellFace, bool> m_tmpResult = new();
 
         public static int SimulatedGVElectricElements;
 
@@ -890,9 +956,9 @@ namespace Game {
 
         public bool debugMode;
         public bool keyboardDebug = false;
-        public Dictionary<ComponentPlayer, GVStepFloatingButtons> m_debugButtonsDictionary = new Dictionary<ComponentPlayer, GVStepFloatingButtons>();
+        public Dictionary<ComponentPlayer, GVStepFloatingButtons> m_debugButtonsDictionary = new();
         public DateTime lastUpdate;
-        public Queue<DateTime> last1000Updates = new Queue<DateTime>(1002);
+        public Queue<DateTime> last1000Updates = new(1002);
 
         public SubsystemTime SubsystemTime { get; set; }
 
@@ -926,7 +992,7 @@ namespace Game {
         }
 
         public void OnChunkDiscarding(TerrainChunk chunk) {
-            foreach (CellFace key in m_GVElectricElementsByCellFace.Keys) {
+            foreach (GVCellFace key in m_GVElectricElementsByCellFace.Keys) {
                 if (key.X >= chunk.Origin.X
                     && key.X < chunk.Origin.X + 16
                     && key.Z >= chunk.Origin.Y
@@ -994,6 +1060,16 @@ namespace Game {
                         && ((connectorType.Value != 0 && connectorType2.Value != GVElectricConnectorType.Output) || (connectorType.Value != GVElectricConnectorType.Output && connectorType2.Value != 0))) {
                         int connectionMask = GVElectricElementBlock.GetConnectionMask(cellValue);
                         int connectionMask2 = GVElectricElementBlock2.GetConnectionMask(cellValue2);
+                        if (GVElectricElementBlock is GVWireHarnessBlock
+                            && GVElectricElementBlock2 is not GVWireHarnessBlock
+                            && connectionMask2 == int.MaxValue) {
+                            continue;
+                        }
+                        if (GVElectricElementBlock2 is GVWireHarnessBlock
+                            && GVElectricElementBlock is not GVWireHarnessBlock
+                            && connectionMask == int.MaxValue) {
+                            continue;
+                        }
                         if ((connectionMask & connectionMask2) != 0) {
                             list.Add(GVElectricConnectionPath);
                         }
@@ -1002,8 +1078,37 @@ namespace Game {
             }
         }
 
-        public GVElectricElement GetGVElectricElement(int x, int y, int z, int mountingFace) {
-            m_GVElectricElementsByCellFace.TryGetValue(new CellFace(x, y, z, mountingFace), out GVElectricElement value);
+        public GVElectricElement GetGVElectricElement(int x, int y, int z, int mountingFace, int mask = int.MaxValue) {
+            m_GVElectricElementsByCellFace.TryGetValue(
+                new GVCellFace(
+                    x,
+                    y,
+                    z,
+                    mountingFace,
+                    mask
+                ),
+                out GVElectricElement value
+            );
+            if (value == null) {
+                if (mask == int.MaxValue) {
+                    for (int i = 0; i < 16; i++) {
+                        m_GVElectricElementsByCellFace.TryGetValue(
+                            new GVCellFace(
+                                x,
+                                y,
+                                z,
+                                mountingFace,
+                                1 << i
+                            ),
+                            out GVElectricElement value2
+                        );
+                        if (value2 != null) {
+                            return value2;
+                        }
+                    }
+                }
+                return null;
+            }
             return value;
         }
 
@@ -1086,9 +1191,6 @@ namespace Game {
                         lastUpdate = now;
                         last1000Updates.Enqueue(now);
                     }
-                }
-                if (DebugDrawGVElectrics) {
-                    DebugDraw();
                 }
                 if (m_isCreativeMode) {
                     foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers) {
@@ -1196,37 +1298,41 @@ namespace Game {
         }
 
         public override void Load(ValuesDictionary valuesDictionary) {
-            SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
-            SubsystemTime = Project.FindSubsystem<SubsystemTime>(true);
-            SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
-            m_isCreativeMode = Project.FindSubsystem<SubsystemGameInfo>(true).WorldSettings.GameMode == GameMode.Creative;
-            if (m_isCreativeMode) {
-                m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(true);
-            }
-            string[] array = valuesDictionary.GetValue<string>("GigaVoltagesByCell").Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            int num = 0;
-            while (true) {
-                if (num < array.Length) {
-                    string[] array2 = array[num].Split(new[] { "," }, StringSplitOptions.None);
-                    if (array2.Length != 4) {
-                        break;
-                    }
-                    int x = int.Parse(array2[0], NumberStyles.HexNumber, null);
-                    int y = int.Parse(array2[1], NumberStyles.HexNumber, null);
-                    int z = int.Parse(array2[2], NumberStyles.HexNumber, null);
-                    uint value = uint.Parse(array2[3], NumberStyles.HexNumber, null);
-                    m_persistentElementsVoltages[new Point3(x, y, z)] = value;
-                    num++;
-                    continue;
+            try {
+                SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
+                SubsystemTime = Project.FindSubsystem<SubsystemTime>(true);
+                SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
+                m_isCreativeMode = Project.FindSubsystem<SubsystemGameInfo>(true).WorldSettings.GameMode == GameMode.Creative;
+                if (m_isCreativeMode) {
+                    m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(true);
                 }
-                return;
+                string[] array = valuesDictionary.GetValue<string>("GigaVoltagesByCell").Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (true) {
+                    if (num < array.Length) {
+                        string[] array2 = array[num].Split(new[] { "," }, StringSplitOptions.None);
+                        if (array2.Length != 4) {
+                            break;
+                        }
+                        int x = int.Parse(array2[0], NumberStyles.HexNumber, null);
+                        int y = int.Parse(array2[1], NumberStyles.HexNumber, null);
+                        int z = int.Parse(array2[2], NumberStyles.HexNumber, null);
+                        uint value = uint.Parse(array2[3], NumberStyles.HexNumber, null);
+                        m_persistentElementsVoltages[new Point3(x, y, z)] = value;
+                        num++;
+                        continue;
+                    }
+                    return;
+                }
+                throw new InvalidOperationException("Invalid number of tokens.");
             }
-            throw new InvalidOperationException("Invalid number of tokens.");
+            catch (Exception e) {
+                Log.Error(e);
+            }
         }
 
         public override void Save(ValuesDictionary valuesDictionary) {
-            int num = 0;
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             foreach (KeyValuePair<Point3, uint> persistentElementsVoltage in m_persistentElementsVoltages) {
                 stringBuilder.Append(persistentElementsVoltage.Key.X.ToString("X", null));
                 stringBuilder.Append(',');
@@ -1236,7 +1342,6 @@ namespace Game {
                 stringBuilder.Append(',');
                 stringBuilder.Append(persistentElementsVoltage.Value.ToString("X", null));
                 stringBuilder.Append(';');
-                num++;
             }
             valuesDictionary.SetValue("GigaVoltagesByCell", stringBuilder.ToString());
         }
@@ -1250,8 +1355,11 @@ namespace Game {
         }
 
         public void AddGVElectricElement(GVElectricElement GVElectricElement) {
+            if (GVElectricElement.CellFaces.Intersect(m_GVElectricElementsByCellFace.Keys).Any()) {
+                return;
+            }
             m_GVElectricElements.Add(GVElectricElement, true);
-            foreach (CellFace cellFace2 in GVElectricElement.CellFaces) {
+            foreach (GVCellFace cellFace2 in GVElectricElement.CellFaces) {
                 m_GVElectricElementsByCellFace.Add(cellFace2, GVElectricElement);
                 m_tmpConnectionPaths.Clear();
                 GetAllConnectedNeighbors(
@@ -1262,12 +1370,17 @@ namespace Game {
                     m_tmpConnectionPaths
                 );
                 foreach (GVElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths) {
-                    CellFace cellFace = new CellFace(cellFace2.X + tmpConnectionPath.NeighborOffsetX, cellFace2.Y + tmpConnectionPath.NeighborOffsetY, cellFace2.Z + tmpConnectionPath.NeighborOffsetZ, tmpConnectionPath.NeighborFace);
-                    if (m_GVElectricElementsByCellFace.TryGetValue(cellFace, out GVElectricElement value)
+                    GVCellFace cellFace = new(cellFace2.X + tmpConnectionPath.NeighborOffsetX, cellFace2.Y + tmpConnectionPath.NeighborOffsetY, cellFace2.Z + tmpConnectionPath.NeighborOffsetZ, tmpConnectionPath.NeighborFace);
+                    GVElectricElement value = GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face);
+                    if (value != null
                         && value != GVElectricElement) {
+                        if (GVElectricElement is WireDomainGVElectricElement
+                            && value is WireDomainGVElectricElement) {
+                            continue;
+                        }
                         int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
                         int num = Terrain.ExtractContents(cellValue);
-                        GVElectricConnectorType value2 = ((IGVElectricElementBlock)BlocksManager.Blocks[num]).GetGVConnectorType(
+                        GVElectricConnectorType value2 = (BlocksManager.Blocks[num] as IGVElectricElementBlock).GetGVConnectorType(
                                 SubsystemTerrain,
                                 cellValue,
                                 cellFace2.Face,
@@ -1279,7 +1392,7 @@ namespace Game {
                             .Value;
                         int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
                         int num2 = Terrain.ExtractContents(cellValue2);
-                        GVElectricConnectorType value3 = ((IGVElectricElementBlock)BlocksManager.Blocks[num2]).GetGVConnectorType(
+                        GVElectricConnectorType value3 = (BlocksManager.Blocks[num2] as IGVElectricElementBlock).GetGVConnectorType(
                                 SubsystemTerrain,
                                 cellValue2,
                                 cellFace.Face,
@@ -1323,14 +1436,11 @@ namespace Game {
             GVElectricElement.OnRemoved();
             QueueGVElectricElementConnectionsForSimulation(GVElectricElement, CircuitStep + 1);
             m_GVElectricElements.Remove(GVElectricElement);
-            foreach (CellFace cellFace in GVElectricElement.CellFaces) {
+            foreach (GVCellFace cellFace in GVElectricElement.CellFaces) {
                 m_GVElectricElementsByCellFace.Remove(cellFace);
             }
             foreach (GVElectricConnection connection in GVElectricElement.Connections) {
-                int num = connection.NeighborGVElectricElement.Connections.FirstIndex(c => c.NeighborGVElectricElement == GVElectricElement);
-                if (num >= 0) {
-                    connection.NeighborGVElectricElement.Connections.RemoveAt(num);
-                }
+                connection.NeighborGVElectricElement.Connections.RemoveAll(connection2 => connection2.NeighborGVElectricElement == GVElectricElement);
             }
         }
 
@@ -1342,7 +1452,7 @@ namespace Game {
                     GVElectricElement GVElectricElement = GetGVElectricElement(key.X, key.Y, key.Z, i);
                     if (GVElectricElement != null) {
                         if (GVElectricElement is WireDomainGVElectricElement) {
-                            m_wiresToUpdate[key] = true;
+                            m_wiresToUpdate[new GVCellFace(key) { Mask = GVElectricElement.CellFaces[0].Mask }] = true;
                         }
                         else {
                             m_GVElectricElementsToRemove[GVElectricElement] = true;
@@ -1353,11 +1463,12 @@ namespace Game {
                     m_persistentElementsVoltages.Remove(key);
                 }
                 int num = Terrain.ExtractContents(cellValue);
-                if (BlocksManager.Blocks[num] is IGVElectricWireElementBlock) {
-                    m_wiresToUpdate[key] = true;
+                Block block = BlocksManager.Blocks[num];
+                if (block is IGVElectricWireElementBlock wire) {
+                    m_wiresToUpdate[new GVCellFace(key) { Mask = wire.GetConnectionMask(cellValue) }] = true;
                 }
                 else {
-                    IGVElectricElementBlock GVElectricElementBlock = BlocksManager.Blocks[num] as IGVElectricElementBlock;
+                    IGVElectricElementBlock GVElectricElementBlock = block as IGVElectricElementBlock;
                     GVElectricElement GVElectricElement2 = GVElectricElementBlock?.CreateGVElectricElement(
                         this,
                         cellValue,
@@ -1386,15 +1497,25 @@ namespace Game {
 
         public void AddWireDomains() {
             m_tmpVisited.Clear();
-            foreach (Point3 key in m_wiresToUpdate.Keys) {
+            foreach (GVCellFace key in m_wiresToUpdate.Keys) {
                 for (int i = key.X - 1; i <= key.X + 1; i++) {
                     for (int j = key.Y - 1; j <= key.Y + 1; j++) {
                         for (int k = key.Z - 1; k <= key.Z + 1; k++) {
                             for (int l = 0; l < 6; l++) {
                                 m_tmpResult.Clear();
-                                ScanWireDomain(new CellFace(i, j, k, l), m_tmpVisited, m_tmpResult);
+                                ScanWireDomain(
+                                    new GVCellFace(
+                                        i,
+                                        j,
+                                        k,
+                                        l,
+                                        key.Mask
+                                    ),
+                                    m_tmpVisited,
+                                    m_tmpResult
+                                );
                                 if (m_tmpResult.Count > 0) {
-                                    WireDomainGVElectricElement GVElectricElement = new WireDomainGVElectricElement(this, m_tmpResult.Keys);
+                                    WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult.Keys);
                                     AddGVElectricElement(GVElectricElement);
                                 }
                             }
@@ -1405,14 +1526,29 @@ namespace Game {
         }
 
         public void RemoveWireDomains() {
-            foreach (Point3 key in m_wiresToUpdate.Keys) {
+            foreach (GVCellFace key in m_wiresToUpdate.Keys) {
                 for (int i = key.X - 1; i <= key.X + 1; i++) {
                     for (int j = key.Y - 1; j <= key.Y + 1; j++) {
                         for (int k = key.Z - 1; k <= key.Z + 1; k++) {
                             for (int l = 0; l < 6; l++) {
-                                if (m_GVElectricElementsByCellFace.TryGetValue(new CellFace(i, j, k, l), out GVElectricElement value)
-                                    && value is WireDomainGVElectricElement) {
-                                    RemoveGVElectricElement(value);
+                                for (int m = 0; m < 16; m++) {
+                                    if (m_GVElectricElementsByCellFace.TryGetValue(
+                                            new GVCellFace(
+                                                i,
+                                                j,
+                                                k,
+                                                l,
+                                                1 << m
+                                            ),
+                                            out GVElectricElement value
+                                        )
+                                        && value is WireDomainGVElectricElement) {
+                                        RemoveGVElectricElement(value);
+                                    }
+                                }
+                                if (m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(i, j, k, l), out GVElectricElement value2)
+                                    && value2 is WireDomainGVElectricElement) {
+                                    RemoveGVElectricElement(value2);
                                 }
                             }
                         }
@@ -1421,10 +1557,10 @@ namespace Game {
             }
         }
 
-        public void ScanWireDomain(CellFace startCellFace, Dictionary<CellFace, bool> visited, Dictionary<CellFace, bool> result) {
-            DynamicArray<CellFace> dynamicArray = new DynamicArray<CellFace> { startCellFace };
+        public void ScanWireDomain(GVCellFace startCellFace, Dictionary<GVCellFace, bool> visited, Dictionary<GVCellFace, bool> result) {
+            DynamicArray<GVCellFace> dynamicArray = [startCellFace];
             while (dynamicArray.Count > 0) {
-                CellFace key = dynamicArray.Array[--dynamicArray.Count];
+                GVCellFace key = dynamicArray.Array[--dynamicArray.Count];
                 if (visited.ContainsKey(key)) {
                     continue;
                 }
@@ -1439,13 +1575,33 @@ namespace Game {
                 if (GVElectricWireElementBlock == null) {
                     continue;
                 }
+                int newMask = GVElectricWireElementBlock.GetConnectionMask(cellValue);
+                switch (GVElectricWireElementBlock) {
+                    case GVWireBlock when (newMask & key.Mask) == 0: continue;
+                    case GVWireHarnessBlock: {
+                        newMask = key.Mask;
+                        if (key.Mask == int.MaxValue) {
+                            continue;
+                        }
+                        break;
+                    }
+                }
                 int connectedWireFacesMask = GVElectricWireElementBlock.GetConnectedWireFacesMask(cellValue, key.Face);
                 if (connectedWireFacesMask == 0) {
                     continue;
                 }
                 for (int i = 0; i < 6; i++) {
                     if ((connectedWireFacesMask & (1 << i)) != 0) {
-                        CellFace key2 = new CellFace(key.X, key.Y, key.Z, i);
+                        GVCellFace key2 = new(
+                            key.X,
+                            key.Y,
+                            key.Z,
+                            i,
+                            newMask
+                        );
+                        if (visited.ContainsKey(key2)) {
+                            continue;
+                        }
                         visited.Add(key2, true);
                         result.Add(key2, true);
                         m_tmpConnectionPaths.Clear();
@@ -1457,10 +1613,15 @@ namespace Game {
                             m_tmpConnectionPaths
                         );
                         foreach (GVElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths) {
-                            int x = key2.X + tmpConnectionPath.NeighborOffsetX;
-                            int y = key2.Y + tmpConnectionPath.NeighborOffsetY;
-                            int z = key2.Z + tmpConnectionPath.NeighborOffsetZ;
-                            dynamicArray.Add(new CellFace(x, y, z, tmpConnectionPath.NeighborFace));
+                            dynamicArray.Add(
+                                new GVCellFace(
+                                    key2.X + tmpConnectionPath.NeighborOffsetX,
+                                    key2.Y + tmpConnectionPath.NeighborOffsetY,
+                                    key2.Z + tmpConnectionPath.NeighborOffsetZ,
+                                    tmpConnectionPath.NeighborFace,
+                                    newMask
+                                )
+                            );
                         }
                     }
                 }
@@ -1480,8 +1641,6 @@ namespace Game {
             list.Clear();
             m_listsCache.Add(list);
         }
-
-        public void DebugDraw() { }
 
         public void SetSpeed(float speed) {
             SpeedFactor = speed;

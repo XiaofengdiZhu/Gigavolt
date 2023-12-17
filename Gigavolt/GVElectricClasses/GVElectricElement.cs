@@ -1,17 +1,26 @@
 using System.Collections.Generic;
+using System.Linq;
 using Engine;
 
 namespace Game {
     public abstract class GVElectricElement {
         public SubsystemGVElectricity SubsystemGVElectricity { get; set; }
 
-        public ReadOnlyList<CellFace> CellFaces { get; set; }
+        public ReadOnlyList<GVCellFace> CellFaces { get; set; }
 
         public List<GVElectricConnection> Connections { get; set; }
 
+        public GVElectricElement(SubsystemGVElectricity subsystemGVElectric, IEnumerable<GVCellFace> cellFaces) {
+            SubsystemGVElectricity = subsystemGVElectric;
+            CellFaces = new ReadOnlyList<GVCellFace>(new List<GVCellFace>(cellFaces));
+            Connections = new List<GVElectricConnection>();
+        }
+
+        public GVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace cellFace) : this(subsystemGVElectric, new List<GVCellFace> { cellFace }) { }
+
         public GVElectricElement(SubsystemGVElectricity subsystemGVElectric, IEnumerable<CellFace> cellFaces) {
             SubsystemGVElectricity = subsystemGVElectric;
-            CellFaces = new ReadOnlyList<CellFace>(new List<CellFace>(cellFaces));
+            CellFaces = new ReadOnlyList<GVCellFace>(cellFaces.Select(cellface => new GVCellFace(cellface)).ToList());
             Connections = new List<GVElectricConnection>();
         }
 

@@ -13,12 +13,38 @@ namespace Game {
         public uint m_inputRight;
         public uint m_inputBottom;
         public uint m_inputLeft;
-        public static readonly Vector3[] m_upVector3 = { Vector3.UnitY, Vector3.UnitX, -Vector3.UnitY, -Vector3.UnitX, Vector3.UnitY, -Vector3.UnitZ, -Vector3.UnitY, Vector3.UnitZ, Vector3.UnitY, -Vector3.UnitX, -Vector3.UnitY, Vector3.UnitX, Vector3.UnitY, Vector3.UnitZ, -Vector3.UnitY, -Vector3.UnitZ, -Vector3.UnitZ, Vector3.UnitX, Vector3.UnitZ, -Vector3.UnitX, Vector3.UnitZ, Vector3.UnitX, -Vector3.UnitZ, -Vector3.UnitX };
+
+        public static readonly Vector3[] m_upVector3 = {
+            Vector3.UnitY,
+            Vector3.UnitX,
+            -Vector3.UnitY,
+            -Vector3.UnitX,
+            Vector3.UnitY,
+            -Vector3.UnitZ,
+            -Vector3.UnitY,
+            Vector3.UnitZ,
+            Vector3.UnitY,
+            -Vector3.UnitX,
+            -Vector3.UnitY,
+            Vector3.UnitX,
+            Vector3.UnitY,
+            Vector3.UnitZ,
+            -Vector3.UnitY,
+            -Vector3.UnitZ,
+            -Vector3.UnitZ,
+            Vector3.UnitX,
+            Vector3.UnitZ,
+            -Vector3.UnitX,
+            Vector3.UnitZ,
+            Vector3.UnitX,
+            -Vector3.UnitZ,
+            -Vector3.UnitX
+        };
 
         public DisplayLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGVDisplayLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDisplayLedGlow>(true);
 
         public override void OnAdded() {
-            CellFace cellFace = CellFaces[0];
+            GVCellFace cellFace = CellFaces[0];
             int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             int mountingFace = cellFace.Face;
             int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
@@ -27,7 +53,7 @@ namespace Game {
             m_glowPoints = m_subsystemGVDisplayLedGlow.AddGlowPoints();
             m_originalPosition = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             if (!m_complex) {
-                GVDisplayPoint point = new GVDisplayPoint { Type = m_type, Position = m_originalPosition, Color = Color.White, Complex = false };
+                GVDisplayPoint point = new() { Type = m_type, Position = m_originalPosition, Color = Color.White, Complex = false };
                 Vector3 forward = -CellFace.FaceToVector3(mountingFace);
                 if (forward.Y != 0) {
                     forward.Z += 0.0001f;
@@ -88,7 +114,7 @@ namespace Game {
                 if (((m_inputBottom >> 28) & 1u) == 0u) {
                     m_glowPoints.Clear();
                 }
-                GVDisplayPoint glowPoint = new GVDisplayPoint {
+                GVDisplayPoint glowPoint = new() {
                     Complex = true,
                     Type = m_type,
                     Rotation = Vector3.Zero,
