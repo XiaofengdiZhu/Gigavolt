@@ -6,11 +6,11 @@ namespace Game {
     public class GVWireBlock : GenerateGVWireVerticesBlock, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 800;
 
-        public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneBlockMesh = new();
 
         public BoundingBox[] m_collisionBoxesByFace = new BoundingBox[6];
 
-        public static readonly Color WireColor = new Color(79, 36, 21);
+        public static readonly Color WireColor = new(79, 36, 21);
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Wire");
@@ -174,11 +174,35 @@ namespace Game {
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 12));
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 13));
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 14));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 1));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 2));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 3));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 4));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 5));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 6));
+            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 10));
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int? paintColor = GetPaintColor(value);
             return SubsystemPalette.GetName(subsystemTerrain, paintColor, base.GetDisplayName(subsystemTerrain, value));
+        }
+
+        public override string GetCategory(int value) {
+            int? paintColor = GetPaintColor(value);
+            if (paintColor.HasValue) {
+                switch (paintColor.Value) {
+                    case 0:
+                    case 8:
+                    case 15:
+                    case 11:
+                    case 12:
+                    case 13:
+                    case 14: return "GV Electrics Regular";
+                    default: return "GV Electrics Shift";
+                }
+            }
+            return "GV Electrics Regular";
         }
 
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
