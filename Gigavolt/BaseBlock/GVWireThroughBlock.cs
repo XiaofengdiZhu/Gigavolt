@@ -79,5 +79,7 @@ namespace Game {
                 default: return data | 2;
             }
         }
+
+        public bool IsWireHarness(int value) => false;
     }
 }

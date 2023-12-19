@@ -241,5 +241,7 @@ namespace Game {
             }
             return data & -1985;
         }
+
+        public bool IsWireHarness(int value) => false;
     }
 }

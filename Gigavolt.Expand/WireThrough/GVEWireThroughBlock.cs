@@ -10,7 +10,8 @@ namespace Game {
             184,
             152,
             136,
-            216
+            216,
+            168
         };
 
         public readonly int[] m_unwiredTextureSlot = {
@@ -18,7 +19,8 @@ namespace Game {
             1,
             70,
             16,
-            78
+            78,
+            4
         };
 
         public readonly int[] m_coloredTextureSlot = {
@@ -26,7 +28,8 @@ namespace Game {
             24,
             39,
             69,
-            78
+            78,
+            23
         };
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => null;
@@ -45,7 +48,8 @@ namespace Game {
             int num = 0;
             int data = Terrain.ExtractData(value);
             int type = GetType(data);
-            if (type < 4) {
+            if (type < 4
+                || type == 5) {
                 if (WireExistsOnFace(value, face)) {
                     int num2 = CellFace.OppositeFace(face);
                     bool flag = false;
@@ -119,24 +123,13 @@ namespace Game {
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
             int type = GetType(data);
-            if (type < 4) {
-                if (GetWireFacesBitmask(data) == 63) {
-                    return "GV六面穿线块";
-                }
-                return "GV多面穿线块";
-            }
-            if (type == 4) {
-                if (GetWireFacesBitmask(data) == 63) {
-                    return "GV六面跨线块";
-                }
-                return "GV多面跨线块";
-            }
-            return null;
+            return $"GV{(GetWireFacesBitmask(data) == 63 ? "六" : "多")}面{(type == 4 || type == 6 ? "跨" : "穿")}线{(IsWireHarness(value) ? "束" : "")}块";
         }
 
         public override IEnumerable<int> GetCreativeValues() {
             yield return Terrain.MakeBlockValue(Index, 0, 63);
             yield return Terrain.MakeBlockValue(Index, 0, 63 | (4 << 11));
+            yield return Terrain.MakeBlockValue(Index, 0, 63 | (5 << 11));
         }
 
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
@@ -170,8 +163,9 @@ namespace Game {
             return data & -1985;
         }
 
-        public static int GetType(int data) => (data >> 11) & 7;
+        public static int GetType(int data) => (data >> 11) & 15;
 
-        public static int SetType(int data, int type) => (data & -14337) | ((type & 7) << 11);
+        public static int SetType(int data, int type) => (data & -30721) | ((type & 15) << 11);
+        public bool IsWireHarness(int value) => GetType(Terrain.ExtractData(value)) >= 5;
     }
 }

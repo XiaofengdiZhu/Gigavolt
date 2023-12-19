@@ -169,5 +169,7 @@ namespace Game {
             num |= bitmask & 0x3F;
             return Terrain.ReplaceData(Terrain.ReplaceContents(value, Index), num);
         }
+
+        public bool IsWireHarness(int value) => true;
     }
 }

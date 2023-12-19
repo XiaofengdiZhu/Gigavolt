@@ -1017,10 +1017,10 @@ namespace Game {
 
         public void GetAllConnectedNeighbors(int x, int y, int z, int mountingFace, DynamicArray<GVElectricConnectionPath> list) {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
-            IGVElectricElementBlock GVElectricElementBlock = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] as IGVElectricElementBlock;
-            if (GVElectricElementBlock == null) {
+            if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is not IGVElectricElementBlock GVElectricElementBlock) {
                 return;
             }
+            IGVElectricWireElementBlock wireBlock = GVElectricElementBlock as IGVElectricWireElementBlock;
             for (GVElectricConnectorDirection GVElectricConnectorDirection = GVElectricConnectorDirection.Top; GVElectricConnectorDirection < (GVElectricConnectorDirection)5; GVElectricConnectorDirection++) {
                 for (int i = 0; i < 4; i++) {
                     GVElectricConnectionPath GVElectricConnectionPath = m_connectionPathsTable[20 * mountingFace + 4 * (int)GVElectricConnectorDirection + i];
@@ -1044,6 +1044,7 @@ namespace Game {
                     int z2 = z + GVElectricConnectionPath.NeighborOffsetZ;
                     int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x2, y2, z2);
                     IGVElectricElementBlock GVElectricElementBlock2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)] as IGVElectricElementBlock;
+                    IGVElectricWireElementBlock wireBlock2 = GVElectricElementBlock2 as IGVElectricWireElementBlock;
                     if (GVElectricElementBlock2 == null) {
                         continue;
                     }
@@ -1060,14 +1061,16 @@ namespace Game {
                         && ((connectorType.Value != 0 && connectorType2.Value != GVElectricConnectorType.Output) || (connectorType.Value != GVElectricConnectorType.Output && connectorType2.Value != 0))) {
                         int connectionMask = GVElectricElementBlock.GetConnectionMask(cellValue);
                         int connectionMask2 = GVElectricElementBlock2.GetConnectionMask(cellValue2);
-                        if (GVElectricElementBlock is GVWireHarnessBlock
-                            && GVElectricElementBlock2 is not GVWireHarnessBlock
-                            && connectionMask2 == int.MaxValue) {
+                        if (connectionMask2 == int.MaxValue
+                            && wireBlock != null
+                            && wireBlock.IsWireHarness(cellValue)
+                            && (wireBlock2 == null || !wireBlock2.IsWireHarness(cellValue2))) {
                             continue;
                         }
-                        if (GVElectricElementBlock2 is GVWireHarnessBlock
-                            && GVElectricElementBlock is not GVWireHarnessBlock
-                            && connectionMask == int.MaxValue) {
+                        if (connectionMask == int.MaxValue
+                            && wireBlock2 != null
+                            && wireBlock2.IsWireHarness(cellValue2)
+                            && (wireBlock == null || !wireBlock.IsWireHarness(cellValue))) {
                             continue;
                         }
                         if ((connectionMask & connectionMask2) != 0) {
@@ -1510,7 +1513,7 @@ namespace Game {
                                             j,
                                             k,
                                             l,
-                                            m
+                                            1 << m
                                         ),
                                         m_tmpVisited,
                                         m_tmpResult
@@ -1584,15 +1587,14 @@ namespace Game {
                     continue;
                 }
                 int newMask = GVElectricWireElementBlock.GetConnectionMask(cellValue);
-                switch (GVElectricWireElementBlock) {
-                    case GVWireBlock when (newMask & key.Mask) == 0: continue;
-                    case GVWireHarnessBlock: {
-                        newMask = key.Mask;
-                        if (key.Mask == int.MaxValue) {
-                            continue;
-                        }
-                        break;
+                if (GVElectricWireElementBlock.IsWireHarness(cellValue)) {
+                    if (key.Mask == int.MaxValue) {
+                        continue;
                     }
+                    newMask = key.Mask;
+                }
+                else if ((newMask & key.Mask) == 0) {
+                    continue;
                 }
                 int connectedWireFacesMask = GVElectricWireElementBlock.GetConnectedWireFacesMask(cellValue, key.Face);
                 if (connectedWireFacesMask == 0) {
