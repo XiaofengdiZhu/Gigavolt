@@ -1,5 +1,5 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-	<CanvasWidget Size="500, 340" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<CanvasWidget Size="500, 440" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 			<LabelWidget Font="{Fonts/Pericles}" Text="[EditGVCopperHammerDialog:1]" HorizontalAlignment="Center"/>
@@ -9,7 +9,8 @@
 				<CanvasWidget Size="10, 0"/>
 				<SliderWidget Name="EditGVCopperHammerDialog.Slider" LabelWidth="60" Granularity="1" MinValue="0" MaxValue="3" Size="300, 40"/>
 			</StackPanelWidget>
-			<BlockIconWidget Name="EditGVCopperHammerDialog.Icon" Size="112, 112" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 20"/>
+			<CheckboxWidget Name="EditGVCopperHammerDialog.Checkbox" Text="[EditGVCopperHammerDialog:5]" IsAutoCheckingEnabled="true" CheckboxSize="24, 24" HorizontalAlignment="Center" Margin="0, 20"/>
+			<BlockIconWidget Name="EditGVCopperHammerDialog.Icon" Size="112, 112" HorizontalAlignment="Center"/>
 			<CanvasWidget Size="0, Infinity"/>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 				<BevelledButtonWidget Name="EditGVCopperHammerDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVCopperHammerDialog:2]" Margin="20, 0"/>

@@ -38,7 +38,7 @@ namespace Game {
             { GVMoreTwoInTwoOutBlock.Index, blockData => GVMoreTwoInTwoOutBlock.SetType(0, GVMoreTwoInTwoOutBlock.GetType(blockData)) },
             { GVMoreOneInOneOutBlock.Index, blockData => GVMoreOneInOneOutBlock.SetType(0, GVMoreOneInOneOutBlock.GetType(blockData)) },
             { GVInventoryFetcherBlock.Index, blockData => GVInventoryFetcherBlock.SetType(0, GVInventoryFetcherBlock.GetType(blockData)) },
-            { GVEWireThroughBlock.Index, blockData => GVEWireThroughBlock.SetType(0, GVEWireThroughBlock.GetType(blockData)) },
+            { GVEWireThroughBlock.Index, blockData => GVEWireThroughBlock.SetColor(blockData, null) },
             { GVPressurePlateBlock.Index, blockData => GVPressurePlateBlock.SetMaterial(0, GVPressurePlateBlock.GetMaterial(blockData)) },
             { GVPressurePlateCBlock.Index, blockData => GVPressurePlateCBlock.SetMaterial(0, GVPressurePlateCBlock.GetMaterial(blockData)) },
             { GVLightbulbBlock.Index, blockData => GVLightbulbBlock.SetColor(0, GVLightbulbBlock.GetColor(blockData)) },

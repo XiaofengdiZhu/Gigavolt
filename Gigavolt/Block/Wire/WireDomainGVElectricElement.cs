@@ -28,7 +28,7 @@ namespace Game {
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
             int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int num = Terrain.ExtractContents(cellValue);
-            if (!(BlocksManager.Blocks[num] is GVWireBlock)) {
+            if (BlocksManager.Blocks[num] is not (GVWireBlock or GVWireHarnessBlock)) {
                 return;
             }
             int wireFacesBitmask = GVWireBlock.GetWireFacesBitmask(cellValue);

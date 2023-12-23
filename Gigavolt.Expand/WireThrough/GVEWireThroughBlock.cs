@@ -5,32 +5,29 @@ namespace Game {
     public class GVEWireThroughBlock : CubeBlock, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 868;
 
-        public readonly int[] m_wiredTextureSlot = {
+        public readonly int[] m_wiredTextureSlot = [
             168,
             184,
             152,
             136,
-            216,
-            168
-        };
+            216
+        ];
 
-        public readonly int[] m_unwiredTextureSlot = {
+        public readonly int[] m_unwiredTextureSlot = [
             4,
             1,
             70,
             16,
-            78,
-            4
-        };
+            78
+        ];
 
-        public readonly int[] m_coloredTextureSlot = {
+        public readonly int[] m_coloredTextureSlot = [
             23,
             24,
             39,
             69,
-            78,
-            23
-        };
+            78
+        ];
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => null;
 
@@ -45,45 +42,38 @@ namespace Game {
         public int GetConnectionMask(int value) => int.MaxValue;
 
         public int GetConnectedWireFacesMask(int value, int face) {
-            int num = 0;
             int data = Terrain.ExtractData(value);
-            int type = GetType(data);
-            if (type < 4
-                || type == 5) {
-                if (WireExistsOnFace(value, face)) {
-                    int num2 = CellFace.OppositeFace(face);
-                    bool flag = false;
-                    for (int i = 0; i < 6; i++) {
-                        if (i == face) {
-                            num |= 1 << i;
-                        }
-                        else if (i != num2
-                            && WireExistsOnFace(value, i)) {
-                            num |= 1 << i;
-                            flag = true;
-                        }
+            if (GetIsCross(data)) {
+                return GetWireFacesBitmask(data) == 63 ? (1 << face) | (1 << CellFace.OppositeFace(face)) : 0;
+            }
+            int num = 0;
+            if (WireExistsOnFace(value, face)) {
+                int num2 = CellFace.OppositeFace(face);
+                bool flag = false;
+                for (int i = 0; i < 6; i++) {
+                    if (i == face) {
+                        num |= 1 << i;
                     }
-                    if (flag && WireExistsOnFace(value, num2)) {
-                        num |= 1 << num2;
+                    else if (i != num2
+                        && WireExistsOnFace(value, i)) {
+                        num |= 1 << i;
+                        flag = true;
                     }
                 }
-            }
-            else if (type == 4
-                && GetWireFacesBitmask(data) == 63) {
-                return (1 << face) | (1 << CellFace.OppositeFace(face));
+                if (flag && WireExistsOnFace(value, num2)) {
+                    num |= 1 << num2;
+                }
             }
             return num;
         }
 
         public override int GetFaceTextureSlot(int face, int value) {
-            int type = GetType(Terrain.ExtractData(value));
+            int data = Terrain.ExtractData(value);
+            int texture = GetIsCross(data) ? 4 : GetTexture(Terrain.ExtractData(value));
             if (WireExistsOnFace(value, CellFace.OppositeFace(face))) {
-                return m_wiredTextureSlot[type];
+                return m_wiredTextureSlot[texture];
             }
-            if (GetPaintColor(value).HasValue) {
-                return m_coloredTextureSlot[type];
-            }
-            return m_unwiredTextureSlot[type];
+            return GetPaintColor(value).HasValue ? m_coloredTextureSlot[texture] : m_unwiredTextureSlot[texture];
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
@@ -103,17 +93,16 @@ namespace Game {
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int? paintColor = GetPaintColor(oldValue);
             int data = Terrain.ExtractData(oldValue);
-            int type = GetType(data);
             int bitmask = GetWireFacesBitmask(data);
             if (bitmask == 63
-                && type == 4) {
-                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, 63 | (4 << 11)), Count = 1 });
+                && GetIsCross(data)) {
+                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetColor(data, null)), Count = 1 });
             }
             else {
                 for (int i = 0; i < 6; i++) {
                     if (WireExistsOnFace(oldValue, i)
                         && !WireExistsOnFace(newValue, i)) {
-                        dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GVWireBlock.Index, 0, SetColor(0, paintColor)), Count = 1 });
+                        dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GetIsWireHarness(data) ? GVWireHarnessBlock.Index : GVWireBlock.Index, 0, SetColor(0, paintColor)), Count = 1 });
                     }
                 }
             }
@@ -122,14 +111,23 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
-            int type = GetType(data);
-            return $"GV{(GetWireFacesBitmask(data) == 63 ? "六" : "多")}面{(type == 4 || type == 6 ? "跨" : "穿")}线{(IsWireHarness(value) ? "束" : "")}块";
+            return $"GV{(GetWireFacesBitmask(data) == 63 ? "六" : "多")}面{(GetIsCross(data) ? "跨" : "穿")}{(GetIsWireHarness(data) ? "总" : "")}线块";
+        }
+
+        public override string GetDescription(int value) {
+            int data = Terrain.ExtractData(value);
+            if (GetIsCross(data)) {
+                return "仅相对的两面互相导通；可染色，仅影响外观，不影响接线";
+            }
+            string name = GetIsWireHarness(data) ? "总" : "导";
+            return $"使用铜锤将一格范围内已摆放好的{name}线转换成的穿线块，已摆放{name}线的面将互相连通，未摆放{name}线的面不互通；对其多次使用铜锤将改变外观，第4次恢复为普通的{name}线；染色不影响接线，仅影响外观";
         }
 
         public override IEnumerable<int> GetCreativeValues() {
             yield return Terrain.MakeBlockValue(Index, 0, 63);
-            yield return Terrain.MakeBlockValue(Index, 0, 63 | (4 << 11));
-            yield return Terrain.MakeBlockValue(Index, 0, 63 | (5 << 11));
+            yield return Terrain.MakeBlockValue(Index, 0, SetIsCross(63, true));
+            yield return Terrain.MakeBlockValue(Index, 0, SetIsWireHarness(63, true));
+            yield return Terrain.MakeBlockValue(Index, 0, SetIsWireHarness(SetIsCross(63, true), true));
         }
 
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
@@ -163,9 +161,12 @@ namespace Game {
             return data & -1985;
         }
 
-        public static int GetType(int data) => (data >> 11) & 15;
-
-        public static int SetType(int data, int type) => (data & -30721) | ((type & 15) << 11);
-        public bool IsWireHarness(int value) => GetType(Terrain.ExtractData(value)) >= 5;
+        public static int GetTexture(int data) => (data >> 11) & 3;
+        public static int SetTexture(int data, int texture) => (data & -6145) | ((texture & 3) << 11);
+        public static bool GetIsCross(int data) => ((data >> 13) & 1) == 1;
+        public static int SetIsCross(int data, bool isCross) => (data & -8193) | ((isCross ? 1 : 0) << 13);
+        public static bool GetIsWireHarness(int data) => ((data >> 14) & 1) == 1;
+        public static int SetIsWireHarness(int data, bool isWireHarness) => (data & -16385) | ((isWireHarness ? 1 : 0) << 14);
+        public bool IsWireHarness(int value) => GetIsWireHarness(Terrain.ExtractData(value));
     }
 }

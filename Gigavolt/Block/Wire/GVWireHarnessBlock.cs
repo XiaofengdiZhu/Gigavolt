@@ -156,12 +156,7 @@ namespace Game {
 
         public static bool WireExistsOnFace(int value, int face) => (GetWireFacesBitmask(value) & (1 << face)) != 0;
 
-        public static int GetWireFacesBitmask(int value) {
-            if (Terrain.ExtractContents(value) == Index) {
-                return Terrain.ExtractData(value) & 0x3F;
-            }
-            return 0;
-        }
+        public static int GetWireFacesBitmask(int value) => Terrain.ExtractData(value) & 0x3F;
 
         public static int SetWireFacesBitmask(int value, int bitmask) {
             int num = Terrain.ExtractData(value);

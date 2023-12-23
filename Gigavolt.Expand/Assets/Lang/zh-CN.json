@@ -20,12 +20,7 @@
     },
     "GVEWireThroughBlock:0": {
       "DisplayName": "GV穿线块",
-      "Description": "使用铜锤将一格范围内已摆放好的导线转换成的穿线块，已摆放导线的面将互相连通，未摆放导线的面不互通；对其多次使用铜锤将改变外观，第4次恢复为普通导线；染色不影响接线，仅影响外观",
-      "CRDescription:0": "无"
-    },
-    "GVEWireThroughBlock:8255": {
-      "DisplayName": "GV六面跨线块",
-      "Description": "相对的两面互相导通；可染色，仅影响外观，不影响接线",
+      "Description": "",
       "CRDescription:0": "无"
     },
     "GVMultiplexerBlock:0": {
@@ -155,7 +150,8 @@
       "1": "铜锤设置",
       "2": "确定",
       "3": "取消",
-      "4": "铺线用穿线块"
+      "4": "铺线用穿线块",
+      "5": "总线模式"
     }
   }
 }
