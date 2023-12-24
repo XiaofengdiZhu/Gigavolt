@@ -8,10 +8,7 @@ namespace Game {
 
         public override int GetFaceTextureSlot(int face, int value) {
             int direction = GetDirection(Terrain.ExtractData(value));
-            if (face != direction) {
-                return 42;
-            }
-            return 59;
+            return face == direction ? 59 : 43;
         }
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
