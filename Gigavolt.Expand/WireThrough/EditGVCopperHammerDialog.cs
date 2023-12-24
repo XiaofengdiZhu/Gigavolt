@@ -61,11 +61,6 @@ namespace Game {
             }
         }
 
-        public static int GetValue(int texture, bool isHarness) {
-            if (isHarness) {
-                return Terrain.MakeBlockValue(GVEWireThroughBlock.Index, 0, GVEWireThroughBlock.SetIsWireHarness(GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetWireFacesBitmask(0, 5), texture), true));
-            }
-            return m_textureIds[texture];
-        }
+        public static int GetValue(int texture, bool isHarness) => isHarness ? Terrain.MakeBlockValue(GVEWireThroughBlock.Index, 0, GVEWireThroughBlock.SetIsWireHarness(GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetWireFacesBitmask(0, 5), texture), true)) : m_textureIds[texture];
     }
 }

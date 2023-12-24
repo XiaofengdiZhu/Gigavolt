@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Engine;
+using Engine.Graphics;
 
 namespace Game {
-    public class GVEWireThroughBlock : CubeBlock, IGVElectricWireElementBlock, IPaintableBlock {
+    public class GVEWireThroughBlock : Block, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 868;
 
         public readonly int[] m_wiredTextureSlot = [
@@ -28,6 +29,10 @@ namespace Game {
             69,
             78
         ];
+
+        public static Texture2D m_harnessTexture;
+
+        public Texture2D HarnessTexture => m_harnessTexture ?? BlocksTexturesManager.DefaultBlocksTexture;
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => null;
 
@@ -86,7 +91,21 @@ namespace Game {
                 y,
                 z,
                 color,
-                geometry.OpaqueSubsetsByFace
+                GetIsWireHarness(data) ? geometry.GetGeometry(m_harnessTexture).OpaqueSubsetsByFace : geometry.OpaqueSubsetsByFace
+            );
+        }
+
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawCubeBlock(
+                primitivesRenderer,
+                value,
+                new Vector3(size),
+                ref matrix,
+                color,
+                color,
+                environmentData,
+                GetIsWireHarness(Terrain.ExtractData(value)) ? m_harnessTexture :
+                environmentData.SubsystemTerrain != null ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture
             );
         }
 
@@ -111,7 +130,7 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
-            return $"GV{(GetWireFacesBitmask(data) == 63 ? "六" : "多")}面{(GetIsCross(data) ? "跨" : "穿")}{(GetIsWireHarness(data) ? "总" : "")}线块";
+            return SubsystemPalette.GetName(subsystemTerrain, GetColor(data), $"GV{(GetWireFacesBitmask(data) == 63 ? "六" : "多")}面{(GetIsCross(data) ? "跨" : "穿")}{(GetIsWireHarness(data) ? "总" : "")}线块");
         }
 
         public override string GetDescription(int value) {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
+using Engine.Media;
 using TemplatesDatabase;
 
 namespace Game {
@@ -37,7 +38,10 @@ namespace Game {
                     case GVEWireThroughBlock.Index: {
                         flag = true;
                         int data = Terrain.ExtractData(value);
-                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVEWireThroughBlock.GetIsCross(data) ? GVEWireThroughBlock.GetIsWireHarness(data) ? Terrain.MakeBlockValue(GVWireHarnessBlock.Index, Terrain.ExtractLight(value), GVWireHarnessBlock.SetWireFacesBitmask(0, 63)) : Terrain.MakeBlockValue(GVWireBlock.Index, Terrain.ExtractLight(value), GVWireBlock.SetColor(GVWireBlock.SetWireFacesBitmask(0, 63), GVEWireThroughBlock.GetColor(data))) : Terrain.ReplaceData(value, GVEWireThroughBlock.SetTexture(data, (GVEWireThroughBlock.GetTexture(data) + 1) % 4)));
+                        if (GVEWireThroughBlock.GetIsCross(data)) {
+                            break;
+                        }
+                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVEWireThroughBlock.GetTexture(data) == 3 ? GVEWireThroughBlock.GetIsWireHarness(data) ? Terrain.MakeBlockValue(GVWireHarnessBlock.Index, Terrain.ExtractLight(value), GVWireHarnessBlock.SetWireFacesBitmask(0, 63)) : Terrain.MakeBlockValue(GVWireBlock.Index, Terrain.ExtractLight(value), GVWireBlock.SetColor(GVWireBlock.SetWireFacesBitmask(0, 63), GVEWireThroughBlock.GetColor(data))) : Terrain.ReplaceData(value, GVEWireThroughBlock.SetTexture(data, (GVEWireThroughBlock.GetTexture(data) + 1) % 4)));
                         break;
                     }
                     default: {
@@ -99,9 +103,58 @@ namespace Game {
         }
 
         public override void Load(ValuesDictionary valuesDictionary) {
+            base.Load(valuesDictionary);
             m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
             m_flatBatch = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.Additive);
-            base.Load(valuesDictionary);
+            if (GVEWireThroughBlock.m_harnessTexture == null) {
+                Image image;
+                if (Project.FindSubsystem<SubsystemBlocksTexture>(true).BlocksTexture.Tag is Image image2) {
+                    image = new Image(image2);
+                }
+                else {
+                    image = ContentManager.Get<Image>("Textures/Blocks");
+                }
+                int d = image.Width / 512;
+                if (d < 1) {
+                    int slotHeight = image.Height / 16;
+                    int startX = slotHeight * 8 + slotHeight / 2 - 1;
+                    int endX = startX + 2;
+                    for (int x = startX; x < endX; x++) {
+                        for (int i = 0; i < 6; i++) {
+                            if (i == 4) {
+                                continue;
+                            }
+                            int startY = slotHeight * 8 + slotHeight / 2 - 1 + i * slotHeight;
+                            int endY = startY + 2;
+                            for (int y = startY; y < endY; y++) {
+                                image.SetPixel(x, y, Color.Orange);
+                            }
+                        }
+                    }
+                }
+                else {
+                    int slotHeight = 32 * d;
+                    int startX = image.Width / 256 * 135;
+                    int endX = startX + d * 4;
+                    for (int x = startX; x < endX; x++) {
+                        for (int i = 0; i < 6; i++) {
+                            if (i == 4) {
+                                continue;
+                            }
+                            int startY = image.Height / 256 * 135 + i * slotHeight;
+                            int endY = startY + d * 4;
+                            for (int y = startY; y < endY; y++) {
+                                if ((x == startX || x == endX - 1)
+                                    && (y == startY || y == endY - 1)) {
+                                    continue;
+                                }
+                                image.SetPixel(x, y, Color.Orange);
+                            }
+                        }
+                    }
+                }
+                GVEWireThroughBlock.m_harnessTexture = Texture2D.Load(image);
+            }
         }
 
         public void Draw(Camera camera, int drawOrder) {
@@ -134,5 +187,10 @@ namespace Game {
         }
 
         public int[] DrawOrders => new[] { 114 };
+
+        public override void Dispose() {
+            GVEWireThroughBlock.m_harnessTexture = null;
+            base.Dispose();
+        }
     }
 }
