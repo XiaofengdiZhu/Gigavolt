@@ -78,7 +78,7 @@ namespace Game {
                                             Point3 glowPoint = m_glowPoints[i];
                                             int face1 = CellFace.Point3ToFace(i == 0 ? m_glowPoints[1] - glowPoint : glowPoint - m_glowPoints[i - 1], 6);
                                             int face2 = CellFace.Point3ToFace(i == m_glowPoints.Length - 1 ? m_glowPoints[i - 1] - glowPoint : glowPoint - m_glowPoints[i + 1], 6);
-                                            SubsystemTerrain.ChangeCell(m_glowPoints[i].X, m_glowPoints[i].Y, m_glowPoints[i].Z, Terrain.MakeBlockValue(GVEWireThroughBlock.Index, 0, GVEWireThroughBlock.SetWireFacesBitmask(GVEWireThroughBlock.SetTexture(0, m_texture), (1 << face1) | (1 << face2))));
+                                            SubsystemTerrain.ChangeCell(m_glowPoints[i].X, m_glowPoints[i].Y, m_glowPoints[i].Z, Terrain.MakeBlockValue(GVEWireThroughBlock.Index, 0, GVEWireThroughBlock.SetWireFacesBitmask(GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetIsWireHarness(0, m_isHarness), m_texture), (1 << face1) | (1 << face2))));
                                         }
                                         m_glowPoints = Array.Empty<Point3>();
                                     }

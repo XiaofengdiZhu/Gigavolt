@@ -169,7 +169,7 @@
 		<Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerData.cs"/>
 		<Compile Include="JavascriptMicrocontroller\SubsystemGVJavascriptMicrocontrollerBlockBehavior.cs"/>
 		<Compile Include="JavascriptMicrocontroller\JavascriptMicrocontrollerGVElectricElement.cs"/>
-		<Compile Include="WireThrough\EditGVCopperHammerDialog.cs" />
+		<Compile Include="WireThrough\EditGVCopperHammerDialog.cs"/>
 		<Compile Include="WireThrough\GVAStar.cs"/>
 		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
 		<Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs"/>
@@ -428,6 +428,11 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Assets\Textures\GVJavascriptMicrocontrollerBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\Textures\GVGuidedDispenserBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

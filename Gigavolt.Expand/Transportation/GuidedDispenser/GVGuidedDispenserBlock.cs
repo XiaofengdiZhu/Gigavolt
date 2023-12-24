@@ -1,4 +1,5 @@
 using Engine;
+using Engine.Graphics;
 
 namespace Game {
     public class GVGuidedDispenserBlock : CubeBlock, IGVElectricElementBlock {
@@ -8,26 +9,38 @@ namespace Game {
 
         public Texture2D texture;
 
-        public override void Initialize()
-        {
+        public override void Initialize() {
             base.Initialize();
             texture = ContentManager.Get<Texture2D>("Textures/GVGuidedDispenserBlock");
         }
-        
-        public override int GetFaceTextureSlot(int face, int value) {
-            int direction = GetDirection(Terrain.ExtractData(value));
-            return face == direction ? 1 : 0;
-        }
+
+        public override int GetFaceTextureSlot(int face, int value) => face == GetDirection(Terrain.ExtractData(value)) ? 1 : 0;
 
         public override int GetTextureSlotCount(int value) => 2;
 
-        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
-        {
-            generator.GenerateCubeVertices(this, value, x, y, z, Color.White, geometry.GetGeometry(texture).OpaqueSubsetsByFace);
+        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
+            generator.GenerateCubeVertices(
+                this,
+                value,
+                x,
+                y,
+                z,
+                Color.White,
+                geometry.GetGeometry(texture).OpaqueSubsetsByFace
+            );
         }
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
-        {
-            BlocksManager.DrawCubeBlock(primitivesRenderer, value, new Vector3(size), ref matrix, color, color, environmentData, texture);
+
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawCubeBlock(
+                primitivesRenderer,
+                value,
+                new Vector3(size),
+                ref matrix,
+                color,
+                color,
+                environmentData,
+                texture
+            );
         }
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
