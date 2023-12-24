@@ -13,19 +13,21 @@ namespace Game {
             Color innerTopColor = GVWireBlock.WireColor;
             Color innerBottomColor = innerTopColor;
             int num = Terrain.ExtractContents(value);
-            switch (num) {
-                case GVWireHarnessBlock.Index:
+            IGVElectricElementBlock innerBlock = BlocksManager.Blocks[num] as IGVElectricElementBlock;
+            switch (innerBlock) {
+                case GVWireHarnessBlock:
                     innerTopColor = GVWireHarnessBlock.WireColor1;
                     innerBottomColor = GVWireHarnessBlock.WireColor2;
                     break;
-                case GVWireBlock.Index: {
-                    int? color2 = GVWireBlock.GetColor(Terrain.ExtractData(value));
+                case IPaintableBlock paintableBlock: {
+                    int? color2 = paintableBlock.GetPaintColor(value);
                     if (color2.HasValue) {
                         innerTopColor = SubsystemPalette.GetColor(generator, color2);
                         innerBottomColor = innerTopColor;
                     }
                     break;
                 }
+                case null: return;
             }
             int num2 = Terrain.ExtractLight(value);
             float num3 = LightingManager.LightIntensityByLightValue[num2];
@@ -60,8 +62,8 @@ namespace Game {
                         if (num != GVWireBlock.Index) {
                             int cellValue = generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ);
                             Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-                            if (block is GVWireBlock) {
-                                int? color4 = WireBlock.GetColor(Terrain.ExtractData(cellValue));
+                            if (block is IPaintableBlock paintableBlock) {
+                                int? color4 = paintableBlock.GetPaintColor(cellValue);
                                 outerTopColor = color4.HasValue ? SubsystemPalette.GetColor(generator, color4) : GVWireBlock.WireColor;
                                 outerBottomColor = outerTopColor;
                                 innerTopColor2 = num == GVWireHarnessBlock.Index ? GVWireHarnessBlock.WireColor1 : outerTopColor;

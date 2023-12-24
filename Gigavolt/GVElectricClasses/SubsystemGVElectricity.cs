@@ -1374,60 +1374,71 @@ namespace Game {
                 );
                 foreach (GVElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths) {
                     GVCellFace cellFace = new(cellFace2.X + tmpConnectionPath.NeighborOffsetX, cellFace2.Y + tmpConnectionPath.NeighborOffsetY, cellFace2.Z + tmpConnectionPath.NeighborOffsetZ, tmpConnectionPath.NeighborFace);
-                    GVElectricElement value = GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face);
-                    if (value != null
-                        && value != GVElectricElement) {
-                        if (GVElectricElement is WireDomainGVElectricElement
-                            && value is WireDomainGVElectricElement) {
+                    GVElectricElement value = GetGVElectricElement(
+                        cellFace.X,
+                        cellFace.Y,
+                        cellFace.Z,
+                        cellFace.Face,
+                        cellFace2.Mask
+                    );
+                    if (value == null) {
+                        value = GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face);
+                        if (value == null
+                            || value == GVElectricElement
+                            || value.CellFaces[0].Mask != int.MaxValue) {
                             continue;
                         }
-                        int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
-                        int num = Terrain.ExtractContents(cellValue);
-                        GVElectricConnectorType value2 = (BlocksManager.Blocks[num] as IGVElectricElementBlock).GetGVConnectorType(
-                                SubsystemTerrain,
-                                cellValue,
-                                cellFace2.Face,
-                                tmpConnectionPath.ConnectorFace,
-                                cellFace2.X,
-                                cellFace2.Y,
-                                cellFace2.Z
-                            )
-                            .Value;
-                        int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
-                        int num2 = Terrain.ExtractContents(cellValue2);
-                        GVElectricConnectorType value3 = (BlocksManager.Blocks[num2] as IGVElectricElementBlock).GetGVConnectorType(
-                                SubsystemTerrain,
-                                cellValue2,
-                                cellFace.Face,
-                                tmpConnectionPath.NeighborConnectorFace,
-                                cellFace.X,
-                                cellFace.Y,
-                                cellFace.Z
-                            )
-                            .Value;
-                        GVElectricElement.Connections.Add(
-                            new GVElectricConnection {
-                                CellFace = cellFace2,
-                                ConnectorFace = tmpConnectionPath.ConnectorFace,
-                                ConnectorType = value2,
-                                NeighborGVElectricElement = value,
-                                NeighborCellFace = cellFace,
-                                NeighborConnectorFace = tmpConnectionPath.NeighborConnectorFace,
-                                NeighborConnectorType = value3
-                            }
-                        );
-                        value.Connections.Add(
-                            new GVElectricConnection {
-                                CellFace = cellFace,
-                                ConnectorFace = tmpConnectionPath.NeighborConnectorFace,
-                                ConnectorType = value3,
-                                NeighborGVElectricElement = GVElectricElement,
-                                NeighborCellFace = cellFace2,
-                                NeighborConnectorFace = tmpConnectionPath.ConnectorFace,
-                                NeighborConnectorType = value2
-                            }
-                        );
                     }
+                    if (value == GVElectricElement
+                        || (GVElectricElement is WireDomainGVElectricElement && value is WireDomainGVElectricElement)) {
+                        continue;
+                    }
+                    int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
+                    int num = Terrain.ExtractContents(cellValue);
+                    GVElectricConnectorType value2 = (BlocksManager.Blocks[num] as IGVElectricElementBlock).GetGVConnectorType(
+                            SubsystemTerrain,
+                            cellValue,
+                            cellFace2.Face,
+                            tmpConnectionPath.ConnectorFace,
+                            cellFace2.X,
+                            cellFace2.Y,
+                            cellFace2.Z
+                        )
+                        .Value;
+                    int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+                    int num2 = Terrain.ExtractContents(cellValue2);
+                    GVElectricConnectorType value3 = (BlocksManager.Blocks[num2] as IGVElectricElementBlock).GetGVConnectorType(
+                            SubsystemTerrain,
+                            cellValue2,
+                            cellFace.Face,
+                            tmpConnectionPath.NeighborConnectorFace,
+                            cellFace.X,
+                            cellFace.Y,
+                            cellFace.Z
+                        )
+                        .Value;
+                    GVElectricElement.Connections.Add(
+                        new GVElectricConnection {
+                            CellFace = cellFace2,
+                            ConnectorFace = tmpConnectionPath.ConnectorFace,
+                            ConnectorType = value2,
+                            NeighborGVElectricElement = value,
+                            NeighborCellFace = cellFace,
+                            NeighborConnectorFace = tmpConnectionPath.NeighborConnectorFace,
+                            NeighborConnectorType = value3
+                        }
+                    );
+                    value.Connections.Add(
+                        new GVElectricConnection {
+                            CellFace = cellFace,
+                            ConnectorFace = tmpConnectionPath.NeighborConnectorFace,
+                            ConnectorType = value3,
+                            NeighborGVElectricElement = GVElectricElement,
+                            NeighborCellFace = cellFace2,
+                            NeighborConnectorFace = tmpConnectionPath.ConnectorFace,
+                            NeighborConnectorType = value2
+                        }
+                    );
                 }
             }
             QueueGVElectricElementForSimulation(GVElectricElement, CircuitStep + 1);

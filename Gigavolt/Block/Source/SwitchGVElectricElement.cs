@@ -6,15 +6,19 @@ namespace Game {
         public uint m_voltage;
         public bool m_edited;
 
-        public SwitchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) {
+        public SwitchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) {
             m_subsystemGVSwitchBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSwitchBlockBehavior>(true);
-            GigaVoltageLevelData blockData = m_subsystemGVSwitchBlockBehavior.GetItemData(cellFace.Point);
-            m_voltage = GVSwitchBlock.GetLeverState(value) ? blockData?.Data ?? uint.MaxValue : 0;
+            m_voltage = GVSwitchBlock.GetLeverState(value) ? m_subsystemGVSwitchBlockBehavior.GetItemData(cellFace.Point)?.Data ?? uint.MaxValue : 0;
         }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
+            Switch();
+            return true;
+        }
+
+        public void Switch() {
             GVCellFace cellFace = CellFaces[0];
             int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int value = GVSwitchBlock.SetLeverState(cellValue, !GVSwitchBlock.GetLeverState(cellValue));
@@ -27,7 +31,6 @@ namespace Game {
                 2f,
                 true
             );
-            return true;
         }
 
         public override bool Simulate() {

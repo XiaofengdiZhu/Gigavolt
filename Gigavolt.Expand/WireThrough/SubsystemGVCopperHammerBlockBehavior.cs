@@ -8,6 +8,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVCopperHammerBlockBehavior : SubsystemBlockBehavior, IDrawable {
         SubsystemAudio m_subsystemAudio;
+        SubsystemGVElectricity m_subsystemGVElectricity;
         public PrimitivesRenderer3D m_primitivesRenderer = new();
         public FlatBatch3D m_flatBatch;
         public int m_texture;
@@ -18,6 +19,20 @@ namespace Game {
         public override int[] HandledBlocks => Array.Empty<int>();
 
         public override bool OnUse(Ray3 ray, ComponentMiner componentMiner) {
+            int? blockColor = GVCopperHammerBlock.GetColor(Terrain.ExtractData(componentMiner.ActiveBlockValue));
+            if (blockColor.HasValue) {
+                foreach (GVElectricElement element in m_subsystemGVElectricity.m_GVElectricElements.Keys) {
+                    switch (element) {
+                        case ButtonGVElectricElement button when button.CellFaces[0].Mask == 1 << blockColor.Value:
+                            button.Press();
+                            break;
+                        case SwitchGVElectricElement switchElement when switchElement.CellFaces[0].Mask == 1 << blockColor.Value:
+                            switchElement.Switch();
+                            break;
+                    }
+                }
+                return true;
+            }
             TerrainRaycastResult? terrainRaycastResult = componentMiner.Raycast<TerrainRaycastResult>(ray, RaycastMode.Digging);
             if (terrainRaycastResult.HasValue) {
                 bool flag = false;
@@ -105,6 +120,7 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
             m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
+            m_subsystemGVElectricity = Project.FindSubsystem<SubsystemGVElectricity>(true);
             m_flatBatch = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.Additive);
             if (GVEWireThroughBlock.m_harnessTexture == null) {
                 Image image;

@@ -3,6 +3,7 @@ using Engine;
 namespace Game {
     public abstract class MountedGVElectricElement : GVElectricElement {
         public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) { }
+        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace cellFace) : base(subsystemGVElectric, cellFace) { }
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
             Point3 point = CellFace.FaceToPoint3(cellFace.Face);

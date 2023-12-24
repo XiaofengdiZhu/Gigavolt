@@ -207,10 +207,7 @@ namespace Game {
 
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
-        public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) {
-            int data = Terrain.ExtractData(value);
-            return Terrain.ReplaceData(value, SetColor(data, color));
-        }
+        public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) => Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
 
         public static bool WireExistsOnFace(int value, int face) => (GetWireFacesBitmask(value) & (1 << face)) != 0;
 

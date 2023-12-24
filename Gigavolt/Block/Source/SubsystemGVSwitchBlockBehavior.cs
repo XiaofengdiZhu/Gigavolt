@@ -3,8 +3,8 @@ namespace Game {
         public override int[] HandledBlocks => new[] { GVSwitchBlock.Index };
         public SubsystemGVSwitchBlockBehavior() : base(GVSwitchBlock.Index) { }
 
-        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 4) & 4095;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -65521) | ((id & 4095) << 4));
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 4) & 1023;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -16369) | ((id & 1023) << 4));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {

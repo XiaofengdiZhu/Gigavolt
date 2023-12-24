@@ -4,8 +4,8 @@ namespace Game {
 
         public SubsystemGVButtonBlockBehavior() : base(GVButtonBlock.Index) { }
 
-        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 3) & 4095;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -32761) | ((id & 4095) << 3));
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 3) & 2047;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -16377) | ((id & 2047) << 3));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
