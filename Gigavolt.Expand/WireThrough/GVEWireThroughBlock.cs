@@ -96,6 +96,7 @@ namespace Game {
         }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+            environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             BlocksManager.DrawCubeBlock(
                 primitivesRenderer,
                 value,
@@ -105,7 +106,7 @@ namespace Game {
                 color,
                 environmentData,
                 GetIsWireHarness(Terrain.ExtractData(value)) ? m_harnessTexture :
-                environmentData.SubsystemTerrain != null ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture
             );
         }
 

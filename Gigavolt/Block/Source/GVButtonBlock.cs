@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
+using Engine.Media;
 
 namespace Game {
     public class GVButtonBlock : MountedGVElectricElementBlock, IPaintableBlock {
         public const int Index = 821;
 
         public BlockMesh m_standaloneBlockMesh = new();
-
         public BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
-
         public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+
+        public readonly Texture2D WhiteTexture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Button");
@@ -78,7 +79,7 @@ namespace Game {
                     m_blockMeshesByFace[face],
                     blockColor.HasValue ? SubsystemPalette.GetColor(generator, blockColor) : Color.White,
                     null,
-                    geometry.SubsetOpaque
+                    blockColor.HasValue ? geometry.GetGeometry(WhiteTexture).SubsetOpaque : geometry.SubsetOpaque
                 );
                 GenerateGVWireVertices(
                     generator,
@@ -96,9 +97,12 @@ namespace Game {
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             int? blockColor = GetColor(Terrain.ExtractData(value));
+            environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
+                blockColor.HasValue ? WhiteTexture :
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,
                 ref matrix,
@@ -147,6 +151,7 @@ namespace Game {
         }
 
         public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
+        public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 5 : base.GetDisplayOrder(value);
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int? paintColor = GetColor(Terrain.ExtractData(value));

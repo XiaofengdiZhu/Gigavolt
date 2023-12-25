@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
+using Engine.Media;
 
 namespace Game {
     public class GVSwitchBlock : MountedGVElectricElementBlock, IPaintableBlock {
         public const int Index = 820;
 
         public readonly BlockMesh m_standaloneBlockMesh = new();
-
         public readonly BlockMesh[] m_blockMeshesByIndex = new BlockMesh[12];
-
         public readonly BoundingBox[][] m_collisionBoxesByIndex = new BoundingBox[12][];
+
+        public readonly Texture2D WhiteTexture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Switch");
@@ -21,7 +22,7 @@ namespace Game {
                 for (int j = 0; j < 2; j++) {
                     int num = (i << 1) | j;
                     Matrix matrix = i >= 4 ? i != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
-                    Matrix matrix2 = Matrix.CreateRotationX(j == 0 ? MathUtils.DegToRad(30f) : MathUtils.DegToRad(-30f));
+                    Matrix matrix2 = Matrix.CreateRotationX(j == 0 ? MathUtils.DegToRad(30f) : MathUtils.DegToRad(-75f));
                     m_blockMeshesByIndex[num] = new BlockMesh();
                     m_blockMeshesByIndex[num]
                     .AppendModelMeshPart(
@@ -103,7 +104,7 @@ namespace Game {
                     m_blockMeshesByIndex[num],
                     blockColor.HasValue ? SubsystemPalette.GetColor(generator, blockColor) : Color.White,
                     null,
-                    geometry.SubsetOpaque
+                    blockColor.HasValue ? geometry.GetGeometry(WhiteTexture).SubsetOpaque : geometry.SubsetOpaque
                 );
                 GenerateGVWireVertices(
                     generator,
@@ -121,9 +122,12 @@ namespace Game {
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             int? blockColor = GetColor(Terrain.ExtractData(value));
+            environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
+                blockColor.HasValue ? WhiteTexture :
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,
                 ref matrix,
@@ -175,6 +179,7 @@ namespace Game {
         }
 
         public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
+        public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 4 : base.GetDisplayOrder(value);
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int? paintColor = GetColor(Terrain.ExtractData(value));

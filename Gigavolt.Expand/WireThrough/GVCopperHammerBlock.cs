@@ -6,22 +6,16 @@ using Engine.Media;
 namespace Game {
     public class GVCopperHammerBlock() : HammerBlock(47, 77) {
         public const int Index = 867;
-        public readonly Texture2D m_texture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
+        public readonly Texture2D WhiteTexture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+            environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             int? blockColor = GetColor(Terrain.ExtractData(value));
-            Texture2D texture;
-            if (blockColor.HasValue) {
-                texture = m_texture;
-            }
-            else {
-                environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
-                texture = environmentData.SubsystemTerrain != null ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture;
-            }
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
-                texture,
+                blockColor.HasValue ? WhiteTexture :
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,
                 ref matrix,
@@ -31,10 +25,12 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int? paintColor = GetColor(Terrain.ExtractData(value));
-            return SubsystemPalette.GetName(subsystemTerrain, paintColor, base.GetDisplayName(subsystemTerrain, value));
+            return paintColor.HasValue ? SubsystemPalette.GetName(subsystemTerrain, paintColor, "遥控器") : base.GetDisplayName(subsystemTerrain, value);
         }
 
         public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Expand";
+
+        public override string GetDescription(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "远程操作和遥控器同色的开关、按钮" : base.GetDescription(value);
 
         public override IEnumerable<int> GetCreativeValues() {
             yield return Terrain.MakeBlockValue(Index);
@@ -53,6 +49,10 @@ namespace Game {
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 6));
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 10));
         }
+
+        public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 3 : base.GetDisplayOrder(value);
+
+        public override bool IsEditable_(int value) => !GetColor(Terrain.ExtractData(value)).HasValue;
 
         public static int? GetColor(int data) {
             if ((data & 16) != 0) {
