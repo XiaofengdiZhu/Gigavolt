@@ -56,7 +56,8 @@ namespace Game {
                         if (GVEWireThroughBlock.GetIsCross(data)) {
                             break;
                         }
-                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVEWireThroughBlock.GetTexture(data) == 3 ? GVEWireThroughBlock.GetIsWireHarness(data) ? Terrain.MakeBlockValue(GVWireHarnessBlock.Index, Terrain.ExtractLight(value), GVWireHarnessBlock.SetWireFacesBitmask(0, 63)) : Terrain.MakeBlockValue(GVWireBlock.Index, Terrain.ExtractLight(value), GVWireBlock.SetColor(GVWireBlock.SetWireFacesBitmask(0, 63), GVEWireThroughBlock.GetColor(data))) : Terrain.ReplaceData(value, GVEWireThroughBlock.SetTexture(data, (GVEWireThroughBlock.GetTexture(data) + 1) % 4)));
+                        int mask = GVEWireThroughBlock.GetWireFacesBitmask(data);
+                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVEWireThroughBlock.GetTexture(data) == 3 ? GVEWireThroughBlock.GetIsWireHarness(data) ? GVWireHarnessBlock.SetWireFacesBitmask(GVWireHarnessBlock.Index, mask) : GVWireBlock.SetWireFacesBitmask(Terrain.MakeBlockValue(GVWireBlock.Index, 0, GVWireBlock.SetColor(0, GVEWireThroughBlock.GetColor(data))), mask) : Terrain.ReplaceData(value, GVEWireThroughBlock.SetTexture(data, (GVEWireThroughBlock.GetTexture(data) + 1) % 4)));
                         break;
                     }
                     default: {

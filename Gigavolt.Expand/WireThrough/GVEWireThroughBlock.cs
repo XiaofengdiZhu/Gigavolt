@@ -51,25 +51,7 @@ namespace Game {
             if (GetIsCross(data)) {
                 return GetWireFacesBitmask(data) == 63 ? (1 << face) | (1 << CellFace.OppositeFace(face)) : 0;
             }
-            int num = 0;
-            if (WireExistsOnFace(value, face)) {
-                int num2 = CellFace.OppositeFace(face);
-                bool flag = false;
-                for (int i = 0; i < 6; i++) {
-                    if (i == face) {
-                        num |= 1 << i;
-                    }
-                    else if (i != num2
-                        && WireExistsOnFace(value, i)) {
-                        num |= 1 << i;
-                        flag = true;
-                    }
-                }
-                if (flag && WireExistsOnFace(value, num2)) {
-                    num |= 1 << num2;
-                }
-            }
-            return num;
+            return WireExistsOnFace(value, face) ? GetWireFacesBitmask(data) : 0;
         }
 
         public override int GetFaceTextureSlot(int face, int value) {

@@ -1045,10 +1045,7 @@ namespace Game {
                     int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x2, y2, z2);
                     IGVElectricElementBlock GVElectricElementBlock2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)] as IGVElectricElementBlock;
                     IGVElectricWireElementBlock wireBlock2 = GVElectricElementBlock2 as IGVElectricWireElementBlock;
-                    if (GVElectricElementBlock2 == null) {
-                        continue;
-                    }
-                    GVElectricConnectorType? connectorType2 = GVElectricElementBlock2.GetGVConnectorType(
+                    GVElectricConnectorType? connectorType2 = GVElectricElementBlock2?.GetGVConnectorType(
                         SubsystemTerrain,
                         cellValue2,
                         GVElectricConnectionPath.NeighborFace,
@@ -1587,8 +1584,9 @@ namespace Game {
                     continue;
                 }
                 TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(key.X, key.Z);
-                if (chunkAtCell == null
-                    || !chunkAtCell.AreBehaviorsNotified) {
+                if (chunkAtCell is not {
+                        AreBehaviorsNotified: true
+                    }) {
                     continue;
                 }
                 int cellValue = SubsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z);

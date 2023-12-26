@@ -129,20 +129,7 @@ namespace Game {
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             Point3 point = CellFace.FaceToPoint3(raycastResult.CellFace.Face);
             int cellValue = subsystemTerrain.Terrain.GetCellValue(raycastResult.CellFace.X + point.X, raycastResult.CellFace.Y + point.Y, raycastResult.CellFace.Z + point.Z);
-            int num = Terrain.ExtractContents(cellValue);
-            Block block = BlocksManager.Blocks[num];
-            int wireFacesBitmask = GetWireFacesBitmask(cellValue);
-            int num2 = wireFacesBitmask | (1 << raycastResult.CellFace.Face);
-            BlockPlacementData result;
-            if (num2 != wireFacesBitmask
-                || !(block is GVWireBlock)) {
-                result = default;
-                result.Value = SetWireFacesBitmask(value, num2);
-                result.CellFace = raycastResult.CellFace;
-                return result;
-            }
-            result = default;
-            return result;
+            return new BlockPlacementData { Value = SetWireFacesBitmask(value, (1 << raycastResult.CellFace.Face) | (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is GVWireBlock ? GetWireFacesBitmask(cellValue) : 0)), CellFace = raycastResult.CellFace };
         }
 
         public override BlockPlacementData GetDigValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, int toolValue, TerrainRaycastResult raycastResult) {
@@ -217,7 +204,7 @@ namespace Game {
             int num = Terrain.ExtractData(value);
             num &= -64;
             num |= bitmask & 0x3F;
-            return Terrain.ReplaceData(Terrain.ReplaceContents(value, Terrain.ExtractContents(value)), num);
+            return Terrain.ReplaceData(value, num);
         }
 
         public static int? GetColor(int data) {
