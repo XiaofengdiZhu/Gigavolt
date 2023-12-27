@@ -129,7 +129,9 @@ namespace Game {
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             Point3 point = CellFace.FaceToPoint3(raycastResult.CellFace.Face);
             int cellValue = subsystemTerrain.Terrain.GetCellValue(raycastResult.CellFace.X + point.X, raycastResult.CellFace.Y + point.Y, raycastResult.CellFace.Z + point.Z);
-            return new BlockPlacementData { Value = SetWireFacesBitmask(value, (1 << raycastResult.CellFace.Face) | (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is GVWireBlock ? GetWireFacesBitmask(cellValue) : 0)), CellFace = raycastResult.CellFace };
+            int oldMask = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is GVWireBlock ? GetWireFacesBitmask(cellValue) : 0;
+            int newMask = (1 << raycastResult.CellFace.Face) | oldMask;
+            return newMask == oldMask ? default : new BlockPlacementData { Value = SetWireFacesBitmask(value, newMask), CellFace = raycastResult.CellFace };
         }
 
         public override BlockPlacementData GetDigValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, int toolValue, TerrainRaycastResult raycastResult) {
