@@ -50,7 +50,7 @@ namespace Game {
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 10));
         }
 
-        public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 3 : base.GetDisplayOrder(value);
+        public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 20 : base.GetDisplayOrder(value);
 
         public override bool IsEditable_(int value) => !GetColor(Terrain.ExtractData(value)).HasValue;
 

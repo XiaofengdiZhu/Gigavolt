@@ -179,7 +179,7 @@ namespace Game {
         }
 
         public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
-        public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 4 : base.GetDisplayOrder(value);
+        public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 10 : base.GetDisplayOrder(value);
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int? paintColor = GetColor(Terrain.ExtractData(value));

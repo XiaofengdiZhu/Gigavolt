@@ -16,14 +16,14 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    switch (connection.NeighborGVElectricElement) {
-                        case WireDomainGVElectricElement:
-                        case ButtonGVElectricElement element1 when (element1.CellFaces[0].Mask & connection.CellFace.Mask) == 0:
-                        case SwitchGVElectricElement element2 when (element2.CellFaces[0].Mask & connection.CellFace.Mask) == 0: continue;
-                        default:
-                            m_voltage |= connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            break;
+                    if (connection.NeighborGVElectricElement is WireDomainGVElectricElement) {
+                        continue;
                     }
+                    if (connection.NeighborGVElectricElement.CellFaces[0].Mask != int.MaxValue
+                        && (connection.NeighborGVElectricElement.CellFaces[0].Mask & connection.CellFace.Mask) == 0) {
+                        continue;
+                    }
+                    m_voltage |= connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                 }
             }
             return m_voltage != voltage;
