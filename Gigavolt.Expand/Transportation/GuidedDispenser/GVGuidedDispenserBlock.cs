@@ -18,6 +18,8 @@ namespace Game {
 
         public override int GetTextureSlotCount(int value) => 2;
 
+        public static string Test() => "LX";
+
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
             generator.GenerateCubeVertices(
                 this,
