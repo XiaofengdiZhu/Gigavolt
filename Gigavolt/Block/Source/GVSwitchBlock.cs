@@ -23,13 +23,14 @@ namespace Game
             Model model = ContentManager.Get<Model>("Models/Switch");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Body").ParentBone);
             Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Lever").ParentBone);
-            for (int i = 0; i < 6; i++)//主体模型
+            for (int i = 0; i < 6; i++)
             {
                 for (int j = 0; j < 2; j++)
                 {
                     int num = (i << 1) | j;
                     Matrix matrix = i >= 4 ? i != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                     Matrix matrix2 = Matrix.CreateRotationX(j == 0 ? MathUtils.DegToRad(30f) : MathUtils.DegToRad(-75f));
+                    //主体模型
                     m_blockMeshesByIndex_Body[num] = new BlockMesh();
                     m_blockMeshesByIndex_Body[num]
                     .AppendModelMeshPart(
@@ -42,15 +43,7 @@ namespace Game
                         Color.White
                     );
                     m_collisionBoxesByIndex[num] = new[] { m_blockMeshesByIndex_Body[num].CalculateBoundingBox() };
-                }
-            }
-            for (int i = 0; i < 6; i++)//拉杆模型
-            {
-                for (int j = 0; j < 2; j++)
-                {
-                    int num = (i << 1) | j;
-                    Matrix matrix = i >= 4 ? i != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
-                    Matrix matrix2 = Matrix.CreateRotationX(j == 0 ? MathUtils.DegToRad(30f) : MathUtils.DegToRad(-30f));
+                    //拉杆模型
                     m_blockMeshesByIndex_Lever[num] = new BlockMesh();
                     m_blockMeshesByIndex_Lever[num]
                     .AppendModelMeshPart(
