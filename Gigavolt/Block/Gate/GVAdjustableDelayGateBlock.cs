@@ -137,7 +137,16 @@ namespace Game {
             }
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new AdjustableDelayGateGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new AdjustableDelayGateGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(
+                x,
+                y,
+                z,
+                GetFace(value),
+                GetConnectionMask(value)
+            )
+        );
 
         public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
             int data = Terrain.ExtractData(value);

@@ -4,7 +4,7 @@ namespace Game {
 
         public override int DelaySteps => m_delaySteps;
 
-        public AdjustableDelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public AdjustableDelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             int data = Terrain.ExtractData(subsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             m_delaySteps = GVAdjustableDelayGateBlock.GetDelay(data);
         }
