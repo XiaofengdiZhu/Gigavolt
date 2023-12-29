@@ -1,570 +1,580 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProjectGuid>{77E3E4A0-32D2-423E-9014-5AEF2B450F14}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Gigavolt</RootNamespace>
-		<AssemblyName>Gigavolt</AssemblyName>
-		<TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-		<FileAlignment>512</FileAlignment>
-		<Deterministic>true</Deterministic>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<TargetFrameworkProfile/>
-		<LangVersion>default</LangVersion>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<OutputPath>bin\Debug\</OutputPath>
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<NoWarn></NoWarn>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Prefer32Bit>false</Prefer32Bit>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>none</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Release\</OutputPath>
-		<DefineConstants>TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Prefer32Bit>false</Prefer32Bit>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="Engine">
-			<HintPath>reference\Engine.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="EntitySystem">
-			<HintPath>reference\EntitySystem.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Survivalcraft, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>reference\Survivalcraft.exe</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="System"/>
-		<Reference Include="System.Core"/>
-		<Reference Include="System.Xml.Linq"/>
-		<Reference Include="System.Data.DataSetExtensions"/>
-		<Reference Include="Microsoft.CSharp"/>
-		<Reference Include="System.Data"/>
-		<Reference Include="System.Xml"/>
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="Block\Gate\Transformer\GV2OTransformerBlock.cs"/>
-		<Compile Include="Block\Gate\Transformer\GV2OTransformerElectricElement.cs"/>
-		<Compile Include="Block\Gate\Transformer\GV2OTransformerGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\Transformer\O2GVTransformerBlock.cs"/>
-		<Compile Include="Block\Gate\Transformer\O2GVTransformerElectricElement.cs"/>
-		<Compile Include="Block\Gate\Transformer\O2GVTransformerGVElectricElement.cs"/>
-		<Compile Include="Block\LED\8NumberLed\GV8NumberGlowPoint.cs"/>
-		<Compile Include="Block\LED\8NumberLed\GV8NumberLedBlock.cs"/>
-		<Compile Include="Block\LED\8NumberLed\SubsystemGV8NumberLedGlow.cs"/>
-		<Compile Include="Block\LED\8NumberLed\_8NumberLedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\8x4Led\8x4LedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\8x4Led\GV8x4GlowPoint.cs"/>
-		<Compile Include="Block\LED\8x4Led\GV8x4LedBlock.cs"/>
-		<Compile Include="Block\LED\8x4Led\SubsystemGV8x4LedGlow.cs"/>
-		<Compile Include="Block\LED\FourLed\FourLedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\FourLed\GVFourLedBlock.cs"/>
-		<Compile Include="Block\LED\Led\GVLedBlock.cs"/>
-		<Compile Include="Block\LED\Led\LedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\Lightbulb\GVLightbulbBlock.cs"/>
-		<Compile Include="Block\LED\Lightbulb\LightBulbGVElectricElement.cs"/>
-		<Compile Include="Block\LED\MulticoloredLed\GVMulticoloredLedBlock.cs"/>
-		<Compile Include="Block\LED\MulticoloredLed\MulticoloredLedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\OneLed\GVOneLedBlock.cs"/>
-		<Compile Include="Block\LED\OneLed\OneLedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\OneLed\SubsystemGVOneLedGlow.cs"/>
-		<Compile Include="Block\LED\SevenSegmentDisplay\GVSevenSegmentDisplayBlock.cs"/>
-		<Compile Include="Block\LED\SevenSegmentDisplay\SevenSegmentDisplayGVElectricElement.cs"/>
-		<Compile Include="Block\LED\Sign\SignGVElectricElement.cs"/>
-		<Compile Include="Block\LED\Sign\GVSignBlock.cs"/>
-		<Compile Include="Block\LED\Sign\GVSignTextData.cs"/>
-		<Compile Include="Block\LED\Sign\SubsystemGVSignBlockBehavior.cs"/>
-		<Compile Include="Block\Other\DebugGVElectricElement.cs"/>
-		<Compile Include="Block\Output\Detonator\DetonatorGVElectricElement.cs"/>
-		<Compile Include="Block\Output\Detonator\GVDetonatorBlock.cs"/>
-		<Compile Include="Block\Output\Dispenser\ComponentGVDispenser.cs"/>
-		<Compile Include="Block\Output\Dispenser\DispenserGVElectricElement.cs"/>
-		<Compile Include="Block\Output\Dispenser\GVDispenserBlock.cs"/>
-		<Compile Include="Block\Output\Dispenser\SubsystemGVDispenserBlockBehavior.cs"/>
-		<Compile Include="Block\Output\Dispenser\SubsystemGVProjectiles.cs"/>
-		<Compile Include="Block\Output\Door\DoorGVElectricElement.cs"/>
-		<Compile Include="Block\Output\Door\GVFenceGateBlock.cs"/>
-		<Compile Include="Block\Output\Door\FenceGateGVElectricElement.cs"/>
-		<Compile Include="Block\Output\Door\GVDoorBlock.cs"/>
-		<Compile Include="Block\Output\Door\SubsystemGVFenceGateBlockBehavior.cs"/>
-		<Compile Include="Block\Output\Door\SubsystemGVDoorBlockBehavior.cs"/>
-		<Compile Include="Block\Output\Door\GVTrapdoorBlock.cs"/>
-		<Compile Include="Block\Output\Door\SubsystemTrapdoorBlockBehavior.cs"/>
-		<Compile Include="Block\Output\Door\TrapDoorElectricElement.cs"/>
-		<Compile Include="Block\Output\Piston\GVPistonBlock.cs"/>
-		<Compile Include="Block\Output\Piston\GVPistonData.cs"/>
-		<Compile Include="Block\Output\Piston\GVPistonHeadBlock.cs"/>
-		<Compile Include="Block\Output\Piston\PistonGVElectricElement.cs"/>
-		<Compile Include="Block\Output\Piston\SubsystemGVMovingBlocks.cs"/>
-		<Compile Include="Block\Output\Piston\SubsystemGVPistonBlockBehavior.cs"/>
-		<Compile Include="Block\Output\SoundGenerator\GVSoundGeneratorBlock.cs"/>
-		<Compile Include="Block\Output\SoundGenerator\SoundGeneratorGVElectricElement.cs"/>
-		<Compile Include="Block\Sensor\EnhancedRealTimeClock\RealTimeClockGVElectricElement.cs"/>
-		<Compile Include="Block\Sensor\EnhancedRealTimeClock\GVRealTimeClockBlock.cs"/>
-		<Compile Include="Block\Source\GVButtonData.cs"/>
-		<Compile Include="Block\Store\MemoryBank\GVArrayData.cs"/>
-		<Compile Include="Block\Store\MemoryBank\GVMemoryBankBlock.cs"/>
-		<Compile Include="Block\Store\MemoryBank\GVMemoryBankData.cs"/>
-		<Compile Include="Block\Store\MemoryBank\MemoryBankGVElectricElement.cs"/>
-		<Compile Include="Block\Store\MemoryBank\SubsystemGVMemoryBankBlockBehavior.cs"/>
-		<Compile Include="Block\Store\TruthTable\GVTruthTableCircuitBlock.cs"/>
-		<Compile Include="Block\Store\TruthTable\GVTruthTableData.cs"/>
-		<Compile Include="Block\Store\TruthTable\SubsystemGVTruthTableCircuitBlockBehavior.cs"/>
-		<Compile Include="Block\Store\TruthTable\TruthTableCircuitGVElectricElement.cs"/>
-		<Compile Include="Block\Wire\GVWireHarnessBlock.cs"/>
-		<Compile Include="ClassicBlock\Dispenser\GVDispenserCBlock.cs"/>
-		<Compile Include="ClassicBlock\Dispenser\DispenserGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\GVRealTimeClockCBlock.cs"/>
-		<Compile Include="ClassicBlock\RealTimeClockGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVAttachedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVIronAttachedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVIronPostedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVPostedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\SignGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVWoodenAttachedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVWoodenPostedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\SubsystemGVSignBlockCBehavior.cs"/>
-		<Compile Include="Dialog\BaseEditGVMemoryBankDialog.cs"/>
-		<Compile Include="Dialog\EditGVUintDialog.cs"/>
-		<Compile Include="Dialog\EditGVButtonDialog.cs"/>
-		<Compile Include="Dialog\EditGVCounterDialog.cs"/>
-		<Compile Include="Dialog\EditGVSignCDialog.cs"/>
-		<Compile Include="Dialog\EditGVSignDialog.cs"/>
-		<Compile Include="GVElectricClasses\ComponentGVDisplayVoltage.cs"/>
-		<Compile Include="GVElectricClasses\GVCellFace.cs"/>
-		<Compile Include="GVElectricClasses\SubsystemGVEditableItemBehavior.cs"/>
-		<Compile Include="Widget\GVDispenserWidget.cs"/>
-		<Compile Include="Widget\GVStepFloatingButtons.cs"/>
-		<Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs"/>
-		<Compile Include="BaseBlock\GVWireThroughBlock.cs"/>
-		<Compile Include="BaseBlock\IGVElectricElementBlock.cs"/>
-		<Compile Include="BaseBlock\IGVElectricWireElementBlock.cs"/>
-		<Compile Include="BaseBlock\MountedElectricGVElement.cs"/>
-		<Compile Include="BaseBlock\MountedElectricGVElementBlock.cs"/>
-		<Compile Include="BaseBlock\RotateableElectricGVElement.cs"/>
-		<Compile Include="BaseBlock\RotateableMountedElectricGVElementBlock.cs"/>
-		<Compile Include="Block\Gate\AdjustableDelayGateGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\AnalogToDigitalConverterGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\AndGateGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\BaseDelayGateGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\DelayGateGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\DigitalToAnalogConverterGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\GVAdjustableDelayGateBlock.cs"/>
-		<Compile Include="Block\Gate\GVAnalogToDigitalConverterBlock.cs"/>
-		<Compile Include="Block\Gate\GVDelayGateBlock.cs"/>
-		<Compile Include="Block\Gate\GVDigitalToAnalogConverterBlock.cs"/>
-		<Compile Include="Block\Gate\GVNandGateBlock.cs"/>
-		<Compile Include="Block\Gate\GVNorGateBlock.cs"/>
-		<Compile Include="Block\Gate\GVNotGateBlock.cs"/>
-		<Compile Include="Block\Gate\GVOrGateBlock.cs"/>
-		<Compile Include="Block\Gate\GVXorGateBlock.cs"/>
-		<Compile Include="Block\Gate\NandGateGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\NorGateGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\NotGateGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\OrGateGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\SubsystemGVAdjustableDelayGateBlockBehavior.cs"/>
-		<Compile Include="Block\Gate\XorGateGVElectricElement.cs"/>
-		<Compile Include="Block\LED\GVGlowPoint.cs"/>
-		<Compile Include="Dialog\EditGVDebugDialog.cs"/>
-		<Compile Include="Block\Other\GVDebugData.cs"/>
-		<Compile Include="Block\Other\GVDebugBlock.cs"/>
-		<Compile Include="Block\Other\SubsystemGVDebugBlockBehavior.cs"/>
-		<Compile Include="ClassicBlock\GVSoundGeneratorCBlock.cs"/>
-		<Compile Include="ClassicBlock\SoundGeneratorGVCElectricElement.cs"/>
-		<Compile Include="Block\Sensor\GVMotionDetectorBlock.cs"/>
-		<Compile Include="Block\Sensor\GVPhotodiodeBlock.cs"/>
-		<Compile Include="Block\Sensor\GVPressurePlateBlock.cs"/>
-		<Compile Include="Block\Sensor\GVPressurePlateElectricElement.cs"/>
-		<Compile Include="Block\Sensor\GVTargetBlock.cs"/>
-		<Compile Include="Block\Sensor\MotionDetectorGVElectricElement.cs"/>
-		<Compile Include="Block\Sensor\PhotodiodeGVElectricElement.cs"/>
-		<Compile Include="Block\Sensor\TargetGVElectricElement.cs"/>
-		<Compile Include="Block\Source\BatteryGVElectricElement.cs"/>
-		<Compile Include="Block\Source\ButtonGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\GVAndGateBlock.cs"/>
-		<Compile Include="Block\Source\CounterGVElectricElement.cs"/>
-		<Compile Include="Block\Source\GVBatteryBlock.cs"/>
-		<Compile Include="Block\Source\GVButtonBlock.cs"/>
-		<Compile Include="Block\Source\GigaVoltageLevelData.cs"/>
-		<Compile Include="Block\Source\GVCounterBlock.cs"/>
-		<Compile Include="Block\Source\GVRandomGeneratorBlock.cs"/>
-		<Compile Include="Block\Source\GVSwitchBlock.cs"/>
-		<Compile Include="Block\Source\RandomGeneratorGVElectricElement.cs"/>
-		<Compile Include="Block\Source\SubsystemGVCounterBlockBehavior.cs"/>
-		<Compile Include="Block\Source\SubsystemGVBatteryBlockBehavior.cs"/>
-		<Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs"/>
-		<Compile Include="Block\Source\SwitchGVElectricElement.cs"/>
-		<Compile Include="Block\Store\GVSRLatchBlock.cs"/>
-		<Compile Include="Block\Store\SRLatchGVElectricElement.cs"/>
-		<Compile Include="Block\Wire\GVWireBlock.cs"/>
-		<Compile Include="Block\Source\SubsystemGVButtonBlockBehavior.cs"/>
-		<Compile Include="Block\Wire\GVWireThroughBricksBlock.cs"/>
-		<Compile Include="Block\Wire\GVWireThroughCobblestoneBlock.cs"/>
-		<Compile Include="Block\Wire\GVWireThroughPlanksBlock.cs"/>
-		<Compile Include="Block\Wire\GVWireThroughSemiconductorBlock.cs"/>
-		<Compile Include="Block\Wire\GVWireThroughStoneBlock.cs"/>
-		<Compile Include="Block\Wire\WireDomainGVElectricElement.cs"/>
-		<Compile Include="ClassicBlock\AnalogToDigitalConverterGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\CounterGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\DetonatorGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\DigitalToAnalogConverterGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\GVAnalogToDigitalConverterCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVCounterCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVDetonatorCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVDigitalToAnalogConverterCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVMemoryBankCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVMulticoloredLedCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVOneLedCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVPressurePlateCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVSRLatchCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVTargetCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVTruthTableCircuitCBlock.cs"/>
-		<Compile Include="ClassicBlock\MemoryBankGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\MulticoloredLedGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\OneLedGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\PressurePlateGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\SRLatchGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\SubsystemGVMemoryBankCBlockBehavior.cs"/>
-		<Compile Include="ClassicBlock\SubsystemGVTruthTableCircuitCBlockBehavior.cs"/>
-		<Compile Include="ClassicBlock\TargetGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\TruthTableCircuitGVCElectricElement.cs"/>
-		<Compile Include="Dialog\EditGVMemoryBankDialog.cs"/>
-		<Compile Include="Dialog\EditGigaVoltageLevelDialog.cs"/>
-		<Compile Include="Dialog\EditGVPistonDialog.cs"/>
-		<Compile Include="Dialog\EditGVTruthTableDialog.cs"/>
-		<Compile Include="GVElectricClasses\GigavoltModLoader.cs"/>
-		<Compile Include="GVElectricClasses\GVElectricConnection.cs"/>
-		<Compile Include="GVElectricClasses\GVElectricConnectionPath.cs"/>
-		<Compile Include="GVElectricClasses\GVElectricConnectorDirection.cs"/>
-		<Compile Include="GVElectricClasses\GVElectricConnectorType.cs"/>
-		<Compile Include="GVElectricClasses\GVElectricElement.cs"/>
-		<Compile Include="GVElectricClasses\GVStaticStorage.cs"/>
-		<Compile Include="GVElectricClasses\MathUint.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRFileStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRInputStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRReaderStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRStringStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\AstParserRuleReturnScope.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\BaseRecognizer.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\BitSet.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\BufferedTokenStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\CharStreamConstants.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\CharStreamState.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ClassicToken.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\CommonToken.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\CommonTokenStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Debug\IDebugEventListener.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\DFA.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\EarlyExitException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\FailedPredicateException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\GrammarRuleAttribute.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\IAstRuleReturnScope.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\IAstRuleReturnScope`1.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ICharStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\IIntStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\IRuleReturnScope.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\IToken.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenSource.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenStreamInformation.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\LegacyCommonTokenStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Lexer.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Misc\FastQueue.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Misc\LookaheadStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedNotSetException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedRangeException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedSetException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedTokenException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedTreeNodeException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\MissingTokenException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\NoViableAltException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Output\ErrorOutputStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Output\IOutputStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Output\OutOutputStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Output\OutputStreamHost.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Parser.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\ParserRuleReturnScope.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\PCLExtensions\PCLExtensions.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\RecognitionException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\RecognizerSharedState.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\RuleReturnScope.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\TokenConstants.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\TokenRewriteStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\AntlrRuntime_BaseTreeDebugView.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BaseTree.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BaseTreeAdaptor.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BufferedTreeNodeStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonErrorNode.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTree.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTreeAdaptor.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTreeNodeStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\DotTreeGenerator.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITree.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeAdaptor.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeNodeStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeVisitorAction.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ParseTree.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteCardinalityException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteEarlyExitException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteEmptyStreamException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleElementStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleNodeStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleSubtreeStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleTokenStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeConstants.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeFilter.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeIterator.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeParser.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreePatternLexer.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreePatternParser.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeRewriter.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeRuleReturnScope.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeVisitor.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeWizard.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\UnbufferedTokenStream.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Antlr\UnwantedTokenException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\BinaryExpression.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\EvaluationVisitor.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\Function.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\LogicalExpression.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\LogicalExpressionVisitor.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\Parameter.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\SerializationVisitor.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\TernaryExpression.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\UnaryExpression.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Domain\Value.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\EvaluateFunctionHandler.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\EvaluateParameterHandler.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\EvaluationException.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\EvaluationOption.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Expression.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\ExtendedMethodInfo.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\FunctionArgs.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\LambdaExpressionVistor.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\NCalcLexer.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\NCalcParser.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\Numbers.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\ParameterArgs.cs"/>
-		<Compile Include="GVElectricClasses\NCalc2\TypeExtensions.cs"/>
-		<Compile Include="GVElectricClasses\SubsystemGVElectricBlockBehavior.cs"/>
-		<Compile Include="GVElectricClasses\SubsystemGVElectricity.cs"/>
-		<Compile Include="Properties\AssemblyInfo.cs"/>
-		<Compile Include="Screen\GVMBExternalContentScreen.cs"/>
-		<Compile Include="Widget\GVTextBoxWidget.cs"/>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Dialogs\EditGVButtonDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Dialogs\EditGVCounterDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Dialogs\EditGVUintDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Gigavolt.csv">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Gigavolt.xdb">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Lang\zh-CN.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Models\GigavoltGates.dae">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="modinfo.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Dialogs\EditGigaVoltageLevelDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Dialogs\EditGVMemoryBankDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="reference\Engine.dll"/>
-		<None Include="reference\EntitySystem.dll"/>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Dialogs\EditGVPistonDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Dialogs\EditGVTruthTableDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Dialogs\EditGVDebugDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Screens\GVMBExternalContentScreen.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Widgets\GVStepFloatingButtons.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="icon.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock16-4.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock32-8.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock4-1.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock8-2.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock1-4.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock2-8.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock4-16.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock8-32.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="reference\Survivalcraft.exe"/>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Dialogs\EditGVSignDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Textures\Copy.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Textures\GV2OTransformer.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Textures\O2GVTransformer.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Widgets\GVDispenserWidget.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Textures\GV8NumberLed\0.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\1.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\10.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\11.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\12.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\13.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\14.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\15.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\2.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\3.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\4.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\5.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\6.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\7.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\8.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8NumberLed\9.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Textures\GV8NumberLedBlockFull.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVOneLedBlockEmpty.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Textures\GV4x2LedBlockFull.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV4x4LedBlockFull.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GV8x4LedBlockFull.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Textures\Delete.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-	<ProjectExtensions/>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{77E3E4A0-32D2-423E-9014-5AEF2B450F14}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Gigavolt</RootNamespace>
+        <AssemblyName>Gigavolt</AssemblyName>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <Deterministic>true</Deterministic>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <TargetFrameworkProfile/>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <NoWarn></NoWarn>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <Prefer32Bit>false</Prefer32Bit>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <Prefer32Bit>false</Prefer32Bit>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Engine">
+            <HintPath>reference\Engine.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="EntitySystem">
+            <HintPath>reference\EntitySystem.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Survivalcraft, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>reference\Survivalcraft.exe</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Xml.Linq"/>
+        <Reference Include="System.Data.DataSetExtensions"/>
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Xml"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Block\Gate\Transformer\GV2OTransformerBlock.cs"/>
+        <Compile Include="Block\Gate\Transformer\GV2OTransformerElectricElement.cs"/>
+        <Compile Include="Block\Gate\Transformer\GV2OTransformerGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\Transformer\O2GVTransformerBlock.cs"/>
+        <Compile Include="Block\Gate\Transformer\O2GVTransformerElectricElement.cs"/>
+        <Compile Include="Block\Gate\Transformer\O2GVTransformerGVElectricElement.cs"/>
+        <Compile Include="Block\LED\8NumberLed\GV8NumberGlowPoint.cs"/>
+        <Compile Include="Block\LED\8NumberLed\GV8NumberLedBlock.cs"/>
+        <Compile Include="Block\LED\8NumberLed\SubsystemGV8NumberLedGlow.cs"/>
+        <Compile Include="Block\LED\8NumberLed\_8NumberLedGVElectricElement.cs"/>
+        <Compile Include="Block\LED\8x4Led\8x4LedGVElectricElement.cs"/>
+        <Compile Include="Block\LED\8x4Led\GV8x4GlowPoint.cs"/>
+        <Compile Include="Block\LED\8x4Led\GV8x4LedBlock.cs"/>
+        <Compile Include="Block\LED\8x4Led\SubsystemGV8x4LedGlow.cs"/>
+        <Compile Include="Block\LED\FourLed\FourLedGVElectricElement.cs"/>
+        <Compile Include="Block\LED\FourLed\GVFourLedBlock.cs"/>
+        <Compile Include="Block\LED\Led\GVLedBlock.cs"/>
+        <Compile Include="Block\LED\Led\LedGVElectricElement.cs"/>
+        <Compile Include="Block\LED\Lightbulb\GVLightbulbBlock.cs"/>
+        <Compile Include="Block\LED\Lightbulb\LightBulbGVElectricElement.cs"/>
+        <Compile Include="Block\LED\MulticoloredLed\GVMulticoloredLedBlock.cs"/>
+        <Compile Include="Block\LED\MulticoloredLed\MulticoloredLedGVElectricElement.cs"/>
+        <Compile Include="Block\LED\OneLed\GVOneLedBlock.cs"/>
+        <Compile Include="Block\LED\OneLed\OneLedGVElectricElement.cs"/>
+        <Compile Include="Block\LED\OneLed\SubsystemGVOneLedGlow.cs"/>
+        <Compile Include="Block\LED\SevenSegmentDisplay\GVSevenSegmentDisplayBlock.cs"/>
+        <Compile Include="Block\LED\SevenSegmentDisplay\SevenSegmentDisplayGVElectricElement.cs"/>
+        <Compile Include="Block\LED\Sign\SignGVElectricElement.cs"/>
+        <Compile Include="Block\LED\Sign\GVSignBlock.cs"/>
+        <Compile Include="Block\LED\Sign\GVSignTextData.cs"/>
+        <Compile Include="Block\LED\Sign\SubsystemGVSignBlockBehavior.cs"/>
+        <Compile Include="Block\Other\DebugGVElectricElement.cs"/>
+        <Compile Include="Block\Output\Detonator\DetonatorGVElectricElement.cs"/>
+        <Compile Include="Block\Output\Detonator\GVDetonatorBlock.cs"/>
+        <Compile Include="Block\Output\Dispenser\ComponentGVDispenser.cs"/>
+        <Compile Include="Block\Output\Dispenser\DispenserGVElectricElement.cs"/>
+        <Compile Include="Block\Output\Dispenser\GVDispenserBlock.cs"/>
+        <Compile Include="Block\Output\Dispenser\SubsystemGVDispenserBlockBehavior.cs"/>
+        <Compile Include="Block\Output\Dispenser\SubsystemGVProjectiles.cs"/>
+        <Compile Include="Block\Output\Door\DoorGVElectricElement.cs"/>
+        <Compile Include="Block\Output\Door\GVFenceGateBlock.cs"/>
+        <Compile Include="Block\Output\Door\FenceGateGVElectricElement.cs"/>
+        <Compile Include="Block\Output\Door\GVDoorBlock.cs"/>
+        <Compile Include="Block\Output\Door\SubsystemGVFenceGateBlockBehavior.cs"/>
+        <Compile Include="Block\Output\Door\SubsystemGVDoorBlockBehavior.cs"/>
+        <Compile Include="Block\Output\Door\GVTrapdoorBlock.cs"/>
+        <Compile Include="Block\Output\Door\SubsystemTrapdoorBlockBehavior.cs"/>
+        <Compile Include="Block\Output\Door\TrapDoorElectricElement.cs"/>
+        <Compile Include="Block\Output\Piston\GVPistonBlock.cs"/>
+        <Compile Include="Block\Output\Piston\GVPistonData.cs"/>
+        <Compile Include="Block\Output\Piston\GVPistonHeadBlock.cs"/>
+        <Compile Include="Block\Output\Piston\PistonGVElectricElement.cs"/>
+        <Compile Include="Block\Output\Piston\SubsystemGVMovingBlocks.cs"/>
+        <Compile Include="Block\Output\Piston\SubsystemGVPistonBlockBehavior.cs"/>
+        <Compile Include="Block\Output\SoundGenerator\GVSoundGeneratorBlock.cs"/>
+        <Compile Include="Block\Output\SoundGenerator\SoundGeneratorGVElectricElement.cs"/>
+        <Compile Include="Block\Sensor\EnhancedRealTimeClock\RealTimeClockGVElectricElement.cs"/>
+        <Compile Include="Block\Sensor\EnhancedRealTimeClock\GVRealTimeClockBlock.cs"/>
+        <Compile Include="Block\Source\GVButtonData.cs"/>
+        <Compile Include="Block\Store\MemoryBank\GVArrayData.cs"/>
+        <Compile Include="Block\Store\MemoryBank\GVMemoryBankBlock.cs"/>
+        <Compile Include="Block\Store\MemoryBank\GVMemoryBankData.cs"/>
+        <Compile Include="Block\Store\MemoryBank\MemoryBankGVElectricElement.cs"/>
+        <Compile Include="Block\Store\MemoryBank\SubsystemGVMemoryBankBlockBehavior.cs"/>
+        <Compile Include="Block\Store\TruthTable\GVTruthTableCircuitBlock.cs"/>
+        <Compile Include="Block\Store\TruthTable\GVTruthTableData.cs"/>
+        <Compile Include="Block\Store\TruthTable\SubsystemGVTruthTableCircuitBlockBehavior.cs"/>
+        <Compile Include="Block\Store\TruthTable\TruthTableCircuitGVElectricElement.cs"/>
+        <Compile Include="Block\Wire\GVWireHarnessBlock.cs"/>
+        <Compile Include="ClassicBlock\Dispenser\GVDispenserCBlock.cs"/>
+        <Compile Include="ClassicBlock\Dispenser\DispenserGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\GVRealTimeClockCBlock.cs"/>
+        <Compile Include="ClassicBlock\RealTimeClockGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\Sign\GVAttachedSignCBlock.cs"/>
+        <Compile Include="ClassicBlock\Sign\GVIronAttachedSignCBlock.cs"/>
+        <Compile Include="ClassicBlock\Sign\GVIronPostedSignCBlock.cs"/>
+        <Compile Include="ClassicBlock\Sign\GVPostedSignCBlock.cs"/>
+        <Compile Include="ClassicBlock\Sign\GVSignCBlock.cs"/>
+        <Compile Include="ClassicBlock\Sign\SignGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\Sign\GVWoodenAttachedSignCBlock.cs"/>
+        <Compile Include="ClassicBlock\Sign\GVWoodenPostedSignCBlock.cs"/>
+        <Compile Include="ClassicBlock\Sign\SubsystemGVSignBlockCBehavior.cs"/>
+        <Compile Include="Dialog\BaseEditGVMemoryBankDialog.cs"/>
+        <Compile Include="Dialog\EditGVUintDialog.cs"/>
+        <Compile Include="Dialog\EditGVButtonDialog.cs"/>
+        <Compile Include="Dialog\EditGVCounterDialog.cs"/>
+        <Compile Include="Dialog\EditGVSignCDialog.cs"/>
+        <Compile Include="Dialog\EditGVSignDialog.cs"/>
+        <Compile Include="GVElectricClasses\ComponentGVDisplayVoltage.cs"/>
+        <Compile Include="GVElectricClasses\GVCellFace.cs"/>
+        <Compile Include="GVElectricClasses\SubsystemGVEditableItemBehavior.cs"/>
+        <Compile Include="Widget\GVDispenserWidget.cs"/>
+        <Compile Include="Widget\GVStepFloatingButtons.cs"/>
+        <Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs"/>
+        <Compile Include="BaseBlock\GVWireThroughBlock.cs"/>
+        <Compile Include="BaseBlock\IGVElectricElementBlock.cs"/>
+        <Compile Include="BaseBlock\IGVElectricWireElementBlock.cs"/>
+        <Compile Include="BaseBlock\MountedElectricGVElement.cs"/>
+        <Compile Include="BaseBlock\MountedElectricGVElementBlock.cs"/>
+        <Compile Include="BaseBlock\RotateableElectricGVElement.cs"/>
+        <Compile Include="BaseBlock\RotateableMountedElectricGVElementBlock.cs"/>
+        <Compile Include="Block\Gate\AdjustableDelayGateGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\AnalogToDigitalConverterGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\AndGateGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\BaseDelayGateGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\DelayGateGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\DigitalToAnalogConverterGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\GVAdjustableDelayGateBlock.cs"/>
+        <Compile Include="Block\Gate\GVAnalogToDigitalConverterBlock.cs"/>
+        <Compile Include="Block\Gate\GVDelayGateBlock.cs"/>
+        <Compile Include="Block\Gate\GVDigitalToAnalogConverterBlock.cs"/>
+        <Compile Include="Block\Gate\GVNandGateBlock.cs"/>
+        <Compile Include="Block\Gate\GVNorGateBlock.cs"/>
+        <Compile Include="Block\Gate\GVNotGateBlock.cs"/>
+        <Compile Include="Block\Gate\GVOrGateBlock.cs"/>
+        <Compile Include="Block\Gate\GVXorGateBlock.cs"/>
+        <Compile Include="Block\Gate\NandGateGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\NorGateGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\NotGateGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\OrGateGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\SubsystemGVAdjustableDelayGateBlockBehavior.cs"/>
+        <Compile Include="Block\Gate\XorGateGVElectricElement.cs"/>
+        <Compile Include="Block\LED\GVGlowPoint.cs"/>
+        <Compile Include="Dialog\EditGVDebugDialog.cs"/>
+        <Compile Include="Block\Other\GVDebugData.cs"/>
+        <Compile Include="Block\Other\GVDebugBlock.cs"/>
+        <Compile Include="Block\Other\SubsystemGVDebugBlockBehavior.cs"/>
+        <Compile Include="ClassicBlock\GVSoundGeneratorCBlock.cs"/>
+        <Compile Include="ClassicBlock\SoundGeneratorGVCElectricElement.cs"/>
+        <Compile Include="Block\Sensor\GVMotionDetectorBlock.cs"/>
+        <Compile Include="Block\Sensor\GVPhotodiodeBlock.cs"/>
+        <Compile Include="Block\Sensor\GVPressurePlateBlock.cs"/>
+        <Compile Include="Block\Sensor\GVPressurePlateElectricElement.cs"/>
+        <Compile Include="Block\Sensor\GVTargetBlock.cs"/>
+        <Compile Include="Block\Sensor\MotionDetectorGVElectricElement.cs"/>
+        <Compile Include="Block\Sensor\PhotodiodeGVElectricElement.cs"/>
+        <Compile Include="Block\Sensor\TargetGVElectricElement.cs"/>
+        <Compile Include="Block\Source\BatteryGVElectricElement.cs"/>
+        <Compile Include="Block\Source\ButtonGVElectricElement.cs"/>
+        <Compile Include="Block\Gate\GVAndGateBlock.cs"/>
+        <Compile Include="Block\Source\CounterGVElectricElement.cs"/>
+        <Compile Include="Block\Source\GVBatteryBlock.cs"/>
+        <Compile Include="Block\Source\GVButtonBlock.cs"/>
+        <Compile Include="Block\Source\GigaVoltageLevelData.cs"/>
+        <Compile Include="Block\Source\GVCounterBlock.cs"/>
+        <Compile Include="Block\Source\GVRandomGeneratorBlock.cs"/>
+        <Compile Include="Block\Source\GVSwitchBlock.cs"/>
+        <Compile Include="Block\Source\RandomGeneratorGVElectricElement.cs"/>
+        <Compile Include="Block\Source\SubsystemGVCounterBlockBehavior.cs"/>
+        <Compile Include="Block\Source\SubsystemGVBatteryBlockBehavior.cs"/>
+        <Compile Include="Block\Source\SubsystemGVSwitchBlockBehavior.cs"/>
+        <Compile Include="Block\Source\SwitchGVElectricElement.cs"/>
+        <Compile Include="Block\Store\GVSRLatchBlock.cs"/>
+        <Compile Include="Block\Store\SRLatchGVElectricElement.cs"/>
+        <Compile Include="Block\Wire\GVWireBlock.cs"/>
+        <Compile Include="Block\Source\SubsystemGVButtonBlockBehavior.cs"/>
+        <Compile Include="Block\Wire\GVWireThroughBricksBlock.cs"/>
+        <Compile Include="Block\Wire\GVWireThroughCobblestoneBlock.cs"/>
+        <Compile Include="Block\Wire\GVWireThroughPlanksBlock.cs"/>
+        <Compile Include="Block\Wire\GVWireThroughSemiconductorBlock.cs"/>
+        <Compile Include="Block\Wire\GVWireThroughStoneBlock.cs"/>
+        <Compile Include="Block\Wire\WireDomainGVElectricElement.cs"/>
+        <Compile Include="ClassicBlock\AnalogToDigitalConverterGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\CounterGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\DetonatorGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\DigitalToAnalogConverterGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\GVAnalogToDigitalConverterCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVCounterCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVDetonatorCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVDigitalToAnalogConverterCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVMemoryBankCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVMulticoloredLedCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVOneLedCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVPressurePlateCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVSRLatchCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVTargetCBlock.cs"/>
+        <Compile Include="ClassicBlock\GVTruthTableCircuitCBlock.cs"/>
+        <Compile Include="ClassicBlock\MemoryBankGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\MulticoloredLedGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\OneLedGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\PressurePlateGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\SRLatchGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\SubsystemGVMemoryBankCBlockBehavior.cs"/>
+        <Compile Include="ClassicBlock\SubsystemGVTruthTableCircuitCBlockBehavior.cs"/>
+        <Compile Include="ClassicBlock\TargetGVCElectricElement.cs"/>
+        <Compile Include="ClassicBlock\TruthTableCircuitGVCElectricElement.cs"/>
+        <Compile Include="Dialog\EditGVMemoryBankDialog.cs"/>
+        <Compile Include="Dialog\EditGigaVoltageLevelDialog.cs"/>
+        <Compile Include="Dialog\EditGVPistonDialog.cs"/>
+        <Compile Include="Dialog\EditGVTruthTableDialog.cs"/>
+        <Compile Include="GVElectricClasses\GigavoltModLoader.cs"/>
+        <Compile Include="GVElectricClasses\GVElectricConnection.cs"/>
+        <Compile Include="GVElectricClasses\GVElectricConnectionPath.cs"/>
+        <Compile Include="GVElectricClasses\GVElectricConnectorDirection.cs"/>
+        <Compile Include="GVElectricClasses\GVElectricConnectorType.cs"/>
+        <Compile Include="GVElectricClasses\GVElectricElement.cs"/>
+        <Compile Include="GVElectricClasses\GVStaticStorage.cs"/>
+        <Compile Include="GVElectricClasses\MathUint.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRFileStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRInputStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRReaderStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ANTLRStringStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\AstParserRuleReturnScope.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\BaseRecognizer.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\BitSet.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\BufferedTokenStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\CharStreamConstants.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\CharStreamState.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ClassicToken.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\CommonToken.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\CommonTokenStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Debug\IDebugEventListener.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\DFA.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\EarlyExitException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\FailedPredicateException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\GrammarRuleAttribute.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\IAstRuleReturnScope.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\IAstRuleReturnScope`1.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ICharStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\IIntStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\IRuleReturnScope.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\IToken.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenSource.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ITokenStreamInformation.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\LegacyCommonTokenStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Lexer.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Misc\FastQueue.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Misc\LookaheadStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedNotSetException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedRangeException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedSetException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedTokenException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\MismatchedTreeNodeException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\MissingTokenException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\NoViableAltException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Output\ErrorOutputStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Output\IOutputStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Output\OutOutputStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Output\OutputStreamHost.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Parser.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\ParserRuleReturnScope.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\PCLExtensions\PCLExtensions.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\RecognitionException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\RecognizerSharedState.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\RuleReturnScope.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\TokenConstants.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\TokenRewriteStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\AntlrRuntime_BaseTreeDebugView.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BaseTree.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BaseTreeAdaptor.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\BufferedTreeNodeStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonErrorNode.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTree.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTreeAdaptor.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\CommonTreeNodeStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\DotTreeGenerator.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITree.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeAdaptor.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeNodeStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ITreeVisitorAction.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\ParseTree.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteCardinalityException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteEarlyExitException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteEmptyStreamException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleElementStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleNodeStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleSubtreeStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\RewriteRuleTokenStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeConstants.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeFilter.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeIterator.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeParser.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreePatternLexer.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreePatternParser.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeRewriter.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeRuleReturnScope.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeVisitor.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\Tree\TreeWizard.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\UnbufferedTokenStream.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Antlr\UnwantedTokenException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\BinaryExpression.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\EvaluationVisitor.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\Function.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\LogicalExpression.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\LogicalExpressionVisitor.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\Parameter.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\SerializationVisitor.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\TernaryExpression.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\UnaryExpression.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Domain\Value.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\EvaluateFunctionHandler.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\EvaluateParameterHandler.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\EvaluationException.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\EvaluationOption.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Expression.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\ExtendedMethodInfo.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\FunctionArgs.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\LambdaExpressionVistor.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\NCalcLexer.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\NCalcParser.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\Numbers.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\ParameterArgs.cs"/>
+        <Compile Include="GVElectricClasses\NCalc2\TypeExtensions.cs"/>
+        <Compile Include="GVElectricClasses\SubsystemGVElectricBlockBehavior.cs"/>
+        <Compile Include="GVElectricClasses\SubsystemGVElectricity.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Screen\GVMBExternalContentScreen.cs"/>
+        <Compile Include="Widget\GVTextBoxWidget.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Dialogs\EditGVButtonDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Dialogs\EditGVCounterDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Dialogs\EditGVUintDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Gigavolt.csv">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Gigavolt.xdb">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Lang\zh-CN.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Models\GigavoltGates.dae">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="modinfo.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Dialogs\EditGigaVoltageLevelDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Dialogs\EditGVMemoryBankDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="reference\Engine.dll"/>
+        <None Include="reference\EntitySystem.dll"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Dialogs\EditGVPistonDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Dialogs\EditGVTruthTableDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Dialogs\EditGVDebugDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Screens\GVMBExternalContentScreen.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Widgets\GVStepFloatingButtons.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="icon.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Textures\GVAnalogToDigitalConverterBlock16-4.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVAnalogToDigitalConverterBlock32-8.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVAnalogToDigitalConverterBlock4-1.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVAnalogToDigitalConverterBlock8-2.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDigitalToAnalogConverterBlock1-4.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDigitalToAnalogConverterBlock2-8.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDigitalToAnalogConverterBlock4-16.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDigitalToAnalogConverterBlock8-32.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="reference\Survivalcraft.exe"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Dialogs\EditGVSignDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Textures\Copy.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Textures\GV2OTransformer.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Textures\O2GVTransformer.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Widgets\GVDispenserWidget.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Textures\GV8NumberLed\0.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\1.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\10.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\11.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\12.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\13.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\14.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\15.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\2.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\3.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\4.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\5.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\6.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\7.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\8.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8NumberLed\9.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Textures\GV8NumberLedBlockFull.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVOneLedBlockEmpty.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Textures\GV4x2LedBlockFull.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV4x4LedBlockFull.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GV8x4LedBlockFull.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Textures\Delete.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Models\GVAdjustableDelayGate.dae">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Models\GVButton.dae">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <ProjectExtensions/>
 </Project>

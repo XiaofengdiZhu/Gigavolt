@@ -4,10 +4,8 @@ using Engine;
 using Engine.Graphics;
 using Engine.Media;
 
-namespace Game
-{
-    public class GVAdjustableDelayGateBlock : RotateableMountedGVElectricElementBlock, IPaintableBlock
-    {
+namespace Game {
+    public class GVAdjustableDelayGateBlock : RotateableMountedGVElectricElementBlock, IPaintableBlock {
         public const int Index = 808;
         public readonly Texture2D WhiteTexture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
 
@@ -16,36 +14,30 @@ namespace Game
         //顶部有颜色的部分
         public BlockMesh[] m_blockMeshes_Top = new BlockMesh[24];
 
-        public BlockMesh m_standaloneBlockMesh_Top = new BlockMesh();
+        public BlockMesh m_standaloneBlockMesh_Top = new();
 
-        public override void Initialize()
-        {
+        public override void Initialize() {
             //原先获取主体模型部分保留
             base.Initialize();
             //获取顶部模型
             Model model = ContentManager.Get<Model>("Models/GVAdjustableDelayGate");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Top").ParentBone);
-            for (int i = 0; i < 6; i++)
-            {
+            for (int i = 0; i < 6; i++) {
                 float radians;
                 bool flag;
-                if (i < 4)
-                {
+                if (i < 4) {
                     radians = i * (float)Math.PI / 2f;
                     flag = false;
                 }
-                else if (i == 4)
-                {
+                else if (i == 4) {
                     radians = -(float)Math.PI / 2f;
                     flag = true;
                 }
-                else
-                {
+                else {
                     radians = (float)Math.PI / 2f;
                     flag = true;
                 }
-                for (int j = 0; j < 4; j++)
-                {
+                for (int j = 0; j < 4; j++) {
                     float radians2 = -j * (float)Math.PI / 2f;
                     int num = (i << 2) + j;
                     Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(radians2) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
@@ -74,19 +66,16 @@ namespace Game
             );
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
-        {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             showDebris = true;
-            if (toolLevel >= RequiredToolLevel)
-            {
+            if (toolLevel >= RequiredToolLevel) {
                 int delay = GetDelay(Terrain.ExtractData(oldValue));
                 int data = SetDelay(0, delay);
                 dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, data), Count = 1 });
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
-        {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             int? blockColor = GetColor(Terrain.ExtractData(value));
             environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             BlocksManager.DrawMeshBlock(
@@ -110,11 +99,9 @@ namespace Game
             );
         }
 
-        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
-        {
+        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
             int num = Terrain.ExtractData(value) & 0x1F;
-            if (num < m_blockMeshes.Length)
-            {
+            if (num < m_blockMeshes.Length) {
                 int? blockColor = GetColor(Terrain.ExtractData(value));
                 generator.GenerateMeshVertices(
                     this,
@@ -152,19 +139,15 @@ namespace Game
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new AdjustableDelayGateGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
-        {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
             int data = Terrain.ExtractData(value);
-            if (GetFace(value) == face)
-            {
+            if (GetFace(value) == face) {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-                if (connectorDirection == GVElectricConnectorDirection.Bottom)
-                {
+                if (connectorDirection == GVElectricConnectorDirection.Bottom) {
                     return GVElectricConnectorType.Input;
                 }
                 if (connectorDirection == GVElectricConnectorDirection.Top
-                    || connectorDirection == GVElectricConnectorDirection.In)
-                {
+                    || connectorDirection == GVElectricConnectorDirection.In) {
                     return GVElectricConnectorType.Output;
                 }
             }
@@ -175,8 +158,7 @@ namespace Game
 
         public static int SetDelay(int data, int delay) => (data & -8161) | ((delay & 0xFF) << 5);
 
-        public override IEnumerable<int> GetCreativeValues()
-        {
+        public override IEnumerable<int> GetCreativeValues() {
             yield return Terrain.MakeBlockValue(Index);
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 0));
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 8));
@@ -197,8 +179,7 @@ namespace Game
         public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
         public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 12 : base.GetDisplayOrder(value);
 
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
-        {
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int? paintColor = GetColor(Terrain.ExtractData(value));
             return paintColor.HasValue ? SubsystemPalette.GetName(subsystemTerrain, paintColor, "单向二极管") : base.GetDisplayName(subsystemTerrain, value);
         }
@@ -207,17 +188,14 @@ namespace Game
 
         public override bool IsEditable_(int value) => !GetColor(Terrain.ExtractData(value)).HasValue;
 
-        public override int GetConnectionMask(int value)
-        {
+        public override int GetConnectionMask(int value) {
             int? color = GetColor(Terrain.ExtractData(value));
             return color.HasValue ? 1 << color.Value : int.MaxValue;
         }
 
-        public static int? GetColor(int data)
-        {
+        public static int? GetColor(int data) {
             int? result = (data >> 14) & 0xF;
-            switch (result.Value)
-            {
+            switch (result.Value) {
                 case 0: return null;
                 case <= 7:
                     result--;
@@ -226,12 +204,9 @@ namespace Game
             return result;
         }
 
-        public static int SetColor(int data, int? color)
-        {
-            if (color.HasValue)
-            {
-                if (color.Value < 7)
-                {
+        public static int SetColor(int data, int? color) {
+            if (color.HasValue) {
+                if (color.Value < 7) {
                     color++;
                 }
                 return (data & -245761) | ((color.Value & 0xF) << 14);
