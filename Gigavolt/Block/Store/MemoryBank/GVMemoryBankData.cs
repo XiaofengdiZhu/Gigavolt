@@ -17,10 +17,14 @@ namespace Game {
         public uint[] Data {
             get => m_data;
             set {
-                m_updateTime = DateTime.Now;
-                m_dataChanged = true;
-                m_data = value;
-                m_isDataInitialized = value != null;
+                if (value != m_data) {
+                    m_data = value;
+                    m_updateTime = DateTime.Now;
+                    if (m_isDataInitialized) {
+                        m_dataChanged = true;
+                    }
+                    m_isDataInitialized = value != null;
+                }
             }
         }
 
@@ -119,7 +123,7 @@ namespace Game {
         public override string SaveString() => SaveString(true);
 
         public string SaveString(bool saveLastOutput) {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             stringBuilder.Append(m_ID.ToString("X", null));
             if (saveLastOutput) {
                 stringBuilder.Append(';');
@@ -138,7 +142,7 @@ namespace Game {
         }
 
         public static Image String2Image(string data, int width = 0, int height = 0) {
-            List<uint[]> rowList = new List<uint[]>();
+            List<uint[]> rowList = new();
             int maxColLength = 0;
             string[] rows = data.Split(';');
             foreach (string row in rows) {
@@ -154,7 +158,7 @@ namespace Game {
                 }
                 rowList.Add(uints);
             }
-            Image image = new Image(width == 0 ? maxColLength : width, height == 0 ? rows.Length : height);
+            Image image = new(width == 0 ? maxColLength : width, height == 0 ? rows.Length : height);
             for (int i = 0; i < image.Height; i++) {
                 if (i == rowList.Count) {
                     break;
@@ -170,7 +174,7 @@ namespace Game {
         }
 
         public static uint[] String2UintArray(string data, ref int width, ref int height) {
-            List<uint[]> rowList = new List<uint[]>();
+            List<uint[]> rowList = new();
             int maxColLength = 0;
             string[] rows = data.Split(';');
             foreach (string row in rows) {
@@ -222,7 +226,7 @@ namespace Game {
                         break;
                     }
                 }
-                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder stringBuilder = new();
                 for (int j = 0; j < lastNotZero; j++) {
                     stringBuilder.Append(image.GetPixel(j, i).PackedValue.ToString("X", null));
                     stringBuilder.Append(',');
@@ -247,7 +251,7 @@ namespace Game {
                         break;
                     }
                 }
-                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder stringBuilder = new();
                 for (uint j = 0; flag && j < lastNotZero; j++) {
                     stringBuilder.Append(array[i * width + j].ToString("X", null));
                     stringBuilder.Append(',');
@@ -329,7 +333,7 @@ namespace Game {
         }
 
         public static Image UintArray2Image(uint[] array, uint width = 0, uint height = 0) {
-            Image image = new Image(width == 0 ? array.Length : (int)width, height == 0 ? 1 : (int)height);
+            Image image = new(width == 0 ? array.Length : (int)width, height == 0 ? 1 : (int)height);
             for (int i = 0; i < array.Length; i++) {
                 image.Pixels[i].PackedValue = array[i];
             }

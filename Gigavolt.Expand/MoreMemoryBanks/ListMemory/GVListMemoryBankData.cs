@@ -18,10 +18,14 @@ namespace Game {
         public List<uint> Data {
             get => m_data;
             set {
-                m_updateTime = DateTime.Now;
-                m_dataChanged = true;
-                m_data = value;
-                m_isDataInitialized = value != null;
+                if (value != m_data) {
+                    m_data = value;
+                    m_updateTime = DateTime.Now;
+                    if (m_isDataInitialized) {
+                        m_dataChanged = true;
+                    }
+                    m_isDataInitialized = value != null;
+                }
             }
         }
 
@@ -107,7 +111,7 @@ namespace Game {
         public override string SaveString() => SaveString(true);
 
         public string SaveString(bool saveLastOutput) {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             stringBuilder.Append(m_ID.ToString("X", null));
             stringBuilder.Append($";{m_width};{m_height};{m_offset}");
             if (saveLastOutput) {
@@ -131,7 +135,7 @@ namespace Game {
         }
 
         public static List<uint> Stream2UintList(Stream stream) {
-            List<uint> image = new List<uint>((int)(stream.Length / 4 + 1));
+            List<uint> image = new((int)(stream.Length / 4 + 1));
             for (int i = 0; i < stream.Length / 4 + 1; i++) {
                 byte[] fourBytes = new byte[4];
                 if (stream.Read(fourBytes, 0, 4) > 0) {
@@ -187,7 +191,7 @@ namespace Game {
         public override string Data2String() => m_isDataInitialized ? UintList2String(Data) : null;
 
         public static string UintList2String(List<uint> array, int maxCount = int.MaxValue) {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             maxCount = MathUtils.Min(array.Count, maxCount);
             for (int i = 0; i < maxCount - 1; i++) {
                 stringBuilder.Append(array[i].ToString("X", null));
@@ -200,7 +204,7 @@ namespace Game {
         }
 
         public static List<uint> Shorts2UintList(short[] shorts) {
-            List<uint> image = new List<uint>(shorts.Length / 2 + 1);
+            List<uint> image = new(shorts.Length / 2 + 1);
             for (int i = 0; i < image.Count; i++) {
                 if (i * 2 >= shorts.Length) {
                     break;
@@ -225,7 +229,7 @@ namespace Game {
         public static Image UintList2Image(List<uint> list, uint width = 0u, uint height = 0u, uint offset = 0u) {
             if (width > 0
                 && height > 0) {
-                Image image = new Image(MathUint.ToInt(width), MathUint.ToInt(height));
+                Image image = new(MathUint.ToInt(width), MathUint.ToInt(height));
                 for (int i = (int)offset; i < Math.Min(list.Count, image.Pixels.Length + (int)offset); i++) {
                     image.Pixels[i].PackedValue = list[i];
                 }
