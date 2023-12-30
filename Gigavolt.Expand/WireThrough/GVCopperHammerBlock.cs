@@ -4,16 +4,63 @@ using Engine.Graphics;
 using Engine.Media;
 
 namespace Game {
-    public class GVCopperHammerBlock() : HammerBlock(47, 77) {
+    public class GVCopperHammerBlock : Block {
         public const int Index = 867;
         public readonly Texture2D WhiteTexture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
+
+        public int m_handleTextureSlot = 47;
+        public int m_headTextureSlot = 77;
+        public BlockMesh m_standaloneBlockMesh_Handle = new();
+        public BlockMesh m_standaloneBlockMesh_Head = new();
+
+        public override void Initialize() {
+            Model model = ContentManager.Get<Model>("Models/Hammer");
+            Matrix absoluteTransform1 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Handle").ParentBone);
+            Matrix absoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Head").ParentBone);
+            BlockMesh blockMesh1 = new();
+            blockMesh1.AppendModelMeshPart(
+                model.FindMesh("Handle").MeshParts[0],
+                absoluteTransform1 * Matrix.CreateTranslation(0.0f, -0.5f, 0.0f),
+                false,
+                false,
+                false,
+                false,
+                Color.White
+            );
+            blockMesh1.TransformTextureCoordinates(Matrix.CreateTranslation(m_handleTextureSlot % 16 / 16f, m_handleTextureSlot / 16 / 16f, 0.0f));
+            BlockMesh blockMesh2 = new();
+            blockMesh2.AppendModelMeshPart(
+                model.FindMesh("Head").MeshParts[0],
+                absoluteTransform2 * Matrix.CreateTranslation(0.0f, -0.5f, 0.0f),
+                false,
+                false,
+                false,
+                false,
+                Color.White
+            );
+            blockMesh2.TransformTextureCoordinates(Matrix.CreateTranslation(m_headTextureSlot % 16 / 16f, m_headTextureSlot / 16 / 16f, 0.0f));
+            m_standaloneBlockMesh_Handle.AppendBlockMesh(blockMesh1);
+            m_standaloneBlockMesh_Head.AppendBlockMesh(blockMesh2);
+            base.Initialize();
+        }
+
+        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) { }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             int? blockColor = GetColor(Terrain.ExtractData(value));
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
-                m_standaloneBlockMesh,
+                m_standaloneBlockMesh_Handle,
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                color,
+                2f * size,
+                ref matrix,
+                environmentData
+            );
+            BlocksManager.DrawMeshBlock(
+                primitivesRenderer,
+                m_standaloneBlockMesh_Head,
                 blockColor.HasValue ? WhiteTexture :
                 environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
