@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 		<ProjectGuid>{27AAF39A-72D9-4836-91CA-181BBEDFD7A0}</ProjectGuid>
 		<OutputType>Library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Gigavolt.Expand</RootNamespace>
+		<RootNamespace>Game</RootNamespace>
 		<AssemblyName>Gigavolt.Expand</AssemblyName>
-		<TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+		<TargetFramework>net8.0</TargetFramework>
 		<FileAlignment>512</FileAlignment>
 		<Deterministic>true</Deterministic>
 		<LangVersion>preview</LangVersion>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<DebugSymbols>true</DebugSymbols>
@@ -40,43 +40,15 @@
 			<HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="Esprima, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-			<HintPath>..\packages\Esprima.3.0.0-beta-10\lib\net462\Esprima.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Jint, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-			<HintPath>..\packages\Jint.3.0.0-beta-2046\lib\net462\Jint.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="mscorlib"/>
 		<Reference Include="Survivalcraft">
-			<HintPath>..\Gigavolt\reference\Survivalcraft.exe</HintPath>
+			<HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="System"/>
-		<Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-			<HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="System.Core"/>
-		<Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-			<HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="System.Numerics"/>
-		<Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="System.Xml.Linq"/>
-		<Reference Include="System.Data.DataSetExtensions"/>
-		<Reference Include="Microsoft.CSharp"/>
-		<Reference Include="System.Data"/>
-		<Reference Include="System.Xml"/>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Esprima" Version="3.0.4"/>
+		<PackageReference Include="Jint" Version="3.0.0-beta-2057"/>
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.2"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="JavascriptMicrocontroller\EditGVJavascriptMicrocontrollerDialog.cs"/>
@@ -392,5 +364,4 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
-	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>
