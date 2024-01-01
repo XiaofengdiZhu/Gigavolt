@@ -7,13 +7,13 @@
 		<ProjectGuid>{BF5E7A9F-747E-43E5-901A-297576F627B6}</ProjectGuid>
 		<OutputType>Library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Gigavolt.Helper</RootNamespace>
+		<RootNamespace>Game</RootNamespace>
 		<AssemblyName>Gigavolt.Helper</AssemblyName>
 		<TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
 		<FileAlignment>512</FileAlignment>
-		<LangVersion>default</LangVersion>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>full</DebugType>
@@ -23,7 +23,7 @@
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
@@ -83,23 +83,15 @@
 		<None Include="modinfo.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Screens\GVHelpTopicScreen.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\GVHelperImages\GVMemoryBankBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\GVHelperImages\GVTruthTableCircuitBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\GVHelperImages\GVDispenserBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -139,8 +131,6 @@
 		<None Include="Assets\GVHelperImages\GVTerrainScannerBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="icon.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

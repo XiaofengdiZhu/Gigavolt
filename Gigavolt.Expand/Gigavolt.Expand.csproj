@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
 	<PropertyGroup>
@@ -14,7 +14,7 @@
 		<Deterministic>true</Deterministic>
 		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>full</DebugType>
 		<Optimize>false</Optimize>
@@ -23,7 +23,7 @@
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<DebugType>none</DebugType>
 		<Optimize>true</Optimize>
 		<OutputPath>bin\Release\</OutputPath>
@@ -132,14 +132,14 @@
 		<Compile Include="MoreMemoryBanks\ListMemory\SubsystemGVListMemoryBankBlockBehavior.cs"/>
 		<Compile Include="MoreMemoryBanks\MemoryBanksOperator\GVMemoryBanksOperatorBlock.cs"/>
 		<Compile Include="MoreMemoryBanks\MemoryBanksOperator\MemoryBanksOperatorGVElectricElement.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemory\GVVolatileListMemoryBankBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemory\GVVolatileListMemoryBankData.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemory\VolatileListMemoryBankGVElectricElement.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemory\SubsystemGVVolatileListMemoryBankBlockBehavior.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemory\GVVolatileMemoryBankData.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemory\SubsystemGVVolatileMemoryBankBlockBehavior.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemory\VolatileMemoryBankGVElectricElement.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\GVVolatileListMemoryBankBlock.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\GVVolatileListMemoryBankData.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\VolatileListMemoryBankGVElectricElement.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\SubsystemGVVolatileListMemoryBankBlockBehavior.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\GVVolatileMemoryBankBlock.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\GVVolatileMemoryBankData.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\SubsystemGVVolatileMemoryBankBlockBehavior.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\VolatileMemoryBankGVElectricElement.cs"/>
 		<Compile Include="MoreOneInOneOut\GVMoreOneInOneOutBlock.cs"/>
 		<Compile Include="MoreOneInOneOut\MoreOneInOneOutGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
@@ -213,18 +213,12 @@
 		<None Include="Assets\Dialogs\EditGVNesEmulatorDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="icon.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Adder.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Divider.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -234,8 +228,6 @@
 		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Subtracter.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Equaler.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -272,18 +264,12 @@
 		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\RightShifter.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVMultiplexerBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVJumpWireBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVNesEmulatorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -310,26 +296,18 @@
 		<None Include="Assets\Textures\GVDisplayLedBlock5.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVTerrainRaycastDetectorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVTerrainScanner.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cos.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sin.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Acos.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -372,28 +350,18 @@
 		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\TCR.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVMemoryBanksOperatorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVFetcherBlock0.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Models\GVFetcher.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVFetcherBlock2.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVInventoryControllerBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -405,33 +373,21 @@
 		<None Include="Assets\Textures\GVVolatileMemoryBankBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Models\GVMemoryBank.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVListMemoryBankBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVVolatileListMemoryBankBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Models\MoreProjectiles.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVJavascriptMicrocontrollerBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVGuidedDispenserBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

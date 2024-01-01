@@ -7,16 +7,15 @@
         <ProjectGuid>{77E3E4A0-32D2-423E-9014-5AEF2B450F14}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Gigavolt</RootNamespace>
+        <RootNamespace>Game</RootNamespace>
         <AssemblyName>Gigavolt</AssemblyName>
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <Deterministic>true</Deterministic>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <TargetFrameworkProfile/>
         <LangVersion>preview</LangVersion>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
@@ -24,18 +23,15 @@
         <DefineConstants>DEBUG;TRACE</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
-        <NoWarn></NoWarn>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <Prefer32Bit>false</Prefer32Bit>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugType>none</DebugType>
         <Optimize>true</Optimize>
         <OutputPath>bin\Release\</OutputPath>
         <DefineConstants>TRACE</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <Prefer32Bit>false</Prefer32Bit>
     </PropertyGroup>
     <ItemGroup>
@@ -396,8 +392,6 @@
         <None Include="modinfo.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Dialogs\EditGigaVoltageLevelDialog.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -406,38 +400,24 @@
         </None>
         <None Include="reference\Engine.dll"/>
         <None Include="reference\EntitySystem.dll"/>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Dialogs\EditGVPistonDialog.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Dialogs\EditGVTruthTableDialog.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Dialogs\EditGVDebugDialog.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Screens\GVMBExternalContentScreen.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Widgets\GVStepFloatingButtons.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="icon.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Textures\GVAnalogToDigitalConverterBlock16-4.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -462,36 +442,22 @@
         <None Include="Assets\Textures\GVDigitalToAnalogConverterBlock8-32.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="reference\Survivalcraft.exe"/>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Dialogs\EditGVSignDialog.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Textures\Copy.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Textures\GV2OTransformer.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Textures\O2GVTransformer.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Widgets\GVDispenserWidget.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Textures\GV8NumberLed\0.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -540,16 +506,12 @@
         <None Include="Assets\Textures\GV8NumberLed\9.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Textures\GV8NumberLedBlockFull.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="Assets\Textures\GVOneLedBlockEmpty.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Textures\GV4x2LedBlockFull.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -559,18 +521,12 @@
         <None Include="Assets\Textures\GV8x4LedBlockFull.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Textures\Delete.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Models\GVAdjustableDelayGate.dae">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
         <None Include="Assets\Models\GVButton.dae">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
