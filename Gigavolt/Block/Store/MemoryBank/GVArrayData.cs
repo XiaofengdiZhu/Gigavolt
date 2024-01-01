@@ -22,20 +22,20 @@ namespace Game {
         public DateTime m_cachedTexture2DTime;
         public RenderTarget2D m_cachedTerrainTexture2D;
         public DateTime m_cachedTerrainTexture2DTime;
-        public PrimitivesRenderer2D m_primitivesRenderer2D = new PrimitivesRenderer2D();
+        public PrimitivesRenderer2D m_primitivesRenderer2D = new();
 
         public SamplerState m_samplerState;
 
-        readonly Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);
-        readonly Color grassColor = BlockColorsMap.GrassColorsMap.Lookup(8, 8);
-        readonly Color ivyColor = BlockColorsMap.IvyColorsMap.Lookup(8, 8);
-        readonly Color kelpColor = BlockColorsMap.KelpColorsMap.Lookup(8, 8);
-        readonly Color mimosaLeavesColor = BlockColorsMap.MimosaLeavesColorsMap.Lookup(8, 8);
-        readonly Color oakLeavesColor = BlockColorsMap.OakLeavesColorsMap.Lookup(8, 8);
-        readonly Color seagrassColor = BlockColorsMap.SeagrassColorsMap.Lookup(8, 8);
-        readonly Color spruceLeavesColor = BlockColorsMap.SpruceLeavesColorsMap.Lookup(8, 8);
-        readonly Color tallSpruceLeavesColor = BlockColorsMap.TallSpruceLeavesColorsMap.Lookup(8, 8);
-        readonly Color waterColor = BlockColorsMap.WaterColorsMap.Lookup(8, 8);
+        static readonly Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);
+        static readonly Color grassColor = BlockColorsMap.GrassColorsMap.Lookup(8, 8);
+        static readonly Color ivyColor = BlockColorsMap.IvyColorsMap.Lookup(8, 8);
+        static readonly Color kelpColor = BlockColorsMap.KelpColorsMap.Lookup(8, 8);
+        static readonly Color mimosaLeavesColor = BlockColorsMap.MimosaLeavesColorsMap.Lookup(8, 8);
+        static readonly Color oakLeavesColor = BlockColorsMap.OakLeavesColorsMap.Lookup(8, 8);
+        static readonly Color seagrassColor = BlockColorsMap.SeagrassColorsMap.Lookup(8, 8);
+        static readonly Color spruceLeavesColor = BlockColorsMap.SpruceLeavesColorsMap.Lookup(8, 8);
+        static readonly Color tallSpruceLeavesColor = BlockColorsMap.TallSpruceLeavesColorsMap.Lookup(8, 8);
+        static readonly Color waterColor = BlockColorsMap.WaterColorsMap.Lookup(8, 8);
 
         public abstract uint Read(uint index);
         public abstract void Write(uint index, uint data);
@@ -145,7 +145,7 @@ namespace Game {
             }
             int slotSide = 1 << multiplier;
             RenderTarget2D originRenderTarget = Display.RenderTarget;
-            RenderTarget2D renderTarget = new RenderTarget2D(
+            RenderTarget2D renderTarget = new(
                 dataWidth << multiplier,
                 dataHeight << multiplier,
                 1,
