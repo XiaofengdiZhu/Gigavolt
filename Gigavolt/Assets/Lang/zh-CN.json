@@ -317,8 +317,8 @@
       "CRDescription:0": "在活塞上加铜钩，做一个严格粘性活塞"
     },
     "GVDebugBlock:0": {
-      "DisplayName": "GV调试石碑",
-      "Description": "提供电路运行速率调整、屏显元件电压、单步运行、超视距保持运行功能的石碑，输出当前倍速，第17~32位为整数部分，第1~16位为小数部分。",
+      "DisplayName": "GV调试台",
+      "Description": "提供电路运行速率调整、屏显元件电压、单步运行、超视距保持运行功能的操作台，输出当前倍速，第17~32位为整数部分，第1~16位为小数部分。",
       "CRDescription:0": "不可合成"
     },
     "GVWoodenPostedSignCBlock:0": {

@@ -87,7 +87,7 @@ namespace Game {
                 color,
                 color,
                 environmentData,
-                GetIsWireHarness(Terrain.ExtractData(value)) ? m_harnessTexture :
+                GetIsWireHarness(Terrain.ExtractData(value)) ? HarnessTexture :
                 environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture
             );
         }
