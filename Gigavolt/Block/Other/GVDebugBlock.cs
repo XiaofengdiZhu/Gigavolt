@@ -66,7 +66,7 @@ namespace Game {
                     Color.White,
                     null,
                     null,
-                    geometry.SubsetAlphaTest
+                    geometry.GetGeometry(texture).SubsetAlphaTest
                 );
             }
             GenerateGVWireVertices(
@@ -78,7 +78,7 @@ namespace Game {
                 4,
                 0.18f,
                 Vector2.Zero,
-                geometry.GetGeometry(texture).SubsetOpaque
+                geometry.SubsetOpaque
             );
         }
 
@@ -114,7 +114,7 @@ namespace Game {
                 data = 1;
             }
             BlockPlacementData result = default;
-            result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, 64), data);
+            result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, 842), data);
             result.CellFace = raycastResult.CellFace;
             return result;
         }
