@@ -99,7 +99,7 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 
 png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的缘故，像素颜色会按照透明通道、蓝色、绿色、红色的顺序（即ABGR）保存进电压数据中，例如ARGB顺序的AABBCCDD像素，会被转换成AADDCCBB V的电压数据  
 你不仅能够导入png文件，还能导入WAV格式的音频文件，要求为双声道，采样率8000~48000Hz之间，采样位数16位，PCM编码，检测完毕后将自动导入该文件的`data chunk`部分，例如`data chunk`开头的6个16位数据为0x0001、0x0002、0x3333、0x4567、0xBA98、0xCDEF，写入存储器的数据将是：0x00010002、0x33334567、0xBA98CDEF；当导入非png和wav的普通文件时，将从开头直接32位32位地读取并写入存储器中  
-各输入端均未连接元件或导线时，上端将输出该真值表的ID
+各输入端均未连接元件或导线时，上端将输出该存储器的ID
 ### 真值表 Truth Table
 表征逻辑事件输入和输出之间全部可能状态的表格
 #### 例子 Examples

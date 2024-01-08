@@ -13,8 +13,8 @@ namespace Game {
     public class SubsystemNesEmulatorBlockBehavior : SubsystemEditableItemBehavior<EditGVNesEmulatorDialogData>, IDrawable {
         public SubsystemSky m_subsystemSky;
         public SubsystemGameInfo m_subsystemGameInfo;
-        public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
-        public Dictionary<GVNesEmulatorGlowPoint, bool> m_glowPoints = new Dictionary<GVNesEmulatorGlowPoint, bool>();
+        public PrimitivesRenderer3D m_primitivesRenderer = new();
+        public Dictionary<GVNesEmulatorGlowPoint, bool> m_glowPoints = new();
         public readonly NESEmulator _emu;
         readonly BitmapRenderer _renderer;
         byte[] _frame = new byte[256 * 240];
@@ -22,7 +22,7 @@ namespace Game {
         public bool RomValid;
 
         public SubsystemNesEmulatorBlockBehavior() : base(GVNesEmulatorBlock.Index) {
-            _emu = new NESEmulator(GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.MoreLeds.NesEmulator.nestest.nes")), GetFrameFromEmulator);
+            _emu = new NESEmulator(GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.MoreLeds.NesEmulator.nestest.nes")), GetFrameFromEmulator);
             RomValid = true;
             _renderer = new BitmapRenderer();
         }
@@ -223,7 +223,7 @@ namespace Game {
         }
 
         public GVNesEmulatorGlowPoint AddGlowPoint() {
-            GVNesEmulatorGlowPoint glowPoint = new GVNesEmulatorGlowPoint();
+            GVNesEmulatorGlowPoint glowPoint = new();
             m_glowPoints.Add(glowPoint, true);
             return glowPoint;
         }
