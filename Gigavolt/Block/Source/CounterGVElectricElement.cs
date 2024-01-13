@@ -14,8 +14,8 @@ namespace Game {
 
         public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
-            GigaVoltageLevelData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(cellFace.Point);
-            uint overflowVoltage = blockData?.Data ?? 0u;
+            GVCounterData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(cellFace.Point);
+            uint overflowVoltage = blockData?.Overflow ?? 0u;
             uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point);
             if (num.HasValue) {
                 if (num.Value == overflowVoltage - 0x12345678) {
@@ -31,7 +31,9 @@ namespace Game {
                     m_counter = num.Value;
                 }
             }
-            if (SubsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face) is CounterGVElectricElement { m_edited: true } electricElement) {
+            if (SubsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face) is CounterGVElectricElement {
+                    m_edited: true
+                } electricElement) {
                 m_counter = electricElement.m_counter;
                 m_edited = true;
             }
@@ -61,8 +63,9 @@ namespace Game {
             bool flag2 = false;
             bool flag3 = false;
             int rotation = Rotation;
-            GigaVoltageLevelData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(CellFaces[0].Point);
-            uint overflowVoltage = blockData?.Data ?? 0u;
+            GVCounterData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(CellFaces[0].Point);
+            uint overflowVoltage = blockData?.Overflow ?? 0u;
+            uint initialVoltage = blockData?.Initial ?? 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
@@ -87,13 +90,13 @@ namespace Game {
                     m_overflow = false;
                 }
                 else {
-                    m_counter = 0u;
+                    m_counter = initialVoltage;
                     m_overflow = true;
                 }
             }
             else if (flag2 && m_minusAllowed) {
                 m_minusAllowed = false;
-                if (m_counter > 0u
+                if (m_counter > initialVoltage
                     && (overflowVoltage == 0u || m_counter < overflowVoltage)) {
                     m_counter--;
                     m_overflow = false;
@@ -104,7 +107,7 @@ namespace Game {
                 }
             }
             else if (flag3 && m_resetAllowed) {
-                m_counter = 0u;
+                m_counter = initialVoltage;
                 m_overflow = false;
             }
             if (!flag) {
@@ -119,7 +122,7 @@ namespace Game {
             if (m_counter != counter
                 || m_overflow != overflow) {
                 uint storeVoltage;
-                if (m_counter == 0 && m_overflow) {
+                if (m_counter == initialVoltage && m_overflow) {
                     storeVoltage = overflowVoltage - 0x12345678u;
                 }
                 else if (m_counter == overflowVoltage && m_overflow) {

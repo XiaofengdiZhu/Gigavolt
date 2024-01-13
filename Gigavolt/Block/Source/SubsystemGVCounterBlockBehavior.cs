@@ -2,7 +2,7 @@ using Engine;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemGVCounterBlockBehavior : SubsystemGVEditableItemBehavior<GigaVoltageLevelData> {
+    public class SubsystemGVCounterBlockBehavior : SubsystemGVEditableItemBehavior<GVCounterData> {
         public SubsystemGVElectricity m_subsystemGVElectricity;
         public override int[] HandledBlocks => new[] { GVCounterBlock.Index };
 
@@ -23,7 +23,7 @@ namespace Game {
             int value = inventory.GetSlotValue(slotIndex);
             int count = inventory.GetSlotCount(slotIndex);
             int id = GetIdFromValue(value);
-            GigaVoltageLevelData blockData = GetItemData(id) ?? new GigaVoltageLevelData { Data = 0u };
+            GVCounterData blockData = GetItemData(id) ?? new GVCounterData { Overflow = 0u };
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditGVCounterDialog(
@@ -40,7 +40,7 @@ namespace Game {
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
-            GigaVoltageLevelData blockData = GetItemData(id) ?? new GigaVoltageLevelData { Data = 0u };
+            GVCounterData blockData = GetItemData(id) ?? new GVCounterData { Overflow = 0u };
             CounterGVElectricElement electricElement = (CounterGVElectricElement)m_subsystemGVElectricity.GetGVElectricElement(x, y, z, (Terrain.ExtractData(value) >> 2) & 7);
             if (electricElement != null) {
                 DialogsManager.ShowDialog(

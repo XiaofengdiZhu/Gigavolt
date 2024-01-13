@@ -108,6 +108,7 @@
 		<Compile Include="Block\Sensor\EnhancedRealTimeClock\RealTimeClockGVElectricElement.cs"/>
 		<Compile Include="Block\Sensor\EnhancedRealTimeClock\GVRealTimeClockBlock.cs"/>
 		<Compile Include="Block\Source\GVButtonData.cs"/>
+		<Compile Include="Block\Source\GVCounterData.cs"/>
 		<Compile Include="Block\Store\MemoryBank\GVArrayData.cs"/>
 		<Compile Include="Block\Store\MemoryBank\GVMemoryBankBlock.cs"/>
 		<Compile Include="Block\Store\MemoryBank\GVMemoryBankData.cs"/>
