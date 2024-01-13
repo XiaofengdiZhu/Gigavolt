@@ -7,16 +7,22 @@ namespace Game {
         public SubsystemGVTruthTableCircuitBlockBehavior m_subsystemTruthTableCircuitBlockBehavior;
 
         public uint m_voltage;
-        public List<GVTruthTableData.SectionInput> lastInputs = new List<GVTruthTableData.SectionInput> { Capacity = 20 };
+        public List<GVTruthTableData.SectionInput> lastInputs = new() { Capacity = 20 };
+        public bool m_dataChanged;
 
         public TruthTableCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitBlockBehavior>(true);
 
-        public override uint GetOutputVoltage(int face) => m_voltage;
+        public override uint GetOutputVoltage(int face) {
+            if (face == 123456) {
+                m_dataChanged = true;
+            }
+            return m_voltage;
+        }
 
         public override bool Simulate() {
             uint voltage = m_voltage;
             int rotation = Rotation;
-            GVTruthTableData.SectionInput sectionInput = new GVTruthTableData.SectionInput();
+            GVTruthTableData.SectionInput sectionInput = new();
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
@@ -44,6 +50,11 @@ namespace Game {
                     if (lastInputs.Count > 16) {
                         lastInputs = lastInputs.GetRange(lastInputs.Count - 16, 16);
                     }
+                    GVTruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
+                    m_voltage = blockData != null ? blockData.Exe(lastInputs) : 0u;
+                }
+                else if (m_dataChanged) {
+                    m_dataChanged = false;
                     GVTruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
                     m_voltage = blockData != null ? blockData.Exe(lastInputs) : 0u;
                 }
