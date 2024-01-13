@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -98,6 +98,7 @@
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs"/>
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs"/>
 		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Memory.cs"/>
+		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankData.cs"/>
 		<Compile Include="MoreMemoryBanks\ListMemory\EditGVListMemoryBankDialog.cs"/>
 		<Compile Include="MoreMemoryBanks\ListMemory\GVListMemoryBankData.cs"/>
 		<Compile Include="MoreMemoryBanks\ListMemory\GVListMemoryBankBlock.cs"/>
