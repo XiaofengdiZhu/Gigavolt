@@ -16,11 +16,12 @@ namespace Game {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
             GVCounterData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(cellFace.Point);
             uint overflowVoltage = blockData?.Overflow ?? 0u;
+            uint initialVoltage = blockData?.Initial ?? 0u;
             uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point);
             if (num.HasValue) {
                 if (num.Value == overflowVoltage - 0x12345678) {
                     m_overflow = true;
-                    m_counter = 0u;
+                    m_counter = initialVoltage;
                 }
                 else if (num.Value == overflowVoltage + 0x12345678) {
                     m_overflow = true;
@@ -37,16 +38,17 @@ namespace Game {
                 m_counter = electricElement.m_counter;
                 m_edited = true;
             }
+            if (m_counter < initialVoltage) {
+                m_counter = initialVoltage;
+            }
         }
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
             if (connectorDirection.HasValue) {
-                if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
-                    return m_counter;
-                }
-                if (connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
-                    return m_overflow ? uint.MaxValue : 0u;
+                switch (connectorDirection.Value) {
+                    case GVElectricConnectorDirection.Top: return m_counter;
+                    case GVElectricConnectorDirection.Bottom: return m_overflow ? uint.MaxValue : 0u;
                 }
             }
             return 0u;
