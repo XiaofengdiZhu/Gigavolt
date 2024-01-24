@@ -23,7 +23,7 @@ namespace Game {
 
         public bool m_listDirty;
 
-        public IExternalContentProvider m_externalContentProvider = ExternalContentManager.DefaultProvider;
+        public IExternalContentProvider m_externalContentProvider = ExternalContentManager.m_providers.Last();
 
         BaseEditGVMemoryBankDialog m_dialog;
         GVArrayData m_arrayData;
@@ -115,7 +115,10 @@ namespace Game {
                 SetPath(directoryName);
             }
             if (m_exportButton.IsClicked) {
-                ExportImage($"{m_path}/{m_arrayData.m_ID.ToString("X", null)}.png", m_arrayData.GetImage());
+                Image image = m_arrayData.GetImage();
+                if (image != null) {
+                    ExportImage($"{m_path}/{m_arrayData.m_ID.ToString("X", null)}.png", image);
+                }
             }
             if (m_actionButton.IsClicked
                 && externalContentEntry != null) {
@@ -157,14 +160,14 @@ namespace Game {
             m_directoryList.ClearItems();
             if (m_externalContentProvider != null
                 && m_externalContentProvider.IsLoggedIn) {
-                CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 9), false);
+                CancellableBusyDialog busyDialog = new(LanguageControl.Get(GetType().Name, 9), false);
                 DialogsManager.ShowDialog(null, busyDialog);
                 m_externalContentProvider.List(
                     m_path,
                     busyDialog.Progress,
                     delegate(ExternalContentEntry entry) {
                         DialogsManager.HideDialog(busyDialog);
-                        List<ExternalContentEntry> list = new List<ExternalContentEntry>(entry.ChildEntries.Where(EntryFilter).Take(1000));
+                        List<ExternalContentEntry> list = new(entry.ChildEntries.Where(EntryFilter).Take(1000));
                         m_directoryList.ClearItems();
                         list.Sort(
                             delegate(ExternalContentEntry e1, ExternalContentEntry e2) {
@@ -197,7 +200,7 @@ namespace Game {
         }
 
         public void ExportImage(string path, Image image) {
-            CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 13), false);
+            CancellableBusyDialog busyDialog = new(LanguageControl.Get(GetType().Name, 13), false);
             DialogsManager.ShowDialog(null, busyDialog);
             try {
                 FileStream fileStream = File.OpenWrite(path);
@@ -231,7 +234,7 @@ namespace Game {
         }
 
         public void DownloadEntry(ExternalContentEntry entry) {
-            CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 10), false);
+            CancellableBusyDialog busyDialog = new(LanguageControl.Get(GetType().Name, 10), false);
             DialogsManager.ShowDialog(null, busyDialog);
             m_externalContentProvider.Download(
                 entry.Path,
@@ -316,7 +319,7 @@ namespace Game {
 
         public static Image Shorts2Image(short[] shorts) {
             int width = (int)Math.Ceiling(Math.Sqrt(shorts.Length / 2 + 1));
-            Image image = new Image(width, width);
+            Image image = new(width, width);
             for (int i = 0; i < image.Pixels.Length; i++) {
                 if (i * 2 >= shorts.Length) {
                     break;
@@ -333,11 +336,11 @@ namespace Game {
 
         public static Image Stream2Image(Stream stream) {
             int width = (int)Math.Ceiling(Math.Sqrt(stream.Length / 4 + 1));
-            Image image = new Image(width, width);
+            Image image = new(width, width);
             for (int i = 0; i < stream.Length / 4 + 1; i++) {
                 byte[] fourBytes = new byte[4];
                 if (stream.Read(fourBytes, 0, 4) > 0) {
-                    Color color = new Color(fourBytes[3] | ((uint)fourBytes[2] << 8) | ((uint)fourBytes[1] << 16) | ((uint)fourBytes[0] << 24));
+                    Color color = new(fourBytes[3] | ((uint)fourBytes[2] << 8) | ((uint)fourBytes[1] << 16) | ((uint)fourBytes[0] << 24));
                     image.SetPixel(i % width, i / width, color);
                 }
             }
