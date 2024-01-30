@@ -148,6 +148,9 @@ namespace Game {
         public static int GetWireFacesBitmask(int value) => Terrain.ExtractData(value) & 0x3F;
 
         public static int SetWireFacesBitmask(int value, int bitmask) {
+            if (bitmask == 0) {
+                return 0;
+            }
             int num = Terrain.ExtractData(value);
             num &= -64;
             num |= bitmask & 0x3F;
