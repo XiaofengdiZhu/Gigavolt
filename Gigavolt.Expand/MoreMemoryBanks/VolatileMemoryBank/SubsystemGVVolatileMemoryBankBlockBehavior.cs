@@ -20,7 +20,7 @@ namespace Game {
                 memoryBankData = memoryBankData ?? new GVVolatileMemoryBankData(GVStaticStorage.GetUniqueGVMBID());
                 DialogsManager.ShowDialog(
                     componentPlayer.GuiWidget,
-                    new EditGVMemoryBankDialog(
+                    new EditGVVolatileMemoryBankDialog(
                         memoryBankData,
                         delegate {
                             int data = StoreItemDataAtUniqueId(memoryBankData);
@@ -41,7 +41,7 @@ namespace Game {
             GVVolatileMemoryBankData memoryBankData = GetBlockData(new Point3(x, y, z)) ?? new GVVolatileMemoryBankData(GVStaticStorage.GetUniqueGVMBID());
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
-                new EditGVMemoryBankDialog(
+                new EditGVVolatileMemoryBankDialog(
                     memoryBankData,
                     delegate {
                         SetBlockData(new Point3(x, y, z), memoryBankData);

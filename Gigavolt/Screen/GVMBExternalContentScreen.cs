@@ -23,7 +23,7 @@ namespace Game {
 
         public bool m_listDirty;
 
-        public IExternalContentProvider m_externalContentProvider = ExternalContentManager.m_providers.Last();
+        public IExternalContentProvider m_externalContentProvider = ExternalContentManager.DefaultProvider;
 
         BaseEditGVMemoryBankDialog m_dialog;
         GVArrayData m_arrayData;
