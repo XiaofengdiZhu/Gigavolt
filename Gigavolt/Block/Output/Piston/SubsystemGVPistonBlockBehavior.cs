@@ -347,6 +347,7 @@ namespace Game {
             length = MathUtils.Clamp(length, 0, maxExtension + 1);
             int num = 0;
             m_movingBlocks.Clear();
+            int num5 = 0;
             Point3 offset = point;
             MovingBlock item;
             while (true) {
@@ -361,6 +362,7 @@ namespace Game {
                 item = new MovingBlock { Offset = offset, Value = cellValue };
                 movingBlocks.Add(item);
                 offset += point;
+                num5++;
                 num++;
             }
             if (length > num) {
@@ -378,6 +380,7 @@ namespace Game {
                     movingBlocks3.Add(item);
                     num3++;
                     offset += point;
+                    num5++;
                     if (isEnd) {
                         break;
                     }
@@ -385,8 +388,8 @@ namespace Game {
                 if (!IsBlockBlocking(terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z))) {
                     GetSpeedAndSmoothness(speed, out float speed2, out Vector2 smoothness);
                     Point3 p = position + (length - num) * point;
-                    if (length > 30) {
-                        int count = (length + 1) / 16;
+                    if (num5 > 30) {
+                        int count = (num5 + 1) / 16;
                         for (int i = 2; i <= count; i++) {
                             if (Math.Abs(point.X) > 0) {
                                 if (i > m_allocatedX) {
@@ -451,6 +454,7 @@ namespace Game {
                         item = new MovingBlock { Offset = offset, Value = cellValue3 };
                         movingBlocks4.Add(item);
                         offset += point;
+                        num5++;
                         num4++;
                         if (isEnd2) {
                             break;
@@ -464,8 +468,8 @@ namespace Game {
                 GetSpeedAndSmoothness(speed, out float speed3, out Vector2 smoothness2);
                 float s = length == 0 ? 0.01f : 0f;
                 Vector3 targetPosition = new Vector3(position) + (length - num) * new Vector3(point) + s * new Vector3(point);
-                if (length > 30) {
-                    int count = (length + 1) / 16;
+                if (num5 > 30) {
+                    int count = (num5 + 1) / 16;
                     for (int i = 2; i <= count; i++) {
                         if (Math.Abs(point.X) > 0) {
                             if (i > m_allocatedX) {
