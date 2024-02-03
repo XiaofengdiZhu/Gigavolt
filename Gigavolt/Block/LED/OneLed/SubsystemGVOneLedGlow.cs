@@ -8,9 +8,9 @@ namespace Game {
     public class SubsystemGVOneLedGlow : Subsystem, IDrawable {
         public SubsystemSky m_subsystemSky;
 
-        public Dictionary<GVGlowPoint, bool> m_glowPoints = new Dictionary<GVGlowPoint, bool>();
+        public Dictionary<GVGlowPoint, bool> m_glowPoints = new();
 
-        public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+        public PrimitivesRenderer3D m_primitivesRenderer = new();
 
         public FlatBatch3D m_batche;
 
@@ -19,7 +19,7 @@ namespace Game {
         public int[] DrawOrders => m_drawOrders;
 
         public GVGlowPoint AddGlowPoint() {
-            GVGlowPoint glowPoint = new GVGlowPoint();
+            GVGlowPoint glowPoint = new();
             m_glowPoints.Add(glowPoint, true);
             return glowPoint;
         }
@@ -62,7 +62,7 @@ namespace Game {
 
         public override void Load(ValuesDictionary valuesDictionary) {
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
-            m_batche = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.NonPremultiplied);
+            m_batche = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.NonPremultiplied);
         }
     }
 }
