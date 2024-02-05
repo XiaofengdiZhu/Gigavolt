@@ -1,9 +1,10 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-	<CanvasWidget Size="500, 300" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<CanvasWidget Size="700, 300" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 			<LabelWidget Font="{Fonts/Pericles}" Text="[EditGVDataModifierProjectileDialog:1]" HorizontalAlignment="Center"/>
 			<CanvasWidget Size="0, Infinity"/>
+			<GridPanelWidget Name="BinaryInputGrid" HorizontalAlignment="Center" VerticalAlignment="Near" ColumnsCount="14" RowsCount="1"/>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 				<LabelWidget Text="[EditGVDataModifierProjectileDialog:2]"/>
 				<CanvasWidget Size="124, 34">
