@@ -37,8 +37,8 @@ namespace Game {
         }
 
         public class Line {
-            public List<Func<SectionInput, bool>[]> i = new List<Func<SectionInput, bool>[]>();
-            public Func<SectionInput, uint> o = u => 0u;
+            public readonly List<Func<SectionInput, bool>[]> i = [];
+            public Func<SectionInput, uint> o = _ => 0u;
 
             public uint? Exe(List<SectionInput> inputs) {
                 int length = Math.Min(i.Count, inputs.Count);
@@ -51,7 +51,7 @@ namespace Game {
                             }
                         }
                     }
-                    return o(inputs[inputs.Count - 1]);
+                    return o(inputs[^1]);
                 }
                 catch (Exception e) {
                     Log.Error(e);
@@ -65,7 +65,7 @@ namespace Game {
         public string LastLoadedString = string.Empty;
 
         public IEditableItemData Copy() {
-            GVTruthTableData result = new GVTruthTableData { LastLoadedString = LastLoadedString, LastOutput = LastOutput };
+            GVTruthTableData result = new() { LastLoadedString = LastLoadedString, LastOutput = LastOutput };
             result.LoadString(LastLoadedString);
             return result;
         }
@@ -80,36 +80,34 @@ namespace Game {
             return 0u;
         }
 
-        public Regex hexRegex = new Regex(@"0[xX][\dabcdefABCDEF]+");
-        public Regex binRegex = new Regex(@"0[bB][01]+");
+        public Regex hexRegex = new(@"0[xX][\dabcdefABCDEF]+");
+        public Regex binRegex = new(@"0[bB][01]+");
 
         public void LoadString(string str, out string error) {
             error = null;
-            List<Line> newData = new List<Line>();
+            List<Line> newData = [];
             string replacedString = str;
             replacedString = hexRegex.Replace(replacedString, m => long.Parse(m.Value.Substring(2), NumberStyles.HexNumber).ToString());
             replacedString = binRegex.Replace(replacedString, m => Convert.ToUInt32(m.Value.Substring(2), 2).ToString());
             replacedString = replacedString.Replace("\n", "").Replace("PI()", "3.141592653589793").Replace("E()", "2.718281828459045");
             string[] linesString = replacedString.Split(new[] { "::" }, StringSplitOptions.None);
             foreach (string lineString in linesString) {
-                Line line = new Line();
+                Line line = new();
                 string[] temp = lineString.Split(':');
                 if (temp.Length < 2) {
                     error = $"{lineString}未找到输出";
                     Log.Error(error);
                     return;
                 }
-                Expression oe;
                 try {
-                    oe = new Expression(CookForExpression(temp[1], "o"));
-                    line.o = oe.ToLambda<SectionInput, uint>();
+                    line.o = new Expression(CookForExpression(temp[1], "o")).ToLambda<SectionInput, uint>();
                 }
                 catch (Exception e) {
                     error = $"{temp[1]}存在错误:\n{e}";
                     Log.Error(error);
                     return;
                 }
-                string[] sectionStrings = temp[0].Split(new[] { ";;" }, StringSplitOptions.None);
+                string[] sectionStrings = temp[0].Split([";;"], StringSplitOptions.None);
                 if (sectionStrings.Length > 16) {
                     error = "其中一套输入规则参试获取15次输入变化前的输入";
                     Log.Error(error);
@@ -121,17 +119,16 @@ namespace Game {
                     string[] inputStrings = sectionString.Split(';');
                     for (int j = 0; j < 4; j++) {
                         if (j >= inputStrings.Length) {
-                            iF[j] = u => true;
+                            iF[j] = _ => true;
                         }
                         else {
                             string inputString = inputStrings[j];
                             if (inputString.Length == 0) {
-                                iF[j] = u => true;
+                                iF[j] = _ => true;
                                 continue;
                             }
                             try {
-                                Expression ie = new Expression(CookForExpression(inputString, $"i{j + 1}"));
-                                iF[j] = ie.ToLambda<SectionInput, bool>();
+                                iF[j] = new Expression(CookForExpression(inputString, $"i{j + 1}")).ToLambda<SectionInput, bool>();
                             }
                             catch (Exception e) {
                                 error = $"{inputString}存在错误:\n{e}";
@@ -148,19 +145,29 @@ namespace Game {
             LastLoadedString = str;
         }
 
-        public Regex addBracketRegex = new Regex(@"(i\d)");
-        public string[] notCookOperators = { "=", "!", "not", ">", "<", "and", "&&", "||", "or" };
+        public Regex addBracketRegex = new(@"(i\d)");
+
+        public string[] notCookOperators = [
+            "=",
+            "!",
+            "not",
+            ">",
+            "<",
+            "and",
+            "&&",
+            "||",
+            "or"
+        ];
 
         public string CookForExpression(string input, string category) {
             if (category.StartsWith("i")) {
-                if (input == "true"
-                    || input == "") {
+                if (input is "true" or "") {
                     return "true";
                 }
-                if (input.StartsWith("=")
+                if (input.StartsWith('=')
                     || input.StartsWith("!=")
-                    || input.StartsWith("<")
-                    || input.StartsWith(">")) {
+                    || input.StartsWith('<')
+                    || input.StartsWith('>')) {
                     input = $"{category}{input}";
                 }
                 else if (!notCookOperators.Any(item => input.Contains(item))) {
@@ -168,7 +175,7 @@ namespace Game {
                 }
             }
             else if (category == "o"
-                && input.StartsWith("=")) {
+                && input.StartsWith('=')) {
                 input = input.Substring(1);
             }
             return addBracketRegex.Replace(input, "[$1]");

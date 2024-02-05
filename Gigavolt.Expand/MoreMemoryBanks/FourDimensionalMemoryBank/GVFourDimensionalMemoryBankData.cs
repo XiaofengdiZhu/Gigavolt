@@ -170,12 +170,17 @@ namespace Game {
                     string directory = $"{m_worldDirectory}/GVFDMB/{m_ID.ToString("X", null)}";
                     if (Storage.DirectoryExists(directory)) {
                         List<string> files = Storage.ListFileNames(directory).ToList();
-                        HashSet<int> hashSet = new();
+                        HashSet<int> hashSet = [];
                         foreach (int key in Data.Keys) {
-                            string path = $"{directory}/{key}.webp";
+                            string file = $"{key:X}.webp";
+                            string path = $"{directory}/{file}";
                             if (Storage.FileExists(path)) {
-                                files.Remove(path);
-                                Image<Rgba32> image = SixLabors.ImageSharp.Image.Load<Rgba32>(DefaultImageDecoderOptions, Storage.OpenFile(path, OpenFileMode.Read));
+                                files.Remove(file);
+                                Image<Rgba32> image;
+                                using (Stream stream = Storage.OpenFile(path, OpenFileMode.Read)) {
+                                    image = SixLabors.ImageSharp.Image.Load<Rgba32>(DefaultImageDecoderOptions, stream);
+                                    stream.Close();
+                                }
                                 if (image.Frames.Count == m_zLength
                                     && image.Width == m_xLength
                                     && image.Height == m_yLength) {
@@ -194,7 +199,7 @@ namespace Game {
                             Data.Remove(key);
                         }
                         foreach (string file in files) {
-                            Storage.DeleteFile(file);
+                            Storage.DeleteFile($"{directory}/{file}");
                         }
                     }
                 }
@@ -235,7 +240,7 @@ namespace Game {
                 LoadData();
             }
             if (array.Length >= 4) {
-                LastOutput = uint.Parse(array[1], NumberStyles.HexNumber, null);
+                LastOutput = uint.Parse(array[3], NumberStyles.HexNumber, null);
             }
         }
 
@@ -262,7 +267,11 @@ namespace Game {
                         if (Storage.FileExists(path)) {
                             files.Remove(path);
                         }
-                        pair.Value.SaveAsWebp(Storage.OpenFile(path, OpenFileMode.CreateOrOpen));
+                        using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen)) {
+                            pair.Value.SaveAsWebp(stream);
+                            stream.Flush();
+                            stream.Close();
+                        }
                     }
                     foreach (string file in files) {
                         Storage.DeleteFile(file);
@@ -276,7 +285,7 @@ namespace Game {
             return stringBuilder.ToString();
         }
 
-        public static Dictionary<int, Image<Rgba32>> String2Data(string data, ref int xLength, ref int yLength, ref int zLength, ref int wLength) {
+        public void String2Data(string data, ref int xLength, ref int yLength, ref int zLength, ref int wLength) {
             Dictionary<int, List<List<List<uint>>>> result1 = new();
             int maxXLength = 0;
             int maxYLength = 0;
@@ -335,14 +344,18 @@ namespace Game {
                 || maxYLength == 0
                 || maxZLength == 0
                 || maxWLength == 0) {
-                return null;
+                return;
             }
             Dictionary<int, Image<Rgba32>> result2 = new();
+            int realXLength = Math.Max(maxXLength, xLength);
+            int realYLength = Math.Max(maxYLength, yLength);
+            int realZLength = Math.Max(maxZLength, zLength);
+            int realWLength = Math.Max(maxWLength, wLength);
             foreach (KeyValuePair<int, List<List<List<uint>>>> pair in result1) {
                 if (pair.Value.Count > 0) {
-                    Image<Rgba32> image = new(DefaultImageConfiguration, maxXLength, maxYLength);
+                    Image<Rgba32> image = new(DefaultImageConfiguration, realXLength, realYLength);
                     image.Metadata.GetWebpMetadata().FileFormat = WebpFileFormatType.Lossless;
-                    while (image.Frames.Count < maxZLength) {
+                    while (image.Frames.Count < realZLength) {
                         image.Frames.AddFrame(image.Frames.RootFrame);
                     }
                     for (int zIndex = 0; zIndex < maxZLength; zIndex++) {
@@ -367,11 +380,18 @@ namespace Game {
                     result2.Add(pair.Key, image);
                 }
             }
-            return result2;
+            Data = result2;
+            m_xLength = realXLength;
+            m_yLength = realYLength;
+            m_xyProduct = maxXLength * realYLength;
+            m_zLength = realZLength;
+            m_xyzProduct = m_xyProduct * realZLength;
+            m_wLength = realWLength;
+            m_totalLength = m_xyzProduct * realWLength;
         }
 
         public static string Data2String(Dictionary<int, Image<Rgba32>> images) {
-            int wLength = images.Keys.Max();
+            int wLength = images.Keys.Max() + 1;
             string[] result = new string[wLength];
             for (int wIndex = 0; wIndex < wLength; wIndex++) {
                 if (images.TryGetValue(wIndex, out Image<Rgba32> image)) {
@@ -448,6 +468,7 @@ namespace Game {
             m_zLength = 1;
             m_xyzProduct = m_xyProduct;
             m_wLength = 1;
+            m_totalLength = m_xyProduct;
         }
 
         public override void Stream2Data(Stream stream) { }

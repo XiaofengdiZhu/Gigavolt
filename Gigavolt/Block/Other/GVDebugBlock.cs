@@ -64,22 +64,11 @@ namespace Game {
                     z,
                     m_blockMeshesByData[num],
                     Color.White,
-                    null,
+                    default,
                     null,
                     geometry.GetGeometry(texture).SubsetAlphaTest
                 );
             }
-            GenerateGVWireVertices(
-                generator,
-                value,
-                x,
-                y,
-                z,
-                4,
-                0.18f,
-                Vector2.Zero,
-                geometry.SubsetOpaque
-            );
         }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
