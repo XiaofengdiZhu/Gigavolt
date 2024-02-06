@@ -3,13 +3,11 @@
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 			<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:1]" HorizontalAlignment="Center"/>
-			<CanvasWidget Size="0, 5"/>
-			<CanvasWidget Size="Infinity, 70" Margin="30, 10">
-				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
-					<LabelWidget Color="128, 128, 128" Text="[EditGVFourDimensionalMemoryBankDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
-					<LinkWidget Color="128, 128, 128" Text="https://github.com/XiaofengdiZhu/Gigavolt#存储器-memory-band" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#存储器-memory-band"/>
-				</StackPanelWidget>
-			</CanvasWidget>
+			<CanvasWidget Size="0, 15"/>
+			<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
+				<LabelWidget Color="128, 128, 128" Text="[EditGVFourDimensionalMemoryBankDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
+				<LinkWidget Color="128, 128, 128" Text="https://github.com/XiaofengdiZhu/Gigavolt#存储器-memory-band" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#存储器-memory-band"/>
+			</StackPanelWidget>
 			<CanvasWidget Size="0, 15"/>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 				<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.ID" HorizontalAlignment="Center"/>

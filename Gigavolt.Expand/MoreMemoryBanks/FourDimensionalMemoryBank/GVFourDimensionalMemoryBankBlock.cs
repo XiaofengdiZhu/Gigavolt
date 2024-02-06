@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVFourDimensionalMemoryBankBlock() : RotateableMountedGVElectricElementBlock("Models/GV4DMemoryBank", "MemoryBank", 0.875f) {
+    public class GVFourDimensionalMemoryBankBlock() : RotateableMountedGVElectricElementBlock("Models/GVMemoryBank", "MemoryBank", 0.875f) {
         public const int Index = 891;
         public Texture2D m_texture;
 

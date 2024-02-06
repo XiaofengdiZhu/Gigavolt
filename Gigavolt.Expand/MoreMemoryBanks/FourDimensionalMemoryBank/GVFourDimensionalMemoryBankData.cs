@@ -274,7 +274,7 @@ namespace Game {
                         }
                     }
                     foreach (string file in files) {
-                        Storage.DeleteFile(file);
+                        Storage.DeleteFile($"{directory}/{file}");
                     }
                     m_dataChanged = false;
                 }
@@ -381,6 +381,7 @@ namespace Game {
                 }
             }
             Data = result2;
+            m_dataChanged = true;
             m_xLength = realXLength;
             m_yLength = realYLength;
             m_xyProduct = maxXLength * realYLength;
