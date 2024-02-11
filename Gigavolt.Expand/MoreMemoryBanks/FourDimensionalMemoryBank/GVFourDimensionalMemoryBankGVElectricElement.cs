@@ -55,7 +55,7 @@ namespace Game {
                         else if (connectorDirection == GVElectricConnectorDirection.Bottom) {
                             uint num4 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                             flag = num4 >= 8u;
-                            flag3 = !flag;
+                            flag3 = num4 > 0u && num4 < 8u;
                             flag2 = true;
                             hasInput = true;
                         }

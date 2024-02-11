@@ -134,7 +134,8 @@ namespace Game {
                 && y < m_yLength
                 && z < m_zLength
                 && w < m_wLength) {
-                if (Data.TryGetValue(w, out Image<Rgba32> image)) {
+                if (Data.TryGetValue(w, out Image<Rgba32> image)
+                    && image.Frames[z][x, y].PackedValue != data) {
                     image.Frames[z][x, y] = new Rgba32(data);
                     m_updateTime = DateTime.Now;
                     m_dataChanged = true;

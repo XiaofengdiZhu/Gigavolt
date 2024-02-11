@@ -1,6 +1,5 @@
 using System;
 using System.Xml.Linq;
-using Engine;
 using Engine.Input;
 
 namespace Game {
@@ -188,7 +187,7 @@ namespace Game {
                 }
             }
             else {
-                Log.Information($"{(m_lastFocusedTextBox == null ? "null" : m_lastFocusedTextBox.Text)} -> {newFocusedTextBox.Text}");
+                //Log.Information($"{(m_lastFocusedTextBox == null ? "null" : m_lastFocusedTextBox.Text)} -> {newFocusedTextBox.Text}");
                 newFocusedTextBox.CaretPosition = newFocusedTextBox.Text.Length;
             }
             for (int i = 0; i < 16; i++) {
