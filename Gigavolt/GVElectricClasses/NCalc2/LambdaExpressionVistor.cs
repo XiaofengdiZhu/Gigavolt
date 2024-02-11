@@ -214,8 +214,8 @@ namespace NCalc {
                 args[i] = Result;
             }
             string functionName = function.Identifier.Name.ToLowerInvariant();
+            Type[] numberTypePriority = { typeof(double), typeof(float), typeof(long), typeof(int), typeof(short) };
             if (functionName == "if") {
-                Type[] numberTypePriority = { typeof(double), typeof(float), typeof(long), typeof(int), typeof(short) };
                 int index1 = Array.IndexOf(numberTypePriority, args[1].Type);
                 int index2 = Array.IndexOf(numberTypePriority, args[2].Type);
                 if (index1 >= 0
@@ -228,6 +228,16 @@ namespace NCalc {
                 return;
             }
             if (functionName == "in") {
+                int typeIndex = int.MaxValue;
+                foreach (L.Expression t in args) {
+                    typeIndex = Math.Min(typeIndex, Array.IndexOf(numberTypePriority, t.Type));
+                }
+                if (typeIndex >= numberTypePriority.Length) {
+                    throw new Exception("Not Supported Arg Type");
+                }
+                for (int i = 0; i < args.Length; i++) {
+                    args[i] = L.Expression.Convert(args[i], numberTypePriority[typeIndex]);
+                }
                 L.NewArrayExpression items = L.Expression.NewArrayInit(args[0].Type, new ArraySegment<L.Expression>(args, 1, args.Length - 1));
                 MethodInfo smi = typeof(Array).GetRuntimeMethod("IndexOf", new[] { typeof(Array), typeof(object) });
                 L.MethodCallExpression r = L.Expression.Call(smi, L.Expression.Convert(items, typeof(Array)), L.Expression.Convert(args[0], typeof(object)));

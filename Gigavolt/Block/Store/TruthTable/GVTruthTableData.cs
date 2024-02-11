@@ -9,10 +9,10 @@ using NCalc;
 namespace Game {
     public class GVTruthTableData : IEditableItemData {
         public class SectionInput {
-            public uint i1;
-            public uint i2;
-            public uint i3;
-            public uint i4;
+            public long i1;
+            public long i2;
+            public long i3;
+            public long i4;
             public SectionInput() { }
 
             public SectionInput(uint i1, uint i2, uint i3, uint i4) {
