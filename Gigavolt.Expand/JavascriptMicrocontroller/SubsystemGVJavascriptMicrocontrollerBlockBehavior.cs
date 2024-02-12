@@ -46,6 +46,7 @@ namespace Game {
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                         GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                         if (GVElectricElement != null) {
+                            GVElectricElement.GetOutputVoltage(123456);
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
                         }
                     }

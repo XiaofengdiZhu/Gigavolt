@@ -61,11 +61,10 @@ namespace Game {
         }
 
         public List<Line> Data;
-        public uint LastOutput { get; set; }
         public string LastLoadedString = string.Empty;
 
         public IEditableItemData Copy() {
-            GVTruthTableData result = new() { LastLoadedString = LastLoadedString, LastOutput = LastOutput };
+            GVTruthTableData result = new() { LastLoadedString = LastLoadedString };
             result.LoadString(LastLoadedString);
             return result;
         }
@@ -181,9 +180,7 @@ namespace Game {
             return addBracketRegex.Replace(input, "[$1]");
         }
 
-        public string SaveString() => SaveString(true);
-
-        public string SaveString(bool saveLastOutput) => LastLoadedString;
+        public string SaveString() => LastLoadedString;
 
         public void LoadString(string data) {
             LoadString(data, out _);

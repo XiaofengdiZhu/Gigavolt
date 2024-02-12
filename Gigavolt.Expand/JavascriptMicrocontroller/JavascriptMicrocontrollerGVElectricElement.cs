@@ -4,13 +4,14 @@ using Engine;
 
 namespace Game {
     public class JavascriptMicrocontrollerGVElectricElement : RotateableGVElectricElement {
-        public static readonly uint[] DefaultOutputs = { 0, 0, 0, 0, 0 };
+        public static readonly uint[] DefaultOutputs = [0, 0, 0, 0, 0];
         public uint[] m_inputs = (uint[])DefaultOutputs.Clone();
         public uint[] m_outputs = (uint[])DefaultOutputs.Clone();
         public bool m_blockDataInitiated;
         public GVJavascriptMicrocontrollerData m_blockData;
-        public SubsystemGVJavascriptMicrocontrollerBlockBehavior m_subsystemJavascriptMicrocontrollerBlockBehavior;
-        public SubsystemTerrain m_subsystemTerrain;
+        public readonly SubsystemGVJavascriptMicrocontrollerBlockBehavior m_subsystemJavascriptMicrocontrollerBlockBehavior;
+        public readonly SubsystemTerrain m_subsystemTerrain;
+        public bool m_dataChanged;
 
         public JavascriptMicrocontrollerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemJavascriptMicrocontrollerBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
@@ -18,6 +19,10 @@ namespace Game {
         }
 
         public override uint GetOutputVoltage(int face) {
+            if (face == 123456) {
+                m_dataChanged = true;
+                return 0u;
+            }
             if (m_blockDataInitiated) {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
                 if (connectorDirection.HasValue) {
@@ -31,8 +36,15 @@ namespace Game {
         }
 
         public override bool Simulate() {
+            bool flag = true;
             if (!m_blockDataInitiated) {
                 m_blockData = m_subsystemJavascriptMicrocontrollerBlockBehavior.GetBlockData(CellFaces[0].Point);
+                flag = false;
+            }
+            if (m_dataChanged) {
+                m_blockData = m_subsystemJavascriptMicrocontrollerBlockBehavior.GetBlockData(CellFaces[0].Point);
+                m_dataChanged = false;
+                flag = false;
             }
             if (m_blockData == null) {
                 m_blockDataInitiated = false;
@@ -51,7 +63,7 @@ namespace Game {
                     }
                 }
             }
-            if (m_inputs.SequenceEqual(lastInputs)) {
+            if (flag && m_inputs.SequenceEqual(lastInputs)) {
                 return false;
             }
             uint[] lastOutputs = (uint[])m_outputs.Clone();
@@ -67,6 +79,7 @@ namespace Game {
                 ++chunkAtCell.ModificationCounter;
                 m_subsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, true);
                 m_subsystemTerrain.m_modifiedCells[CellFaces[0].Point] = true;
+                m_dataChanged = true;
             }
             return !m_outputs.SequenceEqual(lastOutputs);
         }

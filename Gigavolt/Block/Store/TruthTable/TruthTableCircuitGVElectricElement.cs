@@ -51,12 +51,12 @@ namespace Game {
                         lastInputs = lastInputs.GetRange(lastInputs.Count - 16, 16);
                     }
                     GVTruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
-                    m_voltage = blockData != null ? blockData.Exe(lastInputs) : 0u;
+                    m_voltage = blockData?.Exe(lastInputs) ?? 0u;
                 }
                 else if (m_dataChanged) {
                     m_dataChanged = false;
                     GVTruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
-                    m_voltage = blockData != null ? blockData.Exe(lastInputs) : 0u;
+                    m_voltage = blockData?.Exe(lastInputs) ?? 0u;
                 }
             }
             catch (Exception e) {
