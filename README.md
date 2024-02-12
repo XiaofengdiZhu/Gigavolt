@@ -600,15 +600,16 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 | GameEntitySystem | GameEntitySystem命名空间                                           |
 | Project          | 当前游戏存档的Project对象                                               |
 
-| 内置方法                    | 说明                                                                                   |
-|-------------------------|--------------------------------------------------------------------------------------|
-| getPosition()           | 返回该JS单片机所在位置，返回类型为`Engine.Point3`，内有`X`、`Y`、`Z`三个字段来表示坐标                             |
-| getPortState(number)    | 返回指定端口的输入输出状态，参数需要输入0到4的整数，如果是输入则返回字符串`input`，输出`output`，禁用`disabled`，参数错误则返回`error` |
-| setPortDisabled(number) | 设置指定端口为禁用，参数需要是0到4的整数                                                                |
-| setPortInput(number)    | 设置指定端口为输入，参数需要是0到4的整数                                                                |
-| setPortOutput(number)   | 设置指定端口为输出，参数需要是0到4的整数                                                                |
-| importNamespace(string) | 导入并返回命名空间                                                                            |
-| findSubsystem(string)   | 根据名称返回当前游戏存档的Subsystem，参数开头不要带Subsystem                                              |
+| 内置方法                    | 说明                                                                                             |
+|-------------------------|------------------------------------------------------------------------------------------------|
+| getPosition()           | 返回该JS单片机所在位置，返回类型为`Engine.Point3`，内有`X`、`Y`、`Z`三个字段来表示坐标                                       |
+| getPortState(number)    | 返回指定端口的输入输出状态，参数需要输入0到4的整数，如果是输入则返回字符串`input`，输出`output`，禁用`disabled`，参数错误则返回`error`           |
+| setPortDisabled(number) | 设置指定端口为禁用，参数需要是0到4的整数                                                                          |
+| setPortInput(number)    | 设置指定端口为输入，参数需要是0到4的整数                                                                          |
+| setPortOutput(number)   | 设置指定端口为输出，参数需要是0到4的整数                                                                          |
+| importNamespace(string) | 导入并返回命名空间                                                                                      |
+| findSubsystem(string)   | 根据名称返回当前游戏存档的Subsystem，参数开头不要带Subsystem                                                        |
+| executeAgain(number)    | 让该JS单片机在电路运行n个循环后无视输入是否变化，再次自发执行脚本；如果在一次执行中多次使用该方法，以最后设置的n为准；n小于等于0则取消；如果自发执行脚本前因输入变化而执行，此方法取消 |
 > 请务必先设置输入端口，否则脚本完全不会运行
 ## 复数方块 Multiple Blocks
 ### 更多两入两出电路板 More Two In Two Out Electrics

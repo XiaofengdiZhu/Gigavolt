@@ -12,6 +12,7 @@ namespace Game {
         public readonly SubsystemGVJavascriptMicrocontrollerBlockBehavior m_subsystemJavascriptMicrocontrollerBlockBehavior;
         public readonly SubsystemTerrain m_subsystemTerrain;
         public bool m_dataChanged;
+        public int m_executeAgainCircuitStep = -1;
 
         public JavascriptMicrocontrollerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemJavascriptMicrocontrollerBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
@@ -50,6 +51,10 @@ namespace Game {
                 m_blockDataInitiated = false;
                 return false;
             }
+            if (m_executeAgainCircuitStep == SubsystemGVElectricity.CircuitStep) {
+                flag = false;
+            }
+            m_executeAgainCircuitStep = -1;
             m_blockDataInitiated = true;
             int rotation = Rotation;
             uint[] lastInputs = (uint[])m_inputs.Clone();
@@ -81,6 +86,11 @@ namespace Game {
                 m_subsystemTerrain.m_modifiedCells[CellFaces[0].Point] = true;
                 m_dataChanged = true;
             }
+            if (m_blockData.m_executeAgain > 0) {
+                m_executeAgainCircuitStep = SubsystemGVElectricity.CircuitStep + m_blockData.m_executeAgain;
+                SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, m_executeAgainCircuitStep);
+            }
+            m_blockData.m_executeAgain = 0;
             return !m_outputs.SequenceEqual(lastOutputs);
         }
     }

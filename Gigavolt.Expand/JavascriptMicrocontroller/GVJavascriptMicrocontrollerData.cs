@@ -10,6 +10,7 @@ namespace Game {
     public class GVJavascriptMicrocontrollerData : IEditableItemData {
         public static readonly int[] DefaultPortsDefinition = { -1, -1, -1, -1, -1 }; //-1:No input or output. 0:Input. 1:Output
         public int[] m_portsDefinition = (int[])DefaultPortsDefinition.Clone();
+        public int m_executeAgain;
         public Script m_script;
         public string LastLoadedCode = string.Empty;
         public JsEngine m_jsEngine;
@@ -41,6 +42,7 @@ namespace Game {
             m_jsEngine.SetValue("setPortDisabled", SetPortDisabled);
             m_jsEngine.SetValue("setPortInput", SetPortInput);
             m_jsEngine.SetValue("setPortOutput", SetPortOutput);
+            m_jsEngine.SetValue("executeAgain", ExecuteAgain);
         }
 
         public IEditableItemData Copy() {
@@ -136,6 +138,15 @@ namespace Game {
         }
 
         public Point3 GetPosition() => new(m_position.X, m_position.Y, m_position.Z);
+
+        public void ExecuteAgain(object delay) {
+            try {
+                m_executeAgain = Convert.ToInt32(delay);
+            }
+            catch (Exception) {
+                // ignored
+            }
+        }
 
         public void LoadCode(string code, out string error) {
             error = null;
