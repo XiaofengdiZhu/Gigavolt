@@ -19,6 +19,12 @@ namespace Game {
         public readonly LabelWidget m_zLengthTextLabel;
         public readonly TextBoxWidget m_wLengthTextBox;
         public readonly LabelWidget m_wLengthTextLabel;
+        public readonly TextBoxWidget m_xOffsetTextBox;
+        public readonly TextBoxWidget m_yOffsetTextBox;
+        public readonly TextBoxWidget m_zOffsetTextBox;
+        public readonly TextBoxWidget m_wOffsetTextBox;
+        public readonly TextBoxWidget m_widthTextBox;
+        public readonly TextBoxWidget m_heightTextBox;
         public readonly LabelWidget m_IDLabel;
         public readonly BitmapButtonWidget m_copyIDButton;
         public readonly BitmapButtonWidget m_copyDataButton;
@@ -43,6 +49,12 @@ namespace Game {
             m_zLengthTextLabel = Children.Find<LabelWidget>("EditGVFourDimensionalMemoryBankDialog.zLengthLabel");
             m_wLengthTextBox = Children.Find<TextBoxWidget>("EditGVFourDimensionalMemoryBankDialog.wLength");
             m_wLengthTextLabel = Children.Find<LabelWidget>("EditGVFourDimensionalMemoryBankDialog.wLengthLabel");
+            m_xOffsetTextBox = Children.Find<TextBoxWidget>("EditGVFourDimensionalMemoryBankDialog.xOffset");
+            m_yOffsetTextBox = Children.Find<TextBoxWidget>("EditGVFourDimensionalMemoryBankDialog.yOffset");
+            m_zOffsetTextBox = Children.Find<TextBoxWidget>("EditGVFourDimensionalMemoryBankDialog.zOffset");
+            m_wOffsetTextBox = Children.Find<TextBoxWidget>("EditGVFourDimensionalMemoryBankDialog.wOffset");
+            m_widthTextBox = Children.Find<TextBoxWidget>("EditGVFourDimensionalMemoryBankDialog.Width");
+            m_heightTextBox = Children.Find<TextBoxWidget>("EditGVFourDimensionalMemoryBankDialog.Height");
             m_IDLabel = Children.Find<LabelWidget>("EditGVFourDimensionalMemoryBankDialog.ID");
             m_IDLabel.Text += $"ID: {memoryBankData.m_ID.ToString("X", null)}";
             m_copyIDButton = Children.Find<BitmapButtonWidget>("EditGVFourDimensionalMemoryBankDialog.CopyID");
@@ -67,6 +79,12 @@ namespace Game {
                 m_wLengthTextBox.IsEnabled = false;
                 m_wLengthTextBox.Text = m_memoryBankData.m_wLength.ToString();
                 m_wLengthTextLabel.Color = Color.Gray;
+                m_xOffsetTextBox.Text = m_memoryBankData.m_xOffset.ToString();
+                m_yOffsetTextBox.Text = m_memoryBankData.m_yOffset.ToString();
+                m_zOffsetTextBox.Text = m_memoryBankData.m_zOffset.ToString();
+                m_wOffsetTextBox.Text = m_memoryBankData.m_wOffset.ToString();
+                m_widthTextBox.Text = m_memoryBankData.m_xSize.ToString();
+                m_heightTextBox.Text = m_memoryBankData.m_ySize.ToString();
                 if (m_memoryBankData.Data.Count > 100000) {
                     m_linearTextBox.Text = LanguageControl.Get(GetType().Name, 1);
                     m_linearTextBox.IsEnabled = false;
@@ -76,6 +94,14 @@ namespace Game {
                     m_linearTextBox.Text = m_memoryBankData.GetString();
                     m_enterString = m_linearTextBox.Text;
                 }
+            }
+            else {
+                m_xOffsetTextBox.Text = "0";
+                m_yOffsetTextBox.Text = "0";
+                m_zOffsetTextBox.Text = "0";
+                m_wOffsetTextBox.Text = "0";
+                m_widthTextBox.Text = "0";
+                m_heightTextBox.Text = "0";
             }
         }
 
@@ -89,7 +115,19 @@ namespace Game {
                         && int.TryParse(m_zLengthTextBox.Text, out int zLength)
                         && zLength > 0
                         && int.TryParse(m_wLengthTextBox.Text, out int wLength)
-                        && wLength > 0) {
+                        && wLength > 0
+                        && int.TryParse(m_xOffsetTextBox.Text, out int xOffset)
+                        && xOffset >= 0
+                        && int.TryParse(m_yOffsetTextBox.Text, out int yOffset)
+                        && yOffset >= 0
+                        && int.TryParse(m_zOffsetTextBox.Text, out int zOffset)
+                        && zOffset >= 0
+                        && int.TryParse(m_wOffsetTextBox.Text, out int wOffset)
+                        && wOffset >= 0
+                        && int.TryParse(m_widthTextBox.Text, out int width)
+                        && width >= 0
+                        && int.TryParse(m_heightTextBox.Text, out int height)
+                        && height >= 0) {
                         try {
                             m_memoryBankData.String2Data(
                                 m_linearTextBox.Text,
@@ -98,6 +136,12 @@ namespace Game {
                                 ref zLength,
                                 ref wLength
                             );
+                            m_memoryBankData.m_xOffset = xOffset;
+                            m_memoryBankData.m_yOffset = yOffset;
+                            m_memoryBankData.m_zOffset = zOffset;
+                            m_memoryBankData.m_wOffset = wOffset;
+                            m_memoryBankData.m_xSize = width;
+                            m_memoryBankData.m_ySize = height;
                             m_memoryBankData.SaveString();
                             Dismiss(true);
                         }

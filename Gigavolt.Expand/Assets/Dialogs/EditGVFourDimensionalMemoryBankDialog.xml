@@ -1,51 +1,82 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-	<CanvasWidget Size="840, 440" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<CanvasWidget Size="800, 460" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 			<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:1]" HorizontalAlignment="Center"/>
-			<CanvasWidget Size="0, 15"/>
-			<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
-				<LabelWidget Color="128, 128, 128" Text="[EditGVFourDimensionalMemoryBankDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
-				<LinkWidget Color="128, 128, 128" Text="https://github.com/XiaofengdiZhu/Gigavolt#存储器-memory-band" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#存储器-memory-band"/>
-			</StackPanelWidget>
-			<CanvasWidget Size="0, 15"/>
-			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-				<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.ID" HorizontalAlignment="Center"/>
-				<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.CopyID" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
-			</StackPanelWidget>
-			<CanvasWidget Size="0, 15"/>
+			<CanvasWidget Size="0, 20"/>
 			<StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
-				<CanvasWidget Size="0, Infinity"/>
+				<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:13]" FontScale="1" HorizontalAlignment="Center"/>
+				<CanvasWidget Size="0, 10"/>
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-					<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.xLengthLabel" Text="[EditGVFourDimensionalMemoryBankDialog:3]"/>
+					<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.xLengthLabel" Text="[EditGVFourDimensionalMemoryBankDialog:3]" FontScale="0.8"/>
 					<CanvasWidget Size="104, 34">
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.xLength" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.xLength" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 					<CanvasWidget Size="20, 34"/>
-					<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.yLengthLabel" Text="[EditGVFourDimensionalMemoryBankDialog:4]"/>
+					<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.yLengthLabel" Text="[EditGVFourDimensionalMemoryBankDialog:4]" FontScale="0.8"/>
 					<CanvasWidget Size="104, 34">
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.yLength" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.yLength" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<CanvasWidget Size="20, 34"/>
+					<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.zLengthLabel" Text="[EditGVFourDimensionalMemoryBankDialog:5]" FontScale="0.8"/>
+					<CanvasWidget Size="104, 34">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.zLength" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<CanvasWidget Size="20, 34"/>
+					<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.wLengthLabel" Text="[EditGVFourDimensionalMemoryBankDialog:6]" FontScale="0.8"/>
+					<CanvasWidget Size="104, 34">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.wLength" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 				</StackPanelWidget>
-				<CanvasWidget Size="0, 15"/>
+				<CanvasWidget Size="0, 20"/>
+				<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:14]" FontScale="1" HorizontalAlignment="Center"/>
+				<CanvasWidget Size="0, 10"/>
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-					<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.zLengthLabel" Text="[EditGVFourDimensionalMemoryBankDialog:5]"/>
+					<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:7]" FontScale="0.8"/>
 					<CanvasWidget Size="104, 34">
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.zLength" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.xOffset" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 					<CanvasWidget Size="20, 34"/>
-					<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.wLengthLabel" Text="[EditGVFourDimensionalMemoryBankDialog:6]"/>
+					<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:8]" FontScale="0.8"/>
 					<CanvasWidget Size="104, 34">
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.wLength" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.yOffset" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<CanvasWidget Size="20, 34"/>
+					<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:9]" FontScale="0.8"/>
+					<CanvasWidget Size="104, 34">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.zOffset" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<CanvasWidget Size="20, 34"/>
+					<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:10]" FontScale="0.8"/>
+					<CanvasWidget Size="104, 34">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.wOffset" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+				</StackPanelWidget>
+				<CanvasWidget Size="0, 10"/>
+				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+					<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:11]" FontScale="0.8"/>
+					<CanvasWidget Size="104, 34">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.Width" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
+					</CanvasWidget>
+					<CanvasWidget Size="20, 34"/>
+					<LabelWidget Text="[EditGVFourDimensionalMemoryBankDialog:12]" FontScale="0.8"/>
+					<CanvasWidget Size="104, 34">
+						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.Height" Size="100, 30" MaximumLength="11" FontScale="0.8" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 				</StackPanelWidget>
 				<CanvasWidget Size="0, 10"/>
 				<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.ImageLocation" Color="128, 128, 128" Text="[EditGVFourDimensionalMemoryBankDialog:20]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
-				<CanvasWidget Size="0, 10"/>
+				<CanvasWidget Size="0, 20"/>
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 					<CanvasWidget Size="474, 34" HorizontalAlignment="Center">
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
@@ -53,15 +84,19 @@
 					</CanvasWidget>
 					<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
 					<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Delete}" ClickedSubtexture="{Textures/Delete}" Margin="10, 0"/>
-					<CanvasWidget Size="0, Infinity"/>
 				</StackPanelWidget>
 			</StackPanelWidget>
-			<CanvasWidget Size="0, 15"/>
+			<CanvasWidget Size="0, 20"/>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 				<BevelledButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVFourDimensionalMemoryBankDialog:21]" Margin="20, 0"/>
 				<BevelledButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVFourDimensionalMemoryBankDialog:22]"/>
 				<BevelledButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.More" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVFourDimensionalMemoryBankDialog:23]" Margin="20, 0"/>
 			</StackPanelWidget>
+			<CanvasWidget Size="0, 15"/>
+		</StackPanelWidget>
+		<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Far" VerticalAlignment="Near" Margin="15, 15">
+			<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.ID"/>
+			<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.CopyID" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
 		</StackPanelWidget>
 	</CanvasWidget>
 </CanvasWidget>
