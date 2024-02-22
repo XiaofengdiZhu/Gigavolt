@@ -475,8 +475,45 @@ namespace Game {
 
         public override void Stream2Data(Stream stream) { }
 
-        public override void UintArray2Data(uint[] uints, int width = 0, int height = 0) { }
+        public override void UintArray2Data(uint[] uints, int width = 0, int height = 0) {
+            Image<Rgba32> image = new(DefaultImageConfiguration, width, height);
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    int index = y * width + x;
+                    if (index >= uints.Length) {
+                        break;
+                    }
+                    image[x, y] = new Rgba32(uints[index]);
+                }
+            }
+            Data = new Dictionary<int, Image<Rgba32>> { { 0, image } };
+            m_xLength = width;
+            m_yLength = height;
+            m_xyProduct = m_xLength * m_yLength;
+            m_zLength = 1;
+            m_xyzProduct = m_xyProduct;
+            m_wLength = 1;
+            m_totalLength = m_xyProduct;
+            m_xOffset = 0;
+            m_yOffset = 0;
+            m_zOffset = 0;
+            m_wOffset = 0;
+            m_xSize = width;
+            m_ySize = height;
+        }
 
-        public override uint[] Data2UintArray() => null;
+        public override uint[] Data2UintArray() {
+            List<uint> uints = [];
+            if (m_isDataInitialized) {
+                foreach (Image<Rgba32> image in Data.Values) {
+                    Rgba32[] pixelArray = new Rgba32[image.Width * image.Height];
+                    foreach (ImageFrame<Rgba32> frame in image.Frames) {
+                        frame.CopyPixelDataTo(pixelArray);
+                        uints.AddRange(pixelArray.Select(pixel => pixel.PackedValue));
+                    }
+                }
+            }
+            return uints.ToArray();
+        }
     }
 }

@@ -105,6 +105,9 @@ namespace Game {
         }
 
         public virtual void Image2Data(Image image) { }
+        public virtual Stream Data2Stream() => null;
+        public Stream GetStream() => m_isDataInitialized ? Data2Stream() : null;
+
         public virtual void Stream2Data(Stream stream) { }
 
         public Texture2D Data2Texture2D() {

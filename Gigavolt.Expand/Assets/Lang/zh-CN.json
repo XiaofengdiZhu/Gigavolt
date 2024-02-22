@@ -109,6 +109,10 @@
     "GVJavascriptMicrocontrollerBlock:0": {
       "DisplayName": "GV JS单片机",
       "Description": "可以运行Javascript的单片机，理论上可实现一切功能，详见本Mod Github页面的介绍"
+    },
+    "GVFourDimensionalMemoryBankBlock": {
+      "DisplayName": "GV四维存储器",
+      "Description": "和存储器相似，但从二维扩展到了四维，右端口较低的16位用来指定X坐标，右端较高的16位用来指定Y坐标，左端口较低的16位用来指定Z坐标，左端较高的16位用来指定W坐标。初始化时，必须先指定四个维度的范围。请尽量避免使用W和Z坐标，因为保存时需要较多的时间进行压缩。"
     }
   },
   "ContentWidgets": {
