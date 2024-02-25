@@ -32,6 +32,7 @@ namespace Game {
         public bool m_dataChanged;
         public static readonly Configuration DefaultImageConfiguration = new(new WebpConfigurationModule());
         public static readonly DecoderOptions DefaultImageDecoderOptions = new() { Configuration = new Configuration(new TiffConfigurationModule(), new WebpConfigurationModule()) };
+        public override string ExportExtension => ".GVFDMB";
 
         public Dictionary<int, Image<Rgba32>> Data {
             get => m_data;
@@ -168,7 +169,7 @@ namespace Game {
         public override void LoadData() {
             if (m_worldDirectory != null) {
                 try {
-                    string directory = $"{m_worldDirectory}/GVFDMB/{m_ID.ToString("X", null)}";
+                    string directory = $"{m_worldDirectory}/GVFDMB/{m_ID:X}";
                     if (Storage.DirectoryExists(directory)) {
                         List<string> files = Storage.ListFileNames(directory).ToList();
                         HashSet<int> hashSet = [];
@@ -249,15 +250,15 @@ namespace Game {
 
         public string SaveString(bool saveLastOutput) {
             StringBuilder stringBuilder = new();
-            stringBuilder.Append(m_ID.ToString("X", null));
+            stringBuilder.Append(m_ID.ToString("X"));
             stringBuilder.Append($";{m_xLength},{m_yLength},{m_zLength},{m_wLength},{m_xOffset},{m_yOffset},{m_zOffset},{m_wOffset},{m_xSize},{m_ySize};");
             stringBuilder.Append(string.Join(',', Data.Keys));
             if (saveLastOutput) {
                 stringBuilder.Append(';');
-                stringBuilder.Append(LastOutput.ToString("X", null));
+                stringBuilder.Append(LastOutput.ToString("X"));
             }
             if (m_isDataInitialized && m_dataChanged) {
-                string directory = $"{m_worldDirectory}/GVFDMB/{m_ID.ToString("X", null)}";
+                string directory = $"{m_worldDirectory}/GVFDMB/{m_ID:X}";
                 if (!Storage.DirectoryExists(directory)) {
                     Storage.CreateDirectory(directory);
                 }
@@ -413,11 +414,11 @@ namespace Game {
                             }
                             StringBuilder stringBuilder = new();
                             for (int j = 0; j < lastNotZero; j++) {
-                                stringBuilder.Append(frame[j, yIndex].PackedValue.ToString("X", null));
+                                stringBuilder.Append(frame[j, yIndex].PackedValue.ToString("X"));
                                 stringBuilder.Append(',');
                             }
                             if (lastNotZero > -1) {
-                                stringBuilder.Append(frame[lastNotZero, yIndex].PackedValue.ToString("X", null));
+                                stringBuilder.Append(frame[lastNotZero, yIndex].PackedValue.ToString("X"));
                             }
                             result3[yIndex] = stringBuilder.ToString();
                         }
@@ -501,7 +502,66 @@ namespace Game {
             m_totalLength = m_xyProduct;
         }
 
-        public override void Stream2Data(Stream stream) { }
+        public override MemoryStream Data2Stream() {
+            if (m_isDataInitialized) {
+                string comment = SaveString();
+                MemoryStream stream = new();
+                using (ZipArchive zip = ZipArchive.Create(stream, true)) {
+                    string directory = $"{m_worldDirectory}/GVFDMB/{m_ID:X}";
+                    List<string> files = Storage.ListFileNames(directory).ToList();
+                    foreach (string file in files) {
+                        zip.AddStream(file, Storage.OpenFile($"{directory}/{file}", OpenFileMode.Read));
+                    }
+                    zip.Comment = comment;
+                }
+                return stream;
+            }
+            return null;
+        }
+
+        public override string Stream2Data(Stream stream, string extension = "") {
+            if (extension == ".gvfdmb") {
+                Dictionary<int, Image<Rgba32>> newData = new();
+                string comment;
+                using (ZipArchive zip = ZipArchive.Open(stream)) {
+                    foreach (ZipArchiveEntry file in zip.ReadCentralDir()) {
+                        string fileName = file.FilenameInZip;
+                        if (fileName.EndsWith(".webp")
+                            && int.TryParse(fileName.Substring(0, fileName.Length - 4), out int i)) {
+                            MemoryStream memoryStream = new();
+                            zip.ExtractFile(file, memoryStream);
+                            memoryStream.Position = 0L;
+                            newData.Add(i, SixLabors.ImageSharp.Image.Load<Rgba32>(DefaultImageDecoderOptions, memoryStream));
+                            memoryStream.Close();
+                        }
+                    }
+                    comment = zip.Comment;
+                }
+                Data = newData;
+                string[] array = comment.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                if (array.Length >= 2) {
+                    string[] array2 = array[1].Split(',');
+                    if (array2.Length == 10) {
+                        m_xLength = int.Parse(array2[0]);
+                        m_yLength = int.Parse(array2[1]);
+                        m_zLength = int.Parse(array2[2]);
+                        m_wLength = int.Parse(array2[3]);
+                        m_xOffset = int.Parse(array2[4]);
+                        m_yOffset = int.Parse(array2[5]);
+                        m_zOffset = int.Parse(array2[6]);
+                        m_wOffset = int.Parse(array2[7]);
+                        m_xSize = int.Parse(array2[8]);
+                        m_ySize = int.Parse(array2[9]);
+                    }
+                }
+                if (array.Length >= 4) {
+                    LastOutput = uint.Parse(array[3], NumberStyles.HexNumber, null);
+                }
+                return LanguageControl.Get(GetType().Name, 1);
+            }
+            UintList2Data(GVListMemoryBankData.Stream2UintList(stream));
+            return string.Empty;
+        }
 
         public override void UintArray2Data(uint[] uints, int width = 0, int height = 0) {
             Image<Rgba32> image = new(DefaultImageConfiguration, width, height);
@@ -533,14 +593,18 @@ namespace Game {
         public override uint[] Data2UintArray() {
             List<uint> uints = [];
             if (m_isDataInitialized) {
-                foreach (Image<Rgba32> image in Data.Values) {
-                    Rgba32[] pixelArray = new Rgba32[image.Width * image.Height];
-                    foreach (ImageFrame<Rgba32> frame in image.Frames) {
-                        frame.CopyPixelDataTo(pixelArray);
-                        uints.AddRange(pixelArray.Select(pixel => pixel.PackedValue));
+                for (int w = 0; w < m_wLength; w++) {
+                    if (Data.TryGetValue(w, out Image<Rgba32> image)) {
+                        Rgba32[] pixelArray = new Rgba32[image.Width * image.Height];
+                        foreach (ImageFrame<Rgba32> frame in image.Frames) {
+                            frame.CopyPixelDataTo(pixelArray);
+                            uints.AddRange(pixelArray.Select(pixel => pixel.PackedValue));
+                        }
+                    }
+                    else {
+                        uints.AddRange(Enumerable.Repeat(0u, m_xyzProduct));
                     }
                 }
-                for (int w = 0; w < m_wLength; w++) { }
             }
             return uints.ToArray();
         }

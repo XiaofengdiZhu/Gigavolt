@@ -14,6 +14,7 @@ namespace Game {
         public uint m_width;
         public uint m_height;
         public uint m_offset;
+        public override string ExportExtension => ".GVLMB";
 
         public List<uint> Data {
             get => m_data;
@@ -134,7 +135,34 @@ namespace Game {
             return stringBuilder.ToString();
         }
 
-        public static List<uint> Stream2UintList(Stream stream) {
+        public override MemoryStream Data2Stream() {
+            if (m_isDataInitialized) {
+                MemoryStream stream = new();
+                using (ZipArchive zip = ZipArchive.Create(stream, true)) {
+                    MemoryStream stream2 = new(GetBytes(), false);
+                    zip.AddStream("content", stream2);
+                    stream2.Close();
+                }
+                return stream;
+            }
+            return null;
+        }
+
+        public static List<uint> Stream2UintList(Stream stream, string extension = "") {
+            if (extension == ".gvlmb") {
+                using (ZipArchive zip = ZipArchive.Open(stream)) {
+                    foreach (ZipArchiveEntry file in zip.ReadCentralDir()) {
+                        if (file.FilenameInZip == "content") {
+                            MemoryStream memoryStream = new();
+                            zip.ExtractFile(file, memoryStream);
+                            memoryStream.Position = 0L;
+                            List<uint> result = Stream2UintList(memoryStream);
+                            memoryStream.Close();
+                            return result;
+                        }
+                    }
+                }
+            }
             List<uint> image = new((int)(stream.Length / 4 + 1));
             for (int i = 0; i < stream.Length / 4 + 1; i++) {
                 byte[] fourBytes = new byte[4];
@@ -145,11 +173,12 @@ namespace Game {
             return image;
         }
 
-        public override void Stream2Data(Stream stream) {
-            Data = Stream2UintList(stream);
+        public override string Stream2Data(Stream stream, string extension = "") {
+            Data = Stream2UintList(stream, extension);
             m_width = 0u;
             m_height = 0u;
             m_offset = 0u;
+            return extension == ".gvlmb" ? LanguageControl.Get(GetType().Name, 1) : string.Empty;
         }
 
         public static byte[] UintList2Bytes(List<uint> array, int startIndex = 0, int length = int.MaxValue) {

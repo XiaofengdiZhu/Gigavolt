@@ -368,9 +368,19 @@ namespace Game {
             return image;
         }
 
-        public override void Stream2Data(Stream stream) {
+        public override MemoryStream Data2Stream() {
+            if (m_isDataInitialized) {
+                MemoryStream stream = new();
+                Image.Save(GetImage(), stream, ImageFileFormat.Png, true);
+                return stream;
+            }
+            return null;
+        }
+
+        public override string Stream2Data(Stream stream, string extension = "") {
             Data = Stream2UintArray(stream, out m_width);
             m_height = m_width;
+            return string.Empty;
         }
 
         public override void UintArray2Data(uint[] uints, int width = 0, int height = 0) {

@@ -23,9 +23,8 @@ namespace Game {
         public RenderTarget2D m_cachedTerrainTexture2D;
         public DateTime m_cachedTerrainTexture2DTime;
         public PrimitivesRenderer2D m_primitivesRenderer2D = new();
-
         public SamplerState m_samplerState;
-
+        public virtual string ExportExtension => ".png";
         static readonly Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);
         static readonly Color grassColor = BlockColorsMap.GrassColorsMap.Lookup(8, 8);
         static readonly Color ivyColor = BlockColorsMap.IvyColorsMap.Lookup(8, 8);
@@ -105,10 +104,10 @@ namespace Game {
         }
 
         public virtual void Image2Data(Image image) { }
-        public virtual Stream Data2Stream() => null;
-        public Stream GetStream() => m_isDataInitialized ? Data2Stream() : null;
+        public virtual MemoryStream Data2Stream() => null;
+        public MemoryStream GetStream() => m_isDataInitialized ? Data2Stream() : null;
 
-        public virtual void Stream2Data(Stream stream) { }
+        public virtual string Stream2Data(Stream stream, string extension = "") => string.Empty;
 
         public Texture2D Data2Texture2D() {
             Image image = GetImage();

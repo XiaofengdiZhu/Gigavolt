@@ -12,6 +12,12 @@
     "2": "转换失败，原因详见日志",
     "3": "输入的范围应该是正整数，出图用宽度、高度、各偏移应该是自然数"
   },
+  "GVListMemoryBankData": {
+    "1": "一维存储器专用格式"
+  },
+  "GVFourDimensionalMemoryBankData": {
+    "1": "四维存储器专用格式"
+  },
   "Blocks": {
     "GVNesEmulatorBlock:0": {
       "DisplayName": "GV红白机模拟器",

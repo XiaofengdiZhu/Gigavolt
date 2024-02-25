@@ -115,9 +115,9 @@ namespace Game {
                 SetPath(directoryName);
             }
             if (m_exportButton.IsClicked) {
-                Image image = m_arrayData.GetImage();
-                if (image != null) {
-                    ExportImage($"{m_path}/{m_arrayData.m_ID.ToString("X", null)}.png", image);
+                MemoryStream stream = m_arrayData.GetStream();
+                if (stream != null) {
+                    ExportFile($"{m_path}/{m_arrayData.m_ID:X}{m_arrayData.ExportExtension}", stream);
                 }
             }
             if (m_actionButton.IsClicked
@@ -199,13 +199,15 @@ namespace Game {
             }
         }
 
-        public void ExportImage(string path, Image image) {
+        public void ExportFile(string path, MemoryStream stream) {
             CancellableBusyDialog busyDialog = new(LanguageControl.Get(GetType().Name, 13), false);
             DialogsManager.ShowDialog(null, busyDialog);
             try {
                 FileStream fileStream = File.OpenWrite(path);
-                Image.Save(image, fileStream, ImageFileFormat.Png, true);
+                stream.WriteTo(fileStream);
+                fileStream.Flush(true);
                 fileStream.Close();
+                stream.Close();
                 DialogsManager.HideDialog(busyDialog);
                 DialogsManager.ShowDialog(
                     null,
@@ -265,8 +267,8 @@ namespace Game {
                                 );
                                 break;
                             default:
-                                m_arrayData.Stream2Data(stream);
-                                result = string.Format(LanguageControl.Get(GetType().Name, 11), entry.Path, stream.Length);
+                                string desc = m_arrayData.Stream2Data(stream, extension);
+                                result = string.Format(LanguageControl.Get(GetType().Name, 11), entry.Path, stream.Length, desc.Length > 0 ? desc : LanguageControl.Get(GetType().Name, 17));
                                 break;
                         }
                         m_arrayData.SaveString();
