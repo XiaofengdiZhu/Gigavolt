@@ -392,11 +392,13 @@ namespace Game {
             m_totalLength = m_xyzProduct * realWLength;
         }
 
-        public static string Data2String(Dictionary<int, Image<Rgba32>> images) {
-            int wLength = images.Keys.Max() + 1;
-            string[] result = new string[wLength];
-            for (int wIndex = 0; wIndex < wLength; wIndex++) {
-                if (images.TryGetValue(wIndex, out Image<Rgba32> image)) {
+        public override string Data2String() {
+            if (!m_isDataInitialized) {
+                return null;
+            }
+            string[] result = new string[m_wLength];
+            for (int wIndex = 0; wIndex < m_wLength; wIndex++) {
+                if (Data.TryGetValue(wIndex, out Image<Rgba32> image)) {
                     string[] result2 = new string[image.Frames.Count];
                     for (int zIndex = 0; zIndex < image.Frames.Count; zIndex++) {
                         string[] result3 = new string[image.Height];
@@ -430,13 +432,39 @@ namespace Game {
             return string.Join("|", result);
         }
 
-        public override string Data2String() => m_isDataInitialized ? Data2String(Data) : null;
+        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) {
+            List<uint> list = Data2UintList();
+            if (list == null) {
+                return null;
+            }
+            byte[] bytes = new byte[list.Count * 4];
+            for (int i = 0; i < list.Count; i++) {
+                uint num = list[i];
+                bytes[i * 4] = (byte)(num & 0xFF);
+                bytes[i * 4 + 1] = (byte)((num >> 8) & 0xFF);
+                bytes[i * 4 + 2] = (byte)((num >> 16) & 0xFF);
+                bytes[i * 4 + 3] = (byte)((num >> 24) & 0xFF);
+            }
+            return bytes;
+        }
 
-        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) => null;
+        public override short[] Data2Shorts() {
+            List<uint> list = Data2UintList();
+            if (list == null) {
+                return null;
+            }
+            short[] shorts = new short[list.Count * 2];
+            for (int i = 0; i < list.Count; i++) {
+                uint num = list[i];
+                shorts[i * 2 + 1] = (short)(num & 0xFFFF);
+                shorts[i * 2] = (short)((num >> 16) & 0xFFFF);
+            }
+            return shorts;
+        }
 
-        public override short[] Data2Shorts() => null;
-
-        public override void Shorts2Data(short[] shorts) { }
+        public override void Shorts2Data(short[] shorts) {
+            UintList2Data(GVListMemoryBankData.Shorts2UintList(shorts));
+        }
 
         public override Image Data2Image() {
             if (m_isDataInitialized
@@ -512,8 +540,62 @@ namespace Game {
                         uints.AddRange(pixelArray.Select(pixel => pixel.PackedValue));
                     }
                 }
+                for (int w = 0; w < m_wLength; w++) { }
             }
             return uints.ToArray();
+        }
+
+        public List<uint> Data2UintList(int startIndex = 0, int length = int.MaxValue) {
+            if (m_isDataInitialized && startIndex < m_totalLength) {
+                if (startIndex + length > m_totalLength) {
+                    length = m_totalLength - startIndex;
+                }
+                List<uint> list = new(length);
+                for (int i = startIndex; i < startIndex + length; i++) {
+                    int w = i / m_xyzProduct;
+                    if (Data.TryGetValue(w, out Image<Rgba32> image)) {
+                        int wRemainder = i % m_xyzProduct;
+                        int z = wRemainder / m_xyProduct;
+                        int zRemainder = wRemainder % m_xyProduct;
+                        int y = zRemainder / m_xLength;
+                        int x = zRemainder % m_xLength;
+                        list.Add(image.Frames[z][x, y].PackedValue);
+                    }
+                    else {
+                        list.AddRange(Enumerable.Repeat(0u, m_xyzProduct));
+                    }
+                }
+                return list;
+            }
+            return null;
+        }
+
+        public void UintList2Data(List<uint> list) {
+            int width = (int)Math.Ceiling(Math.Sqrt(list.Count + 1));
+            Image<Rgba32> image = new(DefaultImageConfiguration, width, width);
+            for (int y = 0; y < width; y++) {
+                for (int x = 0; x < width; x++) {
+                    int index = y * width + x;
+                    if (index >= list.Count) {
+                        break;
+                    }
+                    image[x, y] = new Rgba32(list[index]);
+                }
+            }
+            Data = new Dictionary<int, Image<Rgba32>> { { 0, image } };
+            m_xLength = width;
+            m_yLength = width;
+            m_xyProduct = m_xLength * m_yLength;
+            m_zLength = 1;
+            m_xyzProduct = m_xyProduct;
+            m_wLength = 1;
+            m_totalLength = m_xyProduct;
+            m_xOffset = 0;
+            m_yOffset = 0;
+            m_zOffset = 0;
+            m_wOffset = 0;
+            m_xSize = width;
+            m_ySize = width;
         }
     }
 }

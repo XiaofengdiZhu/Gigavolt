@@ -269,10 +269,11 @@ namespace Game {
         public static byte[] Image2Bytes(Image image, int startIndex = 0, int length = int.MaxValue) {
             byte[] bytes = new byte[image.Pixels.Length * 4];
             for (int i = startIndex; i < MathUtils.Min(image.Pixels.Length, length); i++) {
-                bytes[i * 4 + 3] = (byte)(image.Pixels[i].PackedValue & 0xFF);
-                bytes[i * 4 + 2] = (byte)((image.Pixels[i].PackedValue >> 8) & 0xFF);
-                bytes[i * 4 + 1] = (byte)((image.Pixels[i].PackedValue >> 16) & 0xFF);
-                bytes[i * 4] = (byte)((image.Pixels[i].PackedValue >> 24) & 0xFF);
+                uint num = image.Pixels[i].PackedValue;
+                bytes[i * 4 + 3] = (byte)(num & 0xFF);
+                bytes[i * 4 + 2] = (byte)((num >> 8) & 0xFF);
+                bytes[i * 4 + 1] = (byte)((num >> 16) & 0xFF);
+                bytes[i * 4] = (byte)(num >> 24);
             }
             return bytes;
         }
@@ -280,10 +281,11 @@ namespace Game {
         public static byte[] UintArray2Bytes(uint[] array, int startIndex = 0, int length = int.MaxValue) {
             byte[] bytes = new byte[array.Length * 4];
             for (int i = startIndex; i < MathUtils.Min(array.Length, length); i++) {
-                bytes[i * 4 + 3] = (byte)(array[i] & 0xFF);
-                bytes[i * 4 + 2] = (byte)((array[i] >> 8) & 0xFF);
-                bytes[i * 4 + 1] = (byte)((array[i] >> 16) & 0xFF);
-                bytes[i * 4] = (byte)((array[i] >> 24) & 0xFF);
+                uint num = array[i];
+                bytes[i * 4 + 3] = (byte)(num & 0xFF);
+                bytes[i * 4 + 2] = (byte)((num >> 8) & 0xFF);
+                bytes[i * 4 + 1] = (byte)((num >> 16) & 0xFF);
+                bytes[i * 4] = (byte)(num >> 24);
             }
             return bytes;
         }
@@ -293,8 +295,9 @@ namespace Game {
         public static short[] Image2Shorts(Image image) {
             short[] shorts = new short[image.Pixels.Length * 2];
             for (int i = 0; i < image.Pixels.Length; i++) {
-                shorts[i * 2 + 1] = (short)(image.Pixels[i].PackedValue & 0xFFFF);
-                shorts[i * 2] = (short)((image.Pixels[i].PackedValue >> 16) & 0xFFFF);
+                uint num = image.Pixels[i].PackedValue;
+                shorts[i * 2 + 1] = (short)(num & 0xFFFF);
+                shorts[i * 2] = (short)(num >> 16);
             }
             return shorts;
         }
@@ -302,8 +305,9 @@ namespace Game {
         public static short[] UintArray2Shorts(uint[] array) {
             short[] shorts = new short[array.Length * 2];
             for (int i = 0; i < array.Length; i++) {
-                shorts[i * 2 + 1] = (short)(array[i] & 0xFFFF);
-                shorts[i * 2] = (short)((array[i] >> 16) & 0xFFFF);
+                uint num = array[i];
+                shorts[i * 2 + 1] = (short)(num & 0xFFFF);
+                shorts[i * 2] = (short)(num >> 16);
             }
             return shorts;
         }
