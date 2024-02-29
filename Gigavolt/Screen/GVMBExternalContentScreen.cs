@@ -267,8 +267,9 @@ namespace Game {
                                 );
                                 break;
                             default:
+                                long length = stream.Length;
                                 string desc = m_arrayData.Stream2Data(stream, extension);
-                                result = string.Format(LanguageControl.Get(GetType().Name, 11), entry.Path, stream.Length, desc.Length > 0 ? desc : LanguageControl.Get(GetType().Name, 17));
+                                result = string.Format(LanguageControl.Get(GetType().Name, 11), entry.Path, length, desc.Length > 0 ? desc : LanguageControl.Get(GetType().Name, 17));
                                 break;
                         }
                         m_arrayData.SaveString();

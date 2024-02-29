@@ -137,32 +137,20 @@ namespace Game {
 
         public override MemoryStream Data2Stream() {
             if (m_isDataInitialized) {
+                string comment = SaveString();
                 MemoryStream stream = new();
                 using (ZipArchive zip = ZipArchive.Create(stream, true)) {
                     MemoryStream stream2 = new(GetBytes(), false);
                     zip.AddStream("content", stream2);
                     stream2.Close();
+                    zip.Comment = comment;
                 }
                 return stream;
             }
             return null;
         }
 
-        public static List<uint> Stream2UintList(Stream stream, string extension = "") {
-            if (extension == ".gvlmb") {
-                using (ZipArchive zip = ZipArchive.Open(stream)) {
-                    foreach (ZipArchiveEntry file in zip.ReadCentralDir()) {
-                        if (file.FilenameInZip == "content") {
-                            MemoryStream memoryStream = new();
-                            zip.ExtractFile(file, memoryStream);
-                            memoryStream.Position = 0L;
-                            List<uint> result = Stream2UintList(memoryStream);
-                            memoryStream.Close();
-                            return result;
-                        }
-                    }
-                }
-            }
+        public static List<uint> Stream2UintList(Stream stream) {
             List<uint> image = new((int)(stream.Length / 4 + 1));
             for (int i = 0; i < stream.Length / 4 + 1; i++) {
                 byte[] fourBytes = new byte[4];
@@ -174,11 +162,33 @@ namespace Game {
         }
 
         public override string Stream2Data(Stream stream, string extension = "") {
-            Data = Stream2UintList(stream, extension);
+            if (extension == ".gvlmb") {
+                using (ZipArchive zip = ZipArchive.Open(stream)) {
+                    foreach (ZipArchiveEntry file in zip.ReadCentralDir()) {
+                        if (file.FilenameInZip == "content") {
+                            MemoryStream memoryStream = new();
+                            zip.ExtractFile(file, memoryStream);
+                            memoryStream.Position = 0L;
+                            Data = Stream2UintList(memoryStream);
+                            memoryStream.Close();
+                            break;
+                        }
+                    }
+                    string[] array = zip.Comment.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (array.Length >= 5) {
+                        m_width = uint.Parse(array[1]);
+                        m_height = uint.Parse(array[2]);
+                        m_offset = uint.Parse(array[3]);
+                        LastOutput = uint.Parse(array[4], NumberStyles.HexNumber, null);
+                    }
+                }
+                return LanguageControl.Get(GetType().Name, 1);
+            }
+            Data = Stream2UintList(stream);
             m_width = 0u;
             m_height = 0u;
             m_offset = 0u;
-            return extension == ".gvlmb" ? LanguageControl.Get(GetType().Name, 1) : string.Empty;
+            return string.Empty;
         }
 
         public static byte[] UintList2Bytes(List<uint> array, int startIndex = 0, int length = int.MaxValue) {

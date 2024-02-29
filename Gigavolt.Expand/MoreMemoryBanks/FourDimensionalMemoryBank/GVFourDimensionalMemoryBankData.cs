@@ -527,7 +527,7 @@ namespace Game {
                     foreach (ZipArchiveEntry file in zip.ReadCentralDir()) {
                         string fileName = file.FilenameInZip;
                         if (fileName.EndsWith(".webp")
-                            && int.TryParse(fileName.Substring(0, fileName.Length - 4), out int i)) {
+                            && int.TryParse(fileName.Substring(0, fileName.Length - 5), out int i)) {
                             MemoryStream memoryStream = new();
                             zip.ExtractFile(file, memoryStream);
                             memoryStream.Position = 0L;

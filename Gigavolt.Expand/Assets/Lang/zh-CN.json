@@ -116,7 +116,7 @@
       "DisplayName": "GV JS单片机",
       "Description": "可以运行Javascript的单片机，理论上可实现一切功能，详见本Mod Github页面的介绍"
     },
-    "GVFourDimensionalMemoryBankBlock": {
+    "GVFourDimensionalMemoryBankBlock:0": {
       "DisplayName": "GV四维存储器",
       "Description": "和存储器相似，但从二维扩展到了四维，右端口较低的16位用来指定X坐标，右端较高的16位用来指定Y坐标，左端口较低的16位用来指定Z坐标，左端较高的16位用来指定W坐标。初始化时，必须先指定四个维度的范围。请尽量避免使用W和Z坐标，初始化时也尽可能设置较小的值，因为多维度的数据在保存等操作下性能较差，可能造成卡顿。"
     }
@@ -128,7 +128,7 @@
       "3": "取消"
     },
     "EditGVListMemoryBankDialog": {
-      "1": "编辑一维内存数据",
+      "1": "编辑一维存储器数据",
       "2": "一维存储器以List列表形式储存32位二进制数字(十六进制0到FFFFFFFF)，每个数字用英文逗号,分开，更多说明详见",
       "3": "指定新长度：",
       "4": "出图用宽度：",
@@ -140,7 +140,7 @@
       "23": "导入/导出"
     },
     "EditGVFourDimensionalMemoryBankDialog": {
-      "1": "编辑四维内存数据",
+      "1": "编辑四维存储器数据",
       "2": "更多说明详见",
       "3": "X范围 ",
       "4": "Y范围 ",
