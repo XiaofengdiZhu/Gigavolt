@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -41,6 +41,10 @@
 			<HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="OpenTK">
+			<HintPath>reference\OpenTK.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 		<Reference Include="Survivalcraft">
 			<HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
 			<Private>False</Private>
@@ -52,11 +56,11 @@
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.2" GeneratePathProperty="true"/>
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="$(PkgSixLabors_ImageSharp)\lib\net6.0\SixLabors.ImageSharp.dll">
+		<None Link="reference\SixLabors.ImageSharp.dll" Include="$(PkgSixLabors_ImageSharp)\lib\net6.0\SixLabors.ImageSharp.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Models\GV4DMemoryBank.dae">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<None Update="reference\OpenTK.dll">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 	<ItemGroup>
@@ -111,13 +115,17 @@
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankBlock.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankGVElectricElement.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\SubsystemGVFourDimensionalMemoryBankBlockBehavior.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemory\EditGVListMemoryBankDialog.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemory\GVListMemoryBankData.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemory\GVListMemoryBankBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemory\ListMemoryBankGVElectricElement.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemory\SubsystemGVListMemoryBankBlockBehavior.cs"/>
+		<Compile Include="MoreMemoryBanks\ListMemoryBank\EditGVListMemoryBankDialog.cs"/>
+		<Compile Include="MoreMemoryBanks\ListMemoryBank\GVListMemoryBankData.cs"/>
+		<Compile Include="MoreMemoryBanks\ListMemoryBank\GVListMemoryBankBlock.cs"/>
+		<Compile Include="MoreMemoryBanks\ListMemoryBank\ListMemoryBankGVElectricElement.cs"/>
+		<Compile Include="MoreMemoryBanks\ListMemoryBank\SubsystemGVListMemoryBankBlockBehavior.cs"/>
 		<Compile Include="MoreMemoryBanks\MemoryBanksOperator\GVMemoryBanksOperatorBlock.cs"/>
 		<Compile Include="MoreMemoryBanks\MemoryBanksOperator\MemoryBanksOperatorGVElectricElement.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\VolatileFourDimensionalMemoryBankGVElectricElement.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\GVVolatileFourDimensionalMemoryBankBlock.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\GVVolatileFourDimensionalMemoryBankData.cs"/>
+		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\GVVolatileListMemoryBankBlock.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\GVVolatileListMemoryBankData.cs"/>
 		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\VolatileListMemoryBankGVElectricElement.cs"/>

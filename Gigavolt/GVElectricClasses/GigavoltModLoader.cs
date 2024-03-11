@@ -1,4 +1,4 @@
-﻿namespace Game {
+namespace Game {
     public class GigavoltModLoader : ModLoader {
         public override void __ModInitialize() {
             ModsManager.RegisterHook("OnProjectDisposed", this);

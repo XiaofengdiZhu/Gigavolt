@@ -12,7 +12,7 @@ namespace Game {
 
         public BlockMesh[] m_blockMeshes = new BlockMesh[24];
 
-        public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneBlockMesh = new();
 
         public BoundingBox[][] m_collisionBoxes = new BoundingBox[24][];
 
@@ -23,6 +23,10 @@ namespace Game {
         }
 
         public override void Initialize() {
+            RotateableMountedGVElectricElementBlockInitialize();
+        }
+
+        public void RotateableMountedGVElectricElementBlockInitialize() {
             Model model = ContentManager.Get<Model>(m_modelName);
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(m_meshName).ParentBone);
             for (int i = 0; i < 6; i++) {

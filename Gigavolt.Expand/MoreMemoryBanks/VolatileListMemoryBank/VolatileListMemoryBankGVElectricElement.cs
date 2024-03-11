@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Engine;
 
 namespace Game {
     public class VolatileListMemoryBankGVElectricElement : RotateableGVElectricElement {
@@ -78,7 +77,6 @@ namespace Game {
                         int rightInputInt = MathUint.ToInt(rightInput);
                         int inInputInt = MathUint.ToInt(inInput);
                         List<uint> data = memoryBankData.Data;
-                        Log.Information(bottomInput + " " + inInput);
                         switch (bottomInput) {
                             case 1u:
                                 m_voltage = memoryBankData.Read(rightInput);

@@ -62,7 +62,7 @@ namespace Game {
                         memoryBankData,
                         delegate {
                             SetBlockData(new Point3(x, y, z), memoryBankData);
-                            int face = ((GVMemoryBankBlock)BlocksManager.Blocks[GVMemoryBankBlock.Index]).GetFace(value);
+                            int face = ((GVFourDimensionalMemoryBankBlock)BlocksManager.Blocks[GVFourDimensionalMemoryBankBlock.Index]).GetFace(value);
                             SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
                             GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
                             if (GVElectricElement != null) {

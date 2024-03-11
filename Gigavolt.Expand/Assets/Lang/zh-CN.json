@@ -119,6 +119,10 @@
     "GVFourDimensionalMemoryBankBlock:0": {
       "DisplayName": "GV四维存储器",
       "Description": "和存储器相似，但从二维扩展到了四维，右端口较低的16位用来指定X坐标，右端较高的16位用来指定Y坐标，左端口较低的16位用来指定Z坐标，左端较高的16位用来指定W坐标。初始化时，必须先指定四个维度的范围。请尽量避免使用W和Z坐标，初始化时也尽可能设置较小的值，因为多维度的数据在保存等操作下性能较差，可能造成卡顿。"
+    },
+    "GVVolatileFourDimensionalMemoryBankBlock:0": {
+      "DisplayName": "GV易失性四维存储器",
+      "Description": "和四维存储器相似，但退出游戏后数据会丢失，不过ID保持不变，无需初始化即可使用"
     }
   },
   "ContentWidgets": {
