@@ -58,6 +58,7 @@
 	<ItemGroup>
 		<None Link="reference\SixLabors.ImageSharp.dll" Include="$(PkgSixLabors_ImageSharp)\lib\net6.0\SixLabors.ImageSharp.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>SixLabors.ImageSharp.dll</TargetPath>
 		</None>
 		<None Update="reference\OpenTK.dll">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -139,6 +140,8 @@
 		<Compile Include="MoreOneInOneOut\MoreOneInOneOutGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\Player\GVPlayerMonitorBlock.cs"/>
+		<Compile Include="MoreSensors\Player\PlayerMonitorGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs"/>
 		<Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs"/>
@@ -393,6 +396,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Textures\GVGuidedDispenserBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVPlayerMonitorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
