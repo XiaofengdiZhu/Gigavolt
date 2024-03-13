@@ -95,6 +95,7 @@ namespace Game {
             if (m_isDataInitialized) {
                 if (m_cachedImage == null
                     || m_updateTime != m_cachedImageTime) {
+                    m_cachedImage = null;
                     m_cachedImage = Data2Image();
                     m_cachedImageTime = m_updateTime;
                 }
@@ -118,7 +119,10 @@ namespace Game {
             if (m_isDataInitialized) {
                 if (m_cachedTexture2D == null
                     || m_updateTime != m_cachedTexture2DTime) {
-                    m_cachedTexture2D?.Dispose();
+                    if (m_cachedTexture2D != null) {
+                        m_cachedTexture2D.Tag = null;
+                        m_cachedTexture2D.Dispose();
+                    }
                     m_cachedTexture2D = Data2Texture2D();
                     m_cachedTexture2DTime = m_updateTime;
                 }

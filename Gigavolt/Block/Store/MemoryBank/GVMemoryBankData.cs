@@ -18,6 +18,7 @@ namespace Game {
             get => m_data;
             set {
                 if (value != m_data) {
+                    m_data = null;
                     m_data = value;
                     m_updateTime = DateTime.Now;
                     if (m_isDataInitialized) {
@@ -337,6 +338,9 @@ namespace Game {
         }
 
         public static Image UintArray2Image(uint[] array, uint width = 0, uint height = 0) {
+            if (array.Length == 0) {
+                return null;
+            }
             Image image = new(width == 0 ? array.Length : (int)width, height == 0 ? 1 : (int)height);
             for (int i = 0; i < array.Length; i++) {
                 image.Pixels[i].PackedValue = array[i];

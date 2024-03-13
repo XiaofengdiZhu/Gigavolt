@@ -102,6 +102,6 @@ namespace Game {
             return flag;
         }
 
-        public static uint Double2Uint(double num) => ((num < 0 ? 1u : 0u) << 31) | (((uint)Math.Truncate(num) & 0x7fff) << 16) | (uint)Math.Round(num % 1 * 0xffff);
+        public static uint Double2Uint(double num) => ((num < 0 ? 1u : 0u) << 31) | (((uint)Math.Truncate(Math.Abs(num)) & 0x7fff) << 16) | (uint)Math.Round(num % 1 * 0xffff);
     }
 }
