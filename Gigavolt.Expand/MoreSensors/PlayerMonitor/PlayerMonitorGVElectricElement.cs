@@ -1,9 +1,7 @@
 using System;
-using System.Runtime.InteropServices;
 using Engine;
 using Engine.Graphics;
 using Engine.Media;
-using OpenTK.Graphics.ES30;
 
 namespace Game {
     public class PlayerMonitorGVElectricElement : RotateableGVElectricElement {
@@ -73,9 +71,9 @@ namespace Game {
                     }
                     case 2u: {
                         Vector3 direction = componentPlayer.ComponentBody.Rotation.ToYawPitchRoll();
-                        m_rightOutput = Float2Uint(direction.X);
-                        m_topOutput = Float2Uint(direction.Y);
-                        m_leftOutput = Float2Uint(direction.Z);
+                        m_rightOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.X * 180 / Math.PI);
+                        m_topOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.Y * 180 / Math.PI);
+                        m_leftOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.Z * 180 / Math.PI);
                         break;
                     }
                     case 3u: {
@@ -94,9 +92,9 @@ namespace Game {
                     }
                     case 5u: {
                         Vector3 direction = componentPlayer.ComponentCreatureModel.EyeRotation.ToYawPitchRoll();
-                        m_rightOutput = Float2Uint(direction.X);
-                        m_topOutput = Float2Uint(direction.Y);
-                        m_leftOutput = Float2Uint(direction.Z);
+                        m_rightOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.X * 180 / Math.PI);
+                        m_topOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.Y * 180 / Math.PI);
+                        m_leftOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.Z * 180 / Math.PI);
                         break;
                     }
                     case 6u: {
@@ -132,7 +130,7 @@ namespace Game {
                     case 18u: {
                         float level = componentPlayer.PlayerData.Level;
                         m_rightOutput = Float2Uint(level);
-                        m_topOutput = Float2Uint(MathUtils.Pow(1.08f, MathUtils.Floor(level - 1f)) / 0.012f * (1f - level % 1f));
+                        m_topOutput = (uint)MathUtils.Ceiling(MathUtils.Pow(1.08f, MathUtils.Floor(level - 1f)) / 0.012f * (1f - level % 1f));
                         IInventory inventory = componentPlayer.ComponentMiner.Inventory;
                         m_leftOutput = (uint)inventory.GetSlotValue(inventory.ActiveSlotIndex);
                         break;
@@ -145,35 +143,62 @@ namespace Game {
                     }
                     case 32u: {
                         ComponentLocomotion locomotion = componentPlayer.ComponentLocomotion;
-                        m_rightOutput = locomotion.m_falling ? uint.MaxValue : 0u;
+                        m_rightOutput = locomotion.m_walking ? uint.MaxValue : 0u;
                         m_topOutput = locomotion.m_flying ? uint.MaxValue : 0u;
-                        m_leftOutput = locomotion.m_walking ? uint.MaxValue : 0u;
+                        m_leftOutput = componentPlayer.ComponentRider.Mount != null ? uint.MaxValue : 0u;
                         break;
                     }
                     case 33u: {
+                        m_rightOutput = componentPlayer.ComponentBody.IsSneaking ? uint.MaxValue : 0u;
+                        m_topOutput = componentPlayer.ComponentLocomotion.m_falling ? uint.MaxValue : 0u;
+                        break;
+                    }
+                    case 34u: {
                         m_rightOutput = componentPlayer.ComponentLocomotion.m_swimming ? uint.MaxValue : 0u;
                         m_topOutput = Float2Uint(componentPlayer.ComponentBody.ImmersionDepth);
-                        m_leftOutput = componentPlayer.ComponentBody.IsSneaking ? uint.MaxValue : 0u;
                         break;
                     }
                     case 48u: {
+                        if (componentPlayer.ViewWidget.m_scalingRenderTarget == null) {
+                            GameWidget gameWidget = componentPlayer.PlayerData.GameWidget;
+                            HookViewWidget hookViewWidget = gameWidget.Children.Find<HookViewWidget>("HookViewWidget", false);
+                            if (hookViewWidget == null) {
+                                hookViewWidget = new HookViewWidget();
+                                gameWidget.Children.InsertAfter(componentPlayer.ViewWidget, hookViewWidget);
+                                m_rightOutput = uint.MaxValue;
+                                m_topOutput = uint.MaxValue;
+                                m_leftOutput = uint.MaxValue;
+                            }
+                            else if (hookViewWidget.m_stopHook) {
+                                hookViewWidget.m_stopHook = false;
+                                m_rightOutput = uint.MaxValue;
+                                m_topOutput = uint.MaxValue;
+                                m_leftOutput = uint.MaxValue;
+                            }
+                            else {
+                                hookViewWidget.m_stopHook = true;
+                                m_rightOutput = 7u;
+                                m_topOutput = 7u;
+                                m_leftOutput = 7u;
+                            }
+                        }
+                        else {
+                            m_rightOutput = uint.MaxValue;
+                            m_topOutput = uint.MaxValue;
+                            m_leftOutput = uint.MaxValue;
+                        }
+                        break;
+                    }
+                    case 49u: {
                         if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inInput, out GVArrayData memory)) {
                             RenderTarget2D renderTarget = componentPlayer.ViewWidget.m_scalingRenderTarget;
                             if (componentPlayer.ViewWidget.m_scalingRenderTarget == null) {
-                                uint[] image = new uint[Window.Size.X * Window.Size.Y];
-                                GCHandle gcHandle = GCHandle.Alloc(image, GCHandleType.Pinned);
-                                GL.ReadPixels(
-                                    0,
-                                    0,
-                                    Window.Size.X,
-                                    Window.Size.Y,
-                                    PixelFormat.Rgba,
-                                    PixelType.UnsignedByte,
-                                    gcHandle.AddrOfPinnedObject()
-                                );
-                                memory.UintArray2Data(image, Window.Size.X, Window.Size.Y);
-                                gcHandle.Free();
-                                image = null;
+                                HookViewWidget hookViewWidget = componentPlayer.PlayerData.GameWidget.Children.Find<HookViewWidget>("HookViewWidget", false);
+                                if (hookViewWidget != null
+                                    && !hookViewWidget.m_stopHook) {
+                                    memory.UintArray2Data(hookViewWidget.m_hookedImage, Window.Size.X, Window.Size.Y);
+                                    hookViewWidget.m_hookedImage = null;
+                                }
                             }
                             else {
                                 Image image = new(renderTarget.Width, renderTarget.Height);

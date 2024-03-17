@@ -140,8 +140,9 @@
 		<Compile Include="MoreOneInOneOut\MoreOneInOneOutGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
-		<Compile Include="MoreSensors\Player\GVPlayerMonitorBlock.cs"/>
-		<Compile Include="MoreSensors\Player\PlayerMonitorGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\PlayerMonitor\GVPlayerMonitorBlock.cs"/>
+		<Compile Include="MoreSensors\PlayerMonitor\HookViewWidget.cs"/>
+		<Compile Include="MoreSensors\PlayerMonitor\PlayerMonitorGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs"/>
 		<Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs"/>
