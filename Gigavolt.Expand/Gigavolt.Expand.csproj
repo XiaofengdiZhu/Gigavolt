@@ -51,6 +51,13 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
+			<Project>{77e3e4a0-32d2-423e-9014-5aef2b450f14}</Project>
+			<Name>Gigavolt</Name>
+			<Private>False</Private>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Esprima" Version="3.0.4"/>
 		<PackageReference Include="Jint" Version="3.0.0-beta-2057"/>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.3" GeneratePathProperty="true"/>
@@ -151,6 +158,8 @@
 		<Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs"/>
 		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
 		<Compile Include="Multiplexer\GVMultiplexerBlock.cs"/>
+		<Compile Include="PlayerController\GVPlayerControllerBlock.cs"/>
+		<Compile Include="PlayerController\PlayerControllerGVElectricElement.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
 		<Compile Include="Transportation\InventoryController\GVInventoryControllerBlock.cs"/>
 		<Compile Include="Transportation\InventoryController\InventoryControllerGVElectricElement.cs"/>
@@ -173,6 +182,7 @@
 		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
 		<Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs"/>
 		<Compile Include="WireThrough\GVCopperHammerBlock.cs"/>
+		<Compile Include="Transportation\GVSolidifiedAirBlock.cs"/>
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Assets\Dialogs\EditGVCopperHammerDialog.xml">
@@ -209,15 +219,6 @@
 		<None Update="Assets\Dialogs\EditGVFourDimensionalMemoryBankDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
-			<Project>{77e3e4a0-32d2-423e-9014-5aef2b450f14}</Project>
-			<Name>Gigavolt</Name>
-			<Private>False</Private>
-		</ProjectReference>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Dialogs\EditGVNesEmulatorDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -281,11 +282,9 @@
 		<None Include="Assets\Textures\GVNesEmulatorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes"/>
-	</ItemGroup>
-	<ItemGroup>
+		<None Update="Assets\Textures\GVPlayerControllerBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Include="Assets\Textures\GVDisplayLedBlock0.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -373,11 +372,6 @@
 		<None Include="Assets\Textures\GVInventoryControllerBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="Transportation\GVSolidifiedAirBlock.cs"/>
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="Assets\Textures\GVVolatileMemoryBankBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -402,5 +396,8 @@
 		<None Update="Assets\Textures\GVPlayerMonitorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes"/>
 	</ItemGroup>
 </Project>

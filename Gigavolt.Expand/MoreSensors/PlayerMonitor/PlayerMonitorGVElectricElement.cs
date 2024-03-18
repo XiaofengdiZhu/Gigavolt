@@ -91,13 +91,19 @@ namespace Game {
                         break;
                     }
                     case 5u: {
+                        Vector2 direction = componentPlayer.ComponentLocomotion.LookAngles;
+                        m_rightOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.X * 180 / Math.PI);
+                        m_topOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.Y * 180 / Math.PI);
+                        break;
+                    }
+                    case 6u: {
                         Vector3 direction = componentPlayer.ComponentCreatureModel.EyeRotation.ToYawPitchRoll();
                         m_rightOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.X * 180 / Math.PI);
                         m_topOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.Y * 180 / Math.PI);
                         m_leftOutput = MoreOneInOneOutGVElectricElement.Double2Uint(direction.Z * 180 / Math.PI);
                         break;
                     }
-                    case 6u: {
+                    case 7u: {
                         Vector3 position = componentPlayer.ComponentBody.Position;
                         int x = (int)position.X;
                         int y = (int)position.Y;
@@ -107,7 +113,7 @@ namespace Game {
                         m_leftOutput = (uint)m_terrain.GetCellLight(x, y, z);
                         break;
                     }
-                    case 7u: {
+                    case 8u: {
                         Vector3 position = componentPlayer.PlayerData.SpawnPosition;
                         m_rightOutput = Float2Uint(position.X);
                         m_topOutput = Float2Uint(position.Y);
