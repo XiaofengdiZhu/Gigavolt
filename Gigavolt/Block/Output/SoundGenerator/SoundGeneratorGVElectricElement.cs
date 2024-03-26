@@ -67,9 +67,7 @@ namespace Game {
                     || topInput != m_lastTopInput
                     || rightInput != m_lastRightInput
                     || leftInput != m_lastLeftInput) {
-                    if (m_sound != null) {
-                        m_sound.Dispose();
-                    }
+                    m_sound?.Dispose();
                     if (inInput > 0) {
                         if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(inInput, out GVArrayData GVMBData)) {
                             int startIndex = MathUint.ToInt(topInput);
@@ -114,13 +112,7 @@ namespace Game {
                             }
                         }
                     }
-                    m_lastTopInput = topInput;
-                    m_lastRightInput = rightInput;
-                    m_lastBottomInput = bottomInput;
-                    m_lastLeftInput = leftInput;
-                    m_lastInInput = inInput;
                 }
-                m_lastBottomInput = 0;
             }
             else {
                 if (bottomInput != m_lastBottomInput) {
@@ -133,9 +125,13 @@ namespace Game {
                             m_playing = true;
                         }
                     }
-                    m_lastBottomInput = bottomInput;
                 }
             }
+            m_lastTopInput = topInput;
+            m_lastRightInput = rightInput;
+            m_lastBottomInput = bottomInput;
+            m_lastLeftInput = leftInput;
+            m_lastInInput = inInput;
             if (m_playing && (DateTime.Now - m_lastNoiseTime).TotalSeconds > 1) {
                 m_lastNoiseTime = DateTime.Now;
                 GVCellFace cellFace = CellFaces[0];
