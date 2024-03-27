@@ -94,12 +94,12 @@ namespace Game {
                 ApplyNewVoltage(~m_lastValidVoltage);
             }
             else if (NumberKeyboardClearEntry.IsClicked) {
-                ApplyNewVoltage(0u);
+                ApplyNewVoltage(0u, true);
             }
             if (OctTextBox.Text != m_lastOctString) {
                 try {
-                    uint newVoltage = Convert.ToUInt32(OctTextBox.Text, 8);
-                    ApplyNewVoltage(newVoltage);
+                    uint newVoltage = OctTextBox.Text == string.Empty ? 0u : Convert.ToUInt32(OctTextBox.Text, 8);
+                    ApplyNewVoltage(newVoltage, true);
                 }
                 catch (Exception e) {
                     OctTextBox.Text = m_lastOctString;
@@ -108,8 +108,8 @@ namespace Game {
             }
             else if (DecTextBox.Text != m_lastDecString) {
                 try {
-                    uint newVoltage = Convert.ToUInt32(DecTextBox.Text, 10);
-                    ApplyNewVoltage(newVoltage);
+                    uint newVoltage = DecTextBox.Text == string.Empty ? 0u : Convert.ToUInt32(DecTextBox.Text, 10);
+                    ApplyNewVoltage(newVoltage, true);
                 }
                 catch (Exception e) {
                     DecTextBox.Text = m_lastDecString;
@@ -118,8 +118,8 @@ namespace Game {
             }
             else if (HexTextBox.Text != m_lastHexString) {
                 try {
-                    uint newVoltage = Convert.ToUInt32(HexTextBox.Text, 16);
-                    ApplyNewVoltage(newVoltage);
+                    uint newVoltage = HexTextBox.Text == string.Empty ? 0u : Convert.ToUInt32(HexTextBox.Text, 16);
+                    ApplyNewVoltage(newVoltage, true);
                 }
                 catch (Exception e) {
                     HexTextBox.Text = m_lastHexString;
@@ -181,9 +181,14 @@ namespace Game {
             }
             if (newFocusedTextBox == m_lastFocusedTextBox) {
                 int newFocusedLength = newFocusedTextBox.Text.Length;
-                newFocusedTextBox.CaretPosition = m_lastCaretPosition;
-                if (newFocusedLength != m_lastFocusedLength) {
-                    newFocusedTextBox.CaretPosition += newFocusedLength - m_lastFocusedLength;
+                if (m_lastCaretPosition > newFocusedLength) {
+                    newFocusedTextBox.CaretPosition = newFocusedLength;
+                }
+                else {
+                    newFocusedTextBox.CaretPosition = m_lastCaretPosition;
+                    if (newFocusedLength != m_lastFocusedLength) {
+                        newFocusedTextBox.CaretPosition += newFocusedLength - m_lastFocusedLength;
+                    }
                 }
             }
             else {
@@ -212,12 +217,12 @@ namespace Game {
                 if (newFocusedTextBox.CaretPosition > 0) {
                     bool flag = newFocusedTextBox.CaretPosition != newFocusedTextBox.Text.Length;
                     string newVoltageString = newFocusedTextBox.Text.Remove(newFocusedTextBox.CaretPosition - 1, 1).Trim();
-                    uint newVoltage = Convert.ToUInt32(
-                        newVoltageString == string.Empty ? "0" : newVoltageString,
+                    uint newVoltage = newVoltageString == string.Empty ? 0u : Convert.ToUInt32(
+                        newVoltageString,
                         OctCheckbox.IsChecked ? 8 :
                         DecCheckbox.IsChecked ? 10 : 16
                     );
-                    ApplyNewVoltage(newVoltage);
+                    ApplyNewVoltage(newVoltage, true);
                     if (flag) {
                         newFocusedTextBox.CaretPosition--;
                     }
@@ -269,16 +274,37 @@ namespace Game {
             }
         }
 
-        public void ApplyNewVoltage(uint newVoltage) {
-            if (m_lastValidVoltage == newVoltage) {
-                return;
+        public void ApplyNewVoltage(uint newVoltage, bool keepEmpty = false) {
+            int num = -1;
+            if (keepEmpty && newVoltage == 0u) {
+                if (OctCheckbox.IsChecked) {
+                    m_lastOctString = "";
+                    OctTextBox.Text = m_lastOctString;
+                    num = 0;
+                }
+                else if (DecCheckbox.IsChecked) {
+                    m_lastDecString = "";
+                    DecTextBox.Text = m_lastDecString;
+                    num = 1;
+                }
+                else if (HexCheckbox.IsChecked) {
+                    m_lastHexString = "";
+                    HexTextBox.Text = m_lastHexString;
+                    num = 2;
+                }
             }
-            m_lastOctString = Convert.ToString(newVoltage, 8);
-            OctTextBox.Text = m_lastOctString;
-            m_lastDecString = newVoltage.ToString();
-            DecTextBox.Text = m_lastDecString;
-            m_lastHexString = newVoltage.ToString("X");
-            HexTextBox.Text = m_lastHexString;
+            if (num != 0) {
+                m_lastOctString = Convert.ToString(newVoltage, 8).ToUpper();
+                OctTextBox.Text = m_lastOctString;
+            }
+            if (num != 1) {
+                m_lastDecString = Convert.ToString(newVoltage, 10).ToUpper();
+                DecTextBox.Text = m_lastDecString;
+            }
+            if (num != 2) {
+                m_lastHexString = Convert.ToString(newVoltage, 16).ToUpper();
+                HexTextBox.Text = m_lastHexString;
+            }
             FixedLabel.Text = ((newVoltage >> 31 == 1 ? -1 : 1) * (((newVoltage >> 16) & 0x7fffu) + (double)(newVoltage & 0xffffu) / 0xffff)).ToString("G");
             for (int i = 0; i < 32; i++) {
                 bool newBit = ((newVoltage >> i) & 1u) == 1u;
