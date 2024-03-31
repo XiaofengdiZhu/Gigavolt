@@ -39,5 +39,8 @@
 		<MemberSubsystemTemplate Name="GVJavascriptMicrocontrollerBlockBehavior" Guid="75b5af50-ae40-44f0-9ea9-ceeffa984e74" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<Parameter Name="Class" Guid="fdec63d8-84d4-4881-8662-d7dcf41f77ed" Value="Game.SubsystemGVJavascriptMicrocontrollerBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVCameraBlockBehavior" Guid="69ba20d9-bd6d-4f75-a70d-2ee29cceea87" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="6aadb777-81b9-4b41-9008-88ac5a11a795" Value="Game.SubsystemGVCameraBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

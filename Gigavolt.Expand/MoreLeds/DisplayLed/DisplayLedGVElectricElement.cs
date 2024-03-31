@@ -14,7 +14,7 @@ namespace Game {
         public uint m_inputBottom;
         public uint m_inputLeft;
 
-        public static readonly Vector3[] m_upVector3 = {
+        public static readonly Vector3[] m_upVector3 = [
             Vector3.UnitY,
             Vector3.UnitX,
             -Vector3.UnitY,
@@ -39,7 +39,7 @@ namespace Game {
             Vector3.UnitX,
             -Vector3.UnitZ,
             -Vector3.UnitX
-        };
+        ];
 
         public DisplayLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGVDisplayLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDisplayLedGlow>(true);
 

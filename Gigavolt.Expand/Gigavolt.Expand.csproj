@@ -147,6 +147,9 @@
 		<Compile Include="MoreOneInOneOut\MoreOneInOneOutGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\Camera\CameraGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\Camera\GVCameraBlock.cs"/>
+		<Compile Include="MoreSensors\Camera\SubsystemGVDoorBlockBehavior.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\GVPlayerMonitorBlock.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\HookViewWidget.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\PlayerMonitorGVElectricElement.cs"/>
@@ -394,6 +397,12 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVPlayerMonitorBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVCameraBlock0.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVCameraBlock1.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

@@ -247,7 +247,9 @@ namespace Game {
                     bytes = data.GetBytes();
                 }
                 else {
-                    bytes = GetByteFromStream(Storage.OpenFile(path, OpenFileMode.Read));
+                    using (Stream stream = Storage.OpenFile(path, OpenFileMode.Read)) {
+                        bytes = GetByteFromStream(stream);
+                    }
                 }
             }
             catch (Exception e) {

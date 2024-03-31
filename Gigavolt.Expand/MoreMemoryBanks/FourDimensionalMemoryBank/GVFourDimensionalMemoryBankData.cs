@@ -510,7 +510,9 @@ namespace Game {
                     string directory = $"{m_worldDirectory}/GVFDMB/{m_ID:X}";
                     List<string> files = Storage.ListFileNames(directory).ToList();
                     foreach (string file in files) {
-                        zip.AddStream(file, Storage.OpenFile($"{directory}/{file}", OpenFileMode.Read));
+                        using (Stream stream2 = Storage.OpenFile($"{directory}/{file}", OpenFileMode.Read)) {
+                            zip.AddStream(file, stream2);
+                        }
                     }
                     zip.Comment = comment;
                 }

@@ -3,10 +3,10 @@ using Engine;
 
 namespace Game {
     public static class GVStaticStorage {
+        public static readonly Random random = new();
         public static Dictionary<uint, GVArrayData> GVMBIDDataDictionary = new();
 
         public static uint GetUniqueGVMBID() {
-            Random random = new();
             while (true) {
                 uint num = random.UInt();
                 if (num == 0u

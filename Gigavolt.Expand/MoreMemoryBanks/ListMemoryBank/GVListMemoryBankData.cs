@@ -84,7 +84,9 @@ namespace Game {
                 try {
                     string path = $"{m_worldDirectory}/GVLMB/{m_ID.ToString("X", null)}.bin";
                     if (Storage.FileExists(path)) {
-                        Stream2Data(Storage.OpenFile(path, OpenFileMode.Read));
+                        using (Stream stream = Storage.OpenFile(path, OpenFileMode.Read)) {
+                            Stream2Data(stream);
+                        }
                     }
                 }
                 catch (Exception ex) {
