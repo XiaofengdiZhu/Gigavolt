@@ -66,7 +66,7 @@ namespace Game {
             while (m_subsystemTerrain.TerrainUpdater.m_pendingLocations.ContainsKey(index)) {
                 index = GVStaticStorage.random.Int(4, int.MaxValue);
             }
-            m_gameWidget = new GameWidget(new PlayerData(SubsystemGVElectricity.Project) { PlayerIndex = index }, 3);
+            m_gameWidget = new GameWidget(new PlayerData(SubsystemGVElectricity.Project) { PlayerIndex = index }, 0);
             m_subsystemGameWidgets.m_gameWidgets.Add(m_gameWidget);
             m_subsystemGVCameraBlockBehavior.m_gameWidgets.Add(m_gameWidget);
             m_camera = new GVCamera(m_gameWidget);
@@ -179,7 +179,7 @@ namespace Game {
                 foreach (TerrainChunk terrainChunk in m_subsystemTerrain.Terrain.AllocatedChunks) {
                     if (Vector2.DistanceSquared(m_camera.ViewPosition.XZ, terrainChunk.Center) <= MathUtils.Sqr(m_subsystemSky.VisibilityRange)
                         && terrainChunk.State == TerrainChunkState.Valid) {
-                        terrainChunk.FogEnds[3] = float.MaxValue;
+                        terrainChunk.FogEnds[0] = float.MaxValue;
                     }
                 }
                 RenderTarget2D lastRenderTarget = Display.RenderTarget;
