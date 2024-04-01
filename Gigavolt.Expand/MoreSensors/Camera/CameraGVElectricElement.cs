@@ -62,7 +62,11 @@ namespace Game {
             int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
             m_originalPosition = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
-            m_gameWidget = new GameWidget(new PlayerData(SubsystemGVElectricity.Project), 3);
+            int index = GVStaticStorage.random.Int(4, int.MaxValue);
+            while (m_subsystemTerrain.TerrainUpdater.m_pendingLocations.ContainsKey(index)) {
+                index = GVStaticStorage.random.Int(4, int.MaxValue);
+            }
+            m_gameWidget = new GameWidget(new PlayerData(SubsystemGVElectricity.Project) { PlayerIndex = index }, 3);
             m_subsystemGameWidgets.m_gameWidgets.Add(m_gameWidget);
             m_subsystemGVCameraBlockBehavior.m_gameWidgets.Add(m_gameWidget);
             m_camera = new GVCamera(m_gameWidget);
@@ -75,9 +79,11 @@ namespace Game {
             else {
                 m_camera.SetupPerspectiveCamera(m_originalPosition, forward, m_upVector3[mountingFace * 4 + rotation]);
             }
+            m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, m_originalPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
         }
 
         public override void OnRemoved() {
+            m_subsystemTerrain.TerrainUpdater.RemoveUpdateLocation(m_gameWidget.PlayerData.PlayerIndex);
             m_subsystemGameWidgets.m_gameWidgets.Remove(m_gameWidget);
             m_subsystemGVCameraBlockBehavior.m_gameWidgets.Remove(m_gameWidget);
             m_gameWidget.Dispose();
@@ -151,6 +157,7 @@ namespace Game {
                 if (changed) {
                     m_camera.PrepareForDrawing();
                     m_camera.SetupPerspectiveCamera(newViewPosition, newViewDirection, newViewUp);
+                    m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, newViewPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
                 }
             }
             else {

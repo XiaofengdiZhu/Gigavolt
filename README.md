@@ -349,7 +349,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 | 6     | 差集     | 将左边数据逐一与右边所有数据比对，如果右边存在则删除，否则保留                             |
 | 7     | 差集（去重） | 同上，但最后还会对结果进行去重                                             |
 ### 地形射线探测器 Terrain Raycast Detector
-每次输入变化后，向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见下表
+每次输入变化时，向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见下表
 <table>
     <thead align="center">
         <tr>
@@ -528,6 +528,69 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 | 17    | 属性2    | 均为小数                                        | 饥饿度      | 体温         | 湿度        |
 | 18    | 属性3    | 等级为小数，其余为整数                                 | 等级       | /          | 当前手持物品ID  |
 | 19    | 属性4    | 均为小数                                        | 剩余感冒时间   | 剩余疾病时间     | 剩余燃烧时间    |
+## 照相机 Camera
+用于拍照，有简单和复杂两个版本
+### 简单照相机 Simple Camera
+输入指定的存储板ID，每次输入发生变化时，就会对着该方块面对的方向拍照，并把图像传输到指定的存储板里，分辨率为512*512，视角为90度
+### 复杂照相机
+每次输入发生变化时，就会按指定的位置、方向、视角、分辨率进行拍照，并把图像传输到指定的存储板里，具体端口定义如下：
+<table>
+    <thead align="center">
+        <tr>
+            <th>端口</th>
+            <th colspan="4">作用</th>
+        </tr>
+    </thead>
+    <tbody align="center">
+        <tr>
+            <td rowspan=2>后端</td>
+            <td colspan="4">32位 指定的存储板ID</td>
+        </tr>
+        <tr>
+            <td colspan="4">将图像输出到指定ID的存储板</td>
+        </tr>
+        <tr>
+            <td rowspan="2">上端</td>
+            <td colspan="2">16位 Y轴位置偏移</td>
+            <td>8位 /</td>
+            <td>8位 视角角度</td>
+        </tr>
+        <tr>
+            <td colspan="2">每加1，拍照位置向上移动1/8格，最高位为1时向下，即移动范围为±4096格</td>
+            <td>无作用</td>
+            <td>单位为角度</td>
+        </tr>
+        <tr>
+            <td rowspan="2">右端</td>
+            <td colspan="2">16位 Z轴位置偏移</td>
+            <td colspan="2">16位 X轴位置偏移</td>
+        </tr>
+        <tr>
+            <td colspan="2">每加1，拍照位置向西移动1/8格，最高位为1时向东</td>
+            <td colspan="2">每加1，拍照位置向北移动1/8格，最高位为1时向南</td>
+        </tr>
+        <tr>
+            <td rowspan="2">下端</td>
+            <td>5位 /</td>
+            <td>3位 旋转的符号</td>
+            <td colspan="2">24位 旋转</td>
+        </tr>
+        <tr>
+            <td>无作用</td>
+            <td>从高到低的3位分别控制偏航角、俯仰角、翻滚角的正负，为1时取负（非补码，仅是简单加负号，其他取负同理）</td>
+            <td colspan="2">从高到低，每8位分别控制方块的偏航角（Yaw）、俯仰角（Pitch）、翻滚角（Roll），单位为角度</td>
+        </tr>
+        <tr>
+            <td rowspan=2>左端</td>
+            <td colspan="2">16位 照片的宽度</td>
+            <td colspan="2">16位 照片的高度</td>
+        </tr>
+        <tr>
+            <td colspan="4">建议不超过8192*8192</td>
+        </tr>
+    </tbody>
+</table>
+
 ### 红白机模拟器 Nes Emulator
 可以模拟红白机的模拟器，使用的库是[XamariNES](https://github.com/enusbaum/XamariNES)，纯软件模拟（CPU运算），不支持声音输出，仅支持CNROM、MMC1、NROM、UxROM四种ROM格式的游戏，可能能够支持的游戏有超级玛丽、双截龙、恶魔城、冒险岛、勇者斗恶龙、合金装备、魂斗罗  
 整个游戏同时仅运行一个模拟器实例，多个红白机模拟器方块显示的内容是一样的，输入的手柄操作会按或计算后传输给模拟器，因此可以同屏异地联机  

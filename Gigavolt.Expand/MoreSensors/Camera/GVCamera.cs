@@ -3,7 +3,7 @@
 namespace Game {
     public class GVCamera : BasePerspectiveCamera {
         public float m_viewAngel = MathUtils.PI / 2;
-        public Point2 m_viewSize = new(1920, 1080);
+        public Point2 m_viewSize = new(512, 512);
         public override bool UsesMovementControls => false;
 
         public override bool IsEntityControlEnabled => false;
