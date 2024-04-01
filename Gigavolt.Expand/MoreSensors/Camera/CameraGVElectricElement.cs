@@ -6,6 +6,8 @@ namespace Game {
     public class CameraGVElectricElement : RotateableGVElectricElement {
         public SubsystemDrawing m_subsystemDrawing;
         public SubsystemGameWidgets m_subsystemGameWidgets;
+        public SubsystemTerrain m_subsystemTerrain;
+        public SubsystemSky m_subsystemSky;
         public SubsystemGVCameraBlockBehavior m_subsystemGVCameraBlockBehavior;
         public GameWidget m_gameWidget;
         public GVCamera m_camera;
@@ -48,6 +50,8 @@ namespace Game {
         public CameraGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemDrawing = SubsystemGVElectricity.Project.FindSubsystem<SubsystemDrawing>(true);
             m_subsystemGameWidgets = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGameWidgets>(true);
+            m_subsystemTerrain = SubsystemGVElectricity.SubsystemTerrain;
+            m_subsystemSky = SubsystemGVElectricity.Project.FindSubsystem<SubsystemSky>(true);
             m_subsystemGVCameraBlockBehavior = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVCameraBlockBehavior>(true);
         }
 
@@ -66,10 +70,10 @@ namespace Game {
             m_gameWidget.m_cameras = [m_camera];
             Vector3 forward = CellFace.FaceToVector3(mountingFace);
             if (m_complex) {
-                m_camera.SetupPerspectiveCamera(m_originalPosition - forward * 0.4f, -Vector3.UnitZ, Vector3.UnitY);
+                m_camera.SetupPerspectiveCamera(m_originalPosition, -Vector3.UnitZ, Vector3.UnitY);
             }
             else {
-                m_camera.SetupPerspectiveCamera(m_originalPosition - forward * 0.4f, forward, m_upVector3[mountingFace * 4 + rotation]);
+                m_camera.SetupPerspectiveCamera(m_originalPosition, forward, m_upVector3[mountingFace * 4 + rotation]);
             }
         }
 
@@ -86,7 +90,7 @@ namespace Game {
             int electricRotation = Rotation;
             uint lastInputIn = m_inputIn;
             m_inputIn = 0u;
-            GVArrayData data = null;
+            GVArrayData data;
             if (m_complex) {
                 uint lastInputTop = m_inputTop;
                 uint lastInputRight = m_inputRight;
@@ -135,8 +139,8 @@ namespace Game {
                 }
                 if (m_inputLeft != lastInputLeft) {
                     changed = true;
-                    m_camera.m_viewSize.X = (int)(m_inputLeft & 0xFFFFu);
-                    m_camera.m_viewSize.Y = (int)((m_inputLeft >> 16) & 0xFFFFu);
+                    m_camera.m_viewSize.X = (int)((m_inputLeft >> 16) & 0xFFFFu);
+                    m_camera.m_viewSize.Y = (int)(m_inputLeft & 0xFFFFu);
                 }
                 if (m_inputBottom != lastInputBottom) {
                     changed = true;
@@ -147,11 +151,6 @@ namespace Game {
                 if (changed) {
                     m_camera.PrepareForDrawing();
                     m_camera.SetupPerspectiveCamera(newViewPosition, newViewDirection, newViewUp);
-                    if (m_inputIn != lastInputIn) {
-                        if (m_inputIn > 0) {
-                            GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inputIn, out data);
-                        }
-                    }
                 }
             }
             else {
@@ -163,15 +162,19 @@ namespace Game {
                         }
                     }
                 }
-                if (m_inputIn != lastInputIn) {
-                    if (m_inputIn > 0) {
-                        GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inputIn, out data);
+            }
+            if (m_inputIn > 0
+                && GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inputIn, out data)
+                && m_camera.m_viewSize.X > 0
+                && m_camera.m_viewSize.Y > 0
+                && m_camera.m_viewAngel > 0) {
+                //去雾
+                foreach (TerrainChunk terrainChunk in m_subsystemTerrain.Terrain.AllocatedChunks) {
+                    if (Vector2.DistanceSquared(m_camera.ViewPosition.XZ, terrainChunk.Center) <= MathUtils.Sqr(m_subsystemSky.VisibilityRange)
+                        && terrainChunk.State == TerrainChunkState.Valid) {
+                        terrainChunk.FogEnds[3] = float.MaxValue;
                     }
                 }
-            }
-            if (data != null
-                && m_camera.m_viewSize.X > 0
-                && m_camera.m_viewSize.Y > 0) {
                 RenderTarget2D lastRenderTarget = Display.RenderTarget;
                 if (m_renderTarget == null
                     || m_renderTarget.Width != m_camera.m_viewSize.X
@@ -199,93 +202,5 @@ namespace Game {
             }
             return false;
         }
-    }
-
-    public class GVGameWidget : GameWidget {
-        public GVGameWidget() : base(null, -1) {
-            m_activeCamera = new GVCamera(this);
-            m_cameras = [m_activeCamera];
-        }
-    }
-
-    public class GVCamera : BasePerspectiveCamera {
-        public float m_viewAngel = MathUtils.PI / 2;
-        public Point2 m_viewSize = new(1920, 1080);
-        public override bool UsesMovementControls => false;
-
-        public override bool IsEntityControlEnabled => false;
-
-        public GVCamera(GameWidget gameWidget) : base(gameWidget) { }
-
-        public void Activate() { }
-
-        public void Activate(Vector3 viewPosition, Vector3 viewDirection, Vector3 viewUp) {
-            SetupPerspectiveCamera(viewPosition, viewDirection, viewUp);
-        }
-
-        public override void Activate(Camera previousCamera) { }
-
-        public override void Update(float dt) { }
-
-        public static Matrix GVCalculateBaseProjectionMatrix(Vector2 wh, float viewAngle) {
-            float num3 = wh.X / wh.Y;
-            float num4 = MathUtils.Min(viewAngle * num3, viewAngle);
-            float num5 = num4 * num3;
-            if (num5 < 90f) {
-                num4 *= 90f / num5;
-            }
-            else if (num5 > 175f) {
-                num4 *= 175f / num5;
-            }
-            return Matrix.CreatePerspectiveFieldOfView(num4, num3, 0.1f, 2048f);
-        }
-
-        public override Matrix ProjectionMatrix {
-            get {
-                if (m_projectionMatrix == null) {
-                    m_projectionMatrix = GVCalculateBaseProjectionMatrix(new Vector2(m_viewSize), m_viewAngel);
-                    m_projectionMatrix *= CreateScaleTranslation(0.5f * m_viewSize.X, -0.5f * m_viewSize.Y, m_viewSize.X / 2f, m_viewSize.Y / 2f) * Matrix.Identity * CreateScaleTranslation(2f / m_viewSize.X, -2f / m_viewSize.Y, -1f, 1f);
-                }
-                return m_projectionMatrix.Value;
-            }
-        }
-
-        public override Matrix ScreenProjectionMatrix {
-            get {
-                if (m_screenProjectionMatrix == null) {
-                    Point2 size = Window.Size;
-                    m_screenProjectionMatrix = GVCalculateBaseProjectionMatrix(new Vector2(m_viewSize), m_viewAngel) * CreateScaleTranslation(0.5f * m_viewSize.X, -0.5f * m_viewSize.Y, m_viewSize.X / 2f, m_viewSize.Y / 2f) * Matrix.Identity * CreateScaleTranslation(2f / m_viewSize.X, -2f / m_viewSize.Y, -1f, 1f);
-                }
-                return m_screenProjectionMatrix.Value;
-            }
-        }
-
-        public override Vector2 ViewportSize {
-            get {
-                if (m_viewportSize == null) {
-                    m_viewportSize = new Vector2(m_viewSize);
-                }
-                return m_viewportSize.Value;
-            }
-        }
-
-        public static Matrix CreateScaleTranslation(float sx, float sy, float tx, float ty) => new(
-            sx,
-            0.0f,
-            0.0f,
-            0.0f,
-            0.0f,
-            sy,
-            0.0f,
-            0.0f,
-            0.0f,
-            0.0f,
-            1f,
-            0.0f,
-            tx,
-            ty,
-            0.0f,
-            1f
-        );
     }
 }

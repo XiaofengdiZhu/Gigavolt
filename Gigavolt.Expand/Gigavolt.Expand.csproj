@@ -148,6 +148,7 @@
 		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
 		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\Camera\CameraGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\Camera\GVCamera.cs"/>
 		<Compile Include="MoreSensors\Camera\GVCameraBlock.cs"/>
 		<Compile Include="MoreSensors\Camera\SubsystemGVDoorBlockBehavior.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\GVPlayerMonitorBlock.cs"/>
