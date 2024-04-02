@@ -801,3 +801,9 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 
 ![](DocRes/GigavoltHelperPosterGirl.webp)
 </details>
+
+# 构建提示 Build Tips
+构建前，你需要先安装[antlr4-tools](https://github.com/antlr/antlr4-tools)
+```
+pip install antlr4-tools
+```
