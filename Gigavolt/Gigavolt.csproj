@@ -50,7 +50,7 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="reference\NCalc2\src\NCalc\NCalc.csproj"/>
+		<ProjectReference Include="reference\NCalc2\src\NCalc\NCalc.csproj" PrivateAssets="all"/>
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1"/>

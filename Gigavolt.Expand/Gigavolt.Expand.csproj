@@ -53,8 +53,11 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
 			<Project>{77e3e4a0-32d2-423e-9014-5aef2b450f14}</Project>
-			<Name>Gigavolt</Name>
 			<Private>False</Private>
+		</ProjectReference>
+		<ProjectReference Include="reference\XamariNES\XamariNES.csproj">
+			<Project>{5875710C-1FDC-4CC1-9B58-FB6704900075}</Project>
+			<Private>True</Private>
 		</ProjectReference>
 	</ItemGroup>
 	<ItemGroup>
@@ -87,37 +90,6 @@
 		<Compile Include="MoreLeds\NesEmulator\GVNesEmulatorGlowPoint.cs"/>
 		<Compile Include="MoreLeds\NesEmulator\NesEmulatorGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\NesEmulator\SubsystemNesEmulatorBlockBehavior.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Flags\Byte6Flags.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Flags\Byte7Flags.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\ICartridge.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\Enums\enumNametableMirroring.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\IMapper.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\CNROM.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\MapperBase.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\MMC1.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\NROM.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\Mappers\impl\UxROM.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Cartridge\NESCartridge.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Common\Extensions\ByteExtension.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Common\Extensions\IntExtensions.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\Enums\enumButtons.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\IController.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Controller\NESController.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Core.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\CPUInstruction.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\CPUStatus.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Enums\EnumAddressingMode.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Enums\EnumOpcode.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.CPU\Memory.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Emulator\Enums\enumEmulatorSpeed.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.Emulator\NESEmulator.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Core.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\CycleStateFlags.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUCtrlFlags.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUMaskFlags.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\PPUStatusFlags.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Flags\ScanLineStateFlags.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\XamariNES.PPU\Memory.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\EditGVFourDimensionalMemoryBankDialog.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankData.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankBlock.cs"/>

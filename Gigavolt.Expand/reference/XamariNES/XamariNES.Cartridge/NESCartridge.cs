@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
-using Engine;
 using XamariNES.Cartridge.Flags;
 using XamariNES.Cartridge.Mappers;
 using XamariNES.Cartridge.Mappers.Enums;
 using XamariNES.Cartridge.Mappers.impl;
 using XamariNES.Common.Extensions;
+//using Engine;
 
 namespace XamariNES.Cartridge {
     /// <summary>
@@ -67,7 +67,7 @@ namespace XamariNES.Cartridge {
             _prgRomBanks = ROM[4];
             int prgROMSize = _prgRomBanks * 16384;
             _prgRom = new byte[prgROMSize];
-            Log.Information($"PRG ROM Size: {prgROMSize}");
+            //Log.Information($"PRG ROM Size: {prgROMSize}");
             _chrRomBanks = ROM[5];
             int chrROMSize = _chrRomBanks * 8192; //0 denotes default 8k
             if (ROM[5] == 0) {
@@ -77,7 +77,7 @@ namespace XamariNES.Cartridge {
             else {
                 _chrRom = new byte[chrROMSize];
             }
-            Log.Information($"CHR ROM Size: {chrROMSize}");
+            //Log.Information($"CHR ROM Size: {chrROMSize}");
 
             //Set Flags6
             Flags6 = ROM[6];
