@@ -8,16 +8,23 @@ using JsEngine = Jint.Engine;
 
 namespace Game {
     public class GVJavascriptMicrocontrollerData : IEditableItemData {
-        public static readonly int[] DefaultPortsDefinition = { -1, -1, -1, -1, -1 }; //-1:No input or output. 0:Input. 1:Output
+        public static readonly int[] DefaultPortsDefinition = {
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+        }; //-1:No input or output. 0:Input. 1:Output
+
         public int[] m_portsDefinition = (int[])DefaultPortsDefinition.Clone();
         public int m_executeAgain;
-        public Script m_script;
+        public Prepared<Script> m_script;
         public string LastLoadedCode = string.Empty;
         public JsEngine m_jsEngine;
 
         public Point3 m_position;
 
-        public static Script InitJs = JsEngine.PrepareScript(
+        public static Prepared<Script> InitJs = JsEngine.PrepareScript(
             """
             var Game = importNamespace("Game");
             var Engine = importNamespace("Engine");
@@ -66,7 +73,13 @@ namespace Game {
             catch (Exception e) {
                 Log.Error(e);
             }
-            uint[] outputs = { 0, 0, 0, 0, 0 };
+            uint[] outputs = {
+                0,
+                0,
+                0,
+                0,
+                0
+            };
             for (int i = 0; i < 5; i++) {
                 if (m_portsDefinition[i] == 1) {
                     try {

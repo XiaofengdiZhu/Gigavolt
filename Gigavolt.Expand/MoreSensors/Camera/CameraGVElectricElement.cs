@@ -19,6 +19,7 @@ namespace Game {
         public uint m_inputRight;
         public uint m_inputBottom;
         public uint m_inputLeft;
+        public int m_lastRotation;
 
         public static readonly Vector3[] m_upVector3 = [
             Vector3.UnitY,
@@ -59,7 +60,7 @@ namespace Game {
             GVCellFace cellFace = CellFaces[0];
             int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             int mountingFace = cellFace.Face;
-            int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
+            m_lastRotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
             m_originalPosition = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             int index = GVStaticStorage.random.Int(4, int.MaxValue);
@@ -77,7 +78,7 @@ namespace Game {
                 m_camera.SetupPerspectiveCamera(m_originalPosition, -Vector3.UnitZ, Vector3.UnitY);
             }
             else {
-                m_camera.SetupPerspectiveCamera(m_originalPosition, forward, m_upVector3[mountingFace * 4 + rotation]);
+                m_camera.SetupPerspectiveCamera(m_originalPosition, forward, m_upVector3[mountingFace * 4 + m_lastRotation]);
             }
             m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, m_originalPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
         }
@@ -168,6 +169,11 @@ namespace Game {
                             m_inputIn = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace) | m_inputIn;
                         }
                     }
+                }
+                if (electricRotation != m_lastRotation) {
+                    m_camera.PrepareForDrawing();
+                    m_camera.SetupPerspectiveCamera(m_camera.ViewPosition, m_camera.ViewDirection, m_upVector3[CellFaces[0].Face * 4 + electricRotation]);
+                    m_lastRotation = electricRotation;
                 }
             }
             if (m_inputIn > 0

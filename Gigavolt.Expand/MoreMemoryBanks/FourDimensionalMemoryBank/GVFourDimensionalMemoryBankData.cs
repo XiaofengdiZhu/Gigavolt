@@ -7,7 +7,6 @@ using System.Text;
 using Engine;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
 using Color = Engine.Color;
@@ -31,7 +30,7 @@ namespace Game {
         public int m_ySize;
         public bool m_dataChanged;
         public static readonly Configuration DefaultImageConfiguration = new(new WebpConfigurationModule());
-        public static readonly DecoderOptions DefaultImageDecoderOptions = new() { Configuration = new Configuration(new TiffConfigurationModule(), new WebpConfigurationModule()) };
+        public static readonly DecoderOptions DefaultImageDecoderOptions = new() { Configuration = DefaultImageConfiguration };
         public override string ExportExtension => ".GVFDMB";
 
         public Dictionary<int, Image<Rgba32>> Data {
