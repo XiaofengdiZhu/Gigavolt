@@ -1,8 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
-using Engine.Media;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using Color = Engine.Color;
+using Image = Engine.Media.Image;
 
 namespace Game {
     public class GVButtonBlock : MountedGVElectricElementBlock, IPaintableBlock {
@@ -14,7 +17,7 @@ namespace Game {
         public BlockMesh[] m_blockMeshesByFace_Top = new BlockMesh[6];
         public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
 
-        public readonly Texture2D WhiteTexture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
+        public static readonly Texture2D WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/GVButton");

@@ -1,7 +1,6 @@
 using System;
 using Engine;
 using Engine.Graphics;
-using Engine.Media;
 
 namespace Game {
     public class PlayerMonitorGVElectricElement : RotateableGVElectricElement {
@@ -207,9 +206,7 @@ namespace Game {
                                 }
                             }
                             else {
-                                Image image = new(renderTarget.Width, renderTarget.Height);
-                                renderTarget.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget.Width, renderTarget.Height));
-                                memory.Image2Data(image);
+                                memory.Image2Data(renderTarget.GetData(new Rectangle(0, 0, renderTarget.Width, renderTarget.Height)));
                             }
                         }
                         break;

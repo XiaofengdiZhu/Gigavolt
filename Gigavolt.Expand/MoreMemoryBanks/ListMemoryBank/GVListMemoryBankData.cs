@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Engine;
 using Engine.Media;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Game {
     public class GVListMemoryBankData : GVArrayData, IEditableItemData {
@@ -273,8 +274,13 @@ namespace Game {
             if (width > 0
                 && height > 0) {
                 Image image = new(MathUint.ToInt(width), MathUint.ToInt(height));
-                for (int i = (int)offset; i < Math.Min(list.Count, image.Pixels.Length + (int)offset); i++) {
-                    image.Pixels[i].PackedValue = list[i];
+                for (int y = 0; y < image.Height; y++) {
+                    for (int x = 0; x < image.Width; x++) {
+                        int index = x + y * image.Width + (int)offset;
+                        if (index < list.Count) {
+                            image.SetPixelFast(x, y, new Rgba32(list[index]));
+                        }
+                    }
                 }
                 return image;
             }
@@ -284,7 +290,18 @@ namespace Game {
         public override Image Data2Image() => m_isDataInitialized ? UintList2Image(Data, m_width, m_height, m_offset) : null;
 
         public static List<uint> Image2UintList(Image image) {
-            return image.Pixels.Select(color => color.PackedValue).ToList();
+            List<uint> pixels = new(image.Width * image.Height);
+            image.ProcessPixelRows(
+                accessor => {
+                    for (int y = 0; y < accessor.Height; y++) {
+                        foreach (Rgba32 pixel in accessor.GetRowSpan(y)) {
+                            pixels.Add(pixel.PackedValue);
+                        }
+                    }
+                },
+                false
+            );
+            return pixels;
         }
 
         public override void Image2Data(Image image) {

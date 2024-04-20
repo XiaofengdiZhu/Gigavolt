@@ -41,10 +41,6 @@
 			<HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="OpenTK">
-			<HintPath>reference\OpenTK.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
 		<Reference Include="Survivalcraft">
 			<HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
 			<Private>False</Private>
@@ -63,12 +59,8 @@
 	<ItemGroup>
 		<PackageReference Include="Esprima" Version="3.0.5"/>
 		<PackageReference Include="Jint" Version="3.1.0"/>
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" GeneratePathProperty="true"/>
-	</ItemGroup>
-	<ItemGroup>
-		<None Update="reference\OpenTK.dll">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
+		<PackageReference Include="OpenTK" Version="2.0.0"/>
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="JavascriptMicrocontroller\EditGVJavascriptMicrocontrollerDialog.cs"/>

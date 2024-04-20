@@ -1,6 +1,5 @@
 using Engine;
 using Engine.Graphics;
-using Engine.Media;
 
 namespace Game {
     public class CameraGVElectricElement : RotateableGVElectricElement {
@@ -209,9 +208,7 @@ namespace Game {
                 finally {
                     Display.RenderTarget = lastRenderTarget;
                 }
-                Image image = new(m_renderTarget.Width, m_renderTarget.Height);
-                m_renderTarget.GetData(image.Pixels, 0, new Rectangle(0, 0, m_renderTarget.Width, m_renderTarget.Height));
-                data.Image2Data(image);
+                data.Image2Data(m_renderTarget.GetData(new Rectangle(0, 0, m_renderTarget.Width, m_renderTarget.Height)));
             }
             return false;
         }

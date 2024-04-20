@@ -14,7 +14,6 @@
 		<LangVersion>preview</LangVersion>
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<GenerateDependencyFile>false</GenerateDependencyFile>
-		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<DebugSymbols>true</DebugSymbols>
@@ -50,10 +49,17 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="reference\NCalc2\src\NCalc\NCalc.csproj" PrivateAssets="all"/>
+		<ProjectReference Include="reference\NCalc2\src\NCalc\NCalc.csproj"/>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1"/>
+		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" GeneratePathProperty="true"/>
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4"/>
+	</ItemGroup>
+	<ItemGroup>
+		<None Link="reference\Antlr4.Runtime.Standard.dll" Include="$(PkgAntlr4_Runtime_Standard)\lib\netstandard2.0\Antlr4.Runtime.Standard.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>Antlr4.Runtime.Standard.dll</TargetPath>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="Block\Gate\Transformer\GV2OTransformerBlock.cs"/>

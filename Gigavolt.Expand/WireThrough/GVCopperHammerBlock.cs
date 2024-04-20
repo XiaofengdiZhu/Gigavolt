@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
-using Engine.Media;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using Color = Engine.Color;
+using Image = Engine.Media.Image;
 
 namespace Game {
     public class GVCopperHammerBlock : Block {
         public const int Index = 867;
-        public readonly Texture2D WhiteTexture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
+        public static readonly Texture2D WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
 
         public int m_handleTextureSlot = 47;
         public int m_headTextureSlot = 77;

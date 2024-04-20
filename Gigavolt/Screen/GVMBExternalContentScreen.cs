@@ -319,35 +319,5 @@ namespace Game {
         }
 
         public static bool EntryFilter(ExternalContentEntry entry) => true;
-
-        public static Image Shorts2Image(short[] shorts) {
-            int width = (int)Math.Ceiling(Math.Sqrt(shorts.Length / 2 + 1));
-            Image image = new(width, width);
-            for (int i = 0; i < image.Pixels.Length; i++) {
-                if (i * 2 >= shorts.Length) {
-                    break;
-                }
-                if (i * 2 == shorts.Length - 1) {
-                    image.Pixels[i] = new Color((uint)(ushort)shorts[i * 2] << 16);
-                }
-                else {
-                    image.Pixels[i] = new Color((ushort)shorts[i * 2 + 1] | ((uint)(ushort)shorts[i * 2] << 16));
-                }
-            }
-            return image;
-        }
-
-        public static Image Stream2Image(Stream stream) {
-            int width = (int)Math.Ceiling(Math.Sqrt(stream.Length / 4 + 1));
-            Image image = new(width, width);
-            for (int i = 0; i < stream.Length / 4 + 1; i++) {
-                byte[] fourBytes = new byte[4];
-                if (stream.Read(fourBytes, 0, 4) > 0) {
-                    Color color = new(fourBytes[3] | ((uint)fourBytes[2] << 8) | ((uint)fourBytes[1] << 16) | ((uint)fourBytes[0] << 24));
-                    image.SetPixel(i % width, i / width, color);
-                }
-            }
-            return image;
-        }
     }
 }

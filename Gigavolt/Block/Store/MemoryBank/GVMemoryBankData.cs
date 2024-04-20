@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Engine;
 using Engine.Media;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Game {
     public class GVMemoryBankData : GVArrayData, IEditableItemData {
@@ -267,18 +268,6 @@ namespace Game {
 
         public override string Data2String() => m_isDataInitialized ? UintArray2String(Data, m_width, m_height) : null;
 
-        public static byte[] Image2Bytes(Image image, int startIndex = 0, int length = int.MaxValue) {
-            byte[] bytes = new byte[image.Pixels.Length * 4];
-            for (int i = startIndex; i < MathUtils.Min(image.Pixels.Length, length); i++) {
-                uint num = image.Pixels[i].PackedValue;
-                bytes[i * 4 + 3] = (byte)(num & 0xFF);
-                bytes[i * 4 + 2] = (byte)((num >> 8) & 0xFF);
-                bytes[i * 4 + 1] = (byte)((num >> 16) & 0xFF);
-                bytes[i * 4] = (byte)(num >> 24);
-            }
-            return bytes;
-        }
-
         public static byte[] UintArray2Bytes(uint[] array, int startIndex = 0, int length = int.MaxValue) {
             byte[] bytes = new byte[array.Length * 4];
             for (int i = startIndex; i < MathUtils.Min(array.Length, length); i++) {
@@ -292,16 +281,6 @@ namespace Game {
         }
 
         public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) => m_isDataInitialized ? UintArray2Bytes(Data, startIndex, length) : null;
-
-        public static short[] Image2Shorts(Image image) {
-            short[] shorts = new short[image.Pixels.Length * 2];
-            for (int i = 0; i < image.Pixels.Length; i++) {
-                uint num = image.Pixels[i].PackedValue;
-                shorts[i * 2 + 1] = (short)(num & 0xFFFF);
-                shorts[i * 2] = (short)(num >> 16);
-            }
-            return shorts;
-        }
 
         public static short[] UintArray2Shorts(uint[] array) {
             short[] shorts = new short[array.Length * 2];
@@ -341,17 +320,33 @@ namespace Game {
             if (array.Length == 0) {
                 return null;
             }
+            int maxHeight = (int)(array.Length / width) + array.Length % width == 0u ? 0 : 1;
             Image image = new(width == 0 ? array.Length : (int)width, height == 0 ? 1 : (int)height);
-            for (int i = 0; i < array.Length; i++) {
-                image.Pixels[i].PackedValue = array[i];
-            }
+            image.ProcessPixelRows(
+                accessor => {
+                    Span<uint> arraySpan = array.AsSpan();
+                    for (int y = 0; y < maxHeight; y++) {
+                        MemoryMarshal.Cast<uint, Rgba32>(arraySpan.Slice(y * image.Width, y == maxHeight - 1 ? array.Length - y * image.Width : image.Width)).CopyTo(accessor.GetRowSpan(y));
+                    }
+                }
+            );
             return image;
         }
 
         public override Image Data2Image() => m_isDataInitialized ? UintArray2Image(Data, m_width, m_height) : null;
 
         public static uint[] Image2UintArray(Image image) {
-            return image.Pixels.Select(color => color.PackedValue).ToArray();
+            uint[] pixels = new uint[image.Width * image.Height];
+            image.ProcessPixelRows(
+                accessor => {
+                    Span<uint> pixelsSpan = pixels.AsSpan();
+                    for (int y = 0; y < accessor.Height; y++) {
+                        MemoryMarshal.Cast<Rgba32, uint>(accessor.GetRowSpan(y)).CopyTo(pixelsSpan.Slice(y * image.Width, image.Width));
+                    }
+                },
+                false
+            );
+            return pixels;
         }
 
         public override void Image2Data(Image image) {

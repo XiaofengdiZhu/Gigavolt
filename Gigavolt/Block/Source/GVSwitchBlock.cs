@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
-using Engine.Media;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using Color = Engine.Color;
+using Image = Engine.Media.Image;
 
 namespace Game {
     public class GVSwitchBlock : MountedGVElectricElementBlock, IPaintableBlock {
@@ -14,7 +17,7 @@ namespace Game {
         public readonly BlockMesh[] m_blockMeshesByIndex_Lever = new BlockMesh[12];
         public readonly BoundingBox[][] m_collisionBoxesByIndex = new BoundingBox[12][];
 
-        public readonly Texture2D WhiteTexture = Texture2D.Load(new Image(1, 1) { Pixels = { [0] = Color.White } });
+        public static readonly Texture2D WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Switch");
