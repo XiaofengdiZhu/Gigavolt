@@ -170,7 +170,7 @@ namespace Game {
             );
             for (int y = 0; y < dataHeight; y++) {
                 for (int x = 0; x < dataWidth; x++) {
-                    int value = (int)image.GetPixel(x, y).PackedValue;
+                    int value = (int)image.GetPixelFast(x, y).PackedValue;
                     int id = Terrain.ExtractContents(value);
                     if (id == 0) {
                         continue;

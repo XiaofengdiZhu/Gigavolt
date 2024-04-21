@@ -4,6 +4,7 @@ using Engine;
 using Engine.Graphics;
 using Engine.Media;
 using TemplatesDatabase;
+using Color = SixLabors.ImageSharp.Color;
 
 namespace Game {
     public class SubsystemGVCopperHammerBlockBehavior : SubsystemBlockBehavior, IDrawable {
@@ -144,7 +145,7 @@ namespace Game {
                             int startY = slotHeight * 8 + slotHeight / 2 - 1 + i * slotHeight;
                             int endY = startY + 2;
                             for (int y = startY; y < endY; y++) {
-                                image.SetPixel(x, y, Color.Orange);
+                                image.SetPixelFast(x, y, Color.Orange);
                             }
                         }
                     }
@@ -165,7 +166,7 @@ namespace Game {
                                     && (y == startY || y == endY - 1)) {
                                     continue;
                                 }
-                                image.SetPixel(x, y, Color.Orange);
+                                image.SetPixelFast(x, y, Color.Orange);
                             }
                         }
                     }
@@ -177,12 +178,12 @@ namespace Game {
         public void Draw(Camera camera, int drawOrder) {
             if (m_startPoint != null) {
                 Vector3 position = new Vector3(m_startPoint.Value) + new Vector3(0.01f);
-                m_flatBatch.QueueBoundingBox(new BoundingBox(position, position + new Vector3(0.98f)), Color.Green);
+                m_flatBatch.QueueBoundingBox(new BoundingBox(position, position + new Vector3(0.98f)), Engine.Color.Green);
             }
             if (m_glowPoints.Length > 0) {
                 foreach (Point3 glowPoint in m_glowPoints) {
                     Vector3 position = new Vector3(glowPoint) + new Vector3(0.01f);
-                    m_flatBatch.QueueBoundingBox(new BoundingBox(position, position + new Vector3(0.98f)), Color.Green);
+                    m_flatBatch.QueueBoundingBox(new BoundingBox(position, position + new Vector3(0.98f)), Engine.Color.Green);
                 }
             }
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);

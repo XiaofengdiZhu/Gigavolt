@@ -9,9 +9,9 @@ namespace Game {
     public class SubsystemGV8x4LedGlow : Subsystem, IDrawable {
         public SubsystemSky m_subsystemSky;
 
-        public Dictionary<GV8x4GlowPoint, bool> m_glowPoints = new Dictionary<GV8x4GlowPoint, bool>();
+        public Dictionary<GV8x4GlowPoint, bool> m_glowPoints = new();
 
-        public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+        public PrimitivesRenderer3D m_primitivesRenderer = new();
 
         public Dictionary<uint, TexturedBatch3D>[] batchCache;
 
@@ -20,7 +20,7 @@ namespace Game {
         public int[] DrawOrders => m_drawOrders;
 
         public GV8x4GlowPoint AddGlowPoint() {
-            GV8x4GlowPoint glowPoint = new GV8x4GlowPoint();
+            GV8x4GlowPoint glowPoint = new();
             m_glowPoints.Add(glowPoint, true);
             return glowPoint;
         }
@@ -90,14 +90,14 @@ namespace Game {
             int width = type > 1 ? 8 : 4;
             int height = type > 0 ? 4 : 2;
             bool heightx2 = type != 1;
-            Image image = new Image(width, width);
+            Image image = new(width, width);
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     int index = y * width + x;
                     if (((voltage >> index) & 1u) == 1u) {
-                        image.SetPixel(x, heightx2 ? y * 2 : y, Color.White);
+                        image.SetPixelFast(x, heightx2 ? y * 2 : y, SixLabors.ImageSharp.Color.White);
                         if (heightx2) {
-                            image.SetPixel(x, y * 2 + 1, Color.White);
+                            image.SetPixelFast(x, y * 2 + 1, SixLabors.ImageSharp.Color.White);
                         }
                     }
                 }

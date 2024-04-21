@@ -9,7 +9,6 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
-using Color = Engine.Color;
 using Image = Engine.Media.Image;
 
 namespace Game {
@@ -476,7 +475,7 @@ namespace Game {
                 Image newImage = new(m_xSize, m_ySize);
                 for (int y = m_yOffset; y < m_yOffset + m_ySize; y++) {
                     for (int x = m_xOffset; x < m_xOffset + m_xSize; x++) {
-                        newImage.SetPixel(x, y, new Color(image[x, y].PackedValue));
+                        newImage.SetPixelFast(x, y, new Rgba32(image[x, y].PackedValue));
                     }
                 }
                 return newImage;
@@ -487,12 +486,9 @@ namespace Game {
         public override void Image2Data(Image image) {
             m_xLength = image.Width;
             m_yLength = image.Height;
-            Image<Rgba32> newImage = new(DefaultImageConfiguration, m_xLength, m_yLength);
-            for (int y = 0; y < m_yLength; y++) {
-                for (int x = 0; x < m_xLength; x++) {
-                    newImage[x, y] = new Rgba32(image.GetPixel(x, y).PackedValue);
-                }
-            }
+            Span<byte> bytes = new byte[m_xLength * m_yLength * 4];
+            image.m_trueImage.Frames[0].CopyPixelDataTo(bytes);
+            Image<Rgba32> newImage = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(DefaultImageConfiguration, bytes, m_xLength, m_yLength);
             Data = new Dictionary<int, Image<Rgba32>> { { 0, newImage } };
             m_xyProduct = m_xLength * m_yLength;
             m_zLength = 1;

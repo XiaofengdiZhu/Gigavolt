@@ -9,9 +9,9 @@ namespace Game {
     public class SubsystemGV8NumberLedGlow : Subsystem, IDrawable {
         public SubsystemSky m_subsystemSky;
 
-        public Dictionary<GV8NumberGlowPoint, bool> m_glowPoints = new Dictionary<GV8NumberGlowPoint, bool>();
+        public Dictionary<GV8NumberGlowPoint, bool> m_glowPoints = new();
 
-        public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+        public PrimitivesRenderer3D m_primitivesRenderer = new();
 
         public Dictionary<uint, TexturedBatch3D> batchCache;
         public static List<Point2>[] number2Pixels = new List<Point2>[16];
@@ -21,7 +21,7 @@ namespace Game {
         public int[] DrawOrders => m_drawOrders;
 
         public GV8NumberGlowPoint AddGlowPoint() {
-            GV8NumberGlowPoint glowPoint = new GV8NumberGlowPoint();
+            GV8NumberGlowPoint glowPoint = new();
             m_glowPoints.Add(glowPoint, true);
             return glowPoint;
         }
@@ -85,11 +85,11 @@ namespace Game {
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
             batchCache = new Dictionary<uint, TexturedBatch3D>();
             for (int number = 0; number < 16; number++) {
-                List<Point2> points = new List<Point2>();
+                List<Point2> points = new();
                 Image image = ContentManager.Get<Image>($"Textures/GV8NumberLed/{number}");
                 for (int x = 0; x < image.Width; x++) {
                     for (int y = 0; y < image.Height; y++) {
-                        if (image.GetPixel(x, y) == Color.White) {
+                        if (image.GetPixelFast(x, y).PackedValue == uint.MaxValue) {
                             points.Add(new Point2(x, y));
                         }
                     }
@@ -99,14 +99,14 @@ namespace Game {
         }
 
         public static TexturedBatch3D generateBatch(PrimitivesRenderer3D renderer, uint voltage) {
-            Image image = new Image(16, 16);
+            Image image = new(16, 16);
             for (int y = 0; y < 2; y++) {
                 for (int x = 0; x < 4; x++) {
                     int index = y * 4 + x;
                     uint number = (voltage >> (index * 4)) & 15u;
-                    Point2 origin = new Point2(12 - x * 4, y == 1 ? 2 : 9);
+                    Point2 origin = new(12 - x * 4, y == 1 ? 2 : 9);
                     foreach (Point2 point in number2Pixels[number]) {
-                        image.SetPixel(origin.X + point.X, origin.Y + point.Y, Color.White);
+                        image.SetPixelFast(origin.X + point.X, origin.Y + point.Y, SixLabors.ImageSharp.Color.White);
                     }
                 }
             }

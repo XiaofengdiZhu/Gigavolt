@@ -143,38 +143,6 @@ namespace Game {
             return stringBuilder.ToString();
         }
 
-        public static Image String2Image(string data, int width = 0, int height = 0) {
-            List<uint[]> rowList = new();
-            int maxColLength = 0;
-            string[] rows = data.Split(';');
-            foreach (string row in rows) {
-                string[] cols = row.Split(',');
-                if (cols.Length > maxColLength) {
-                    maxColLength = cols.Length;
-                }
-                uint[] uints = new uint[cols.Length];
-                for (int i = 0; i < cols.Length; i++) {
-                    if (cols[i].Length > 0) {
-                        uints[i] = uint.Parse(cols[i], NumberStyles.HexNumber, null);
-                    }
-                }
-                rowList.Add(uints);
-            }
-            Image image = new(width == 0 ? maxColLength : width, height == 0 ? rows.Length : height);
-            for (int i = 0; i < image.Height; i++) {
-                if (i == rowList.Count) {
-                    break;
-                }
-                for (int j = 0; j < rowList[i].Length; j++) {
-                    if (j == image.Width) {
-                        break;
-                    }
-                    image.SetPixel(j, i, new Color(rowList[i][j]));
-                }
-            }
-            return image;
-        }
-
         public static uint[] String2UintArray(string data, ref int width, ref int height) {
             List<uint[]> rowList = new();
             int maxColLength = 0;
@@ -223,18 +191,18 @@ namespace Game {
             for (int i = 0; i < image.Height; i++) {
                 int lastNotZero = -1;
                 for (int j = image.Width - 1; j >= 0; j--) {
-                    if (image.GetPixel(j, i).PackedValue > 0) {
+                    if (image.GetPixelFast(j, i).PackedValue > 0) {
                         lastNotZero = j;
                         break;
                     }
                 }
                 StringBuilder stringBuilder = new();
                 for (int j = 0; j < lastNotZero; j++) {
-                    stringBuilder.Append(image.GetPixel(j, i).PackedValue.ToString("X", null));
+                    stringBuilder.Append(image.GetPixelFast(j, i).PackedValue.ToString("X", null));
                     stringBuilder.Append(',');
                 }
                 if (lastNotZero > -1) {
-                    stringBuilder.Append(image.GetPixel(lastNotZero, i).PackedValue.ToString("X", null));
+                    stringBuilder.Append(image.GetPixelFast(lastNotZero, i).PackedValue.ToString("X", null));
                 }
                 result[i] = stringBuilder.ToString();
             }
@@ -320,8 +288,8 @@ namespace Game {
             if (array.Length == 0) {
                 return null;
             }
-            int maxHeight = (int)(array.Length / width) + array.Length % width == 0u ? 0 : 1;
             Image image = new(width == 0 ? array.Length : (int)width, height == 0 ? 1 : (int)height);
+            int maxHeight = array.Length / image.Width + (array.Length % image.Width == 0u ? 0 : 1);
             image.ProcessPixelRows(
                 accessor => {
                     Span<uint> arraySpan = array.AsSpan();
