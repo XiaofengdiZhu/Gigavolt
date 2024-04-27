@@ -1,4 +1,4 @@
-﻿using Engine;
+﻿using System;
 
 namespace Game {
     public class TargetGVCElectricElement : MountedGVElectricElement {
@@ -30,14 +30,14 @@ namespace Game {
                     || cellFace.Face == 2) {
                     float num = worldItem.Position.X - cellFace.X - 0.5f;
                     float num2 = worldItem.Position.Y - cellFace.Y - 0.5f;
-                    float num3 = MathUtils.Sqrt(num * num + num2 * num2);
-                    m_score = MathUint.Clamp((uint)MathUtils.Round(8f * (1f - num3 / 0.707f)), 1, 8);
+                    float num3 = MathF.Sqrt(num * num + num2 * num2);
+                    m_score = MathUint.Clamp((uint)MathF.Round(8f * (1f - num3 / 0.707f)), 1, 8);
                 }
                 else {
                     float num4 = worldItem.Position.Z - cellFace.Z - 0.5f;
                     float num5 = worldItem.Position.Y - cellFace.Y - 0.5f;
-                    float num6 = MathUtils.Sqrt(num4 * num4 + num5 * num5);
-                    m_score = MathUint.Clamp((uint)MathUtils.Round(8f * (1f - num6 / 0.5f)), 1, 8);
+                    float num6 = MathF.Sqrt(num4 * num4 + num5 * num5);
+                    m_score = MathUint.Clamp((uint)MathF.Round(8f * (1f - num6 / 0.5f)), 1, 8);
                 }
                 SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 1);
             }

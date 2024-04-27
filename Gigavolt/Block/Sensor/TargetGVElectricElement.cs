@@ -1,4 +1,4 @@
-using Engine;
+using System;
 
 namespace Game {
     public class TargetGVElectricElement : MountedGVElectricElement {
@@ -31,12 +31,12 @@ namespace Game {
                     || cellFace.Face == 2) {
                     float num = worldItem.Position.X - cellFace.X - 0.5f;
                     float num2 = worldItem.Position.Y - cellFace.Y - 0.5f;
-                    distance = MathUtils.Sqrt(num * num + num2 * num2);
+                    distance = MathF.Sqrt(num * num + num2 * num2);
                 }
                 else {
                     float num4 = worldItem.Position.Z - cellFace.Z - 0.5f;
                     float num5 = worldItem.Position.Y - cellFace.Y - 0.5f;
-                    distance = MathUtils.Sqrt(num4 * num4 + num5 * num5);
+                    distance = MathF.Sqrt(num4 * num4 + num5 * num5);
                 }
                 if (distance <= 0.5f) {
                     m_score = (uint)((1f - distance * 2f) * uint.MaxValue);

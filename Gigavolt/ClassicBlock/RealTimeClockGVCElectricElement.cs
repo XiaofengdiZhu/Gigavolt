@@ -1,4 +1,4 @@
-using Engine;
+using System;
 
 namespace Game {
     public class RealTimeClockGVCElectricElement : RotateableGVElectricElement {
@@ -32,8 +32,8 @@ namespace Game {
 
         public override bool Simulate() {
             double day = m_subsystemTimeOfDay.Day;
-            int num = (int)(((MathUtils.Ceiling(day * 4096.0) + 0.5) / 4096.0 - day) * 1200.0 / 0.0099999997764825821);
-            int circuitStep = MathUtils.Max(SubsystemGVElectricity.FrameStartCircuitStep + num, SubsystemGVElectricity.CircuitStep + 1);
+            int num = (int)(((Math.Ceiling(day * 4096.0) + 0.5) / 4096.0 - day) * 1200.0 / 0.0099999997764825821);
+            int circuitStep = Math.Max(SubsystemGVElectricity.FrameStartCircuitStep + num, SubsystemGVElectricity.CircuitStep + 1);
             SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, circuitStep);
             uint clockValue = GetClockValue();
             if (clockValue != m_lastClockValue) {

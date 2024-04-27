@@ -1,3 +1,4 @@
+using System;
 using Engine;
 
 // ReSharper disable RedundantExplicitArraySize
@@ -117,10 +118,10 @@ namespace Game {
                     }
                 }
                 else if (!string.IsNullOrEmpty(text)) {
-                    float num6 = 130.8125f * MathUtils.Pow(1.05946314f, num + 12 * num3);
+                    float num6 = 130.8125f * MathF.Pow(1.05946314f, num + 12f * num3);
                     int num7 = 0;
                     for (int i = 4; i <= m_maxOctaves[num4]; i++) {
-                        float num8 = num6 / (523.25f * MathUtils.Pow(2f, i - 5));
+                        float num8 = num6 / (523.25f * MathF.Pow(2f, i - 5f));
                         if (num7 == 0
                             || (num8 >= 0.5f && num8 < num5)) {
                             num7 = i;
@@ -134,7 +135,7 @@ namespace Game {
                     GVCellFace cellFace = CellFaces[0];
                     Vector3 position = new(cellFace.X, cellFace.Y, cellFace.Z);
                     float volume = num2 / 15f;
-                    float pitch = MathUtils.Clamp(MathUtils.Log(num5) / MathUtils.Log(2f), -1f, 1f);
+                    float pitch = MathUtils.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);
                     float minDistance = 0.5f + 5f * num2 / 15f;
                     SubsystemGVElectricity.SubsystemAudio.PlaySound(
                         text2,

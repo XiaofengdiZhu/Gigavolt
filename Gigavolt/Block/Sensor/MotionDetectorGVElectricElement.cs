@@ -1,3 +1,4 @@
+using System;
 using Engine;
 
 namespace Game {
@@ -26,7 +27,7 @@ namespace Game {
 
         public Vector2 m_corner2;
 
-        public DynamicArray<ComponentBody> m_bodies = new DynamicArray<ComponentBody>();
+        public DynamicArray<ComponentBody> m_bodies = new();
 
         public MotionDetectorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemBodies = subsystemGVElectricity.Project.FindSubsystem<SubsystemBodies>(true);
@@ -113,7 +114,7 @@ namespace Game {
                         }
                     )
                     .HasValue) {
-                return MathUtils.Saturate(1f - MathUtils.Sqrt(num) / 8f);
+                return MathUtils.Saturate(1f - MathF.Sqrt(num) / 8f);
             }
             return 0f;
         }

@@ -135,7 +135,7 @@ namespace Game {
                     case 18u: {
                         float level = componentPlayer.PlayerData.Level;
                         m_rightOutput = Float2Uint(level);
-                        m_topOutput = (uint)MathUtils.Ceiling(MathUtils.Pow(1.08f, MathUtils.Floor(level - 1f)) / 0.012f * (1f - level % 1f));
+                        m_topOutput = (uint)MathF.Ceiling(MathF.Pow(1.08f, MathF.Floor(level - 1f)) / 0.012f * (1f - level % 1f));
                         IInventory inventory = componentPlayer.ComponentMiner.Inventory;
                         m_leftOutput = (uint)inventory.GetSlotValue(inventory.ActiveSlotIndex);
                         break;

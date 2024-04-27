@@ -3,12 +3,12 @@ using Engine;
 
 namespace Game {
     public class TerrainScannerGVElectricElement : RotateableGVElectricElement {
-        readonly Terrain m_terrain;
-        uint m_rightInput;
-        uint m_leftInput;
-        uint m_topInput;
-        uint m_bottomInput;
-        uint m_inInput;
+        public readonly Terrain m_terrain;
+        public uint m_rightInput;
+        public uint m_leftInput;
+        public uint m_topInput;
+        public uint m_bottomInput;
+        public uint m_inInput;
 
         public TerrainScannerGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) => m_terrain = SubsystemGVElectricity.SubsystemTerrain.Terrain;
 
@@ -61,6 +61,10 @@ namespace Game {
                 return false;
             }
             int distance = (int)(m_topInput & 0x7FFFu) * (((m_topInput >> 15) & 1u) == 1u ? -1 : 1);
+            bool scanNearest = distance == -32767;
+            if (scanNearest) {
+                distance = 0;
+            }
             int offsetX = (int)((m_rightInput >> 16) & 0x7FFFu) * (((m_rightInput >> 31) & 1u) == 1u ? -1 : 1);
             int offsetY = (int)(m_rightInput & 0x7FFFu) * (((m_rightInput >> 15) & 1u) == 1u ? -1 : 1);
             Point3 direction = CellFace.FaceToPoint3(CellFaces[0].Face);
@@ -105,13 +109,28 @@ namespace Game {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     Point3 position = startPosition + directionX * x + directionY * y;
-                    int value = m_terrain.GetCellValue(position.X, position.Y, position.Z);
+                    int value = scanNearest ? GetNearestCellValue(position, direction, 0) : m_terrain.GetCellValue(position.X, position.Y, position.Z);
                     image[width * y + x] = (uint)(((m_topInput >> 16) & 1u) == 1u ? value : Terrain.ExtractContents(value));
                 }
             }
             arrayData.UintArray2Data(image, width, height);
             arrayData.SaveString();
             return false;
+        }
+
+        public int GetNearestCellValue(Point3 start, Point3 direction, int distance) {
+            if (distance >= 256) {
+                return 0;
+            }
+            Point3 position = start + direction * distance;
+            if (position.Y is < 0 or > 255) {
+                return 0;
+            }
+            int value = m_terrain.GetCellValue(position.X, position.Y, position.Z);
+            if (Terrain.ReplaceLight(value, 0) == 0) {
+                return GetNearestCellValue(start, direction, distance + 1);
+            }
+            return value;
         }
     }
 }

@@ -36,6 +36,9 @@
     * [玩家控制器 Player Controller](#玩家控制器-player-controller)
       * [端口定义 Input Definition](#端口定义-input-definition-3)
       * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-3)
+  * [照相机 Camera](#照相机-camera)
+    * [简单照相机 Simple Camera](#简单照相机-simple-camera)
+    * [复杂照相机](#复杂照相机)
     * [红白机模拟器 Nes Emulator](#红白机模拟器-nes-emulator)
     * [制导发射器 Guided Dispenser](#制导发射器-guided-dispenser)
     * [箱子控制器 Inventory Controller](#箱子控制器-inventory-controller)
@@ -47,6 +50,7 @@
     * [更多单入单出电路板 More One In One Out Electrics](#更多单入单出电路板-more-one-in-one-out-electrics)
 * [十亿伏特·帮助包 Gigavolt.Helper](#十亿伏特帮助包-gigavolthelper)
   * [看板娘 Yuru-chara](#看板娘-yuru-chara-2)
+* [构建提示 Build Tips](#构建提示-build-tips)
 <!-- TOC -->
 # 十亿伏特 GigaVoltage
 ## 简介 Introduction
@@ -427,7 +431,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
         <tr>
             <td>无作用</td>
             <td>为0时只保存方块ID，为1时方块ID和数据一并保存</td>
-            <td>每加1，扫描起始位置距离扫描仪面向的方向加1格，最高位为1时向背面</td>
+            <td>每加1，扫描起始位置距离扫描仪面向的方向加1格，最高位为1时向背面；如果为0xFFFF，则不调整起始距离，扫描方式改为像射线探测器那样，向面对方向不断扫描直到遇到非空气方块（可用于生成地图）</td>
         </tr>
         <tr>
             <td rowspan="2">右端</td>

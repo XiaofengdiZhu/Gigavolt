@@ -45,21 +45,21 @@ namespace Game {
 
         public SubsystemFireBlockBehavior m_subsystemFireBlockBehavior;
 
-        public List<Projectile> m_projectiles = new List<Projectile>();
+        public List<Projectile> m_projectiles = new();
 
-        public List<Projectile> m_projectilesToRemove = new List<Projectile>();
+        public List<Projectile> m_projectilesToRemove = new();
 
-        public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+        public PrimitivesRenderer3D m_primitivesRenderer = new();
 
-        public Random m_random = new Random();
+        public Random m_random = new();
 
-        public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new DrawBlockEnvironmentData();
+        public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new();
 
         public const float BodyInflateAmount = 0.2f;
 
         public static readonly int[] m_drawOrders = { 10 };
 
-        public ReadOnlyList<Projectile> Projectiles => new ReadOnlyList<Projectile>(m_projectiles);
+        public ReadOnlyList<Projectile> Projectiles => new(m_projectiles);
 
         public int[] DrawOrders => m_drawOrders;
 
@@ -73,7 +73,7 @@ namespace Game {
         public static int? m_dataModifierBlockContent = null;
 
         public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, bool disableGravity = false, bool disableDamping = false, bool safe = false, bool transform = false, Point3 stopAt = default) {
-            Projectile projectile = new Projectile {
+            Projectile projectile = new() {
                 Value = value,
                 Position = position,
                 Velocity = velocity,
@@ -104,7 +104,7 @@ namespace Game {
             Vector3 v = Vector3.Normalize(velocity);
             Vector3 vector = position;
             if (owner != null) {
-                Ray3 ray = new Ray3(position + v * 5f, -v);
+                Ray3 ray = new(position + v * 5f, -v);
                 BoundingBox boundingBox = owner.ComponentBody.BoundingBox;
                 boundingBox.Min -= new Vector3(0.4f);
                 boundingBox.Max += new Vector3(0.4f);
@@ -235,7 +235,7 @@ namespace Game {
                     else {
                         projectile.NoChunk = false;
                         Vector3 position = projectile.Position;
-                        Point3 positionInt = new Point3((int)Math.Floor(position.X), (int)Math.Floor(position.Y), (int)Math.Floor(position.Z));
+                        Point3 positionInt = new((int)Math.Floor(position.X), (int)Math.Floor(position.Y), (int)Math.Floor(position.Z));
                         Vector3 stopAtVector3 = new Vector3(projectile.StopAt) + new Vector3(0.5f);
                         bool stopAtIsAir = false;
                         Vector3 vector = position + projectile.Velocity * dt;
@@ -501,7 +501,7 @@ namespace Game {
                                 }
                             }
                         }
-                        float num5 = projectile.IsInWater ? MathUtils.Pow(0.001f, dt) : MathUtils.Pow(block.GetProjectileDamping(projectile.Value), dt);
+                        float num5 = projectile.IsInWater ? MathF.Pow(0.001f, dt) : MathF.Pow(block.GetProjectileDamping(projectile.Value), dt);
                         if (!projectile.DisableGravity) {
                             projectile.Velocity.Y += -10f * dt;
                         }
@@ -605,7 +605,7 @@ namespace Game {
             m_subsystemFluidBlockBehavior = Project.FindSubsystem<SubsystemFluidBlockBehavior>(true);
             m_subsystemFireBlockBehavior = Project.FindSubsystem<SubsystemFireBlockBehavior>(true);
             foreach (ValuesDictionary item in valuesDictionary.GetValue<ValuesDictionary>("GVProjectiles").Values.Where(v => v is ValuesDictionary)) {
-                Projectile projectile = new Projectile {
+                Projectile projectile = new() {
                     Value = item.GetValue<int>("Value"),
                     Position = item.GetValue<Vector3>("Position"),
                     Velocity = item.GetValue<Vector3>("Velocity"),
@@ -621,11 +621,11 @@ namespace Game {
         }
 
         public override void Save(ValuesDictionary valuesDictionary) {
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            ValuesDictionary valuesDictionary2 = new();
             valuesDictionary.SetValue("GVProjectiles", valuesDictionary2);
             int num = 0;
             foreach (Projectile projectile in m_projectiles) {
-                ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                ValuesDictionary valuesDictionary3 = new();
                 valuesDictionary2.SetValue(num.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                 valuesDictionary3.SetValue("Value", projectile.Value);
                 valuesDictionary3.SetValue("Position", projectile.Position);

@@ -56,10 +56,10 @@ namespace Game {
             if (m_input != input) {
                 switch (m_input) {
                     case 1:
-                        circuitAdd = (int)MathUtils.Ceiling((DateTime.Today.AddDays(1) - now).TotalSeconds / SubsystemGVElectricity.CircuitStepDuration);
+                        circuitAdd = (int)Math.Ceiling((DateTime.Today.AddDays(1) - now).TotalSeconds / SubsystemGVElectricity.CircuitStepDuration);
                         break;
                     case 3:
-                        circuitAdd = (int)MathUtils.Ceiling(0.25 / SubsystemGVElectricity.CircuitStepDuration);
+                        circuitAdd = (int)MathF.Ceiling(0.25f / SubsystemGVElectricity.CircuitStepDuration);
                         break;
                     default:
                         circuitAdd = 1;
@@ -87,11 +87,11 @@ namespace Game {
                     m_outputs[3] = 0u;
                     return true;
                 case 3:
-                    double precipitationStartTimeLeft = MathUtils.Ceiling(m_subsystemWeather.m_precipitationStartTime - m_subsystemGameInfo.TotalElapsedGameTime);
-                    double precipitationEndTimeLeft = MathUtils.Ceiling(m_subsystemWeather.m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime);
-                    m_outputs[0] = (uint)MathUtils.Abs(precipitationStartTimeLeft);
+                    double precipitationStartTimeLeft = Math.Ceiling(m_subsystemWeather.m_precipitationStartTime - m_subsystemGameInfo.TotalElapsedGameTime);
+                    double precipitationEndTimeLeft = Math.Ceiling(m_subsystemWeather.m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime);
+                    m_outputs[0] = (uint)Math.Abs(precipitationStartTimeLeft);
                     m_outputs[1] = precipitationStartTimeLeft < 0 ? uint.MaxValue : 0u;
-                    m_outputs[2] = (uint)MathUtils.Abs(precipitationEndTimeLeft);
+                    m_outputs[2] = (uint)Math.Abs(precipitationEndTimeLeft);
                     m_outputs[3] = precipitationEndTimeLeft < 0 ? uint.MaxValue : 0u;
                     break;
                 default:
