@@ -131,6 +131,10 @@
     "GVPlayerControllerBlock:0": {
       "DisplayName": "GV玩家控制器",
       "Description": "用于控制玩家的各种信息，如果参数输入端没有连接导线或元件，将不改变对应的信息，详见本Mod Github页面的介绍"
+    },
+    "GVAttractorBlock:0": {
+      "DisplayName": "GV吸引器",
+      "Description": "可吸引掉落物、抛射物、动物等，每次输入电压变化都会尝试进行吸引，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {

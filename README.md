@@ -39,6 +39,7 @@
   * [照相机 Camera](#照相机-camera)
     * [简单照相机 Simple Camera](#简单照相机-simple-camera)
     * [复杂照相机](#复杂照相机)
+    * [吸引器 Attractor](#吸引器-attractor)
     * [红白机模拟器 Nes Emulator](#红白机模拟器-nes-emulator)
     * [制导发射器 Guided Dispenser](#制导发射器-guided-dispenser)
     * [箱子控制器 Inventory Controller](#箱子控制器-inventory-controller)
@@ -594,6 +595,23 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
         </tr>
     </tbody>
 </table>
+
+### 吸引器 Attractor
+可吸引掉落物、抛射物、动物等，每次输入电压变化都会尝试进行吸引，详见下面位定义
+
+| 位      | 说明                                  |
+|--------|-------------------------------------|
+| 1\~8   | 发生作用的范围                             |
+| 9      | 为0时以直线方式移动被吸引物体；为1时以抛物线形式移动，一些情况下无效 |
+| 10     | 为1时吸引掉落物                            |
+| 11     | 为1时吸引抛射物                            |
+| 12     | 为1时吸引燃烧中的火焰方块                       |
+| 13     | 为1时吸引正在进行的爆炸，成功率低                   |
+| 14     | 为1时吸引玩家，仅直线方式                       |
+| 15     | 为1时吸引玩家以外的动物、可移动实体，仅直线方式            |
+| 16     | 为1时把吸引改为弹开，仅直线方式移动有效                |
+| 17\~22 | 指定移动速度，仅直线方式移动有效                    |
+| 23\~32 | 只吸引指定方块ID的掉落物、抛射物，为0时不指定            |
 
 ### 红白机模拟器 Nes Emulator
 可以模拟红白机的模拟器，使用的库是[XamariNES](https://github.com/enusbaum/XamariNES)，纯软件模拟（CPU运算），不支持声音输出，仅支持CNROM、MMC1、NROM、UxROM四种ROM格式的游戏，可能能够支持的游戏有超级玛丽、双截龙、恶魔城、冒险岛、勇者斗恶龙、合金装备、魂斗罗  

@@ -148,6 +148,7 @@ namespace Game {
                         velocity,
                         Vector3.Zero,
                         null,
+                        1,
                         disableGravity,
                         disableDamping,
                         safe,

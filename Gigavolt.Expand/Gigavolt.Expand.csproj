@@ -125,6 +125,8 @@
 		<Compile Include="PlayerController\GVPlayerControllerBlock.cs"/>
 		<Compile Include="PlayerController\PlayerControllerGVElectricElement.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
+		<Compile Include="Transportation\Attractor\GVAttractorBlock.cs"/>
+		<Compile Include="Transportation\Attractor\AttractorGVElectricElement.cs"/>
 		<Compile Include="Transportation\InventoryController\GVInventoryControllerBlock.cs"/>
 		<Compile Include="Transportation\InventoryController\InventoryControllerGVElectricElement.cs"/>
 		<Compile Include="Transportation\InventoryController\SubsystemGVInventoryControllerBlockBehavior.cs"/>
@@ -364,6 +366,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVCameraBlock1.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Models\GVAttractor.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

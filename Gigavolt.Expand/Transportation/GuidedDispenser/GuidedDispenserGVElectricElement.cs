@@ -10,12 +10,12 @@ namespace Game {
         public GuidedDispenserGVElectricElement(SubsystemGVElectricity subsystemElectricity, Point3 point) : base(
             subsystemElectricity,
             new List<CellFace> {
-                new CellFace(point.X, point.Y, point.Z, 0),
-                new CellFace(point.X, point.Y, point.Z, 1),
-                new CellFace(point.X, point.Y, point.Z, 2),
-                new CellFace(point.X, point.Y, point.Z, 3),
-                new CellFace(point.X, point.Y, point.Z, 4),
-                new CellFace(point.X, point.Y, point.Z, 5)
+                new(point.X, point.Y, point.Z, 0),
+                new(point.X, point.Y, point.Z, 1),
+                new(point.X, point.Y, point.Z, 2),
+                new(point.X, point.Y, point.Z, 3),
+                new(point.X, point.Y, point.Z, 4),
+                new(point.X, point.Y, point.Z, 5)
             }
         ) => m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
 
@@ -77,28 +77,9 @@ namespace Game {
                     int offsetX = (int)(m_voltage & 0xFFu) * (((m_voltage >> 24) & 1u) == 1u ? -1 : 1);
                     int offsetY = (int)((m_voltage >> 8) & 0xFFu) * (((m_voltage >> 25) & 1u) == 1u ? -1 : 1);
                     int offsetZ = (int)((m_voltage >> 16) & 0xFFu) * (((m_voltage >> 26) & 1u) == 1u ? -1 : 1);
-                    Point3 target = new Point3(position.X + offsetX, position.Y + offsetY, position.Z + offsetZ);
-                    Vector3 targetV = new Vector3(target.X + 0.5f, target.Y + 0.5f, target.Z + 0.5f);
-                    Vector3 direction = Vector3.Zero;
-                    double l = Math.Sqrt((double)(targetV.X - origin.X) * (targetV.X - origin.X) + (double)(targetV.Z - origin.Z) * (targetV.Z - origin.Z));
-                    double angle = Math.Atan(Math.Abs((double)(targetV.X - origin.X) / (targetV.Z - origin.Z)));
-                    if (targetV.Y >= origin.Y) {
-                        double h = targetV.Y - origin.Y;
-                        double t = Math.Sqrt(h / 5);
-                        double vy = t * 10;
-                        double vx = l / t;
-                        direction.Y = (float)vy;
-                        direction.X = (float)(vx * Math.Sin(angle) * (targetV.X > origin.X ? 1 : -1));
-                        direction.Z = (float)(vx * Math.Cos(angle) * (targetV.Z > origin.Z ? 1 : -1));
-                    }
-                    else {
-                        double h = origin.Y - targetV.Y;
-                        double vx = l / Math.Sqrt(h / 5);
-                        direction.X = (float)(vx * Math.Sin(angle) * (targetV.X > origin.X ? 1 : -1));
-                        direction.Z = (float)(vx * Math.Cos(angle) * (targetV.Z > origin.Z ? 1 : -1));
-                    }
+                    Point3 target = new(position.X + offsetX, position.Y + offsetY, position.Z + offsetZ);
+                    Vector3 direction = GetDirection(origin, new Vector3(target.X + 0.5f, target.Y + 0.5f, target.Z + 0.5f));
                     bool transform = ((m_voltage >> 27) & 1u) == 1u;
-                    //Log.Information($"l: {l}, angle: {angle}, h: {targetV.Y - origin.Y}, direction: {direction}");
                     for (int i = 0; i < removedCount; i++) {
                         component.ShootItem(
                             position,
@@ -120,6 +101,35 @@ namespace Game {
                 }
             }
             return false;
+        }
+
+        public static Vector3 GetDirection(Vector3 origin, Vector3 target) {
+            Vector3 direction = Vector3.Zero;
+            double l = Math.Sqrt((double)(target.X - origin.X) * (target.X - origin.X) + (double)(target.Z - origin.Z) * (target.Z - origin.Z));
+            double angle = Math.Atan(Math.Abs((double)(target.X - origin.X) / (target.Z - origin.Z)));
+            double h = target.Y - origin.Y;
+            if (h > l
+                || h > 5) {
+                double t = Math.Sqrt(h / 5);
+                double vy = t * 10;
+                double vx = l / t;
+                direction.Y = (float)vy;
+                direction.X = (float)(vx * Math.Sin(angle) * (target.X > origin.X ? 1 : -1));
+                direction.Z = (float)(vx * Math.Cos(angle) * (target.Z > origin.Z ? 1 : -1));
+            }
+            else if (h < -5) {
+                double vx = l / Math.Sqrt(-h / 5);
+                direction.X = (float)(vx * Math.Sin(angle) * (target.X > origin.X ? 1 : -1));
+                direction.Z = (float)(vx * Math.Cos(angle) * (target.Z > origin.Z ? 1 : -1));
+            }
+            else {
+                double t = Math.Sqrt((l - h) / 5);
+                double v = l / t;
+                direction.Y = (float)v;
+                direction.X = (float)(v * Math.Sin(angle) * (target.X > origin.X ? 1 : -1));
+                direction.Z = (float)(v * Math.Cos(angle) * (target.Z > origin.Z ? 1 : -1));
+            }
+            return direction;
         }
     }
 }
