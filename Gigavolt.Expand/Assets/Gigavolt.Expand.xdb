@@ -42,5 +42,8 @@
 		<MemberSubsystemTemplate Name="GVCameraBlockBehavior" Guid="69ba20d9-bd6d-4f75-a70d-2ee29cceea87" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="6aadb777-81b9-4b41-9008-88ac5a11a795" Value="Game.SubsystemGVCameraBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVAttractorBlockBehavior" Guid="546b2b61-0c0b-4926-a873-1f318fe058b8" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="562c3507-004c-4fcc-b497-15d45f1fcc52" Value="Game.SubsystemGVAttractorBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

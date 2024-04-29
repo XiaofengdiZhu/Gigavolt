@@ -277,6 +277,20 @@ namespace Game {
                                 );
                             }
                             projectile.ToRemove = true;
+                            continue;
+                        }
+                        if (projectile.Velocity.Length() < 0.3f) {
+                            if (projectile.ProjectileStoppedAction != ProjectileStoppedAction.Disappear) {
+                                m_subsystemPickables.AddPickable(
+                                    projectile.Value,
+                                    projectile.Count,
+                                    stopAtVector3,
+                                    Vector3.Zero,
+                                    null
+                                );
+                            }
+                            projectile.ToRemove = true;
+                            continue;
                         }
                         BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(position + v, newPosition + v, 0.2f, (_, _) => true);
                         TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(
@@ -491,8 +505,7 @@ namespace Game {
                                 if (plane.Normal.Z != 0f) {
                                     projectile.Velocity *= new Vector3(0.3f, 0.3f, -0.3f);
                                 }
-                                float num3 = projectile.Velocity.Length();
-                                projectile.Velocity = num3 * Vector3.Normalize(projectile.Velocity);
+                                projectile.Velocity = projectile.Velocity.Length() * Vector3.Normalize(projectile.Velocity);
                                 projectile.AngularVelocity *= -0.3f;
                             }
                             MakeProjectileNoise(projectile);

@@ -9,6 +9,9 @@ namespace Game {
         public readonly SubsystemGVProjectiles m_subsystemGVProjectiles;
         public readonly SubsystemFireBlockBehavior m_subsystemFireBlockBehavior;
         public readonly SubsystemExplosions m_subsystemExplosions;
+        public readonly SubsystemPlayers m_subsystemPlayers;
+        public readonly SubsystemBodies m_subsystemBodies;
+        public readonly SubsystemGVAttractorBlockBehavior m_subsystemGVAttractorBlockBehavior;
         public readonly Random m_random;
         public uint m_lastInput;
         public readonly Vector3 m_originalPosition;
@@ -19,6 +22,9 @@ namespace Game {
             m_subsystemGVProjectiles = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVProjectiles>(true);
             m_subsystemFireBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemFireBlockBehavior>(true);
             m_subsystemExplosions = subsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true);
+            m_subsystemPlayers = subsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true);
+            m_subsystemBodies = subsystemGVElectricity.Project.FindSubsystem<SubsystemBodies>(true);
+            m_subsystemGVAttractorBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVAttractorBlockBehavior>(true);
             m_random = new Random();
             m_originalPosition = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f);
         }
@@ -36,6 +42,7 @@ namespace Game {
                 if (rangeSquared <= 0) {
                     return false;
                 }
+                bool ignoreDistance = (m_lastInput & 0xFFu) == 0xFFu;
                 rangeSquared *= rangeSquared;
                 int specifiedContent = (int)(m_lastInput >> 22);
                 bool rebound = ((m_lastInput >> 15) & 1u) == 1u;
@@ -52,9 +59,12 @@ namespace Game {
                         foreach (SubsystemGVProjectiles.Projectile projectile in m_subsystemGVProjectiles.m_projectiles) {
                             if (!projectile.ToRemove
                                 && (specifiedContent == 0 || projectile.Value == specifiedContent)) {
-                                float distance = Vector3.DistanceSquared(m_originalPosition, projectile.Position);
-                                if (distance > 0.5f
-                                    && distance < rangeSquared) {
+                                bool inDistance = ignoreDistance;
+                                if (!inDistance) {
+                                    float distanceSquared = Vector3.DistanceSquared(m_originalPosition, projectile.Position);
+                                    inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
+                                }
+                                if (inDistance) {
                                     projectile.Velocity = parabola ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, m_originalPosition) : Vector3.Normalize(m_originalPosition - projectile.Position) * speed;
                                     projectile.DisableGravity = !parabola;
                                     projectile.DisableDamping = parabola || !rebound;
@@ -66,9 +76,12 @@ namespace Game {
                         foreach (Projectile projectile in m_subsystemProjectiles.m_projectiles) {
                             if (!projectile.ToRemove
                                 && (specifiedContent == 0 || projectile.Value == specifiedContent)) {
-                                float distance = Vector3.DistanceSquared(m_originalPosition, projectile.Position);
-                                if (distance > 0.5f
-                                    && distance < rangeSquared) {
+                                bool inDistance = ignoreDistance;
+                                if (!inDistance) {
+                                    float distanceSquared = Vector3.DistanceSquared(m_originalPosition, projectile.Position);
+                                    inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
+                                }
+                                if (inDistance) {
                                     SubsystemGVProjectiles.Projectile newProjectile = m_subsystemGVProjectiles.AddProjectile(
                                         projectile.Value,
                                         projectile.Position,
@@ -99,9 +112,12 @@ namespace Game {
                         foreach (Pickable pickable in m_subsystemPickables.m_pickables) {
                             if (!pickable.ToRemove
                                 && (specifiedContent == 0 || pickable.Value == specifiedContent)) {
-                                float distance = Vector3.DistanceSquared(m_originalPosition, pickable.Position);
-                                if (distance > 0.5f
-                                    && distance < rangeSquared) {
+                                bool inDistance = ignoreDistance;
+                                if (!inDistance) {
+                                    float distanceSquared = Vector3.DistanceSquared(m_originalPosition, pickable.Position);
+                                    inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
+                                }
+                                if (inDistance) {
                                     m_subsystemGVProjectiles.FireProjectile(
                                         pickable.Value,
                                         pickable.Position,
@@ -124,9 +140,12 @@ namespace Game {
                         HashSet<SubsystemExplosions.ExplosionData> toRemove = new();
                         foreach (SubsystemExplosions.ExplosionData explosion in m_subsystemExplosions.m_queuedExplosions) {
                             Vector3 explosionPosition = new(explosion.X + 0.5f, explosion.Y + 0.5f, explosion.Z + 0.5f);
-                            float distance = Vector3.DistanceSquared(m_originalPosition, explosionPosition);
-                            if (distance > 2.1f
-                                && distance < rangeSquared) {
+                            bool inDistance = ignoreDistance;
+                            if (!inDistance) {
+                                float distanceSquared = Vector3.DistanceSquared(m_originalPosition, explosionPosition);
+                                inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
+                            }
+                            if (inDistance) {
                                 toRemove.Add(explosion);
                                 if (explosion.Pressure < 2f) {
                                     continue;
@@ -169,9 +188,12 @@ namespace Game {
                         HashSet<Point3> toRemove = new();
                         foreach (SubsystemFireBlockBehavior.FireData fire in m_subsystemFireBlockBehavior.m_fireData.Values) {
                             Vector3 firePosition = new(fire.Point.X + 0.5f, fire.Point.Y + 0.5f, fire.Point.Z + 0.5f);
-                            float distance = Vector3.DistanceSquared(m_originalPosition, firePosition);
-                            if (distance > 2.1f
-                                && distance < rangeSquared) {
+                            bool inDistance = ignoreDistance;
+                            if (!inDistance) {
+                                float distanceSquared = Vector3.DistanceSquared(m_originalPosition, firePosition);
+                                inDistance = distanceSquared > 2.1f && distanceSquared < rangeSquared;
+                            }
+                            if (inDistance) {
                                 toRemove.Add(fire.Point);
                                 SubsystemGVProjectiles.Projectile projectile = m_subsystemGVProjectiles.FireProjectile(
                                     FireBlock.Index,
@@ -208,8 +230,34 @@ namespace Game {
                     }
                 }
                 if (speed != 0f) {
-                    if (attractPlayers) { }
-                    if (attractAnimals) { }
+                    if (attractPlayers) {
+                        foreach (ComponentPlayer player in m_subsystemPlayers.m_componentPlayers) {
+                            ComponentBody body = player.ComponentBody;
+                            bool inDistance = ignoreDistance;
+                            if (!inDistance) {
+                                float distanceSquared = Vector3.DistanceSquared(m_originalPosition, body.Position);
+                                inDistance = distanceSquared > body.BoxSize.LengthSquared() / 4 && distanceSquared < rangeSquared;
+                            }
+                            if (inDistance) {
+                                m_subsystemGVAttractorBlockBehavior.StartMoveBody(body, m_originalPosition, speed, rebound);
+                            }
+                        }
+                    }
+                    if (attractAnimals) {
+                        foreach (ComponentBody body in m_subsystemBodies.m_areaByComponentBody.Keys) {
+                            if (body.Entity.FindComponent<ComponentPlayer>(false) != null) {
+                                continue;
+                            }
+                            bool inDistance = ignoreDistance;
+                            if (!inDistance) {
+                                float distanceSquared = Vector3.DistanceSquared(m_originalPosition, body.Position);
+                                inDistance = distanceSquared > body.BoxSize.LengthSquared() / 4 && distanceSquared < rangeSquared;
+                            }
+                            if (inDistance) {
+                                m_subsystemGVAttractorBlockBehavior.StartMoveBody(body, m_originalPosition, speed, rebound);
+                            }
+                        }
+                    }
                 }
             }
             return false;

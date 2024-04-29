@@ -110,7 +110,7 @@
 		<Compile Include="MoreSensors\Camera\CameraGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\Camera\GVCamera.cs"/>
 		<Compile Include="MoreSensors\Camera\GVCameraBlock.cs"/>
-		<Compile Include="MoreSensors\Camera\SubsystemGVDoorBlockBehavior.cs"/>
+		<Compile Include="MoreSensors\Camera\SubsystemGVCameraBlockBehavior.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\GVPlayerMonitorBlock.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\HookViewWidget.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\PlayerMonitorGVElectricElement.cs"/>
@@ -127,6 +127,7 @@
 		<Compile Include="Properties\AssemblyInfo.cs"/>
 		<Compile Include="Transportation\Attractor\GVAttractorBlock.cs"/>
 		<Compile Include="Transportation\Attractor\AttractorGVElectricElement.cs"/>
+		<Compile Include="Transportation\Attractor\SubsystemGVAttractorBlockBehavior.cs"/>
 		<Compile Include="Transportation\InventoryController\GVInventoryControllerBlock.cs"/>
 		<Compile Include="Transportation\InventoryController\InventoryControllerGVElectricElement.cs"/>
 		<Compile Include="Transportation\InventoryController\SubsystemGVInventoryControllerBlockBehavior.cs"/>
