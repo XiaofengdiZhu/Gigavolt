@@ -17,9 +17,13 @@ namespace Game {
         public BlockMesh[] m_blockMeshesByFace_Top = new BlockMesh[6];
         public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
 
-        public static readonly Texture2D WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+        public static Texture2D WhiteTexture;
 
         public override void Initialize() {
+            if (WhiteTexture == null
+                || WhiteTexture.m_isDisposed) {
+                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+            }
             Model model = ContentManager.Get<Model>("Models/GVButton");
             Matrix boneAbsoluteTransform_Body = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Button").ParentBone);
             Matrix boneAbsoluteTransform_Top = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Top").ParentBone);

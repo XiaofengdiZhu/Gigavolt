@@ -10,7 +10,7 @@ using Image = Engine.Media.Image;
 namespace Game {
     public class GVAdjustableDelayGateBlock : RotateableMountedGVElectricElementBlock, IPaintableBlock {
         public const int Index = 808;
-        public static readonly Texture2D WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+        public static Texture2D WhiteTexture;
 
         public GVAdjustableDelayGateBlock() : base("Models/GVAdjustableDelayGate", "Body", 0.375f) { }
 
@@ -22,6 +22,10 @@ namespace Game {
         public override void Initialize() {
             //原先获取主体模型部分保留
             base.Initialize();
+            if (WhiteTexture == null
+                || WhiteTexture.m_isDisposed) {
+                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+            }
             //获取顶部模型
             Model model = ContentManager.Get<Model>("Models/GVAdjustableDelayGate");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Top").ParentBone);

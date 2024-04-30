@@ -17,9 +17,13 @@ namespace Game {
         public readonly BlockMesh[] m_blockMeshesByIndex_Lever = new BlockMesh[12];
         public readonly BoundingBox[][] m_collisionBoxesByIndex = new BoundingBox[12][];
 
-        public static readonly Texture2D WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+        public static Texture2D WhiteTexture;
 
         public override void Initialize() {
+            if (WhiteTexture == null
+                || WhiteTexture.m_isDisposed) {
+                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+            }
             Model model = ContentManager.Get<Model>("Models/Switch");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Body").ParentBone);
             Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Lever").ParentBone);

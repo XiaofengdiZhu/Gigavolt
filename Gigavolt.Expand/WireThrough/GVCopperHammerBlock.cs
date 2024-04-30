@@ -9,7 +9,7 @@ using Image = Engine.Media.Image;
 namespace Game {
     public class GVCopperHammerBlock : Block {
         public const int Index = 867;
-        public static readonly Texture2D WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+        public static Texture2D WhiteTexture;
 
         public int m_handleTextureSlot = 47;
         public int m_headTextureSlot = 77;
@@ -17,6 +17,10 @@ namespace Game {
         public BlockMesh m_standaloneBlockMesh_Head = new();
 
         public override void Initialize() {
+            if (WhiteTexture == null
+                || WhiteTexture.m_isDisposed) {
+                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+            }
             Model model = ContentManager.Get<Model>("Models/Hammer");
             Matrix absoluteTransform1 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Handle").ParentBone);
             Matrix absoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Head").ParentBone);
