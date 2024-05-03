@@ -112,7 +112,6 @@
 		<Compile Include="MoreSensors\Camera\GVCameraBlock.cs"/>
 		<Compile Include="MoreSensors\Camera\SubsystemGVCameraBlockBehavior.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\GVPlayerMonitorBlock.cs"/>
-		<Compile Include="MoreSensors\PlayerMonitor\HookViewWidget.cs"/>
 		<Compile Include="MoreSensors\PlayerMonitor\PlayerMonitorGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs"/>

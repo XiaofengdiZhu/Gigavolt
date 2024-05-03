@@ -1,6 +1,8 @@
 using System;
+using System.Runtime.InteropServices;
 using Engine;
 using Engine.Graphics;
+using OpenTK.Graphics.ES30;
 
 namespace Game {
     public class PlayerMonitorGVElectricElement : RotateableGVElectricElement {
@@ -164,46 +166,25 @@ namespace Game {
                         break;
                     }
                     case 48u: {
-                        if (componentPlayer.ViewWidget.m_scalingRenderTarget == null) {
-                            GameWidget gameWidget = componentPlayer.PlayerData.GameWidget;
-                            HookViewWidget hookViewWidget = gameWidget.Children.Find<HookViewWidget>("HookViewWidget", false);
-                            if (hookViewWidget == null) {
-                                hookViewWidget = new HookViewWidget();
-                                gameWidget.Children.InsertAfter(componentPlayer.ViewWidget, hookViewWidget);
-                                m_rightOutput = uint.MaxValue;
-                                m_topOutput = uint.MaxValue;
-                                m_leftOutput = uint.MaxValue;
-                            }
-                            else if (hookViewWidget.m_stopHook) {
-                                hookViewWidget.m_stopHook = false;
-                                m_rightOutput = uint.MaxValue;
-                                m_topOutput = uint.MaxValue;
-                                m_leftOutput = uint.MaxValue;
-                            }
-                            else {
-                                hookViewWidget.m_stopHook = true;
-                                m_rightOutput = 7u;
-                                m_topOutput = 7u;
-                                m_leftOutput = 7u;
-                            }
-                        }
-                        else {
-                            m_rightOutput = uint.MaxValue;
-                            m_topOutput = uint.MaxValue;
-                            m_leftOutput = uint.MaxValue;
-                        }
-                        break;
-                    }
-                    case 49u: {
                         if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inInput, out GVArrayData memory)) {
                             RenderTarget2D renderTarget = componentPlayer.ViewWidget.m_scalingRenderTarget;
                             if (componentPlayer.ViewWidget.m_scalingRenderTarget == null) {
-                                HookViewWidget hookViewWidget = componentPlayer.PlayerData.GameWidget.Children.Find<HookViewWidget>("HookViewWidget", false);
-                                if (hookViewWidget != null
-                                    && !hookViewWidget.m_stopHook) {
-                                    memory.UintArray2Data(hookViewWidget.m_hookedImage, Window.Size.X, Window.Size.Y);
-                                    hookViewWidget.m_hookedImage = null;
-                                }
+                                int lastFrameBuffer = GLWrapper.m_framebuffer;
+                                GLWrapper.BindFramebuffer(GLWrapper.m_mainFramebuffer);
+                                uint[] m_hookedImage = new uint[Window.Size.X * Window.Size.Y];
+                                GCHandle gcHandle = GCHandle.Alloc(m_hookedImage, GCHandleType.Pinned);
+                                GL.ReadPixels(
+                                    0,
+                                    0,
+                                    Window.Size.X,
+                                    Window.Size.Y,
+                                    PixelFormat.Rgba,
+                                    PixelType.UnsignedByte,
+                                    gcHandle.AddrOfPinnedObject()
+                                );
+                                memory.UintArray2Data(m_hookedImage, Window.Size.X, Window.Size.Y);
+                                gcHandle.Free();
+                                GLWrapper.BindFramebuffer(lastFrameBuffer);
                             }
                             else {
                                 memory.Image2Data(renderTarget.GetData(new Rectangle(0, 0, renderTarget.Width, renderTarget.Height)));
