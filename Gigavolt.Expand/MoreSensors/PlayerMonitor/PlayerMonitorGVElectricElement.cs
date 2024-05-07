@@ -1,8 +1,13 @@
+extern alias OpenTKForWindows;
+extern alias OpenTKForAndroid;
 using System;
 using System.Runtime.InteropServices;
 using Engine;
 using Engine.Graphics;
-using OpenTK.Graphics.ES30;
+using OpenTKForWindows::OpenTK.Graphics.ES30;
+using GL = OpenTKForAndroid::OpenTK.Graphics.ES30.GL;
+using PixelFormat = OpenTKForAndroid::OpenTK.Graphics.ES30.PixelFormat;
+using PixelType = OpenTKForAndroid::OpenTK.Graphics.ES30.PixelType;
 
 namespace Game {
     public class PlayerMonitorGVElectricElement : RotateableGVElectricElement {
@@ -173,15 +178,14 @@ namespace Game {
                                 GLWrapper.BindFramebuffer(GLWrapper.m_mainFramebuffer);
                                 uint[] m_hookedImage = new uint[Window.Size.X * Window.Size.Y];
                                 GCHandle gcHandle = GCHandle.Alloc(m_hookedImage, GCHandleType.Pinned);
-                                GL.ReadPixels(
-                                    0,
-                                    0,
-                                    Window.Size.X,
-                                    Window.Size.Y,
-                                    PixelFormat.Rgba,
-                                    PixelType.UnsignedByte,
-                                    gcHandle.AddrOfPinnedObject()
-                                );
+                                switch (VersionsManager.Platform) {
+                                    case Platform.Desktop:
+                                        WindowsGLReadPixels(Window.Size.X, Window.Size.Y, gcHandle.AddrOfPinnedObject());
+                                        break;
+                                    case Platform.Android:
+                                        AndroidGLReadPixels(Window.Size.X, Window.Size.Y, gcHandle.AddrOfPinnedObject());
+                                        break;
+                                }
                                 memory.UintArray2Data(m_hookedImage, Window.Size.X, Window.Size.Y);
                                 gcHandle.Free();
                                 GLWrapper.BindFramebuffer(lastFrameBuffer);
@@ -198,5 +202,29 @@ namespace Game {
         }
 
         public static uint Float2Uint(float num) => ((num < 0 ? 1u : 0u) << 31) | (((uint)Math.Truncate(Math.Abs(num)) & 0x7fff) << 16) | (uint)Math.Round(num % 1 * 0xffff);
+
+        public void WindowsGLReadPixels(int width, int height, nint pixels) {
+            OpenTKForWindows::OpenTK.Graphics.ES30.GL.ReadPixels(
+                0,
+                0,
+                width,
+                height,
+                OpenTKForWindows::OpenTK.Graphics.ES30.PixelFormat.Rgba,
+                OpenTKForWindows::OpenTK.Graphics.ES30.PixelType.UnsignedByte,
+                pixels
+            );
+        }
+
+        public void AndroidGLReadPixels(int width, int height, nint pixels) {
+            GL.ReadPixels(
+                0,
+                0,
+                width,
+                height,
+                PixelFormat.Rgba,
+                PixelType.UnsignedByte,
+                pixels
+            );
+        }
     }
 }
