@@ -120,7 +120,7 @@
     },
     "GVTruthTableCircuitBlock:0": {
       "DisplayName": "GV真值表",
-      "Description": "真值表，表征逻辑事件输入和输出之间全部可能状态的表格。详见本Mod Github页面的介绍。",
+      "Description": "真值表，表征逻辑事件输入和输出之间全部可能状态的表格，除了能像经典版一样根据指定的输入输出电压，还能编写公式输出计算结果。详见本Mod Github页面的介绍。",
       "CRDescription:0": "用铜和锗合成真值表"
     },
     "GVTruthTableCircuitCBlock:0": {

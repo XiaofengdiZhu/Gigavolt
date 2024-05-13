@@ -70,10 +70,12 @@ namespace Game {
         }
 
         public uint Exe(List<SectionInput> inputs) {
-            for (int i = 0; i < Data.Count; i++) {
-                uint? output = Data[i].Exe(inputs);
-                if (output.HasValue) {
-                    return output.Value;
+            if (Data != null) {
+                foreach (Line line in Data) {
+                    uint? output = line.Exe(inputs);
+                    if (output.HasValue) {
+                        return output.Value;
+                    }
                 }
             }
             return 0u;

@@ -11,7 +11,7 @@ namespace Game {
             texture = ContentManager.Get<Texture2D>("Textures/GVTerrainScanner");
         }
 
-        public GVTerrainScannerBlock() : base("Models/GigavoltGates", "OneLed", 0.5f) { }
+        public GVTerrainScannerBlock() : base("Models/GigavoltGates", "AnalogToDigitalConverter", 0.375f) { }
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new TerrainScannerGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
 
