@@ -45,5 +45,8 @@
 		<MemberSubsystemTemplate Name="GVAttractorBlockBehavior" Guid="546b2b61-0c0b-4926-a873-1f318fe058b8" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="562c3507-004c-4fcc-b497-15d45f1fcc52" Value="Game.SubsystemGVAttractorBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVSignalGeneratorBlockBehavior" Guid="c8ed81bb-fd97-47af-a84b-1079199feb0c" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="0f227d34-8888-4935-a770-b1a022e5ecd3" Value="Game.SubsystemGVSignalGeneratorBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

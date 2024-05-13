@@ -131,6 +131,9 @@
 		<Compile Include="PlayerController\GVPlayerControllerBlock.cs"/>
 		<Compile Include="PlayerController\PlayerControllerGVElectricElement.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
+		<Compile Include="SignalGenerator\GVSignalGeneratorBlock.cs"/>
+		<Compile Include="SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
+		<Compile Include="SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
 		<Compile Include="Transportation\Attractor\GVAttractorBlock.cs"/>
 		<Compile Include="Transportation\Attractor\AttractorGVElectricElement.cs"/>
 		<Compile Include="Transportation\Attractor\SubsystemGVAttractorBlockBehavior.cs"/>
@@ -376,6 +379,12 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Models\GVAttractor.dae">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Models\GVSignalGenerator.dae">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVSignalGeneratorBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

@@ -6,7 +6,7 @@ namespace Game {
 
         public uint m_voltage;
 
-        public static Random s_random = new Random();
+        public static Random s_random = new();
 
         public RandomGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             uint? num = SubsystemGVElectricity.ReadPersistentVoltage(CellFaces[0].Point);
@@ -19,10 +19,9 @@ namespace Game {
             uint voltage = m_voltage;
             bool flag = false;
             bool flag2 = false;
-            _ = Rotation;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
-                    && connection.NeighborConnectorType != 0) {
+                    && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
                     if (IsSignalHigh(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace))) {
                         if (m_clockAllowed) {
                             flag = true;

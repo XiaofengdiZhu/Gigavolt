@@ -4,6 +4,7 @@ namespace Game {
     public abstract class MountedGVElectricElement : GVElectricElement {
         public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) { }
         public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace cellFace) : base(subsystemGVElectric, cellFace) { }
+        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace[] cellFaces) : base(subsystemGVElectric, cellFaces) { }
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
             Point3 point = CellFace.FaceToPoint3(cellFace.Face);
@@ -14,7 +15,7 @@ namespace Game {
                 int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
                 if ((!block.IsCollidable_(cellValue) || block.IsFaceTransparent(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue))
-                    && (cellFace.Face != 4 || !(block is FenceBlock))) {
+                    && (cellFace.Face != 4 || block is not FenceBlock)) {
                     SubsystemGVElectricity.SubsystemTerrain.DestroyCell(
                         0,
                         cellFace.X,

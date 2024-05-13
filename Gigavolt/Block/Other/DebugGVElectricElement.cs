@@ -19,8 +19,8 @@ namespace Game {
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
             int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y - 1, cellFace.Z);
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-            if (!block.IsCollidable_(cellValue)
-                || block.IsTransparent_(cellValue)) {
+            if ((!block.IsCollidable_(cellValue) || block.IsFaceTransparent(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue))
+                && (cellFace.Face != 4 || block is not FenceBlock)) {
                 SubsystemGVElectricity.SubsystemTerrain.DestroyCell(
                     0,
                     cellFace.X,

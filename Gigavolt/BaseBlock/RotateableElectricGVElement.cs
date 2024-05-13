@@ -25,6 +25,7 @@ namespace Game {
 
         public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) { }
         public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace cellFace) : base(subsystemGVElectric, cellFace) { }
+        public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace[] cellFaces) : base(subsystemGVElectric, cellFaces) { }
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
             ++Rotation;

@@ -135,6 +135,10 @@
     "GVAttractorBlock:0": {
       "DisplayName": "GV吸引器",
       "Description": "可吸引掉落物、抛射物、动物等，每次输入电压变化都会尝试进行吸引，详见本Mod Github页面的介绍"
+    },
+    "GVSignalGeneratorBlock:0": {
+      "DisplayName": "GV信号发生器",
+      "Description": "用于产生正弦波、三角波、锯齿波、方波，占用两格，如果空间不足将无法放置或旋转，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {

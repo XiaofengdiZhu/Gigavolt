@@ -10,11 +10,11 @@ namespace Game {
 
         public float m_centerBoxSize;
 
-        public BlockMesh[] m_blockMeshes = new BlockMesh[24];
+        public readonly BlockMesh[] m_blockMeshes = new BlockMesh[24];
 
-        public BlockMesh m_standaloneBlockMesh = new();
+        public readonly BlockMesh m_standaloneBlockMesh = new();
 
-        public BoundingBox[][] m_collisionBoxes = new BoundingBox[24][];
+        public readonly BoundingBox[][] m_collisionBoxes = new BoundingBox[24][];
 
         public RotateableMountedGVElectricElementBlock(string modelName, string meshName, float centerBoxSize) {
             m_modelName = modelName;
@@ -27,8 +27,9 @@ namespace Game {
         }
 
         public void RotateableMountedGVElectricElementBlockInitialize() {
-            Model model = ContentManager.Get<Model>(m_modelName);
-            Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(m_meshName).ParentBone);
+            ModelMesh modelMesh = ContentManager.Get<Model>(m_modelName).FindMesh(m_meshName);
+            ModelMeshPart modelMeshPart = modelMesh.MeshParts[0];
+            Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(modelMesh.ParentBone);
             for (int i = 0; i < 6; i++) {
                 float radians;
                 bool flag;
@@ -45,13 +46,11 @@ namespace Game {
                     flag = true;
                 }
                 for (int j = 0; j < 4; j++) {
-                    float radians2 = -j * (float)Math.PI / 2f;
                     int num = (i << 2) + j;
-                    Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(radians2) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
-                    m_blockMeshes[num] = new BlockMesh();
-                    m_blockMeshes[num]
-                    .AppendModelMeshPart(
-                        model.FindMesh(m_meshName).MeshParts[0],
+                    Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(-j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                    BlockMesh blockMesh = new();
+                    blockMesh.AppendModelMeshPart(
+                        modelMeshPart,
                         boneAbsoluteTransform * m,
                         false,
                         false,
@@ -59,12 +58,13 @@ namespace Game {
                         false,
                         Color.White
                     );
-                    m_collisionBoxes[num] = new[] { m_blockMeshes[num].CalculateBoundingBox() };
+                    m_blockMeshes[num] = blockMesh;
+                    m_collisionBoxes[num] = [blockMesh.CalculateBoundingBox()];
                 }
             }
             Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
             m_standaloneBlockMesh.AppendModelMeshPart(
-                model.FindMesh(m_meshName).MeshParts[0],
+                modelMeshPart,
                 boneAbsoluteTransform * m2,
                 false,
                 false,
@@ -75,6 +75,7 @@ namespace Game {
         }
 
         public override int GetFace(int value) => (Terrain.ExtractData(value) >> 2) & 7;
+        public static int GetFaceFromDataStatic(int data) => (data >> 2) & 7;
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
