@@ -2,9 +2,9 @@ using Engine;
 
 namespace Game {
     public abstract class MountedGVElectricElement : GVElectricElement {
-        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) { }
-        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace cellFace) : base(subsystemGVElectric, cellFace) { }
-        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace[] cellFaces) : base(subsystemGVElectric, cellFaces) { }
+        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace[] cellFaces) : base(subsystemGVElectricity, cellFaces) { }
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
             Point3 point = CellFace.FaceToPoint3(cellFace.Face);

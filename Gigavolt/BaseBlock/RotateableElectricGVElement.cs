@@ -23,9 +23,9 @@ namespace Game {
             }
         }
 
-        public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) { }
-        public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace cellFace) : base(subsystemGVElectric, cellFace) { }
-        public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectric, GVCellFace[] cellFaces) : base(subsystemGVElectric, cellFaces) { }
+        public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public RotateableGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace[] cellFaces) : base(subsystemGVElectricity, cellFaces) { }
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
             ++Rotation;

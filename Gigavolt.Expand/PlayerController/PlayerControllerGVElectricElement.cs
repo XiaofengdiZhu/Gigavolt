@@ -10,7 +10,7 @@ namespace Game {
         uint m_bottomInput;
         uint m_inInput;
 
-        public PlayerControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) => m_subsystemPlayers = SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true);
+        public PlayerControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemPlayers = SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true);
 
         public override uint GetOutputVoltage(int face) => 0u;
 

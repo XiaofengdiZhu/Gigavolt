@@ -5,7 +5,7 @@ namespace Game {
         public int m_type;
         public uint m_output;
 
-        public MoreOneInOneOutGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace, int value) : base(subsystemGVElectric, cellFace) => m_type = GVMoreOneInOneOutBlock.GetType(Terrain.ExtractData(value));
+        public MoreOneInOneOutGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) => m_type = GVMoreOneInOneOutBlock.GetType(Terrain.ExtractData(value));
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
@@ -38,52 +38,52 @@ namespace Game {
             }
             if (m_type < 14) {
                 double radius = (input >> 31 == 1 ? -1 : 1) * (((input >> 16) & 0x7fffu) + (double)(input & 0xffffu) / 0xffff);
-                double midleOutput;
+                double middleOutput;
                 switch (m_type) {
                     case 1:
-                        midleOutput = Math.Cos(radius);
+                        middleOutput = Math.Cos(radius);
                         break;
                     case 2:
-                        midleOutput = Math.Tan(radius);
+                        middleOutput = Math.Tan(radius);
                         break;
                     case 3:
-                        midleOutput = 1 / Math.Tan(radius);
+                        middleOutput = 1 / Math.Tan(radius);
                         break;
                     case 4:
-                        midleOutput = 1 / Math.Cos(radius);
+                        middleOutput = 1 / Math.Cos(radius);
                         break;
                     case 5:
-                        midleOutput = 1 / Math.Sin(radius);
+                        middleOutput = 1 / Math.Sin(radius);
                         break;
                     case 6:
-                        midleOutput = Math.Asin(radius);
+                        middleOutput = Math.Asin(radius);
                         break;
                     case 7:
-                        midleOutput = Math.Acos(radius);
+                        middleOutput = Math.Acos(radius);
                         break;
                     case 8:
-                        midleOutput = Math.Atan(radius);
+                        middleOutput = Math.Atan(radius);
                         break;
                     case 9:
-                        midleOutput = Math.Sinh(radius);
+                        middleOutput = Math.Sinh(radius);
                         break;
                     case 10:
-                        midleOutput = Math.Cosh(radius);
+                        middleOutput = Math.Cosh(radius);
                         break;
                     case 11:
-                        midleOutput = Math.Tanh(radius);
+                        middleOutput = Math.Tanh(radius);
                         break;
                     case 12:
-                        midleOutput = radius * Math.PI / 180;
+                        middleOutput = radius * Math.PI / 180;
                         break;
                     case 13:
-                        midleOutput = radius * 180 / Math.PI;
+                        middleOutput = radius * 180 / Math.PI;
                         break;
                     default:
-                        midleOutput = Math.Sin(radius);
+                        middleOutput = Math.Sin(radius);
                         break;
                 }
-                output = Double2Uint(midleOutput);
+                output = Double2Uint(middleOutput);
             }
             else if (m_type == 14) {
                 output = input ^ (1u << 31);

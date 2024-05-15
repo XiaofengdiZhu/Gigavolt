@@ -9,12 +9,12 @@ namespace Game {
         public PistonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point) : base(
             subsystemGVElectricity,
             new List<CellFace> {
-                new CellFace(point.X, point.Y, point.Z, 0),
-                new CellFace(point.X, point.Y, point.Z, 1),
-                new CellFace(point.X, point.Y, point.Z, 2),
-                new CellFace(point.X, point.Y, point.Z, 3),
-                new CellFace(point.X, point.Y, point.Z, 4),
-                new CellFace(point.X, point.Y, point.Z, 5)
+                new(point.X, point.Y, point.Z, 0),
+                new(point.X, point.Y, point.Z, 1),
+                new(point.X, point.Y, point.Z, 2),
+                new(point.X, point.Y, point.Z, 3),
+                new(point.X, point.Y, point.Z, 4),
+                new(point.X, point.Y, point.Z, 5)
             }
         ) => m_subsystemGVPistonBlockBehavior = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVPistonBlockBehavior>(true);
 
@@ -26,7 +26,7 @@ namespace Game {
                     num = MathUint.Max(num, connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
                 }
             }
-            int num2 = MathUint.ToInt(num);
+            int num2 = MathUint.ToIntWithClamp(num);
             if (num2 != m_lastLength) {
                 m_lastLength = num2;
                 m_subsystemGVPistonBlockBehavior.AdjustPiston(CellFaces[0].Point, num2);

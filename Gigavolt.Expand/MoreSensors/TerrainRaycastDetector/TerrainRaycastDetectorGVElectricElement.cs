@@ -9,7 +9,7 @@ namespace Game {
         uint m_bottomOutput;
         uint m_inOutput;
 
-        public TerrainRaycastDetectorGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) => m_terrain = SubsystemGVElectricity.SubsystemTerrain.Terrain;
+        public TerrainRaycastDetectorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_terrain = SubsystemGVElectricity.SubsystemTerrain.Terrain;
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);

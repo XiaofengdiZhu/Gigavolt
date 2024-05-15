@@ -154,7 +154,7 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectric, int value, int x, int y, int z) => new FourLedGVElectricElement(subsystemGVElectric, new CellFace(x, y, z, GetFace(value)));
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new FourLedGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
 
         public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
             int face2 = GetFace(value);

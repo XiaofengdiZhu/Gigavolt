@@ -24,7 +24,7 @@ namespace Game {
             }
             if (m_voltage != voltage) {
                 GVCellFace cellFace = CellFaces[0];
-                m_subsystem.OpenGate(cellFace.X, cellFace.Y, cellFace.Z, MathUint.ToInt(m_voltage));
+                m_subsystem.OpenGate(cellFace.X, cellFace.Y, cellFace.Z, MathUint.ToIntWithClamp(m_voltage));
             }
             return false;
         }

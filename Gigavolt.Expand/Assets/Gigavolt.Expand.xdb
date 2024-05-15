@@ -1,6 +1,6 @@
 ﻿<Mod>
 	<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
-		<MemberSubsystemTemplate Name="NesEmulatorBlockBehavior" Guid="e75dafb1-e62a-19f0-868d-5ebe47faf54e" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="NesEmulatorBlockBehavior" Guid="e75dafb1-e62a-19f0-868d-5ebe47faf54e" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="9dd0d325-33d3-1ca5-3185-2e0c5079668e" Value="Game.SubsystemNesEmulatorBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVCopperHammerBlockBehavior" Guid="0834f755-7751-cb90-e722-0abc9e3d4c7f" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
@@ -12,31 +12,31 @@
 		<MemberSubsystemTemplate Name="GVDisplayLedGlow" Guid="a3ec5953-6388-41e4-b9df-dcba507c4b21" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="f2fa61d4-faaa-4eb9-9bee-95a8d0b68bcf" Value="Game.SubsystemGVDisplayLedGlow" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVVolatileMemoryBankBlockBehavior" Guid="095c4cc2-2064-453e-8b46-13aee174f144" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVVolatileMemoryBankBlockBehavior" Guid="095c4cc2-2064-453e-8b46-13aee174f144" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="b28ff894-ed25-490e-b341-942310361adf" Value="Game.SubsystemGVVolatileMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVListMemoryBankBlockBehavior" Guid="8bfcf9dc-4e2d-443d-b02e-6f70079f77b5" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVListMemoryBankBlockBehavior" Guid="8bfcf9dc-4e2d-443d-b02e-6f70079f77b5" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="003607e2-97cc-4389-838a-faf393ed370c" Value="Game.SubsystemGVListMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVVolatileListMemoryBankBlockBehavior" Guid="b77494ea-c0bf-4ac4-9534-18f4dd49a0b3" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVVolatileListMemoryBankBlockBehavior" Guid="b77494ea-c0bf-4ac4-9534-18f4dd49a0b3" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="b78384b3-a2b2-41fe-9e95-2a6dea9d3765" Value="Game.SubsystemGVVolatileListMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVFourDimensionalMemoryBankBlockBehavior" Guid="6a51c8d2-2c5d-4340-9aad-899ff1da1cd6" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVFourDimensionalMemoryBankBlockBehavior" Guid="6a51c8d2-2c5d-4340-9aad-899ff1da1cd6" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="aa8241c6-c71d-4051-8c27-777c66c47d67" Value="Game.SubsystemGVFourDimensionalMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVVolatileFourDimensionalMemoryBankBlockBehavior" Guid="6aa3e402-de3e-4e7d-9a6b-64995e145348" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVVolatileFourDimensionalMemoryBankBlockBehavior" Guid="6aa3e402-de3e-4e7d-9a6b-64995e145348" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="8c913f0a-18c0-495b-9dc6-aba393dde631" Value="Game.SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVCrusherProjectileBlockBehavior" Guid="f91dbbdc-f15b-48c6-a149-d69b4573c329" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVCrusherProjectileBlockBehavior" Guid="f91dbbdc-f15b-48c6-a149-d69b4573c329" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="093954f4-3ff1-460c-be05-b4290859769a" Value="Game.SubsystemGVCrusherProjectileBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVDataModifierProjectileBlockBehavior" Guid="8210b070-0f9e-49e5-a382-630f4ba49f15" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVDataModifierProjectileBlockBehavior" Guid="8210b070-0f9e-49e5-a382-630f4ba49f15" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="b86083be-8f5c-4a53-9876-d971fe70cc82" Value="Game.SubsystemGVDataModifierProjectileBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVInventoryControllerBlockBehavior" Guid="c50d7476-0dac-4210-87e8-6150c4f60246" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="4bd8fb72-d7f7-466d-84be-cbc0a3470cff" Value="Game.SubsystemGVInventoryControllerBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVJavascriptMicrocontrollerBlockBehavior" Guid="75b5af50-ae40-44f0-9ea9-ceeffa984e74" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVJavascriptMicrocontrollerBlockBehavior" Guid="75b5af50-ae40-44f0-9ea9-ceeffa984e74" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="fdec63d8-84d4-4881-8662-d7dcf41f77ed" Value="Game.SubsystemGVJavascriptMicrocontrollerBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVCameraBlockBehavior" Guid="69ba20d9-bd6d-4f75-a70d-2ee29cceea87" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
@@ -46,6 +46,7 @@
 			<Parameter Name="Class" Guid="562c3507-004c-4fcc-b497-15d45f1fcc52" Value="Game.SubsystemGVAttractorBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVSignalGeneratorBlockBehavior" Guid="c8ed81bb-fd97-47af-a84b-1079199feb0c" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<ParameterSet Name="Blocks" Guid="954e3f8a-5116-42b5-b234-d2db60562b6a"/>
 			<Parameter Name="Class" Guid="0f227d34-8888-4935-a770-b1a022e5ecd3" Value="Game.SubsystemGVSignalGeneratorBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 	</ProjectTemplate>

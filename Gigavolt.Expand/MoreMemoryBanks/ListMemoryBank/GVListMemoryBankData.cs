@@ -52,7 +52,7 @@ namespace Game {
         public virtual uint LastOutput { get; set; }
 
         public override uint Read(uint index) {
-            int intIndex = MathUint.ToInt(index);
+            int intIndex = MathUint.ToIntWithClamp(index);
             if (m_isDataInitialized && intIndex < Data.Count) {
                 return Data[intIndex];
             }
@@ -61,7 +61,7 @@ namespace Game {
 
         public override void Write(uint index, uint data) {
             if (m_isDataInitialized) {
-                int intIndex = MathUint.ToInt(index);
+                int intIndex = MathUint.ToIntWithClamp(index);
                 if (index < Data.Count) {
                     Data[intIndex] = data;
                 }
@@ -273,7 +273,7 @@ namespace Game {
         public static Image UintList2Image(List<uint> list, uint width = 0u, uint height = 0u, uint offset = 0u) {
             if (width > 0
                 && height > 0) {
-                Image image = new(MathUint.ToInt(width), MathUint.ToInt(height));
+                Image image = new(MathUint.ToIntWithClamp(width), MathUint.ToIntWithClamp(height));
                 for (int y = 0; y < image.Height; y++) {
                     for (int x = 0; x < image.Width; x++) {
                         int index = x + y * image.Width + (int)offset;

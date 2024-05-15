@@ -5,8 +5,8 @@ namespace Game {
     public class WireDomainGVElectricElement : GVElectricElement {
         public uint m_voltage;
 
-        public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectric, IEnumerable<CellFace> cellFaces) : base(subsystemGVElectric, cellFaces) { }
-        public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectric, IEnumerable<GVCellFace> cellFaces) : base(subsystemGVElectric, cellFaces) { }
+        public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<CellFace> cellFaces) : base(subsystemGVElectricity, cellFaces) { }
+        public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<GVCellFace> cellFaces) : base(subsystemGVElectricity, cellFaces) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

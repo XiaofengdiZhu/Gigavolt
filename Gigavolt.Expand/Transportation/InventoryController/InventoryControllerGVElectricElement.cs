@@ -11,7 +11,7 @@ namespace Game {
         public uint m_lastBottomInput;
         ComponentInventoryBase m_originInventory;
 
-        public InventoryControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) { }
+        public InventoryControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

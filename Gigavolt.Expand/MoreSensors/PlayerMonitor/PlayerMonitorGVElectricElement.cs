@@ -19,7 +19,7 @@ namespace Game {
         uint m_bottomInput;
         uint m_inInput;
 
-        public PlayerMonitorGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) {
+        public PlayerMonitorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
             m_subsystemPlayers = SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true);
             m_terrain = SubsystemGVElectricity.SubsystemTerrain.Terrain;
         }

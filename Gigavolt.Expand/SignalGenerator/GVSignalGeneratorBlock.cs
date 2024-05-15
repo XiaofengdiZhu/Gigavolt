@@ -189,6 +189,7 @@ namespace Game {
                     case GVElectricConnectorDirection.Left: return GVElectricConnectorType.Input;
                     case GVElectricConnectorDirection.Top: return isUp ? GVElectricConnectorType.Output : null;
                     case GVElectricConnectorDirection.Bottom: return isUp ? null : GVElectricConnectorType.Input;
+                    case GVElectricConnectorDirection.In: return isUp ? GVElectricConnectorType.Output : GVElectricConnectorType.Input;
                 }
             }
             return null;

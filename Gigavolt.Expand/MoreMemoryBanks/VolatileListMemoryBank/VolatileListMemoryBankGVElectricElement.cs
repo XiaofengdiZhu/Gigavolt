@@ -71,11 +71,11 @@ namespace Game {
                         if (leftInput == 0u) {
                             smallIndex = bigIndex;
                         }
-                        int smallIndexInt = MathUint.ToInt(smallIndex);
-                        int bigIndexInt = MathUint.ToInt(bigIndex);
-                        int leftInputInt = MathUint.ToInt(leftInput);
-                        int rightInputInt = MathUint.ToInt(rightInput);
-                        int inInputInt = MathUint.ToInt(inInput);
+                        int smallIndexInt = MathUint.ToIntWithClamp(smallIndex);
+                        int bigIndexInt = MathUint.ToIntWithClamp(bigIndex);
+                        int leftInputInt = MathUint.ToIntWithClamp(leftInput);
+                        int rightInputInt = MathUint.ToIntWithClamp(rightInput);
+                        int inInputInt = MathUint.ToIntWithClamp(inInput);
                         List<uint> data = memoryBankData.Data;
                         switch (bottomInput) {
                             case 1u:
@@ -279,7 +279,7 @@ namespace Game {
                                 break;
                             case 44u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput << MathUint.ToInt(memoryBankData.Read(i)));
+                                    memoryBankData.Write(i, inInput << MathUint.ToIntWithClamp(memoryBankData.Read(i)));
                                 }
                                 break;
                             case 29u:
@@ -289,7 +289,7 @@ namespace Game {
                                 break;
                             case 45u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput >> MathUint.ToInt(memoryBankData.Read(i)));
+                                    memoryBankData.Write(i, inInput >> MathUint.ToIntWithClamp(memoryBankData.Read(i)));
                                 }
                                 break;
                             case 30u:

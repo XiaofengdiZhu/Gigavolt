@@ -27,7 +27,7 @@ namespace Game {
         }
 
         public override void Write(uint index, uint data) {
-            int intIndex = MathUint.ToInt(index);
+            int intIndex = MathUint.ToIntWithClamp(index);
             if (m_isDataInitialized && intIndex < Data.Length) {
                 Data[intIndex] = data;
                 m_updateTime = DateTime.Now;

@@ -70,8 +70,8 @@ namespace Game {
                     m_sound?.Dispose();
                     if (inInput > 0) {
                         if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(inInput, out GVArrayData GVMBData)) {
-                            int startIndex = MathUint.ToInt(topInput);
-                            int itemsCount = MathUint.ToInt(rightInput);
+                            int startIndex = MathUint.ToIntWithClamp(topInput);
+                            int itemsCount = MathUint.ToIntWithClamp(rightInput);
                             try {
                                 if (GVMBData.m_worldDirectory == null) {
                                     GVMBData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
@@ -91,7 +91,7 @@ namespace Game {
                                         startIndex,
                                         itemsCount,
                                         2,
-                                        MathUint.ToInt(leftInput)
+                                        MathUint.ToIntWithClamp(leftInput)
                                     )
                                 );
                             }
@@ -100,7 +100,7 @@ namespace Game {
                                 foreach (ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
                                     componentPlayer.ComponentGui.DisplaySmallMessage(error, Color.White, true, true);
                                 }
-                                Log.Error($"{error}，加载起始位置为{startIndex}（均为十进制），加载short数量为{itemsCount}，声道数为2，采样率为{MathUint.ToInt(leftInput)}，详细报错：\n{ex}");
+                                Log.Error($"{error}，加载起始位置为{startIndex}（均为十进制），加载short数量为{itemsCount}，声道数为2，采样率为{MathUint.ToIntWithClamp(leftInput)}，详细报错：\n{ex}");
                             }
                         }
                         else {

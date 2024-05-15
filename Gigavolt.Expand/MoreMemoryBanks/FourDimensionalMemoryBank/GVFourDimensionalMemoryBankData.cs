@@ -80,7 +80,7 @@ namespace Game {
         public virtual uint LastOutput { get; set; }
 
         public override uint Read(uint index) {
-            int intIndex = MathUint.ToInt(index);
+            int intIndex = MathUint.ToIntWithClamp(index);
             if (m_isDataInitialized && intIndex < m_totalLength) {
                 int w = intIndex / m_xyzProduct;
                 if (Data.TryGetValue(w, out Image<Rgba32> image)) {
@@ -109,7 +109,7 @@ namespace Game {
         }
 
         public override void Write(uint index, uint data) {
-            int intIndex = MathUint.ToInt(index);
+            int intIndex = MathUint.ToIntWithClamp(index);
             if (m_isDataInitialized && intIndex < m_totalLength) {
                 int w = intIndex / m_xyzProduct;
                 int wRemainder = intIndex % m_xyzProduct;

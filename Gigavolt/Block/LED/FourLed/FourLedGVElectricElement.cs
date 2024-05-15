@@ -10,7 +10,7 @@ namespace Game {
 
         public GlowPoint[] m_glowPoints = new GlowPoint[4];
 
-        public FourLedGVElectricElement(SubsystemGVElectricity subsystemGVElectric, CellFace cellFace) : base(subsystemGVElectric, cellFace) => m_subsystemGlow = subsystemGVElectric.Project.FindSubsystem<SubsystemGlow>(true);
+        public FourLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(true);
 
         public override void OnAdded() {
             GVCellFace cellFace = CellFaces[0];
