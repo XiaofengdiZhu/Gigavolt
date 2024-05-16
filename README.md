@@ -39,6 +39,7 @@
     * [照相机 Camera](#照相机-camera)
       * [简单照相机 Simple Camera](#简单照相机-simple-camera)
       * [复杂照相机](#复杂照相机)
+    * [信号发生器 Signal Generator](#信号发生器-signal-generator)
     * [吸引器 Attractor](#吸引器-attractor)
     * [红白机模拟器 Nes Emulator](#红白机模拟器-nes-emulator)
     * [制导发射器 Guided Dispenser](#制导发射器-guided-dispenser)
@@ -599,12 +600,14 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 用于产生正弦波、三角波、锯齿波、方波，占用两格，如果空间不足将无法放置或旋转。分为两种模式：
 * 异步模式：下下端不接任何导线和元件即启用异步模式，此模式下可通过下后端来控制时钟启动、暂停、重置，启动后时钟将不断自加1
 * 同步模式：给接下下端接上导线或元件即启用同步模式，下下端电压每次变化都会给时钟增、减相应数值，可通过下后端来重置时钟
+
+无论是同步模式还是异步模式，都需要时钟发生变化才会计算新的波值  
 端口定义详见下表（从上到下为高位到低位）：
 <table>
     <thead align="center">
         <tr>
             <th>端口</th>
-            <th>第n位</th>
+            <th>使用位</th>
             <th>作用</th>
             <th>说明</th>
         </tr>

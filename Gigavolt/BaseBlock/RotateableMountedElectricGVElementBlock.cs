@@ -121,16 +121,17 @@ namespace Game {
                 float num2 = Vector3.Dot(forward, Vector3.UnitX);
                 float num3 = Vector3.Dot(forward, -Vector3.UnitZ);
                 float num4 = Vector3.Dot(forward, -Vector3.UnitX);
-                if (num == MathUtils.Max(num, num2, num3, num4)) {
+                float max = MathUtils.Max(num, num2, num3, num4);
+                if (num == max) {
                     rotation = 2;
                 }
-                else if (num2 == MathUtils.Max(num, num2, num3, num4)) {
+                else if (num2 == max) {
                     rotation = 1;
                 }
-                else if (num3 == MathUtils.Max(num, num2, num3, num4)) {
+                else if (num3 == max) {
                     rotation = 0;
                 }
-                else if (num4 == MathUtils.Max(num, num2, num3, num4)) {
+                else if (num4 == max) {
                     rotation = 3;
                 }
             }

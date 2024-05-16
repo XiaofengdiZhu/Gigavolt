@@ -8,7 +8,7 @@ namespace Game {
     public class SubsystemGVOneLedGlow : Subsystem, IDrawable {
         public SubsystemSky m_subsystemSky;
 
-        public Dictionary<GVGlowPoint, bool> m_glowPoints = new();
+        public HashSet<GVGlowPoint> m_glowPoints = new();
 
         public PrimitivesRenderer3D m_primitivesRenderer = new();
 
@@ -20,7 +20,7 @@ namespace Game {
 
         public GVGlowPoint AddGlowPoint() {
             GVGlowPoint glowPoint = new();
-            m_glowPoints.Add(glowPoint, true);
+            m_glowPoints.Add(glowPoint);
             return glowPoint;
         }
 
@@ -29,7 +29,7 @@ namespace Game {
         }
 
         public void Draw(Camera camera, int drawOrder) {
-            foreach (GVGlowPoint key in m_glowPoints.Keys) {
+            foreach (GVGlowPoint key in m_glowPoints) {
                 if (key.Color.A > 0) {
                     Vector3 vector = key.Position - camera.ViewPosition;
                     float num = Vector3.Dot(vector, camera.ViewDirection);
@@ -40,12 +40,10 @@ namespace Game {
                             if (key.FarDistance > 0f) {
                                 num3 += (key.FarSize - key.Size) * MathUtils.Saturate(num2 / key.FarDistance);
                             }
-                            //Vector3 v = (0f - (0.01f + 0.02f * num)) / num2 * vector;
-                            Vector3 v = Vector3.Zero;
-                            Vector3 p = key.Position + num3 * (-key.Right - key.Up) + v;
-                            Vector3 p2 = key.Position + num3 * (key.Right - key.Up) + v;
-                            Vector3 p3 = key.Position + num3 * (key.Right + key.Up) + v;
-                            Vector3 p4 = key.Position + num3 * (-key.Right + key.Up) + v;
+                            Vector3 p = key.Position + num3 * (-key.Right - key.Up);
+                            Vector3 p2 = key.Position + num3 * (key.Right - key.Up);
+                            Vector3 p3 = key.Position + num3 * (key.Right + key.Up);
+                            Vector3 p4 = key.Position + num3 * (-key.Right + key.Up);
                             m_batche.QueueQuad(
                                 p,
                                 p2,

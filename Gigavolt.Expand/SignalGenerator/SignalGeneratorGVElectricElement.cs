@@ -74,7 +74,7 @@ namespace Game {
             int rotation = Rotation;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
-                    && connection.NeighborConnectorType != 0) {
+                    && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
                     GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(m_bottomCellFace.Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection) {
@@ -168,7 +168,8 @@ namespace Game {
             if ((!shouldResetClock && circleWithGap > 0) || firstRun) {
                 firstRun = false;
                 if (bottomBottomConnected) {
-                    if (m_bottomBottomInput == 0) {
+                    if (m_bottomBottomInput == 0
+                        || m_bottomBottomInput == bottomBottomInput) {
                         return false;
                     }
                     step = m_step + MathUint.ToIntWithSign(m_bottomBottomInput);
@@ -220,16 +221,22 @@ namespace Game {
                     }
                 }
                 else {
-                    if (m_circle != 0) {
-                        m_topTopOutput = m_waveType switch {
-                            WaveType.Sine => (uint)(m_nowAmplitude * Math.Sin(trueStep / (double)m_circle * Math.PI)),
-                            WaveType.Triangle => trueStep >= m_circle / 2d ? (uint)(2d * m_nowAmplitude * (1d - trueStep / (double)m_circle)) : (uint)(2d * m_nowAmplitude * trueStep / m_circle),
-                            WaveType.Sawtooth => (uint)(m_nowAmplitude * trueStep / (double)m_circle),
-                            WaveType.Square => trueStep >= m_circle / 2d ? 0u : (uint)m_nowAmplitude,
+                    if (m_circle > 0) {
+                        long temp = m_waveType switch {
+                            WaveType.Sine => (long)(m_nowAmplitude * Math.Sin(trueStep / (double)m_circle * Math.PI * 2d)),
+                            WaveType.Triangle => trueStep >= m_circle / 2d ? (long)(2d * m_nowAmplitude * (1d - trueStep / (double)m_circle)) : (long)(2d * m_nowAmplitude * trueStep / m_circle),
+                            WaveType.Sawtooth => (long)(m_nowAmplitude * trueStep / (double)m_circle),
+                            WaveType.Square => trueStep >= m_circle / 2d ? 0u : m_nowAmplitude,
                             _ => 0u
                         };
+                        temp += verticalOffset;
+                        if (temp < 0) {
+                            m_topTopOutput = 0;
+                        }
+                        else {
+                            m_topTopOutput = (uint)temp;
+                        }
                     }
-                    m_topTopOutput += verticalOffset <= 0L ? 0u : (uint)verticalOffset;
                 }
                 if (m_topTopOutput != topTopOutput) {
                     SubsystemGVElectricity.WritePersistentVoltage(m_bottomCellFace.Point, m_topTopOutput);
@@ -244,15 +251,16 @@ namespace Game {
             int face = bottomCellFace.Face;
             int data = Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(bottomCellFace.X, bottomCellFace.Y, bottomCellFace.Z));
             int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
-            Point3 nextUp = GVSignalGeneratorBlock.m_upPoint3[face * 4 + rotation + 1] + bottomCellFace.Point;
+            int nextRotation = (rotation + 1) % 4;
+            Point3 nextUp = GVSignalGeneratorBlock.m_upPoint3[face * 4 + nextRotation] + bottomCellFace.Point;
             if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(nextUp.X, nextUp.Y, nextUp.Z)) == 0) {
                 Point3 faceDirection = -CellFace.FaceToPoint3(face);
                 int faceValue = m_subsystemTerrain.Terrain.GetCellValue(nextUp.X + faceDirection.X, nextUp.Y + faceDirection.Y, nextUp.Z + faceDirection.Z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(faceValue)];
                 if ((block.IsCollidable_(faceValue) && !block.IsFaceTransparent(m_subsystemTerrain, face, faceValue))
                     || (face == 4 && block is FenceBlock)) {
-                    m_subsystemTerrain.ChangeCell(nextUp.X, nextUp.Y, nextUp.Z, Terrain.MakeBlockValue(GVSignalGeneratorBlock.Index, 0, RotateableMountedGVElectricElementBlock.SetRotation(GVSignalGeneratorBlock.SetIsTopPart(data, true), rotation + 1)));
-                    Rotation = rotation + 1;
+                    m_subsystemTerrain.ChangeCell(nextUp.X, nextUp.Y, nextUp.Z, Terrain.MakeBlockValue(GVSignalGeneratorBlock.Index, 0, RotateableMountedGVElectricElementBlock.SetRotation(GVSignalGeneratorBlock.SetIsTopPart(data, true), nextRotation)));
+                    Rotation = nextRotation;
                     Point3 upDirection = GVSignalGeneratorBlock.m_upPoint3[face * 4 + rotation];
                     m_subsystemTerrain.ChangeCell(upDirection.X + bottomCellFace.X, upDirection.Y + bottomCellFace.Y, upDirection.Z + bottomCellFace.Z, 0);
                     return true;

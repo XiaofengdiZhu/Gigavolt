@@ -139,6 +139,10 @@
     "GVSignalGeneratorBlock:0": {
       "DisplayName": "GV信号发生器",
       "Description": "用于产生正弦波、三角波、锯齿波、方波，占用两格，如果空间不足将无法放置或旋转，详见本Mod Github页面的介绍"
+    },
+    "GVOscilloscopeBlock:0": {
+      "DisplayName": "GV示波器",
+      "Description": ""
     }
   },
   "ContentWidgets": {
