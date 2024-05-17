@@ -96,7 +96,7 @@ namespace Game {
         public int CaretPosition {
             get => m_caretPosition;
             set {
-                m_caretPosition = MathUtils.Clamp(value, 0, Text.Length);
+                m_caretPosition = Math.Clamp(value, 0, Text.Length);
                 m_focusStartTime = Time.RealTime;
             }
         }

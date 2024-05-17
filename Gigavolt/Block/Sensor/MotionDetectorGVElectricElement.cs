@@ -36,7 +36,7 @@ namespace Game {
             m_subsystemPickables = subsystemGVElectricity.Project.FindSubsystem<SubsystemPickables>(true);
             m_center = new Vector3(cellFace.X, cellFace.Y, cellFace.Z) + new Vector3(0.5f) - 0.25f * m_direction;
             m_direction = CellFace.FaceToVector3(cellFace.Face);
-            Vector3 vector = Vector3.One - new Vector3(MathUtils.Abs(m_direction.X), MathUtils.Abs(m_direction.Y), MathUtils.Abs(m_direction.Z));
+            Vector3 vector = Vector3.One - new Vector3(MathF.Abs(m_direction.X), MathF.Abs(m_direction.Y), MathF.Abs(m_direction.Z));
             Vector3 vector2 = m_center - 8f * vector;
             Vector3 vector3 = m_center + 8f * (vector + m_direction);
             m_corner1 = new Vector2(vector2.X, vector2.Z);
@@ -96,7 +96,7 @@ namespace Game {
             if (!(num > 0f)) {
                 return 0u;
             }
-            return (uint)MathUtils.Round(MathUtils.Lerp(0.51f, 1f, MathUtils.Saturate(num * 1.1f)) * 15f);
+            return (uint)MathF.Round(MathUtils.Lerp(0.51f, 1f, MathUtils.Saturate(num * 1.1f)) * 15f);
         }
 
         public float TestPoint(Vector3 p) {
@@ -108,7 +108,7 @@ namespace Game {
                         p,
                         false,
                         true,
-                        delegate(int value, float d) {
+                        delegate(int value, float _) {
                             Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
                             return block.IsCollidable && block.BlockIndex != 15 && block.BlockIndex != 60 && block.BlockIndex != 44 && block.BlockIndex != 18;
                         }

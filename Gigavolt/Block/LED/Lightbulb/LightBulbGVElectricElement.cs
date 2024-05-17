@@ -1,4 +1,4 @@
-using Engine;
+using System;
 
 namespace Game {
     public class LightBulbGVElectricElement : MountedGVElectricElement {
@@ -22,7 +22,7 @@ namespace Game {
                 }
             }
             int intensity = m_intensity;
-            m_intensity = MathUtils.Clamp((int)(num2 & 0xfu) * 2 - 15, 0, 15);
+            m_intensity = Math.Clamp((int)(num2 & 0xfu) * 2 - 15, 0, 15);
             if (m_intensity != intensity) {
                 m_lastChangeCircuitStep = SubsystemGVElectricity.CircuitStep;
             }

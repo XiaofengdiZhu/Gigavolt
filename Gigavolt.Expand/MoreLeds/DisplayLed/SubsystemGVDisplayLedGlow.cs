@@ -10,19 +10,19 @@ namespace Game {
     public class SubsystemGVDisplayLedGlow : Subsystem, IDrawable {
         public SubsystemSky m_subsystemSky;
         public SubsystemTerrain m_subsystemTerrain;
-        public readonly DrawBlockEnvironmentData m_drawBlockEnvironmentData = new DrawBlockEnvironmentData();
-        public readonly Dictionary<List<GVDisplayPoint>, bool> m_points = new Dictionary<List<GVDisplayPoint>, bool>();
+        public readonly DrawBlockEnvironmentData m_drawBlockEnvironmentData = new();
+        public readonly Dictionary<List<GVDisplayPoint>, bool> m_points = new();
         public Texture2D BlocksTexture;
         public TexturedBatch3D[] m_batches = new TexturedBatch3D[2];
 
-        public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+        public PrimitivesRenderer3D m_primitivesRenderer = new();
 
         public static int[] m_drawOrders = { 112 };
 
         public int[] DrawOrders => m_drawOrders;
 
         public List<GVDisplayPoint> AddGlowPoints() {
-            List<GVDisplayPoint> glowPoint = new List<GVDisplayPoint>();
+            List<GVDisplayPoint> glowPoint = new();
             m_points.Add(glowPoint, true);
             return glowPoint;
         }
@@ -107,7 +107,7 @@ namespace Game {
                             forward = Vector3.Zero;
                         }
                         else {
-                            lightValue = m_subsystemTerrain.Terrain.GetCellLightFast((int)MathUtils.Floor(position.X), (int)MathUtils.Floor(position.Y), (int)MathUtils.Floor(position.Z));
+                            lightValue = m_subsystemTerrain.Terrain.GetCellLightFast((int)MathF.Floor(position.X), (int)MathF.Floor(position.Y), (int)MathF.Floor(position.Z));
                             forward = matrix.Forward * 0.43f;
                         }
                         Vector3 right = matrix.Right * halfWidth;

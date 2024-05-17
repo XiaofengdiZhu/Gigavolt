@@ -42,13 +42,13 @@ namespace Game {
                     m_blockMeshesByData[num2].GenerateSidesData();
                     Vector3 vector = Vector3.Transform(new Vector3(-0.5f, 0f, -0.5f), matrix);
                     Vector3 vector2 = Vector3.Transform(new Vector3(0.5f, 0.0625f, 0.5f), matrix);
-                    vector.X = MathUtils.Round(vector.X * 100f) / 100f;
-                    vector.Y = MathUtils.Round(vector.Y * 100f) / 100f;
-                    vector.Z = MathUtils.Round(vector.Z * 100f) / 100f;
-                    vector2.X = MathUtils.Round(vector2.X * 100f) / 100f;
-                    vector2.Y = MathUtils.Round(vector2.Y * 100f) / 100f;
-                    vector2.Z = MathUtils.Round(vector2.Z * 100f) / 100f;
-                    m_collisionBoxesByData[num2] = new[] { new BoundingBox(new Vector3(MathUtils.Min(vector.X, vector2.X), MathUtils.Min(vector.Y, vector2.Y), MathUtils.Min(vector.Z, vector2.Z)), new Vector3(MathUtils.Max(vector.X, vector2.X), MathUtils.Max(vector.Y, vector2.Y), MathUtils.Max(vector.Z, vector2.Z))) };
+                    vector.X = MathF.Round(vector.X * 100f) / 100f;
+                    vector.Y = MathF.Round(vector.Y * 100f) / 100f;
+                    vector.Z = MathF.Round(vector.Z * 100f) / 100f;
+                    vector2.X = MathF.Round(vector2.X * 100f) / 100f;
+                    vector2.Y = MathF.Round(vector2.Y * 100f) / 100f;
+                    vector2.Z = MathF.Round(vector2.Z * 100f) / 100f;
+                    m_collisionBoxesByData[num2] = new[] { new BoundingBox(new Vector3(MathF.Min(vector.X, vector2.X), MathF.Min(vector.Y, vector2.Y), MathF.Min(vector.Z, vector2.Z)), new Vector3(MathF.Max(vector.X, vector2.X), MathF.Max(vector.Y, vector2.Y), MathF.Max(vector.Z, vector2.Z))) };
                 }
                 Matrix identity = Matrix.Identity;
                 m_standaloneBlockMeshesByMaterial[i] = new BlockMesh();

@@ -135,7 +135,7 @@ namespace Game {
                     GVCellFace cellFace = CellFaces[0];
                     Vector3 position = new(cellFace.X, cellFace.Y, cellFace.Z);
                     float volume = num2 / 15f;
-                    float pitch = MathUtils.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);
+                    float pitch = Math.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);
                     float minDistance = 0.5f + 5f * num2 / 15f;
                     SubsystemGVElectricity.SubsystemAudio.PlaySound(
                         text2,

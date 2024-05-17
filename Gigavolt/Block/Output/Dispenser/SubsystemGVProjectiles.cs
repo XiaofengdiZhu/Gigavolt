@@ -572,7 +572,7 @@ namespace Game {
                             if (flag2) {
                                 float num6 = new Vector2(projectile.Velocity.X + projectile.Velocity.Z).Length();
                                 if (num6 > 6f
-                                    && num6 > 4f * MathUtils.Abs(projectile.Velocity.Y)) {
+                                    && num6 > 4f * MathF.Abs(projectile.Velocity.Y)) {
                                     projectile.Velocity *= 0.5f;
                                     projectile.Velocity.Y *= -1f;
                                     flag2 = false;

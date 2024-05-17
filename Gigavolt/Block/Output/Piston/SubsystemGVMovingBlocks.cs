@@ -1,17 +1,18 @@
+using System;
 using Engine;
 
 namespace Game {
     public class SubsystemGVMovingBlocks : SubsystemMovingBlocks, IDrawable {
         public new void GenerateGeometry(MovingBlockSet movingBlockSet) {
             Point3 point = default;
-            point.X = movingBlockSet.CurrentVelocity.X > 0f ? (int)MathUtils.Floor(movingBlockSet.Position.X) : point.X = (int)MathUtils.Ceiling(movingBlockSet.Position.X);
-            point.Y = movingBlockSet.CurrentVelocity.Y > 0f ? (int)MathUtils.Floor(movingBlockSet.Position.Y) : point.Y = (int)MathUtils.Ceiling(movingBlockSet.Position.Y);
-            point.Z = movingBlockSet.CurrentVelocity.Z > 0f ? (int)MathUtils.Floor(movingBlockSet.Position.Z) : point.Z = (int)MathUtils.Ceiling(movingBlockSet.Position.Z);
+            point.X = movingBlockSet.CurrentVelocity.X > 0f ? (int)MathF.Floor(movingBlockSet.Position.X) : point.X = (int)MathF.Ceiling(movingBlockSet.Position.X);
+            point.Y = movingBlockSet.CurrentVelocity.Y > 0f ? (int)MathF.Floor(movingBlockSet.Position.Y) : point.Y = (int)MathF.Ceiling(movingBlockSet.Position.Y);
+            point.Z = movingBlockSet.CurrentVelocity.Z > 0f ? (int)MathF.Floor(movingBlockSet.Position.Z) : point.Z = (int)MathF.Ceiling(movingBlockSet.Position.Z);
             if (!(point != movingBlockSet.GeometryGenerationPosition)) {
                 return;
             }
-            Point3 p = new Point3(movingBlockSet.Box.Left, movingBlockSet.Box.Top, movingBlockSet.Box.Near);
-            Point3 point2 = new Point3(movingBlockSet.Box.Width, movingBlockSet.Box.Height, movingBlockSet.Box.Depth);
+            Point3 p = new(movingBlockSet.Box.Left, movingBlockSet.Box.Top, movingBlockSet.Box.Near);
+            Point3 point2 = new(movingBlockSet.Box.Width, movingBlockSet.Box.Height, movingBlockSet.Box.Depth);
             int num = point.Y + p.Y;
             point2.Y = MathUtils.Min(point2.Y, 254);
             if (m_blockGeometryGenerator == null) {

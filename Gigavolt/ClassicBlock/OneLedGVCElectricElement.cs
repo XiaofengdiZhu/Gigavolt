@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using System;
+using Engine;
 
 namespace Game {
     public class OneLedGVCElectricElement : MountedGVElectricElement {
@@ -48,7 +49,7 @@ namespace Game {
             }
             if (m_voltage != voltage) {
                 int num = (int)MathUint.Clamp(m_voltage, 0, 15);
-                m_glowPoint.Color = num >= 8 ? LedBlock.LedColors[MathUtils.Clamp(num - 8, 0, 7)] : Color.Transparent;
+                m_glowPoint.Color = num >= 8 ? LedBlock.LedColors[Math.Clamp(num - 8, 0, 7)] : Color.Transparent;
             }
             return false;
         }

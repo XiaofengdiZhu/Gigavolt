@@ -103,7 +103,7 @@ namespace Game {
                         continue;
                     }
                     string fileName = fileList[Array.IndexOf(fileNumberList, id)];
-                    Storage.DeleteDirectory($"{m_subsystemGameInfo.DirectoryName}/GVFDMB/{fileName}");
+                    Storage.DeleteDirectory($"{m_subsystemGameInfo.DirectoryName}/GVFDMB/{fileName}", true);
                 }
             }
             catch (Exception ex) {

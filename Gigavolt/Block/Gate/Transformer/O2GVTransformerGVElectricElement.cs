@@ -1,4 +1,4 @@
-using Engine;
+using System;
 
 namespace Game {
     public class O2GVTransformerGVElectricElement : RotateableGVElectricElement {
@@ -14,7 +14,7 @@ namespace Game {
             GVCellFace cellFace = CellFaces[0];
             ElectricElement electricElement = subsystemElectricity.GetElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face);
             if (electricElement != null) {
-                m_voltage = (uint)MathUtils.Round(electricElement.GetOutputVoltage(0) * 15f);
+                m_voltage = (uint)MathF.Round(electricElement.GetOutputVoltage(0) * 15f);
             }
             return m_voltage != voltage;
         }
