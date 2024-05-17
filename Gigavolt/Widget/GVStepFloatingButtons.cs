@@ -53,7 +53,8 @@ namespace Game {
                 }
             }
             m_count.Text = (m_subsystem.last1000Updates.Count - 1).ToString();
-            m_time.Text = (m_subsystem.lastUpdate - (m_subsystem.last1000Updates.Count > 0 ? m_subsystem.last1000Updates.Peek() : m_subsystem.lastUpdate)).TotalSeconds.ToString("f2");
+            double time = (m_subsystem.lastUpdate - (m_subsystem.last1000Updates.Count > 0 ? m_subsystem.last1000Updates.Peek() : m_subsystem.lastUpdate)).TotalSeconds;
+            m_time.Text = time.ToString(time < 1 ? "f4" : "f2");
         }
     }
 }

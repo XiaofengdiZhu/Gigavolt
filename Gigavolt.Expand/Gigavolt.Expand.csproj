@@ -85,6 +85,8 @@
 		<Compile Include="MoreLeds\NesEmulator\GVNesEmulatorGlowPoint.cs"/>
 		<Compile Include="MoreLeds\NesEmulator\NesEmulatorGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\NesEmulator\SubsystemNesEmulatorBlockBehavior.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphic\GVFlatBatch2D.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphic\GVPrimitivesRenderer2D.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeData.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeBlock.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\OscilloscopeGVElectricElement.cs"/>
