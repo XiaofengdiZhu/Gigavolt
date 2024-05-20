@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
-using Engine.Media;
 using GameEntitySystem;
 using TemplatesDatabase;
 
@@ -9,14 +8,13 @@ namespace Game {
     public class SubsystemGV8NumberLedGlow : Subsystem, IDrawable {
         public SubsystemSky m_subsystemSky;
 
-        public Dictionary<GV8NumberGlowPoint, bool> m_glowPoints = new();
+        public readonly Dictionary<GV8NumberGlowPoint, bool> m_glowPoints = new();
 
-        public PrimitivesRenderer3D m_primitivesRenderer = new();
+        public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
 
-        public Dictionary<uint, TexturedBatch3D> batchCache;
-        public static List<Point2>[] number2Pixels = new List<Point2>[16];
+        public TexturedBatch3D batchCache;
 
-        public static int[] m_drawOrders = { 110 };
+        public static int[] m_drawOrders = [110];
 
         public int[] DrawOrders => m_drawOrders;
 
@@ -42,76 +40,56 @@ namespace Game {
                             if (key.FarDistance > 0f) {
                                 num3 += (key.FarSize - key.Size) * MathUtils.Saturate(num2 / key.FarDistance);
                             }
-                            Vector3 p = key.Position + num3 * (-key.Right - key.Up);
-                            Vector3 p2 = key.Position + num3 * (key.Right - key.Up);
-                            Vector3 p3 = key.Position + num3 * (key.Right + key.Up);
-                            Vector3 p4 = key.Position + num3 * (-key.Right + key.Up);
-                            if (batchCache.TryGetValue(key.Voltage, out TexturedBatch3D batch)) {
-                                batch.QueueQuad(
-                                    p,
-                                    p2,
-                                    p3,
-                                    p4,
-                                    new Vector2(1f, 1f),
-                                    new Vector2(0f, 1f),
-                                    new Vector2(0f, 0f),
-                                    new Vector2(1f, 0f),
-                                    Color.White
-                                );
-                            }
-                            else {
-                                TexturedBatch3D newBatch = generateBatch(m_primitivesRenderer, key.Voltage);
-                                newBatch.QueueQuad(
-                                    p,
-                                    p2,
-                                    p3,
-                                    p4,
-                                    new Vector2(1f, 1f),
-                                    new Vector2(0f, 1f),
-                                    new Vector2(0f, 0f),
-                                    new Vector2(1f, 0f),
-                                    Color.White
-                                );
-                                batchCache.Add(key.Voltage, newBatch);
-                            }
+                            Draw8Number(
+                                batchCache,
+                                key.Voltage,
+                                key.Position,
+                                num3,
+                                key.Right,
+                                key.Up,
+                                Color.White
+                            );
                         }
                     }
                 }
             }
-            m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
+            batchCache.Flush(camera.ViewProjectionMatrix);
         }
 
-        public override void Load(ValuesDictionary valuesDictionary) {
-            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
-            batchCache = new Dictionary<uint, TexturedBatch3D>();
-            for (int number = 0; number < 16; number++) {
-                List<Point2> points = new();
-                Image image = ContentManager.Get<Image>($"Textures/GV8NumberLed/{number}");
-                for (int x = 0; x < image.Width; x++) {
-                    for (int y = 0; y < image.Height; y++) {
-                        if (image.GetPixelFast(x, y).PackedValue == uint.MaxValue) {
-                            points.Add(new Point2(x, y));
-                        }
-                    }
-                }
-                number2Pixels[number] = points;
-            }
-        }
-
-        public static TexturedBatch3D generateBatch(PrimitivesRenderer3D renderer, uint voltage) {
-            Image image = new(16, 16);
+        public static void Draw8Number(TexturedBatch3D batch, uint voltage, Vector3 position, float size, Vector3 right, Vector3 up, Color color) {
+            Vector3 p = position + size * (right + up);
+            size *= 2f;
             for (int y = 0; y < 2; y++) {
                 for (int x = 0; x < 4; x++) {
                     int index = y * 4 + x;
                     uint number = (voltage >> (index * 4)) & 15u;
-                    Point2 origin = new(12 - x * 4, y == 1 ? 2 : 9);
-                    foreach (Point2 point in number2Pixels[number]) {
-                        image.SetPixelFast(origin.X + point.X, origin.Y + point.Y, SixLabors.ImageSharp.Color.White);
-                    }
+                    float px1 = (12 - x * 4) / 16f;
+                    float px2 = px1 + 3 / 16f;
+                    float py1 = (y == 1 ? 2 : 9) / 16f;
+                    float py2 = py1 + 5 / 16f;
+                    float tx1 = number % 4 * 3f / 12f;
+                    float tx2 = tx1 + 3f / 12f;
+                    float ty1 = number / 4 * 5f / 20f;
+                    float ty2 = ty1 + 5f / 20f;
+                    batch.QueueQuad(
+                        p - (right * px1 + up * py1) * size,
+                        p - (right * px2 + up * py1) * size,
+                        p - (right * px2 + up * py2) * size,
+                        p - (right * px1 + up * py2) * size,
+                        new Vector2(tx1, ty1),
+                        new Vector2(tx2, ty1),
+                        new Vector2(tx2, ty2),
+                        new Vector2(tx1, ty2),
+                        color
+                    );
                 }
             }
-            return renderer.TexturedBatch(
-                Texture2D.Load(image),
+        }
+
+        public override void Load(ValuesDictionary valuesDictionary) {
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
+            batchCache = m_primitivesRenderer.TexturedBatch(
+                ContentManager.Get<Texture2D>("Textures/GV8NumberLed"),
                 false,
                 0,
                 DepthStencilState.DepthRead,

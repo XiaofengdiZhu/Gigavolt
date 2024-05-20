@@ -11,7 +11,7 @@ namespace Game {
         public ComponentPlayer m_componentPlayer;
         public ComponentBlockHighlight m_componentBlockHighlight;
 
-        public static int[] m_drawOrders = { 1 };
+        public static int[] m_drawOrders = [1];
 
         public int[] DrawOrders => m_drawOrders;
 
@@ -46,10 +46,28 @@ namespace Game {
             int blockData = Terrain.ExtractData(blockValue);
             int blockFace = 4;
             Block block = BlocksManager.Blocks[blockContents];
+            TexturedBatch3D batch = m_subsystemGV8NumberLedGlow.batchCache;
             switch (block) {
                 case MountedGVElectricElementBlock mountedBlock: {
                     blockFace = mountedBlock.GetFace(blockValue);
-                    if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
+                    GVElectricElement element = null;
+                    if (!m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out element)) {
+                        for (int i = 0; i < 16; i++) {
+                            if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(
+                                    new GVCellFace(
+                                        cellFace.X,
+                                        cellFace.Y,
+                                        cellFace.Z,
+                                        blockFace,
+                                        1 << i
+                                    ),
+                                    out element
+                                )) {
+                                break;
+                            }
+                        }
+                    }
+                    if (element != null) {
                         Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) - 0.3f * CellFace.FaceToVector3(blockFace);
                         Vector3 forward = CellFace.FaceToVector3(blockFace);
                         int rotation = 0;
@@ -64,10 +82,6 @@ namespace Game {
                         };
                         Vector3 right = Vector3.Cross(forward, up);
                         const float size = 0.1f;
-                        Vector3 p1 = position + size * (-right - up);
-                        Vector3 p2 = position + size * (right - up);
-                        Vector3 p3 = position + size * (right + up);
-                        Vector3 p4 = position + size * (-right + up);
                         for (int connectorFace = 0; connectorFace < 6; connectorFace++) {
                             GVElectricConnectorType? connectorType = mountedBlock.GetGVConnectorType(
                                 m_subsystemTerrain,
@@ -83,24 +97,26 @@ namespace Game {
                             if (connectorType.HasValue) {
                                 switch (connectorType.Value) {
                                     case GVElectricConnectorType.Output:
-                                        DrawVoltage(
+                                        SubsystemGV8NumberLedGlow.Draw8Number(
+                                            batch,
                                             element.GetOutputVoltage(connectorFace),
-                                            p1 + offset,
-                                            p2 + offset,
-                                            p3 + offset,
-                                            p4 + offset,
+                                            position + offset,
+                                            size,
+                                            right,
+                                            up,
                                             Color.Red
                                         );
                                         break;
                                     case GVElectricConnectorType.Input: {
                                         GVElectricConnection connection = element.Connections.Find(connection => connection.ConnectorFace == connectorFace);
                                         if (connection != null) {
-                                            DrawVoltage(
+                                            SubsystemGV8NumberLedGlow.Draw8Number(
+                                                batch,
                                                 connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace),
-                                                p1 + offset,
-                                                p2 + offset,
-                                                p3 + offset,
-                                                p4 + offset,
+                                                position + offset,
+                                                size,
+                                                right,
+                                                up,
                                                 Color.Green
                                             );
                                         }
@@ -116,21 +132,23 @@ namespace Game {
                                                     rotation == connectorFace || rotation + 2 == connectorFace || rotation - 2 == connectorFace ? right : up);
                                             inputOffset += offset2;
                                             outputOffset -= offset2;
-                                            DrawVoltage(
+                                            SubsystemGV8NumberLedGlow.Draw8Number(
+                                                batch,
                                                 connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace),
-                                                p1 + inputOffset,
-                                                p2 + inputOffset,
-                                                p3 + inputOffset,
-                                                p4 + inputOffset,
+                                                position + inputOffset,
+                                                size,
+                                                right,
+                                                up,
                                                 Color.Green
                                             );
                                         }
-                                        DrawVoltage(
+                                        SubsystemGV8NumberLedGlow.Draw8Number(
+                                            batch,
                                             element.GetOutputVoltage(connectorFace),
-                                            p1 + outputOffset,
-                                            p2 + outputOffset,
-                                            p3 + outputOffset,
-                                            p4 + outputOffset,
+                                            position + outputOffset,
+                                            size,
+                                            right,
+                                            up,
                                             Color.Red
                                         );
                                         break;
@@ -148,16 +166,13 @@ namespace Game {
                         Vector3 up = cellFace.Face < 4 ? Vector3.UnitY : Vector3.UnitX;
                         Vector3 right = Vector3.Cross(forward, up);
                         const float size = 0.1f;
-                        Vector3 p1 = position + size * (-right - up);
-                        Vector3 p2 = position + size * (right - up);
-                        Vector3 p3 = position + size * (right + up);
-                        Vector3 p4 = position + size * (-right + up);
-                        DrawVoltage(
+                        SubsystemGV8NumberLedGlow.Draw8Number(
+                            batch,
                             element.GetOutputVoltage(blockFace),
-                            p1,
-                            p2,
-                            p3,
-                            p4,
+                            position,
+                            size,
+                            right,
+                            up,
                             Color.Red
                         );
                     }
@@ -178,52 +193,18 @@ namespace Game {
                         Vector3 up = cellFace.Face < 4 ? Vector3.UnitY : Vector3.UnitX;
                         Vector3 right = Vector3.Cross(forward, up);
                         const float size = 0.1f;
-                        Vector3 p1 = position + size * (-right - up);
-                        Vector3 p2 = position + size * (right - up);
-                        Vector3 p3 = position + size * (right + up);
-                        Vector3 p4 = position + size * (-right + up);
-                        DrawVoltage(
+                        SubsystemGV8NumberLedGlow.Draw8Number(
+                            batch,
                             element.CalculateAllInputsVoltage(),
-                            p1,
-                            p2,
-                            p3,
-                            p4,
+                            position,
+                            size,
+                            right,
+                            up,
                             Color.Green
                         );
                     }
                     break;
                 }
-            }
-        }
-
-        public void DrawVoltage(uint voltage, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, Color color) {
-            if (m_subsystemGV8NumberLedGlow.batchCache.TryGetValue(voltage, out TexturedBatch3D batch)) {
-                batch.QueueQuad(
-                    p1,
-                    p2,
-                    p3,
-                    p4,
-                    Vector2.One,
-                    Vector2.UnitY,
-                    Vector2.Zero,
-                    Vector2.UnitX,
-                    color
-                );
-            }
-            else {
-                TexturedBatch3D newBatch = SubsystemGV8NumberLedGlow.generateBatch(m_subsystemGV8NumberLedGlow.m_primitivesRenderer, voltage);
-                newBatch.QueueQuad(
-                    p1,
-                    p2,
-                    p3,
-                    p4,
-                    Vector2.One,
-                    Vector2.UnitY,
-                    Vector2.Zero,
-                    Vector2.UnitX,
-                    color
-                );
-                m_subsystemGV8NumberLedGlow.batchCache.Add(voltage, newBatch);
             }
         }
     }
