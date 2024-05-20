@@ -20,7 +20,7 @@ namespace Game {
         public uint MaxLevel = uint.MaxValue;
         public bool AutoSetMinMaxLevelMode = true;
         public int RecordsCount => Records.Count;
-        public int RecordsCountAtLastGenerateWaveTexture;
+        public int RecordsCountAtLastGenerateTexture;
         public int RecordsCountAtLastGenerateFlatBatch3D;
         public int RecordsCountAtAutoSetMinMaxLevel;
 
@@ -38,23 +38,21 @@ namespace Game {
         RenderTarget2D m_texture;
         TexturedBatch3D m_texturedBatch3D;
 
-        static readonly Color[] m_pointsColor = [Color.Green, Color.Cyan, Color.Red, Color.Yellow];
-
-        static readonly Color[] m_linesColor = [Color.Green * 0.5f, Color.Cyan * 0.5f, Color.Red * 0.5f, Color.Yellow * 0.5f];
+        static readonly Color[] m_waveColor = [Color.Green, Color.Cyan, Color.Red, Color.Yellow];
 
         public GVOscilloscopeData(PrimitivesRenderer3D primitivesRenderer3D) {
             m_primitivesRenderer3D = primitivesRenderer3D;
             m_waveBatch = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.AlphaBlend);
         }
 
-        public RenderTarget2D WaveTexture {
+        public RenderTarget2D Texture {
             get {
                 if (Records.Count == 0) {
                     return null;
                 }
                 if (m_texture == null
                     || m_texture.m_isDisposed
-                    || Records.Count != RecordsCountAtLastGenerateWaveTexture) {
+                    || Records.Count != RecordsCountAtLastGenerateTexture) {
                     RenderTarget2D originRenderTarget = Display.RenderTarget;
                     try {
                         m_texture?.Dispose();
@@ -105,12 +103,12 @@ namespace Game {
                                 uint record = Records[Records.Count - j - 1][i];
                                 drawPoints[j] = new Vector2((1 - j / (float)trueDisplayCount) * (DisplayWidth - 1), (1 - (record - MinLevel) / (float)(MaxLevel - MinLevel)) * (DisplayHeight - 1));
                             }
-                            m_waveBatch.QueueLineStrip(drawPoints, 0, m_linesColor[i]);
-                            m_waveBatch.QueuePoints(drawPoints, 0, m_pointsColor[i]);
+                            Color color = m_waveColor[i];
+                            m_waveBatch.QueueLineStrip(drawPoints, 0, color);
+                            m_waveBatch.QueuePoints(drawPoints, 0, color);
                             m_waveBatch.FlushWave();
                         }
                         wavRenderTarget.GenerateMipMaps();
-                        //m_waveTexture.GetData(new Rectangle(0, 0, 1024, 1024)).m_trueImage.SaveAsBmp("temp.bmp");
                         GVOscilloscopeBlurTexturedBatch2D blurBatch = m_primitivesRenderer2D.TexturedBatch(
                             wavRenderTarget,
                             false,
@@ -121,19 +119,15 @@ namespace Game {
                         );
                         blurBatch.QueueQuad(
                             Vector2.Zero,
-                            new Vector2(DisplayWidth, 0f),
                             new Vector2(DisplayWidth, DisplayHeight),
-                            new Vector2(0f, DisplayHeight),
                             0,
                             Vector2.Zero,
-                            new Vector2(1, 0),
                             Vector2.One,
-                            new Vector2(0, 1),
                             Color.White
                         );
                         m_texture = blurBatch.FlushBlur();
                         wavRenderTarget.Dispose();
-                        RecordsCountAtLastGenerateWaveTexture = Records.Count;
+                        RecordsCountAtLastGenerateTexture = Records.Count;
                         return m_texture;
                     }
                     catch (Exception e) {
@@ -156,7 +150,7 @@ namespace Game {
                 if (m_texturedBatch3D == null
                     || Records.Count != RecordsCountAtLastGenerateFlatBatch3D) {
                     m_texturedBatch3D = m_primitivesRenderer3D.TexturedBatch(
-                        WaveTexture,
+                        Texture,
                         false,
                         0,
                         DepthStencilState.DepthRead,

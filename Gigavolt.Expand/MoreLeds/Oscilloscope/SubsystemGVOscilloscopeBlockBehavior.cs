@@ -22,7 +22,7 @@ namespace Game {
                 try {
                     m_datas.Add(value3.GetValue<Point3>("Point"), new GVOscilloscopeData(m_primitivesRenderer3D));
                 }
-                catch (Exception e) {
+                catch (Exception) {
                     // ignored
                 }
             }

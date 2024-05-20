@@ -12,6 +12,7 @@ uniform sampler2D u_texture;
 uniform sampler2D u_texture2;
 varying vec2 v_texcoord;
 
+//Forked from https://www.shadertoy.com/view/lsBfRc
 #define colorRange 24.0
 
 vec3 jodieReinhardTonemap(vec3 c) {
@@ -25,20 +26,20 @@ vec3 bloomTile(float lod, vec2 offset, vec2 uv) {
 }
 
 vec3 getBloom(vec2 uv) {
-    vec3 blur = vec3(0.0);
 
-    blur = pow(bloomTile(2., vec2(0.0, 0.0), uv), vec3(2.2)) + blur;
-    blur = pow(bloomTile(3., vec2(0.3, 0.0), uv), vec3(2.2)) * 1.3 + blur;
-    blur = pow(bloomTile(4., vec2(0.0, 0.3), uv), vec3(2.2)) * 1.6 + blur;
-    blur = pow(bloomTile(5., vec2(0.1, 0.3), uv), vec3(2.2)) * 1.9 + blur;
-    blur = pow(bloomTile(6., vec2(0.2, 0.3), uv), vec3(2.2)) * 2.2 + blur;
+    vec3 blur = pow(bloomTile(2., vec2(0.0, 0.0), uv), vec3(2.2)) * 2;
+    blur += pow(bloomTile(3., vec2(0.3, 0.0), uv), vec3(2.2)) * 8;
+    blur += pow(bloomTile(4., vec2(0.0, 0.3), uv), vec3(2.2)) * 30;
+    blur += pow(bloomTile(5., vec2(0.1, 0.3), uv), vec3(2.2)) * 40;
+    blur += pow(bloomTile(6., vec2(0.2, 0.3), uv), vec3(2.2)) * 220;
 
-    return blur * colorRange;
+    return blur * colorRange * 2;
 }
 
 void main()
 {
-    vec3 color = pow(texture2D(u_texture, v_texcoord).rgb / 5.0 * colorRange, vec3(4.4)) + pow(getBloom(v_texcoord), vec3(2.2));
+    vec3 color = pow(texture2D(u_texture, v_texcoord).rgb / 5.0 * colorRange, vec3(4.4));
+    color += pow(getBloom(v_texcoord), vec3(2.2));
     color = jodieReinhardTonemap(pow(color, vec3(1.0 / 2.2)));
     gl_FragColor = vec4(color, 1.0);
 }

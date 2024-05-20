@@ -6,6 +6,7 @@
 precision mediump float;
 #endif
 
+//Forked from https://www.shadertoy.com/view/lsBfRc
 uniform vec2 u_textureSize;
 uniform sampler2D u_texture;
 varying vec2 v_texcoord;
@@ -23,7 +24,7 @@ vec3 makeBloom(float lod, vec2 offset, vec2 bCoord) {
     for (int i = -5; i < 5; i++) {
         for (int j = -5; j < 5; j++) {
             float wg = pow(1.0 - length(vec2(i, j)) * 0.125, 6.0);
-            bloom = pow(textureLod(u_texture, vec2(i, j) * scale + lodFactor * pixelSize + coord, lod).xyz / 5.0, vec3(2.2)) * wg + bloom;
+            bloom += pow(textureLod(u_texture, vec2(i, j) * scale + lodFactor * pixelSize + coord, lod).xyz / 5.0, vec3(2.2)) * wg;
             totalWeight += wg;
         }
     }
