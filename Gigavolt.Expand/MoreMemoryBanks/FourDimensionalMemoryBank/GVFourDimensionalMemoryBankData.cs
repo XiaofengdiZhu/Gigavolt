@@ -156,7 +156,7 @@ namespace Game {
         public override IEditableItemData Copy() => new GVFourDimensionalMemoryBankData(
             m_ID,
             m_worldDirectory,
-            m_isDataInitialized ? Data.Select(pair => new KeyValuePair<int, Image<Rgba32>>(pair.Key, pair.Value.CloneAs<Rgba32>(DefaultImageConfiguration))).ToDictionary() : null,
+            m_isDataInitialized ? Data : null,
             m_xLength,
             m_yLength,
             m_zLength,

@@ -6,7 +6,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Engine;
 using Engine.Media;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
+using Image = Engine.Media.Image;
 
 namespace Game {
     public class GVMemoryBankData : GVArrayData, IEditableItemData {
@@ -15,11 +18,12 @@ namespace Game {
         public uint m_height;
         public bool m_dataChanged;
 
+        public static PngEncoder DefaultPngEncoder = new() { ColorType = PngColorType.RgbWithAlpha, BitDepth = PngBitDepth.Bit8, TransparentColorMode = PngTransparentColorMode.Preserve };
+
         public uint[] Data {
             get => m_data;
             set {
                 if (value != m_data) {
-                    m_data = null;
                     m_data = value;
                     m_updateTime = DateTime.Now;
                     if (m_isDataInitialized) {
@@ -133,8 +137,12 @@ namespace Game {
             }
             if (m_isDataInitialized && m_dataChanged) {
                 try {
-                    Image.Save(GetImage(), $"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", ImageFileFormat.Png, true);
-                    m_dataChanged = false;
+                    using (Stream stream = Storage.OpenFile($"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", OpenFileMode.CreateOrOpen)) {
+                        GetImage().m_trueImage.SaveAsPng(stream, DefaultPngEncoder);
+                        stream.Flush();
+                        stream.Close();
+                        m_dataChanged = false;
+                    }
                 }
                 catch (Exception ex) {
                     Log.Error(ex);
@@ -182,6 +190,7 @@ namespace Game {
             int h = height;
             uint[] image = String2UintArray(str, ref w, ref h);
             Data = image ?? throw new Exception("该文本无法转换为指定数据");
+            m_dataChanged = true;
             m_width = (uint)w;
             m_height = (uint)h;
         }

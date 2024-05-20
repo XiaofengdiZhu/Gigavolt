@@ -927,7 +927,8 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 </details>
 
 # 构建提示 Build Tips
-构建前，你需要先安装[antlr4-tools](https://github.com/antlr/antlr4-tools)
+构建前，你需要先安装[Python](https://www.python.org/downloads/)，然后运行以下命令来安装[antlr4-tools](https://github.com/antlr/antlr4-tools)，最后即可顺利构建项目
 ```
 pip install antlr4-tools
 ```
+> 可能每个步骤完成后都需要重启电脑才能进行下一步
