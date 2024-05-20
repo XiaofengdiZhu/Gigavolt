@@ -85,8 +85,13 @@
 		<Compile Include="MoreLeds\NesEmulator\GVNesEmulatorGlowPoint.cs"/>
 		<Compile Include="MoreLeds\NesEmulator\NesEmulatorGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\NesEmulator\SubsystemNesEmulatorBlockBehavior.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphic\GVFlatBatch2D.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphic\GVPrimitivesRenderer2D.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurShader1.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurShader2.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeWaveFlatBatch2D.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBackgroundShader.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurTexturedBatch2D.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeWaveShader.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVPrimitivesRenderer2D.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeData.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeBlock.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\OscilloscopeGVElectricElement.cs"/>
@@ -391,6 +396,27 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVSignalGeneratorBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVOscilloscopeBackground.vsh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVOscilloscopeBackground.psh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVOscilloscopeWave.vsh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVOscilloscopeWave.psh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVOscilloscopeBlur.psh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVOscilloscopeBlur1.psh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVOscilloscopeBlur2.psh">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

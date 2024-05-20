@@ -63,7 +63,7 @@ namespace Game {
                 }
             }
             if (inConected) {
-                if (m_lastInInput != leftInput) {
+                if (m_lastInInput != inInput) {
                     if (m_lastInInput == 0u) {
                         m_data.AddRecord([topInput, rightInput, bottomInput, leftInput]);
                     }

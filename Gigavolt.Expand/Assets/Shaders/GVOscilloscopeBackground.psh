@@ -1,0 +1,28 @@
+﻿#ifdef GLSL
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform float u_leftOffset;
+uniform float u_upOffset;
+uniform float u_horizontalSpacing;
+uniform float u_verticalSpacing;
+uniform float u_dashLength;
+uniform float u_dashAndGapLength;
+
+void main()
+{
+    if (gl_FragCoord.x <= 1.0 || gl_FragCoord.y <= 1.0) {
+        discard;
+    }
+    float x = gl_FragCoord.x + u_leftOffset;
+    float y = gl_FragCoord.y + u_upOffset;
+    if ((mod(x, u_horizontalSpacing) <= 1.0 && mod(y, u_dashAndGapLength) <= u_dashLength) || (mod(y, u_verticalSpacing) <= 1.0 && mod(x, u_dashAndGapLength) <= u_dashLength)) {
+        gl_FragColor = vec4(0.3, 0.3, 0.3, 1.0);
+    } else {
+        discard;
+    }
+}
+
+#endif

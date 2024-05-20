@@ -1,7 +1,7 @@
 using Engine.Media;
 
 namespace Engine.Graphics {
-    public class GVPrimitivesRenderer2D : BasePrimitivesRenderer<GVFlatBatch2D, TexturedBatch2D, FontBatch2D> {
+    public class GVPrimitivesRenderer2D : BasePrimitivesRenderer<GVOscilloscopeWaveFlatBatch2D, GVOscilloscopeBlurTexturedBatch2D, FontBatch2D> {
         public static Matrix ViewportMatrix() {
             Viewport viewport = Display.Viewport;
             float num = 1f / viewport.Width;
@@ -26,14 +26,14 @@ namespace Engine.Graphics {
             );
         }
 
-        public GVFlatBatch2D FlatBatch(int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null) {
+        public GVOscilloscopeWaveFlatBatch2D FlatBatch(int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null) {
             depthStencilState = depthStencilState ?? DepthStencilState.None;
             rasterizerState = rasterizerState ?? RasterizerState.CullNoneScissor;
             blendState = blendState ?? BlendState.AlphaBlend;
             return FindFlatBatch(layer, depthStencilState, rasterizerState, blendState);
         }
 
-        public TexturedBatch2D TexturedBatch(Texture2D texture, bool useAlphaTest = false, int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null, SamplerState samplerState = null) {
+        public GVOscilloscopeBlurTexturedBatch2D TexturedBatch(Texture2D texture, bool useAlphaTest = false, int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null, SamplerState samplerState = null) {
             depthStencilState = depthStencilState ?? DepthStencilState.None;
             rasterizerState = rasterizerState ?? RasterizerState.CullNoneScissor;
             blendState = blendState ?? BlendState.AlphaBlend;

@@ -1,8 +1,10 @@
-﻿using System;
+﻿extern alias OpenTKForWindows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Engine;
 using Engine.Graphics;
+using OpenTKForWindows::OpenTK.Graphics.ES30;
 using Color = Engine.Color;
 
 namespace Game {
@@ -11,6 +13,8 @@ namespace Game {
         public Vector3 Right;
         public Vector3 Up;
         public Vector3 Forward;
+        public int DisplayWidth = 1024;
+        public int DisplayHeight = 1024;
         public int DisplayCount = 512;
         public uint MinLevel;
         public uint MaxLevel = uint.MaxValue;
@@ -20,17 +24,27 @@ namespace Game {
         public int RecordsCountAtLastGenerateFlatBatch3D;
         public int RecordsCountAtAutoSetMinMaxLevel;
 
+        public float DashedLineLeftOffset;
+        public float DashedLineUpOffset;
+        public float DashedLineHorizontalSpacing;
+        public float DashedLineVerticalSpacing;
+        public float DashedLineDashLength;
+        public float DashedLineDashAndGapLength;
+
         readonly List<uint[]> Records = new(4100);
         readonly PrimitivesRenderer3D m_primitivesRenderer3D;
-        readonly PrimitivesRenderer2D m_primitivesRenderer2D = new();
-        readonly FlatBatch2D m_flatBatch2D;
-        RenderTarget2D m_waveTexture;
+        readonly GVPrimitivesRenderer2D m_primitivesRenderer2D = new();
+        readonly GVOscilloscopeWaveFlatBatch2D m_waveBatch;
+        RenderTarget2D m_texture;
         TexturedBatch3D m_texturedBatch3D;
-        static readonly Color[] m_linesColor = [Color.Green, Color.Cyan, Color.Red, Color.Yellow];
+
+        static readonly Color[] m_pointsColor = [Color.Green, Color.Cyan, Color.Red, Color.Yellow];
+
+        static readonly Color[] m_linesColor = [Color.Green * 0.5f, Color.Cyan * 0.5f, Color.Red * 0.5f, Color.Yellow * 0.5f];
 
         public GVOscilloscopeData(PrimitivesRenderer3D primitivesRenderer3D) {
             m_primitivesRenderer3D = primitivesRenderer3D;
-            m_flatBatch2D = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.AlphaBlend);
+            m_waveBatch = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.AlphaBlend);
         }
 
         public RenderTarget2D WaveTexture {
@@ -38,22 +52,20 @@ namespace Game {
                 if (Records.Count == 0) {
                     return null;
                 }
-                if (m_waveTexture == null
-                    || m_waveTexture.m_isDisposed
+                if (m_texture == null
+                    || m_texture.m_isDisposed
                     || Records.Count != RecordsCountAtLastGenerateWaveTexture) {
-                    const int displayWidth = 1024;
-                    const int displayHeight = 1024;
                     RenderTarget2D originRenderTarget = Display.RenderTarget;
                     try {
-                        m_waveTexture?.Dispose();
-                        m_waveTexture = new RenderTarget2D(
-                            displayWidth,
-                            displayHeight,
-                            1,
+                        m_texture?.Dispose();
+                        RenderTarget2D wavRenderTarget = new(
+                            DisplayWidth,
+                            DisplayHeight,
+                            6,
                             ColorFormat.Rgba8888,
                             DepthFormat.None
                         );
-                        Display.RenderTarget = m_waveTexture;
+                        Display.RenderTarget = wavRenderTarget;
                         Display.Clear(Color.Black);
                         int trueDisplayCount = 0;
                         if (Records.Count > DisplayCount) {
@@ -70,22 +82,59 @@ namespace Game {
                         if (AutoSetMinMaxLevelMode) {
                             AutoSetMinMaxLevel();
                         }
+                        CalculateDashedLineArguments();
+                        m_waveBatch.PrepareBackground(
+                            DashedLineLeftOffset,
+                            DashedLineUpOffset,
+                            DashedLineHorizontalSpacing,
+                            DashedLineVerticalSpacing,
+                            DashedLineDashLength,
+                            DashedLineDashAndGapLength
+                        );
+                        m_waveBatch.QueueQuad(new Vector2(0, 0), new Vector2(DisplayWidth, DisplayHeight), 0, Color.Transparent);
+                        m_waveBatch.FlushBackground();
+                        GL.Enable((All)34370);
                         for (int i = 3; i >= 0; i--) {
                             Vector2[] drawPoints = new Vector2[trueDisplayCount > Records.Count ? Records.Count + 2 : trueDisplayCount];
                             for (int j = 0; j < trueDisplayCount; j++) {
                                 if (j >= Records.Count) {
-                                    drawPoints[j] = new Vector2((1 - j / (float)trueDisplayCount) * displayWidth, displayHeight);
-                                    drawPoints[j + 1] = new Vector2(0f, displayHeight);
+                                    drawPoints[j] = new Vector2((1 - j / (float)trueDisplayCount) * (DisplayWidth - 1), DisplayHeight - 1);
+                                    drawPoints[j + 1] = new Vector2(0f, DisplayHeight - 1);
                                     break;
                                 }
                                 uint record = Records[Records.Count - j - 1][i];
-                                drawPoints[j] = new Vector2((1 - j / (float)trueDisplayCount) * displayWidth, (1 - (record - MinLevel) / (float)(MaxLevel - MinLevel)) * displayHeight);
+                                drawPoints[j] = new Vector2((1 - j / (float)trueDisplayCount) * (DisplayWidth - 1), (1 - (record - MinLevel) / (float)(MaxLevel - MinLevel)) * (DisplayHeight - 1));
                             }
-                            m_flatBatch2D.QueueLineStrip(drawPoints, 0, m_linesColor[i]);
+                            m_waveBatch.QueueLineStrip(drawPoints, 0, m_linesColor[i]);
+                            m_waveBatch.QueuePoints(drawPoints, 0, m_pointsColor[i]);
+                            m_waveBatch.FlushWave();
                         }
-                        m_primitivesRenderer2D.Flush();
+                        wavRenderTarget.GenerateMipMaps();
+                        //m_waveTexture.GetData(new Rectangle(0, 0, 1024, 1024)).m_trueImage.SaveAsBmp("temp.bmp");
+                        GVOscilloscopeBlurTexturedBatch2D blurBatch = m_primitivesRenderer2D.TexturedBatch(
+                            wavRenderTarget,
+                            false,
+                            0,
+                            DepthStencilState.None,
+                            null,
+                            BlendState.AlphaBlend
+                        );
+                        blurBatch.QueueQuad(
+                            Vector2.Zero,
+                            new Vector2(DisplayWidth, 0f),
+                            new Vector2(DisplayWidth, DisplayHeight),
+                            new Vector2(0f, DisplayHeight),
+                            0,
+                            Vector2.Zero,
+                            new Vector2(1, 0),
+                            Vector2.One,
+                            new Vector2(0, 1),
+                            Color.White
+                        );
+                        m_texture = blurBatch.FlushBlur();
+                        wavRenderTarget.Dispose();
                         RecordsCountAtLastGenerateWaveTexture = Records.Count;
-                        return m_waveTexture;
+                        return m_texture;
                     }
                     catch (Exception e) {
                         Log.Error(e);
@@ -95,7 +144,7 @@ namespace Game {
                         Display.RenderTarget = originRenderTarget;
                     }
                 }
-                return m_waveTexture;
+                return m_texture;
             }
         }
 
@@ -113,7 +162,7 @@ namespace Game {
                         DepthStencilState.DepthRead,
                         RasterizerState.CullCounterClockwiseScissor,
                         BlendState.NonPremultiplied,
-                        SamplerState.AnisotropicClamp
+                        SamplerState.PointClamp
                     );
                     RecordsCountAtLastGenerateFlatBatch3D = Records.Count;
                 }
@@ -241,6 +290,16 @@ namespace Game {
             RecordsCountAtAutoSetMinMaxLevel = Records.Count;
         }
 
+
         public static uint GetNearest16Multiples(uint value) => (value + 63u) & 0xFFFFFFF0u;
+
+        public void CalculateDashedLineArguments() {
+            DashedLineVerticalSpacing = DisplayHeight / 8f;
+            DashedLineHorizontalSpacing = DisplayWidth / (DisplayWidth / (float)DisplayHeight > 1.5f ? 16f : 8f);
+            DashedLineLeftOffset = 0f;
+            DashedLineUpOffset = 0f;
+            DashedLineDashLength = DashedLineVerticalSpacing / 16f;
+            DashedLineDashAndGapLength = DashedLineDashLength * 3f;
+        }
     }
 }
