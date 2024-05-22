@@ -92,7 +92,7 @@ namespace Game {
                 ContentManager.Get<Texture2D>("Textures/GV8NumberLed"),
                 false,
                 0,
-                DepthStencilState.DepthRead,
+                DepthStencilState.Default,
                 RasterizerState.CullCounterClockwiseScissor,
                 BlendState.AlphaBlend,
                 SamplerState.PointClamp
