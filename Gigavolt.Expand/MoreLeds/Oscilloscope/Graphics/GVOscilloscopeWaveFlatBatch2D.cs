@@ -80,7 +80,7 @@ namespace Engine.Graphics {
 
         public void FlushWave() {
             if (LineStripeIndices.Count != 0
-                && PointsIndices.Count != 0) {
+                || PointsIndices.Count != 0) {
                 Display.DepthStencilState = DepthStencilState;
                 Display.RasterizerState = RasterizerState;
                 Display.BlendState = BlendState;

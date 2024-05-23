@@ -7,8 +7,7 @@ namespace Game {
     public class ComponentGVDisplayVoltage : Component, IDrawable {
         public SubsystemTerrain m_subsystemTerrain;
         public SubsystemGVElectricity m_subsystemGVElectricity;
-        public SubsystemGV8NumberLedGlow m_subsystemGV8NumberLedGlow;
-        TexturedBatch3D m_8Numberbatch;
+        public TexturedBatch3D m_8NumberBatch;
         public ComponentPlayer m_componentPlayer;
         public ComponentBlockHighlight m_componentBlockHighlight;
 
@@ -30,15 +29,14 @@ namespace Game {
                     && m_componentBlockHighlight.m_highlightRaycastResult is TerrainRaycastResult result) {
                     DisplayVoltage(result.CellFace);
                 }
-                m_8Numberbatch.Flush(camera.ViewProjectionMatrix);
+                m_8NumberBatch.Flush(camera.ViewProjectionMatrix);
             }
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap) {
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemGVElectricity = Project.FindSubsystem<SubsystemGVElectricity>(true);
-            m_subsystemGV8NumberLedGlow = Project.FindSubsystem<SubsystemGV8NumberLedGlow>(true);
-            m_8Numberbatch = m_subsystemGV8NumberLedGlow.batchCache;
+            m_8NumberBatch = Project.FindSubsystem<SubsystemGV8NumberLedGlow>(true).batchCache;
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>(true);
             m_componentBlockHighlight = Entity.FindComponent<ComponentBlockHighlight>(true);
         }
@@ -52,8 +50,7 @@ namespace Game {
             switch (block) {
                 case MountedGVElectricElementBlock mountedBlock: {
                     blockFace = mountedBlock.GetFace(blockValue);
-                    GVElectricElement element = null;
-                    if (!m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out element)) {
+                    if (!m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
                         for (int i = 0; i < 16; i++) {
                             if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(
                                     new GVCellFace(
@@ -100,7 +97,7 @@ namespace Game {
                                 switch (connectorType.Value) {
                                     case GVElectricConnectorType.Output:
                                         SubsystemGV8NumberLedGlow.Draw8Number(
-                                            m_8Numberbatch,
+                                            m_8NumberBatch,
                                             element.GetOutputVoltage(connectorFace),
                                             position + offset,
                                             size,
@@ -113,7 +110,7 @@ namespace Game {
                                         GVElectricConnection connection = element.Connections.Find(connection => connection.ConnectorFace == connectorFace);
                                         if (connection != null) {
                                             SubsystemGV8NumberLedGlow.Draw8Number(
-                                                m_8Numberbatch,
+                                                m_8NumberBatch,
                                                 connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace),
                                                 position + offset,
                                                 size,
@@ -135,7 +132,7 @@ namespace Game {
                                             inputOffset += offset2;
                                             outputOffset -= offset2;
                                             SubsystemGV8NumberLedGlow.Draw8Number(
-                                                m_8Numberbatch,
+                                                m_8NumberBatch,
                                                 connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace),
                                                 position + inputOffset,
                                                 size,
@@ -145,7 +142,7 @@ namespace Game {
                                             );
                                         }
                                         SubsystemGV8NumberLedGlow.Draw8Number(
-                                            m_8Numberbatch,
+                                            m_8NumberBatch,
                                             element.GetOutputVoltage(connectorFace),
                                             position + outputOffset,
                                             size,
@@ -169,7 +166,7 @@ namespace Game {
                         Vector3 right = Vector3.Cross(forward, up);
                         const float size = 0.1f;
                         SubsystemGV8NumberLedGlow.Draw8Number(
-                            m_8Numberbatch,
+                            m_8NumberBatch,
                             element.GetOutputVoltage(blockFace),
                             position,
                             size,
@@ -213,7 +210,7 @@ namespace Game {
                                     Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) + 0.55f * forward - (i % 4 * 2 - 3) / 8f * right - (i / 4 * 2 - 3) / 8f * up;
                                     const float size = 0.1f;
                                     SubsystemGV8NumberLedGlow.Draw8Number(
-                                        m_8Numberbatch,
+                                        m_8NumberBatch,
                                         voltage,
                                         position,
                                         size,
@@ -226,8 +223,7 @@ namespace Game {
                         }
                     }
                     else {
-                        GVElectricElement element = null;
-                        if (!m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out element)) {
+                        if (!m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
                             for (int i = 0; i < 16; i++) {
                                 if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(
                                         new GVCellFace(
@@ -250,7 +246,7 @@ namespace Game {
                             Vector3 right = Vector3.Cross(forward, up);
                             const float size = 0.1f;
                             SubsystemGV8NumberLedGlow.Draw8Number(
-                                m_8Numberbatch,
+                                m_8NumberBatch,
                                 element.GetOutputVoltage(blockFace),
                                 position,
                                 size,
@@ -277,7 +273,7 @@ namespace Game {
                         Vector3 right = Vector3.Cross(forward, up);
                         const float size = 0.1f;
                         SubsystemGV8NumberLedGlow.Draw8Number(
-                            m_8Numberbatch,
+                            m_8NumberBatch,
                             element.CalculateAllInputsVoltage(),
                             position,
                             size,

@@ -15,7 +15,8 @@ namespace Game {
             int mountingFace = FourLedBlock.GetMountingFace(data);
             Vector3 v = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             Vector3 vector = CellFace.FaceToVector3(mountingFace);
-            Vector3 vector2 = mountingFace < 4 ? Vector3.UnitY : Vector3.UnitX;
+            Vector3 vector2 = mountingFace < 4 ? Vector3.UnitY :
+                mountingFace == 4 ? -Vector3.UnitZ : Vector3.UnitZ;
             Vector3 right = Vector3.Cross(vector, vector2);
             m_data = m_subsystemGlow.GetData(cellFace.Point);
             m_data.Position = v - 0.43f * CellFace.FaceToVector3(mountingFace);
@@ -36,6 +37,7 @@ namespace Game {
             uint inInput = 0u;
             bool inConected = false;
             int face = CellFaces[0].Face;
+            m_data.ConnectionState = new bool[4];
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
@@ -44,15 +46,19 @@ namespace Game {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Top:
                                 topInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                m_data.ConnectionState[0] = true;
                                 break;
                             case GVElectricConnectorDirection.Right:
                                 rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                m_data.ConnectionState[1] = true;
                                 break;
                             case GVElectricConnectorDirection.Bottom:
                                 bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                m_data.ConnectionState[2] = true;
                                 break;
                             case GVElectricConnectorDirection.Left:
                                 leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                                m_data.ConnectionState[3] = true;
                                 break;
                             case GVElectricConnectorDirection.In:
                                 inInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);

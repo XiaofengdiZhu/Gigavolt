@@ -419,6 +419,9 @@
 		<None Update="Assets\Shaders\GVOscilloscopeBlur.vsh">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Assets\Textures\GVOscilloscopeArrowButton.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes"/>

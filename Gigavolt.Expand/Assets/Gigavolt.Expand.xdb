@@ -49,7 +49,7 @@
 			<ParameterSet Name="Blocks" Guid="954e3f8a-5116-42b5-b234-d2db60562b6a"/>
 			<Parameter Name="Class" Guid="0f227d34-8888-4935-a770-b1a022e5ecd3" Value="Game.SubsystemGVSignalGeneratorBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVOscilloscopeBlockBehavior" Guid="48d1c17a-1ee7-4987-9596-22e9690ce964" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+		<MemberSubsystemTemplate Name="GVOscilloscopeBlockBehavior" Guid="48d1c17a-1ee7-4987-9596-22e9690ce964" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 			<ParameterSet Name="Blocks" Guid="997f6d93-0d0e-4888-a973-2451ca3803bc"/>
 			<Parameter Name="Class" Guid="96bc0a0f-1e85-4313-b562-d0e16a982918" Value="Game.SubsystemGVOscilloscopeBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>

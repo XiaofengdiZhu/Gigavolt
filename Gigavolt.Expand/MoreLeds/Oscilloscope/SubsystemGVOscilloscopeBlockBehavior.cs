@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using Engine;
 using Engine.Graphics;
-using GameEntitySystem;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemGVOscilloscopeBlockBehavior : Subsystem, IDrawable {
+    public class SubsystemGVOscilloscopeBlockBehavior : SubsystemBlockBehavior, IDrawable {
         public SubsystemSky m_subsystemSky;
-        public Dictionary<Point3, GVOscilloscopeData> m_datas = new();
-        public PrimitivesRenderer3D m_primitivesRenderer3D = new();
+        public readonly Dictionary<Point3, GVOscilloscopeData> m_datas = new();
+        public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new();
+        public readonly GVPrimitivesRenderer2D m_primitivesRenderer2D = new();
+        public TexturedBatch2D m_numberBatch;
+        public TexturedBatch2D m_arrowButtonBatch;
         public static int[] m_drawOrders = [110];
 
         public int[] DrawOrders => m_drawOrders;
@@ -18,15 +20,35 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
+            m_numberBatch = m_primitivesRenderer2D.TexturedBatch(
+                Project.FindSubsystem<SubsystemGV8NumberLedGlow>(true).batchCache.Texture,
+                false,
+                0,
+                DepthStencilState.None,
+                null,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp
+            );
+            m_arrowButtonBatch = m_primitivesRenderer2D.TexturedBatch(
+                ContentManager.Get<Texture2D>("Textures/GVOscilloscopeArrowButton"),
+                false,
+                0,
+                DepthStencilState.None,
+                null,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp
+            );
             foreach (ValuesDictionary value3 in valuesDictionary.GetValue<ValuesDictionary>("Blocks").Values) {
                 try {
-                    m_datas.Add(value3.GetValue<Point3>("Point"), new GVOscilloscopeData(m_primitivesRenderer3D));
+                    m_datas.Add(value3.GetValue<Point3>("Point"), new GVOscilloscopeData(this));
                 }
                 catch (Exception) {
                     // ignored
                 }
             }
         }
+
+        public override int[] HandledBlocks => [GVOscilloscopeBlock.Index];
 
         public override void Save(ValuesDictionary valuesDictionary) {
             base.Save(valuesDictionary);
@@ -44,7 +66,7 @@ namespace Game {
             if (m_datas.TryGetValue(point, out GVOscilloscopeData result)) {
                 return result;
             }
-            GVOscilloscopeData data = new(m_primitivesRenderer3D);
+            GVOscilloscopeData data = new(this);
             m_datas.Add(point, data);
             return data;
         }
@@ -61,6 +83,21 @@ namespace Game {
                     if (num > 0.01f) {
                         float num2 = vector.Length();
                         if (num2 < m_subsystemSky.ViewFogRange.Y) {
+                            int newLodLevel = vector.LengthSquared() switch {
+                                < 3f => 0, //全特效
+                                < 5.3f => 1, //降低虚线精度
+                                < 45f => 2, //关闭按钮显示、降低分辨率至512*512、进一步降低虚线精度
+                                < 56f => 3, //关闭网格显示
+                                < 81f => 4, //关闭标签显示
+                                < 225f => 5, //降低分辨率至360*360，停止画点
+                                _ => 6 //关闭泛光特效，降低分辨率至160*160
+                            };
+                            if (newLodLevel != data.LodLevel) {
+                                data.LodLevel = newLodLevel;
+                                if (!data.IsTextureObsolete()) {
+                                    data.Texture.Dispose();
+                                }
+                            }
                             const float size = 0.5f;
                             Vector3 p = data.Position + size * (-data.Right - data.Up);
                             Vector3 p2 = data.Position + size * (data.Right - data.Up);
@@ -82,6 +119,14 @@ namespace Game {
                 }
             }
             m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
+        }
+
+        public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
+            if (m_datas.TryGetValue(raycastResult.CellFace.Point, out GVOscilloscopeData data)) {
+                data.DisplayButtons = !data.DisplayButtons;
+                return true;
+            }
+            return false;
         }
     }
 }

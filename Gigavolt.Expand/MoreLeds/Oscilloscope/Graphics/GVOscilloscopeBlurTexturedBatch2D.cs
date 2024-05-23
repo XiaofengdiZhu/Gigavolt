@@ -1,9 +1,9 @@
-﻿namespace Engine.Graphics {
+namespace Engine.Graphics {
     public class GVOscilloscopeBlurTexturedBatch2D : TexturedBatch2D {
         public static GVOscilloscopeBlurShader1 GVOscilloscopeBlurShader1 = new();
         public static GVOscilloscopeBlurShader2 GVOscilloscopeBlurShader2 = new();
 
-        public RenderTarget2D FlushBlur() {
+        public void FlushBlur() {
             RenderTarget2D originRenderTarget = Display.RenderTarget;
             RenderTarget2D tempRenderTarget = new(
                 Texture.Width,
@@ -33,15 +33,7 @@
                 0,
                 TriangleIndices.Count
             );
-            RenderTarget2D blurredTexture = new(
-                Texture.Width,
-                Texture.Height,
-                1,
-                ColorFormat.Rgba8888,
-                DepthFormat.None
-            );
-            Display.RenderTarget = blurredTexture;
-            Display.Clear(Color.Black);
+            Display.RenderTarget = originRenderTarget;
             GVOscilloscopeBlurShader2.TextureSize = new Vector2(Texture.Width, Texture.Height);
             GVOscilloscopeBlurShader2.Texture = Texture;
             GVOscilloscopeBlurShader2.Texture2 = tempRenderTarget;
@@ -61,8 +53,6 @@
             );
             tempRenderTarget.Dispose();
             Clear();
-            Display.RenderTarget = originRenderTarget;
-            return blurredTexture;
         }
     }
 }
