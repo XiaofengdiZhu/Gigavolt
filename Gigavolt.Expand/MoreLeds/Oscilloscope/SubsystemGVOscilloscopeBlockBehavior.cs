@@ -10,9 +10,35 @@ namespace Game {
         public SubsystemSky m_subsystemSky;
         public readonly Dictionary<Point3, GVOscilloscopeData> m_datas = new();
         public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new();
-        public readonly GVPrimitivesRenderer2D m_primitivesRenderer2D = new();
+        public readonly GVOscilloscopePrimitivesRenderer2D m_primitivesRenderer2D = new();
         public TexturedBatch2D m_numberBatch;
         public TexturedBatch2D m_arrowButtonBatch;
+        public TexturedBatch2D m_autoButtonBatch;
+        public TexturedBatch2D m_moonButtonBatch;
+        public TexturedBatch2D m_sunButtonBatch;
+
+        public static readonly Dictionary<Rectangle, Action<GVOscilloscopeData>> m_interacts = new() {
+            { new Rectangle(76, 20, 88, 88), data => data.IncreaseMaxLevel() },
+            { new Rectangle(188, 20, 88, 88), data => data.DecreaseMaxLevel() },
+            { new Rectangle(76, 916, 88, 88), data => data.IncreaseMinLevel() },
+            { new Rectangle(188, 916, 88, 88), data => data.DecreaseMinLevel() },
+            { new Rectangle(412, 20, 88, 88), data => data.IncreaseDisplayCount() },
+            { new Rectangle(524, 20, 88, 88), data => data.DecreaseDisplayCount() }, {
+                new Rectangle(916, 20, 88, 88), data => {
+                    data.DisplayBloom = !data.DisplayBloom;
+                    if (!data.IsTextureObsolete()) {
+                        data.Texture.Dispose();
+                    }
+                }
+            }, {
+                new Rectangle(804, 20, 88, 88), data => {
+                    if (!data.AutoSetMinMaxLevelMode) {
+                        data.AutoSetMinMaxLevel(!data.IsTextureObsolete());
+                    }
+                }
+            }
+        };
+
         public static int[] m_drawOrders = [110];
 
         public int[] DrawOrders => m_drawOrders;
@@ -31,6 +57,33 @@ namespace Game {
             );
             m_arrowButtonBatch = m_primitivesRenderer2D.TexturedBatch(
                 ContentManager.Get<Texture2D>("Textures/GVOscilloscopeArrowButton"),
+                false,
+                0,
+                DepthStencilState.None,
+                null,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp
+            );
+            m_autoButtonBatch = m_primitivesRenderer2D.TexturedBatch(
+                ContentManager.Get<Texture2D>("Textures/GVOscilloscopeAutoButton"),
+                false,
+                0,
+                DepthStencilState.None,
+                null,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp
+            );
+            m_moonButtonBatch = m_primitivesRenderer2D.TexturedBatch(
+                ContentManager.Get<Texture2D>("Textures/GVOscilloscopeMoonButton"),
+                false,
+                0,
+                DepthStencilState.None,
+                null,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp
+            );
+            m_sunButtonBatch = m_primitivesRenderer2D.TexturedBatch(
+                ContentManager.Get<Texture2D>("Textures/GVOscilloscopeSunButton"),
                 false,
                 0,
                 DepthStencilState.None,
@@ -122,8 +175,36 @@ namespace Game {
         }
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
-            if (m_datas.TryGetValue(raycastResult.CellFace.Point, out GVOscilloscopeData data)) {
-                data.DisplayButtons = !data.DisplayButtons;
+            Point3 blockPoint = raycastResult.CellFace.Point;
+            int face = raycastResult.CellFace.Face;
+            if (GVOscilloscopeBlock.GetMountingFace(Terrain.ExtractData(raycastResult.Value)) == face
+                && m_datas.TryGetValue(blockPoint, out GVOscilloscopeData data)) {
+                Vector3 hitPosition = raycastResult.HitPoint();
+                Vector2 interactPosition = face switch {
+                    0 => new Vector2(hitPosition.X - blockPoint.X, blockPoint.Y + 1 - hitPosition.Y),
+                    1 => new Vector2(blockPoint.Z + 1 - hitPosition.Z, blockPoint.Y + 1 - hitPosition.Y),
+                    2 => new Vector2(hitPosition.X - blockPoint.X, blockPoint.Y + 1 - hitPosition.Y),
+                    3 => new Vector2(hitPosition.Z - blockPoint.Z, blockPoint.Y + 1 - hitPosition.Y),
+                    4 => new Vector2(hitPosition.X - blockPoint.X, hitPosition.Z - blockPoint.Z),
+                    5 => new Vector2(hitPosition.X - blockPoint.X, blockPoint.Z + 1 - hitPosition.Z),
+                    _ => Vector2.Zero
+                };
+                interactPosition *= 1024f;
+                bool flag = true;
+                foreach (KeyValuePair<Rectangle, Action<GVOscilloscopeData>> pair in m_interacts) {
+                    Rectangle rectangle = pair.Key;
+                    if (interactPosition.X >= rectangle.Left
+                        && interactPosition.X < rectangle.Left + rectangle.Width
+                        && interactPosition.Y >= rectangle.Top
+                        && interactPosition.Y < rectangle.Top + rectangle.Height) {
+                        pair.Value(data);
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    data.DisplayButtons = !data.DisplayButtons;
+                }
                 return true;
             }
             return false;

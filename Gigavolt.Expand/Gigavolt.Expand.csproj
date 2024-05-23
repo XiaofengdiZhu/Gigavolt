@@ -91,7 +91,7 @@
 		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBackgroundShader.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurTexturedBatch2D.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeWaveShader.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVPrimitivesRenderer2D.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopePrimitivesRenderer2D.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeData.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeBlock.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\OscilloscopeGVElectricElement.cs"/>
@@ -420,6 +420,15 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVOscilloscopeArrowButton.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVOscilloscopeAutoButton.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVOscilloscopeMoonButton.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVOscilloscopeSunButton.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

@@ -1,7 +1,7 @@
 using Engine.Media;
 
 namespace Engine.Graphics {
-    public class GVPrimitivesRenderer2D : BasePrimitivesRenderer<GVOscilloscopeWaveFlatBatch2D, GVOscilloscopeBlurTexturedBatch2D, FontBatch2D> {
+    public class GVOscilloscopePrimitivesRenderer2D : BasePrimitivesRenderer<GVOscilloscopeWaveFlatBatch2D, GVOscilloscopeBlurTexturedBatch2D, FontBatch2D> {
         public static Matrix ViewportMatrix() {
             Viewport viewport = Display.Viewport;
             float num = 1f / viewport.Width;

@@ -22,6 +22,7 @@ namespace Game {
         public bool AutoSetMinMaxLevelMode = true;
         public int LodLevel = 0;
         public bool DisplayButtons = true;
+        public bool DisplayBloom = true;
         public int RecordsCount => Records.Count;
         public int RecordsCountAtLastGenerateTexture;
         public int RecordsCountAtLastGenerateFlatBatch3D;
@@ -36,9 +37,12 @@ namespace Game {
 
         readonly List<uint[]> Records = new(4100);
         readonly PrimitivesRenderer3D m_primitivesRenderer3D;
-        readonly GVPrimitivesRenderer2D m_primitivesRenderer2D;
+        readonly GVOscilloscopePrimitivesRenderer2D m_primitivesRenderer2D;
         readonly TexturedBatch2D m_numberBatch;
         readonly TexturedBatch2D m_arrowButtonBatch;
+        public TexturedBatch2D m_autoButtonBatch;
+        public TexturedBatch2D m_moonButtonBatch;
+        public TexturedBatch2D m_sunButtonBatch;
         readonly GVOscilloscopeWaveFlatBatch2D m_waveBatch;
         RenderTarget2D m_texture;
         TexturedBatch3D m_texturedBatch3D;
@@ -50,6 +54,9 @@ namespace Game {
             m_primitivesRenderer2D = subsystem.m_primitivesRenderer2D;
             m_numberBatch = subsystem.m_numberBatch;
             m_arrowButtonBatch = subsystem.m_arrowButtonBatch;
+            m_autoButtonBatch = subsystem.m_autoButtonBatch;
+            m_moonButtonBatch = subsystem.m_moonButtonBatch;
+            m_sunButtonBatch = subsystem.m_sunButtonBatch;
             m_waveBatch = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.AlphaBlend);
         }
 
@@ -85,7 +92,7 @@ namespace Game {
                         RenderTarget2D waveRenderTarget = new(
                             DisplayWidth,
                             DisplayHeight,
-                            LodLevel < 6 ? 6 : 1,
+                            DisplayBloom && LodLevel < 6 ? 6 : 1,
                             ColorFormat.Rgba8888,
                             DepthFormat.None
                         );
@@ -146,7 +153,7 @@ namespace Game {
                             }
                             m_waveBatch.FlushWave();
                         }
-                        if (LodLevel < 6) {
+                        if (DisplayBloom && LodLevel < 6) {
                             waveRenderTarget.GenerateMipMaps();
                             RenderTarget2D blurRenderTarget = new(
                                 DisplayWidth,
@@ -204,7 +211,7 @@ namespace Game {
                                 0,
                                 Vector2.One,
                                 Vector2.Zero,
-                                MaxLevel <= 64u ? Color.DarkGray : Color.LightGray
+                                MaxLevel <= 64u || MinLevel >= uint.MaxValue - 64u ? Color.DarkGray : Color.LightGray
                             );
                             m_arrowButtonBatch.QueueQuad(
                                 new Vector2(76f, 916f),
@@ -212,7 +219,7 @@ namespace Game {
                                 0,
                                 Vector2.Zero,
                                 Vector2.One,
-                                MinLevel >= uint.MaxValue - 64u ? Color.DarkGray : Color.LightGray
+                                MinLevel >= uint.MaxValue - 64u || MaxLevel <= 64u ? Color.DarkGray : Color.LightGray
                             );
                             m_arrowButtonBatch.QueueQuad(
                                 new Vector2(188f, 916f),
@@ -222,10 +229,52 @@ namespace Game {
                                 Vector2.Zero,
                                 MinLevel == 0u ? Color.DarkGray : Color.LightGray
                             );
-                            m_arrowButtonBatch.Flush();
+                            m_arrowButtonBatch.QueueQuad(
+                                new Vector2(412f, 108f),
+                                new Vector2(412f, 20f),
+                                new Vector2(500f, 20f),
+                                new Vector2(500f, 108f),
+                                0,
+                                Vector2.Zero,
+                                Vector2.UnitX,
+                                Vector2.One,
+                                Vector2.UnitY,
+                                Array.IndexOf(displayCountArray, DisplayCount) == displayCountArray.Length - 1 ? Color.DarkGray : Color.LightGray
+                            );
+                            m_arrowButtonBatch.QueueQuad(
+                                new Vector2(612f, 20f),
+                                new Vector2(612f, 108f),
+                                new Vector2(524f, 108f),
+                                new Vector2(524f, 20f),
+                                0,
+                                Vector2.Zero,
+                                Vector2.UnitX,
+                                Vector2.One,
+                                Vector2.UnitY,
+                                Array.IndexOf(displayCountArray, DisplayCount) == 0 ? Color.DarkGray : Color.LightGray
+                            );
+                            (DisplayBloom ? m_sunButtonBatch : m_moonButtonBatch).QueueQuad(
+                                new Vector2(916f, 20f),
+                                new Vector2(1004f, 108f),
+                                0,
+                                Vector2.Zero,
+                                Vector2.One,
+                                Color.LightGray
+                            );
+                            if (!AutoSetMinMaxLevelMode) {
+                                m_autoButtonBatch.QueueQuad(
+                                    new Vector2(804f, 20f),
+                                    new Vector2(892f, 108f),
+                                    0,
+                                    Vector2.Zero,
+                                    Vector2.One,
+                                    Color.LightGray
+                                );
+                            }
+                            m_primitivesRenderer2D.Flush();
                         }
                         m_texture = Display.RenderTarget;
-                        if (LodLevel < 6) {
+                        if (DisplayBloom && LodLevel < 6) {
                             waveRenderTarget.Dispose();
                         }
                         RecordsCountAtLastGenerateTexture = Records.Count;
@@ -249,7 +298,8 @@ namespace Game {
                     return null;
                 }
                 if (m_texturedBatch3D == null
-                    || Records.Count != RecordsCountAtLastGenerateFlatBatch3D) {
+                    || Records.Count != RecordsCountAtLastGenerateFlatBatch3D
+                    || IsTextureObsolete()) {
                     m_texturedBatch3D = m_primitivesRenderer3D.TexturedBatch(
                         Texture,
                         false,
@@ -288,10 +338,16 @@ namespace Game {
             if (index > -1) {
                 if (index != displayCountArray.Length - 1) {
                     DisplayCount = displayCountArray[index + 1];
+                    if (!IsTextureObsolete()) {
+                        Texture.Dispose();
+                    }
                 }
             }
             else {
                 DisplayCount = 512;
+                if (!IsTextureObsolete()) {
+                    Texture.Dispose();
+                }
             }
         }
 
@@ -299,51 +355,83 @@ namespace Game {
             int index = Array.IndexOf(displayCountArray, DisplayCount);
             if (index > -1) {
                 if (index != 0) {
-                    DisplayCount = displayCountArray[index + 1];
+                    DisplayCount = displayCountArray[index - 1];
+                    if (!IsTextureObsolete()) {
+                        Texture.Dispose();
+                    }
                 }
             }
             else {
                 DisplayCount = 512;
+                if (!IsTextureObsolete()) {
+                    Texture.Dispose();
+                }
             }
         }
 
-        public void InCreaseMinLevel() {
-            AutoSetMinMaxLevelMode = false;
+        public void IncreaseMinLevel() {
+            if (MinLevel >= uint.MaxValue - 64u) {
+                MinLevel = uint.MaxValue - 64u;
+                return;
+            }
             if (MaxLevel <= 64u) {
                 MinLevel = 0u;
                 return;
             }
+            AutoSetMinMaxLevelMode = false;
             MinLevel = GetNearest16Multiples(MinLevel + (MaxLevel - MinLevel) / 4u);
             if (MaxLevel - MinLevel <= 64u) {
                 MinLevel = MaxLevel - 64u;
             }
+            if (!IsTextureObsolete()) {
+                Texture.Dispose();
+            }
         }
 
         public void DecreaseMinLevel() {
+            if (MinLevel == 0u) {
+                return;
+            }
             AutoSetMinMaxLevelMode = false;
             uint num = (MaxLevel - MinLevel) / 3u;
             MinLevel = num > MinLevel ? 0u : GetNearest16Multiples(MinLevel - num);
+            if (!IsTextureObsolete()) {
+                Texture.Dispose();
+            }
         }
 
-        public void InCreaseMaxLevel() {
+        public void IncreaseMaxLevel() {
+            if (MaxLevel == uint.MaxValue) {
+                return;
+            }
             AutoSetMinMaxLevelMode = false;
             uint num = (MaxLevel - MinLevel) / 3u;
             MaxLevel = num > uint.MaxValue - MaxLevel ? uint.MaxValue : GetNearest16Multiples(MaxLevel + num);
+            if (!IsTextureObsolete()) {
+                Texture.Dispose();
+            }
         }
 
         public void DecreaseMaxLevel() {
-            AutoSetMinMaxLevelMode = false;
+            if (MaxLevel <= 64u) {
+                MaxLevel = 64u;
+                return;
+            }
             if (MinLevel >= uint.MaxValue - 64u) {
                 MaxLevel = uint.MaxValue;
                 return;
             }
+            AutoSetMinMaxLevelMode = false;
             MaxLevel = GetNearest16Multiples(MaxLevel - (MaxLevel - MinLevel) / 4u);
             if (MaxLevel - MinLevel <= 64u) {
                 MaxLevel = GetNearest16Multiples(MinLevel + 64u);
             }
+            if (!IsTextureObsolete()) {
+                Texture.Dispose();
+            }
         }
 
-        public void AutoSetMinMaxLevel() {
+        public void AutoSetMinMaxLevel(bool dispose = false) {
             AutoSetMinMaxLevelMode = true;
             if (Records.Count == 0
                 || (AutoSetMinMaxLevelMode && Records.Count == RecordsCountAtAutoSetMinMaxLevel)) {
@@ -387,6 +475,9 @@ namespace Game {
                 MaxLevel = MinLevel + 64u;
             }
             RecordsCountAtAutoSetMinMaxLevel = Records.Count;
+            if (dispose) {
+                Texture.Dispose();
+            }
         }
 
         public static uint GetNearest16Multiples(uint value) => (value + 15u) & 0xFFFFFFF0u;
