@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Engine;
+using Engine.Graphics;
 using Engine.Input;
 using GameEntitySystem;
 using TemplatesDatabase;
@@ -11,7 +12,7 @@ using TemplatesDatabase;
 // ReSharper disable RedundantExplicitArraySize
 
 namespace Game {
-    public class SubsystemGVElectricity : Subsystem, IUpdateable {
+    public class SubsystemGVElectricity : Subsystem, IUpdateable, IDrawable {
         public static GVElectricConnectionPath[] m_connectionPathsTable = new GVElectricConnectionPath[120] {
             new(
                 0,
@@ -924,29 +925,17 @@ namespace Game {
         public float m_remainingSimulationTime;
 
         public Dictionary<Point3, uint> m_persistentElementsVoltages = new();
-
         public Dictionary<GVElectricElement, bool> m_GVElectricElements = new();
-
         public Dictionary<GVCellFace, GVElectricElement> m_GVElectricElementsByCellFace = new();
-
         public Dictionary<Point3, bool> m_pointsToUpdate = new();
-
         public Dictionary<Point3, GVElectricElement> m_GVElectricElementsToAdd = new();
-
         public Dictionary<GVElectricElement, bool> m_GVElectricElementsToRemove = new();
-
         public Dictionary<GVCellFace, bool> m_wiresToUpdate = new();
-
         public List<Dictionary<GVElectricElement, bool>> m_listsCache = new();
-
         public Dictionary<int, Dictionary<GVElectricElement, bool>> m_futureSimulateLists = new();
-
         public Dictionary<GVElectricElement, bool> m_nextStepSimulateList;
-
         public DynamicArray<GVElectricConnectionPath> m_tmpConnectionPaths = new();
-
         public Dictionary<GVCellFace, bool> m_tmpVisited = new();
-
         public Dictionary<GVCellFace, bool> m_tmpResult = new();
 
         public static int SimulatedGVElectricElements;
@@ -959,9 +948,12 @@ namespace Game {
         public Dictionary<ComponentPlayer, GVStepFloatingButtons> m_debugButtonsDictionary = new();
         public DateTime lastUpdate;
         public Queue<DateTime> last1000Updates = new(1002);
+        public PrimitivesRenderer3D m_primitivesRenderer = new();
+        public FlatBatch3D m_flatBatch;
+        public TexturedBatch3D m_8NumberBatch;
+        public List<Vector3> m_debugDrawPositions = [];
 
         public SubsystemTime SubsystemTime { get; set; }
-
         public SubsystemTerrain SubsystemTerrain { get; set; }
 
         public SubsystemAudio SubsystemAudio { get; set; }
@@ -974,6 +966,7 @@ namespace Game {
         public int CircuitStep { get; set; }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
+        public static int[] m_drawOrders = [113];
 
         public void OnGVElectricElementBlockGenerated(int x, int y, int z) {
             m_pointsToUpdate[new Point3(x, y, z)] = false;
@@ -1155,19 +1148,23 @@ namespace Game {
                 if (keyboardDebug) {
                     if (Keyboard.IsKeyDownOnce(Key.F5)) {
                         debugMode = !debugMode;
+                        if (debugMode) {
+                            last1000Updates.Clear();
+                        }
                     }
                     if (debugMode) {
-                        if (Keyboard.IsKeyDownOnce(Key.F7)) {
-                            JumpUpdate();
-                        }
-                        else if (Keyboard.IsKeyDownOnce(Key.F6)) {
+                        if (Keyboard.IsKeyDownOnce(Key.F6)) {
                             StepUpdate();
+                        }
+                        else if (Keyboard.IsKeyDownOnce(Key.F7)) {
+                            JumpUpdate();
                         }
                     }
                 }
                 if (!debugMode) {
                     StepUpdateSkip();
                     FrameStartCircuitStep = CircuitStep;
+                    m_debugDrawPositions.Clear();
                     SimulatedGVElectricElements = 0;
                     m_remainingSimulationTime = MathUtils.Min(m_remainingSimulationTime + dt, 0.1f);
                     while (m_remainingSimulationTime >= CircuitStepDuration) {
@@ -1222,6 +1219,7 @@ namespace Game {
             if (debugMode) {
                 StepUpdateSkip();
                 FrameStartCircuitStep = CircuitStep;
+                m_debugDrawPositions.Clear();
                 SimulatedGVElectricElements = 0;
                 UpdateGVElectricElements();
                 m_nextStepSimulateList = null;
@@ -1231,6 +1229,7 @@ namespace Game {
                     foreach (GVElectricElement key in value.Keys) {
                         if (m_GVElectricElements.ContainsKey(key)) {
                             SimulateGVElectricElement(key);
+                            AddElement2DebugDraw(key);
                         }
                     }
                     ReturnListToCache(value);
@@ -1238,9 +1237,8 @@ namespace Game {
                 while (last1000Updates.Count >= 1001) {
                     last1000Updates.Dequeue();
                 }
-                DateTime now = DateTime.Now;
-                lastUpdate = now;
-                last1000Updates.Enqueue(now);
+                lastUpdate = DateTime.Now;
+                last1000Updates.Clear();
             }
         }
 
@@ -1251,12 +1249,15 @@ namespace Game {
 
         public void StepUpdate() {
             if (debugMode) {
+                m_debugDrawPositions.Clear();
                 if (inStepping) {
                     StepUpdateRun();
                 }
                 else {
                     StepUpdateInitiate();
                 }
+                lastUpdate = DateTime.Now;
+                last1000Updates.Clear();
             }
         }
 
@@ -1285,6 +1286,7 @@ namespace Game {
             GVElectricElement nowElement = steppingElements[steppingIndex++];
             if (m_GVElectricElements.ContainsKey(nowElement)) {
                 SimulateGVElectricElement(nowElement);
+                AddElement2DebugDraw(nowElement);
             }
             if (steppingElements.Count <= steppingIndex) {
                 inStepping = false;
@@ -1293,7 +1295,20 @@ namespace Game {
 
         public void StepUpdateSkip() {
             while (inStepping) {
-                StepUpdate();
+                StepUpdateRun();
+            }
+        }
+
+        public void AddElement2DebugDraw(GVElectricElement element) {
+            GVCellFace cellFace = element.CellFaces[0];
+            int face = cellFace.Face;
+            Point3 point = cellFace.Point;
+            if (element is MountedGVElectricElement) {
+                Vector3 faceDirection = GVCellFace.FaceToVector3(face);
+                m_debugDrawPositions.Add(new Vector3(point.X - faceDirection.X * 0.48f + 0.5f, point.Y - faceDirection.Y * 0.48f + 0.5f, point.Z - faceDirection.Z * 0.48f + 0.5f));
+            }
+            else {
+                m_debugDrawPositions.Add(new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f));
             }
         }
 
@@ -1306,6 +1321,7 @@ namespace Game {
                 if (m_isCreativeMode) {
                     m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(true);
                 }
+                m_flatBatch = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.Additive);
                 string[] array = valuesDictionary.GetValue<string>("GigaVoltagesByCell").Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                 int num = 0;
                 while (true) {
@@ -1664,6 +1680,66 @@ namespace Game {
         public void SetSpeed(float speed) {
             SpeedFactor = speed;
             CircuitStepDuration = 0.01f / speed;
+        }
+
+        public void Draw(Camera camera, int drawOrder) {
+            if (m_debugDrawPositions.Count > 0) {
+                m_8NumberBatch ??= Project.FindSubsystem<SubsystemGV8NumberLedGlow>(true).batchCache;
+                int i = 0;
+                Vector3 right = -Vector3.Normalize(Vector3.Cross(camera.ViewDirection, camera.ViewUp));
+                foreach (Vector3 blockPosition in m_debugDrawPositions) {
+                    Vector3 origin = new(camera.ViewPosition.X, camera.ViewPosition.Y - 0.5f, camera.ViewPosition.Z);
+                    m_flatBatch.QueueLine(origin, blockPosition, Color.Cyan);
+                    Draw4DecNumber(
+                        ++i,
+                        origin + Vector3.Normalize(blockPosition - origin) * (0.6f + i * 0.05f),
+                        0.04f,
+                        right,
+                        Vector3.UnitY,
+                        Color.Cyan
+                    );
+                }
+                m_flatBatch.Flush(camera.ViewProjectionMatrix);
+                m_8NumberBatch.Flush(camera.ViewProjectionMatrix);
+            }
+        }
+
+        public int[] DrawOrders => m_drawOrders;
+
+        public void Draw4DecNumber(int number, Vector3 position, float numberWidth, Vector3 right, Vector3 up, Color color) {
+            number %= 10000;
+            int maxPlace = number switch {
+                >= 1000 => 4,
+                >= 100 => 3,
+                >= 10 => 2,
+                _ => 1
+            };
+            up *= numberWidth / 0.6f;
+            Vector3 p = position - up / 2f - right * numberWidth / 2f;
+            right *= maxPlace * numberWidth;
+            float startX = 4 * maxPlace - 4;
+            float pixelWidth = 4 * maxPlace - 1;
+            for (int i = 0; i < maxPlace; i++) {
+                int digit = number % 10;
+                number /= 10;
+                float px1 = (startX - i * 4) / pixelWidth;
+                float px2 = px1 + 3 / pixelWidth;
+                float tx1 = digit % 4 * 3f / 12f;
+                float tx2 = tx1 + 3f / 12f;
+                float ty1 = digit / 4 * 5f / 20f;
+                float ty2 = ty1 + 5f / 20f;
+                m_8NumberBatch.QueueQuad(
+                    p - right * px1,
+                    p - right * px2,
+                    p - (right * px2 + up),
+                    p - (right * px1 + up),
+                    new Vector2(tx1, ty1),
+                    new Vector2(tx2, ty1),
+                    new Vector2(tx2, ty2),
+                    new Vector2(tx1, ty2),
+                    color
+                );
+            }
         }
     }
 }
