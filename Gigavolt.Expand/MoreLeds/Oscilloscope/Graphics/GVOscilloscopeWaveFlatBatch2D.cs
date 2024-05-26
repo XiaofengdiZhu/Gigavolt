@@ -1,8 +1,9 @@
 extern alias OpenTKForWindows;
+extern alias OpenTKForAndroid;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using OpenTKForWindows::OpenTK.Graphics.ES30;
+using Game;
 
 namespace Engine.Graphics {
     public class GVOscilloscopeWaveFlatBatch2D : FlatBatch2D {
@@ -147,9 +148,14 @@ namespace Engine.Graphics {
                 GLWrapper.ApplyRasterizerState(Display.RasterizerState);
                 GLWrapper.ApplyDepthStencilState(Display.DepthStencilState);
                 GLWrapper.ApplyBlendState(Display.BlendState);
-#pragma warning disable CS0618 // 类型或成员已过时
-                GL.DrawElements(TranslateGVPrimitiveType(primitiveType), indicesCount, All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
-#pragma warning restore CS0618 // 类型或成员已过时
+                switch (VersionsManager.Platform) {
+                    case Platform.Desktop:
+                        WindowsGLDrawElements(primitiveType, indicesCount, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
+                        break;
+                    case Platform.Android:
+                        AndroidGLDrawElements(primitiveType, indicesCount, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
+                        break;
+                }
             }
             finally {
                 gCHandle.Free();
@@ -164,13 +170,31 @@ namespace Engine.Graphics {
             TriangleStrip,
             Points
         }
+#pragma warning disable CS0618 // 类型或成员已过时
+        public static void WindowsGLDrawElements(GVPrimitiveType primitiveType, int indicesCount, IntPtr indices) {
+            OpenTKForWindows::OpenTK.Graphics.ES30.GL.DrawElements(WindowsTranslateGVPrimitiveType(primitiveType), indicesCount, OpenTKForWindows::OpenTK.Graphics.ES30.DrawElementsType.UnsignedInt, indices);
+        }
 
-        public static All TranslateGVPrimitiveType(GVPrimitiveType type) => type switch {
-            GVPrimitiveType.LineList => All.Lines,
-            GVPrimitiveType.LineStrip => All.LineStrip,
-            GVPrimitiveType.TriangleList => All.Triangles,
-            GVPrimitiveType.TriangleStrip => All.TriangleStrip,
-            GVPrimitiveType.Points => All.Points,
+
+        public static OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType WindowsTranslateGVPrimitiveType(GVPrimitiveType type) => type switch {
+            GVPrimitiveType.LineList => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.Lines,
+            GVPrimitiveType.LineStrip => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.LineStrip,
+            GVPrimitiveType.TriangleList => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.Triangles,
+            GVPrimitiveType.TriangleStrip => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.TriangleStrip,
+            GVPrimitiveType.Points => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.Points,
+            _ => throw new InvalidOperationException("Unsupported primitive type.")
+        };
+#pragma warning restore CS0618 // 类型或成员已过时
+        public static void AndroidGLDrawElements(GVPrimitiveType primitiveType, int indicesCount, IntPtr indices) {
+            OpenTKForAndroid::OpenTK.Graphics.ES30.GL.DrawElements(AndroidTranslateGVPrimitiveType(primitiveType), indicesCount, OpenTKForAndroid::OpenTK.Graphics.ES30.DrawElementsType.UnsignedInt, indices);
+        }
+
+        public static OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode AndroidTranslateGVPrimitiveType(GVPrimitiveType type) => type switch {
+            GVPrimitiveType.LineList => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.Lines,
+            GVPrimitiveType.LineStrip => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.LineStrip,
+            GVPrimitiveType.TriangleList => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.Triangles,
+            GVPrimitiveType.TriangleStrip => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.TriangleStrip,
+            GVPrimitiveType.Points => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.Points,
             _ => throw new InvalidOperationException("Unsupported primitive type.")
         };
     }

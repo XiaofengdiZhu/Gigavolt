@@ -1,13 +1,14 @@
-﻿#ifdef GLSL
+﻿#version 300 es
+#ifdef GLSL
 
 // <Semantic Name='POSITION' Attribute='a_position' />
 // <Semantic Name='TEXCOORD' Attribute='a_texcoord' />
 
 uniform mat4 u_worldViewProjectionMatrix;
 
-attribute vec3 a_position;
-attribute vec2 a_texcoord;
-varying vec2 v_texcoord;
+in vec3 a_position;
+in vec2 a_texcoord;
+out vec2 v_texcoord;
 
 void main()
 {

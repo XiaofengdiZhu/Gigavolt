@@ -21,7 +21,7 @@ namespace Game {
                 try {
                     m_datas.Add(value3.GetValue<Point3>("Point"), new Data(value3.GetValue<int>("Step"), value3.GetValue<int>("NowAmplitude")));
                 }
-                catch (Exception e) {
+                catch (Exception) {
                     // ignored
                 }
             }

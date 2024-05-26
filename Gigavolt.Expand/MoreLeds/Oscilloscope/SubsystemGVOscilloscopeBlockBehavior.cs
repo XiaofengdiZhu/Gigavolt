@@ -16,28 +16,7 @@ namespace Game {
         public TexturedBatch2D m_autoButtonBatch;
         public TexturedBatch2D m_moonButtonBatch;
         public TexturedBatch2D m_sunButtonBatch;
-
-        public static readonly Dictionary<Rectangle, Action<GVOscilloscopeData>> m_interacts = new() {
-            { new Rectangle(76, 20, 88, 88), data => data.IncreaseMaxLevel() },
-            { new Rectangle(188, 20, 88, 88), data => data.DecreaseMaxLevel() },
-            { new Rectangle(76, 916, 88, 88), data => data.IncreaseMinLevel() },
-            { new Rectangle(188, 916, 88, 88), data => data.DecreaseMinLevel() },
-            { new Rectangle(412, 20, 88, 88), data => data.IncreaseDisplayCount() },
-            { new Rectangle(524, 20, 88, 88), data => data.DecreaseDisplayCount() }, {
-                new Rectangle(916, 20, 88, 88), data => {
-                    data.DisplayBloom = !data.DisplayBloom;
-                    if (!data.IsTextureObsolete()) {
-                        data.Texture.Dispose();
-                    }
-                }
-            }, {
-                new Rectangle(804, 20, 88, 88), data => {
-                    if (!data.AutoSetMinMaxLevelMode) {
-                        data.AutoSetMinMaxLevel(!data.IsTextureObsolete());
-                    }
-                }
-            }
-        };
+        public bool m_isInScreen;
 
         public static int[] m_drawOrders = [110];
 
@@ -93,7 +72,13 @@ namespace Game {
             );
             foreach (ValuesDictionary value3 in valuesDictionary.GetValue<ValuesDictionary>("Blocks").Values) {
                 try {
-                    m_datas.Add(value3.GetValue<Point3>("Point"), new GVOscilloscopeData(this));
+                    GVOscilloscopeData data = new(this);
+                    m_datas.Add(value3.GetValue<Point3>("Point"), data);
+                    data.DisplayBloom = value3.GetValue<bool>("DisplayBloom");
+                    data.DisplayCount = value3.GetValue<int>("DisplayCount");
+                    data.MaxLevel = value3.GetValue<uint>("MaxLevel");
+                    data.MinLevel = value3.GetValue<uint>("MinLevel");
+                    data.AutoSetMinMaxLevelMode = value3.GetValue<bool>("AutoSetMinMaxLevelMode");
                 }
                 catch (Exception) {
                     // ignored
@@ -112,6 +97,11 @@ namespace Game {
                 ValuesDictionary valuesDictionary3 = new();
                 valuesDictionary2.SetValue(num++.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                 valuesDictionary3.SetValue("Point", pair.Key);
+                valuesDictionary3.SetValue("DisplayBloom", pair.Value.DisplayBloom);
+                valuesDictionary3.SetValue("DisplayCount", pair.Value.DisplayCount);
+                valuesDictionary3.SetValue("MaxLevel", pair.Value.MaxLevel);
+                valuesDictionary3.SetValue("MinLevel", pair.Value.MinLevel);
+                valuesDictionary3.SetValue("AutoSetMinMaxLevelMode", pair.Value.AutoSetMinMaxLevelMode);
             }
         }
 
@@ -129,6 +119,9 @@ namespace Game {
         }
 
         public void Draw(Camera camera, int drawOrder) {
+            if (m_isInScreen) {
+                return;
+            }
             foreach (GVOscilloscopeData data in m_datas.Values) {
                 if (data.RecordsCount > 0) {
                     Vector3 vector = data.Position - camera.ViewPosition;
@@ -138,8 +131,8 @@ namespace Game {
                         if (num2 < m_subsystemSky.ViewFogRange.Y) {
                             int newLodLevel = vector.LengthSquared() switch {
                                 < 3f => 0, //全特效
-                                < 5.3f => 1, //降低虚线精度
-                                < 45f => 2, //关闭按钮显示、降低分辨率至512*512、进一步降低虚线精度
+                                < 5.3f => 1, //关闭按钮显示、降低虚线精度
+                                < 45f => 2, //降低分辨率至512*512、进一步降低虚线精度
                                 < 56f => 3, //关闭网格显示
                                 < 81f => 4, //关闭标签显示
                                 < 225f => 5, //降低分辨率至360*360，停止画点
@@ -175,6 +168,9 @@ namespace Game {
         }
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
+            if (raycastResult.Distance > 2.3f) {
+                return true;
+            }
             Point3 blockPoint = raycastResult.CellFace.Point;
             int face = raycastResult.CellFace.Face;
             if (GVOscilloscopeBlock.GetMountingFace(Terrain.ExtractData(raycastResult.Value)) == face
@@ -189,22 +185,20 @@ namespace Game {
                     5 => new Vector2(hitPosition.X - blockPoint.X, blockPoint.Z + 1 - hitPosition.Z),
                     _ => Vector2.Zero
                 };
-                interactPosition *= 1024f;
-                bool flag = true;
-                foreach (KeyValuePair<Rectangle, Action<GVOscilloscopeData>> pair in m_interacts) {
-                    Rectangle rectangle = pair.Key;
-                    if (interactPosition.X >= rectangle.Left
-                        && interactPosition.X < rectangle.Left + rectangle.Width
-                        && interactPosition.Y >= rectangle.Top
-                        && interactPosition.Y < rectangle.Top + rectangle.Height) {
-                        pair.Value(data);
-                        flag = false;
-                        break;
-                    }
+                data.Interact(interactPosition * 1024, 1024f, 1024f);
+                return true;
+            }
+            return false;
+        }
+
+        public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
+            Point3 blockPoint = new(x, y, z);
+            if (m_datas.TryGetValue(blockPoint, out GVOscilloscopeData data)) {
+                if (!ScreensManager.m_screens.ContainsKey("GVOscilloscopeScreen")) {
+                    ScreensManager.AddScreen("GVOscilloscopeScreen", new GVOscilloscopeScreen());
                 }
-                if (flag) {
-                    data.DisplayButtons = !data.DisplayButtons;
-                }
+                ScreensManager.SwitchScreen("GVOscilloscopeScreen", blockPoint, data, this);
+                m_isInScreen = true;
                 return true;
             }
             return false;

@@ -92,6 +92,7 @@
 		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurTexturedBatch2D.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeWaveShader.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopePrimitivesRenderer2D.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeScreen.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeData.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeBlock.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\OscilloscopeGVElectricElement.cs"/>
@@ -429,6 +430,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVOscilloscopeSunButton.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\SCREENS\GVOscilloscopeScreen.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

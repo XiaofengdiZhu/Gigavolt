@@ -4,10 +4,6 @@ using System;
 using System.Runtime.InteropServices;
 using Engine;
 using Engine.Graphics;
-using OpenTKForWindows::OpenTK.Graphics.ES30;
-using GL = OpenTKForAndroid::OpenTK.Graphics.ES30.GL;
-using PixelFormat = OpenTKForAndroid::OpenTK.Graphics.ES30.PixelFormat;
-using PixelType = OpenTKForAndroid::OpenTK.Graphics.ES30.PixelType;
 
 namespace Game {
     public class PlayerMonitorGVElectricElement : RotateableGVElectricElement {
@@ -217,13 +213,13 @@ namespace Game {
         }
 
         public void AndroidGLReadPixels(int width, int height, nint pixels) {
-            GL.ReadPixels(
+            OpenTKForAndroid::OpenTK.Graphics.ES30.GL.ReadPixels(
                 0,
                 0,
                 width,
                 height,
-                PixelFormat.Rgba,
-                PixelType.UnsignedByte,
+                OpenTKForAndroid::OpenTK.Graphics.ES30.PixelFormat.Rgba,
+                OpenTKForAndroid::OpenTK.Graphics.ES30.PixelType.UnsignedByte,
                 pixels
             );
         }

@@ -1,9 +1,9 @@
 ﻿extern alias OpenTKForWindows;
+extern alias OpenTKForAndroid;
 using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
-using OpenTKForWindows::OpenTK.Graphics.ES30;
 using Color = Engine.Color;
 
 namespace Game {
@@ -68,227 +68,236 @@ namespace Game {
                     return null;
                 }
                 if (IsTextureObsolete()) {
-                    RenderTarget2D originRenderTarget = Display.RenderTarget;
-                    try {
-                        switch (LodLevel) {
-                            case < 2:
-                                DisplayWidth = 1024;
-                                DisplayHeight = 1024;
-                                break;
-                            case < 5:
-                                DisplayWidth = 512;
-                                DisplayHeight = 512;
-                                break;
-                            case < 6:
-                                DisplayWidth = 320;
-                                DisplayHeight = 320;
-                                break;
-                            default:
-                                DisplayWidth = 160;
-                                DisplayHeight = 160;
-                                break;
-                        }
-                        m_texture?.Dispose();
-                        RenderTarget2D waveRenderTarget = new(
-                            DisplayWidth,
-                            DisplayHeight,
-                            DisplayBloom && LodLevel < 6 ? 6 : 1,
-                            ColorFormat.Rgba8888,
-                            DepthFormat.None
-                        );
-                        Display.RenderTarget = waveRenderTarget;
-                        Display.Clear(Color.Black);
-                        TrueDisplayCount = 0;
-                        if (Records.Count > DisplayCount) {
-                            TrueDisplayCount = DisplayCount;
-                        }
-                        else {
-                            foreach (int num in displayCountArray) {
-                                if (num > Records.Count) {
-                                    TrueDisplayCount = num;
-                                    break;
-                                }
-                            }
-                        }
-                        if (AutoSetMinMaxLevelMode) {
-                            AutoSetMinMaxLevel();
-                        }
-                        CalculateDashedLineArguments();
-                        m_waveBatch.PrepareBackground(
-                            DashedLineLeftOffset,
-                            DashedLineUpOffset,
-                            DashedLineHorizontalSpacing,
-                            DashedLineVerticalSpacing,
-                            DashedLineDashLength,
-                            DashedLineDashAndGapLength
-                        );
-                        if (LodLevel < 3) {
-                            m_waveBatch.QueueQuad(new Vector2(0, 0), new Vector2(DisplayWidth, DisplayHeight), 0, Color.Transparent);
-                            m_waveBatch.FlushBackground();
-                        }
-#pragma warning disable CS0618 // 类型或成员已过时
-                        GL.Enable((All)34370);
-#pragma warning restore CS0618 // 类型或成员已过时
-                        float levelRange = MaxLevel - MinLevel;
-                        float displayWidthMax = DisplayWidth - 1;
-                        float displayHeightMax = DisplayHeight - 1;
-                        for (int i = 3; i >= 0; i--) {
-                            if (!ConnectionState[i]) {
-                                continue;
-                            }
-                            Vector2[] drawPoints = new Vector2[TrueDisplayCount > Records.Count ? Records.Count + 2 : TrueDisplayCount];
-                            for (int j = 0; j < TrueDisplayCount; j++) {
-                                if (j >= Records.Count) {
-                                    drawPoints[j] = new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, displayHeightMax);
-                                    drawPoints[j + 1] = new Vector2(0f, displayHeightMax);
-                                    break;
-                                }
-                                uint record = Records[Records.Count - j - 1][i];
-                                drawPoints[j] = new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, (1f - (record - MinLevel) / levelRange) * displayHeightMax);
-                            }
-                            Color color = m_waveColor[i];
-                            m_waveBatch.QueueLineStrip(drawPoints, 0, color);
-                            if (LodLevel < 5) {
-                                m_waveBatch.QueuePoints(drawPoints, 0, color);
-                            }
-                            m_waveBatch.FlushWave();
-                        }
-                        if (DisplayBloom && LodLevel < 6) {
-                            waveRenderTarget.GenerateMipMaps();
-                            RenderTarget2D blurRenderTarget = new(
-                                DisplayWidth,
-                                DisplayHeight,
-                                1,
-                                ColorFormat.Rgba8888,
-                                DepthFormat.None
-                            );
-                            Display.RenderTarget = blurRenderTarget;
-                            Display.Clear(Color.Black);
-                            GVOscilloscopeBlurTexturedBatch2D blurBatch = m_primitivesRenderer2D.TexturedBatch(
-                                waveRenderTarget,
-                                false,
-                                0,
-                                DepthStencilState.None,
-                                null,
-                                BlendState.AlphaBlend
-                            );
-                            blurBatch.QueueQuad(
-                                Vector2.Zero,
-                                new Vector2(DisplayWidth, DisplayHeight),
-                                0,
-                                Vector2.Zero,
-                                Vector2.One,
-                                Color.White
-                            );
-                            blurBatch.FlushBlur();
-                        }
-                        if (LodLevel < 4) {
-                            uint dy = (MaxLevel - MinLevel) / 8u;
-                            for (uint i = 0u; i < 8u; i++) {
-                                Draw8HexNumber(MinLevel + dy * i, new Vector2(8f, DisplayHeight - 41 - i * DashedLineVerticalSpacing), new Vector2(45f, 33f), Color.LightGray);
-                            }
-                            if (LodLevel < 2) {
-                                Draw8HexNumber(MaxLevel, new Vector2(8f, 8), new Vector2(45f, 33f), Color.LightGray);
-                            }
-                            int recordLabelsCount = DisplayWidth / (float)DisplayHeight > 1.5f ? 16 : 8;
-                            for (int i = 0; i < recordLabelsCount - (DisplayButtons && LodLevel < 2 ? 2 : 1); i++) {
-                                Draw4DecNumber(i * TrueDisplayCount / recordLabelsCount, new Vector2(DisplayWidth - 53 - i * DashedLineHorizontalSpacing, DisplayHeight - 23), new Vector2(45, 15), Color.LightGray);
-                            }
-                            m_numberBatch.Flush();
-                        }
-                        if (DisplayButtons && LodLevel < 2) {
-                            m_arrowButtonBatch.QueueQuad(
-                                new Vector2(76f, 20f),
-                                new Vector2(164f, 108f),
-                                0,
-                                Vector2.Zero,
-                                Vector2.One,
-                                MaxLevel == uint.MaxValue ? Color.DarkGray : Color.LightGray
-                            );
-                            m_arrowButtonBatch.QueueQuad(
-                                new Vector2(188f, 20f),
-                                new Vector2(276f, 108f),
-                                0,
-                                Vector2.One,
-                                Vector2.Zero,
-                                MaxLevel <= 64u || MinLevel >= uint.MaxValue - 64u ? Color.DarkGray : Color.LightGray
-                            );
-                            m_arrowButtonBatch.QueueQuad(
-                                new Vector2(76f, 916f),
-                                new Vector2(164f, 1004f),
-                                0,
-                                Vector2.Zero,
-                                Vector2.One,
-                                MinLevel >= uint.MaxValue - 64u || MaxLevel <= 64u ? Color.DarkGray : Color.LightGray
-                            );
-                            m_arrowButtonBatch.QueueQuad(
-                                new Vector2(188f, 916f),
-                                new Vector2(276f, 1004f),
-                                0,
-                                Vector2.One,
-                                Vector2.Zero,
-                                MinLevel == 0u ? Color.DarkGray : Color.LightGray
-                            );
-                            m_arrowButtonBatch.QueueQuad(
-                                new Vector2(412f, 108f),
-                                new Vector2(412f, 20f),
-                                new Vector2(500f, 20f),
-                                new Vector2(500f, 108f),
-                                0,
-                                Vector2.Zero,
-                                Vector2.UnitX,
-                                Vector2.One,
-                                Vector2.UnitY,
-                                Array.IndexOf(displayCountArray, DisplayCount) == displayCountArray.Length - 1 ? Color.DarkGray : Color.LightGray
-                            );
-                            m_arrowButtonBatch.QueueQuad(
-                                new Vector2(612f, 20f),
-                                new Vector2(612f, 108f),
-                                new Vector2(524f, 108f),
-                                new Vector2(524f, 20f),
-                                0,
-                                Vector2.Zero,
-                                Vector2.UnitX,
-                                Vector2.One,
-                                Vector2.UnitY,
-                                Array.IndexOf(displayCountArray, DisplayCount) == 0 ? Color.DarkGray : Color.LightGray
-                            );
-                            (DisplayBloom ? m_sunButtonBatch : m_moonButtonBatch).QueueQuad(
-                                new Vector2(916f, 20f),
-                                new Vector2(1004f, 108f),
-                                0,
-                                Vector2.Zero,
-                                Vector2.One,
-                                Color.LightGray
-                            );
-                            if (!AutoSetMinMaxLevelMode) {
-                                m_autoButtonBatch.QueueQuad(
-                                    new Vector2(804f, 20f),
-                                    new Vector2(892f, 108f),
-                                    0,
-                                    Vector2.Zero,
-                                    Vector2.One,
-                                    Color.LightGray
-                                );
-                            }
-                            m_primitivesRenderer2D.Flush();
-                        }
-                        m_texture = Display.RenderTarget;
-                        if (DisplayBloom && LodLevel < 6) {
-                            waveRenderTarget.Dispose();
-                        }
-                        RecordsCountAtLastGenerateTexture = Records.Count;
-                        return m_texture;
+                    switch (LodLevel) {
+                        case < 2:
+                            DisplayWidth = 1024;
+                            DisplayHeight = 1024;
+                            break;
+                        case < 5:
+                            DisplayWidth = 512;
+                            DisplayHeight = 512;
+                            break;
+                        case < 6:
+                            DisplayWidth = 320;
+                            DisplayHeight = 320;
+                            break;
+                        default:
+                            DisplayWidth = 160;
+                            DisplayHeight = 160;
+                            break;
                     }
-                    catch (Exception e) {
-                        Log.Error(e);
-                        return null;
-                    }
-                    finally {
-                        Display.RenderTarget = originRenderTarget;
-                    }
+                    m_texture?.Dispose();
+                    m_texture = GenerateTexture(LodLevel, DisplayWidth, DisplayHeight);
+                    RecordsCountAtLastGenerateTexture = Records.Count;
                 }
                 return m_texture;
+            }
+        }
+
+        public RenderTarget2D GenerateTexture(int lodLevel, int displayWidth, int displayHeight) {
+            RenderTarget2D originRenderTarget = Display.RenderTarget;
+            try {
+                RenderTarget2D waveRenderTarget = new(
+                    displayWidth,
+                    displayHeight,
+                    DisplayBloom && lodLevel < 6 ? 6 : 1,
+                    ColorFormat.Rgba8888,
+                    DepthFormat.None
+                );
+                Display.RenderTarget = waveRenderTarget;
+                Display.Clear(Color.Black);
+                TrueDisplayCount = 0;
+                if (Records.Count > DisplayCount) {
+                    TrueDisplayCount = DisplayCount;
+                }
+                else {
+                    foreach (int num in displayCountArray) {
+                        if (num > Records.Count) {
+                            TrueDisplayCount = num;
+                            break;
+                        }
+                    }
+                }
+                if (AutoSetMinMaxLevelMode) {
+                    AutoSetMinMaxLevel();
+                }
+                CalculateDashedLineArguments(lodLevel, displayWidth, displayHeight);
+                m_waveBatch.PrepareBackground(
+                    DashedLineLeftOffset,
+                    DashedLineUpOffset,
+                    DashedLineHorizontalSpacing,
+                    DashedLineVerticalSpacing,
+                    DashedLineDashLength,
+                    DashedLineDashAndGapLength
+                );
+                if (lodLevel < 3) {
+                    m_waveBatch.QueueQuad(new Vector2(0, 0), new Vector2(displayWidth, displayHeight), 0, Color.Transparent);
+                    m_waveBatch.FlushBackground();
+                }
+                switch (VersionsManager.Platform) {
+                    case Platform.Desktop:
+                        WindowsEnableGLPointSize();
+                        break;
+                    case Platform.Android:
+                        AndroidEnableGLPointSize();
+                        break;
+                }
+                float levelRange = MaxLevel - MinLevel;
+                float displayWidthMax = displayWidth - 1;
+                float displayHeightMax = displayHeight - 1;
+                for (int i = 3; i >= 0; i--) {
+                    if (!ConnectionState[i]) {
+                        continue;
+                    }
+                    Vector2[] drawPoints = new Vector2[TrueDisplayCount > Records.Count ? Records.Count + 2 : TrueDisplayCount];
+                    for (int j = 0; j < TrueDisplayCount; j++) {
+                        if (j >= Records.Count) {
+                            drawPoints[j] = new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, displayHeightMax);
+                            drawPoints[j + 1] = new Vector2(0f, displayHeightMax);
+                            break;
+                        }
+                        uint record = Records[Records.Count - j - 1][i];
+                        drawPoints[j] = new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, (1f - (record - MinLevel) / levelRange) * displayHeightMax);
+                    }
+                    Color color = m_waveColor[i];
+                    m_waveBatch.QueueLineStrip(drawPoints, 0, color);
+                    if (lodLevel < 5) {
+                        m_waveBatch.QueuePoints(drawPoints, 0, color);
+                    }
+                    m_waveBatch.FlushWave();
+                }
+                if (DisplayBloom && lodLevel < 6) {
+                    waveRenderTarget.GenerateMipMaps();
+                    RenderTarget2D blurRenderTarget = new(
+                        displayWidth,
+                        displayHeight,
+                        1,
+                        ColorFormat.Rgba8888,
+                        DepthFormat.None
+                    );
+                    Display.RenderTarget = blurRenderTarget;
+                    Display.Clear(Color.Black);
+                    GVOscilloscopeBlurTexturedBatch2D blurBatch = m_primitivesRenderer2D.TexturedBatch(
+                        waveRenderTarget,
+                        false,
+                        0,
+                        DepthStencilState.None,
+                        null,
+                        BlendState.AlphaBlend
+                    );
+                    blurBatch.QueueQuad(
+                        Vector2.Zero,
+                        new Vector2(displayWidth, displayHeight),
+                        0,
+                        Vector2.Zero,
+                        Vector2.One,
+                        Color.White
+                    );
+                    blurBatch.FlushBlur();
+                }
+                if (lodLevel < 4) {
+                    uint dy = (MaxLevel - MinLevel) / 8u;
+                    for (uint i = 0u; i < 8u; i++) {
+                        Draw8HexNumber(MinLevel + dy * i, new Vector2(8f, displayHeight - 41 - i * DashedLineVerticalSpacing), new Vector2(45f, 33f), Color.LightGray);
+                    }
+                    if (lodLevel < 2) {
+                        Draw8HexNumber(MaxLevel, new Vector2(8f, 8), new Vector2(45f, 33f), Color.LightGray);
+                    }
+                    int recordLabelsCount = displayWidth / (float)displayHeight > 1.5f ? 16 : 8;
+                    for (int i = 0; i < recordLabelsCount - (DisplayButtons && lodLevel < 2 ? 2 : 1); i++) {
+                        Draw4DecNumber(i * TrueDisplayCount / recordLabelsCount, new Vector2(displayWidth - 53 - i * DashedLineHorizontalSpacing, displayHeight - 23), new Vector2(45, 15), Color.LightGray);
+                    }
+                    m_numberBatch.Flush();
+                }
+                if (DisplayButtons && lodLevel < 2) {
+                    m_arrowButtonBatch.QueueQuad(
+                        new Vector2(76f, 20f),
+                        new Vector2(164f, 108f),
+                        0,
+                        Vector2.Zero,
+                        Vector2.One,
+                        MaxLevel == uint.MaxValue ? Color.DarkGray : Color.LightGray
+                    );
+                    m_arrowButtonBatch.QueueQuad(
+                        new Vector2(188f, 20f),
+                        new Vector2(276f, 108f),
+                        0,
+                        Vector2.One,
+                        Vector2.Zero,
+                        MaxLevel <= 64u || MinLevel >= uint.MaxValue - 64u ? Color.DarkGray : Color.LightGray
+                    );
+                    m_arrowButtonBatch.QueueQuad(
+                        new Vector2(76f, displayHeight - 108f),
+                        new Vector2(164f, displayHeight - 20f),
+                        0,
+                        Vector2.Zero,
+                        Vector2.One,
+                        MinLevel >= uint.MaxValue - 64u || MaxLevel <= 64u ? Color.DarkGray : Color.LightGray
+                    );
+                    m_arrowButtonBatch.QueueQuad(
+                        new Vector2(188f, displayHeight - 108f),
+                        new Vector2(276f, displayHeight - 20f),
+                        0,
+                        Vector2.One,
+                        Vector2.Zero,
+                        MinLevel == 0u ? Color.DarkGray : Color.LightGray
+                    );
+                    m_arrowButtonBatch.QueueQuad(
+                        new Vector2(displayWidth / 2 - 100f, 108f),
+                        new Vector2(displayWidth / 2 - 100f, 20f),
+                        new Vector2(displayWidth / 2 - 12f, 20f),
+                        new Vector2(displayWidth / 2 - 12f, 108f),
+                        0,
+                        Vector2.Zero,
+                        Vector2.UnitX,
+                        Vector2.One,
+                        Vector2.UnitY,
+                        Array.IndexOf(displayCountArray, DisplayCount) == displayCountArray.Length - 1 ? Color.DarkGray : Color.LightGray
+                    );
+                    m_arrowButtonBatch.QueueQuad(
+                        new Vector2(displayWidth / 2 + 100f, 20f),
+                        new Vector2(displayWidth / 2 + 100f, 108f),
+                        new Vector2(displayWidth / 2 + 12f, 108f),
+                        new Vector2(displayWidth / 2 + 12f, 20f),
+                        0,
+                        Vector2.Zero,
+                        Vector2.UnitX,
+                        Vector2.One,
+                        Vector2.UnitY,
+                        Array.IndexOf(displayCountArray, DisplayCount) == 0 ? Color.DarkGray : Color.LightGray
+                    );
+                    (DisplayBloom ? m_sunButtonBatch : m_moonButtonBatch).QueueQuad(
+                        new Vector2(displayWidth - 108f, 20f),
+                        new Vector2(displayWidth - 20f, 108f),
+                        0,
+                        Vector2.Zero,
+                        Vector2.One,
+                        Color.LightGray
+                    );
+                    if (!AutoSetMinMaxLevelMode) {
+                        m_autoButtonBatch.QueueQuad(
+                            new Vector2(displayWidth - 220f, 20f),
+                            new Vector2(displayWidth - 132f, 108f),
+                            0,
+                            Vector2.Zero,
+                            Vector2.One,
+                            Color.LightGray
+                        );
+                    }
+                    m_primitivesRenderer2D.Flush();
+                }
+                //var result = Display.RenderTarget;
+                if (DisplayBloom && lodLevel < 6) {
+                    waveRenderTarget.Dispose();
+                }
+                return Display.RenderTarget;
+            }
+            catch (Exception e) {
+                Log.Error(e);
+                return null;
+            }
+            finally {
+                Display.RenderTarget = originRenderTarget;
             }
         }
 
@@ -314,6 +323,8 @@ namespace Game {
                 return m_texturedBatch3D;
             }
         }
+
+        public uint[] LastRecord => Records[Records.Count - 1];
 
         public void AddRecord(uint[] record) {
             Records.Add(record);
@@ -482,16 +493,16 @@ namespace Game {
 
         public static uint GetNearest16Multiples(uint value) => (value + 15u) & 0xFFFFFFF0u;
 
-        public void CalculateDashedLineArguments() {
-            DashedLineVerticalSpacing = DisplayHeight / 8f;
-            DashedLineHorizontalSpacing = DisplayWidth / (DisplayWidth / (float)DisplayHeight > 1.5f ? 16f : 8f);
+        public void CalculateDashedLineArguments(int lodLevel, int displayWidth, int displayHeight) {
+            DashedLineVerticalSpacing = displayHeight / 8f;
+            DashedLineHorizontalSpacing = displayWidth / (displayWidth / (float)displayHeight > 1.5f ? 16f : 8f);
             DashedLineLeftOffset = 0f;
             DashedLineUpOffset = 0f;
-            if (LodLevel < 1) {
+            if (lodLevel < 1) {
                 DashedLineDashLength = DashedLineVerticalSpacing / 16f;
                 DashedLineDashAndGapLength = DashedLineDashLength * 3f;
             }
-            else if (LodLevel < 2) {
+            else if (lodLevel < 2) {
                 DashedLineDashLength = DashedLineVerticalSpacing / 8f;
                 DashedLineDashAndGapLength = DashedLineDashLength * 2f;
             }
@@ -555,5 +566,64 @@ namespace Game {
                 );
             }
         }
+
+        public void Interact(Vector2 position, float displayWidth, float displayHeight) {
+            if (position.X is >= 76f and <= 164f
+                && position.Y is >= 20f and <= 108f) {
+                IncreaseMaxLevel();
+            }
+            else if (position.X is >= 188f and <= 276f
+                && position.Y is >= 20f and <= 108f) {
+                DecreaseMaxLevel();
+            }
+            else if (position.X is >= 76f and <= 164f
+                && position.Y >= displayWidth - 108f
+                && position.Y <= displayWidth - 20f) {
+                IncreaseMinLevel();
+            }
+            else if (position.X is >= 188f and <= 276f
+                && position.Y >= displayWidth - 108f
+                && position.Y <= displayWidth - 20f) {
+                DecreaseMinLevel();
+            }
+            else if (position.X >= displayWidth / 2f - 100f
+                && position.X <= displayWidth / 2f - 12f
+                && position.Y is >= 20f and <= 108f) {
+                IncreaseDisplayCount();
+            }
+            else if (position.X >= displayWidth / 2f + 12f
+                && position.X <= displayWidth / 2f + 100f
+                && position.Y is >= 20f and <= 108f) {
+                DecreaseDisplayCount();
+            }
+            else if (position.X >= displayWidth - 108f
+                && position.X <= displayWidth - 20f
+                && position.Y is >= 20f and <= 108f) {
+                DisplayBloom = !DisplayBloom;
+                if (!IsTextureObsolete()) {
+                    Texture.Dispose();
+                }
+            }
+            else if (position.X >= displayWidth - 220f
+                && position.X <= displayWidth - 132f
+                && position.Y is >= 20f and <= 108f) {
+                if (!AutoSetMinMaxLevelMode) {
+                    AutoSetMinMaxLevel(!IsTextureObsolete());
+                }
+            }
+            else {
+                DisplayButtons = !DisplayButtons;
+            }
+        }
+
+#pragma warning disable CS0618 // 类型或成员已过时
+        public static void WindowsEnableGLPointSize() {
+            OpenTKForWindows::OpenTK.Graphics.ES30.GL.Enable((OpenTKForWindows::OpenTK.Graphics.ES30.All)34370);
+        }
+
+        public static void AndroidEnableGLPointSize() {
+            OpenTKForAndroid::OpenTK.Graphics.ES30.GL.Enable((OpenTKForAndroid::OpenTK.Graphics.ES30.All)34370);
+        }
+#pragma warning restore CS0618 // 类型或成员已过时
     }
 }
