@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using Engine;
+using Engine.Input;
 
 namespace Game {
     public class GVStepFloatingButtons : CanvasWidget {
@@ -23,6 +24,9 @@ namespace Game {
         }
 
         public override void Update() {
+            m_stopButton.IsChecked = false;
+            m_stepButton.IsChecked = false;
+            m_jumpButton.IsChecked = false;
             if (m_stopButton.IsClicked) {
                 m_subsystem.debugMode = !m_subsystem.debugMode;
                 if (m_subsystem.debugMode) {
@@ -50,6 +54,19 @@ namespace Game {
                 }
                 catch (Exception ex) {
                     Log.Error(ex);
+                }
+            }
+            if (m_subsystem.keyboardDebug) {
+                if (Keyboard.IsKeyDownOnce(Key.F5)) {
+                    m_stopButton.IsChecked = true;
+                }
+                if (m_subsystem.debugMode) {
+                    if (Keyboard.IsKeyDownOnce(Key.F6)) {
+                        m_stepButton.IsChecked = true;
+                    }
+                    else if (Keyboard.IsKeyDownOnce(Key.F7)) {
+                        m_jumpButton.IsChecked = true;
+                    }
                 }
             }
             m_count.Text = (m_subsystem.last1000Updates.Count - 1).ToString();

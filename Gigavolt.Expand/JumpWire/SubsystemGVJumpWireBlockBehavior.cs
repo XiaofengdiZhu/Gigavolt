@@ -8,7 +8,7 @@ namespace Game {
         public PrimitivesRenderer3D m_primitivesRenderer = new();
         public FlatBatch3D m_flatBatch;
         public Dictionary<uint, List<JumpWireGVElectricElement>> m_tagsDictionary = new();
-        public static int[] m_drawOrders = { 113 };
+        public static int[] m_drawOrders = [113];
         public override int[] HandledBlocks => new[] { GVJumpWireBlock.Index };
 
         public override void Load(ValuesDictionary valuesDictionary) {

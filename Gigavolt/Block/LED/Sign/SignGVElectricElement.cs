@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Engine;
 
@@ -85,21 +84,24 @@ namespace Game {
                     string str;
                     try {
                         byte[] byteArray = data.GetBytes(0, 64);
-                        List<byte> byteList = new List<byte>(64);
-                        for (int i = 0; i < byteArray.Length; i++) {
-                            byte b = byteArray[i];
-                            if (b == 0) {
+                        int newLength = byteArray.Length;
+                        for (int i = byteArray.Length - 1; i >= 0; i--) {
+                            if (byteArray[i] == 0) {
+                                newLength--;
+                            }
+                            else {
                                 break;
                             }
-                            byteList.Add(b);
                         }
-                        str = new UTF8Encoding(true, true).GetString(byteList.ToArray());
+                        byte[] trimmedArray = new byte[newLength];
+                        Array.Copy(byteArray, trimmedArray, newLength);
+                        str = Encoding.UTF8.GetString(trimmedArray);
                         m_glowPoint.Line = str;
                         m_glowPoint.TextureLocation = null;
                         m_subsystemGVSignBlockBehavior.m_lastUpdatePositions.Clear();
                     }
                     catch (Exception e) {
-                        str = "错误！详见日志";
+                        m_glowPoint.Line = "错误！详见日志";
                         Log.Error(e);
                     }
                 }

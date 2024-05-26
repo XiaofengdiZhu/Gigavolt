@@ -2,6 +2,7 @@ using System;
 using System.Xml.Linq;
 using Engine;
 using Engine.Graphics;
+using Engine.Input;
 
 namespace Game {
     public class GVOscilloscopeScreen : Screen {
@@ -62,6 +63,9 @@ namespace Game {
         }
 
         public override void Update() {
+            m_stopButton.IsChecked = false;
+            m_stepButton.IsChecked = false;
+            m_jumpButton.IsChecked = false;
             uint[] lastRecord = m_data.LastRecord;
             m_topInputLabel.Text = string.Format(LanguageControl.GetContentWidgets("GVOscilloscopeScreen", "2"), lastRecord[0].ToString("X8"));
             m_rightInputLabel.Text = string.Format(LanguageControl.GetContentWidgets("GVOscilloscopeScreen", "3"), lastRecord[1].ToString("X8"));
@@ -79,14 +83,17 @@ namespace Game {
                     }
                 }
             }
-            if (m_stopButton.IsClicked) {
+            if (m_stopButton.IsClicked
+                || Keyboard.IsKeyDownOnce(Key.F5)) {
+                m_stopButton.IsChecked = true;
                 m_electricity.debugMode = !m_electricity.debugMode;
                 if (m_electricity.debugMode) {
-                    m_electricity.lastUpdate = new DateTime();
                     m_electricity.last1000Updates.Clear();
                 }
             }
-            if (m_stepButton.IsClicked) {
+            if (m_stepButton.IsClicked
+                || Keyboard.IsKeyDownOnce(Key.F6)) {
+                m_stepButton.IsChecked = true;
                 if (!m_electricity.debugMode) {
                     m_electricity.debugMode = true;
                 }
@@ -97,7 +104,9 @@ namespace Game {
                     Log.Error(ex);
                 }
             }
-            if (m_jumpButton.IsClicked) {
+            if (m_jumpButton.IsClicked
+                || Keyboard.IsKeyDownOnce(Key.F7)) {
+                m_jumpButton.IsChecked = true;
                 if (!m_electricity.debugMode) {
                     m_electricity.debugMode = true;
                 }
