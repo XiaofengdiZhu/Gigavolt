@@ -207,7 +207,10 @@ namespace Game {
                                     Vector3 forward = CellFace.FaceToVector3(cellFace.Face);
                                     Vector3 up = cellFace.Face < 4 ? Vector3.UnitY : Vector3.UnitX;
                                     Vector3 right = Vector3.Cross(forward, up);
-                                    Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) + 0.55f * forward - (i % 4 * 2 - 3) / 8f * right - (i / 4 * 2 - 3) / 8f * up;
+                                    Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) - (i % 4 * 2 - 3) / 8f * right - (i / 4 * 2 - 3) / 8f * up;
+                                    if (wireBlock.IsWireThrough()) {
+                                        position += forward * 0.55f;
+                                    }
                                     const float size = 0.1f;
                                     SubsystemGV8NumberLedGlow.Draw8Number(
                                         m_8NumberBatch,
@@ -241,7 +244,10 @@ namespace Game {
                         }
                         if (element != null) {
                             Vector3 forward = CellFace.FaceToVector3(cellFace.Face);
-                            Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) + 0.55f * forward;
+                            Vector3 position = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
+                            if (wireBlock.IsWireThrough()) {
+                                position += forward * 0.55f;
+                            }
                             Vector3 up = cellFace.Face < 4 ? Vector3.UnitY : Vector3.UnitX;
                             Vector3 right = Vector3.Cross(forward, up);
                             const float size = 0.1f;

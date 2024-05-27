@@ -194,6 +194,18 @@ namespace Game {
             return "GV Electrics Regular";
         }
 
+        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
+            int? color = GetColor(Terrain.ExtractData(value));
+            return new BlockDebrisParticleSystem(
+                subsystemTerrain,
+                position,
+                strength,
+                DestructionDebrisScale,
+                color.HasValue ? SubsystemPalette.GetColor(subsystemTerrain, color) : 1.25f * WireColor,
+                GetFaceTextureSlot(4, value)
+            );
+        }
+
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
         public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) => Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
@@ -227,5 +239,6 @@ namespace Game {
         }
 
         public bool IsWireHarness(int value) => false;
+        public bool IsWireThrough() => false;
     }
 }

@@ -81,5 +81,6 @@ namespace Game {
         }
 
         public bool IsWireHarness(int value) => false;
+        public bool IsWireThrough() => true;
     }
 }

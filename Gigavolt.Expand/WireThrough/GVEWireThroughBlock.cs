@@ -170,5 +170,6 @@ namespace Game {
         public static bool GetIsWireHarness(int data) => ((data >> 14) & 1) == 1;
         public static int SetIsWireHarness(int data, bool isWireHarness) => (data & -16385) | ((isWireHarness ? 1 : 0) << 14);
         public bool IsWireHarness(int value) => GetIsWireHarness(Terrain.ExtractData(value));
+        public bool IsWireThrough() => true;
     }
 }
