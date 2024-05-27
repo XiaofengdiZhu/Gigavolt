@@ -28,14 +28,12 @@ namespace Game {
         public int RecordsCountAtLastGenerateFlatBatch3D;
         public int RecordsCountAtAutoSetMinMaxLevel;
 
-        public float DashedLineLeftOffset;
-        public float DashedLineUpOffset;
         public float DashedLineHorizontalSpacing;
         public float DashedLineVerticalSpacing;
         public float DashedLineDashLength;
         public float DashedLineDashAndGapLength;
 
-        readonly List<uint[]> Records = new(4100);
+        readonly List<uint[]> Records = new(5100);
         readonly PrimitivesRenderer3D m_primitivesRenderer3D;
         readonly GVOscilloscopePrimitivesRenderer2D m_primitivesRenderer2D;
         readonly TexturedBatch2D m_numberBatch;
@@ -47,7 +45,7 @@ namespace Game {
         RenderTarget2D m_texture;
         TexturedBatch3D m_texturedBatch3D;
 
-        static readonly Color[] m_waveColor = [Color.Green, Color.Cyan, Color.Red, Color.Yellow];
+        public static readonly Color[] WaveColor = [Color.Green, Color.Cyan, Color.Red, Color.Yellow];
 
         public GVOscilloscopeData(SubsystemGVOscilloscopeBlockBehavior subsystem) {
             m_primitivesRenderer3D = subsystem.m_primitivesRenderer3D;
@@ -122,14 +120,7 @@ namespace Game {
                     AutoSetMinMaxLevel();
                 }
                 CalculateDashedLineArguments(lodLevel, displayWidth, displayHeight);
-                m_waveBatch.PrepareBackground(
-                    DashedLineLeftOffset,
-                    DashedLineUpOffset,
-                    DashedLineHorizontalSpacing,
-                    DashedLineVerticalSpacing,
-                    DashedLineDashLength,
-                    DashedLineDashAndGapLength
-                );
+                m_waveBatch.PrepareBackground(DashedLineHorizontalSpacing, DashedLineVerticalSpacing, DashedLineDashLength, DashedLineDashAndGapLength);
                 if (lodLevel < 3) {
                     m_waveBatch.QueueQuad(new Vector2(0, 0), new Vector2(displayWidth, displayHeight), 0, Color.Transparent);
                     m_waveBatch.FlushBackground();
@@ -149,20 +140,31 @@ namespace Game {
                     if (!ConnectionState[i]) {
                         continue;
                     }
-                    Vector2[] drawPoints = new Vector2[TrueDisplayCount > Records.Count ? Records.Count + 2 : TrueDisplayCount];
+                    Color color = WaveColor[i];
                     for (int j = 0; j < TrueDisplayCount; j++) {
                         if (j >= Records.Count) {
-                            drawPoints[j] = new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, displayHeightMax);
-                            drawPoints[j + 1] = new Vector2(0f, displayHeightMax);
+                            if (MinLevel == 0u) {
+                                m_waveBatch.QueueLine(new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, displayHeightMax), new Vector2(0f, displayHeightMax), 0, color);
+                            }
                             break;
                         }
-                        uint record = Records[Records.Count - j - 1][i];
-                        drawPoints[j] = new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, (1f - (record - MinLevel) / levelRange) * displayHeightMax);
-                    }
-                    Color color = m_waveColor[i];
-                    m_waveBatch.QueueLineStrip(drawPoints, 0, color);
-                    if (lodLevel < 5) {
-                        m_waveBatch.QueuePoints(drawPoints, 0, color);
+                        int index = Records.Count - j - 1;
+                        uint record = Records[index][i];
+                        if (index > 0) {
+                            uint record2 = Records[index - 1][i];
+                            if (record >= MinLevel
+                                || record2 >= MinLevel) {
+                                m_waveBatch.QueueLine(new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, (MinLevel > record ? 1f : 1f - (record - MinLevel) / levelRange) * displayHeightMax), new Vector2((1f - (j + 1) / (float)TrueDisplayCount) * displayWidthMax, (MinLevel > record2 ? 1f : 1f - (record2 - MinLevel) / levelRange) * displayHeightMax), 0, color);
+                            }
+                        }
+                        else if (record >= MinLevel) {
+                            m_waveBatch.QueueLine(new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, (1f - (record - MinLevel) / levelRange) * displayHeightMax), new Vector2((1f - (j + 1) / (float)TrueDisplayCount) * displayWidthMax, displayHeightMax), 0, color);
+                        }
+                        if (record >= MinLevel
+                            && lodLevel < 5
+                            && record <= MaxLevel) {
+                            m_waveBatch.QueuePoint(new Vector2((1f - j / (float)TrueDisplayCount) * displayWidthMax, (1f - (record - MinLevel) / levelRange) * displayHeightMax), 0, color);
+                        }
                     }
                     m_waveBatch.FlushWave();
                 }
@@ -197,19 +199,31 @@ namespace Game {
                 }
                 if (lodLevel < 4) {
                     uint dy = (MaxLevel - MinLevel) / 8u;
-                    for (uint i = 0u; i < 8u; i++) {
-                        Draw8HexNumber(MinLevel + dy * i, new Vector2(8f, displayHeight - 41 - i * DashedLineVerticalSpacing), new Vector2(45f, 33f), Color.LightGray);
+                    bool flag = false;
+                    if (DashedLineVerticalSpacing >= 49) {
+                        flag = true;
+                        for (uint i = 0u; i < 8u; i++) {
+                            Draw8HexNumber(MinLevel + dy * i, new Vector2(8f, displayHeight - 41 - i * DashedLineVerticalSpacing), new Vector2(45f, 33f), Color.LightGray);
+                        }
+                        if (lodLevel < 2
+                            && DashedLineVerticalSpacing >= 90) {
+                            Draw8HexNumber(MaxLevel, new Vector2(8f, 8), new Vector2(45f, 33f), Color.LightGray);
+                        }
                     }
-                    if (lodLevel < 2) {
-                        Draw8HexNumber(MaxLevel, new Vector2(8f, 8), new Vector2(45f, 33f), Color.LightGray);
+                    if (DashedLineHorizontalSpacing >= 49) {
+                        flag = true;
+                        int recordLabelsCount = displayWidth / (float)displayHeight > 1.5f ? 16 : 8;
+                        for (int i = 0; i < recordLabelsCount - (DisplayButtons && lodLevel < 2 ? 2 : 1); i++) {
+                            Draw4DecNumber(i * TrueDisplayCount / recordLabelsCount, new Vector2(displayWidth - 53 - i * DashedLineHorizontalSpacing, displayHeight - 23), new Vector2(45, 15), Color.LightGray);
+                        }
                     }
-                    int recordLabelsCount = displayWidth / (float)displayHeight > 1.5f ? 16 : 8;
-                    for (int i = 0; i < recordLabelsCount - (DisplayButtons && lodLevel < 2 ? 2 : 1); i++) {
-                        Draw4DecNumber(i * TrueDisplayCount / recordLabelsCount, new Vector2(displayWidth - 53 - i * DashedLineHorizontalSpacing, displayHeight - 23), new Vector2(45, 15), Color.LightGray);
+                    if (flag) {
+                        m_numberBatch.Flush();
                     }
-                    m_numberBatch.Flush();
                 }
-                if (DisplayButtons && lodLevel < 2) {
+                if (DisplayButtons
+                    && lodLevel < 2
+                    && displayWidth >= 800) {
                     m_arrowButtonBatch.QueueQuad(
                         new Vector2(76f, 20f),
                         new Vector2(164f, 108f),
@@ -324,12 +338,13 @@ namespace Game {
             }
         }
 
+        public uint[] GetLastIndexOfRecord(int index) => Records[Records.Count - 1 - index];
         public uint[] LastRecord => Records[Records.Count - 1];
 
         public void AddRecord(uint[] record) {
             Records.Add(record);
-            if (Records.Count > 4097) {
-                Records.RemoveRange(0, 2);
+            if (Records.Count > 5096) {
+                Records.RemoveRange(0, 1000);
             }
         }
 
@@ -496,8 +511,6 @@ namespace Game {
         public void CalculateDashedLineArguments(int lodLevel, int displayWidth, int displayHeight) {
             DashedLineVerticalSpacing = displayHeight / 8f;
             DashedLineHorizontalSpacing = displayWidth / (displayWidth / (float)displayHeight > 1.5f ? 16f : 8f);
-            DashedLineLeftOffset = 0f;
-            DashedLineUpOffset = 0f;
             if (lodLevel < 1) {
                 DashedLineDashLength = DashedLineVerticalSpacing / 16f;
                 DashedLineDashAndGapLength = DashedLineDashLength * 3f;
@@ -577,13 +590,13 @@ namespace Game {
                 DecreaseMaxLevel();
             }
             else if (position.X is >= 76f and <= 164f
-                && position.Y >= displayWidth - 108f
-                && position.Y <= displayWidth - 20f) {
+                && position.Y >= displayHeight - 108f
+                && position.Y <= displayHeight - 20f) {
                 IncreaseMinLevel();
             }
             else if (position.X is >= 188f and <= 276f
-                && position.Y >= displayWidth - 108f
-                && position.Y <= displayWidth - 20f) {
+                && position.Y >= displayHeight - 108f
+                && position.Y <= displayHeight - 20f) {
                 DecreaseMinLevel();
             }
             else if (position.X >= displayWidth / 2f - 100f

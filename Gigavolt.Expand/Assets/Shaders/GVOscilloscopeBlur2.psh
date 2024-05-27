@@ -4,9 +4,8 @@
 // <Sampler Name='u_samplerState' Texture='u_texture' />
 // <Sampler Name='u_samplerState2' Texture='u_texture2' />
 
-#ifdef GL_ES
-precision mediump float;
-#endif
+precision highp float;
+precision highp sampler2D;
 
 uniform vec2 u_textureSize;
 uniform sampler2D u_texture;

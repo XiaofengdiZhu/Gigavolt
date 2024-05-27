@@ -95,6 +95,7 @@
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeScreen.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeData.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeBlock.cs"/>
+		<Compile Include="MoreLeds\Oscilloscope\GVVoltageRectangleWidget.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\OscilloscopeGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\SubsystemGVOscilloscopeBlockBehavior.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\EditGVFourDimensionalMemoryBankDialog.cs"/>
@@ -433,6 +434,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\SCREENS\GVOscilloscopeScreen.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVOscilloscopeBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

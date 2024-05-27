@@ -6,38 +6,38 @@
 		</CanvasWidget>
 		<StackPanelWidget Direction="Vertical">
 			<StackPanelWidget Direction="Horizontal">
-				<BevelledButtonWidget Size="188, 60">
+				<BevelledButtonWidget Name="GVOscilloscopeScreen.TopButton" Size="188, 60">
 					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0" HorizontalAlignment="Near">
 						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="112, 112, 112"/>
 						<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Near" VerticalAlignment="Center" IsHitTestVisible="false">
-							<LabelWidget Name="GVOscilloscopeScreen.TopInput" VerticalAlignment="Center" Margin="10, 0" Text="[GVOscilloscopeScreen:2]" Color="0, 255, 0"/>
+							<LabelWidget Name="GVOscilloscopeScreen.TopInput" VerticalAlignment="Center" Margin="10, 0" Text="[GVOscilloscopeScreen:2]"/>
 						</StackPanelWidget>
 					</CanvasWidget>
 				</BevelledButtonWidget>
 				<CanvasWidget Size="4,0"/>
-				<BevelledButtonWidget Size="188, 60">
+				<BevelledButtonWidget Name="GVOscilloscopeScreen.RightButton" Size="188, 60">
 					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0" HorizontalAlignment="Near">
 						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="112, 112, 112"/>
 						<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Near" VerticalAlignment="Center" IsHitTestVisible="false">
-							<LabelWidget Name="GVOscilloscopeScreen.RightInput" VerticalAlignment="Center" Margin="10, 0" Text="[GVOscilloscopeScreen:3]" Color="0, 255, 255"/>
+							<LabelWidget Name="GVOscilloscopeScreen.RightInput" VerticalAlignment="Center" Margin="10, 0" Text="[GVOscilloscopeScreen:3]"/>
 						</StackPanelWidget>
 					</CanvasWidget>
 				</BevelledButtonWidget>
 				<CanvasWidget Size="4,0"/>
-				<BevelledButtonWidget Size="188, 60">
+				<BevelledButtonWidget Name="GVOscilloscopeScreen.BottomButton" Size="188, 60">
 					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0" HorizontalAlignment="Near">
 						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="112, 112, 112"/>
 						<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Near" VerticalAlignment="Center" IsHitTestVisible="false">
-							<LabelWidget Name="GVOscilloscopeScreen.BottomInput" VerticalAlignment="Center" Margin="10, 0" Text="[GVOscilloscopeScreen:4]" Color="255, 0, 0"/>
+							<LabelWidget Name="GVOscilloscopeScreen.BottomInput" VerticalAlignment="Center" Margin="10, 0" Text="[GVOscilloscopeScreen:4]"/>
 						</StackPanelWidget>
 					</CanvasWidget>
 				</BevelledButtonWidget>
 				<CanvasWidget Size="4,0"/>
-				<BevelledButtonWidget Size="188, 60">
+				<BevelledButtonWidget Name="GVOscilloscopeScreen.LeftButton" Size="188, 60">
 					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0" HorizontalAlignment="Near">
 						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="112, 112, 112"/>
 						<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Near" VerticalAlignment="Center" IsHitTestVisible="false">
-							<LabelWidget Name="GVOscilloscopeScreen.LeftInput" VerticalAlignment="Center" Margin="10, 0" Text="[GVOscilloscopeScreen:5]" Color="255, 255, 0"/>
+							<LabelWidget Name="GVOscilloscopeScreen.LeftInput" VerticalAlignment="Center" Margin="10, 0" Text="[GVOscilloscopeScreen:5]"/>
 						</StackPanelWidget>
 					</CanvasWidget>
 				</BevelledButtonWidget>
@@ -63,7 +63,15 @@
 					</CanvasWidget>
 				</BevelledButtonWidget>
 			</StackPanelWidget>
-			<CanvasWidget Name="GVOscilloscopeScreen.Canvas" Size="Infinity, Infinity" Margin="0, 4"/>
+			<CanvasWidget Name="GVOscilloscopeScreen.Canvas" Size="Infinity, Infinity" Margin="0, 4">
+				<ScrollPanelWidget Name="GVOscilloscopeScreen.ScrollPanel" Direction="Vertical" ClampToBounds="true">
+					<StackPanelWidget Direction="Vertical">
+						<CanvasWidget Name="GVOscilloscopeScreen.Placeholder1" Size="1, 0"/>
+						<StackPanelWidget Name="GVOscilloscopeScreen.ScrollStack" Direction="Vertical"/>
+						<CanvasWidget Name="GVOscilloscopeScreen.Placeholder2" Size="1, 0"/>
+					</StackPanelWidget>
+				</ScrollPanelWidget>
+			</CanvasWidget>
 		</StackPanelWidget>
 	</StackPanelWidget>
 </Screen>

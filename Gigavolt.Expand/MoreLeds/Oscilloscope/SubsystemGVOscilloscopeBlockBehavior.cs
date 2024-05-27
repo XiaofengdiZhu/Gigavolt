@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Engine;
 using Engine.Graphics;
 using TemplatesDatabase;
@@ -123,7 +124,8 @@ namespace Game {
                 return;
             }
             foreach (GVOscilloscopeData data in m_datas.Values) {
-                if (data.RecordsCount > 0) {
+                if (data.RecordsCount > 0
+                    && data.ConnectionState.Any(state => state)) {
                     Vector3 vector = data.Position - camera.ViewPosition;
                     float num = Vector3.Dot(vector, camera.ViewDirection);
                     if (num > 0.01f) {

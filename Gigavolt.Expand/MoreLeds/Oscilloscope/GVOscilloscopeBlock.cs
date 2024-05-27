@@ -8,18 +8,17 @@ namespace Game {
         public const int Index = 898;
 
         public BlockMesh m_standaloneBlockMesh;
-
         public readonly BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
-
         public readonly BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+        public Texture2D texture;
 
         public override void Initialize() {
-            ModelMesh modelMesh = ContentManager.Get<Model>("Models/Leds").FindMesh("OneLed");
+            ModelMesh modelMesh = ContentManager.Get<Model>("Models/GigavoltGates").FindMesh("OneLed");
             ModelMeshPart modelMeshPart = modelMesh.MeshParts[0];
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(modelMesh.ParentBone);
             for (int i = 0; i < 6; i++) {
                 Matrix m = i >= 4 ? i != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
-                BlockMesh blockMesh = new BlockMesh();
+                BlockMesh blockMesh = new();
                 m_blockMeshesByFace[i] = blockMesh;
                 blockMesh.AppendModelMeshPart(
                     modelMeshPart,
@@ -43,6 +42,7 @@ namespace Game {
                 false,
                 Color.White
             );
+            texture = ContentManager.Get<Texture2D>("Textures/GVOscilloscopeBlock");
         }
 
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) {
@@ -82,7 +82,7 @@ namespace Game {
                     m_blockMeshesByFace[mountingFace],
                     Color.White,
                     null,
-                    geometry.SubsetOpaque
+                    geometry.GetGeometry(texture).SubsetOpaque
                 );
                 GenerateGVWireVertices(
                     generator,
@@ -102,6 +102,7 @@ namespace Game {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
+                texture,
                 color,
                 2f * size,
                 ref matrix,

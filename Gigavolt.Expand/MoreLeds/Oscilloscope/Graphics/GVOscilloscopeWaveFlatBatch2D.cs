@@ -80,7 +80,7 @@ namespace Engine.Graphics {
         }
 
         public void FlushWave() {
-            if (LineStripeIndices.Count != 0
+            if (LineIndices.Count != 0
                 || PointsIndices.Count != 0) {
                 Display.DepthStencilState = DepthStencilState;
                 Display.RasterizerState = RasterizerState;
@@ -105,26 +105,24 @@ namespace Engine.Graphics {
                     num8 -= num9;
                 }
                 DrawUserIndexed(
-                    GVPrimitiveType.LineStrip,
+                    GVPrimitiveType.LineList,
                     GVOscilloscopeWaveShader,
                     VertexPositionColor.VertexDeclaration,
-                    LineStripeVertices.Array,
+                    LineVertices.Array,
                     0,
-                    LineStripeVertices.Count,
-                    LineStripeIndices.Array,
+                    LineVertices.Count,
+                    LineIndices.Array,
                     0,
-                    LineStripeIndices.Count
+                    LineIndices.Count
                 );
-                LineStripeIndices.Clear();
-                LineStripeVertices.Clear();
+                LineIndices.Clear();
+                LineVertices.Clear();
                 PointsIndices.Clear();
                 PointsVertices.Clear();
             }
         }
 
-        public void PrepareBackground(float leftOffset, float upOffset, float horizontalSpacing, float verticalSpacing, float dashLength, float dashAndGapLength) {
-            GVOscilloscopeBackgroundShader.LeftOffset = leftOffset;
-            GVOscilloscopeBackgroundShader.UpOffset = upOffset;
+        public void PrepareBackground(float horizontalSpacing, float verticalSpacing, float dashLength, float dashAndGapLength) {
             GVOscilloscopeBackgroundShader.HorizontalSpacing = horizontalSpacing;
             GVOscilloscopeBackgroundShader.VerticalSpacing = verticalSpacing;
             GVOscilloscopeBackgroundShader.DashLength = dashLength;

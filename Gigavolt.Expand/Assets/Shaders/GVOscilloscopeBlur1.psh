@@ -3,9 +3,8 @@
 
 // <Sampler Name='u_samplerState' Texture='u_texture' />
 
-#ifdef GL_ES
-precision mediump float;
-#endif
+precision highp float;
+precision highp sampler2D;
 
 //Forked from https://www.shadertoy.com/view/lsBfRc
 uniform vec2 u_textureSize;
