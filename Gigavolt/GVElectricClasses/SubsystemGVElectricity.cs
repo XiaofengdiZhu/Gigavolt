@@ -968,6 +968,8 @@ namespace Game {
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
         public static int[] m_drawOrders = [113];
 
+        public static GVFurnitureBlock GVFurnitureBlock = new();
+
         public void OnGVElectricElementBlockGenerated(int x, int y, int z) {
             m_pointsToUpdate[new Point3(x, y, z)] = false;
         }
@@ -1010,8 +1012,14 @@ namespace Game {
 
         public void GetAllConnectedNeighbors(int x, int y, int z, int mountingFace, DynamicArray<GVElectricConnectionPath> list) {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
-            if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is not IGVElectricElementBlock GVElectricElementBlock) {
-                return;
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
+            if (block is not IGVElectricElementBlock GVElectricElementBlock) {
+                if (block is FurnitureBlock) {
+                    GVElectricElementBlock = GVFurnitureBlock;
+                }
+                else {
+                    return;
+                }
             }
             IGVElectricWireElementBlock wireBlock = GVElectricElementBlock as IGVElectricWireElementBlock;
             for (GVElectricConnectorDirection GVElectricConnectorDirection = GVElectricConnectorDirection.Top; GVElectricConnectorDirection < (GVElectricConnectorDirection)5; GVElectricConnectorDirection++) {
@@ -1036,7 +1044,15 @@ namespace Game {
                     int y2 = y + GVElectricConnectionPath.NeighborOffsetY;
                     int z2 = z + GVElectricConnectionPath.NeighborOffsetZ;
                     int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x2, y2, z2);
-                    IGVElectricElementBlock GVElectricElementBlock2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)] as IGVElectricElementBlock;
+                    Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
+                    if (block2 is not IGVElectricElementBlock GVElectricElementBlock2) {
+                        if (block2 is FurnitureBlock) {
+                            GVElectricElementBlock2 = GVFurnitureBlock;
+                        }
+                        else {
+                            continue;
+                        }
+                    }
                     IGVElectricWireElementBlock wireBlock2 = GVElectricElementBlock2 as IGVElectricWireElementBlock;
                     GVElectricConnectorType? connectorType2 = GVElectricElementBlock2?.GetGVConnectorType(
                         SubsystemTerrain,
@@ -1407,49 +1423,69 @@ namespace Game {
                         continue;
                     }
                     int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
-                    int num = Terrain.ExtractContents(cellValue);
-                    GVElectricConnectorType value2 = (BlocksManager.Blocks[num] as IGVElectricElementBlock).GetGVConnectorType(
-                            SubsystemTerrain,
-                            cellValue,
-                            cellFace2.Face,
-                            tmpConnectionPath.ConnectorFace,
-                            cellFace2.X,
-                            cellFace2.Y,
-                            cellFace2.Z
-                        )
-                        .Value;
+                    Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
+                    if (block is not IGVElectricElementBlock GVElectricElementBlock) {
+                        if (block is FurnitureBlock) {
+                            GVElectricElementBlock = GVFurnitureBlock;
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    GVElectricConnectorType? value2 = GVElectricElementBlock.GetGVConnectorType(
+                        SubsystemTerrain,
+                        cellValue,
+                        cellFace2.Face,
+                        tmpConnectionPath.ConnectorFace,
+                        cellFace2.X,
+                        cellFace2.Y,
+                        cellFace2.Z
+                    );
+                    if (!value2.HasValue) {
+                        continue;
+                    }
                     int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
-                    int num2 = Terrain.ExtractContents(cellValue2);
-                    GVElectricConnectorType value3 = (BlocksManager.Blocks[num2] as IGVElectricElementBlock).GetGVConnectorType(
-                            SubsystemTerrain,
-                            cellValue2,
-                            cellFace.Face,
-                            tmpConnectionPath.NeighborConnectorFace,
-                            cellFace.X,
-                            cellFace.Y,
-                            cellFace.Z
-                        )
-                        .Value;
+                    Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
+                    if (block2 is not IGVElectricElementBlock GVElectricElementBlock2) {
+                        if (block2 is FurnitureBlock) {
+                            GVElectricElementBlock2 = GVFurnitureBlock;
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    GVElectricConnectorType? value3 = GVElectricElementBlock2.GetGVConnectorType(
+                        SubsystemTerrain,
+                        cellValue2,
+                        cellFace.Face,
+                        tmpConnectionPath.NeighborConnectorFace,
+                        cellFace.X,
+                        cellFace.Y,
+                        cellFace.Z
+                    );
+                    if (!value3.HasValue) {
+                        continue;
+                    }
                     GVElectricElement.Connections.Add(
                         new GVElectricConnection {
                             CellFace = cellFace2,
                             ConnectorFace = tmpConnectionPath.ConnectorFace,
-                            ConnectorType = value2,
+                            ConnectorType = value2.Value,
                             NeighborGVElectricElement = value,
                             NeighborCellFace = cellFace,
                             NeighborConnectorFace = tmpConnectionPath.NeighborConnectorFace,
-                            NeighborConnectorType = value3
+                            NeighborConnectorType = value3.Value
                         }
                     );
                     value.Connections.Add(
                         new GVElectricConnection {
                             CellFace = cellFace,
                             ConnectorFace = tmpConnectionPath.NeighborConnectorFace,
-                            ConnectorType = value3,
+                            ConnectorType = value3.Value,
                             NeighborGVElectricElement = GVElectricElement,
                             NeighborCellFace = cellFace2,
                             NeighborConnectorFace = tmpConnectionPath.ConnectorFace,
-                            NeighborConnectorType = value2
+                            NeighborConnectorType = value2.Value
                         }
                     );
                 }
@@ -1496,6 +1532,11 @@ namespace Game {
                 }
                 else {
                     IGVElectricElementBlock GVElectricElementBlock = block as IGVElectricElementBlock;
+                    if (GVElectricElementBlock == null) {
+                        if (block is FurnitureBlock) {
+                            GVElectricElementBlock = GVFurnitureBlock;
+                        }
+                    }
                     GVElectricElement GVElectricElement2 = GVElectricElementBlock?.CreateGVElectricElement(
                         this,
                         cellValue,
@@ -1634,10 +1675,9 @@ namespace Game {
                             i,
                             newMask
                         );
-                        if (visited.ContainsKey(key2)) {
+                        if (!visited.TryAdd(key2, true)) {
                             continue;
                         }
-                        visited.Add(key2, true);
                         result.Add(key2, true);
                         m_tmpConnectionPaths.Clear();
                         GetAllConnectedNeighbors(

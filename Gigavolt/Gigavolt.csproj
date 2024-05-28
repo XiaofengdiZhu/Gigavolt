@@ -65,6 +65,11 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="Block\Furniture\ButtonFurnitureGVElectricElement.cs"/>
+		<Compile Include="Block\Furniture\FurnitureGVElectricElement.cs"/>
+		<Compile Include="Block\Furniture\GVFurnitureBlock.cs"/>
+		<Compile Include="Block\Furniture\MultistateFurnitureElectricElement.cs"/>
+		<Compile Include="Block\Furniture\SwitchFurnitureGVElectricElement.cs"/>
 		<Compile Include="Block\Gate\Transformer\GV2OTransformerBlock.cs"/>
 		<Compile Include="Block\Gate\Transformer\GV2OTransformerElectricElement.cs"/>
 		<Compile Include="Block\Gate\Transformer\GV2OTransformerGVElectricElement.cs"/>

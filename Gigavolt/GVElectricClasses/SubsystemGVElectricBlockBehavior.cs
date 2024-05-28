@@ -72,7 +72,8 @@ namespace Game {
             GVDispenserCBlock.Index,
             GVDispenserBlock.Index,
             GVDebugBlock.Index,
-            GVWireHarnessBlock.Index
+            GVWireHarnessBlock.Index,
+            FurnitureBlock.Index
         };
 
         public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded) {
