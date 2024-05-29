@@ -116,7 +116,10 @@ namespace Game {
         }
 
         public void RemoveData(Point3 point) {
-            m_datas.Remove(point);
+            if (m_datas.TryGetValue(point, out GVOscilloscopeData data)) {
+                data.Dispose();
+                m_datas.Remove(point);
+            }
         }
 
         public void Draw(Camera camera, int drawOrder) {
@@ -143,7 +146,7 @@ namespace Game {
                             if (newLodLevel != data.LodLevel) {
                                 data.LodLevel = newLodLevel;
                                 if (!data.IsTextureObsolete()) {
-                                    data.Texture.Dispose();
+                                    data.Texture = null;
                                 }
                             }
                             const float size = 0.5f;
@@ -151,7 +154,8 @@ namespace Game {
                             Vector3 p2 = data.Position + size * (data.Right - data.Up);
                             Vector3 p3 = data.Position + size * (data.Right + data.Up);
                             Vector3 p4 = data.Position + size * (-data.Right + data.Up);
-                            data.FlatBatch3D.QueueQuad(
+                            TexturedBatch3D batch = data.FlatBatch3D;
+                            batch.QueueQuad(
                                 p,
                                 p2,
                                 p3,
@@ -162,11 +166,11 @@ namespace Game {
                                 Vector2.UnitX,
                                 Color.White
                             );
+                            batch.Flush(camera.ViewProjectionMatrix);
                         }
                     }
                 }
             }
-            m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
         }
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {

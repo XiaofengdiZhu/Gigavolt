@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using Engine;
 using Engine.Graphics;
 using Engine.Input;
+using Color = Engine.Color;
 
 namespace Game {
     public class GVOscilloscopeScreen : Screen {
@@ -30,6 +31,9 @@ namespace Game {
         public SubsystemGVElectricity m_electricity;
         public SubsystemTime m_subsystemTime;
         RenderTarget2D m_texture;
+        RenderTarget2D m_cachedWaveRenderTarget;
+        RenderTarget2D m_cachedBlurRenderTarget;
+        RenderTarget2D m_cachedTempBlurRenderTarget;
         TexturedBatch2D m_texturedBatch2D;
         PrimitivesRenderer2D m_primitivesRenderer2D;
         public int RecordsCountAtLastGenerateTexture;
@@ -107,7 +111,7 @@ namespace Game {
                     Vector2 size = m_canvas.GlobalBounds.Max - min;
                     m_data.Interact(start - min, size.X, size.Y);
                     if (!IsTextureObsolete()) {
-                        Texture?.Dispose();
+                        m_texture = null;
                     }
                 }
             }
@@ -251,7 +255,13 @@ namespace Game {
             if (m_lastParentAvailableSize != parentAvailableSize) {
                 m_lastParentAvailableSize = parentAvailableSize;
                 if (!IsTextureObsolete()) {
-                    Texture?.Dispose();
+                    m_texture = null;
+                    m_cachedWaveRenderTarget?.Dispose();
+                    m_cachedBlurRenderTarget?.Dispose();
+                    m_cachedTempBlurRenderTarget?.Dispose();
+                    m_cachedWaveRenderTarget = null;
+                    m_cachedBlurRenderTarget = null;
+                    m_cachedTempBlurRenderTarget = null;
                 }
             }
             base.MeasureOverride(parentAvailableSize);
@@ -271,6 +281,7 @@ namespace Game {
                     Vector2.One,
                     Color.White
                 );
+                FlatBatch2D.Flush();
             }
         }
 
@@ -280,9 +291,39 @@ namespace Game {
                     return null;
                 }
                 if (IsTextureObsolete()) {
-                    m_texture?.Dispose();
                     Vector2 size = m_canvas.GlobalBounds.Size();
-                    m_texture = m_data.GenerateTexture(0, (int)size.X, (int)size.Y);
+                    int width = (int)size.X;
+                    int height = (int)size.Y;
+                    m_cachedWaveRenderTarget ??= new RenderTarget2D(
+                        width,
+                        height,
+                        m_data.DisplayBloom ? 6 : 1,
+                        ColorFormat.Rgba8888,
+                        DepthFormat.None
+                    );
+                    m_cachedBlurRenderTarget ??= new RenderTarget2D(
+                        width,
+                        height,
+                        1,
+                        ColorFormat.Rgba8888,
+                        DepthFormat.None
+                    );
+                    m_cachedTempBlurRenderTarget ??= new RenderTarget2D(
+                        width,
+                        height,
+                        1,
+                        ColorFormat.Rgba8888,
+                        DepthFormat.None
+                    );
+                    m_texture = m_data.GenerateTexture(
+                        0,
+                        (int)size.X,
+                        (int)size.Y,
+                        m_cachedWaveRenderTarget,
+                        m_cachedBlurRenderTarget,
+                        m_cachedTempBlurRenderTarget
+                    );
+                    //m_texture.GetData(new Rectangle(0, 0, width, height)).m_trueImage.SaveAsBmp("oscilloscope.bmp");
                     RecordsCountAtLastGenerateTexture = m_data.RecordsCount;
                 }
                 return m_texture;
@@ -297,14 +338,15 @@ namespace Game {
                 if (m_texturedBatch2D == null
                     || m_data.RecordsCount != RecordsCountAtLastGenerateFlatBatch3D
                     || IsTextureObsolete()) {
-                    m_texturedBatch2D = m_primitivesRenderer2D.TexturedBatch(
-                        Texture,
-                        false,
-                        0,
-                        DepthStencilState.None,
-                        null,
-                        BlendState.AlphaBlend
-                    );
+                    m_texturedBatch2D = new TexturedBatch2D {
+                        Texture = Texture,
+                        UseAlphaTest = false,
+                        Layer = 0,
+                        DepthStencilState = DepthStencilState.None,
+                        RasterizerState = RasterizerState.CullNone,
+                        BlendState = BlendState.AlphaBlend,
+                        SamplerState = SamplerState.LinearClamp
+                    };
                     RecordsCountAtLastGenerateFlatBatch3D = m_data.RecordsCount;
                 }
                 return m_texturedBatch2D;

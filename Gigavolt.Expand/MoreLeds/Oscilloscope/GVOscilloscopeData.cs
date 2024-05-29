@@ -12,8 +12,7 @@ namespace Game {
         public Vector3 Right;
         public Vector3 Up;
         public Vector3 Forward;
-        public int DisplayWidth = 1024;
-        public int DisplayHeight = 1024;
+        public int DisplaySize = 1024;
         public int DisplayCount = 512;
         public int TrueDisplayCount;
         public uint MinLevel;
@@ -43,6 +42,13 @@ namespace Game {
         public TexturedBatch2D m_sunButtonBatch;
         readonly GVOscilloscopeWaveFlatBatch2D m_waveBatch;
         RenderTarget2D m_texture;
+
+        readonly RenderTarget2D[] m_cachedWaveRenderTargets = new RenderTarget2D[8];
+        readonly RenderTarget2D[] m_cachedBlurRenderTargets = new RenderTarget2D[3];
+        readonly RenderTarget2D[] m_cachedTempBlurRenderTargets = new RenderTarget2D[3];
+
+        //int m_lastDisplaySize;
+        bool m_lastDisplayBloom;
         TexturedBatch3D m_texturedBatch3D;
 
         public static readonly Color[] WaveColor = [Color.Green, Color.Cyan, Color.Red, Color.Yellow];
@@ -66,42 +72,83 @@ namespace Game {
                     return null;
                 }
                 if (IsTextureObsolete()) {
+                    int cacheIndex = 3;
                     switch (LodLevel) {
                         case < 2:
-                            DisplayWidth = 1024;
-                            DisplayHeight = 1024;
+                            DisplaySize = 1024;
+                            cacheIndex = 0;
                             break;
                         case < 5:
-                            DisplayWidth = 512;
-                            DisplayHeight = 512;
+                            DisplaySize = 512;
+                            cacheIndex = 1;
                             break;
                         case < 6:
-                            DisplayWidth = 320;
-                            DisplayHeight = 320;
+                            DisplaySize = 320;
+                            cacheIndex = 2;
                             break;
                         default:
-                            DisplayWidth = 160;
-                            DisplayHeight = 160;
+                            DisplaySize = 160;
                             break;
                     }
-                    m_texture?.Dispose();
-                    m_texture = GenerateTexture(LodLevel, DisplayWidth, DisplayHeight);
+                    RenderTarget2D blurRenderTarget = null;
+                    RenderTarget2D tempBlurRenderTarget = null;
+                    bool displayBloom = DisplayBloom && LodLevel < 6;
+                    if (displayBloom) {
+                        blurRenderTarget = m_cachedBlurRenderTargets[cacheIndex];
+                        if (blurRenderTarget == null) {
+                            blurRenderTarget = new RenderTarget2D(
+                                DisplaySize,
+                                DisplaySize,
+                                1,
+                                ColorFormat.Rgba8888,
+                                DepthFormat.None
+                            );
+                            m_cachedBlurRenderTargets[cacheIndex] = blurRenderTarget;
+                        }
+                        tempBlurRenderTarget = m_cachedTempBlurRenderTargets[cacheIndex];
+                        if (tempBlurRenderTarget == null) {
+                            tempBlurRenderTarget = new RenderTarget2D(
+                                DisplaySize,
+                                DisplaySize,
+                                1,
+                                ColorFormat.Rgba8888,
+                                DepthFormat.None
+                            );
+                            m_cachedTempBlurRenderTargets[cacheIndex] = tempBlurRenderTarget;
+                        }
+                        cacheIndex += 4;
+                    }
+                    RenderTarget2D waveRenderTarget = m_cachedWaveRenderTargets[cacheIndex];
+                    if (waveRenderTarget == null) {
+                        waveRenderTarget = new RenderTarget2D(
+                            DisplaySize,
+                            DisplaySize,
+                            displayBloom ? 6 : 1,
+                            ColorFormat.Rgba8888,
+                            DepthFormat.None
+                        );
+                        m_cachedWaveRenderTargets[cacheIndex] = waveRenderTarget;
+                    }
+                    m_texture = GenerateTexture(
+                        LodLevel,
+                        DisplaySize,
+                        DisplaySize,
+                        waveRenderTarget,
+                        blurRenderTarget,
+                        tempBlurRenderTarget
+                    );
                     RecordsCountAtLastGenerateTexture = Records.Count;
+                    m_lastDisplayBloom = displayBloom;
                 }
                 return m_texture;
             }
+            set => m_texture = value;
         }
 
-        public RenderTarget2D GenerateTexture(int lodLevel, int displayWidth, int displayHeight) {
+        public RenderTarget2D GenerateTexture(int lodLevel, int displayWidth, int displayHeight, RenderTarget2D waveRenderTarget, RenderTarget2D blurRenderTarget = null, RenderTarget2D tempBlurRenderTarget = null) {
             RenderTarget2D originRenderTarget = Display.RenderTarget;
             try {
-                RenderTarget2D waveRenderTarget = new(
-                    displayWidth,
-                    displayHeight,
-                    DisplayBloom && lodLevel < 6 ? 6 : 1,
-                    ColorFormat.Rgba8888,
-                    DepthFormat.None
-                );
+                bool displayBloom = DisplayBloom && lodLevel < 6;
                 Display.RenderTarget = waveRenderTarget;
                 Display.Clear(Color.Black);
                 TrueDisplayCount = 0;
@@ -168,25 +215,19 @@ namespace Game {
                     }
                     m_waveBatch.FlushWave();
                 }
-                if (DisplayBloom && lodLevel < 6) {
+                if (displayBloom && blurRenderTarget != null) {
                     waveRenderTarget.GenerateMipMaps();
-                    RenderTarget2D blurRenderTarget = new(
-                        displayWidth,
-                        displayHeight,
-                        1,
-                        ColorFormat.Rgba8888,
-                        DepthFormat.None
-                    );
                     Display.RenderTarget = blurRenderTarget;
                     Display.Clear(Color.Black);
-                    GVOscilloscopeBlurTexturedBatch2D blurBatch = m_primitivesRenderer2D.TexturedBatch(
-                        waveRenderTarget,
-                        false,
-                        0,
-                        DepthStencilState.None,
-                        null,
-                        BlendState.AlphaBlend
-                    );
+                    GVOscilloscopeBlurTexturedBatch2D blurBatch = new() {
+                        Texture = waveRenderTarget,
+                        UseAlphaTest = false,
+                        Layer = 0,
+                        DepthStencilState = DepthStencilState.None,
+                        RasterizerState = RasterizerState.CullNone,
+                        BlendState = BlendState.AlphaBlend,
+                        SamplerState = SamplerState.LinearClamp
+                    };
                     blurBatch.QueueQuad(
                         Vector2.Zero,
                         new Vector2(displayWidth, displayHeight),
@@ -195,7 +236,7 @@ namespace Game {
                         Vector2.One,
                         Color.White
                     );
-                    blurBatch.FlushBlur();
+                    blurBatch.FlushBlur(tempBlurRenderTarget);
                 }
                 if (lodLevel < 4) {
                     uint dy = (MaxLevel - MinLevel) / 8u;
@@ -280,6 +321,7 @@ namespace Game {
                         Vector2.UnitY,
                         Array.IndexOf(displayCountArray, DisplayCount) == 0 ? Color.DarkGray : Color.LightGray
                     );
+                    TexturedBatch2D batch = DisplayBloom ? m_sunButtonBatch : m_moonButtonBatch;
                     (DisplayBloom ? m_sunButtonBatch : m_moonButtonBatch).QueueQuad(
                         new Vector2(displayWidth - 108f, 20f),
                         new Vector2(displayWidth - 20f, 108f),
@@ -297,12 +339,10 @@ namespace Game {
                             Vector2.One,
                             Color.LightGray
                         );
+                        m_autoButtonBatch.Flush();
                     }
-                    m_primitivesRenderer2D.Flush();
-                }
-                //var result = Display.RenderTarget;
-                if (DisplayBloom && lodLevel < 6) {
-                    waveRenderTarget.Dispose();
+                    m_arrowButtonBatch.Flush();
+                    batch.Flush();
                 }
                 return Display.RenderTarget;
             }
@@ -323,15 +363,15 @@ namespace Game {
                 if (m_texturedBatch3D == null
                     || Records.Count != RecordsCountAtLastGenerateFlatBatch3D
                     || IsTextureObsolete()) {
-                    m_texturedBatch3D = m_primitivesRenderer3D.TexturedBatch(
-                        Texture,
-                        false,
-                        0,
-                        DepthStencilState.DepthRead,
-                        RasterizerState.CullCounterClockwiseScissor,
-                        BlendState.NonPremultiplied,
-                        SamplerState.PointClamp
-                    );
+                    m_texturedBatch3D = new TexturedBatch3D {
+                        Texture = Texture,
+                        UseAlphaTest = false,
+                        Layer = 0,
+                        DepthStencilState = DepthStencilState.DepthRead,
+                        RasterizerState = RasterizerState.CullCounterClockwiseScissor,
+                        BlendState = BlendState.NonPremultiplied,
+                        SamplerState = SamplerState.PointClamp
+                    };
                     RecordsCountAtLastGenerateFlatBatch3D = Records.Count;
                 }
                 return m_texturedBatch3D;
@@ -365,14 +405,14 @@ namespace Game {
                 if (index != displayCountArray.Length - 1) {
                     DisplayCount = displayCountArray[index + 1];
                     if (!IsTextureObsolete()) {
-                        Texture.Dispose();
+                        m_texture = null;
                     }
                 }
             }
             else {
                 DisplayCount = 512;
                 if (!IsTextureObsolete()) {
-                    Texture.Dispose();
+                    m_texture = null;
                 }
             }
         }
@@ -383,14 +423,14 @@ namespace Game {
                 if (index != 0) {
                     DisplayCount = displayCountArray[index - 1];
                     if (!IsTextureObsolete()) {
-                        Texture.Dispose();
+                        m_texture = null;
                     }
                 }
             }
             else {
                 DisplayCount = 512;
                 if (!IsTextureObsolete()) {
-                    Texture.Dispose();
+                    m_texture = null;
                 }
             }
         }
@@ -410,7 +450,7 @@ namespace Game {
                 MinLevel = MaxLevel - 64u;
             }
             if (!IsTextureObsolete()) {
-                Texture.Dispose();
+                m_texture = null;
             }
         }
 
@@ -422,7 +462,7 @@ namespace Game {
             uint num = (MaxLevel - MinLevel) / 3u;
             MinLevel = num > MinLevel ? 0u : GetNearest16Multiples(MinLevel - num);
             if (!IsTextureObsolete()) {
-                Texture.Dispose();
+                m_texture = null;
             }
         }
 
@@ -434,7 +474,7 @@ namespace Game {
             uint num = (MaxLevel - MinLevel) / 3u;
             MaxLevel = num > uint.MaxValue - MaxLevel ? uint.MaxValue : GetNearest16Multiples(MaxLevel + num);
             if (!IsTextureObsolete()) {
-                Texture.Dispose();
+                m_texture = null;
             }
         }
 
@@ -453,7 +493,7 @@ namespace Game {
                 MaxLevel = GetNearest16Multiples(MinLevel + 64u);
             }
             if (!IsTextureObsolete()) {
-                Texture.Dispose();
+                m_texture = null;
             }
         }
 
@@ -502,7 +542,7 @@ namespace Game {
             }
             RecordsCountAtAutoSetMinMaxLevel = Records.Count;
             if (dispose) {
-                Texture.Dispose();
+                m_texture = null;
             }
         }
 
@@ -614,7 +654,7 @@ namespace Game {
                 && position.Y is >= 20f and <= 108f) {
                 DisplayBloom = !DisplayBloom;
                 if (!IsTextureObsolete()) {
-                    Texture.Dispose();
+                    m_texture = null;
                 }
             }
             else if (position.X >= displayWidth - 220f
@@ -638,5 +678,18 @@ namespace Game {
             OpenTKForAndroid::OpenTK.Graphics.ES30.GL.Enable((OpenTKForAndroid::OpenTK.Graphics.ES30.All)34370);
         }
 #pragma warning restore CS0618 // 类型或成员已过时
+        public void Dispose() {
+            m_texture.Dispose();
+            foreach (RenderTarget2D renderTarget in m_cachedWaveRenderTargets) {
+                renderTarget.Dispose();
+            }
+            foreach (RenderTarget2D renderTarget in m_cachedBlurRenderTargets) {
+                renderTarget.Dispose();
+            }
+            foreach (RenderTarget2D renderTarget in m_cachedTempBlurRenderTargets) {
+                renderTarget.Dispose();
+            }
+            Records.Clear();
+        }
     }
 }

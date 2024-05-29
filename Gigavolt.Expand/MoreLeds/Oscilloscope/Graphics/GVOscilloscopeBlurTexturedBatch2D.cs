@@ -3,15 +3,8 @@ namespace Engine.Graphics {
         public static GVOscilloscopeBlurShader1 GVOscilloscopeBlurShader1 = new();
         public static GVOscilloscopeBlurShader2 GVOscilloscopeBlurShader2 = new();
 
-        public void FlushBlur() {
+        public void FlushBlur(RenderTarget2D tempRenderTarget) {
             RenderTarget2D originRenderTarget = Display.RenderTarget;
-            RenderTarget2D tempRenderTarget = new(
-                Texture.Width,
-                Texture.Height,
-                1,
-                ColorFormat.Rgba8888,
-                DepthFormat.None
-            );
             Display.RenderTarget = tempRenderTarget;
             Display.Clear(Color.Black);
             Display.DepthStencilState = DepthStencilState;
@@ -51,7 +44,6 @@ namespace Engine.Graphics {
                 0,
                 TriangleIndices.Count
             );
-            tempRenderTarget.Dispose();
             Clear();
         }
     }
