@@ -41,8 +41,8 @@
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 						<TextBoxWidget Name="EditGVJavascriptMicrocontrollerDialog.LinearText" Size="470, 30" MaximumLength="1000000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
-					<BitmapButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
-					<BitmapButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Delete}" ClickedSubtexture="{Textures/Delete}" Margin="10, 0"/>
+					<BitmapButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
+					<BitmapButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVDelete}" ClickedSubtexture="{Textures/Gui/GVDelete}" Margin="10, 0"/>
 				</StackPanelWidget>
 				<CanvasWidget Size="0, Infinity"/>
 			</StackPanelWidget>

@@ -26,7 +26,7 @@
 								<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128"/>
 								<TextBoxWidget Name="EditGVSignDialog.ConvertedTextBox" Size="280, 50" Description="" VerticalAlignment="Center" Margin="10, 0"/>
 							</CanvasWidget>
-							<BitmapButtonWidget Name="EditGVSignDialog.CopyButton" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="20, 0"/>
+							<BitmapButtonWidget Name="EditGVSignDialog.CopyButton" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="20, 0"/>
 						</StackPanelWidget>
 					</StackPanelWidget>
 				</CanvasWidget>

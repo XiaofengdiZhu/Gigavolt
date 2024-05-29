@@ -11,7 +11,7 @@
 						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="112, 112, 112"/>
 						<StackPanelWidget Direction="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="false">
 							<LabelWidget Name="BevelledButton.Label" Text="[GVHelpTopicScreen:2]"/>
-							<RectangleWidget Name="BevelledButton.Image" Size="16, 18" Subtexture="{Textures/Copy}" IsVisible="true" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" VerticalAlignment="Far"/>
+							<RectangleWidget Name="BevelledButton.Image" Size="16, 18" Subtexture="{Textures/Gui/GVCopy}" IsVisible="true" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" VerticalAlignment="Far"/>
 						</StackPanelWidget>
 						<ClickableWidget Name="BevelledButton.Clickable" SoundName="Audio/UI/ButtonClick"/>
 					</CanvasWidget>

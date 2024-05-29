@@ -5,29 +5,36 @@ using Engine.Input;
 
 namespace Game {
     public class GVStepFloatingButtons : CanvasWidget {
-        public ButtonWidget m_stopButton;
-        public ButtonWidget m_stepButton;
-        public ButtonWidget m_jumpButton;
-        public LabelWidget m_count;
-        public LabelWidget m_time;
+        public readonly ButtonWidget m_pauseButton;
+        public readonly ButtonWidget m_stepButton;
+        public readonly ButtonWidget m_jumpButton;
+        public readonly LabelWidget m_count;
+        public readonly LabelWidget m_time;
+        public readonly RectangleWidget m_pauseIcon;
+        public readonly Subtexture m_continueSubtexture;
+        public readonly Subtexture m_pauseSubtexture;
         public SubsystemGVElectricity m_subsystem;
 
         public GVStepFloatingButtons(SubsystemGVElectricity subsystem) {
             XElement node = ContentManager.Get<XElement>("Widgets/GVStepFloatingButtons");
             LoadContents(this, node);
-            m_stopButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Stop");
+            m_pauseButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Pause");
             m_stepButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Step");
             m_jumpButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Jump");
             m_count = Children.Find<LabelWidget>("GVStepFloatingButtons.Count");
             m_time = Children.Find<LabelWidget>("GVStepFloatingButtons.Time");
+            m_pauseIcon = Children.Find<RectangleWidget>("GVStepFloatingButtons.PauseIcon");
+            m_continueSubtexture = ContentManager.Get<Subtexture>("Textures/Gui/GVContinue");
+            m_pauseSubtexture = ContentManager.Get<Subtexture>("Textures/Gui/GVPause");
             m_subsystem = subsystem;
+            m_pauseIcon.Subtexture = m_subsystem.debugMode ? m_continueSubtexture : m_pauseSubtexture;
         }
 
         public override void Update() {
-            m_stopButton.IsChecked = false;
+            m_pauseButton.IsChecked = false;
             m_stepButton.IsChecked = false;
             m_jumpButton.IsChecked = false;
-            if (m_stopButton.IsClicked) {
+            if (m_pauseButton.IsClicked) {
                 m_subsystem.debugMode = !m_subsystem.debugMode;
                 if (m_subsystem.debugMode) {
                     m_subsystem.lastUpdate = new DateTime();
@@ -58,7 +65,7 @@ namespace Game {
             }
             if (m_subsystem.keyboardDebug) {
                 if (Keyboard.IsKeyDownOnce(Key.F5)) {
-                    m_stopButton.IsChecked = true;
+                    m_pauseButton.IsChecked = true;
                 }
                 if (m_subsystem.debugMode) {
                     if (Keyboard.IsKeyDownOnce(Key.F6)) {
@@ -72,6 +79,7 @@ namespace Game {
             m_count.Text = (m_subsystem.last1000Updates.Count - 1).ToString();
             double time = (m_subsystem.lastUpdate - (m_subsystem.last1000Updates.Count > 0 ? m_subsystem.last1000Updates.Peek() : m_subsystem.lastUpdate)).TotalSeconds;
             m_time.Text = time.ToString(time < 1 ? "f4" : "f2");
+            m_pauseIcon.Subtexture = m_subsystem.debugMode ? m_continueSubtexture : m_pauseSubtexture;
         }
     }
 }

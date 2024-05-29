@@ -42,24 +42,24 @@
 					</CanvasWidget>
 				</BevelledButtonWidget>
 				<CanvasWidget Size="4, 0"/>
-				<BevelledButtonWidget Name="GVOscilloscopeScreen.Stop" Size="60, 60">
+				<BevelledButtonWidget Name="GVOscilloscopeScreen.Pause" Size="60, 60">
 					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0">
 						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="50, 150, 35" BevelColor="50, 150, 35"/>
-						<RectangleWidget Size="24, 24" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<RectangleWidget Name="GVOscilloscopeScreen.PauseIcon" Size="40, 40" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					</CanvasWidget>
 				</BevelledButtonWidget>
 				<CanvasWidget Size="4, 0"/>
 				<BevelledButtonWidget Name="GVOscilloscopeScreen.Step" Size="60, 60">
 					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0">
 						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="50, 150, 35" BevelColor="50, 150, 35"/>
-						<RectangleWidget Size="32, 32" Subtexture="{Textures/Atlas/ArrowRight}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<RectangleWidget Size="40, 40" Subtexture="{Textures/Gui/GVStep}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					</CanvasWidget>
 				</BevelledButtonWidget>
 				<CanvasWidget Size="4, 0"/>
 				<BevelledButtonWidget Name="GVOscilloscopeScreen.Jump" Size="60, 60">
 					<CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0">
 						<BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="50, 150, 35" BevelColor="50, 150, 35"/>
-						<RectangleWidget Size="32, 32" Subtexture="{Textures/Atlas/TurnRight}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<RectangleWidget Size="40, 40" Subtexture="{Textures/Gui/GVJump}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					</CanvasWidget>
 				</BevelledButtonWidget>
 			</StackPanelWidget>

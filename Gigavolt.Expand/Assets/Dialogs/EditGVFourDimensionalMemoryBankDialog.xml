@@ -82,8 +82,8 @@
 						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 						<TextBoxWidget Name="EditGVFourDimensionalMemoryBankDialog.LinearText" Size="470, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
-					<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
-					<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Delete}" ClickedSubtexture="{Textures/Delete}" Margin="10, 0"/>
+					<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
+					<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVDelete}" ClickedSubtexture="{Textures/Gui/GVDelete}" Margin="10, 0"/>
 				</StackPanelWidget>
 			</StackPanelWidget>
 			<CanvasWidget Size="0, 20"/>
@@ -96,7 +96,7 @@
 		</StackPanelWidget>
 		<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Far" VerticalAlignment="Near" Margin="15, 15">
 			<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.ID"/>
-			<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.CopyID" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+			<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.CopyID" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 		</StackPanelWidget>
 	</CanvasWidget>
 </CanvasWidget>

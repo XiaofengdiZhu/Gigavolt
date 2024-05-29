@@ -19,9 +19,12 @@ namespace Game {
         public readonly LabelWidget m_rightInputLabel;
         public readonly LabelWidget m_bottomInputLabel;
         public readonly LabelWidget m_leftInputLabel;
-        public ButtonWidget m_stopButton;
+        public ButtonWidget m_pauseButton;
         public ButtonWidget m_stepButton;
         public ButtonWidget m_jumpButton;
+        public readonly RectangleWidget m_pauseIcon;
+        public readonly Subtexture m_continueSubtexture;
+        public readonly Subtexture m_pauseSubtexture;
         public CanvasWidget m_canvas;
         public readonly ScrollPanelWidget m_scrollPanel;
         public readonly StackPanelWidget m_scrollStack;
@@ -55,9 +58,12 @@ namespace Game {
             m_rightInputLabel = Children.Find<LabelWidget>("GVOscilloscopeScreen.RightInput");
             m_bottomInputLabel = Children.Find<LabelWidget>("GVOscilloscopeScreen.BottomInput");
             m_leftInputLabel = Children.Find<LabelWidget>("GVOscilloscopeScreen.LeftInput");
-            m_stopButton = Children.Find<ButtonWidget>("GVOscilloscopeScreen.Stop");
+            m_pauseButton = Children.Find<ButtonWidget>("GVOscilloscopeScreen.Pause");
             m_stepButton = Children.Find<ButtonWidget>("GVOscilloscopeScreen.Step");
             m_jumpButton = Children.Find<ButtonWidget>("GVOscilloscopeScreen.Jump");
+            m_pauseIcon = Children.Find<RectangleWidget>("GVOscilloscopeScreen.PauseIcon");
+            m_continueSubtexture = ContentManager.Get<Subtexture>("Textures/Gui/GVContinue");
+            m_pauseSubtexture = ContentManager.Get<Subtexture>("Textures/Gui/GVPause");
             m_canvas = Children.Find<CanvasWidget>("GVOscilloscopeScreen.Canvas");
             m_scrollPanel = Children.Find<ScrollPanelWidget>("GVOscilloscopeScreen.ScrollPanel");
             m_scrollStack = Children.Find<StackPanelWidget>("GVOscilloscopeScreen.ScrollStack");
@@ -88,6 +94,7 @@ namespace Game {
                 m_lastScrollPosition = 0f;
                 m_placeholder1.Size = new Vector2(1, 0);
                 m_placeholder2.Size = new Vector2(1, 0);
+                m_pauseIcon.Subtexture = m_electricity.debugMode ? m_continueSubtexture : m_pauseSubtexture;
             }
             catch (Exception e) {
                 Log.Error(e);
@@ -95,7 +102,7 @@ namespace Game {
         }
 
         public override void Update() {
-            m_stopButton.IsChecked = false;
+            m_pauseButton.IsChecked = false;
             m_stepButton.IsChecked = false;
             m_jumpButton.IsChecked = false;
             uint[] lastRecord = m_data.LastRecord;
@@ -115,9 +122,9 @@ namespace Game {
                     }
                 }
             }
-            if (m_stopButton.IsClicked
+            if (m_pauseButton.IsClicked
                 || Keyboard.IsKeyDownOnce(Key.F5)) {
-                m_stopButton.IsChecked = true;
+                m_pauseButton.IsChecked = true;
                 m_electricity.debugMode = !m_electricity.debugMode;
                 if (m_electricity.debugMode) {
                     m_electricity.last1000Updates.Clear();
@@ -152,6 +159,7 @@ namespace Game {
             if (!m_electricity.debugMode) {
                 m_electricity.Update(Math.Clamp(m_subsystemTime.GameTimeDelta, 0f, 0.1f));
             }
+            m_pauseIcon.Subtexture = m_electricity.debugMode ? m_continueSubtexture : m_pauseSubtexture;
             if (m_topButton.IsClicked
                 || m_rightButton.IsClicked
                 || m_bottomButton.IsClicked

@@ -78,7 +78,7 @@
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 							<GVTextBoxWidget Name="EditGVUintDialog.OctTextBox" Text="0" Size="160, 30" MaximumLength="13" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
-						<BitmapButtonWidget Name="EditGVUintDialog.CopyOct" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+						<BitmapButtonWidget Name="EditGVUintDialog.CopyOct" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
 					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
 						<CheckboxWidget Name="EditGVUintDialog.DecCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24" VerticalAlignment="Center"/>
@@ -87,7 +87,7 @@
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 							<GVTextBoxWidget Name="EditGVUintDialog.DecTextBox" Text="0" Size="160, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
-						<BitmapButtonWidget Name="EditGVUintDialog.CopyDec" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+						<BitmapButtonWidget Name="EditGVUintDialog.CopyDec" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
 					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
 						<CheckboxWidget Name="EditGVUintDialog.HexCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24" VerticalAlignment="Center"/>
@@ -96,12 +96,12 @@
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 							<GVTextBoxWidget Name="EditGVUintDialog.HexTextBox" Text="0" Size="160, 30" MaximumLength="8" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
-						<BitmapButtonWidget Name="EditGVUintDialog.CopyHex" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+						<BitmapButtonWidget Name="EditGVUintDialog.CopyHex" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
 					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
 						<LabelWidget Text="[EditGVUintDialog:3]"/>
 						<LabelWidget Name="EditGVUintDialog.FixedLabel" Text="0.0" VerticalAlignment="Center"/>
-						<BitmapButtonWidget Name="EditGVUintDialog.CopyFixed" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Copy}" ClickedSubtexture="{Textures/Copy}" Margin="10, 0"/>
+						<BitmapButtonWidget Name="EditGVUintDialog.CopyFixed" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
 					<CanvasWidget Size="400, 0"/>
 				</StackPanelWidget>
@@ -111,7 +111,7 @@
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardShiftRight" Size="70, 50" Text="&gt;&gt;" Margin="5, 5"/>
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardNegate" Size="70, 50" Text="~" FontScale="1.2" Margin="5, 5"/>
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardBackSpace" Size="70, 50" Margin="5, 5">
-							<RectangleWidget Size="24, 24" Subtexture="{Textures/Delete}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+							<RectangleWidget Size="24, 24" Subtexture="{Textures/Gui/GVDelete}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 						</BevelledButtonWidget>
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardClearEntry" Size="70, 50" Text="CE" Margin="5, 5"/>
 					</StackPanelWidget>
