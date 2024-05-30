@@ -681,13 +681,13 @@ namespace Game {
         public void Dispose() {
             m_texture.Dispose();
             foreach (RenderTarget2D renderTarget in m_cachedWaveRenderTargets) {
-                renderTarget.Dispose();
+                renderTarget?.Dispose();
             }
             foreach (RenderTarget2D renderTarget in m_cachedBlurRenderTargets) {
-                renderTarget.Dispose();
+                renderTarget?.Dispose();
             }
             foreach (RenderTarget2D renderTarget in m_cachedTempBlurRenderTargets) {
-                renderTarget.Dispose();
+                renderTarget?.Dispose();
             }
             Records.Clear();
         }

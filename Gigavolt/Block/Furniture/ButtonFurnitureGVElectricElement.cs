@@ -3,50 +3,28 @@ using Engine;
 namespace Game {
     public class ButtonFurnitureGVElectricElement : FurnitureGVElectricElement {
         public uint m_voltage;
-
-        public bool m_wasPressed;
+        public ButtonFurnitureElectricElement m_originalElement;
 
         public ButtonFurnitureGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point) : base(subsystemGVElectricity, point) { }
-
-        public void Press() {
-            if (!m_wasPressed
-                && !IsSignalHigh(m_voltage)) {
-                m_wasPressed = true;
-                GVCellFace cellFace = CellFaces[0];
-                SubsystemGVElectricity.SubsystemAudio.PlaySound(
-                    "Audio/Click",
-                    1f,
-                    0f,
-                    new Vector3(cellFace.X, cellFace.Y, cellFace.Z),
-                    2f,
-                    true
-                );
-                SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 1);
-            }
-        }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
             uint voltage = m_voltage;
-            if (m_wasPressed) {
-                m_wasPressed = false;
-                m_voltage = uint.MaxValue;
-                SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 10);
-            }
-            else {
-                m_voltage = 0u;
-            }
+            m_voltage = (m_originalElement?.m_voltage ?? 0u) > 0u ? uint.MaxValue : 0u;
+            SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 1);
             return m_voltage != voltage;
         }
 
-        public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
-            Press();
-            return true;
+        public override void OnAdded() {
+            GVCellFace cellFace = CellFaces[0];
+            if (SubsystemGVElectricity.Project.FindSubsystem<SubsystemElectricity>(true).GetElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face) is ButtonFurnitureElectricElement element) {
+                m_originalElement = element;
+            }
         }
 
-        public override void OnHitByProjectile(CellFace cellFace, WorldItem worldItem) {
-            Press();
+        public override void OnRemoved() {
+            m_originalElement = null;
         }
     }
 }
