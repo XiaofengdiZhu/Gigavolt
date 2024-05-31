@@ -107,6 +107,9 @@ namespace Game {
             catch (Exception ex) {
                 Log.Error(ex);
             }
+            foreach (GVArrayData data in GVStaticStorage.GVMBIDDataDictionary.Values) {
+                data.ClearCache();
+            }
             GVStaticStorage.GVMBIDDataDictionary.Clear();
             base.Dispose();
         }

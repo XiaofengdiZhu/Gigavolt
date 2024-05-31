@@ -248,8 +248,9 @@ namespace Game {
         }
 
         public static List<uint> Shorts2UintList(short[] shorts) {
-            List<uint> image = new(shorts.Length / 2 + 1);
-            for (int i = 0; i < image.Count; i++) {
+            int imageLength = shorts.Length / 2 + 1;
+            List<uint> image = new(imageLength);
+            for (int i = 0; i < imageLength; i++) {
                 if (i * 2 >= shorts.Length) {
                     break;
                 }

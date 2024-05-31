@@ -467,17 +467,20 @@ namespace Game {
 
         public override Image Data2Image() {
             if (m_isDataInitialized
-                && m_xOffset + m_xSize < m_xLength
-                && m_yOffset + m_ySize < m_yLength
+                && m_xSize > 0
+                && m_ySize > 0
+                && m_xOffset + m_xSize <= m_xLength
+                && m_yOffset + m_ySize <= m_yLength
                 && m_zOffset < m_zLength
                 && m_wOffset < m_wLength
                 && Data.TryGetValue(m_wOffset, out Image<Rgba32> image)) {
                 Image newImage = new(m_xSize, m_ySize);
                 for (int y = m_yOffset; y < m_yOffset + m_ySize; y++) {
                     for (int x = m_xOffset; x < m_xOffset + m_xSize; x++) {
-                        newImage.SetPixelFast(x, y, new Rgba32(image[x, y].PackedValue));
+                        newImage.SetPixelFast(x, y, new Rgba32(image.Frames[m_zOffset][x, y].PackedValue));
                     }
                 }
+                m_cachedImage?.m_trueImage.Dispose();
                 return newImage;
             }
             return null;

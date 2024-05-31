@@ -109,7 +109,6 @@ namespace Game {
             catch (Exception ex) {
                 Log.Error(ex);
             }
-            GVStaticStorage.GVMBIDDataDictionary.Clear();
             base.Dispose();
         }
     }

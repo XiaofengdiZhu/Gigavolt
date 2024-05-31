@@ -679,7 +679,7 @@ namespace Game {
         }
 #pragma warning restore CS0618 // 类型或成员已过时
         public void Dispose() {
-            m_texture.Dispose();
+            m_texture?.Dispose();
             foreach (RenderTarget2D renderTarget in m_cachedWaveRenderTargets) {
                 renderTarget?.Dispose();
             }

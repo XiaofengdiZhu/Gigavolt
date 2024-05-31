@@ -414,17 +414,14 @@ namespace Game {
                             case 256u:
                                 memoryBankData.m_width = inInput;
                                 memoryBankData.m_updateTime = DateTime.Now;
-                                memoryBankData.m_dataChanged = true;
                                 break;
                             case 257u:
                                 memoryBankData.m_height = inInput;
                                 memoryBankData.m_updateTime = DateTime.Now;
-                                memoryBankData.m_dataChanged = true;
                                 break;
                             case 258u:
                                 memoryBankData.m_offset = inInput;
                                 memoryBankData.m_updateTime = DateTime.Now;
-                                memoryBankData.m_dataChanged = true;
                                 break;
                             case 272u:
                                 m_voltage = memoryBankData.m_width;

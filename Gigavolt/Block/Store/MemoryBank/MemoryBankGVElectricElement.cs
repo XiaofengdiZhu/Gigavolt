@@ -91,10 +91,10 @@ namespace Game {
                 if (!flag3) {
                     m_writeAllowed = true;
                 }
-                memoryBankData.LastOutput = m_voltage;
                 if (!hasInput) {
                     m_voltage = memoryBankData.m_ID;
                 }
+                memoryBankData.LastOutput = m_voltage;
             }
             return m_voltage != voltage;
         }

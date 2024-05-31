@@ -95,7 +95,6 @@ namespace Game {
             if (m_isDataInitialized) {
                 if (m_cachedImage == null
                     || m_updateTime != m_cachedImageTime) {
-                    m_cachedImage = null;
                     m_cachedImage = Data2Image();
                     m_cachedImageTime = m_updateTime;
                 }
@@ -284,5 +283,17 @@ namespace Game {
         public virtual void UintArray2Data(uint[] uints, int width = 0, int height = 0) { }
         public virtual uint[] Data2UintArray() => null;
         public uint[] GetUintArray() => m_isDataInitialized ? Data2UintArray() : null;
+
+        public void ClearCache() {
+            m_cachedTexture2D?.Dispose();
+            m_cachedTexture2D = null;
+            m_cachedTerrainTexture2D?.Dispose();
+            m_cachedTerrainTexture2D = null;
+            m_cachedImage?.m_trueImage.Dispose();
+            m_cachedImage = null;
+            m_cachedBytes = null;
+            m_cachedString = null;
+            m_cachedShorts = null;
+        }
     }
 }

@@ -13,11 +13,10 @@ namespace Game {
         public readonly DrawBlockEnvironmentData m_drawBlockEnvironmentData = new();
         public readonly Dictionary<List<GVDisplayPoint>, bool> m_points = new();
         public Texture2D BlocksTexture;
-        public TexturedBatch3D[] m_batches = new TexturedBatch3D[2];
 
         public PrimitivesRenderer3D m_primitivesRenderer = new();
 
-        public static int[] m_drawOrders = { 112 };
+        public static int[] m_drawOrders = [112];
 
         public int[] DrawOrders => m_drawOrders;
 
@@ -128,49 +127,51 @@ namespace Game {
                             Color color = Color.MultiplyColorOnly(key.Color, LightingManager.LightIntensityByLightValue[lightValue]);
                             if (key.Type == 2) {
                                 // 绘制地层
-                                m_primitivesRenderer.TexturedBatch(
-                                        data.GetTerrainTexture2D(samplerState),
-                                        false,
-                                        0,
-                                        DepthStencilState.DepthRead,
-                                        RasterizerState.CullCounterClockwiseScissor,
-                                        BlendState.NonPremultiplied,
-                                        samplerState
-                                    )
-                                    .QueueQuad(
-                                        position + right - up + forward,
-                                        position - right - up + forward,
-                                        position - right + up + forward,
-                                        position + right + up + forward,
-                                        new Vector2(1f, 1f),
-                                        new Vector2(0f, 1f),
-                                        new Vector2(0f, 0f),
-                                        new Vector2(1f, 0f),
-                                        color
-                                    );
+                                TexturedBatch3D batch = new() {
+                                    Texture = data.GetTerrainTexture2D(samplerState),
+                                    UseAlphaTest = false,
+                                    Layer = 0,
+                                    DepthStencilState = DepthStencilState.DepthRead,
+                                    RasterizerState = RasterizerState.CullCounterClockwiseScissor,
+                                    BlendState = BlendState.NonPremultiplied,
+                                    SamplerState = samplerState
+                                };
+                                batch.QueueQuad(
+                                    position + right - up + forward,
+                                    position - right - up + forward,
+                                    position - right + up + forward,
+                                    position + right + up + forward,
+                                    new Vector2(1f, 1f),
+                                    new Vector2(0f, 1f),
+                                    new Vector2(0f, 0f),
+                                    new Vector2(1f, 0f),
+                                    color
+                                );
+                                batch.Flush(camera.ViewProjectionMatrix);
                             }
                             else {
                                 //绘制图片
-                                m_primitivesRenderer.TexturedBatch(
-                                        data.GetTexture2D(),
-                                        false,
-                                        0,
-                                        DepthStencilState.DepthRead,
-                                        RasterizerState.CullCounterClockwiseScissor,
-                                        BlendState.NonPremultiplied,
-                                        samplerState
-                                    )
-                                    .QueueQuad(
-                                        position + right - up + forward,
-                                        position - right - up + forward,
-                                        position - right + up + forward,
-                                        position + right + up + forward,
-                                        new Vector2(1f, 1f),
-                                        new Vector2(0f, 1f),
-                                        new Vector2(0f, 0f),
-                                        new Vector2(1f, 0f),
-                                        color
-                                    );
+                                TexturedBatch3D batch = new() {
+                                    Texture = data.GetTexture2D(),
+                                    UseAlphaTest = false,
+                                    Layer = 0,
+                                    DepthStencilState = DepthStencilState.DepthRead,
+                                    RasterizerState = RasterizerState.CullCounterClockwiseScissor,
+                                    BlendState = BlendState.NonPremultiplied,
+                                    SamplerState = samplerState
+                                };
+                                batch.QueueQuad(
+                                    position + right - up + forward,
+                                    position - right - up + forward,
+                                    position - right + up + forward,
+                                    position + right + up + forward,
+                                    new Vector2(1f, 1f),
+                                    new Vector2(0f, 1f),
+                                    new Vector2(0f, 0f),
+                                    new Vector2(1f, 0f),
+                                    color
+                                );
+                                batch.Flush(camera.ViewProjectionMatrix);
                             }
                         }
                     }
@@ -183,24 +184,6 @@ namespace Game {
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             BlocksTexture = Project.FindSubsystem<SubsystemBlocksTexture>(true).BlocksTexture;
-            m_batches[0] = m_primitivesRenderer.TexturedBatch(
-                BlocksTexture,
-                false,
-                0,
-                DepthStencilState.DepthRead,
-                RasterizerState.CullCounterClockwiseScissor,
-                BlendState.NonPremultiplied,
-                SamplerState.AnisotropicClamp
-            );
-            m_batches[1] = m_primitivesRenderer.TexturedBatch(
-                BlocksTexture,
-                false,
-                0,
-                DepthStencilState.DepthRead,
-                RasterizerState.CullCounterClockwiseScissor,
-                BlendState.NonPremultiplied,
-                SamplerState.PointClamp
-            );
         }
     }
 }

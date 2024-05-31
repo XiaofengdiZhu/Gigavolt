@@ -85,10 +85,9 @@ namespace Game {
                 m_wOffsetTextBox.Text = m_memoryBankData.m_wOffset.ToString();
                 m_widthTextBox.Text = m_memoryBankData.m_xSize.ToString();
                 m_heightTextBox.Text = m_memoryBankData.m_ySize.ToString();
-                if (m_memoryBankData.Data.Count > 100000) {
+                if (m_memoryBankData.m_wLength * m_memoryBankData.m_zLength * m_memoryBankData.m_yLength * m_memoryBankData.m_xLength > 100000) {
                     m_linearTextBox.Text = LanguageControl.Get(GetType().Name, 1);
                     m_linearTextBox.IsEnabled = false;
-                    m_okButton.IsEnabled = false;
                 }
                 else {
                     m_linearTextBox.Text = m_memoryBankData.GetString();
@@ -129,13 +128,18 @@ namespace Game {
                         && int.TryParse(m_heightTextBox.Text, out int height)
                         && height >= 0) {
                         try {
-                            m_memoryBankData.String2Data(
-                                m_linearTextBox.Text,
-                                ref xLength,
-                                ref yLength,
-                                ref zLength,
-                                ref wLength
-                            );
+                            if (m_linearTextBox.Text != LanguageControl.Get(GetType().Name, 1)) {
+                                m_memoryBankData.String2Data(
+                                    m_linearTextBox.Text,
+                                    ref xLength,
+                                    ref yLength,
+                                    ref zLength,
+                                    ref wLength
+                                );
+                            }
+                            else {
+                                m_memoryBankData.m_updateTime = DateTime.Now;
+                            }
                             m_memoryBankData.m_xOffset = xOffset;
                             m_memoryBankData.m_yOffset = yOffset;
                             m_memoryBankData.m_zOffset = zOffset;
