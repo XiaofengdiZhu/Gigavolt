@@ -655,10 +655,16 @@ namespace Game {
             m_subsystemFluidBlockBehavior = Project.FindSubsystem<SubsystemFluidBlockBehavior>(true);
             m_subsystemFireBlockBehavior = Project.FindSubsystem<SubsystemFireBlockBehavior>(true);
             foreach (ValuesDictionary item in valuesDictionary.GetValue<ValuesDictionary>("GVProjectiles").Values.Where(v => v is ValuesDictionary)) {
+                Vector3 velocity = item.GetValue<Vector3>("Velocity");
+                if (float.IsNaN(velocity.X)
+                    || float.IsNaN(velocity.Y)
+                    || float.IsNaN(velocity.Z)) {
+                    velocity = Vector3.Zero;
+                }
                 Projectile projectile = new() {
                     Value = item.GetValue<int>("Value"),
                     Position = item.GetValue<Vector3>("Position"),
-                    Velocity = item.GetValue<Vector3>("Velocity"),
+                    Velocity = velocity,
                     CreationTime = item.GetValue<double>("CreationTime"),
                     DisableGravity = item.GetValue<bool>("DisableGravity"),
                     DisableDamping = item.GetValue<bool>("DisableDamping"),

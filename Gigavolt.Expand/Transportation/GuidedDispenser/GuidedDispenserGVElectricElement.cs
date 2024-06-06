@@ -106,8 +106,16 @@ namespace Game {
         public static Vector3 GetDirection(Vector3 origin, Vector3 target) {
             Vector3 direction = Vector3.Zero;
             double l = Math.Sqrt((double)(target.X - origin.X) * (target.X - origin.X) + (double)(target.Z - origin.Z) * (target.Z - origin.Z));
-            double angle = Math.Atan(Math.Abs((double)(target.X - origin.X) / (target.Z - origin.Z)));
             double h = target.Y - origin.Y;
+            if (l <= 0.05f) {
+                direction.X = 0f;
+                direction.Z = 0f;
+                if (h > 0) {
+                    direction.Y = (float)(Math.Sqrt(h / 5) * 10);
+                }
+                return direction;
+            }
+            double angle = Math.Atan(Math.Abs((double)(target.X - origin.X) / (target.Z - origin.Z)));
             if (h > l
                 || h > 5) {
                 double t = Math.Sqrt(h / 5);
