@@ -139,6 +139,7 @@
 		<Compile Include="Block\Output\Piston\GVPistonBlock.cs"/>
 		<Compile Include="Block\Output\Piston\GVPistonData.cs"/>
 		<Compile Include="Block\Output\Piston\GVPistonHeadBlock.cs"/>
+		<Compile Include="Block\Output\Piston\GVPistonMode.cs"/>
 		<Compile Include="Block\Output\Piston\PistonGVElectricElement.cs"/>
 		<Compile Include="Block\Output\Piston\SubsystemGVMovingBlocks.cs"/>
 		<Compile Include="Block\Output\Piston\SubsystemGVPistonBlockBehavior.cs"/>

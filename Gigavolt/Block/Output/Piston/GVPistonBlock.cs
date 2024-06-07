@@ -13,12 +13,12 @@ namespace Game {
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Pistons");
-            for (PistonMode pistonMode = PistonMode.Pushing; pistonMode <= PistonMode.StrictPulling; pistonMode++) {
+            for (GVPistonMode GVPistonMode = GVPistonMode.Pushing; GVPistonMode <= GVPistonMode.Complex; GVPistonMode++) {
                 for (int i = 0; i < 2; i++) {
                     string name = i == 0 ? "PistonRetracted" : "PistonExtended";
                     Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(name).ParentBone);
                     for (int j = 0; j < 6; j++) {
-                        int num = SetFace(SetIsExtended(SetMode(0, pistonMode), i != 0), j);
+                        int num = SetFace(SetIsExtended(SetMode(0, GVPistonMode), i != 0), j);
                         Matrix m = j < 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f + (float)Math.PI) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
                             j != 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) : Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                         m_blockMeshesByData[num] = new BlockMesh();
@@ -33,20 +33,23 @@ namespace Game {
                             Color.White
                         );
                         if (i == 0) {
-                            switch (pistonMode) {
-                                case PistonMode.Pulling:
+                            switch (GVPistonMode) {
+                                case GVPistonMode.Pulling:
                                     m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 1 << j);
                                     break;
-                                case PistonMode.StrictPulling:
+                                case GVPistonMode.StrictPulling:
                                     m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 1 << j);
+                                    break;
+                                case GVPistonMode.Complex:
+                                    m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 1 << j);
                                     break;
                             }
                         }
                     }
                 }
                 Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("PistonRetracted").ParentBone);
-                m_standaloneBlockMeshes[(int)pistonMode] = new BlockMesh();
-                m_standaloneBlockMeshes[(int)pistonMode]
+                m_standaloneBlockMeshes[(int)GVPistonMode] = new BlockMesh();
+                m_standaloneBlockMeshes[(int)GVPistonMode]
                 .AppendModelMeshPart(
                     model.FindMesh("PistonRetracted").MeshParts[0],
                     boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.5f, 0f),
@@ -56,12 +59,15 @@ namespace Game {
                     false,
                     Color.White
                 );
-                switch (pistonMode) {
-                    case PistonMode.Pulling:
-                        m_standaloneBlockMeshes[(int)pistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 4);
+                switch (GVPistonMode) {
+                    case GVPistonMode.Pulling:
+                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 4);
                         break;
-                    case PistonMode.StrictPulling:
-                        m_standaloneBlockMeshes[(int)pistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 4);
+                    case GVPistonMode.StrictPulling:
+                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 4);
+                        break;
+                    case GVPistonMode.Complex:
+                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 4);
                         break;
                 }
             }
@@ -112,24 +118,26 @@ namespace Game {
             }
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new PistonGVElectricElement(subsystemGVElectricity, new Point3(x, y, z));
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new PistonGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), GetMode(Terrain.ExtractData(value)) == GVPistonMode.Complex);
 
         public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) => GVElectricConnectorType.Input;
 
         public int GetConnectionMask(int value) => int.MaxValue;
 
         public override IEnumerable<int> GetCreativeValues() {
-            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, PistonMode.Pushing));
-            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, PistonMode.Pulling));
-            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, PistonMode.StrictPulling));
+            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, GVPistonMode.Pushing));
+            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, GVPistonMode.Pulling));
+            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, GVPistonMode.StrictPulling));
+            yield return Terrain.MakeBlockValue(Index, 0, SetMode(0, GVPistonMode.Complex));
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Mode2Name(GetMode(Terrain.ExtractData(value)));
 
-        public static string Mode2Name(PistonMode mode) {
+        public static string Mode2Name(GVPistonMode mode) {
             switch (mode) {
-                case PistonMode.Pulling: return "GV粘性活塞";
-                case PistonMode.StrictPulling: return "GV严格粘性活塞";
+                case GVPistonMode.Pulling: return "GV粘性活塞";
+                case GVPistonMode.StrictPulling: return "GV严格粘性活塞";
+                case GVPistonMode.Complex: return "GV复杂活塞";
                 default: return "GV活塞";
             }
         }
@@ -158,20 +166,23 @@ namespace Game {
             showDebris = true;
         }
 
-        public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 6) & 4095) > 0;
+        public override bool IsNonDuplicable_(int value) {
+            int data = Terrain.ExtractData(value);
+            return GetMode(data) != GVPistonMode.Complex && ((data >> 6) & 4095) > 0;
+        }
+
+        public override bool IsEditable_(int value) => GetMode(Terrain.ExtractData(value)) != GVPistonMode.Complex;
 
         public static bool GetIsExtended(int data) => (data & 1) != 0;
 
         public static int SetIsExtended(int data, bool isExtended) => (data & -2) | (isExtended ? 1 : 0);
 
-        public static PistonMode GetMode(int data) => (PistonMode)((data >> 1) & 3);
+        public static GVPistonMode GetMode(int data) => (GVPistonMode)((data >> 1) & 3);
 
-        public static int SetMode(int data, PistonMode mode) => (data & -7) | (((int)mode & 3) << 1);
+        public static int SetMode(int data, GVPistonMode mode) => (data & -7) | (((int)mode & 3) << 1);
 
         public static int GetFace(int data) => (data >> 3) & 7;
 
         public static int SetFace(int data, int face) => (data & -57) | ((face & 7) << 3);
-        public static bool GetTransparent(int data) => ((data >> 17) & 1) == 1;
-        public static int SetTransparent(int data, bool transparent) => (data & -131073) | (transparent ? 131072 : 0);
     }
 }

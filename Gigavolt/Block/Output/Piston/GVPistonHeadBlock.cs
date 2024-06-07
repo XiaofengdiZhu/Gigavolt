@@ -13,7 +13,7 @@ namespace Game {
             for (int i = 0; i < 2; i++) {
                 string name = i == 0 ? "PistonHead" : "PistonShaft";
                 Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(name).ParentBone);
-                for (PistonMode pistonMode = PistonMode.Pushing; pistonMode <= PistonMode.StrictPulling; pistonMode++) {
+                for (GVPistonMode pistonMode = GVPistonMode.Pushing; pistonMode <= GVPistonMode.Complex; pistonMode++) {
                     for (int j = 0; j < 6; j++) {
                         int num = SetFace(SetMode(SetIsShaft(0, i != 0), pistonMode), j);
                         Matrix m = j < 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f + (float)Math.PI) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
@@ -30,11 +30,14 @@ namespace Game {
                             Color.White
                         );
                         switch (pistonMode) {
-                            case PistonMode.Pulling:
+                            case GVPistonMode.Pulling:
                                 m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 1 << j);
                                 break;
-                            case PistonMode.StrictPulling:
+                            case GVPistonMode.StrictPulling:
                                 m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 1 << j);
+                                break;
+                            case GVPistonMode.Complex:
+                                m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 1 << j);
                                 break;
                         }
                     }
@@ -84,9 +87,9 @@ namespace Game {
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) { }
 
-        public static PistonMode GetMode(int data) => (PistonMode)(data & 3);
+        public static GVPistonMode GetMode(int data) => (GVPistonMode)(data & 3);
 
-        public static int SetMode(int data, PistonMode mode) => (data & -4) | ((int)mode & 3);
+        public static int SetMode(int data, GVPistonMode mode) => (data & -4) | ((int)mode & 3);
 
         public static bool GetIsShaft(int data) => (data & 4) != 0;
 

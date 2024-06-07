@@ -14,6 +14,7 @@
       * [端口定义 Input Definition](#端口定义-input-definition)
       * [音频转换 Sound Conversion](#音频转换-sound-conversion)
     * [发射器 Dispenser](#发射器-dispenser)
+    * [复杂活塞 Complex Piston](#复杂活塞-complex-piston)
     * [告示牌 Sign](#告示牌-sign)
 * [十亿伏特·扩展 GigaVoltage.Expand](#十亿伏特扩展-gigavoltageexpand)
   * [简介 Introduction](#简介-introduction-1)
@@ -25,17 +26,19 @@
       * [端口定义 Input&Output Definition](#端口定义-inputoutput-definition)
       * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input)
     * [四维存储器 Four Dimensional Memory Bank](#四维存储器-four-dimensional-memory-bank)
+      * [端口定义 Input&Output Definition](#端口定义-inputoutput-definition-1)
+      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-1)
     * [多存储器操作器 Memory Banks Operator](#多存储器操作器-memory-banks-operator)
       * [端口定义 Input Definition](#端口定义-input-definition-1)
-      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-1)
+      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-2)
     * [地形射线探测器 Terrain Raycast Detector](#地形射线探测器-terrain-raycast-detector)
     * [地形扫描仪 Terrain Scanner](#地形扫描仪-terrain-scanner)
     * [玩家监视器 Player Monitor](#玩家监视器-player-monitor)
       * [端口定义 Input Definition](#端口定义-input-definition-2)
-      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-2)
+      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-3)
     * [玩家控制器 Player Controller](#玩家控制器-player-controller)
       * [端口定义 Input Definition](#端口定义-input-definition-3)
-      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-3)
+      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-4)
     * [照相机 Camera](#照相机-camera)
       * [简单照相机 Simple Camera](#简单照相机-simple-camera)
       * [复杂照相机](#复杂照相机)
@@ -45,7 +48,7 @@
     * [制导发射器 Guided Dispenser](#制导发射器-guided-dispenser)
     * [箱子控制器 Inventory Controller](#箱子控制器-inventory-controller)
       * [端口定义 Input Definition](#端口定义-input-definition-4)
-      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-4)
+      * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-5)
     * [JS单片机 Javascript Microcontroller](#js单片机-javascript-microcontroller)
   * [复数方块 Multiple Blocks](#复数方块-multiple-blocks)
     * [更多两入两出电路板 More Two In Two Out Electrics](#更多两入两出电路板-more-two-in-two-out-electrics)
@@ -76,26 +79,26 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 > 以上方块的原版可通过变压器，将十亿伏特电压转换为原版电压后再操作原版  
 > 原版家具可直接产生、接收十亿伏特电压
 
-| 方块            | 原版                             | 十亿伏特版                                                                                             |
-|---------------|--------------------------------|---------------------------------------------------------------------------------------------------|
-| 导线            | 创造模式提供7色                       | 创造模式提供14色                                                                                         |
-| SR锁存器         | S端高压才储存                        | S端非0即储存                                                                                           |
-| 开关、按钮、电池      | 默认输出1.5V                       | 默认输出0xFFFFFFFF V，其他原本默认输出1.5V的也改为默认输出此电压，不提供与原版完全一致的经典版。其中按钮可自定义输出的持续周期数。其中按钮和开关提供有色版本，不会与异色导线相连接 |
-| 计数器           | 默认溢出电压为0x10V，初始电压为0 V，上限为0xF V | 默认溢出电压为0V，上限0xFFFFFFFF V，可设置溢出、初始电压，还能直接调整当前电压                                                    |
-| 真值表           | 略                              | 除了能像经典版一样根据指定的输入输出电压，还能编写公式输出计算结果，详见[详细-真值表](#真值表-truth-table)                                    |
-| 存储器           | 略                              | 宽、高上限提高到了2^31-1，详见[详细-存储器](#存储器-memory-band)                                                      |
-| 实时钟           | 略                              | 详见[详细-实时钟](#实时钟-real-time-clock)                                                                  |
-| 数模转换器         | 略                              | 变更为4个合并器，分别是4个1位合并成4位、4个2位合并成8位、4个4位合并成16位，4个8位合并成32位，对于要被合并的输入，会在合并前分别取它们最低的1、2、4、8位后，按顺序进行合并    |
-| 模数转换器         | 略                              | 和数模转换器类似，被变更为4个拆分器，同理，输入在拆分前会被分别取最低的4、8、16、32位，再按顺序输出拆分结果                                         |
-| 声音发生器         | 略                              | 输出是现实世界的时间，详见[详细-声音发生器](#声音发生器-sound-generator)                                                   |
-| 压力板           | 有压力时输出0.8\~1.5V，随意设置的压力与电压关系   | 输出准确的压力值，参考16进制结果：男性玩家0x46V，虎鲸0x5DC V                                                             |
-| 活塞            | 0.8V开始伸长                       | 1V开始伸长，提高了伸长、推动或推拉、速度上限（黏住过多时卡住是游戏其他子系统问题），新增隐藏延长杆的选项，不提供与原版完全一致的经典版                              |
-| 彩色LED、1面LED   | 0.8\~1.5V对应不同颜色。输入0V时显示。       | 所有电压对应不同颜色（ABGR格式）。1面LED使用独立的新发光子系统，支持半透明，可无缝拼接。输入0时不显示。                                          |
-| 靶子            | 输出0.8\~1.5V                    | 输出0\~0xFFFFFF00 V，因游戏坐标精度问题，最低8位为0                                                                |
-| 电子雷管          | 输入0.8v及以上电压产生威力为10的爆炸          | 输入0v以上电压产生威力等于电压的爆炸，输入0xFFFFFFFF V有彩蛋                                                             |
-| 大门、栅栏门、活板门、活塞 | 收到的电压由0.7V及以下上升到0.8V及以上后开门或关门  | 根据输入的电压强度打开或部分打开，0V关门，0x2D V打开45度，0x5A V及以上完全打开；不提供与原版完全一致的经典版                                    |
-| 发射器           | 略                              | 可以通过输入的电压来控制射出的速度、角度等，一旦电压变化就会尝试发射，详见[详细-发射器](#发射器-dispenser)                                     |
-| 告示牌           | 略                              | 不仅具有原版的显示文字、弹出提示功能，还可以额外悬浮显示文字，详见[详细-告示牌](#告示牌-sign)                                              |
+| 方块            | 原版                             | 十亿伏特版                                                                                                            |
+|---------------|--------------------------------|------------------------------------------------------------------------------------------------------------------|
+| 导线            | 创造模式提供7色                       | 创造模式提供14色                                                                                                        |
+| SR锁存器         | S端高压才储存                        | S端非0即储存                                                                                                          |
+| 开关、按钮、电池      | 默认输出1.5V                       | 默认输出0xFFFFFFFF V，其他原本默认输出1.5V的也改为默认输出此电压，不提供与原版完全一致的经典版。其中按钮可自定义输出的持续周期数。其中按钮和开关提供有色版本，不会与异色导线相连接                |
+| 计数器           | 默认溢出电压为0x10V，初始电压为0 V，上限为0xF V | 默认溢出电压为0V，上限0xFFFFFFFF V，可设置溢出、初始电压，还能直接调整当前电压                                                                   |
+| 真值表           | 略                              | 除了能像经典版一样根据指定的输入输出电压，还能编写公式输出计算结果，详见[详细-真值表](#真值表-truth-table)                                                   |
+| 存储器           | 略                              | 宽、高上限提高到了2^31-1，详见[详细-存储器](#存储器-memory-band)                                                                     |
+| 实时钟           | 略                              | 详见[详细-实时钟](#实时钟-real-time-clock)                                                                                 |
+| 数模转换器         | 略                              | 变更为4个合并器，分别是4个1位合并成4位、4个2位合并成8位、4个4位合并成16位，4个8位合并成32位，对于要被合并的输入，会在合并前分别取它们最低的1、2、4、8位后，按顺序进行合并                   |
+| 模数转换器         | 略                              | 和数模转换器类似，被变更为4个拆分器，同理，输入在拆分前会被分别取最低的4、8、16、32位，再按顺序输出拆分结果                                                        |
+| 声音发生器         | 略                              | 输出是现实世界的时间，详见[详细-声音发生器](#声音发生器-sound-generator)                                                                  |
+| 压力板           | 有压力时输出0.8\~1.5V，随意设置的压力与电压关系   | 输出准确的压力值，参考16进制结果：男性玩家0x46V，虎鲸0x5DC V                                                                            |
+| 活塞            | 0.8V开始伸长                       | 1V开始伸长，提高了伸长、推动或推拉、速度上限（黏住过多时卡住是游戏其他子系统问题），新增隐藏延长杆的选项（移动生效）；不提供与原版完全一致的经典版，另有[复杂版](#复杂活塞-complex-piston)         |
+| 彩色LED、1面LED   | 0.8\~1.5V对应不同颜色。输入0V时显示。       | 所有电压对应不同颜色（ABGR格式）。1面LED使用独立的新发光子系统，支持半透明，可无缝拼接。输入0时不显示。                                                         |
+| 靶子            | 输出0.8\~1.5V                    | 输出0\~0xFFFFFF00 V，因游戏坐标精度问题，最低8位为0                                                                               |
+| 电子雷管          | 输入0.8v及以上电压产生威力为10的爆炸          | 输入0v以上电压产生威力等于电压的爆炸，输入0xFFFFFFFF V有彩蛋                                                                            |
+| 大门、栅栏门、活板门、活塞 | 收到的电压由0.7V及以下上升到0.8V及以上后开门或关门  | 根据输入的电压强度打开或部分打开，0V关门，0x2D V打开45度，0x5A V及以上完全打开；不提供与原版完全一致的经典版                                                   |
+| 发射器           | 略                              | 可以通过输入的电压来控制射出的速度、角度等，一旦电压变化就会尝试发射，详见[详细-发射器](#发射器-dispenser)                                                    |
+| 告示牌           | 略                              | 不仅具有原版的显示文字、弹出提示功能，还可以额外悬浮显示文字，详见[详细-告示牌](#告示牌-sign)                                                             |
 ## 新增 New
 | 名称       | 特性                                                                       |
 |----------|--------------------------------------------------------------------------|
@@ -180,6 +183,18 @@ png要求颜色模式为24位带透明通道的RGB模式，因为游戏引擎的
 | 28     | 为1时与非空气、流体相撞时，投射物将自身放置到世界中（如果可以的话）                                 |
 | 29     | 为1时可设置只发射指定槽位的方块                                                   |
 | 30\~32 | 指定槽位：指定只发射第n+1个槽位的方块                                               |
+### 复杂活塞 Complex Piston
+完全由电压控制的活塞，一旦电压变化就会尝试调整
+
+| 第n位    | 说明       |
+|--------|----------|
+| 1\~8   | 延伸长度，单位格 |
+| 9\~16  | 速度，单位格/秒 |
+| 17\~24 | 推拉方块个数   |
+| 25     | 是否有粘性    |
+| 26     | 是否严格推拉个数 |
+| 27     | 是否隐藏延长杆  |
+> 速度为0时活塞将无法运作
 ### 告示牌 Sign
 不仅具有原版的显示文字、弹出提示功能，还可以额外悬浮显示文字，通过不同端口控制悬浮显示的内容、大小、位置、旋转、亮度、颜色，但只能记录一行文字，具体端口定义如下（从左到右为高位到低位）
 <table>

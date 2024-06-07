@@ -6,34 +6,43 @@ using Engine;
 
 namespace Game {
     public class EditGVPistonDialog : Dialog {
-        public LabelWidget m_title;
+        public readonly LabelWidget m_title;
+        public readonly TextBoxWidget m_maxExtensionWidget;
+        public readonly TextBoxWidget m_pullCountWidget;
+        public readonly CheckboxWidget m_transparentCheckBoxWidget;
+        public readonly LabelWidget m_label2;
+        public readonly SliderWidget m_slider3;
+        public readonly ButtonWidget m_okButton;
+        public readonly ButtonWidget m_cancelButton;
 
-        public TextBoxWidget m_maxExtensionWidget;
-
-        public TextBoxWidget m_pullCountWidget;
-        public CheckboxWidget m_transparentCheckBoxWidget;
-
-        public LabelWidget m_label2;
-
-        public SliderWidget m_slider3;
-
-        public ButtonWidget m_okButton;
-
-        public ButtonWidget m_cancelButton;
-
-        public Action m_handler;
-
+        public readonly Action m_handler;
         public GVPistonData m_pistonData;
 
         public int m_speed;
 
-        public static string[] m_speedNames = new string[7] { "Very Slow", "Slow", "Medium", "Fast", "2xFast", "3xFast", "4xFast" };
+        public static readonly string[] m_speedNames = [
+            "Very Slow",
+            "Slow",
+            "Medium",
+            "Fast",
+            "2xFast",
+            "3xFast",
+            "4xFast"
+        ];
 
-        public static string[] m_speedCNNames = new string[7] { "非常慢", "慢", "中", "快", "2x快", "3x快", "4x快" };
+        public static readonly string[] m_speedCNNames = [
+            "非常慢",
+            "慢",
+            "中",
+            "快",
+            "2x快",
+            "3x快",
+            "4x快"
+        ];
 
         public string m_languageType;
 
-        public EditGVPistonDialog(PistonMode mode, GVPistonData pistonData, Action handler) {
+        public EditGVPistonDialog(GVPistonMode mode, GVPistonData pistonData, Action handler) {
             try {
                 XElement node = ContentManager.Get<XElement>("Dialogs/EditGVPistonDialog");
                 LoadContents(this, node);
@@ -56,7 +65,7 @@ namespace Game {
                 m_slider3.Granularity = 1f;
                 m_slider3.MinValue = 0f;
                 m_slider3.MaxValue = 6f;
-                m_label2.Text = mode == PistonMode.Pushing ? LanguageControl.Get(GetType().Name, 3) : LanguageControl.Get(GetType().Name, 2);
+                m_label2.Text = mode == GVPistonMode.Pushing ? LanguageControl.Get(GetType().Name, 3) : LanguageControl.Get(GetType().Name, 2);
                 UpdateControls();
             }
             catch (Exception e) {

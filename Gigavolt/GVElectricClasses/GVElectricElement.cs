@@ -20,7 +20,7 @@ namespace Game {
 
         public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<CellFace> cellFaces) {
             SubsystemGVElectricity = subsystemGVElectricity;
-            CellFaces = new ReadOnlyList<GVCellFace>(cellFaces.Select(cellface => new GVCellFace(cellface)).ToList());
+            CellFaces = new ReadOnlyList<GVCellFace>(cellFaces.Select(cellFace => new GVCellFace(cellFace)).ToList());
             Connections = new List<GVElectricConnection>();
         }
 

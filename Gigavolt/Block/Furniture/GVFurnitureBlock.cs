@@ -5,7 +5,8 @@ namespace Game {
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) {
             int designIndex = FurnitureBlock.GetDesignIndex(Terrain.ExtractData(value));
             FurnitureDesign design = subsystemGVElectricity.SubsystemTerrain.SubsystemFurnitureBlockBehavior.GetDesign(designIndex);
-            if (design != null) {
+            if (design != null
+                && design.MountingFacesMask != 0) {
                 switch (design.InteractionMode) {
                     case FurnitureInteractionMode.Multistate:
                     case FurnitureInteractionMode.ConnectedMultistate: return new MultistateFurnitureGVElectricElement(subsystemGVElectricity, new Point3(x, y, z));
