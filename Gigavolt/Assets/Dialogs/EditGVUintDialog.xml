@@ -103,9 +103,9 @@
 						<LabelWidget Name="EditGVUintDialog.FixedLabel" Text="0.0" VerticalAlignment="Center"/>
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyFixed" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
-					<CanvasWidget Size="400, 0"/>
+					<CanvasWidget Size="448, 0"/>
 				</StackPanelWidget>
-				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
+				<StackPanelWidget Direction="Vertical">
 					<StackPanelWidget Direction="Horizontal">
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardShiftLeft" Size="70, 50" Text="&lt;&lt;" Margin="5, 5"/>
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardShiftRight" Size="70, 50" Text="&gt;&gt;" Margin="5, 5"/>

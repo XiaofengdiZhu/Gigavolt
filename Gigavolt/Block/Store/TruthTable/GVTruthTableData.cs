@@ -31,7 +31,16 @@ namespace Game {
             }
 
             public bool Equals(SectionInput other) => i1 == other.i1 && i2 == other.i2 && i3 == other.i3 && i4 == other.i4;
-            public override int GetHashCode() => base.GetHashCode();
+
+            public override int GetHashCode() {
+                int hash = 17;
+                // ReSharper disable NonReadonlyMemberInGetHashCode
+                hash = hash * 23 + i1.GetHashCode();
+                hash = hash * 23 + i2.GetHashCode();
+                hash = hash * 23 + i3.GetHashCode();
+                hash = hash * 23 + i4.GetHashCode();
+                return hash;
+            }
 
             public override string ToString() => $"{i1},{i2},{i3},{i4}";
         }

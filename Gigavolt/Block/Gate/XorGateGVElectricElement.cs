@@ -13,10 +13,10 @@ namespace Game {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
                     uint num2 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                    num = !num.HasValue ? num2 : num ^= num2;
+                    num = num.HasValue ? num ^ num2 : num2;
                 }
             }
-            m_voltage = num.HasValue ? num.Value : 0u;
+            m_voltage = num ?? 0u;
             return m_voltage != voltage;
         }
     }

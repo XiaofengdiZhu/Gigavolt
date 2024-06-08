@@ -23,7 +23,6 @@ namespace Game {
         public static Matrix GVCalculateBaseProjectionMatrix(Vector2 wh, float viewAngle) {
             float num3 = wh.X / wh.Y;
             float num4 = MathUtils.Min(viewAngle * num3, viewAngle);
-            float num5 = num4 * num3;
             return Matrix.CreatePerspectiveFieldOfView(num4, num3, 0.1f, 2048f);
         }
 
@@ -39,19 +38,14 @@ namespace Game {
 
         public override Matrix ScreenProjectionMatrix {
             get {
-                if (m_screenProjectionMatrix == null) {
-                    Point2 size = Window.Size;
-                    m_screenProjectionMatrix = GVCalculateBaseProjectionMatrix(new Vector2(m_viewSize), m_viewAngel) * CreateScaleTranslation(0.5f * m_viewSize.X, -0.5f * m_viewSize.Y, m_viewSize.X / 2f, m_viewSize.Y / 2f) * Matrix.Identity * CreateScaleTranslation(2f / m_viewSize.X, -2f / m_viewSize.Y, -1f, 1f);
-                }
+                m_screenProjectionMatrix ??= GVCalculateBaseProjectionMatrix(new Vector2(m_viewSize), m_viewAngel) * CreateScaleTranslation(0.5f * m_viewSize.X, -0.5f * m_viewSize.Y, m_viewSize.X / 2f, m_viewSize.Y / 2f) * Matrix.Identity * CreateScaleTranslation(2f / m_viewSize.X, -2f / m_viewSize.Y, -1f, 1f);
                 return m_screenProjectionMatrix.Value;
             }
         }
 
         public override Vector2 ViewportSize {
             get {
-                if (m_viewportSize == null) {
-                    m_viewportSize = new Vector2(m_viewSize);
-                }
+                m_viewportSize ??= new Vector2(m_viewSize);
                 return m_viewportSize.Value;
             }
         }

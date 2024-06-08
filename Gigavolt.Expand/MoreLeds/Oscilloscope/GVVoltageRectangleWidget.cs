@@ -19,11 +19,7 @@ namespace Game {
 
         public string Text {
             get => m_text;
-            set {
-                if (value != m_text) {
-                    m_text = value;
-                }
-            }
+            set => m_text = value;
         }
 
         public bool OverwriteMode { get; set; }

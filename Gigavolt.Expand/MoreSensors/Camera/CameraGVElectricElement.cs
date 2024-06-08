@@ -96,7 +96,6 @@ namespace Game {
             int electricRotation = Rotation;
             uint lastInputIn = m_inputIn;
             m_inputIn = 0u;
-            GVArrayData data;
             if (m_complex) {
                 uint lastInputTop = m_inputTop;
                 uint lastInputRight = m_inputRight;
@@ -175,8 +174,9 @@ namespace Game {
                     m_lastRotation = electricRotation;
                 }
             }
-            if (m_inputIn > 0
-                && GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inputIn, out data)
+            if (m_inputIn != lastInputIn
+                && m_inputIn > 0
+                && GVStaticStorage.GVMBIDDataDictionary.TryGetValue(m_inputIn, out GVArrayData data)
                 && m_camera.m_viewSize.X > 0
                 && m_camera.m_viewSize.Y > 0
                 && m_camera.m_viewAngel > 0) {

@@ -109,7 +109,7 @@ namespace Game {
             }
             if (m_counter != counter
                 || m_overflow != overflow) {
-                uint storeVoltage = m_counter;
+                uint storeVoltage;
                 if (m_counter == 0 && m_overflow) {
                     storeVoltage = overflowVoltage - 0x12345678u;
                 }

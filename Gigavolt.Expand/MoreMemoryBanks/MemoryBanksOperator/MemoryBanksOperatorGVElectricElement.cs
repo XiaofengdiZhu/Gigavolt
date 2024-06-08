@@ -4,14 +4,13 @@ using System.Linq;
 
 namespace Game {
     public class MemoryBanksOperatorGVElectricElement : RotateableGVElectricElement {
-        readonly Terrain m_terrain;
         uint m_rightInput;
         uint m_leftInput;
         uint m_topInput;
         uint m_bottomInput;
         uint m_inInput;
 
-        public MemoryBanksOperatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_terrain = SubsystemGVElectricity.SubsystemTerrain.Terrain;
+        public MemoryBanksOperatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
 
         public override uint GetOutputVoltage(int face) => 0u;
 

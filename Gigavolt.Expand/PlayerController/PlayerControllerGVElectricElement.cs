@@ -17,9 +17,6 @@ namespace Game {
         public override bool Simulate() {
             uint bottomInput = m_bottomInput;
             uint inInput = m_inInput;
-            uint? rightOutput = m_rightInput;
-            uint? leftOutput = m_leftInput;
-            uint? topOutput = m_topInput;
             m_rightInput = null;
             m_leftInput = null;
             m_topInput = null;

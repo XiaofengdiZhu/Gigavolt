@@ -1,10 +1,8 @@
-﻿using Engine;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using Engine;
 
-namespace Game
-{
-    public class EditGVSignCDialog : Dialog
-    {
+namespace Game {
+    public class EditGVSignCDialog : Dialog {
         public SubsystemGVSignBlockCBehavior m_subsystemSignBlockBehavior;
 
         public Point3 m_signPoint;
@@ -41,20 +39,18 @@ namespace Game
 
         public ButtonWidget m_linesButton;
 
-        public Color[] m_colors = new Color[8]
-        {
-            new Color(0, 0, 0),
-            new Color(140, 0, 0),
-            new Color(0, 112, 0),
-            new Color(0, 0, 96),
-            new Color(160, 0, 128),
-            new Color(0, 112, 112),
-            new Color(160, 112, 0),
-            new Color(180, 180, 180)
+        public Color[] m_colors = new Color[8] {
+            new(0, 0, 0),
+            new(140, 0, 0),
+            new(0, 112, 0),
+            new(0, 0, 96),
+            new(160, 0, 128),
+            new(0, 112, 112),
+            new(160, 112, 0),
+            new(180, 180, 180)
         };
 
-        public EditGVSignCDialog(SubsystemGVSignBlockCBehavior subsystemSignBlockBehavior, Point3 signPoint)
-        {
+        public EditGVSignCDialog(SubsystemGVSignBlockCBehavior subsystemSignBlockBehavior, Point3 signPoint) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditSignDialog");
             LoadContents(this, node);
             m_linesPage = Children.Find<ContainerWidget>("EditSignDialog.LinesPage");
@@ -76,8 +72,7 @@ namespace Game
             m_subsystemSignBlockBehavior = subsystemSignBlockBehavior;
             m_signPoint = signPoint;
             SignData signData = m_subsystemSignBlockBehavior.GetSignData(m_signPoint);
-            if (signData != null)
-            {
+            if (signData != null) {
                 m_textBox1.Text = signData.Lines[0];
                 m_textBox2.Text = signData.Lines[1];
                 m_textBox3.Text = signData.Lines[2];
@@ -88,8 +83,7 @@ namespace Game
                 m_colorButton4.Color = signData.Colors[3];
                 m_urlTextBox.Text = signData.Url;
             }
-            else
-            {
+            else {
                 m_textBox1.Text = string.Empty;
                 m_textBox2.Text = string.Empty;
                 m_textBox3.Text = string.Empty;
@@ -105,66 +99,44 @@ namespace Game
             UpdateControls();
         }
 
-        public override void Update()
-        {
+        public override void Update() {
             UpdateControls();
-            if (m_okButton.IsClicked)
-            {
-                string[] lines = new string[4]
-                {
-                    m_textBox1.Text,
-                    m_textBox2.Text,
-                    m_textBox3.Text,
-                    m_textBox4.Text
-                };
-                var colors = new Color[4]
-                {
-                    m_colorButton1.Color,
-                    m_colorButton2.Color,
-                    m_colorButton3.Color,
-                    m_colorButton4.Color
-                };
+            if (m_okButton.IsClicked) {
+                string[] lines = [m_textBox1.Text, m_textBox2.Text, m_textBox3.Text, m_textBox4.Text];
+                Color[] colors = [m_colorButton1.Color, m_colorButton2.Color, m_colorButton3.Color, m_colorButton4.Color];
                 m_subsystemSignBlockBehavior.SetSignData(m_signPoint, lines, colors, m_urlTextBox.Text);
                 Dismiss();
             }
-            if (m_urlButton.IsClicked)
-            {
+            if (m_urlButton.IsClicked) {
                 m_urlPage.IsVisible = true;
                 m_linesPage.IsVisible = false;
             }
-            if (m_linesButton.IsClicked)
-            {
+            if (m_linesButton.IsClicked) {
                 m_urlPage.IsVisible = false;
                 m_linesPage.IsVisible = true;
             }
-            if (m_urlTestButton.IsClicked)
-            {
+            if (m_urlTestButton.IsClicked) {
                 WebBrowserManager.LaunchBrowser(m_urlTextBox.Text);
             }
-            if (m_colorButton1.IsClicked)
-            {
+            if (m_colorButton1.IsClicked) {
                 m_colorButton1.Color = m_colors[(m_colors.FirstIndex(m_colorButton1.Color) + 1) % m_colors.Length];
             }
-            if (m_colorButton2.IsClicked)
-            {
+            if (m_colorButton2.IsClicked) {
                 m_colorButton2.Color = m_colors[(m_colors.FirstIndex(m_colorButton2.Color) + 1) % m_colors.Length];
             }
-            if (m_colorButton3.IsClicked)
-            {
+            if (m_colorButton3.IsClicked) {
                 m_colorButton3.Color = m_colors[(m_colors.FirstIndex(m_colorButton3.Color) + 1) % m_colors.Length];
             }
-            if (m_colorButton4.IsClicked)
-            {
+            if (m_colorButton4.IsClicked) {
                 m_colorButton4.Color = m_colors[(m_colors.FirstIndex(m_colorButton4.Color) + 1) % m_colors.Length];
             }
-            if (Input.Cancel || m_cancelButton.IsClicked)
-            {
+            if (Input.Cancel
+                || m_cancelButton.IsClicked) {
                 Dismiss();
             }
         }
 
-        public void UpdateControls()
-        {
+        public void UpdateControls() {
             bool flag = !string.IsNullOrEmpty(m_urlTextBox.Text);
             m_urlButton.IsVisible = m_linesPage.IsVisible;
             m_linesButton.IsVisible = !m_linesPage.IsVisible;
@@ -175,8 +147,7 @@ namespace Game
             m_urlTestButton.IsEnabled = flag;
         }
 
-        public void Dismiss()
-        {
+        public void Dismiss() {
             DialogsManager.HideDialog(this);
         }
     }

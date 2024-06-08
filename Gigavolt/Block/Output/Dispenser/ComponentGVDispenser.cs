@@ -137,7 +137,7 @@ namespace Game {
 
         public void ShootItem(Point3 point, int face, int value, Vector3 velocity, bool disableGravity, bool disableDamping, bool safe, bool transform, Point3 stopAt) {
             Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + 0.6f * CellFace.FaceToVector3(face);
-            bool flag = false;
+            bool flag;
             if (disableGravity
                 || disableDamping
                 || transform

@@ -77,7 +77,7 @@ namespace Game {
 
         DateTime _lastUpdatedTime = DateTime.MinValue;
 
-        public static int[] m_drawOrders = { 111 };
+        public static int[] m_drawOrders = [111];
 
         public TexturedBatch3D cachedBatch;
         public int[] DrawOrders => m_drawOrders;
@@ -145,7 +145,7 @@ namespace Game {
                         float halfSize = key.GetSize() * 0.5f;
                         Vector3 right = key.Right * halfSize;
                         Vector3 up = key.Up * halfSize * 0.9375f;
-                        Vector3[] offsets = { right - up, right + up, -right - up, -right + up };
+                        Vector3[] offsets = [right - up, right + up, -right - up, -right + up];
                         Vector3 min = Vector3.Zero;
                         Vector3 max = Vector3.Zero;
                         foreach (Vector3 offset in offsets) {
@@ -235,6 +235,7 @@ namespace Game {
         public void LoadRomFromPath(string path) {
             byte[] bytes = null;
             try {
+                // ReSharper disable once StringLiteralTypo
                 if (path == "nestest") {
                     bytes = GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Gigavolt.Expand.NesEmulator.nestest.nes"));
                 }
@@ -274,13 +275,13 @@ namespace Game {
         }
 
         /// <summary>
-        ///     Reads an stream resource to a byte array
+        ///     Reads a stream resource to a byte array
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
         public static byte[] GetByteFromStream(Stream stream) {
             byte[] output = new byte[stream.Length];
-            stream.Read(output, 0, (int)stream.Length);
+            _ = stream.Read(output, 0, (int)stream.Length);
             return output;
         }
     }

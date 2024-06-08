@@ -33,8 +33,6 @@ namespace Game {
         public float DashedLineDashAndGapLength;
 
         readonly List<uint[]> Records = new(5100);
-        readonly PrimitivesRenderer3D m_primitivesRenderer3D;
-        readonly GVOscilloscopePrimitivesRenderer2D m_primitivesRenderer2D;
         readonly TexturedBatch2D m_numberBatch;
         readonly TexturedBatch2D m_arrowButtonBatch;
         public TexturedBatch2D m_autoButtonBatch;
@@ -47,21 +45,17 @@ namespace Game {
         readonly RenderTarget2D[] m_cachedBlurRenderTargets = new RenderTarget2D[3];
         readonly RenderTarget2D[] m_cachedTempBlurRenderTargets = new RenderTarget2D[3];
 
-        //int m_lastDisplaySize;
-        bool m_lastDisplayBloom;
         TexturedBatch3D m_texturedBatch3D;
 
         public static readonly Color[] WaveColor = [Color.Green, Color.Cyan, Color.Red, Color.Yellow];
 
         public GVOscilloscopeData(SubsystemGVOscilloscopeBlockBehavior subsystem) {
-            m_primitivesRenderer3D = subsystem.m_primitivesRenderer3D;
-            m_primitivesRenderer2D = subsystem.m_primitivesRenderer2D;
             m_numberBatch = subsystem.m_numberBatch;
             m_arrowButtonBatch = subsystem.m_arrowButtonBatch;
             m_autoButtonBatch = subsystem.m_autoButtonBatch;
             m_moonButtonBatch = subsystem.m_moonButtonBatch;
             m_sunButtonBatch = subsystem.m_sunButtonBatch;
-            m_waveBatch = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.AlphaBlend);
+            m_waveBatch = subsystem.m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.AlphaBlend);
         }
 
         public bool IsTextureObsolete() => m_texture == null || m_texture.m_isDisposed || Records.Count != RecordsCountAtLastGenerateTexture;
@@ -138,7 +132,6 @@ namespace Game {
                         tempBlurRenderTarget
                     );
                     RecordsCountAtLastGenerateTexture = Records.Count;
-                    m_lastDisplayBloom = displayBloom;
                 }
                 return m_texture;
             }

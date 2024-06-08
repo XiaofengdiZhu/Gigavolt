@@ -26,13 +26,8 @@ namespace Game {
         public override bool Simulate() {
             uint rightInput = m_rightInput;
             m_rightInput = 0u;
-            uint length = 0u;
-            bool detectData = false;
-            bool skipFluid = false;
             uint leftInput = m_leftInput;
             m_leftInput = 0u;
-            int specifiedContent = 0;
-            int specifiedData = 0;
             uint topOutput = m_topOutput;
             uint bottomOutput = m_bottomOutput;
             uint inOutput = m_inOutput;
@@ -51,11 +46,11 @@ namespace Game {
                     }
                 }
             }
-            length = m_rightInput & 0xFFFu;
-            detectData = m_rightInput >> 12 == 1u;
-            skipFluid = m_rightInput >> 13 == 1u;
-            specifiedContent = Terrain.ExtractContents((int)m_leftInput);
-            specifiedData = Terrain.ExtractData((int)m_leftInput);
+            uint length = m_rightInput & 0xFFFu;
+            bool detectData = m_rightInput >> 12 == 1u;
+            bool skipFluid = m_rightInput >> 13 == 1u;
+            int specifiedContent = Terrain.ExtractContents((int)m_leftInput);
+            int specifiedData = Terrain.ExtractData((int)m_leftInput);
             if (length == 0) {
                 m_inOutput = 0u;
                 m_topOutput = 0u;
@@ -76,8 +71,7 @@ namespace Game {
             int i = 1;
             for (; i <= length; i++) {
                 Point3 position = originPosition + direction * i;
-                if (position.Y < 0
-                    && position.Y >= 256) {
+                if (position.Y is < 0 or >= 256) {
                     break;
                 }
                 TerrainChunk chunkAtCell = m_terrain.GetChunkAtCell(position.X, position.Z);

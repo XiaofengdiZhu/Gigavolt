@@ -15,7 +15,7 @@ namespace Game {
             m_updateTime = DateTime.Now;
         }
 
-        public GVVolatileFourDimensionalMemoryBankData(uint ID, Dictionary<int, Image<Rgba32>> image = null, int xLength = 0, int yLength = 0, int zLength = 0, int wLength = 0, uint lastOutput = 0) {
+        public GVVolatileFourDimensionalMemoryBankData(uint ID, Dictionary<int, Image<Rgba32>> image = null, int xLength = 0, int yLength = 0, int zLength = 0, int wLength = 0) {
             m_ID = ID;
             m_data = image;
             m_xLength = xLength;

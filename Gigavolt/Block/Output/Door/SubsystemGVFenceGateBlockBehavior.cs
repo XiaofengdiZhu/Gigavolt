@@ -5,7 +5,7 @@ namespace Game {
     public class SubsystemGVFenceGateBlockBehavior : SubsystemBlockBehavior {
         public SubsystemGVElectricity m_subsystemElectricity;
 
-        public static Random m_random = new Random();
+        public static Random m_random = new();
 
         public override int[] HandledBlocks => new[] { GVFenceGateBlock.Index };
 
@@ -58,7 +58,6 @@ namespace Game {
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
             CellFace cellFace = raycastResult.CellFace;
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
-            int num = Terrain.ExtractContents(cellValue);
             int data = Terrain.ExtractData(cellValue);
             if (GVFenceGateBlock.GetModel(data) == 0
                 || !IsGateElectricallyConnected(cellFace.X, cellFace.Y, cellFace.Z)) {

@@ -26,9 +26,8 @@ namespace Game {
         public override void OnHitByProjectile(CellFace cellFace, WorldItem worldItem) {
             if (m_score == 0u
                 && m_voltage == 0u) {
-                float distance = 0f;
-                if (cellFace.Face == 0
-                    || cellFace.Face == 2) {
+                float distance;
+                if (cellFace.Face is 0 or 2) {
                     float num = worldItem.Position.X - cellFace.X - 0.5f;
                     float num2 = worldItem.Position.Y - cellFace.Y - 0.5f;
                     distance = MathF.Sqrt(num * num + num2 * num2);

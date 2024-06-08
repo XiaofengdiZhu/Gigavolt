@@ -94,7 +94,7 @@ namespace XamariNES.CPU {
         /// </summary>
         /// <returns></returns>
         Dictionary<int, CPUInstruction> DeclareInstructions() {
-            Dictionary<int, CPUInstruction> output = new Dictionary<int, CPUInstruction>();
+            Dictionary<int, CPUInstruction> output = new();
 
             #region OpCode Definition
 
@@ -3606,6 +3606,7 @@ namespace XamariNES.CPU {
                 int newA = (sbyte)A - (sbyte)value - (1 - (Status.Carry ? 1 : 0));
                 Status.Zero = (byte)newA == 0;
                 Status.Negative = ((byte)newA).IsNegative();
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 Status.Carry = A - value - (1 - (Status.Carry ? 1 : 0)) >= byte.MinValue && A - value - (1 - (Status.Carry ? 1 : 0)) <= byte.MaxValue;
                 Status.Overflow = newA > 127 || newA < -128;
                 A = (byte)newA;

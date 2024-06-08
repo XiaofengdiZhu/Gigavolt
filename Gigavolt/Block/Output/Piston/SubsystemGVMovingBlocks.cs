@@ -2,7 +2,7 @@ using System;
 using Engine;
 
 namespace Game {
-    public class SubsystemGVMovingBlocks : SubsystemMovingBlocks, IDrawable {
+    public class SubsystemGVMovingBlocks : SubsystemMovingBlocks {
         public new void GenerateGeometry(MovingBlockSet movingBlockSet) {
             Point3 point = default;
             point.X = movingBlockSet.CurrentVelocity.X > 0f ? (int)MathF.Floor(movingBlockSet.Position.X) : point.X = (int)MathF.Ceiling(movingBlockSet.Position.X);

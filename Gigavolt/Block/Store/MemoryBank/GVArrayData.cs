@@ -185,16 +185,12 @@ namespace Game {
                         case WoodBlock woodBlock:
                             slotIndex = woodBlock.m_sideTextureSlot;
                             break;
-                        case PaintedCubeBlock paintedCubeBlock: {
+                        case PaintedCubeBlock: {
                             int? intColor = PaintedCubeBlock.GetColor(blockData);
                             if (intColor.HasValue) {
-                                SubsystemPalette subsystemPalette = GameManager.Project.FindSubsystem<SubsystemPalette>(false);
-                                if (subsystemPalette == null) {
-                                    maskColor = WorldPalette.DefaultColors[intColor.Value];
-                                }
-                                else {
-                                    maskColor = subsystemPalette.GetColor(intColor.Value);
-                                }
+                                // ReSharper disable once ConstantConditionalAccessQualifier
+                                // ReSharper disable once ConstantNullCoalescingCondition
+                                maskColor = GameManager.Project.FindSubsystem<SubsystemPalette>(false)?.GetColor(intColor.Value) ?? WorldPalette.DefaultColors[intColor.Value];
                             }
                             break;
                         }

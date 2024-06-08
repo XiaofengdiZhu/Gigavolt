@@ -19,13 +19,13 @@ namespace Game {
         public readonly LabelWidget m_rightInputLabel;
         public readonly LabelWidget m_bottomInputLabel;
         public readonly LabelWidget m_leftInputLabel;
-        public ButtonWidget m_pauseButton;
-        public ButtonWidget m_stepButton;
-        public ButtonWidget m_jumpButton;
+        public readonly ButtonWidget m_pauseButton;
+        public readonly ButtonWidget m_stepButton;
+        public readonly ButtonWidget m_jumpButton;
         public readonly RectangleWidget m_pauseIcon;
         public readonly Subtexture m_continueSubtexture;
         public readonly Subtexture m_pauseSubtexture;
-        public CanvasWidget m_canvas;
+        public readonly CanvasWidget m_canvas;
         public readonly ScrollPanelWidget m_scrollPanel;
         public readonly StackPanelWidget m_scrollStack;
         public readonly CanvasWidget m_placeholder1;
@@ -200,8 +200,7 @@ namespace Game {
                             uint[] record = m_data.GetLastIndexOfRecord(tag);
                             bool isBottom = tag == m_data.RecordsCount - 1;
                             for (int i = 0; i < 4; i++) {
-                                GVVoltageRectangleWidget rectangle = (row as StackPanelWidget)?.Children[i] as GVVoltageRectangleWidget;
-                                if (rectangle != null) {
+                                if ((row as StackPanelWidget)?.Children[i] is GVVoltageRectangleWidget rectangle) {
                                     rectangle.Text = $"{record[i]:X8} V";
                                     rectangle.IsBottom = isBottom;
                                 }
@@ -238,8 +237,7 @@ namespace Game {
                         uint[] record = m_data.GetLastIndexOfRecord(tag);
                         bool isBottom = tag == m_data.RecordsCount - 1;
                         for (int i = 0; i < 4; i++) {
-                            GVVoltageRectangleWidget rectangle = (row as StackPanelWidget)?.Children[i] as GVVoltageRectangleWidget;
-                            if (rectangle != null) {
+                            if ((row as StackPanelWidget)?.Children[i] is GVVoltageRectangleWidget rectangle) {
                                 rectangle.Text = $"{record[i]:X8} V";
                                 rectangle.IsBottom = isBottom;
                             }

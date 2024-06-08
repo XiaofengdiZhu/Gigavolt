@@ -395,19 +395,16 @@ namespace Game {
                                 break;
                             case 64u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    uint input = memoryBankData.Read(i);
                                     memoryBankData.Write(i, ~memoryBankData.Read(i));
                                 }
                                 break;
                             case 65u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    uint input = memoryBankData.Read(i);
                                     memoryBankData.Write(i, memoryBankData.Read(i) + 1);
                                 }
                                 break;
                             case 66u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    uint input = memoryBankData.Read(i);
                                     memoryBankData.Write(i, memoryBankData.Read(i) - 1);
                                 }
                                 break;

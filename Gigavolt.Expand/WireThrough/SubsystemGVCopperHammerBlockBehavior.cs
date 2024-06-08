@@ -47,7 +47,6 @@ namespace Game {
                         break;
                     case GVWireHarnessBlock.Index: {
                         flag = true;
-                        int data = Terrain.ExtractData(value);
                         SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, Terrain.MakeBlockValue(GVEWireThroughBlock.Index, Terrain.ExtractLight(value), GVEWireThroughBlock.SetIsWireHarness(GVEWireThroughBlock.SetWireFacesBitmask(0, GVWireHarnessBlock.GetWireFacesBitmask(value)), true)));
                         break;
                     }

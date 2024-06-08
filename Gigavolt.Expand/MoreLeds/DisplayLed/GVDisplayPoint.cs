@@ -25,6 +25,7 @@ namespace Game {
             return Position.Equals(other.Position) && Color.Equals(other.Color) && Size.Equals(other.Size) && Value == other.Value && Rotation.Equals(other.Rotation) && Complex == other.Complex && Type == other.Type && CustomBit == other.CustomBit;
         }
 
+        // ReSharper disable NonReadonlyMemberInGetHashCode
         public override int GetHashCode() => Position.GetHashCode() ^ Color.GetHashCode() ^ Size.GetHashCode() ^ Value.GetHashCode() ^ Rotation.GetHashCode() ^ Complex.GetHashCode() ^ Type.GetHashCode() ^ CustomBit.GetHashCode();
     }
 }

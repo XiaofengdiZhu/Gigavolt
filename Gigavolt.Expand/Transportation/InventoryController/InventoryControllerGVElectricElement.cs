@@ -208,16 +208,14 @@ namespace Game {
                                 return m_voltage != voltage;
                             }
                             int totalCount = 0;
-                            IEnumerable<int> originalSlotsIndex = inventory.m_slots.Select(
-                                    (slot, index) => {
-                                        if (slot.Value == valueInput) {
-                                            totalCount += slot.Count;
-                                            return index;
-                                        }
-                                        return -1;
-                                    }
-                                )
-                                .Where(index => index > -1);
+                            List<int> originalSlotsIndex = [];
+                            for (int i = 0; i < inventory.m_slots.Count; i++) {
+                                ComponentInventoryBase.Slot slot = inventory.m_slots[i];
+                                if (slot.Value == valueInput) {
+                                    originalSlotsIndex.Add(i);
+                                    totalCount += slot.Count;
+                                }
+                            }
                             totalCount = Math.Min(totalCount, countInput);
                             int toUseSlotsCount = 0;
                             int toRemoveCount = 0;
