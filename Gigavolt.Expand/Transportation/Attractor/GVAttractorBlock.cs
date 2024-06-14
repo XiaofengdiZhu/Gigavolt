@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVAttractorBlock : GenerateGVWireVerticesBlock, IGVElectricElementBlock {
+    public class GVAttractorBlock : Block, IGVElectricElementBlock {
         public const int Index = 996;
 
         public BlockMesh[] m_meshesByData = new BlockMesh[2];
@@ -71,7 +71,7 @@ namespace Game {
                     null,
                     geometry.SubsetOpaque
                 );
-                GenerateGVWireVertices(
+                GVBlockGeometryGenerator.GenerateGVWireVertices(
                     generator,
                     value,
                     x,
@@ -96,7 +96,7 @@ namespace Game {
             );
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new AttractorGVElectricElement(subsystemGVElectricity, new Point3(x, y, z));
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new AttractorGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
@@ -108,7 +108,7 @@ namespace Game {
         }
 
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (face == 4
                 && SubsystemGVElectricity.GetConnectorDirection(4, 0, connectorFace).HasValue) {
                 return GVElectricConnectorType.Input;

@@ -4,7 +4,7 @@ namespace Game {
     public class DebugGVElectricElement : GVElectricElement {
         public uint m_voltage;
 
-        public DebugGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public DebugGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDebugBlockBehavior>(true).m_elementHashSet.Add(this);
             m_voltage = Double2Uint(subsystemGVElectricity.SpeedFactor);
         }
@@ -17,15 +17,16 @@ namespace Game {
         public override uint GetOutputVoltage(int face) => Double2Uint(SubsystemGVElectricity.SpeedFactor);
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
-            int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y - 1, cellFace.Z);
+            int cellValue = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y - 1, cellFace.Z);
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
             if ((!block.IsCollidable_(cellValue) || block.IsFaceTransparent(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue))
                 && (cellFace.Face != 4 || block is not FenceBlock)) {
-                SubsystemGVElectricity.SubsystemTerrain.DestroyCell(
+                SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(
                     0,
                     cellFace.X,
                     cellFace.Y,
                     cellFace.Z,
+                    SubterrainId,
                     0,
                     false,
                     false

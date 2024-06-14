@@ -9,7 +9,7 @@ namespace Game {
 
         public float m_pressure;
 
-        public PressurePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public PressurePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public void Press(float pressure) {
             m_lastPressFrameIndex = Time.FrameIndex;

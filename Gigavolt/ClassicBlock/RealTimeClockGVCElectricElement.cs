@@ -6,7 +6,7 @@ namespace Game {
 
         public uint m_lastClockValue;
 
-        public RealTimeClockGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemTimeOfDay = SubsystemGVElectricity.Project.FindSubsystem<SubsystemTimeOfDay>(true);
+        public RealTimeClockGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemTimeOfDay = SubsystemGVElectricity.Project.FindSubsystem<SubsystemTimeOfDay>(true);
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);

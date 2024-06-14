@@ -12,12 +12,12 @@ namespace Game {
         public bool m_overflow;
         public bool m_edited;
 
-        public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
             GVCounterData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(cellFace.Point);
             uint overflowVoltage = blockData?.Overflow ?? 0u;
             uint initialVoltage = blockData?.Initial ?? 0u;
-            uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point);
+            uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point, SubterrainId);
             if (num.HasValue) {
                 if (num.Value == overflowVoltage - 0x12345678) {
                     m_overflow = true;
@@ -32,7 +32,13 @@ namespace Game {
                     m_counter = num.Value;
                 }
             }
-            if (SubsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face) is CounterGVElectricElement {
+            if (SubsystemGVElectricity.GetGVElectricElement(
+                    cellFace.X,
+                    cellFace.Y,
+                    cellFace.Z,
+                    cellFace.Face,
+                    subterrainId
+                ) is CounterGVElectricElement {
                     m_edited: true
                 } electricElement) {
                 m_counter = electricElement.m_counter;
@@ -133,7 +139,7 @@ namespace Game {
                 else {
                     storeVoltage = m_counter;
                 }
-                SubsystemGVElectricity.WritePersistentVoltage(CellFaces[0].Point, storeVoltage);
+                SubsystemGVElectricity.WritePersistentVoltage(CellFaces[0].Point, storeVoltage, SubterrainId);
                 return true;
             }
             return false;

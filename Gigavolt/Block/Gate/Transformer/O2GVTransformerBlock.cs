@@ -8,12 +8,11 @@ namespace Game {
 
         public O2GVTransformerBlock() : base("Models/GigavoltGates", "AndGate", 0.5f) => texture = ContentManager.Get<Texture2D>("Textures/O2GVTransformer");
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new O2GVTransformerGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new O2GVTransformerGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
-            int data = Terrain.ExtractData(value);
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(Terrain.ExtractData(value)), connectorFace);
                 if (connectorDirection == GVElectricConnectorDirection.Top
                     || connectorDirection == GVElectricConnectorDirection.In) {
                     return GVElectricConnectorType.Output;
@@ -34,7 +33,7 @@ namespace Game {
                 null,
                 geometry.GetGeometry(texture).SubsetOpaque
             );
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,
@@ -60,9 +59,8 @@ namespace Game {
         public ElectricElement CreateElectricElement(SubsystemElectricity subsystemElectricity, int value, int x, int y, int z) => new O2GVTransformerElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)));
 
         public ElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
-            int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
-                ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(GetFace(value), GetRotation(Terrain.ExtractData(value)), connectorFace);
                 if (connectorDirection == ElectricConnectorDirection.Bottom) {
                     return ElectricConnectorType.Input;
                 }

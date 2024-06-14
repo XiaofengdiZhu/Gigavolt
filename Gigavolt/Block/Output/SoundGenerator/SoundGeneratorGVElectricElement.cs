@@ -19,7 +19,7 @@ namespace Game {
         public bool m_playing;
         public DateTime m_lastNoiseTime = DateTime.MinValue;
 
-        public SoundGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public SoundGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemNoise = subsystemGVElectricity.Project.FindSubsystem<SubsystemNoise>(true);
             m_subsystemAudio = subsystemGVElectricity.Project.FindSubsystem<SubsystemAudio>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);

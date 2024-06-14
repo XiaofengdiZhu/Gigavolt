@@ -6,7 +6,7 @@ namespace Game {
 
         public int m_lastChangeCircuitStep;
 
-        public LightBulbGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) {
+        public LightBulbGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_lastChangeCircuitStep = SubsystemGVElectricity.CircuitStep;
             int data = Terrain.ExtractData(value);
             m_intensity = GVLightbulbBlock.GetLightIntensity(data);
@@ -28,10 +28,16 @@ namespace Game {
             }
             if (num >= 10) {
                 GVCellFace cellFace = CellFaces[0];
-                int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+                int cellValue = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
                 int data = GVLightbulbBlock.SetLightIntensity(Terrain.ExtractData(cellValue), m_intensity);
                 int value = Terrain.ReplaceData(cellValue, data);
-                SubsystemGVElectricity.SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, value);
+                SubsystemGVElectricity.SubsystemGVSubterrain.ChangeCell(
+                    cellFace.X,
+                    cellFace.Y,
+                    cellFace.Z,
+                    SubterrainId,
+                    value
+                );
             }
             else {
                 SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 10 - num);

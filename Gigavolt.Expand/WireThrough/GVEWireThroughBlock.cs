@@ -34,9 +34,9 @@ namespace Game {
 
         public Texture2D HarnessTexture => m_harnessTexture ?? BlocksTexturesManager.DefaultBlocksTexture;
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => null;
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => null;
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (WireExistsOnFace(value, face)
                 && connectorFace == CellFace.OppositeFace(face)) {
                 return GVElectricConnectorType.InputOutput;

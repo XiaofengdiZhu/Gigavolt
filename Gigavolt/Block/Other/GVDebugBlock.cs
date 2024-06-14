@@ -3,15 +3,15 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVDebugBlock : GenerateGVWireVerticesBlock, IGVElectricElementBlock {
+    public class GVDebugBlock : Block, IGVElectricElementBlock {
         public const int Index = 842;
 
         public BlockMesh[] m_blockMeshesByData = new BlockMesh[4];
         public BlockMesh m_standaloneBlockMesh = new();
         public Texture2D texture;
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new DebugGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, 4));
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DebugGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, 4), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (face == 4
                 && SubsystemGVElectricity.GetConnectorDirection(4, 0, connectorFace).HasValue) {
                 return GVElectricConnectorType.Output;

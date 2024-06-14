@@ -3,7 +3,7 @@ using Engine;
 
 namespace Game {
     public class DetonatorGVElectricElement : MountedGVElectricElement {
-        public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public void Detonate(uint pressure) {
             SubsystemExplosions m_subsystemExplosions = SubsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true);

@@ -5,12 +5,13 @@ using GameEntitySystem;
 
 namespace Game {
     public class GVSubterrainSystem : IDisposable {
-        public readonly SubsystemGVBlockBehaviors m_subsystemGVBlockBehaviors;
         public readonly SubsystemBlockBehaviors m_subsystemBlockBehaviors;
         public readonly SubsystemTerrain m_subsystemTerrain;
         public readonly SubsystemPickables m_subsystemPickables;
         public readonly SubsystemParticles m_subsystemParticles;
         public readonly SubsystemGameWidgets m_subsystemViews;
+        public readonly SubsystemGVBlockBehaviors m_subsystemGVBlockBehaviors;
+        public SubsystemGVElectricity m_subsystemGVElectricity;
 
         public readonly uint ID;
         public readonly GVSubterrainSystem Parent;
@@ -84,12 +85,13 @@ namespace Game {
         public readonly DynamicArray<Point3> m_modifiedList = [];
 
         public GVSubterrainSystem(Project project, Matrix transform = default, Point3 anchor = default, Vector3 originOffset = default, GVSubterrainSystem parent = null, Point2 min = default, Point2 max = default, Dictionary<Point3, int> blocks = null) {
-            m_subsystemGVBlockBehaviors = project.FindSubsystem<SubsystemGVBlockBehaviors>(true);
             m_subsystemBlockBehaviors = project.FindSubsystem<SubsystemBlockBehaviors>(true);
             m_subsystemTerrain = project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemPickables = project.FindSubsystem<SubsystemPickables>(true);
             m_subsystemParticles = project.FindSubsystem<SubsystemParticles>(true);
             m_subsystemViews = project.FindSubsystem<SubsystemGameWidgets>(true);
+            m_subsystemGVBlockBehaviors = project.FindSubsystem<SubsystemGVBlockBehaviors>(true);
+            m_subsystemGVElectricity = project.FindSubsystem<SubsystemGVElectricity>(true);
             Terrain.SeasonHumidity = 12;
             Terrain.SeasonTemperature = 12;
             TerrainUpdater = new GVSubterrainUpdater(this, project);
@@ -106,6 +108,7 @@ namespace Game {
             );
             ID = GVStaticStorage.GetUniqueGVMBID();
             GVStaticStorage.GVSubterrainSystemDictionary.Add(ID, this);
+            m_subsystemGVElectricity.AddSubterrain(ID);
             Anchor = anchor;
             AnchorTransform = Matrix.CreateTranslation(anchor.X + 0.5f, anchor.Y + 0.5f, anchor.Z + 0.5f);
             OriginTransform = Matrix.CreateTranslation(originOffset);
@@ -333,6 +336,7 @@ namespace Game {
 
         public void Dispose() {
             GVStaticStorage.GVSubterrainSystemDictionary.Remove(ID);
+            m_subsystemGVElectricity.RemoveSubterrain(ID);
             TerrainRenderer.Dispose();
             TerrainUpdater.Dispose();
             Terrain.Dispose();

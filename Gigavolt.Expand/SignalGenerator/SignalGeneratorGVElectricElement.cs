@@ -30,12 +30,12 @@ namespace Game {
         public int m_nowAmplitude;
         public Random m_random = new();
 
-        public SignalGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace[] cellFaces) : base(subsystemGVElectricity, cellFaces) {
+        public SignalGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace[] cellFaces, uint subterrainId) : base(subsystemGVElectricity, cellFaces, subterrainId) {
             m_subsystemTerrain = SubsystemGVElectricity.SubsystemTerrain;
             m_blockBehavior = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVSignalGeneratorBlockBehavior>(true);
             m_bottomCellFace = cellFaces[0];
             m_bottomPoint3 = m_bottomCellFace.Point;
-            uint? output = subsystemGVElectricity.ReadPersistentVoltage(m_bottomPoint3);
+            uint? output = subsystemGVElectricity.ReadPersistentVoltage(m_bottomPoint3, SubterrainId);
             if (output.HasValue) {
                 m_topTopOutput = output.Value;
             }
@@ -239,7 +239,7 @@ namespace Game {
                     }
                 }
                 if (m_topTopOutput != topTopOutput) {
-                    SubsystemGVElectricity.WritePersistentVoltage(m_bottomCellFace.Point, m_topTopOutput);
+                    SubsystemGVElectricity.WritePersistentVoltage(m_bottomCellFace.Point, m_topTopOutput, SubterrainId);
                     return true;
                 }
             }

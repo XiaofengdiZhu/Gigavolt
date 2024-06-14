@@ -10,7 +10,7 @@ namespace Game {
         public uint m_bottomInput;
         public uint m_inInput;
 
-        public TerrainScannerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_terrain = SubsystemGVElectricity.SubsystemTerrain.Terrain;
+        public TerrainScannerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_terrain = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId);
 
         public override bool Simulate() {
             m_rightInput = 0u;

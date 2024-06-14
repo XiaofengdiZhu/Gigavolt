@@ -13,7 +13,7 @@ namespace Game {
         public uint m_inputBottom;
         public uint m_inputLeft;
 
-        public SignGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGVSignBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSignBlockBehavior>(true);
+        public SignGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGVSignBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSignBlockBehavior>(true);
 
         public override void OnAdded() {
             Point3 point = CellFaces[0].Point;

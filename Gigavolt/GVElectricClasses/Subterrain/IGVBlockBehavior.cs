@@ -5,5 +5,6 @@
         public void OnBlockModified(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) { }
         public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) { }
         public void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded, GVSubterrainSystem system) { }
+        public void OnChunkDiscarding(TerrainChunk chunk, GVSubterrainSystem system) { }
     }
 }

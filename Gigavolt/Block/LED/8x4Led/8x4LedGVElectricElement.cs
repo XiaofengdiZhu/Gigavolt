@@ -8,11 +8,11 @@ namespace Game {
 
         public GV8x4GlowPoint m_glowPoint;
 
-        public _8x4LedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGV8x4LedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGV8x4LedGlow>(true);
+        public _8x4LedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGV8x4LedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGV8x4LedGlow>(true);
 
         public override void OnAdded() {
             GVCellFace cellFace = CellFaces[0];
-            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             int mountingFace = GV8x4LedBlock.GetMountingFace(data);
             Vector3 v = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             Vector3 vector = CellFace.FaceToVector3(mountingFace);

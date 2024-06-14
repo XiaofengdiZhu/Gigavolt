@@ -6,7 +6,7 @@ namespace Game {
         public SubsystemGVElectricity m_subsystemElectricity;
         public SubsystemAudio m_subsystemAudio;
 
-        public static Random m_random = new Random();
+        public static Random m_random = new();
 
         public override int[] HandledBlocks => new[] { GVDoorBlock.Index };
 
@@ -41,14 +41,20 @@ namespace Game {
             }
         }
 
-        public bool IsDoorElectricallyConnected(int x, int y, int z) {
+        public bool IsDoorElectricallyConnected(int x, int y, int z, uint subterrainId) {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             int data = Terrain.ExtractData(cellValue);
             if (BlocksManager.Blocks[num] is GVDoorBlock) {
                 int num2 = GVDoorBlock.IsBottomPart(SubsystemTerrain.Terrain, x, y, z) ? y : y - 1;
                 for (int i = num2; i <= num2 + 1; i++) {
-                    GVElectricElement electricElement = m_subsystemElectricity.GetGVElectricElement(x, i, z, GVDoorBlock.GetHingeFace(data));
+                    GVElectricElement electricElement = m_subsystemElectricity.GetGVElectricElement(
+                        x,
+                        i,
+                        z,
+                        GVDoorBlock.GetHingeFace(data),
+                        subterrainId
+                    );
                     if (electricElement != null
                         && electricElement.Connections.Count > 0) {
                         return true;
@@ -63,7 +69,7 @@ namespace Game {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int data = Terrain.ExtractData(cellValue);
             if (GVDoorBlock.GetModel(data) == 0
-                || !IsDoorElectricallyConnected(cellFace.X, cellFace.Y, cellFace.Z)) {
+                || !IsDoorElectricallyConnected(cellFace.X, cellFace.Y, cellFace.Z, 0)) {
                 bool open = GVDoorBlock.GetOpen(data) > 0;
                 return OpenCloseDoor(cellFace.X, cellFace.Y, cellFace.Z, !open);
             }

@@ -6,15 +6,13 @@ using Engine;
 namespace Game {
     public class SoundGeneratorGVCElectricElement : RotateableGVElectricElement {
         public SubsystemNoise m_subsystemNoise;
-
         public SubsystemParticles m_subsystemParticles;
-
         public SoundParticleSystem m_particleSystem;
+        public GVSubterrainSystem m_subterrainSystem;
 
         public Random m_random = new();
 
         public uint m_lastToneInput;
-
         public double m_playAllowedTime;
 
         public string[] m_tones = new string[16] {
@@ -68,12 +66,13 @@ namespace Game {
             "HandClap"
         };
 
-        public SoundGeneratorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public SoundGeneratorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemNoise = subsystemGVElectricity.Project.FindSubsystem<SubsystemNoise>(true);
             m_subsystemParticles = subsystemGVElectricity.Project.FindSubsystem<SubsystemParticles>(true);
             Vector3 vector = CellFace.FaceToVector3(cellFace.Face);
             Vector3 position = new Vector3(cellFace.Point) + new Vector3(0.5f) - 0.2f * vector;
             m_particleSystem = new SoundParticleSystem(subsystemGVElectricity.SubsystemTerrain, position, vector);
+            m_subterrainSystem = subterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
         }
 
         public override bool Simulate() {
@@ -134,6 +133,12 @@ namespace Game {
                     && !string.IsNullOrEmpty(text2)) {
                     GVCellFace cellFace = CellFaces[0];
                     Vector3 position = new(cellFace.X, cellFace.Y, cellFace.Z);
+                    if (SubterrainId != 0) {
+                        Matrix transform = m_subterrainSystem.GlobalTransform;
+                        position = Vector3.Transform(position, transform);
+                        m_particleSystem.m_position = position;
+                        m_particleSystem.m_direction = Vector3.Transform(m_particleSystem.m_direction, transform) - Vector3.Transform(Vector3.Zero, transform);
+                    }
                     float volume = num2 / 15f;
                     float pitch = Math.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);
                     float minDistance = 0.5f + 5f * num2 / 15f;

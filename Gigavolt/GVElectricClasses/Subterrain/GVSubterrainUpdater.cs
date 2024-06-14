@@ -388,7 +388,8 @@ namespace Game {
         }
 
         public void PropagateLight() {
-            foreach (TerrainUpdater.LightSource lightSource in m_lightSources) {
+            for (int index = 0; index < m_lightSources.Count; index++) {
+                TerrainUpdater.LightSource lightSource = m_lightSources[index];
                 int light = lightSource.Light;
                 if (light > 1) {
                     PropagateLightSource(lightSource.X - 1, lightSource.Y, lightSource.Z, light);

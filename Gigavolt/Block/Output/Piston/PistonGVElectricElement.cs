@@ -9,7 +9,7 @@ namespace Game {
         public readonly bool m_complex;
         public GVPistonData m_pistonData;
 
-        public PistonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, bool complex) : base(
+        public PistonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId, bool complex) : base(
             subsystemGVElectricity,
             new List<GVCellFace> {
                 new(point.X, point.Y, point.Z, 0),
@@ -18,7 +18,8 @@ namespace Game {
                 new(point.X, point.Y, point.Z, 3),
                 new(point.X, point.Y, point.Z, 4),
                 new(point.X, point.Y, point.Z, 5)
-            }
+            },
+            subterrainId
         ) {
             m_subsystemGVPistonBlockBehavior = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVPistonBlockBehavior>(true);
             m_complex = complex;

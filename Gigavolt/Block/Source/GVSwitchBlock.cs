@@ -128,7 +128,7 @@ namespace Game {
                     null,
                     blockColor.HasValue ? geometry.GetGeometry(WhiteTexture).SubsetOpaque : geometry.SubsetOpaque
                 );
-                GenerateGVWireVertices(
+                GVBlockGeometryGenerator.GenerateGVWireVertices(
                     generator,
                     value,
                     x,
@@ -166,7 +166,7 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new SwitchGVElectricElement(
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new SwitchGVElectricElement(
             subsystemGVElectricity,
             new GVCellFace(
                 x,
@@ -175,10 +175,11 @@ namespace Game {
                 GetFace(value),
                 GetConnectionMask(value)
             ),
-            value
+            value,
+            subterrainId
         );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {

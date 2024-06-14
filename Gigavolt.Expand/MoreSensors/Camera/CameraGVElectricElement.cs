@@ -3,11 +3,12 @@ using Engine.Graphics;
 
 namespace Game {
     public class CameraGVElectricElement : RotateableGVElectricElement {
-        public SubsystemDrawing m_subsystemDrawing;
-        public SubsystemGameWidgets m_subsystemGameWidgets;
-        public SubsystemTerrain m_subsystemTerrain;
-        public SubsystemSky m_subsystemSky;
-        public SubsystemGVCameraBlockBehavior m_subsystemGVCameraBlockBehavior;
+        public readonly SubsystemDrawing m_subsystemDrawing;
+        public readonly SubsystemGameWidgets m_subsystemGameWidgets;
+        public readonly SubsystemTerrain m_subsystemTerrain;
+        public readonly SubsystemSky m_subsystemSky;
+        public readonly SubsystemGVCameraBlockBehavior m_subsystemGVCameraBlockBehavior;
+        public readonly GVSubterrainSystem m_subterrainSystem;
         public GameWidget m_gameWidget;
         public GVCamera m_camera;
         public Vector3 m_originalPosition;
@@ -19,6 +20,7 @@ namespace Game {
         public uint m_inputBottom;
         public uint m_inputLeft;
         public int m_lastRotation;
+        public int m_mountingFace;
 
         public static readonly Vector3[] m_upVector3 = [
             Vector3.UnitY,
@@ -47,18 +49,21 @@ namespace Game {
             -Vector3.UnitX
         ];
 
-        public CameraGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public CameraGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemDrawing = SubsystemGVElectricity.Project.FindSubsystem<SubsystemDrawing>(true);
             m_subsystemGameWidgets = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGameWidgets>(true);
             m_subsystemTerrain = SubsystemGVElectricity.SubsystemTerrain;
             m_subsystemSky = SubsystemGVElectricity.Project.FindSubsystem<SubsystemSky>(true);
             m_subsystemGVCameraBlockBehavior = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVCameraBlockBehavior>(true);
+            if (subterrainId != 0) {
+                m_subterrainSystem = GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
+            }
         }
 
         public override void OnAdded() {
             GVCellFace cellFace = CellFaces[0];
-            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
-            int mountingFace = cellFace.Face;
+            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            m_mountingFace = cellFace.Face;
             m_lastRotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
             m_originalPosition = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
@@ -72,14 +77,19 @@ namespace Game {
             m_camera = new GVCamera(m_gameWidget);
             m_gameWidget.m_activeCamera = m_camera;
             m_gameWidget.m_cameras = [m_camera];
-            Vector3 forward = CellFace.FaceToVector3(mountingFace);
+            Vector3 forward = CellFace.FaceToVector3(m_mountingFace);
+            Vector3 originalPosition = m_originalPosition;
+            if (SubterrainId != 0) {
+                Matrix transform = m_subterrainSystem.GlobalTransform;
+                m_originalPosition = Vector3.Transform(m_originalPosition, transform);
+            }
             if (m_complex) {
-                m_camera.SetupPerspectiveCamera(m_originalPosition, -Vector3.UnitZ, Vector3.UnitY);
+                m_camera.SetupPerspectiveCamera(originalPosition, -Vector3.UnitZ, Vector3.UnitY);
             }
             else {
-                m_camera.SetupPerspectiveCamera(m_originalPosition, forward, m_upVector3[mountingFace * 4 + m_lastRotation]);
+                m_camera.SetupPerspectiveCamera(originalPosition, forward, m_upVector3[m_mountingFace * 4 + m_lastRotation]);
             }
-            m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, m_originalPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
+            m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, originalPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
         }
 
         public override void OnRemoved() {
@@ -155,6 +165,13 @@ namespace Game {
                 }
                 if (changed) {
                     m_camera.PrepareForDrawing();
+                    if (SubterrainId != 0) {
+                        Matrix transform = m_subterrainSystem.GlobalTransform;
+                        newViewPosition = Vector3.Transform(newViewPosition, transform);
+                        Vector3 zero = Vector3.Transform(Vector3.Zero, transform);
+                        newViewDirection = Vector3.Transform(newViewDirection, transform) - zero;
+                        newViewUp = Vector3.Transform(newViewUp, transform) - zero;
+                    }
                     m_camera.SetupPerspectiveCamera(newViewPosition, newViewDirection, newViewUp);
                     m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, newViewPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
                 }
@@ -170,7 +187,17 @@ namespace Game {
                 }
                 if (electricRotation != m_lastRotation) {
                     m_camera.PrepareForDrawing();
-                    m_camera.SetupPerspectiveCamera(m_camera.ViewPosition, m_camera.ViewDirection, m_upVector3[CellFaces[0].Face * 4 + electricRotation]);
+                    Vector3 position = m_originalPosition;
+                    Vector3 forward = CellFace.FaceToVector3(m_mountingFace);
+                    Vector3 up = m_upVector3[m_mountingFace * 4 + m_lastRotation];
+                    if (SubterrainId != 0) {
+                        Matrix transform = m_subterrainSystem.GlobalTransform;
+                        position = Vector3.Transform(position, transform);
+                        Vector3 zero = Vector3.Transform(Vector3.Zero, transform);
+                        forward = Vector3.Transform(forward, transform) - zero;
+                        up = Vector3.Transform(up, transform) - zero;
+                    }
+                    m_camera.SetupPerspectiveCamera(position, forward, up);
                     m_lastRotation = electricRotation;
                 }
             }

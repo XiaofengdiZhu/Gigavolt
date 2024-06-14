@@ -6,7 +6,7 @@ namespace Game {
 
         public double? m_lastActionTime;
 
-        public MultistateFurnitureGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point) : base(subsystemGVElectricity, point) { }
+        public MultistateFurnitureGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(subsystemGVElectricity, point, subterrainId) { }
 
         public override bool Simulate() {
             if (CalculateHighInputsCount() > 0) {

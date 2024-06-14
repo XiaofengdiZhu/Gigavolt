@@ -7,16 +7,17 @@ namespace Game {
         public SubsystemBlockEntities m_subsystemBlockEntities;
         public uint m_voltage;
 
-        public GuidedDispenserGVElectricElement(SubsystemGVElectricity subsystemElectricity, Point3 point) : base(
-            subsystemElectricity,
-            new List<CellFace> {
+        public GuidedDispenserGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(
+            subsystemGVElectricity,
+            new List<GVCellFace> {
                 new(point.X, point.Y, point.Z, 0),
                 new(point.X, point.Y, point.Z, 1),
                 new(point.X, point.Y, point.Z, 2),
                 new(point.X, point.Y, point.Z, 3),
                 new(point.X, point.Y, point.Z, 4),
                 new(point.X, point.Y, point.Z, 5)
-            }
+            },
+            subterrainId
         ) => m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
 
         public override bool Simulate() {
@@ -35,7 +36,7 @@ namespace Game {
                 if (component == null) {
                     return false;
                 }
-                int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z));
+                int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(position.X, position.Y, position.Z));
                 int face = GVGuidedDispenserBlock.GetDirection(data);
                 int slotIndex = 0;
                 int slotValue = 0;

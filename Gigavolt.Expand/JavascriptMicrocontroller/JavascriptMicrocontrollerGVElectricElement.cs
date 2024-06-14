@@ -4,7 +4,14 @@ using Engine;
 
 namespace Game {
     public class JavascriptMicrocontrollerGVElectricElement : RotateableGVElectricElement {
-        public static readonly uint[] DefaultOutputs = [0, 0, 0, 0, 0];
+        public static readonly uint[] DefaultOutputs = [
+            0,
+            0,
+            0,
+            0,
+            0
+        ];
+
         public uint[] m_inputs = (uint[])DefaultOutputs.Clone();
         public uint[] m_outputs = (uint[])DefaultOutputs.Clone();
         public bool m_blockDataInitiated;
@@ -14,7 +21,7 @@ namespace Game {
         public bool m_dataChanged;
         public int m_executeAgainCircuitStep = -1;
 
-        public JavascriptMicrocontrollerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public JavascriptMicrocontrollerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemJavascriptMicrocontrollerBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
             m_subsystemTerrain = subsystemGVElectricity.Project.FindSubsystem<SubsystemTerrain>(true);
         }

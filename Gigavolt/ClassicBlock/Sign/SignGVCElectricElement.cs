@@ -6,7 +6,7 @@ namespace Game {
 
         public double? m_lastMessageTime;
 
-        public SignGVCElectricElement(SubsystemGVElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) { }
+        public SignGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public override bool Simulate() {
             bool flag = CalculateHighInputsCount() > 0;

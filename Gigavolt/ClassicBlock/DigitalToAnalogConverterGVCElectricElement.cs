@@ -2,7 +2,7 @@ namespace Game {
     public class DigitalToAnalogConverterGVCElectricElement : RotateableGVElectricElement {
         public uint m_voltage;
 
-        public DigitalToAnalogConverterGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public DigitalToAnalogConverterGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

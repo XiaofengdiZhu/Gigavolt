@@ -7,7 +7,7 @@ namespace Game {
         public uint m_output;
         public uint m_overflow;
 
-        public MoreTwoInTwoOutGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) => m_type = GVMoreTwoInTwoOutBlock.GetType(Terrain.ExtractData(value));
+        public MoreTwoInTwoOutGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_type = GVMoreTwoInTwoOutBlock.GetType(Terrain.ExtractData(value));
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);

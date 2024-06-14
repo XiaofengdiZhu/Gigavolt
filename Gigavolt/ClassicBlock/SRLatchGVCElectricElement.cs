@@ -8,8 +8,8 @@
 
         public uint m_voltage;
 
-        public SRLatchGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
-            uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point);
+        public SRLatchGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point, SubterrainId);
             if (num.HasValue) {
                 m_voltage = num.Value;
             }
@@ -74,7 +74,7 @@
                 m_resetAllowed = true;
             }
             if (m_voltage != voltage) {
-                SubsystemGVElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage);
+                SubsystemGVElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage, SubterrainId);
                 return true;
             }
             return false;

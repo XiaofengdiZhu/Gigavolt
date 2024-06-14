@@ -7,8 +7,8 @@ namespace Game {
 
         public uint m_voltage;
 
-        public FenceGateGVElectricElement(SubsystemGVElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) {
-            m_subsystem = subsystemElectricity.Project.FindSubsystem<SubsystemGVFenceGateBlockBehavior>(true);
+        public FenceGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            m_subsystem = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVFenceGateBlockBehavior>(true);
             m_lastChangeCircuitStep = SubsystemGVElectricity.CircuitStep;
             m_needsReset = true;
         }

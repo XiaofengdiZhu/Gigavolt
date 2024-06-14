@@ -13,9 +13,9 @@ namespace Game {
 
         public int m_postedSignBlockIndex;
 
-        public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneBlockMesh = new();
 
-        public BlockMesh m_standaloneColoredBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneColoredBlockMesh = new();
 
         public BlockMesh[] m_blockMeshes = new BlockMesh[4];
 
@@ -40,7 +40,7 @@ namespace Game {
             for (int i = 0; i < 4; i++) {
                 float radians = (float)Math.PI / 2f * i;
                 Matrix m = Matrix.CreateTranslation(0f, 0f, -15f / 32f) * Matrix.CreateRotationY(radians) * Matrix.CreateTranslation(0.5f, -0.3125f, 0.5f);
-                BlockMesh blockMesh = new BlockMesh();
+                BlockMesh blockMesh = new();
                 blockMesh.AppendModelMeshPart(
                     model.FindMesh("Sign").MeshParts[0],
                     boneAbsoluteTransform * m,
@@ -143,7 +143,7 @@ namespace Game {
                     geometry.SubsetOpaque
                 );
             }
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,
@@ -198,12 +198,12 @@ namespace Game {
 
         public override Vector3 GetSignSurfaceNormal(int data) => m_surfaceNormals[GetFace(data)];
 
-        public virtual GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemElectricity, int value, int x, int y, int z) {
+        public virtual GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
             int data = Terrain.ExtractData(value);
-            return new SignGVCElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(data)));
+            return new SignGVCElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(data)), subterrainId);
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int data = Terrain.ExtractData(value);
             if (face != GetFace(data)
                 || !SubsystemElectricity.GetConnectorDirection(face, 0, connectorFace).HasValue) {

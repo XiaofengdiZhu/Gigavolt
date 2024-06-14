@@ -3,11 +3,14 @@ namespace Game {
         public uint m_voltage;
         readonly SubsystemElectricity subsystemElectricity;
 
-        public GV2OTransformerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => subsystemElectricity = SubsystemGVElectricity.Project.FindSubsystem<SubsystemElectricity>(true);
+        public GV2OTransformerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => subsystemElectricity = SubsystemGVElectricity.Project.FindSubsystem<SubsystemElectricity>(true);
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
+            if (SubterrainId != 0) {
+                return false;
+            }
             uint voltage = m_voltage;
             uint input = 0u;
             foreach (GVElectricConnection connection in Connections) {

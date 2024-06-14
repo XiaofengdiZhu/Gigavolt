@@ -57,7 +57,13 @@ namespace Game {
                             SetBlockData(new Point3(x, y, z), memoryBankData);
                             int face = ((GVMemoryBankCBlock)BlocksManager.Blocks[GVMemoryBankCBlock.Index]).GetFace(value);
                             SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                            GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
+                            GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(
+                                x,
+                                y,
+                                z,
+                                face,
+                                0
+                            );
                             if (electricElement != null) {
                                 subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
                             }
@@ -74,7 +80,13 @@ namespace Game {
                             SetBlockData(new Point3(x, y, z), memoryBankData);
                             int face = ((GVMemoryBankCBlock)BlocksManager.Blocks[GVMemoryBankCBlock.Index]).GetFace(value);
                             SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                            GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
+                            GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(
+                                x,
+                                y,
+                                z,
+                                face,
+                                0
+                            );
                             if (electricElement != null) {
                                 subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
                             }

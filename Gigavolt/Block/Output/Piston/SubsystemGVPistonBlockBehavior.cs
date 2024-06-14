@@ -97,7 +97,13 @@ namespace Game {
                     delegate {
                         SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(GVPistonBlock.Index, 0, Terrain.ExtractData(SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)))));
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, 0);
+                        GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(
+                            x,
+                            y,
+                            z,
+                            0,
+                            0
+                        );
                         if (electricElement != null) {
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
                         }

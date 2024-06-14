@@ -7,9 +7,9 @@ namespace Game {
     public class GVLightbulbBlock : MountedGVElectricElementBlock, IPaintableBlock {
         public const int Index = 819;
 
-        public BlockMesh m_standaloneBulbBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneBulbBlockMesh = new();
 
-        public BlockMesh m_standaloneSidesBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneSidesBlockMesh = new();
 
         public BlockMesh[] m_bulbBlockMeshes = new BlockMesh[6];
 
@@ -19,7 +19,7 @@ namespace Game {
 
         public BoundingBox[][] m_collisionBoxes = new BoundingBox[6][];
         public new static string fName = "GVLightbulbBlock";
-        public Color m_copperColor = new Color(118, 56, 32);
+        public Color m_copperColor = new(118, 56, 32);
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Lightbulbs");
@@ -184,7 +184,7 @@ namespace Game {
                     null,
                     geometry.SubsetOpaque
                 );
-                GenerateGVWireVertices(
+                GVBlockGeometryGenerator.GenerateGVWireVertices(
                     generator,
                     value,
                     x,
@@ -226,9 +226,9 @@ namespace Game {
             return Terrain.ReplaceData(value, SetColor(data, color));
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new LightBulbGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)), value);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new LightBulbGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), value, subterrainId);
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {

@@ -12,7 +12,7 @@ namespace Game {
         public Vector3 m_targetOffset;
         public Point3 m_targetPoint;
 
-        public TractorBeamGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTractorBeamBlockBehavior>(true);
+        public TractorBeamGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTractorBeamBlockBehavior>(true);
 
         public override uint GetOutputVoltage(int face) => 0u;
 

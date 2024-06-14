@@ -11,7 +11,7 @@ namespace Game {
         public uint m_lastBottomInput;
         ComponentInventoryBase m_originInventory;
 
-        public InventoryControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public InventoryControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
@@ -443,17 +443,19 @@ namespace Game {
             int x = cellFace.X - point.X;
             int y = cellFace.Y - point.Y;
             int z = cellFace.Z - point.Z;
-            if (SubsystemGVElectricity.SubsystemTerrain.Terrain.IsCellValid(x, y, z)) {
-                int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            Terrain terrain = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId);
+            if (terrain.IsCellValid(x, y, z)) {
+                int cellValue = terrain.GetCellValue(x, y, z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
                 if ((!block.IsCollidable_(cellValue) || block.IsFaceTransparent(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue))
                     && (cellFace.Face != 4 || !(block is FenceBlock))
                     && SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(x, y, z)?.Entity.FindComponent<ComponentInventoryBase>() == null) {
-                    SubsystemGVElectricity.SubsystemTerrain.DestroyCell(
+                    SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(
                         0,
                         cellFace.X,
                         cellFace.Y,
                         cellFace.Z,
+                        SubterrainId,
                         0,
                         false,
                         false

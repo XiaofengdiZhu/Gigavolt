@@ -6,7 +6,7 @@ namespace Game {
 
         public uint m_score;
 
-        public TargetGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public TargetGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

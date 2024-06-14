@@ -3,7 +3,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVWireBlock : GenerateGVWireVerticesBlock, IGVElectricWireElementBlock, IPaintableBlock {
+    public class GVWireBlock : Block, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 800;
 
         public BlockMesh m_standaloneBlockMesh = new();
@@ -48,9 +48,9 @@ namespace Game {
             }
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => null;
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => null;
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (!WireExistsOnFace(value, face)) {
                 return null;
             }
@@ -98,7 +98,7 @@ namespace Game {
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
             for (int i = 0; i < 6; i++) {
                 if (WireExistsOnFace(value, i)) {
-                    GenerateGVWireVertices(
+                    GVBlockGeometryGenerator.GenerateGVWireVertices(
                         generator,
                         value,
                         x,

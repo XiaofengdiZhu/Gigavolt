@@ -8,12 +8,12 @@ namespace Game {
 
         public GlowPoint m_glowPoint;
 
-        public MulticoloredLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(true);
+        public MulticoloredLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGlow>(true);
 
         public override void OnAdded() {
             m_glowPoint = m_subsystemGlow.AddGlowPoint();
             GVCellFace cellFace = CellFaces[0];
-            int mountingFace = GVMulticoloredLedBlock.GetMountingFace(Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)));
+            int mountingFace = GVMulticoloredLedBlock.GetMountingFace(Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)));
             Vector3 v = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             m_glowPoint.Position = v - 0.4375f * CellFace.FaceToVector3(mountingFace);
             m_glowPoint.Forward = CellFace.FaceToVector3(mountingFace);

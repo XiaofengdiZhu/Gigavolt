@@ -5,8 +5,7 @@ namespace Game {
     public class WireDomainGVElectricElement : GVElectricElement {
         public uint m_voltage;
 
-        public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<CellFace> cellFaces) : base(subsystemGVElectricity, cellFaces) { }
-        public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<GVCellFace> cellFaces) : base(subsystemGVElectricity, cellFaces) { }
+        public WireDomainGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<GVCellFace> cellFaces, uint subterrainId) : base(subsystemGVElectricity, cellFaces, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
@@ -30,7 +29,8 @@ namespace Game {
         }
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
-            int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+            Terrain terrain = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId);
+            int cellValue = terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int num = Terrain.ExtractContents(cellValue);
             if (BlocksManager.Blocks[num] is not (GVWireBlock or GVWireHarnessBlock)) {
                 return;
@@ -39,7 +39,7 @@ namespace Game {
             int num2 = wireFacesBitmask;
             if (GVWireBlock.WireExistsOnFace(cellValue, cellFace.Face)) {
                 Point3 point = CellFace.FaceToPoint3(cellFace.Face);
-                int cellValue2 = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X - point.X, cellFace.Y - point.Y, cellFace.Z - point.Z);
+                int cellValue2 = terrain.GetCellValue(cellFace.X - point.X, cellFace.Y - point.Y, cellFace.Z - point.Z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
                 if (!block.IsCollidable_(cellValue2)
                     || block.IsTransparent_(cellValue2)) {
@@ -47,11 +47,12 @@ namespace Game {
                 }
             }
             if (num2 == 0) {
-                SubsystemGVElectricity.SubsystemTerrain.DestroyCell(
+                SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(
                     0,
                     cellFace.X,
                     cellFace.Y,
                     cellFace.Z,
+                    SubterrainId,
                     0,
                     false,
                     false
@@ -59,11 +60,12 @@ namespace Game {
             }
             else if (num2 != wireFacesBitmask) {
                 int newValue = GVWireBlock.SetWireFacesBitmask(cellValue, num2);
-                SubsystemGVElectricity.SubsystemTerrain.DestroyCell(
+                SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(
                     0,
                     cellFace.X,
                     cellFace.Y,
                     cellFace.Z,
+                    SubterrainId,
                     newValue,
                     false,
                     false

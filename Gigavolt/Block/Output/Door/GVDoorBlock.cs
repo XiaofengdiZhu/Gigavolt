@@ -4,15 +4,15 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVDoorBlock : GenerateGVWireVerticesBlock, IGVElectricElementBlock {
+    public class GVDoorBlock : Block, IGVElectricElementBlock {
         public float m_pivotDistance = 0.0625f;
         public const int Index = 864;
 
         public BlockMesh[] m_standaloneBlockMesh = new BlockMesh[3];
         public Matrix[] m_boneAbsoluteTransform = new Matrix[3];
         public ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[3];
-        public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new Dictionary<int, BlockMesh>();
-        public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new Dictionary<int, BoundingBox[]>();
+        public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
+        public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
         public string[] m_displayNamesByModel = { "GV木门", "GV铁门", "GV铁栅门" };
         public int[] m_creativeValuesByModel = { Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1)), Terrain.MakeBlockValue(Index, 0, SetModel(0, 2)) };
 
@@ -25,7 +25,7 @@ namespace Game {
             for (int i = 0; i < 3; i++) {
                 m_boneAbsoluteTransform[i] = BlockMesh.GetBoneAbsoluteTransform(model[i].FindMesh("Door").ParentBone);
                 m_modelMeshPart[i] = model[i].FindMesh("Door").MeshParts[0];
-                BlockMesh blockMesh = new BlockMesh();
+                BlockMesh blockMesh = new();
                 blockMesh.AppendModelMeshPart(
                     m_modelMeshPart[i],
                     m_boneAbsoluteTransform[i] * Matrix.CreateTranslation(0f, -1f, 0f),
@@ -57,7 +57,7 @@ namespace Game {
                 );
             }
             Vector2 centerOffset = GetRightHanded(data) ? new Vector2(-0.45f, 0f) : new Vector2(0.45f, 0f);
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,
@@ -239,12 +239,9 @@ namespace Game {
 
         #endregion
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemElectricity, int value, int x, int y, int z) {
-            int data = Terrain.ExtractData(value);
-            return new DoorGVElectricElement(subsystemElectricity, new CellFace(x, y, z, GetHingeFace(data)));
-        }
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DoorGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetHingeFace(Terrain.ExtractData(value))), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int hingeFace = GetHingeFace(Terrain.ExtractData(value));
             if (face == hingeFace) {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(hingeFace, 0, connectorFace);

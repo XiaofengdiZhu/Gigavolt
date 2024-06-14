@@ -6,24 +6,36 @@ namespace Game {
     public class InventoryFetcherGVElectricElement : GVElectricElement {
         public readonly SubsystemBlockEntities m_subsystemBlockEntities;
         public readonly SubsystemPickables m_subsystemPickables;
+        public int m_originType;
+        public int m_originFace;
         public uint m_voltage;
 
-        public InventoryFetcherGVElectricElement(SubsystemGVElectricity subsystemElectricity, Point3 point) : base(
-            subsystemElectricity,
-            new List<CellFace> {
+        public InventoryFetcherGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, Point3 point, uint subterrainId) : base(
+            subsystemGVElectricity,
+            new List<GVCellFace> {
                 new(point.X, point.Y, point.Z, 0),
                 new(point.X, point.Y, point.Z, 1),
                 new(point.X, point.Y, point.Z, 2),
                 new(point.X, point.Y, point.Z, 3),
                 new(point.X, point.Y, point.Z, 4),
                 new(point.X, point.Y, point.Z, 5)
-            }
+            },
+            subterrainId
         ) {
+            if (SubterrainId != 0) {
+                return;
+            }
             m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
             m_subsystemPickables = SubsystemGVElectricity.Project.FindSubsystem<SubsystemPickables>(true);
+            int originData = Terrain.ExtractData(value);
+            m_originType = GVInventoryFetcherBlock.GetType(originData);
+            m_originFace = GVInventoryFetcherBlock.GetFace(originData);
         }
 
         public override bool Simulate() {
+            if (SubterrainId != 0) {
+                return false;
+            }
             uint voltage = m_voltage;
             m_voltage = 0;
             foreach (GVElectricConnection connection in Connections) {
@@ -35,10 +47,7 @@ namespace Game {
             if (m_voltage != voltage
                 && m_voltage > 0) {
                 GVCellFace cellFace = CellFaces[0];
-                int originData = Terrain.ExtractData(SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
-                int originType = GVInventoryFetcherBlock.GetType(originData);
-                int originFace = GVInventoryFetcherBlock.GetFace(originData);
-                Point3 originFaceDirection = CellFace.FaceToPoint3(originFace);
+                Point3 originFaceDirection = CellFace.FaceToPoint3(m_originFace);
                 ComponentInventoryBase originInventory = m_subsystemBlockEntities.GetBlockEntity(cellFace.X - originFaceDirection.X, cellFace.Y - originFaceDirection.Y, cellFace.Z - originFaceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
                 if (originInventory == null) {
                     return false;
@@ -47,7 +56,7 @@ namespace Game {
                 int itemCount;
                 bool throwOut;
                 HashSet<int> itemAtSlots = new();
-                if (originType == 0) {
+                if (m_originType == 0) {
                     int slot = (int)(m_voltage & 0xffu);
                     itemValue = originInventory.GetSlotValue(slot);
                     itemCount = Math.Min(m_voltage >> 16 == 1u ? int.MaxValue : (int)((m_voltage >> 8) & 0xffu), originInventory.GetSlotCount(slot));
@@ -57,7 +66,7 @@ namespace Game {
                     itemAtSlots.Add(slot);
                     throwOut = m_voltage >> 17 == 0u;
                 }
-                else if (originType == 2) {
+                else if (m_originType == 2) {
                     bool specifyData = m_voltage >> 10 == 1u;
                     int itemContents = (int)(m_voltage & 0x3ffu);
                     itemValue = Terrain.MakeBlockValue(itemContents, 0, specifyData ? (int)((m_voltage >> 14) & 0x3ffffu) : 0);
@@ -94,11 +103,11 @@ namespace Game {
                         int face = GVInventoryFetcherBlock.GetFace(data);
                         int oppositeFace = CellFace.OppositeFace(face);
                         if (type == 1
-                            && (face == originFace || oppositeFace == originFace)) {
+                            && (face == m_originFace || oppositeFace == m_originFace)) {
                             continue;
                         }
                         if ((type == 0 || type == 2)
-                            && oppositeFace == originFace) {
+                            && oppositeFace == m_originFace) {
                             ComponentInventoryBase inventory = m_subsystemBlockEntities.GetBlockEntity(position.X + originFaceDirection.X, position.Y + originFaceDirection.Y, position.Z + originFaceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
                             if (inventory != null) {
                                 int removedCount = itemCount - ComponentInventoryBase.AcquireItems(inventory, itemValue, itemCount);
@@ -127,7 +136,7 @@ namespace Game {
                             }
                         }
                         else if (throwOut && !BlocksManager.Blocks[contents].IsCollidable_(value)) {
-                            Vector3 originFaceVector3 = CellFace.FaceToVector3(originFace);
+                            Vector3 originFaceVector3 = CellFace.FaceToVector3(m_originFace);
                             m_subsystemPickables.AddPickable(
                                 itemValue,
                                 itemCount,

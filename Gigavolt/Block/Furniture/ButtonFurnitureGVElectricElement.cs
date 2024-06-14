@@ -5,7 +5,7 @@ namespace Game {
         public uint m_voltage;
         public ButtonFurnitureElectricElement m_originalElement;
 
-        public ButtonFurnitureGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point) : base(subsystemGVElectricity, point) { }
+        public ButtonFurnitureGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(subsystemGVElectricity, point, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

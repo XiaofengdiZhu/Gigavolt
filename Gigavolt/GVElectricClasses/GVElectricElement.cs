@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Engine;
 
 namespace Game {
@@ -7,22 +6,16 @@ namespace Game {
         public SubsystemGVElectricity SubsystemGVElectricity { get; set; }
         public ReadOnlyList<GVCellFace> CellFaces { get; set; }
         public List<GVElectricConnection> Connections { get; set; }
+        public readonly uint SubterrainId;
 
-        public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<GVCellFace> cellFaces) {
+        public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<GVCellFace> cellFaces, uint subterrainId) {
             SubsystemGVElectricity = subsystemGVElectricity;
             CellFaces = new ReadOnlyList<GVCellFace>(new List<GVCellFace>(cellFaces));
-            Connections = new List<GVElectricConnection>();
+            Connections = [];
+            SubterrainId = subterrainId;
         }
 
-        public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace) : this(subsystemGVElectricity, new List<GVCellFace> { cellFace }) { }
-
-        public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<CellFace> cellFaces) {
-            SubsystemGVElectricity = subsystemGVElectricity;
-            CellFaces = new ReadOnlyList<GVCellFace>(cellFaces.Select(cellFace => new GVCellFace(cellFace)).ToList());
-            Connections = new List<GVElectricConnection>();
-        }
-
-        public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : this(subsystemGVElectricity, new List<CellFace> { cellFace }) { }
+        public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : this(subsystemGVElectricity, new List<GVCellFace> { cellFace }, subterrainId) { }
 
         public virtual uint GetOutputVoltage(int face) => 0u;
 

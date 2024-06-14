@@ -202,7 +202,6 @@
 		<Compile Include="GVElectricClasses\Subterrain\SubsystemGVSubterrain.cs"/>
 		<Compile Include="Widget\GVDispenserWidget.cs"/>
 		<Compile Include="Widget\GVStepFloatingButtons.cs"/>
-		<Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs"/>
 		<Compile Include="BaseBlock\GVWireThroughBlock.cs"/>
 		<Compile Include="BaseBlock\IGVElectricElementBlock.cs"/>
 		<Compile Include="BaseBlock\IGVElectricWireElementBlock.cs"/>

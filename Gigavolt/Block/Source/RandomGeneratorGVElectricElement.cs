@@ -8,8 +8,8 @@ namespace Game {
 
         public static Random s_random = new();
 
-        public RandomGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
-            uint? num = SubsystemGVElectricity.ReadPersistentVoltage(CellFaces[0].Point);
+        public RandomGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            uint? num = SubsystemGVElectricity.ReadPersistentVoltage(CellFaces[0].Point, SubterrainId);
             m_voltage = num.HasValue ? num.Value : GetRandomVoltage();
         }
 
@@ -44,7 +44,7 @@ namespace Game {
                 SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + MathUtils.Max((int)(s_random.Float(0.25f, 0.75f) / 0.01f), 1));
             }
             if (m_voltage != voltage) {
-                SubsystemGVElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage);
+                SubsystemGVElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage, SubterrainId);
                 return true;
             }
             return false;

@@ -4,7 +4,7 @@ namespace Game {
 
         public uint m_voltage;
 
-        public TruthTableCCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitCBlockBehavior>(true);
+        public TruthTableCCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitCBlockBehavior>(true);
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

@@ -38,7 +38,13 @@ namespace Game {
                             SubsystemTerrain.ChangeCell(x, y, z, value2);
                             int face = ((GVAdjustableDelayGateBlock)BlocksManager.Blocks[GVAdjustableDelayGateBlock.Index]).GetFace(value);
                             SubsystemGVElectricity subsystemGVElectricity = Project.FindSubsystem<SubsystemGVElectricity>(true);
-                            GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
+                            GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
+                                x,
+                                y,
+                                z,
+                                face,
+                                0
+                            );
                             if (GVElectricElement != null) {
                                 subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
                             }

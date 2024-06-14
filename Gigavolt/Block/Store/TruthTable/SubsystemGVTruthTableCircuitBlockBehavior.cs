@@ -40,7 +40,13 @@ namespace Game {
                         SetBlockData(new Point3(x, y, z), truthTableData);
                         int face = ((GVTruthTableCircuitBlock)BlocksManager.Blocks[GVTruthTableCircuitBlock.Index]).GetFace(value);
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
+                        GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
+                            x,
+                            y,
+                            z,
+                            face,
+                            0
+                        );
                         if (GVElectricElement != null) {
                             GVElectricElement.GetOutputVoltage(123456);
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);

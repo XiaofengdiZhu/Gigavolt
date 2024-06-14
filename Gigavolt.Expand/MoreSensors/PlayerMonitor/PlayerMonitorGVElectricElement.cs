@@ -15,7 +15,7 @@ namespace Game {
         uint m_bottomInput;
         uint m_inInput;
 
-        public PlayerMonitorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public PlayerMonitorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemPlayers = SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true);
             m_terrain = SubsystemGVElectricity.SubsystemTerrain.Terrain;
         }

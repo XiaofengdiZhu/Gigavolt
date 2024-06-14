@@ -9,16 +9,17 @@ namespace Game {
 
         public SubsystemBlockEntities m_subsystemBlockEntities;
 
-        public DispenserGVCElectricElement(SubsystemGVElectricity subsystemElectricity, Point3 point) : base(
-            subsystemElectricity,
-            new List<CellFace> {
-                new CellFace(point.X, point.Y, point.Z, 0),
-                new CellFace(point.X, point.Y, point.Z, 1),
-                new CellFace(point.X, point.Y, point.Z, 2),
-                new CellFace(point.X, point.Y, point.Z, 3),
-                new CellFace(point.X, point.Y, point.Z, 4),
-                new CellFace(point.X, point.Y, point.Z, 5)
-            }
+        public DispenserGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(
+            subsystemGVElectricity,
+            new List<GVCellFace> {
+                new(point.X, point.Y, point.Z, 0),
+                new(point.X, point.Y, point.Z, 1),
+                new(point.X, point.Y, point.Z, 2),
+                new(point.X, point.Y, point.Z, 3),
+                new(point.X, point.Y, point.Z, 4),
+                new(point.X, point.Y, point.Z, 5)
+            },
+            subterrainId
         ) => m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
 
         public override bool Simulate() {

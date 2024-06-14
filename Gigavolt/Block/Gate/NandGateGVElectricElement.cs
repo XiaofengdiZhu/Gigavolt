@@ -2,7 +2,7 @@ namespace Game {
     public class NandGateGVElectricElement : RotateableGVElectricElement {
         public uint m_voltage;
 
-        public NandGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public NandGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

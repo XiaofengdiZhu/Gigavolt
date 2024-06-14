@@ -37,7 +37,7 @@ namespace Game {
                 null,
                 geometry.GetGeometry(texture).SubsetOpaque
             );
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,
@@ -50,16 +50,15 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new JavascriptMicrocontrollerGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new JavascriptMicrocontrollerGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
-            GVJavascriptMicrocontrollerData blockData = terrain.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true).GetBlockData(new Point3(x, y, z));
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+            GVJavascriptMicrocontrollerData blockData = subsystem.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true).GetBlockData(new Point3(x, y, z));
             if (blockData == null) {
                 return null;
             }
-            int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(Terrain.ExtractData(value)), connectorFace);
                 if (connectorDirection.HasValue) {
                     int type = blockData.m_portsDefinition[(int)connectorDirection.Value];
                     return type switch {

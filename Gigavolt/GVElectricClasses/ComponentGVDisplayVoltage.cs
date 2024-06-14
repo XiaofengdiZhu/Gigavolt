@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
@@ -5,6 +6,7 @@ using TemplatesDatabase;
 
 namespace Game {
     public class ComponentGVDisplayVoltage : Component, IDrawable {
+        public SubsystemGVSubterrain m_subsystemGVSubterrain;
         public SubsystemTerrain m_subsystemTerrain;
         public SubsystemGVElectricity m_subsystemGVElectricity;
         public TexturedBatch3D m_8NumberBatch;
@@ -34,6 +36,7 @@ namespace Game {
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap) {
+            m_subsystemGVSubterrain = Project.FindSubsystem<SubsystemGVSubterrain>(true);
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemGVElectricity = Project.FindSubsystem<SubsystemGVElectricity>(true);
             m_8NumberBatch = Project.FindSubsystem<SubsystemGV8NumberLedGlow>(true).batchCache;
@@ -47,12 +50,13 @@ namespace Game {
             int blockData = Terrain.ExtractData(blockValue);
             int blockFace = 4;
             Block block = BlocksManager.Blocks[blockContents];
+            Dictionary<GVCellFace, GVElectricElement> elements = m_subsystemGVElectricity.m_GVElectricElementsByCellFace[0];
             switch (block) {
                 case MountedGVElectricElementBlock mountedBlock: {
                     blockFace = mountedBlock.GetFace(blockValue);
-                    if (!m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
+                    if (!elements.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
                         for (int i = 0; i < 16; i++) {
-                            if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(
+                            if (elements.TryGetValue(
                                     new GVCellFace(
                                         cellFace.X,
                                         cellFace.Y,
@@ -83,13 +87,14 @@ namespace Game {
                         const float size = 0.1f;
                         for (int connectorFace = 0; connectorFace < 6; connectorFace++) {
                             GVElectricConnectorType? connectorType = mountedBlock.GetGVConnectorType(
-                                m_subsystemTerrain,
+                                m_subsystemGVSubterrain,
                                 blockValue,
                                 blockFace,
                                 connectorFace,
                                 cellFace.X,
                                 cellFace.Y,
-                                cellFace.Z
+                                cellFace.Z,
+                                0
                             );
                             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(blockFace, rotation, connectorFace);
                             Vector3 offset = connectorDirection == GVElectricConnectorDirection.In ? -0.4f * (up + right) : 0.4f * CellFace.FaceToVector3(connectorFace);
@@ -159,7 +164,7 @@ namespace Game {
                     break;
                 }
                 case GVBatteryBlock or GVDebugBlock: {
-                    if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
+                    if (elements.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
                         Vector3 forward = CellFace.FaceToVector3(cellFace.Face);
                         Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) + 0.55f * forward;
                         Vector3 up = cellFace.Face < 4 ? Vector3.UnitY : Vector3.UnitX;
@@ -192,7 +197,7 @@ namespace Game {
                     }
                     if (wireBlock.IsWireHarness(blockValue)) {
                         for (int i = 0; i < 16; i++) {
-                            if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(
+                            if (elements.TryGetValue(
                                     new GVCellFace(
                                         cellFace.X,
                                         cellFace.Y,
@@ -226,9 +231,9 @@ namespace Game {
                         }
                     }
                     else {
-                        if (!m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
+                        if (!elements.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
                             for (int i = 0; i < 16; i++) {
-                                if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(
+                                if (elements.TryGetValue(
                                         new GVCellFace(
                                             cellFace.X,
                                             cellFace.Y,
@@ -272,7 +277,7 @@ namespace Game {
                         GVFenceGateBlock => GVFenceGateBlock.GetHingeFace(blockData),
                         _ => blockFace
                     };
-                    if (m_subsystemGVElectricity.m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
+                    if (elements.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
                         Vector3 forward = CellFace.FaceToVector3(cellFace.Face);
                         Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) + 0.55f * forward;
                         Vector3 up = cellFace.Face < 4 ? Vector3.UnitY : Vector3.UnitX;

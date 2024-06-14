@@ -65,9 +65,9 @@ namespace Game {
 
         public static int SetAcceptsDrops(int data, bool acceptsDrops) => (data & -17) | (acceptsDrops ? 16 : 0);
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemElectricity, int value, int x, int y, int z) => new DispenserGVElectricElement(subsystemElectricity, new Point3(x, y, z));
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DispenserGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) => GVElectricConnectorType.Input;
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) => GVElectricConnectorType.Input;
 
         public int GetConnectionMask(int value) => int.MaxValue;
     }

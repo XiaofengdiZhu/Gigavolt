@@ -97,7 +97,7 @@ namespace Game {
 
         public GVSignalGeneratorBlock() : base("Models/GVSignalGenerator", "GVSignalGenerator", 0.375f) { }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) {
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
             int face = GetFace(value);
             int data = Terrain.ExtractData(value);
             int rotation = GetRotation(data);
@@ -120,14 +120,14 @@ namespace Game {
                 another.Z = bottom.Z + upDirection.Z;
                 up = new GVCellFace(another.X, another.Y, another.Z, face);
             }
-            if (!subsystemGVElectricity.m_GVElectricElementsToAdd.ContainsKey(another)) {
-                int anotherValue = subsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(another.X, another.Y, another.Z);
+            if (!subsystemGVElectricity.m_GVElectricElementsToAdd[subterrainId].ContainsKey(another)) {
+                int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(another.X, another.Y, another.Z);
                 if (Terrain.ExtractContents(anotherValue) == Index
                     && GetFace(anotherValue) == face) {
                     int anotherData = Terrain.ExtractData(anotherValue);
                     if (GetRotation(anotherData) == rotation
                         && GetIsTopPart(anotherData) != isUp) {
-                        return new SignalGeneratorGVElectricElement(subsystemGVElectricity, [bottom, up]);
+                        return new SignalGeneratorGVElectricElement(subsystemGVElectricity, [bottom, up], subterrainId);
                     }
                 }
             }
@@ -161,7 +161,7 @@ namespace Game {
                     geometry.GetGeometry(texture).SubsetOpaque
                 );
             }
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,
@@ -179,7 +179,7 @@ namespace Game {
             return GetIsTopPart(data) ? m_bottomCollisionBoxes[data & 0x1F] : m_collisionBoxes[data & 0x1F];
         }
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int data = Terrain.ExtractData(value);
             bool isUp = GetIsTopPart(data);
             if (GetFace(value) == face) {

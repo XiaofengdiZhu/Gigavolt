@@ -10,7 +10,7 @@ namespace Game {
         uint m_bottomInput;
         uint m_inInput;
 
-        public MemoryBanksOperatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public MemoryBanksOperatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) => 0u;
 

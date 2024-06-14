@@ -8,7 +8,16 @@ namespace Game {
         public const int Index = 832;
 
         // ReSharper disable once RedundantExplicitArraySize
-        public static readonly Color[] LedColors = new Color[8] { new Color(255, 255, 255), new Color(0, 255, 255), new Color(255, 0, 0), new Color(0, 0, 255), new Color(255, 240, 0), new Color(0, 255, 0), new Color(255, 120, 0), new Color(255, 0, 255) };
+        public static readonly Color[] LedColors = new Color[8] {
+            new(255, 255, 255),
+            new(0, 255, 255),
+            new(255, 0, 0),
+            new(0, 0, 255),
+            new(255, 240, 0),
+            new(0, 255, 0),
+            new(255, 120, 0),
+            new(255, 0, 255)
+        };
 
 
         public BlockMesh[] m_standaloneBlockMeshesByColor = new BlockMesh[8];
@@ -156,7 +165,7 @@ namespace Game {
                     null,
                     geometry.SubsetOpaque
                 );
-                GenerateGVWireVertices(
+                GVBlockGeometryGenerator.GenerateGVWireVertices(
                     generator,
                     value,
                     x,
@@ -182,9 +191,9 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new LedGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new LedGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {

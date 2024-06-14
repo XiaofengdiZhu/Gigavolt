@@ -9,9 +9,7 @@ namespace Game {
         public Dictionary<int, uint> m_voltagesHistory = new();
 
         public abstract int DelaySteps { get; }
-
-        public BaseDelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
-        public BaseDelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public BaseDelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

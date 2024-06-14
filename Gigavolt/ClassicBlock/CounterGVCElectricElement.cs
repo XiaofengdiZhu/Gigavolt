@@ -13,10 +13,10 @@ namespace Game {
 
         public bool m_overflow;
 
-        public CounterGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public CounterGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
             uint overflowVoltage = 16;
-            uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point);
+            uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point, SubterrainId);
             if (num.HasValue) {
                 if (num.Value == overflowVoltage - 0x12345678) {
                     m_overflow = true;
@@ -119,7 +119,7 @@ namespace Game {
                 else {
                     storeVoltage = m_counter;
                 }
-                SubsystemGVElectricity.WritePersistentVoltage(CellFaces[0].Point, storeVoltage);
+                SubsystemGVElectricity.WritePersistentVoltage(CellFaces[0].Point, storeVoltage, SubterrainId);
                 return true;
             }
             return false;

@@ -10,7 +10,7 @@ namespace Game {
         public List<GVTruthTableData.SectionInput> lastInputs = new() { Capacity = 20 };
         public bool m_dataChanged;
 
-        public TruthTableCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) => m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitBlockBehavior>(true);
+        public TruthTableCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitBlockBehavior>(true);
 
         public override uint GetOutputVoltage(int face) {
             if (face == 123456) {

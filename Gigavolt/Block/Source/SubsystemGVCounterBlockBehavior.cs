@@ -41,7 +41,13 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GVCounterData blockData = GetItemData(id) ?? new GVCounterData { Overflow = 0u };
-            CounterGVElectricElement electricElement = (CounterGVElectricElement)m_subsystemGVElectricity.GetGVElectricElement(x, y, z, (Terrain.ExtractData(value) >> 2) & 7);
+            CounterGVElectricElement electricElement = (CounterGVElectricElement)m_subsystemGVElectricity.GetGVElectricElement(
+                x,
+                y,
+                z,
+                (Terrain.ExtractData(value) >> 2) & 7,
+                0
+            );
             if (electricElement != null) {
                 DialogsManager.ShowDialog(
                     componentPlayer.GuiWidget,
@@ -49,7 +55,7 @@ namespace Game {
                         blockData,
                         electricElement,
                         current => {
-                            m_subsystemGVElectricity.WritePersistentVoltage(new Point3(x, y, z), current);
+                            m_subsystemGVElectricity.WritePersistentVoltage(new Point3(x, y, z), current, 0);
                             SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
                             electricElement.m_counter = current;
                             electricElement.m_edited = true;

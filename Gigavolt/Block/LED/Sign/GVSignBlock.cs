@@ -6,10 +6,7 @@ namespace Game {
 
         public GVSignBlock() : base("Models/IronSign", 78, Index) { }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemElectricity, int value, int x, int y, int z) {
-            int data = Terrain.ExtractData(value);
-            return new SignGVElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(data)));
-        }
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new SignGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(Terrain.ExtractData(value))), subterrainId);
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             int? color = GetColor(Terrain.ExtractData(value));
@@ -51,7 +48,7 @@ namespace Game {
                     geometry.SubsetOpaque
                 );
             }
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,

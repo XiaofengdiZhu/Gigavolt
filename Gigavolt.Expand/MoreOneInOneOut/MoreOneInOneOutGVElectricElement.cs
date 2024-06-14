@@ -5,7 +5,7 @@ namespace Game {
         public int m_type;
         public uint m_output;
 
-        public MoreOneInOneOutGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) => m_type = GVMoreOneInOneOutBlock.GetType(Terrain.ExtractData(value));
+        public MoreOneInOneOutGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_type = GVMoreOneInOneOutBlock.GetType(Terrain.ExtractData(value));
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);

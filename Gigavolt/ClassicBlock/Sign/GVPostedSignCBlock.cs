@@ -11,9 +11,9 @@ namespace Game {
 
         public int m_attachedSignBlockIndex;
 
-        public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneBlockMesh = new();
 
-        public BlockMesh m_standaloneColoredBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneColoredBlockMesh = new();
 
         public BlockMesh[] m_blockMeshes = new BlockMesh[16];
 
@@ -45,7 +45,7 @@ namespace Game {
                     m *= Matrix.CreateScale(1f, -1f, 1f) * Matrix.CreateTranslation(0f, 1f, 0f);
                 }
                 m_directions[i] = m.Forward;
-                BlockMesh blockMesh = new BlockMesh();
+                BlockMesh blockMesh = new();
                 blockMesh.AppendModelMeshPart(
                     model.FindMesh("Sign").MeshParts[0],
                     boneAbsoluteTransform * m,
@@ -55,7 +55,7 @@ namespace Game {
                     false,
                     Color.White
                 );
-                BlockMesh blockMesh2 = new BlockMesh();
+                BlockMesh blockMesh2 = new();
                 blockMesh2.AppendModelMeshPart(
                     model.FindMesh("Post").MeshParts[0],
                     boneAbsoluteTransform2 * m,
@@ -198,7 +198,7 @@ namespace Game {
                     geometry.SubsetOpaque
                 );
             }
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,
@@ -278,12 +278,12 @@ namespace Game {
 
         public override Vector3 GetSignSurfaceNormal(int data) => m_surfaceNormals[GetVariant(data)];
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemElectricity, int value, int x, int y, int z) {
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
             int data = Terrain.ExtractData(value);
-            return new SignGVCElectricElement(subsystemElectricity, new CellFace(x, y, z, GetHanging(data) ? 5 : 4));
+            return new SignGVCElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetHanging(data) ? 5 : 4), subterrainId);
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (GetHanging(Terrain.ExtractData(value))) {
                 if (face != 5
                     || !SubsystemElectricity.GetConnectorDirection(face, 0, connectorFace).HasValue) {

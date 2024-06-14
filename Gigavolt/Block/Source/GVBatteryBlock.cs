@@ -3,12 +3,12 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVBatteryBlock : GenerateGVWireVerticesBlock, IGVElectricElementBlock {
+    public class GVBatteryBlock : Block, IGVElectricElementBlock {
         public const int Index = 818;
 
-        public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+        public BlockMesh m_standaloneBlockMesh = new();
 
-        public BlockMesh m_blockMesh = new BlockMesh();
+        public BlockMesh m_blockMesh = new();
 
         public BoundingBox[] m_collisionBoxes = new BoundingBox[1];
 
@@ -57,7 +57,7 @@ namespace Game {
                 null,
                 geometry.SubsetOpaque
             );
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,
@@ -81,9 +81,9 @@ namespace Game {
             );
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new BatteryGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, 4));
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new BatteryGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, 4), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (face == 4
                 && SubsystemGVElectricity.GetConnectorDirection(4, 0, connectorFace).HasValue) {
                 return GVElectricConnectorType.Output;

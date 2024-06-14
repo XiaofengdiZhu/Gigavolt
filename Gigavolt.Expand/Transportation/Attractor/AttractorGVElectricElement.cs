@@ -12,11 +12,12 @@ namespace Game {
         public readonly SubsystemPlayers m_subsystemPlayers;
         public readonly SubsystemBodies m_subsystemBodies;
         public readonly SubsystemGVAttractorBlockBehavior m_subsystemGVAttractorBlockBehavior;
+        public readonly GVSubterrainSystem m_subterrainSystem;
         public readonly Random m_random;
         public uint m_lastInput;
         public readonly Vector3 m_originalPosition;
 
-        public AttractorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point) : base(subsystemGVElectricity, new List<CellFace> { new(point.X, point.Y, point.Z, 4) }) {
+        public AttractorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(subsystemGVElectricity, new List<GVCellFace> { new(point.X, point.Y, point.Z, 4) }, subterrainId) {
             m_subsystemPickables = subsystemGVElectricity.Project.FindSubsystem<SubsystemPickables>(true);
             m_subsystemProjectiles = subsystemGVElectricity.Project.FindSubsystem<SubsystemProjectiles>(true);
             m_subsystemGVProjectiles = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVProjectiles>(true);
@@ -25,6 +26,7 @@ namespace Game {
             m_subsystemPlayers = subsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true);
             m_subsystemBodies = subsystemGVElectricity.Project.FindSubsystem<SubsystemBodies>(true);
             m_subsystemGVAttractorBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVAttractorBlockBehavior>(true);
+            m_subterrainSystem = subterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
             m_random = new Random();
             m_originalPosition = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f);
         }
@@ -54,6 +56,7 @@ namespace Game {
                 bool attractProjectiles = ((m_lastInput >> 10) & 1u) == 1u;
                 bool attractPickables = ((m_lastInput >> 9) & 1u) == 1u;
                 bool parabola = ((m_lastInput >> 8) & 1u) == 1u;
+                Vector3 originalPosition = SubterrainId == 0 ? m_originalPosition : Vector3.Transform(m_originalPosition, m_subterrainSystem.GlobalTransform);
                 if (speed != 0f || parabola) {
                     if (attractProjectiles) {
                         foreach (SubsystemGVProjectiles.Projectile projectile in m_subsystemGVProjectiles.m_projectiles) {
@@ -61,11 +64,11 @@ namespace Game {
                                 && (specifiedContent == 0 || projectile.Value == specifiedContent)) {
                                 bool inDistance = ignoreDistance;
                                 if (!inDistance) {
-                                    float distanceSquared = Vector3.DistanceSquared(m_originalPosition, projectile.Position);
+                                    float distanceSquared = Vector3.DistanceSquared(originalPosition, projectile.Position);
                                     inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
                                 }
                                 if (inDistance) {
-                                    projectile.Velocity = parabola ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, m_originalPosition) : Vector3.Normalize(m_originalPosition - projectile.Position) * speed;
+                                    projectile.Velocity = parabola ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, originalPosition) : Vector3.Normalize(originalPosition - projectile.Position) * speed;
                                     projectile.DisableGravity = !parabola;
                                     projectile.DisableDamping = parabola || !rebound;
                                     projectile.Transform = false;
@@ -78,14 +81,14 @@ namespace Game {
                                 && (specifiedContent == 0 || projectile.Value == specifiedContent)) {
                                 bool inDistance = ignoreDistance;
                                 if (!inDistance) {
-                                    float distanceSquared = Vector3.DistanceSquared(m_originalPosition, projectile.Position);
+                                    float distanceSquared = Vector3.DistanceSquared(originalPosition, projectile.Position);
                                     inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
                                 }
                                 if (inDistance) {
                                     SubsystemGVProjectiles.Projectile newProjectile = m_subsystemGVProjectiles.AddProjectile(
                                         projectile.Value,
                                         projectile.Position,
-                                        parabola ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, m_originalPosition) : Vector3.Normalize(m_originalPosition - projectile.Position) * speed,
+                                        parabola ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, originalPosition) : Vector3.Normalize(originalPosition - projectile.Position) * speed,
                                         projectile.AngularVelocity,
                                         projectile.Owner,
                                         1,
@@ -114,14 +117,14 @@ namespace Game {
                                 && (specifiedContent == 0 || pickable.Value == specifiedContent)) {
                                 bool inDistance = ignoreDistance;
                                 if (!inDistance) {
-                                    float distanceSquared = Vector3.DistanceSquared(m_originalPosition, pickable.Position);
+                                    float distanceSquared = Vector3.DistanceSquared(originalPosition, pickable.Position);
                                     inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
                                 }
                                 if (inDistance) {
                                     m_subsystemGVProjectiles.FireProjectile(
                                         pickable.Value,
                                         pickable.Position,
-                                        parabola ? GuidedDispenserGVElectricElement.GetDirection(pickable.Position, m_originalPosition) : Vector3.Normalize(m_originalPosition - pickable.Position) * speed,
+                                        parabola ? GuidedDispenserGVElectricElement.GetDirection(pickable.Position, originalPosition) : Vector3.Normalize(originalPosition - pickable.Position) * speed,
                                         Vector3.Zero,
                                         null,
                                         pickable.Count,
@@ -142,7 +145,7 @@ namespace Game {
                             Vector3 explosionPosition = new(explosion.X + 0.5f, explosion.Y + 0.5f, explosion.Z + 0.5f);
                             bool inDistance = ignoreDistance;
                             if (!inDistance) {
-                                float distanceSquared = Vector3.DistanceSquared(m_originalPosition, explosionPosition);
+                                float distanceSquared = Vector3.DistanceSquared(originalPosition, explosionPosition);
                                 inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
                             }
                             if (inDistance) {
@@ -153,7 +156,7 @@ namespace Game {
                                 SubsystemGVProjectiles.Projectile projectile = m_subsystemGVProjectiles.FireProjectile(
                                     FireBlock.Index,
                                     explosionPosition,
-                                    parabola ? GuidedDispenserGVElectricElement.GetDirection(explosionPosition, m_originalPosition) : Vector3.Normalize(m_originalPosition - explosionPosition) * speed,
+                                    parabola ? GuidedDispenserGVElectricElement.GetDirection(explosionPosition, originalPosition) : Vector3.Normalize(originalPosition - explosionPosition) * speed,
                                     Vector3.Zero,
                                     null,
                                     (int)explosion.Pressure,
@@ -190,7 +193,7 @@ namespace Game {
                             Vector3 firePosition = new(fire.Point.X + 0.5f, fire.Point.Y + 0.5f, fire.Point.Z + 0.5f);
                             bool inDistance = ignoreDistance;
                             if (!inDistance) {
-                                float distanceSquared = Vector3.DistanceSquared(m_originalPosition, firePosition);
+                                float distanceSquared = Vector3.DistanceSquared(originalPosition, firePosition);
                                 inDistance = distanceSquared > 2.1f && distanceSquared < rangeSquared;
                             }
                             if (inDistance) {
@@ -198,7 +201,7 @@ namespace Game {
                                 SubsystemGVProjectiles.Projectile projectile = m_subsystemGVProjectiles.FireProjectile(
                                     FireBlock.Index,
                                     firePosition,
-                                    parabola ? GuidedDispenserGVElectricElement.GetDirection(firePosition, m_originalPosition) : Vector3.Normalize(m_originalPosition - firePosition) * speed,
+                                    parabola ? GuidedDispenserGVElectricElement.GetDirection(firePosition, originalPosition) : Vector3.Normalize(originalPosition - firePosition) * speed,
                                     Vector3.Zero,
                                     null,
                                     1,
@@ -235,11 +238,11 @@ namespace Game {
                             ComponentBody body = player.ComponentBody;
                             bool inDistance = ignoreDistance;
                             if (!inDistance) {
-                                float distanceSquared = Vector3.DistanceSquared(m_originalPosition, body.Position);
+                                float distanceSquared = Vector3.DistanceSquared(originalPosition, body.Position);
                                 inDistance = distanceSquared > body.BoxSize.LengthSquared() / 4 && distanceSquared < rangeSquared;
                             }
                             if (inDistance) {
-                                m_subsystemGVAttractorBlockBehavior.StartMoveBody(body, m_originalPosition, speed, rebound);
+                                m_subsystemGVAttractorBlockBehavior.StartMoveBody(body, originalPosition, speed, rebound);
                             }
                         }
                     }
@@ -250,11 +253,11 @@ namespace Game {
                             }
                             bool inDistance = ignoreDistance;
                             if (!inDistance) {
-                                float distanceSquared = Vector3.DistanceSquared(m_originalPosition, body.Position);
+                                float distanceSquared = Vector3.DistanceSquared(originalPosition, body.Position);
                                 inDistance = distanceSquared > body.BoxSize.LengthSquared() / 4 && distanceSquared < rangeSquared;
                             }
                             if (inDistance) {
-                                m_subsystemGVAttractorBlockBehavior.StartMoveBody(body, m_originalPosition, speed, rebound);
+                                m_subsystemGVAttractorBlockBehavior.StartMoveBody(body, originalPosition, speed, rebound);
                             }
                         }
                     }

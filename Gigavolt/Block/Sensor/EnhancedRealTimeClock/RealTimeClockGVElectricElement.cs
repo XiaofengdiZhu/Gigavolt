@@ -10,7 +10,7 @@ namespace Game {
         public readonly SubsystemWeather m_subsystemWeather;
         public readonly SubsystemGameInfo m_subsystemGameInfo;
 
-        public RealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public RealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemWeather = subsystemGVElectricity.Project.FindSubsystem<SubsystemWeather>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
         }

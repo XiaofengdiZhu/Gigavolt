@@ -22,7 +22,7 @@ namespace Game {
         public override bool OnUse(Ray3 ray, ComponentMiner componentMiner) {
             int? blockColor = GVCopperHammerBlock.GetColor(Terrain.ExtractData(componentMiner.ActiveBlockValue));
             if (blockColor.HasValue) {
-                foreach (GVElectricElement element in m_subsystemGVElectricity.m_GVElectricElements.Keys) {
+                foreach (GVElectricElement element in m_subsystemGVElectricity.m_GVElectricElements) {
                     switch (element) {
                         case ButtonGVElectricElement button when button.CellFaces[0].Mask == 1 << blockColor.Value:
                             button.Press();

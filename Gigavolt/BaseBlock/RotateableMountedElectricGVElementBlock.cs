@@ -100,7 +100,7 @@ namespace Game {
                 null,
                 geometry.SubsetOpaque
             );
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,

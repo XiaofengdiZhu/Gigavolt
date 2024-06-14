@@ -118,9 +118,9 @@ namespace Game {
             }
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new PistonGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), GetMode(Terrain.ExtractData(value)) == GVPistonMode.Complex);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new PistonGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId, GetMode(Terrain.ExtractData(value)) == GVPistonMode.Complex);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) => GVElectricConnectorType.Input;
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) => GVElectricConnectorType.Input;
 
         public int GetConnectionMask(int value) => int.MaxValue;
 

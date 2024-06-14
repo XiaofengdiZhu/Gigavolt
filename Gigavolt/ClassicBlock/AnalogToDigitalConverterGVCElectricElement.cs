@@ -2,7 +2,7 @@ namespace Game {
     public class AnalogToDigitalConverterGVCElectricElement : RotateableGVElectricElement {
         public uint m_bits;
 
-        public AnalogToDigitalConverterGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public AnalogToDigitalConverterGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);

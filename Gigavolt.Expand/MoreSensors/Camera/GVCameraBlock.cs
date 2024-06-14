@@ -15,7 +15,7 @@ namespace Game {
 
         public GVCameraBlock() : base("Models/GigavoltGates", "AnalogToDigitalConverter", 0.375f) { }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z) => new CameraGVElectricElement(subsystemGVElectricity, new CellFace(x, y, z, GetFace(value)));
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new CameraGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
@@ -41,7 +41,7 @@ namespace Game {
                 null,
                 geometry.GetGeometry(GetComplex(Terrain.ExtractData(value)) ? textures[1] : textures[0]).SubsetOpaque
             );
-            GenerateGVWireVertices(
+            GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
                 value,
                 x,
@@ -54,7 +54,7 @@ namespace Game {
             );
         }
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (GetFace(value) == face
                 && SubsystemGVElectricity.GetConnectorDirection(GetFace(value), 0, connectorFace).HasValue) {
                 return GVElectricConnectorType.Input;

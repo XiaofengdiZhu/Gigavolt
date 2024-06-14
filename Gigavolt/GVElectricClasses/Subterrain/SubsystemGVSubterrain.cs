@@ -111,10 +111,61 @@ namespace Game {
             return true;
         }
 
+        public Terrain GetTerrain(uint id) => id == 0 ? m_subsystemTerrain.Terrain : GVStaticStorage.GVSubterrainSystemDictionary[id]?.Terrain;
+
+        public void ChangeCell(int x, int y, int z, uint subterrainId, int value, bool updateModificationCounter = true) {
+            if (subterrainId == 0) {
+                m_subsystemTerrain.ChangeCell(
+                    x,
+                    y,
+                    z,
+                    value,
+                    updateModificationCounter
+                );
+            }
+            else {
+                GVStaticStorage.GVSubterrainSystemDictionary[subterrainId]
+                ?.ChangeCell(
+                    x,
+                    y,
+                    z,
+                    value,
+                    updateModificationCounter
+                );
+            }
+        }
+
+        public void DestroyCell(int toolLevel, int x, int y, int z, uint subterrainId, int newValue, bool noDrop, bool noParticleSystem) {
+            if (subterrainId == 0) {
+                m_subsystemTerrain.DestroyCell(
+                    toolLevel,
+                    x,
+                    y,
+                    z,
+                    newValue,
+                    noDrop,
+                    noParticleSystem
+                );
+            }
+            else {
+                GVStaticStorage.GVSubterrainSystemDictionary[subterrainId]
+                ?.DestroyCell(
+                    toolLevel,
+                    x,
+                    y,
+                    z,
+                    newValue,
+                    noDrop,
+                    noParticleSystem
+                );
+            }
+        }
+
         public static bool IsParallelToAxis(Vector3 vector) {
             vector = Vector3.Normalize(vector);
             return Math.Abs(vector.X) - 1f < floatTolerance || Math.Abs(vector.Y) - 1f < floatTolerance || Math.Abs(vector.Z) - 1f < floatTolerance;
         }
+
 
         public override void Dispose() {
             foreach (GVSubterrainSystem subterrainSystem in GVStaticStorage.GVSubterrainSystemDictionary.Values) {

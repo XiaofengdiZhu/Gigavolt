@@ -4,14 +4,14 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVTrapdoorBlock : GenerateGVWireVerticesBlock, IGVElectricElementBlock {
+    public class GVTrapdoorBlock : Block, IGVElectricElementBlock {
         public const int Index = 865;
 
         public BlockMesh[] m_standaloneBlockMesh = new BlockMesh[2];
         public Matrix[] m_boneAbsoluteTransform = new Matrix[2];
         public ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[2];
-        public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new Dictionary<int, BlockMesh>();
-        public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new Dictionary<int, BoundingBox[]>();
+        public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
+        public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
         public string[] m_displayNamesByModel = { "GV木活板门", "GV铁活板门" };
         public int[] m_creativeValuesByModel = { Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1)) };
 
@@ -23,7 +23,7 @@ namespace Game {
             for (int i = 0; i < 2; i++) {
                 m_boneAbsoluteTransform[i] = BlockMesh.GetBoneAbsoluteTransform(model[i].FindMesh("Trapdoor").ParentBone);
                 m_modelMeshPart[i] = model[i].FindMesh("Trapdoor").MeshParts[0];
-                BlockMesh blockMesh = new BlockMesh();
+                BlockMesh blockMesh = new();
                 blockMesh.AppendModelMeshPart(
                     m_modelMeshPart[i],
                     m_boneAbsoluteTransform[i] * Matrix.CreateTranslation(0f, 0f, 0f),
@@ -168,12 +168,12 @@ namespace Game {
             };
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemElectricity, int value, int x, int y, int z) {
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
             int data = Terrain.ExtractData(value);
-            return new TrapDoorGVElectricElement(subsystemElectricity, new CellFace(x, y, z, GetMountingFace(data)));
+            return new TrapDoorGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetMountingFace(data)), subterrainId);
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int data = Terrain.ExtractData(value);
             if (face == GetMountingFace(data)) {
                 int rotation = GetRotation(data);

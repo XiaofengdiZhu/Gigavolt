@@ -12,7 +12,7 @@ namespace Game {
         public bool m_allowTagInput;
         public uint m_bottomInput;
 
-        public JumpWireGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) {
+        public JumpWireGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystem = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJumpWireBlockBehavior>(true);
             m_position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) - CellFace.FaceToVector3(cellFace.Face) * 0.48f;
         }

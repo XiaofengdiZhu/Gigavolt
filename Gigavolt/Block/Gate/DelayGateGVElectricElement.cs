@@ -21,7 +21,7 @@ namespace Game {
             }
         }
 
-        public DelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public DelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public static void CountDelayPredecessors(DelayGateGVElectricElement delayGate, ref int count) {
             if (count < 2) {

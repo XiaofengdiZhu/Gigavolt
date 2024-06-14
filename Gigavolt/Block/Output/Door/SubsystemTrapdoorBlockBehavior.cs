@@ -5,16 +5,22 @@ namespace Game {
     public class SubsystemGVTrapdoorBlockBehavior : SubsystemBlockBehavior {
         public SubsystemGVElectricity m_subsystemElectricity;
 
-        public static Random m_random = new Random();
+        public static Random m_random = new();
 
         public override int[] HandledBlocks => new[] { GVTrapdoorBlock.Index };
 
-        public bool IsTrapdoorElectricallyConnected(int x, int y, int z) {
+        public bool IsTrapdoorElectricallyConnected(int x, int y, int z, uint subterrainId) {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             int data = Terrain.ExtractData(cellValue);
             if (BlocksManager.Blocks[num] is GVTrapdoorBlock) {
-                GVElectricElement electricElement = m_subsystemElectricity.GetGVElectricElement(x, y, z, GVTrapdoorBlock.GetMountingFace(data));
+                GVElectricElement electricElement = m_subsystemElectricity.GetGVElectricElement(
+                    x,
+                    y,
+                    z,
+                    GVTrapdoorBlock.GetMountingFace(data),
+                    subterrainId
+                );
                 if (electricElement != null
                     && electricElement.Connections.Count > 0) {
                     return true;
@@ -60,7 +66,7 @@ namespace Game {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int data = Terrain.ExtractData(cellValue);
             if (GVTrapdoorBlock.GetModel(data) == 0
-                || !IsTrapdoorElectricallyConnected(cellFace.X, cellFace.Y, cellFace.Z)) {
+                || !IsTrapdoorElectricallyConnected(cellFace.X, cellFace.Y, cellFace.Z, 0)) {
                 bool open = GVTrapdoorBlock.GetOpen(data) > 0;
                 return OpenCloseTrapdoor(cellFace.X, cellFace.Y, cellFace.Z, !open);
             }

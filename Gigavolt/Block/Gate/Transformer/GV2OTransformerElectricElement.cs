@@ -10,7 +10,13 @@ namespace Game {
         public override bool Simulate() {
             float voltage = m_voltage;
             CellFace cellFace = CellFaces[0];
-            GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face);
+            GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
+                cellFace.X,
+                cellFace.Y,
+                cellFace.Z,
+                cellFace.Face,
+                0u
+            );
             if (GVElectricElement != null) {
                 m_voltage = GVElectricElement.GetOutputVoltage(0) / 15f;
             }

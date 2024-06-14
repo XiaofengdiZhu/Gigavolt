@@ -44,7 +44,13 @@ namespace Game {
                         SubsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, true);
                         SubsystemTerrain.m_modifiedCells[new Point3(x, y, z)] = true;
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face);
+                        GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
+                            x,
+                            y,
+                            z,
+                            face,
+                            0
+                        );
                         if (GVElectricElement != null) {
                             GVElectricElement.GetOutputVoltage(123456);
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);

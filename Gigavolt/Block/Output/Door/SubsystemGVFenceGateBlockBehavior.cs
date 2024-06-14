@@ -41,12 +41,18 @@ namespace Game {
             }
         }
 
-        public bool IsGateElectricallyConnected(int x, int y, int z) {
+        public bool IsGateElectricallyConnected(int x, int y, int z, uint subterrainId) {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             int data = Terrain.ExtractData(cellValue);
             if (BlocksManager.Blocks[num] is GVFenceGateBlock) {
-                GVElectricElement electricElement = m_subsystemElectricity.GetGVElectricElement(x, y, z, GVFenceGateBlock.GetHingeFace(data));
+                GVElectricElement electricElement = m_subsystemElectricity.GetGVElectricElement(
+                    x,
+                    y,
+                    z,
+                    GVFenceGateBlock.GetHingeFace(data),
+                    subterrainId
+                );
                 if (electricElement != null
                     && electricElement.Connections.Count > 0) {
                     return true;
@@ -60,7 +66,7 @@ namespace Game {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int data = Terrain.ExtractData(cellValue);
             if (GVFenceGateBlock.GetModel(data) == 0
-                || !IsGateElectricallyConnected(cellFace.X, cellFace.Y, cellFace.Z)) {
+                || !IsGateElectricallyConnected(cellFace.X, cellFace.Y, cellFace.Z, 0)) {
                 bool open = GVFenceGateBlock.GetOpen(data) > 0;
                 return OpenCloseGate(cellFace.X, cellFace.Y, cellFace.Z, !open);
             }

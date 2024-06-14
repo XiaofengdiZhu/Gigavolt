@@ -1,6 +1,6 @@
 ﻿namespace Game {
     public class DetonatorGVCElectricElement : MountedGVElectricElement {
-        public DetonatorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, CellFace cellFace) : base(subsystemGVElectricity, cellFace) { }
+        public DetonatorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
         public void Detonate() {
             GVCellFace cellFace = CellFaces[0];

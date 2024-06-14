@@ -6,7 +6,7 @@ namespace Game {
         public uint m_voltage;
         public bool m_edited;
 
-        public SwitchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value) : base(subsystemGVElectricity, cellFace) {
+        public SwitchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemGVSwitchBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSwitchBlockBehavior>(true);
             m_voltage = GVSwitchBlock.GetLeverState(value) ? m_subsystemGVSwitchBlockBehavior.GetItemData(cellFace.Point)?.Data ?? uint.MaxValue : 0;
         }
@@ -20,9 +20,15 @@ namespace Game {
 
         public void Switch() {
             GVCellFace cellFace = CellFaces[0];
-            int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+            int cellValue = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int value = GVSwitchBlock.SetLeverState(cellValue, !GVSwitchBlock.GetLeverState(cellValue));
-            SubsystemGVElectricity.SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, value);
+            SubsystemGVElectricity.SubsystemGVSubterrain.ChangeCell(
+                cellFace.X,
+                cellFace.Y,
+                cellFace.Z,
+                SubterrainId,
+                value
+            );
             SubsystemGVElectricity.SubsystemAudio.PlaySound(
                 "Audio/Click",
                 1f,

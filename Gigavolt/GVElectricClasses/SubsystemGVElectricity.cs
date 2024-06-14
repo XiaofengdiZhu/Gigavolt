@@ -13,7 +13,7 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVElectricity : Subsystem, IUpdateable, IDrawable {
-        public static GVElectricConnectionPath[] m_connectionPathsTable = new GVElectricConnectionPath[120] {
+        public static readonly GVElectricConnectionPath[] m_connectionPathsTable = new GVElectricConnectionPath[120] {
             new(
                 0,
                 1,
@@ -850,7 +850,7 @@ namespace Game {
             null
         };
 
-        public static GVElectricConnectorDirection?[] m_connectorDirectionsTable = new GVElectricConnectorDirection?[36] {
+        public static readonly GVElectricConnectorDirection?[] m_connectorDirectionsTable = new GVElectricConnectorDirection?[36] {
             null,
             GVElectricConnectorDirection.Right,
             GVElectricConnectorDirection.In,
@@ -889,7 +889,7 @@ namespace Game {
             null
         };
 
-        public static int[] m_connectorFacesTable = new int[30] {
+        public static readonly int[] m_connectorFacesTable = new int[30] {
             4,
             3,
             5,
@@ -924,21 +924,19 @@ namespace Game {
 
         public float m_remainingSimulationTime;
 
-        public Dictionary<Point3, uint> m_persistentElementsVoltages = new();
-        public Dictionary<GVElectricElement, bool> m_GVElectricElements = new();
-        public Dictionary<GVCellFace, GVElectricElement> m_GVElectricElementsByCellFace = new();
-        public Dictionary<Point3, bool> m_pointsToUpdate = new();
-        public Dictionary<Point3, GVElectricElement> m_GVElectricElementsToAdd = new();
-        public Dictionary<GVElectricElement, bool> m_GVElectricElementsToRemove = new();
-        public Dictionary<GVCellFace, bool> m_wiresToUpdate = new();
-        public List<Dictionary<GVElectricElement, bool>> m_listsCache = new();
-        public Dictionary<int, Dictionary<GVElectricElement, bool>> m_futureSimulateLists = new();
-        public Dictionary<GVElectricElement, bool> m_nextStepSimulateList;
-        public DynamicArray<GVElectricConnectionPath> m_tmpConnectionPaths = new();
-        public Dictionary<GVCellFace, bool> m_tmpVisited = new();
-        public Dictionary<GVCellFace, bool> m_tmpResult = new();
-
-        public static int SimulatedGVElectricElements;
+        public readonly Dictionary<Point3, uint> m_persistentElementsVoltages = new();
+        public readonly HashSet<GVElectricElement> m_GVElectricElements = [];
+        public readonly Dictionary<uint, Dictionary<GVCellFace, GVElectricElement>> m_GVElectricElementsByCellFace = new() { { 0u, new Dictionary<GVCellFace, GVElectricElement>() } };
+        public readonly Dictionary<uint, Dictionary<Point3, bool>> m_pointsToUpdate = new() { { 0u, new Dictionary<Point3, bool>() } };
+        public readonly Dictionary<uint, Dictionary<Point3, GVElectricElement>> m_GVElectricElementsToAdd = new() { { 0u, new Dictionary<Point3, GVElectricElement>() } };
+        public readonly HashSet<GVElectricElement> m_GVElectricElementsToRemove = [];
+        public readonly Dictionary<uint, HashSet<GVCellFace>> m_wiresToUpdate = new() { { 0u, [] } };
+        public readonly List<HashSet<GVElectricElement>> m_listsCache = [];
+        public readonly Dictionary<int, HashSet<GVElectricElement>> m_futureSimulateLists = new();
+        public HashSet<GVElectricElement> m_nextStepSimulateList;
+        public readonly DynamicArray<GVElectricConnectionPath> m_tmpConnectionPaths = [];
+        public readonly HashSet<GVCellFace> m_tmpVisited = [];
+        public readonly HashSet<GVCellFace> m_tmpResult = [];
 
         public float CircuitStepDuration = 0.01f;
         public float SpeedFactor = 1f;
@@ -954,45 +952,74 @@ namespace Game {
         public List<Vector3> m_debugDrawPositions = [];
 
         public SubsystemTime SubsystemTime { get; set; }
-        public SubsystemTerrain SubsystemTerrain { get; set; }
 
+        public SubsystemTerrain SubsystemTerrain { get; set; }
+        public SubsystemGVSubterrain SubsystemGVSubterrain { get; set; }
         public SubsystemAudio SubsystemAudio { get; set; }
         public SubsystemPlayers m_subsystemPlayers;
         public bool m_isCreativeMode;
 
-
         public int FrameStartCircuitStep { get; set; }
-
         public int CircuitStep { get; set; }
-
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
-        public static int[] m_drawOrders = [113];
 
         public static GVFurnitureBlock GVFurnitureBlock = new();
 
-        public void OnGVElectricElementBlockGenerated(int x, int y, int z) {
-            m_pointsToUpdate[new Point3(x, y, z)] = false;
+        public void AddSubterrain(uint id) {
+            m_pointsToUpdate.Add(id, new Dictionary<Point3, bool>());
+            m_GVElectricElementsToAdd.Add(id, new Dictionary<Point3, GVElectricElement>());
+            m_wiresToUpdate.Add(id, []);
+            m_GVElectricElementsByCellFace.Add(id, new Dictionary<GVCellFace, GVElectricElement>());
         }
 
-        public void OnGVElectricElementBlockAdded(int x, int y, int z) {
-            m_pointsToUpdate[new Point3(x, y, z)] = true;
+        public void RemoveSubterrain(uint id) {
+            HashSet<GVElectricElement> removed = [];
+            foreach (KeyValuePair<GVCellFace, GVElectricElement> pair in m_GVElectricElementsByCellFace[id]) {
+                GVElectricElement element = pair.Value;
+                if (!removed.Add(element)) {
+                    continue;
+                }
+                element.OnRemoved();
+                QueueGVElectricElementConnectionsForSimulation(element, CircuitStep + 1);
+                m_GVElectricElements.Remove(element);
+                foreach (GVElectricConnection connection in element.Connections) {
+                    connection.NeighborGVElectricElement.Connections.RemoveAll(connection2 => connection2.NeighborGVElectricElement == element);
+                }
+            }
+            m_pointsToUpdate[id]?.Clear();
+            m_pointsToUpdate.Remove(id);
+            m_GVElectricElementsToAdd[id]?.Clear();
+            m_GVElectricElementsToAdd.Remove(id);
+            m_wiresToUpdate[id]?.Clear();
+            m_wiresToUpdate.Remove(id);
+            m_GVElectricElementsByCellFace[id]?.Clear();
+            m_GVElectricElementsByCellFace.Remove(id);
         }
 
-        public void OnGVElectricElementBlockRemoved(int x, int y, int z) {
-            m_pointsToUpdate[new Point3(x, y, z)] = true;
+        public void OnGVElectricElementBlockGenerated(int x, int y, int z, uint subterrainId) {
+            m_pointsToUpdate[subterrainId][new Point3(x, y, z)] = false;
         }
 
-        public void OnGVElectricElementBlockModified(int x, int y, int z) {
-            m_pointsToUpdate[new Point3(x, y, z)] = true;
+        public void OnGVElectricElementBlockAdded(int x, int y, int z, uint subterrainId) {
+            m_pointsToUpdate[subterrainId][new Point3(x, y, z)] = true;
         }
 
-        public void OnChunkDiscarding(TerrainChunk chunk) {
-            foreach (GVCellFace key in m_GVElectricElementsByCellFace.Keys) {
+        public void OnGVElectricElementBlockRemoved(int x, int y, int z, uint subterrainId) {
+            m_pointsToUpdate[subterrainId][new Point3(x, y, z)] = true;
+        }
+
+        public void OnGVElectricElementBlockModified(int x, int y, int z, uint subterrainId) {
+            m_pointsToUpdate[subterrainId][new Point3(x, y, z)] = true;
+        }
+
+        public void OnChunkDiscarding(TerrainChunk chunk, uint subterrainId) {
+            // Todo
+            foreach (GVCellFace key in m_GVElectricElementsByCellFace[subterrainId].Keys) {
                 if (key.X >= chunk.Origin.X
                     && key.X < chunk.Origin.X + 16
                     && key.Z >= chunk.Origin.Y
                     && key.Z < chunk.Origin.Y + 16) {
-                    m_pointsToUpdate[new Point3(key.X, key.Y, key.Z)] = false;
+                    m_pointsToUpdate[subterrainId][new Point3(key.X, key.Y, key.Z)] = false;
                 }
             }
         }
@@ -1010,8 +1037,9 @@ namespace Game {
 
         public static int GetConnectorFace(int mountingFace, GVElectricConnectorDirection connectionDirection) => m_connectorFacesTable[(int)(5 * mountingFace + connectionDirection)];
 
-        public void GetAllConnectedNeighbors(int x, int y, int z, int mountingFace, DynamicArray<GVElectricConnectionPath> list) {
-            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+        public void GetAllConnectedNeighbors(int x, int y, int z, int mountingFace, uint subterrainId, DynamicArray<GVElectricConnectionPath> list) {
+            Terrain terrain = SubsystemGVSubterrain.GetTerrain(subterrainId);
+            int cellValue = terrain.GetCellValue(x, y, z);
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
             if (block is not IGVElectricElementBlock GVElectricElementBlock) {
                 if (block is FurnitureBlock) {
@@ -1029,13 +1057,14 @@ namespace Game {
                         break;
                     }
                     GVElectricConnectorType? connectorType = GVElectricElementBlock.GetGVConnectorType(
-                        SubsystemTerrain,
+                        SubsystemGVSubterrain,
                         cellValue,
                         mountingFace,
                         GVElectricConnectionPath.ConnectorFace,
                         x,
                         y,
-                        z
+                        z,
+                        subterrainId
                     );
                     if (!connectorType.HasValue) {
                         break;
@@ -1043,7 +1072,7 @@ namespace Game {
                     int x2 = x + GVElectricConnectionPath.NeighborOffsetX;
                     int y2 = y + GVElectricConnectionPath.NeighborOffsetY;
                     int z2 = z + GVElectricConnectionPath.NeighborOffsetZ;
-                    int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x2, y2, z2);
+                    int cellValue2 = terrain.GetCellValue(x2, y2, z2);
                     Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
                     if (block2 is not IGVElectricElementBlock GVElectricElementBlock2) {
                         if (block2 is FurnitureBlock) {
@@ -1055,13 +1084,14 @@ namespace Game {
                     }
                     IGVElectricWireElementBlock wireBlock2 = GVElectricElementBlock2 as IGVElectricWireElementBlock;
                     GVElectricConnectorType? connectorType2 = GVElectricElementBlock2?.GetGVConnectorType(
-                        SubsystemTerrain,
+                        SubsystemGVSubterrain,
                         cellValue2,
                         GVElectricConnectionPath.NeighborFace,
                         GVElectricConnectionPath.NeighborConnectorFace,
                         x2,
                         y2,
-                        z2
+                        z2,
+                        subterrainId
                     );
                     if (connectorType2.HasValue
                         && ((connectorType.Value != 0 && connectorType2.Value != GVElectricConnectorType.Output) || (connectorType.Value != GVElectricConnectorType.Output && connectorType2.Value != 0))) {
@@ -1087,8 +1117,9 @@ namespace Game {
             }
         }
 
-        public GVElectricElement GetGVElectricElement(int x, int y, int z, int mountingFace, int mask = int.MaxValue) {
-            m_GVElectricElementsByCellFace.TryGetValue(
+        public GVElectricElement GetGVElectricElement(int x, int y, int z, int mountingFace, uint subterrainId, int mask = int.MaxValue) {
+            Dictionary<GVCellFace, GVElectricElement> elements = m_GVElectricElementsByCellFace[subterrainId];
+            elements.TryGetValue(
                 new GVCellFace(
                     x,
                     y,
@@ -1101,7 +1132,7 @@ namespace Game {
             if (value == null) {
                 if (mask == int.MaxValue) {
                     for (int i = 0; i < 16; i++) {
-                        m_GVElectricElementsByCellFace.TryGetValue(
+                        elements.TryGetValue(
                             new GVCellFace(
                                 x,
                                 y,
@@ -1128,14 +1159,14 @@ namespace Game {
                     m_nextStepSimulateList = GetListFromCache();
                     m_futureSimulateLists.Add(CircuitStep + 1, m_nextStepSimulateList);
                 }
-                m_nextStepSimulateList[GVElectricElement] = true;
+                m_nextStepSimulateList.Add(GVElectricElement);
             }
             else if (circuitStep > CircuitStep + 1) {
-                if (!m_futureSimulateLists.TryGetValue(circuitStep, out Dictionary<GVElectricElement, bool> value)) {
+                if (!m_futureSimulateLists.TryGetValue(circuitStep, out HashSet<GVElectricElement> value)) {
                     value = GetListFromCache();
                     m_futureSimulateLists.Add(circuitStep, value);
                 }
-                value[GVElectricElement] = true;
+                value.Add(GVElectricElement);
             }
         }
 
@@ -1148,15 +1179,18 @@ namespace Game {
             }
         }
 
-        public uint? ReadPersistentVoltage(Point3 point) {
-            if (m_persistentElementsVoltages.TryGetValue(point, out uint value)) {
+        public uint? ReadPersistentVoltage(Point3 point, uint subterrainId) {
+            if (subterrainId == 0
+                && m_persistentElementsVoltages.TryGetValue(point, out uint value)) {
                 return value;
             }
             return null;
         }
 
-        public void WritePersistentVoltage(Point3 point, uint voltage) {
-            m_persistentElementsVoltages[point] = voltage;
+        public void WritePersistentVoltage(Point3 point, uint voltage, uint subterrainId) {
+            if (subterrainId == 0) {
+                m_persistentElementsVoltages[point] = voltage;
+            }
         }
 
         public void Update(float dt) {
@@ -1181,17 +1215,15 @@ namespace Game {
                     StepUpdateSkip();
                     FrameStartCircuitStep = CircuitStep;
                     m_debugDrawPositions.Clear();
-                    SimulatedGVElectricElements = 0;
                     m_remainingSimulationTime = MathUtils.Min(m_remainingSimulationTime + dt, 0.1f);
                     while (m_remainingSimulationTime >= CircuitStepDuration) {
                         UpdateGVElectricElements();
                         m_remainingSimulationTime -= CircuitStepDuration;
                         m_nextStepSimulateList = null;
-                        if (m_futureSimulateLists.TryGetValue(++CircuitStep, out Dictionary<GVElectricElement, bool> value)) {
+                        if (m_futureSimulateLists.TryGetValue(++CircuitStep, out HashSet<GVElectricElement> value)) {
                             m_futureSimulateLists.Remove(CircuitStep);
-                            SimulatedGVElectricElements += value.Count;
-                            foreach (GVElectricElement key in value.Keys) {
-                                if (m_GVElectricElements.ContainsKey(key)) {
+                            foreach (GVElectricElement key in value) {
+                                if (m_GVElectricElements.Contains(key)) {
                                     SimulateGVElectricElement(key);
                                 }
                             }
@@ -1236,14 +1268,12 @@ namespace Game {
                 StepUpdateSkip();
                 FrameStartCircuitStep = CircuitStep;
                 m_debugDrawPositions.Clear();
-                SimulatedGVElectricElements = 0;
                 UpdateGVElectricElements();
                 m_nextStepSimulateList = null;
-                if (m_futureSimulateLists.TryGetValue(++CircuitStep, out Dictionary<GVElectricElement, bool> value)) {
+                if (m_futureSimulateLists.TryGetValue(++CircuitStep, out HashSet<GVElectricElement> value)) {
                     m_futureSimulateLists.Remove(CircuitStep);
-                    SimulatedGVElectricElements += value.Count;
-                    foreach (GVElectricElement key in value.Keys) {
-                        if (m_GVElectricElements.ContainsKey(key)) {
+                    foreach (GVElectricElement key in value) {
+                        if (m_GVElectricElements.Contains(key)) {
                             SimulateGVElectricElement(key);
                             AddElement2DebugDraw(key);
                         }
@@ -1261,7 +1291,7 @@ namespace Game {
         public bool inStepping;
         public List<GVElectricElement> steppingElements;
         public int steppingIndex;
-        Dictionary<GVElectricElement, bool> lastWhat;
+        HashSet<GVElectricElement> lastWhat;
 
         public void StepUpdate() {
             if (debugMode) {
@@ -1279,16 +1309,14 @@ namespace Game {
 
         public void StepUpdateInitiate() {
             FrameStartCircuitStep = CircuitStep;
-            SimulatedGVElectricElements = 0;
             UpdateGVElectricElements();
             m_nextStepSimulateList = null;
-            if (m_futureSimulateLists.TryGetValue(++CircuitStep, out Dictionary<GVElectricElement, bool> value)) {
+            if (m_futureSimulateLists.TryGetValue(++CircuitStep, out HashSet<GVElectricElement> value)) {
                 if (lastWhat != null) {
                     ReturnListToCache(lastWhat);
                 }
                 m_futureSimulateLists.Remove(CircuitStep);
-                SimulatedGVElectricElements += value.Count;
-                steppingElements = value.Keys.ToList();
+                steppingElements = value.ToList();
                 steppingIndex = 0;
                 if (steppingElements.Count > 0) {
                     inStepping = true;
@@ -1300,7 +1328,7 @@ namespace Game {
 
         public void StepUpdateRun() {
             GVElectricElement nowElement = steppingElements[steppingIndex++];
-            if (m_GVElectricElements.ContainsKey(nowElement)) {
+            if (m_GVElectricElements.Contains(nowElement)) {
                 SimulateGVElectricElement(nowElement);
                 AddElement2DebugDraw(nowElement);
             }
@@ -1331,6 +1359,7 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             try {
                 SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
+                SubsystemGVSubterrain = Project.FindSubsystem<SubsystemGVSubterrain>(true);
                 SubsystemTime = Project.FindSubsystem<SubsystemTime>(true);
                 SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
                 m_isCreativeMode = Project.FindSubsystem<SubsystemGameInfo>(true).WorldSettings.GameMode == GameMode.Creative;
@@ -1387,18 +1416,20 @@ namespace Game {
         }
 
         public void AddGVElectricElement(GVElectricElement GVElectricElement) {
-            if (GVElectricElement.CellFaces.Intersect(m_GVElectricElementsByCellFace.Keys).Any()) {
+            Dictionary<GVCellFace, GVElectricElement> elements = m_GVElectricElementsByCellFace[GVElectricElement.SubterrainId];
+            if (GVElectricElement.CellFaces.Intersect(elements.Keys).Any()) {
                 return;
             }
-            m_GVElectricElements.Add(GVElectricElement, true);
+            m_GVElectricElements.Add(GVElectricElement);
             foreach (GVCellFace cellFace2 in GVElectricElement.CellFaces) {
-                m_GVElectricElementsByCellFace.Add(cellFace2, GVElectricElement);
+                elements.Add(cellFace2, GVElectricElement);
                 m_tmpConnectionPaths.Clear();
                 GetAllConnectedNeighbors(
                     cellFace2.X,
                     cellFace2.Y,
                     cellFace2.Z,
                     cellFace2.Face,
+                    GVElectricElement.SubterrainId,
                     m_tmpConnectionPaths
                 );
                 foreach (GVElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths) {
@@ -1408,10 +1439,17 @@ namespace Game {
                         cellFace.Y,
                         cellFace.Z,
                         cellFace.Face,
+                        GVElectricElement.SubterrainId,
                         cellFace2.Mask
                     );
                     if (value == null) {
-                        value = GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face);
+                        value = GetGVElectricElement(
+                            cellFace.X,
+                            cellFace.Y,
+                            cellFace.Z,
+                            cellFace.Face,
+                            GVElectricElement.SubterrainId
+                        );
                         if (value == null
                             || value == GVElectricElement
                             || value.CellFaces[0].Mask != int.MaxValue) {
@@ -1422,7 +1460,8 @@ namespace Game {
                         || (GVElectricElement is WireDomainGVElectricElement && value is WireDomainGVElectricElement)) {
                         continue;
                     }
-                    int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
+                    Terrain terrain = SubsystemGVSubterrain.GetTerrain(GVElectricElement.SubterrainId);
+                    int cellValue = terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
                     if (block is not IGVElectricElementBlock GVElectricElementBlock) {
                         if (block is FurnitureBlock) {
@@ -1433,18 +1472,19 @@ namespace Game {
                         }
                     }
                     GVElectricConnectorType? value2 = GVElectricElementBlock.GetGVConnectorType(
-                        SubsystemTerrain,
+                        SubsystemGVSubterrain,
                         cellValue,
                         cellFace2.Face,
                         tmpConnectionPath.ConnectorFace,
                         cellFace2.X,
                         cellFace2.Y,
-                        cellFace2.Z
+                        cellFace2.Z,
+                        GVElectricElement.SubterrainId
                     );
                     if (!value2.HasValue) {
                         continue;
                     }
-                    int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+                    int cellValue2 = terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
                     Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
                     if (block2 is not IGVElectricElementBlock GVElectricElementBlock2) {
                         if (block2 is FurnitureBlock) {
@@ -1455,13 +1495,14 @@ namespace Game {
                         }
                     }
                     GVElectricConnectorType? value3 = GVElectricElementBlock2.GetGVConnectorType(
-                        SubsystemTerrain,
+                        SubsystemGVSubterrain,
                         cellValue2,
                         cellFace.Face,
                         tmpConnectionPath.NeighborConnectorFace,
                         cellFace.X,
                         cellFace.Y,
-                        cellFace.Z
+                        cellFace.Z,
+                        GVElectricElement.SubterrainId
                     );
                     if (!value3.HasValue) {
                         continue;
@@ -1499,8 +1540,9 @@ namespace Game {
             GVElectricElement.OnRemoved();
             QueueGVElectricElementConnectionsForSimulation(GVElectricElement, CircuitStep + 1);
             m_GVElectricElements.Remove(GVElectricElement);
+            Dictionary<GVCellFace, GVElectricElement> elements = m_GVElectricElementsByCellFace[GVElectricElement.SubterrainId];
             foreach (GVCellFace cellFace in GVElectricElement.CellFaces) {
-                m_GVElectricElementsByCellFace.Remove(cellFace);
+                elements.Remove(cellFace);
             }
             foreach (GVElectricConnection connection in GVElectricElement.Connections) {
                 connection.NeighborGVElectricElement.Connections.RemoveAll(connection2 => connection2.NeighborGVElectricElement == GVElectricElement);
@@ -1508,91 +1550,107 @@ namespace Game {
         }
 
         public void UpdateGVElectricElements() {
-            foreach (KeyValuePair<Point3, bool> item in m_pointsToUpdate) {
-                Point3 key = item.Key;
-                int cellValue = SubsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z);
-                for (int i = 0; i < 6; i++) {
-                    GVElectricElement GVElectricElement = GetGVElectricElement(key.X, key.Y, key.Z, i);
-                    if (GVElectricElement != null) {
-                        if (GVElectricElement is WireDomainGVElectricElement) {
-                            m_wiresToUpdate[new GVCellFace(key) { Mask = GVElectricElement.CellFaces[0].Mask }] = true;
-                        }
-                        else {
-                            m_GVElectricElementsToRemove[GVElectricElement] = true;
-                        }
-                    }
-                }
-                if (item.Value) {
-                    m_persistentElementsVoltages.Remove(key);
-                }
-                int num = Terrain.ExtractContents(cellValue);
-                Block block = BlocksManager.Blocks[num];
-                if (block is IGVElectricWireElementBlock wire) {
-                    m_wiresToUpdate[new GVCellFace(key) { Mask = wire.GetConnectionMask(cellValue) }] = true;
-                }
-                else {
-                    IGVElectricElementBlock GVElectricElementBlock = block as IGVElectricElementBlock;
-                    if (GVElectricElementBlock == null) {
-                        if (block is FurnitureBlock) {
-                            GVElectricElementBlock = GVFurnitureBlock;
+            foreach ((uint subterrainId, Dictionary<Point3, bool> value) in m_pointsToUpdate) {
+                foreach ((Point3 key, bool b) in value) {
+                    int cellValue = SubsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(key.X, key.Y, key.Z);
+                    for (int i = 0; i < 6; i++) {
+                        GVElectricElement GVElectricElement = GetGVElectricElement(
+                            key.X,
+                            key.Y,
+                            key.Z,
+                            i,
+                            subterrainId
+                        );
+                        if (GVElectricElement != null) {
+                            if (GVElectricElement is WireDomainGVElectricElement) {
+                                m_wiresToUpdate[subterrainId].Add(new GVCellFace(key) { Mask = GVElectricElement.CellFaces[0].Mask });
+                            }
+                            else {
+                                m_GVElectricElementsToRemove.Add(GVElectricElement);
+                            }
                         }
                     }
-                    GVElectricElement GVElectricElement2 = GVElectricElementBlock?.CreateGVElectricElement(
-                        this,
-                        cellValue,
-                        key.X,
-                        key.Y,
-                        key.Z
-                    );
-                    if (GVElectricElement2 != null) {
-                        m_GVElectricElementsToAdd[key] = GVElectricElement2;
+                    if (b && subterrainId == 0) {
+                        m_persistentElementsVoltages.Remove(key);
+                    }
+                    Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
+                    if (block is IGVElectricWireElementBlock wire) {
+                        m_wiresToUpdate[subterrainId].Add(new GVCellFace(key) { Mask = wire.GetConnectionMask(cellValue) });
+                    }
+                    else {
+                        IGVElectricElementBlock GVElectricElementBlock = block as IGVElectricElementBlock;
+                        if (GVElectricElementBlock == null) {
+                            if (block is FurnitureBlock) {
+                                GVElectricElementBlock = GVFurnitureBlock;
+                            }
+                        }
+                        GVElectricElement GVElectricElement2 = GVElectricElementBlock?.CreateGVElectricElement(
+                            this,
+                            cellValue,
+                            key.X,
+                            key.Y,
+                            key.Z,
+                            subterrainId
+                        );
+                        if (GVElectricElement2 != null) {
+                            m_GVElectricElementsToAdd[subterrainId][key] = GVElectricElement2;
+                        }
                     }
                 }
             }
             RemoveWireDomains();
-            foreach (KeyValuePair<GVElectricElement, bool> item2 in m_GVElectricElementsToRemove) {
-                RemoveGVElectricElement(item2.Key);
+            foreach (GVElectricElement item2 in m_GVElectricElementsToRemove) {
+                RemoveGVElectricElement(item2);
             }
             AddWireDomains();
-            foreach (GVElectricElement value in m_GVElectricElementsToAdd.Values) {
-                AddGVElectricElement(value);
+            foreach (Dictionary<Point3, GVElectricElement> elements in m_GVElectricElementsToAdd.Values) {
+                foreach (GVElectricElement element in elements.Values) {
+                    AddGVElectricElement(element);
+                }
+                elements.Clear();
             }
-            m_pointsToUpdate.Clear();
-            m_wiresToUpdate.Clear();
-            m_GVElectricElementsToAdd.Clear();
+            foreach (Dictionary<Point3, bool> points in m_pointsToUpdate.Values) {
+                points.Clear();
+            }
+            foreach (HashSet<GVCellFace> wires in m_wiresToUpdate.Values) {
+                wires.Clear();
+            }
             m_GVElectricElementsToRemove.Clear();
         }
 
         public void AddWireDomains() {
             m_tmpVisited.Clear();
-            foreach (GVCellFace key in m_wiresToUpdate.Keys) {
-                for (int i = key.X - 1; i <= key.X + 1; i++) {
-                    for (int j = key.Y - 1; j <= key.Y + 1; j++) {
-                        for (int k = key.Z - 1; k <= key.Z + 1; k++) {
-                            for (int l = 0; l < 6; l++) {
-                                for (int m = 0; m < 16; m++) {
+            foreach ((uint subterrainId, HashSet<GVCellFace> wires) in m_wiresToUpdate) {
+                foreach (GVCellFace key in wires) {
+                    for (int i = key.X - 1; i <= key.X + 1; i++) {
+                        for (int j = key.Y - 1; j <= key.Y + 1; j++) {
+                            for (int k = key.Z - 1; k <= key.Z + 1; k++) {
+                                for (int l = 0; l < 6; l++) {
+                                    for (int m = 0; m < 16; m++) {
+                                        m_tmpResult.Clear();
+                                        ScanWireDomain(
+                                            new GVCellFace(
+                                                i,
+                                                j,
+                                                k,
+                                                l,
+                                                1 << m
+                                            ),
+                                            subterrainId,
+                                            m_tmpVisited,
+                                            m_tmpResult
+                                        );
+                                        if (m_tmpResult.Count > 0) {
+                                            WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult, subterrainId);
+                                            AddGVElectricElement(GVElectricElement);
+                                        }
+                                    }
                                     m_tmpResult.Clear();
-                                    ScanWireDomain(
-                                        new GVCellFace(
-                                            i,
-                                            j,
-                                            k,
-                                            l,
-                                            1 << m
-                                        ),
-                                        m_tmpVisited,
-                                        m_tmpResult
-                                    );
+                                    ScanWireDomain(new GVCellFace(i, j, k, l), subterrainId, m_tmpVisited, m_tmpResult);
                                     if (m_tmpResult.Count > 0) {
-                                        WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult.Keys);
+                                        WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult, subterrainId);
                                         AddGVElectricElement(GVElectricElement);
                                     }
-                                }
-                                m_tmpResult.Clear();
-                                ScanWireDomain(new GVCellFace(i, j, k, l), m_tmpVisited, m_tmpResult);
-                                if (m_tmpResult.Count > 0) {
-                                    WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult.Keys);
-                                    AddGVElectricElement(GVElectricElement);
                                 }
                             }
                         }
@@ -1602,29 +1660,32 @@ namespace Game {
         }
 
         public void RemoveWireDomains() {
-            foreach (GVCellFace key in m_wiresToUpdate.Keys) {
-                for (int i = key.X - 1; i <= key.X + 1; i++) {
-                    for (int j = key.Y - 1; j <= key.Y + 1; j++) {
-                        for (int k = key.Z - 1; k <= key.Z + 1; k++) {
-                            for (int l = 0; l < 6; l++) {
-                                for (int m = 0; m < 16; m++) {
-                                    if (m_GVElectricElementsByCellFace.TryGetValue(
-                                            new GVCellFace(
-                                                i,
-                                                j,
-                                                k,
-                                                l,
-                                                1 << m
-                                            ),
-                                            out GVElectricElement value
-                                        )
-                                        && value is WireDomainGVElectricElement) {
-                                        RemoveGVElectricElement(value);
+            foreach ((uint subterrainId, HashSet<GVCellFace> wires) in m_wiresToUpdate) {
+                Dictionary<GVCellFace, GVElectricElement> elements = m_GVElectricElementsByCellFace[subterrainId];
+                foreach (GVCellFace key in wires) {
+                    for (int i = key.X - 1; i <= key.X + 1; i++) {
+                        for (int j = key.Y - 1; j <= key.Y + 1; j++) {
+                            for (int k = key.Z - 1; k <= key.Z + 1; k++) {
+                                for (int l = 0; l < 6; l++) {
+                                    for (int m = 0; m < 16; m++) {
+                                        if (elements.TryGetValue(
+                                                new GVCellFace(
+                                                    i,
+                                                    j,
+                                                    k,
+                                                    l,
+                                                    1 << m
+                                                ),
+                                                out GVElectricElement value
+                                            )
+                                            && value is WireDomainGVElectricElement) {
+                                            RemoveGVElectricElement(value);
+                                        }
                                     }
-                                }
-                                if (m_GVElectricElementsByCellFace.TryGetValue(new GVCellFace(i, j, k, l), out GVElectricElement value2)
-                                    && value2 is WireDomainGVElectricElement) {
-                                    RemoveGVElectricElement(value2);
+                                    if (elements.TryGetValue(new GVCellFace(i, j, k, l), out GVElectricElement value2)
+                                        && value2 is WireDomainGVElectricElement) {
+                                        RemoveGVElectricElement(value2);
+                                    }
                                 }
                             }
                         }
@@ -1633,20 +1694,21 @@ namespace Game {
             }
         }
 
-        public void ScanWireDomain(GVCellFace startCellFace, Dictionary<GVCellFace, bool> visited, Dictionary<GVCellFace, bool> result) {
+        public void ScanWireDomain(GVCellFace startCellFace, uint subterrainId, HashSet<GVCellFace> visited, HashSet<GVCellFace> result) {
             DynamicArray<GVCellFace> dynamicArray = [startCellFace];
             while (dynamicArray.Count > 0) {
                 GVCellFace key = dynamicArray.Array[--dynamicArray.Count];
-                if (visited.ContainsKey(key)) {
+                if (visited.Contains(key)) {
                     continue;
                 }
-                TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(key.X, key.Z);
+                Terrain terrain = SubsystemGVSubterrain.GetTerrain(subterrainId);
+                TerrainChunk chunkAtCell = terrain.GetChunkAtCell(key.X, key.Z);
                 if (chunkAtCell is not {
                         AreBehaviorsNotified: true
                     }) {
                     continue;
                 }
-                int cellValue = SubsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z);
+                int cellValue = terrain.GetCellValue(key.X, key.Y, key.Z);
                 int num = Terrain.ExtractContents(cellValue);
                 IGVElectricWireElementBlock GVElectricWireElementBlock = BlocksManager.Blocks[num] as IGVElectricWireElementBlock;
                 if (GVElectricWireElementBlock == null) {
@@ -1675,16 +1737,17 @@ namespace Game {
                             i,
                             newMask
                         );
-                        if (!visited.TryAdd(key2, true)) {
+                        if (!visited.Add(key2)) {
                             continue;
                         }
-                        result.Add(key2, true);
+                        result.Add(key2);
                         m_tmpConnectionPaths.Clear();
                         GetAllConnectedNeighbors(
                             key2.X,
                             key2.Y,
                             key2.Z,
                             key2.Face,
+                            subterrainId,
                             m_tmpConnectionPaths
                         );
                         foreach (GVElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths) {
@@ -1703,16 +1766,16 @@ namespace Game {
             }
         }
 
-        public Dictionary<GVElectricElement, bool> GetListFromCache() {
+        public HashSet<GVElectricElement> GetListFromCache() {
             if (m_listsCache.Count > 0) {
-                Dictionary<GVElectricElement, bool> result = m_listsCache[m_listsCache.Count - 1];
+                HashSet<GVElectricElement> result = m_listsCache[m_listsCache.Count - 1];
                 m_listsCache.RemoveAt(m_listsCache.Count - 1);
                 return result;
             }
-            return new Dictionary<GVElectricElement, bool>();
+            return [];
         }
 
-        public void ReturnListToCache(Dictionary<GVElectricElement, bool> list) {
+        public void ReturnListToCache(HashSet<GVElectricElement> list) {
             list.Clear();
             m_listsCache.Add(list);
         }
@@ -1744,7 +1807,7 @@ namespace Game {
             }
         }
 
-        public int[] DrawOrders => m_drawOrders;
+        public int[] DrawOrders => [113];
 
         public void Draw4DecNumber(int number, Vector3 position, float numberWidth, Vector3 right, Vector3 up, Color color) {
             number %= 10000;
