@@ -81,6 +81,18 @@
 		<None Update="Assets\Textures\Gui\GVJump.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Assets\Shaders\GVSubterrainOpaqueAndAlphaTested.psh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVSubterrainOpaqueAndAlphaTested.vsh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVSubterrainTransparent.psh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Shaders\GVSubterrainTransparent.vsh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="Block\Furniture\ButtonFurnitureGVElectricElement.cs"/>
@@ -181,6 +193,13 @@
 		<Compile Include="GVElectricClasses\ComponentGVDisplayVoltage.cs"/>
 		<Compile Include="GVElectricClasses\GVCellFace.cs"/>
 		<Compile Include="GVElectricClasses\SubsystemGVEditableItemBehavior.cs"/>
+		<Compile Include="GVElectricClasses\Subterrain\GVBlockGeometryGenerator.cs"/>
+		<Compile Include="GVElectricClasses\Subterrain\GVSubterrainRenderer.cs"/>
+		<Compile Include="GVElectricClasses\Subterrain\GVSubterrainSystem.cs"/>
+		<Compile Include="GVElectricClasses\Subterrain\GVSubterrainUpdater.cs"/>
+		<Compile Include="GVElectricClasses\Subterrain\IGVBlockBehavior.cs"/>
+		<Compile Include="GVElectricClasses\Subterrain\SubsystemGVBlockBehaviors.cs"/>
+		<Compile Include="GVElectricClasses\Subterrain\SubsystemGVSubterrain.cs"/>
 		<Compile Include="Widget\GVDispenserWidget.cs"/>
 		<Compile Include="Widget\GVStepFloatingButtons.cs"/>
 		<Compile Include="BaseBlock\GenerateGVWireVerticesBlock.cs"/>

@@ -5,14 +5,14 @@ using Engine.Serialization;
 using TemplatesDatabase;
 
 namespace Game {
-    public abstract class SubsystemGVEditableItemBehavior<T> : SubsystemBlockBehavior where T : IEditableItemData, new() {
+    public abstract class SubsystemGVEditableItemBehavior<T> : SubsystemBlockBehavior, IGVBlockBehavior where T : IEditableItemData, new() {
         public SubsystemItemsScanner m_subsystemItemsScanner;
         public SubsystemTerrain m_subsystemTerrain;
 
         public int m_contents;
 
-        public Dictionary<int, T> m_itemsData = new Dictionary<int, T>();
-        public HashSet<int> m_existingIds = new HashSet<int>();
+        public Dictionary<int, T> m_itemsData = new();
+        public HashSet<int> m_existingIds = new();
 
         public SubsystemGVEditableItemBehavior(int contents) => m_contents = contents;
 
@@ -24,7 +24,6 @@ namespace Game {
         public T GetItemData(int id, bool returnNew = false) {
             m_itemsData.TryGetValue(id, out T value);
             if (value == null && returnNew) {
-                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.GetItemData: 未找到{id}，完整ID列表：{string.Join(",", m_itemsData.Keys)}\n");
                 return new T();
             }
             return value;
@@ -68,18 +67,17 @@ namespace Game {
                     }
                 }
                 else {
-                    T value2 = new T();
+                    T value2 = new();
                     value2.LoadString((string)item2.Value);
                     m_itemsData[key2] = value2;
                 }
             }
-            //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.Load: 世界有以下ID: {string.Join(",", m_existingIds)}\n");
             m_subsystemItemsScanner.ItemsScanned += GarbageCollectItems;
         }
 
         public override void Save(ValuesDictionary valuesDictionary) {
             base.Save(valuesDictionary);
-            ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+            ValuesDictionary valuesDictionary3 = new();
             valuesDictionary.SetValue("Items", valuesDictionary3);
             foreach (KeyValuePair<int, T> itemsDatum in m_itemsData) {
                 valuesDictionary3.SetValue(HumanReadableConverter.ConvertToString(itemsDatum.Key), itemsDatum.Value.SaveString());
@@ -100,15 +98,35 @@ namespace Game {
             int id = GetIdFromValue(value);
             if (id > 0) {
                 m_existingIds.Add(id);
-                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.OnBlockAdded: {id}\n");
+            }
+        }
+
+        public void OnBlockAdded(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) {
+            int id = GetIdFromValue(value);
+            if (id > 0) {
+                m_existingIds.Add(id);
             }
         }
 
         public override void OnBlockModified(int value, int oldValue, int x, int y, int z) {
+            int oldId = GetIdFromValue(oldValue);
+            if (oldId > 0) {
+                m_existingIds.Remove(oldId);
+            }
             int id = GetIdFromValue(value);
             if (id > 0) {
                 m_existingIds.Add(id);
-                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.OnBlockModified: {id}\n");
+            }
+        }
+
+        public void OnBlockModified(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) {
+            int oldId = GetIdFromValue(oldValue);
+            if (oldId > 0) {
+                m_existingIds.Remove(oldId);
+            }
+            int id = GetIdFromValue(value);
+            if (id > 0) {
+                m_existingIds.Add(id);
             }
         }
 
@@ -116,7 +134,13 @@ namespace Game {
             int id = GetIdFromValue(value);
             if (id > 0) {
                 m_existingIds.Add(GetIdFromValue(value));
-                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.OnBlockGenerated: {id}\n");
+            }
+        }
+
+        public void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded, GVSubterrainSystem system) {
+            int id = GetIdFromValue(value);
+            if (id > 0) {
+                m_existingIds.Add(GetIdFromValue(value));
             }
         }
 
@@ -124,27 +148,30 @@ namespace Game {
             int id = GetIdFromValue(value);
             if (id > 0) {
                 m_existingIds.Remove(id);
-                //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.OnBlockRemoved: {id}\n");
+            }
+        }
+
+        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
+            int id = GetIdFromValue(value);
+            if (id > 0) {
+                m_existingIds.Remove(id);
             }
         }
 
         public void GarbageCollectItems(ReadOnlyList<ScannedItemData> allExistingItems) {
-            HashSet<int> hashSet = new HashSet<int>();
+            HashSet<int> hashSet = new();
             foreach (ScannedItemData item in allExistingItems) {
                 if (Terrain.ExtractContents(item.Value) == m_contents) {
                     hashSet.Add(GetIdFromValue(item.Value));
                 }
             }
-            //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.GarbageCollectItems: 背包有以下ID: {string.Join(",", hashSet)}\n");
-            //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.GarbageCollectItems: 世界有以下ID: {string.Join(",", m_existingIds)}\n");
-            List<int> list = new List<int>();
+            List<int> list = new();
             foreach (KeyValuePair<int, T> itemsDatum in m_itemsData) {
                 if (!hashSet.Contains(itemsDatum.Key)
                     && !m_existingIds.Contains(itemsDatum.Key)) {
                     list.Add(itemsDatum.Key);
                 }
             }
-            //Debugger.Log(0, "SubsystemGVEditableItemBehavior", $"{GetType().FullName}.GarbageCollectItems: 移除以下ID: {string.Join(",", list)}\n");
             foreach (int item2 in list) {
                 m_itemsData.Remove(item2);
             }

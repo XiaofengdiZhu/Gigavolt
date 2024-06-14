@@ -53,5 +53,8 @@
 			<ParameterSet Name="Blocks" Guid="997f6d93-0d0e-4888-a973-2451ca3803bc"/>
 			<Parameter Name="Class" Guid="96bc0a0f-1e85-4313-b562-d0e16a982918" Value="Game.SubsystemGVOscilloscopeBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVTractorBeamBlockBehavior" Guid="db243681-13fb-444c-95ea-9b521d05c9bf" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
+			<Parameter Name="Class" Guid="ad1192e6-1b54-4839-8929-f7c911fedd26" Value="Game.SubsystemGVTractorBeamBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

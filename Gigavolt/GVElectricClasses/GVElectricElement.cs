@@ -5,9 +5,7 @@ using Engine;
 namespace Game {
     public abstract class GVElectricElement {
         public SubsystemGVElectricity SubsystemGVElectricity { get; set; }
-
         public ReadOnlyList<GVCellFace> CellFaces { get; set; }
-
         public List<GVElectricConnection> Connections { get; set; }
 
         public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<GVCellFace> cellFaces) {

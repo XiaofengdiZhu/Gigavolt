@@ -348,7 +348,7 @@ namespace Game {
             }
         }
 
-        public TexturedBatch3D FlatBatch3D {
+        public TexturedBatch3D TexturedBatch3D {
             get {
                 if (Records.Count == 0) {
                     return null;

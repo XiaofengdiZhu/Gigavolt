@@ -154,7 +154,7 @@ namespace Game {
                             Vector3 p2 = data.Position + size * (data.Right - data.Up);
                             Vector3 p3 = data.Position + size * (data.Right + data.Up);
                             Vector3 p4 = data.Position + size * (-data.Right + data.Up);
-                            TexturedBatch3D batch = data.FlatBatch3D;
+                            TexturedBatch3D batch = data.TexturedBatch3D;
                             batch.QueueQuad(
                                 p,
                                 p2,

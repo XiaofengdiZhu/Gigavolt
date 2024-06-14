@@ -17,6 +17,19 @@ namespace Game {
             }
         }
 
+        public static Dictionary<uint, GVSubterrainSystem> GVSubterrainSystemDictionary = new();
+
+        public static uint GetUniqueGVSubterrainID() {
+            while (true) {
+                uint num = random.UInt();
+                if (num == 0u
+                    || GVSubterrainSystemDictionary.ContainsKey(num)) {
+                    continue;
+                }
+                return num;
+            }
+        }
+
         public static List<SoundGeneratorGVElectricElement> GVSGCFEEList = new();
 
         public static bool PreventChunkFromBeingFree = false;

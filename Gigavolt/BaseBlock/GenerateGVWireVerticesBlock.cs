@@ -5,8 +5,10 @@ namespace Game {
         public readonly DynamicArray<GVElectricConnectionPath> m_GVtmpConnectionPaths = [];
         public readonly Random m_GVRandom = new();
 
-        public virtual void GenerateGVWireVertices(BlockGeometryGenerator generator, int value, int x, int y, int z, int mountingFace, float centerBoxSize, Vector2 centerOffset, TerrainGeometrySubset subset) {
-            SubsystemGVElectricity SubsystemGVElectricity = generator.SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
+        public void GenerateGVWireVertices(BlockGeometryGenerator generator, int value, int x, int y, int z, int mountingFace, float centerBoxSize, Vector2 centerOffset, TerrainGeometrySubset subset) {
+            SubsystemGVElectricity SubsystemGVElectricity = generator is GVBlockGeometryGenerator GVGenerator ? GVGenerator.SubsystemGVElectricity : generator.SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            // ReSharper disable once HeuristicUnreachableCode
             if (SubsystemGVElectricity == null) {
                 return;
             }

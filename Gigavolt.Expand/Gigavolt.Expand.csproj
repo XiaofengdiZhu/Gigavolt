@@ -147,6 +147,9 @@
 		<Compile Include="SignalGenerator\GVSignalGeneratorBlock.cs"/>
 		<Compile Include="SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
 		<Compile Include="SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
+		<Compile Include="TractorBeam\GVTractorBeamBlock.cs"/>
+		<Compile Include="TractorBeam\SubsystemGVTractorBeamBlockBehavior.cs"/>
+		<Compile Include="TractorBeam\TractorBeamGVElectricElement.cs"/>
 		<Compile Include="Transportation\Attractor\GVAttractorBlock.cs"/>
 		<Compile Include="Transportation\Attractor\AttractorGVElectricElement.cs"/>
 		<Compile Include="Transportation\Attractor\SubsystemGVAttractorBlockBehavior.cs"/>
@@ -437,6 +440,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVOscilloscopeBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVTractorBeamBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

@@ -3,6 +3,7 @@
 		<SubsystemTemplate Name="GVEditableItemBehavior" Guid="5ac0a57e-c339-4c46-8e0a-e500e3b9e295" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<ParameterSet Name="Items" Description="Contains memory banks associated with items" Guid="edc2d637-6375-4163-a389-0060ebee2a38"/>
 		</SubsystemTemplate>
+		<SubsystemTemplate Name="GVBlockBehavior" Guid="0f40208e-af0e-4bca-978a-e79445378b05" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb"/>
 	</Folder>
 	<Parameter Name="Class" Guid="1739995d-79de-4d04-9763-432c22b3f416" new-Value="Game.SubsystemGVMovingBlocks" Type="string"/>
 	<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
@@ -82,6 +83,12 @@
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GV8NumberLedGlow" Guid="d801a01a-78c7-4f84-bde4-30befff42f3a" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="d4a518cf-3f5e-43c1-b948-2c8484fadd33" Value="Game.SubsystemGV8NumberLedGlow" Type="string"/>
+		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVSubterrain" Guid="ac8baf94-7331-48b1-8a23-f9a24a25deef" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="e909c0c8-f93f-47d9-acfa-42a025f7d347" Value="Game.SubsystemGVSubterrain" Type="string"/>
+		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVBlockBehaviors" Guid="7c933c4b-324a-4e0e-bc0d-db60b3b520b4" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="735a5b32-ac66-4c83-b665-eb29858a752d" Value="Game.SubsystemGVBlockBehaviors" Type="string"/>
 		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 	<Folder Name="Entities" Guid="5fcdf35f-7001-442c-883e-e0502b15d291">

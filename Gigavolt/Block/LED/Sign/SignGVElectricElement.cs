@@ -110,9 +110,9 @@ namespace Game {
                 m_glowPoint.FloatSize = (m_inputTop & 0xFFFFu) / 8f;
             }
             if (m_inputBottom != inputBottom) {
-                float yaw = (m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f);
+                float yaw = (m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f);
                 float pitch = ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f);
-                float roll = ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f);
+                float roll = ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f);
                 m_glowPoint.FloatRotation = new Vector3(yaw, pitch, roll);
                 m_glowPoint.FloatLight = ((m_inputBottom >> 28) & 0xFu) / 16f;
             }
