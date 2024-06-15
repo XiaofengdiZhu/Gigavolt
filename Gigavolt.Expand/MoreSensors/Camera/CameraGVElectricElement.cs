@@ -168,9 +168,9 @@ namespace Game {
                     if (SubterrainId != 0) {
                         Matrix transform = m_subterrainSystem.GlobalTransform;
                         newViewPosition = Vector3.Transform(newViewPosition, transform);
-                        Vector3 zero = Vector3.Transform(Vector3.Zero, transform);
-                        newViewDirection = Vector3.Transform(newViewDirection, transform) - zero;
-                        newViewUp = Vector3.Transform(newViewUp, transform) - zero;
+                        Matrix orientation = transform.OrientationMatrix;
+                        newViewDirection = Vector3.Transform(newViewDirection, orientation);
+                        newViewUp = Vector3.Transform(newViewUp, orientation);
                     }
                     m_camera.SetupPerspectiveCamera(newViewPosition, newViewDirection, newViewUp);
                     m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, newViewPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
@@ -193,9 +193,9 @@ namespace Game {
                     if (SubterrainId != 0) {
                         Matrix transform = m_subterrainSystem.GlobalTransform;
                         position = Vector3.Transform(position, transform);
-                        Vector3 zero = Vector3.Transform(Vector3.Zero, transform);
-                        forward = Vector3.Transform(forward, transform) - zero;
-                        up = Vector3.Transform(up, transform) - zero;
+                        Matrix orientation = transform.OrientationMatrix;
+                        forward = Vector3.Transform(forward, orientation);
+                        up = Vector3.Transform(up, orientation);
                     }
                     m_camera.SetupPerspectiveCamera(position, forward, up);
                     m_lastRotation = electricRotation;

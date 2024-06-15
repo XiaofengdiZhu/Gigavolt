@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
@@ -8,47 +9,59 @@ namespace Game {
     public class SubsystemGV8NumberLedGlow : Subsystem, IDrawable {
         public SubsystemSky m_subsystemSky;
 
-        public readonly Dictionary<GV8NumberGlowPoint, bool> m_glowPoints = new();
-
+        public readonly Dictionary<uint, HashSet<GV8NumberGlowPoint>> m_glowPoints = new();
         public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
-
         public TexturedBatch3D batchCache;
 
-        public static int[] m_drawOrders = [110];
+        public int[] DrawOrders => [110];
 
-        public int[] DrawOrders => m_drawOrders;
-
-        public GV8NumberGlowPoint AddGlowPoint() {
+        public GV8NumberGlowPoint AddGlowPoint(uint subterrainId) {
             GV8NumberGlowPoint glowPoint = new();
-            m_glowPoints.Add(glowPoint, true);
+            if (m_glowPoints.TryGetValue(subterrainId, out HashSet<GV8NumberGlowPoint> points)) {
+                points.Add(glowPoint);
+            }
+            else {
+                m_glowPoints.Add(subterrainId, [glowPoint]);
+            }
             return glowPoint;
         }
 
-        public void RemoveGlowPoint(GV8NumberGlowPoint glowPoint) {
-            m_glowPoints.Remove(glowPoint);
+        public void RemoveGlowPoint(GV8NumberGlowPoint glowPoint, uint subterrainId) {
+            m_glowPoints[subterrainId]?.Remove(glowPoint);
         }
 
         public void Draw(Camera camera, int drawOrder) {
-            foreach (GV8NumberGlowPoint key in m_glowPoints.Keys) {
-                if (key.Voltage > 0) {
-                    Vector3 vector = key.Position - camera.ViewPosition;
-                    float num = Vector3.Dot(vector, camera.ViewDirection);
-                    if (num > 0.01f) {
-                        float num2 = vector.Length();
-                        if (num2 < m_subsystemSky.ViewFogRange.Y) {
-                            float num3 = key.Size;
-                            if (key.FarDistance > 0f) {
-                                num3 += (key.FarSize - key.Size) * MathUtils.Saturate(num2 / key.FarDistance);
+            foreach ((uint subterrainId, HashSet<GV8NumberGlowPoint> points) in m_glowPoints) {
+                if (points.Count == 0) {
+                    continue;
+                }
+                Matrix transform = subterrainId == 0 ? default : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform;
+                foreach (GV8NumberGlowPoint key in points) {
+                    if (key.Voltage > 0) {
+                        Vector3 position = subterrainId == 0 ? key.Position : Vector3.Transform(key.Position, transform);
+                        Vector3 vector = position - camera.ViewPosition;
+                        if (Vector3.Dot(vector, camera.ViewDirection) > 0.01f) {
+                            float distance = vector.Length();
+                            if (distance < m_subsystemSky.ViewFogRange.Y) {
+                                Vector3 right = key.Right;
+                                Vector3 up = key.Up;
+                                float size = key.Size;
+                                if (subterrainId != 0) {
+                                    Matrix orientation = transform.OrientationMatrix;
+                                    right = Vector3.Normalize(Vector3.Transform(right, orientation));
+                                    up = Vector3.Normalize(Vector3.Transform(up, orientation));
+                                    size *= MathF.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13);
+                                }
+                                Draw8Number(
+                                    batchCache,
+                                    key.Voltage,
+                                    position,
+                                    size,
+                                    right,
+                                    up,
+                                    Color.White
+                                );
                             }
-                            Draw8Number(
-                                batchCache,
-                                key.Voltage,
-                                key.Position,
-                                num3,
-                                key.Right,
-                                key.Up,
-                                Color.White
-                            );
                         }
                     }
                 }

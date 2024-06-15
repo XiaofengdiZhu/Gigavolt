@@ -4,6 +4,7 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVBlockBehaviors : Subsystem {
+        public HashSet<IGVBlockBehavior> BlockBehaviors = [];
         public List<IGVBlockBehavior>[] m_blockBehaviorsByContents;
         public List<IGVBlockBehavior> GetBlockBehaviors(int contents) => m_blockBehaviorsByContents[contents];
 
@@ -15,6 +16,7 @@ namespace Game {
                 foreach (SubsystemBlockBehavior originalBehavior in originalSubsystem.m_blockBehaviorsByContents[i]) {
                     if (originalBehavior is IGVBlockBehavior blockBehavior) {
                         m_blockBehaviorsByContents[i].Add(blockBehavior);
+                        BlockBehaviors.Add(blockBehavior);
                     }
                 }
             }

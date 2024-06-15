@@ -116,15 +116,17 @@
 		<Compile Include="Block\LED\8x4Led\SubsystemGV8x4LedGlow.cs"/>
 		<Compile Include="Block\LED\FourLed\FourLedGVElectricElement.cs"/>
 		<Compile Include="Block\LED\FourLed\GVFourLedBlock.cs"/>
+		<Compile Include="Block\LED\Led\GVGlowPoint.cs"/>
+		<Compile Include="Block\LED\Led\GVGlowPointType.cs"/>
 		<Compile Include="Block\LED\Led\GVLedBlock.cs"/>
 		<Compile Include="Block\LED\Led\LedGVElectricElement.cs"/>
+		<Compile Include="Block\LED\Led\SubsystemGVGlow.cs"/>
 		<Compile Include="Block\LED\Lightbulb\GVLightbulbBlock.cs"/>
 		<Compile Include="Block\LED\Lightbulb\LightBulbGVElectricElement.cs"/>
 		<Compile Include="Block\LED\MulticoloredLed\GVMulticoloredLedBlock.cs"/>
 		<Compile Include="Block\LED\MulticoloredLed\MulticoloredLedGVElectricElement.cs"/>
 		<Compile Include="Block\LED\OneLed\GVOneLedBlock.cs"/>
 		<Compile Include="Block\LED\OneLed\OneLedGVElectricElement.cs"/>
-		<Compile Include="Block\LED\OneLed\SubsystemGVOneLedGlow.cs"/>
 		<Compile Include="Block\LED\SevenSegmentDisplay\GVSevenSegmentDisplayBlock.cs"/>
 		<Compile Include="Block\LED\SevenSegmentDisplay\SevenSegmentDisplayGVElectricElement.cs"/>
 		<Compile Include="Block\LED\Sign\SignGVElectricElement.cs"/>
@@ -230,7 +232,6 @@
 		<Compile Include="Block\Gate\OrGateGVElectricElement.cs"/>
 		<Compile Include="Block\Gate\SubsystemGVAdjustableDelayGateBlockBehavior.cs"/>
 		<Compile Include="Block\Gate\XorGateGVElectricElement.cs"/>
-		<Compile Include="Block\LED\GVGlowPoint.cs"/>
 		<Compile Include="Dialog\EditGVDebugDialog.cs"/>
 		<Compile Include="Block\Other\GVDebugData.cs"/>
 		<Compile Include="Block\Other\GVDebugBlock.cs"/>

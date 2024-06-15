@@ -20,6 +20,9 @@ namespace Game {
         ) => m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
 
         public override bool Simulate() {
+            if (SubterrainId != 0) {
+                return false;
+            }
             uint voltage = m_voltage;
             m_voltage = 0;
             foreach (GVElectricConnection connection in Connections) {

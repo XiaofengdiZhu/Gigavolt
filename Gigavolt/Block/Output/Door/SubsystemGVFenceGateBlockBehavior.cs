@@ -31,13 +31,19 @@ namespace Game {
             return false;
         }
 
-        public void OpenGate(int x, int y, int z, int open) {
-            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
-            int num = Terrain.ExtractContents(cellValue);
-            if (BlocksManager.Blocks[num] is GVFenceGateBlock) {
-                int data = GVFenceGateBlock.SetOpen(Terrain.ExtractData(cellValue), open);
-                int value = Terrain.ReplaceData(cellValue, data);
-                SubsystemTerrain.ChangeCell(x, y, z, value);
+        public void OpenGate(int x, int y, int z, uint subterrainId, int open) {
+            if (subterrainId == 0) {
+                int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+                if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is GVFenceGateBlock) {
+                    SubsystemTerrain.ChangeCell(x, y, z, Terrain.ReplaceData(cellValue, GVFenceGateBlock.SetOpen(Terrain.ExtractData(cellValue), open)));
+                }
+            }
+            else {
+                GVSubterrainSystem subterrainSystem = GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
+                int cellValue = subterrainSystem.Terrain.GetCellValue(x, y, z);
+                if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is GVFenceGateBlock) {
+                    subterrainSystem.ChangeCell(x, y, z, Terrain.ReplaceData(cellValue, GVFenceGateBlock.SetOpen(Terrain.ExtractData(cellValue), open)));
+                }
             }
         }
 

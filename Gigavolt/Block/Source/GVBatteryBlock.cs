@@ -81,7 +81,7 @@ namespace Game {
             );
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new BatteryGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, 4), subterrainId);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new BatteryGVElectricElement(subsystemGVElectricity, value, new GVCellFace(x, y, z, 4), subterrainId);
 
         public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             if (face == 4

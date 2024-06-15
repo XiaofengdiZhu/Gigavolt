@@ -42,7 +42,7 @@ namespace Game {
                 foreach (KeyValuePair<GVCellFace, Vector3> pair in m_indicatorLine) {
                     GVCellFace key = pair.Key;
                     Vector3 origin = new(key.X + 0.5f, key.Y + 0.5f, key.Z + 0.5f);
-                    m_flatBatch.QueueLine(origin - 0.4375f * GVCellFace.FaceToVector3(key.Face), origin + pair.Value, Color.Yellow);
+                    m_flatBatch.QueueLine(origin - 0.43f * GVCellFace.FaceToVector3(key.Face), origin + pair.Value, Color.Yellow);
                 }
                 m_flatBatch.Flush(camera.ViewProjectionMatrix);
             }

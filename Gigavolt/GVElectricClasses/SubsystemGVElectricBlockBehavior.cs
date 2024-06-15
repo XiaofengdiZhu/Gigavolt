@@ -98,9 +98,7 @@ namespace Game {
 
         public void OnBlockModified(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) => m_subsystemGVElectric.OnGVElectricElementBlockModified(x, y, z, system.ID);
 
-        public override void OnChunkDiscarding(TerrainChunk chunk) => m_subsystemGVElectric.OnChunkDiscarding(chunk, 0);
-
-        public void OnChunkDiscarding(TerrainChunk chunk, GVSubterrainSystem system) => m_subsystemGVElectric.OnChunkDiscarding(chunk, system.ID);
+        public override void OnChunkDiscarding(TerrainChunk chunk) => m_subsystemGVElectric.OnChunkDiscarding(chunk);
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
             for (int i = 0; i < 6; i++) {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Engine;
 
@@ -18,7 +19,11 @@ namespace Game {
         public override void OnAdded() {
             Point3 point = CellFaces[0].Point;
             m_originalPosition = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f);
-            if (m_subsystemGVSignBlockBehavior.m_textsByPoint.TryGetValue(new Point3(point.X, point.Y, point.Z), out m_glowPoint)) {
+            if (!m_subsystemGVSignBlockBehavior.m_textsByPoint.TryGetValue(SubterrainId, out Dictionary<Point3, GVSignTextData> points)) {
+                points = new Dictionary<Point3, GVSignTextData>();
+                m_subsystemGVSignBlockBehavior.m_textsByPoint.Add(SubterrainId, points);
+            }
+            if (points.TryGetValue(new Point3(point.X, point.Y, point.Z), out m_glowPoint)) {
                 m_glowPoint.FloatPosition = m_originalPosition;
                 m_glowPoint.FloatColor = Color.White;
                 m_glowPoint.FloatSize = 0;
@@ -37,7 +42,7 @@ namespace Game {
                     FloatRotation = Vector3.Zero,
                     FloatLight = 0
                 };
-                m_subsystemGVSignBlockBehavior.m_textsByPoint[point] = m_glowPoint;
+                points[point] = m_glowPoint;
             }
         }
 

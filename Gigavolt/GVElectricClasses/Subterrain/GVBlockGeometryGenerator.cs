@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using System;
+using Engine;
 
 namespace Game {
     public class GVBlockGeometryGenerator : BlockGeometryGenerator {
@@ -1308,7 +1309,7 @@ namespace Game {
                         }
                         Vector3 vector3 = connectorDirection != GVElectricConnectorDirection.In ? CellFace.FaceToVector3(tmpConnectionPath.ConnectorFace) : -Vector3.Normalize(vector2);
                         Vector3 vector4 = Vector3.Cross(vector, vector3);
-                        float s = centerBoxSize >= 0f ? MathUtils.Max(0.03125f, centerBoxSize / 2f) : centerBoxSize / 2f;
+                        float s = centerBoxSize >= 0f ? Math.Max(0.03125f, centerBoxSize / 2f) : centerBoxSize / 2f;
                         float num5 = connectorDirection == GVElectricConnectorDirection.In ? 0.03125f : 0.5f;
                         float num6 = connectorDirection == GVElectricConnectorDirection.In ? 0f :
                             tmpConnectionPath.ConnectorFace == tmpConnectionPath.NeighborFace ? num5 + 0.03125f :
@@ -1325,10 +1326,10 @@ namespace Game {
                             v6 += vector9;
                             vector7 += vector9;
                         }
-                        Vector2 vector10 = v2 + v3 * new Vector2(MathUtils.Max(0.0625f, centerBoxSize), 0f);
+                        Vector2 vector10 = v2 + v3 * new Vector2(Math.Max(0.0625f, centerBoxSize), 0f);
                         Vector2 vector11 = v2 + v3 * new Vector2(num5 * 2f, 0f);
                         Vector2 vector12 = v2 + v3 * new Vector2(num5 * 2f, 1f);
-                        Vector2 vector13 = v2 + v3 * new Vector2(MathUtils.Max(0.0625f, centerBoxSize), 1f);
+                        Vector2 vector13 = v2 + v3 * new Vector2(Math.Max(0.0625f, centerBoxSize), 1f);
                         Vector2 vector14 = v2 + v3 * new Vector2(centerBoxSize, 0.5f);
                         Vector2 vector15 = v2 + v3 * new Vector2(num6 * 2f, 0.5f);
                         int num7 = Terrain.ExtractLight(generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ));

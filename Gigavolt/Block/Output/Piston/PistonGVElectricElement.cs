@@ -30,6 +30,9 @@ namespace Game {
         }
 
         public override bool Simulate() {
+            if (SubterrainId != 0) {
+                return false;
+            }
             uint input = 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output

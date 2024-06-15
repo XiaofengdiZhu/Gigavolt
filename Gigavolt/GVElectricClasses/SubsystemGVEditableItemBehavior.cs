@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Serialization;
@@ -28,20 +27,6 @@ namespace Game {
             }
             return value;
         }
-
-        public T GetItemData(int x, int y, int z, bool returnNew = false) {
-            int value = m_subsystemTerrain.Terrain.GetCellValue(x, y, z);
-            if (Array.IndexOf(HandledBlocks, Terrain.ExtractContents(value)) == -1) {
-                if (returnNew) {
-                    return new T();
-                }
-                return default;
-            }
-            int id = GetIdFromValue(value);
-            return GetItemData(id, returnNew);
-        }
-
-        public T GetItemData(Point3 position, bool returnNew = false) => GetItemData(position.X, position.Y, position.Z, returnNew);
 
         public int StoreItemDataAtUniqueId(T t, int oldId = 0) {
             int num = FindFreeItemId();

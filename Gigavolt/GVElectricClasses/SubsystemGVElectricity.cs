@@ -1012,14 +1012,13 @@ namespace Game {
             m_pointsToUpdate[subterrainId][new Point3(x, y, z)] = true;
         }
 
-        public void OnChunkDiscarding(TerrainChunk chunk, uint subterrainId) {
-            // Todo
-            foreach (GVCellFace key in m_GVElectricElementsByCellFace[subterrainId].Keys) {
+        public void OnChunkDiscarding(TerrainChunk chunk) {
+            foreach (GVCellFace key in m_GVElectricElementsByCellFace[0].Keys) {
                 if (key.X >= chunk.Origin.X
                     && key.X < chunk.Origin.X + 16
                     && key.Z >= chunk.Origin.Y
                     && key.Z < chunk.Origin.Y + 16) {
-                    m_pointsToUpdate[subterrainId][new Point3(key.X, key.Y, key.Z)] = false;
+                    m_pointsToUpdate[0][new Point3(key.X, key.Y, key.Z)] = false;
                 }
             }
         }

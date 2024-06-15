@@ -23,6 +23,9 @@ namespace Game {
         ) => m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
 
         public override bool Simulate() {
+            if (SubterrainId != 0) {
+                return false;
+            }
             if (CalculateHighInputsCount() > 0) {
                 if (m_isDispenseAllowed && (!m_lastDispenseTime.HasValue || SubsystemGVElectricity.SubsystemTime.GameTime - m_lastDispenseTime > 0.1)) {
                     m_isDispenseAllowed = false;

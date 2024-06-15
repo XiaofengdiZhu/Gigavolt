@@ -1,22 +1,20 @@
 namespace Game {
     public class CounterGVElectricElement : RotateableGVElectricElement {
         public SubsystemGVCounterBlockBehavior m_subsystemGVCounterBlockBehavior;
+
         public bool m_plusAllowed = true;
-
         public bool m_minusAllowed = true;
-
         public bool m_resetAllowed = true;
-
         public uint m_counter;
-
         public bool m_overflow;
         public bool m_edited;
+        public GVCounterData m_blockData;
 
-        public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
-            GVCounterData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(cellFace.Point);
-            uint overflowVoltage = blockData?.Overflow ?? 0u;
-            uint initialVoltage = blockData?.Initial ?? 0u;
+            m_blockData = m_subsystemGVCounterBlockBehavior.GetItemData(m_subsystemGVCounterBlockBehavior.GetIdFromValue(value));
+            uint overflowVoltage = m_blockData?.Overflow ?? 0u;
+            uint initialVoltage = m_blockData?.Initial ?? 0u;
             uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point, SubterrainId);
             if (num.HasValue) {
                 if (num.Value == overflowVoltage - 0x12345678) {
@@ -71,9 +69,8 @@ namespace Game {
             bool flag2 = false;
             bool flag3 = false;
             int rotation = Rotation;
-            GVCounterData blockData = m_subsystemGVCounterBlockBehavior.GetItemData(CellFaces[0].Point);
-            uint overflowVoltage = blockData?.Overflow ?? 0u;
-            uint initialVoltage = blockData?.Initial ?? 0u;
+            uint overflowVoltage = m_blockData?.Overflow ?? 0u;
+            uint initialVoltage = m_blockData?.Initial ?? 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {

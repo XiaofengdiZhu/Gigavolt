@@ -44,8 +44,8 @@
 		<MemberSubsystemTemplate Name="GVPistonBlockBehavior" Guid="325f252e-c556-7c6d-0f0d-d7f3b6a0530d" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="cebe7b85-7db3-6175-1b44-ebcee17da574" Value="Game.SubsystemGVPistonBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVOneLedGlow" Guid="cb008e75-3c39-d73b-3944-db501b593467" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
-			<Parameter Name="Class" Guid="f741c19e-3263-d90e-ac74-aa16fca07913" Value="Game.SubsystemGVOneLedGlow" Type="string"/>
+		<MemberSubsystemTemplate Name="GVGlow" Guid="cb008e75-3c39-d73b-3944-db501b593467" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="f741c19e-3263-d90e-ac74-aa16fca07913" Value="Game.SubsystemGVGlow" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GV8x4LedGlow" Guid="73a5e199-5856-97b2-65d1-3e24f115d17e" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="36eb9fa2-b74f-a463-4db1-cdb2bba7d54d" Value="Game.SubsystemGV8x4LedGlow" Type="string"/>

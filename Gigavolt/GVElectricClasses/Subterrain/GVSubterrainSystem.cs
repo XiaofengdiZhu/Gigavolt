@@ -335,6 +335,26 @@ namespace Game {
         }
 
         public void Dispose() {
+            foreach (TerrainChunk terrainChunk in Terrain.m_allocatedChunks) {
+                for (int x = 0; x < 16; x++) {
+                    for (int z = 0; z < 16; z++) {
+                        for (int y = 0; y < 256; y++) {
+                            int cellValue = terrainChunk.GetCellValueFast(x, y, z);
+                            List<IGVBlockBehavior> blockBehaviors = m_subsystemGVBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
+                            foreach (IGVBlockBehavior behavior in blockBehaviors) {
+                                behavior.OnBlockRemoved(
+                                    cellValue,
+                                    0,
+                                    x + (terrainChunk.Coords.X << 4),
+                                    y,
+                                    z + (terrainChunk.Coords.Y << 4),
+                                    this
+                                );
+                            }
+                        }
+                    }
+                }
+            }
             GVStaticStorage.GVSubterrainSystemDictionary.Remove(ID);
             m_subsystemGVElectricity.RemoveSubterrain(ID);
             TerrainRenderer.Dispose();

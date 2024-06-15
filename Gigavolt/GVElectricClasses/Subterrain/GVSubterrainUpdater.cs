@@ -362,7 +362,7 @@ namespace Game {
                             num6 = MathUtils.Max(cellLightFast, cellLightFast2, cellLightFast3, cellLightFast4) - 1 - block.LightAttenuation;
                         }
                         if (block.DefaultEmittedLightAmount > 0) {
-                            num6 = MathUtils.Max(num6, block.GetEmittedLightAmount(cellValueFast));
+                            num6 = Math.Max(num6, block.GetEmittedLightAmount(cellValueFast));
                         }
                         if (num6 > Terrain.ExtractLight(cellValueFast)) {
                             chunk.SetCellValueFast(num5, Terrain.ReplaceLight(cellValueFast, num6));
@@ -526,8 +526,8 @@ namespace Game {
             int num3 = chunk.Origin.X + 16 + 1;
             int num4 = chunk.Origin.Y - 1;
             int num5 = chunk.Origin.Y + 16 + 1;
-            int x = MathUtils.Max(16 * sliceIndex - 1, 0);
-            int x2 = MathUtils.Min(16 * (sliceIndex + 1) + 1, 256);
+            int x = Math.Max(16 * sliceIndex - 1, 0);
+            int x2 = Math.Min(16 * (sliceIndex + 1) + 1, 256);
             for (int i = num2; i < num3; i++) {
                 for (int j = num4; j < num5; j++) {
                     TerrainChunk chunkAtCell = m_terrain.GetChunkAtCell(i, j);
@@ -537,8 +537,8 @@ namespace Game {
                         int shaftValueFast = chunkAtCell.GetShaftValueFast(x3, z);
                         int num6 = Terrain.ExtractBottomHeight(shaftValueFast);
                         int num7 = Terrain.ExtractTopHeight(shaftValueFast);
-                        int num8 = MathUtils.Max(x, num6 - 1);
-                        int num9 = MathUtils.Min(x2, num7 + 2);
+                        int num8 = Math.Max(x, num6 - 1);
+                        int num9 = Math.Min(x2, num7 + 2);
                         int num10 = TerrainChunk.CalculateCellIndex(x3, num8, z);
                         int num11 = num10 + num9 - num8;
                         while (num10 < num11) {

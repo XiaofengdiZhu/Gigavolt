@@ -2,13 +2,12 @@ using Engine;
 
 namespace Game {
     public class SwitchGVElectricElement : MountedGVElectricElement {
-        public SubsystemGVSwitchBlockBehavior m_subsystemGVSwitchBlockBehavior;
-        public uint m_voltage;
+        public readonly uint m_voltage;
         public bool m_edited;
 
         public SwitchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
-            m_subsystemGVSwitchBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSwitchBlockBehavior>(true);
-            m_voltage = GVSwitchBlock.GetLeverState(value) ? m_subsystemGVSwitchBlockBehavior.GetItemData(cellFace.Point)?.Data ?? uint.MaxValue : 0;
+            SubsystemGVSwitchBlockBehavior subsystemGVSwitchBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSwitchBlockBehavior>(true);
+            m_voltage = GVSwitchBlock.GetLeverState(value) ? subsystemGVSwitchBlockBehavior.GetItemData(subsystemGVSwitchBlockBehavior.GetIdFromValue(value))?.Data ?? uint.MaxValue : 0;
         }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
@@ -20,23 +19,32 @@ namespace Game {
 
         public void Switch() {
             GVCellFace cellFace = CellFaces[0];
-            int cellValue = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
-            int value = GVSwitchBlock.SetLeverState(cellValue, !GVSwitchBlock.GetLeverState(cellValue));
-            SubsystemGVElectricity.SubsystemGVSubterrain.ChangeCell(
-                cellFace.X,
-                cellFace.Y,
-                cellFace.Z,
-                SubterrainId,
-                value
-            );
-            SubsystemGVElectricity.SubsystemAudio.PlaySound(
-                "Audio/Click",
-                1f,
-                0f,
-                new Vector3(cellFace.X, cellFace.Y, cellFace.Z),
-                2f,
-                true
-            );
+            Vector3 position = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
+            if (SubterrainId == 0) {
+                int cellValue = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+                SubsystemGVElectricity.SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVSwitchBlock.SetLeverState(cellValue, !GVSwitchBlock.GetLeverState(cellValue)));
+                SubsystemGVElectricity.SubsystemAudio.PlaySound(
+                    "Audio/Click",
+                    1f,
+                    0f,
+                    position,
+                    2f,
+                    true
+                );
+            }
+            else {
+                GVSubterrainSystem subterrainSystem = GVStaticStorage.GVSubterrainSystemDictionary[SubterrainId];
+                int cellValue = subterrainSystem.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+                subterrainSystem.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVSwitchBlock.SetLeverState(cellValue, !GVSwitchBlock.GetLeverState(cellValue)));
+                SubsystemGVElectricity.SubsystemAudio.PlaySound(
+                    "Audio/Click",
+                    1f,
+                    0f,
+                    Vector3.Transform(position, subterrainSystem.GlobalTransform),
+                    2f,
+                    true
+                );
+            }
         }
 
         public override bool Simulate() {

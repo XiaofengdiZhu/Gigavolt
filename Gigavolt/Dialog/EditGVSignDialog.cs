@@ -54,7 +54,7 @@ namespace Game {
             m_convertButton = Children.Find<ButtonWidget>("EditGVSignDialog.ConvertButton");
             m_subsystemSignBlockBehavior = subsystemSignBlockBehavior;
             m_signPoint = signPoint;
-            GVSignTextData signData = m_subsystemSignBlockBehavior.GetSignData(m_signPoint);
+            GVSignTextData signData = m_subsystemSignBlockBehavior.GetSignData(m_signPoint, 0);
             if (signData != null) {
                 m_textBox1.Text = signData.Line;
                 m_colorButton1.Color = signData.Color;
@@ -75,7 +75,13 @@ namespace Game {
             if (m_okButton.IsClicked) {
                 string line = m_textBox1.Text;
                 Color color = m_colorButton1.Color;
-                m_subsystemSignBlockBehavior.SetSignData(m_signPoint, line, color, m_urlTextBox.Text);
+                m_subsystemSignBlockBehavior.SetSignData(
+                    m_signPoint,
+                    0,
+                    line,
+                    color,
+                    m_urlTextBox.Text
+                );
                 Dismiss();
             }
             if (m_urlButton.IsClicked) {

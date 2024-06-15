@@ -30,7 +30,7 @@ namespace Game {
             }
         }
 
-        const float floatTolerance = 0.01f;
+        const float FloatTolerance = 0.01f;
 
         public bool DropSubterrain(GVSubterrainSystem rootSubterrainSystem) {
             Dictionary<Point3, int> blocks = new();
@@ -39,13 +39,10 @@ namespace Game {
             subterrainSystems.Push(rootSubterrainSystem);
             while (subterrainSystems.Count > 0) {
                 GVSubterrainSystem subterrainSystem = subterrainSystems.Pop();
-                subterrainSystem.GlobalTransform.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 _);
-                if (Math.Abs(scale.X - 1f) < floatTolerance
-                    && Math.Abs(scale.Y - 1f) < floatTolerance
-                    && Math.Abs(scale.Z - 1f) < floatTolerance
-                    && IsParallelToAxis(rotation.GetForwardVector())
-                    && IsParallelToAxis(rotation.GetRightVector())
-                    && IsParallelToAxis(rotation.GetUpVector())) {
+                Matrix transform = subterrainSystem.GlobalTransform;
+                if (Math.Abs(transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13 - 1) < FloatTolerance
+                    && IsParallelToAxis(transform.Forward)
+                    && IsParallelToAxis(transform.Right)) {
                     foreach (TerrainChunk chunk in subterrainSystem.Terrain.AllocatedChunks) {
                         if (chunk.State >= TerrainChunkState.InvalidVertices1) {
                             for (int x = 0; x < 16; x++) {
@@ -163,8 +160,10 @@ namespace Game {
 
         public static bool IsParallelToAxis(Vector3 vector) {
             vector = Vector3.Normalize(vector);
-            return Math.Abs(vector.X) - 1f < floatTolerance || Math.Abs(vector.Y) - 1f < floatTolerance || Math.Abs(vector.Z) - 1f < floatTolerance;
+            return IsNumberNearOne(vector.X) || IsNumberNearOne(vector.Y) || IsNumberNearOne(vector.Z);
         }
+
+        public static bool IsNumberNearOne(float number) => Math.Abs(number - 1f) < FloatTolerance || Math.Abs(number + 1f) < FloatTolerance;
 
 
         public override void Dispose() {

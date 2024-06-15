@@ -5,10 +5,10 @@ using Engine;
 
 namespace Game {
     public class SoundGeneratorGVCElectricElement : RotateableGVElectricElement {
-        public SubsystemNoise m_subsystemNoise;
-        public SubsystemParticles m_subsystemParticles;
-        public SoundParticleSystem m_particleSystem;
-        public GVSubterrainSystem m_subterrainSystem;
+        public readonly SubsystemNoise m_subsystemNoise;
+        public readonly SubsystemParticles m_subsystemParticles;
+        public readonly SoundParticleSystem m_particleSystem;
+        public readonly GVSubterrainSystem m_subterrainSystem;
 
         public Random m_random = new();
 
@@ -137,7 +137,7 @@ namespace Game {
                         Matrix transform = m_subterrainSystem.GlobalTransform;
                         position = Vector3.Transform(position, transform);
                         m_particleSystem.m_position = position;
-                        m_particleSystem.m_direction = Vector3.Transform(m_particleSystem.m_direction, transform) - Vector3.Transform(Vector3.Zero, transform);
+                        m_particleSystem.m_direction = Vector3.Normalize(Vector3.Transform(m_particleSystem.m_direction, transform.OrientationMatrix));
                     }
                     float volume = num2 / 15f;
                     float pitch = Math.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);

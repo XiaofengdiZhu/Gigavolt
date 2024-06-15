@@ -3,23 +3,40 @@ using Engine;
 
 namespace Game {
     public class DetonatorGVElectricElement : MountedGVElectricElement {
-        public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
+        public readonly GVSubterrainSystem m_subterrainSystem;
+        public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subterrainSystem = subterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
 
         public void Detonate(uint pressure) {
             SubsystemExplosions m_subsystemExplosions = SubsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true);
             GVCellFace cellFace = CellFaces[0];
+            Point3 position = CellFaces[0].Point;
+            if (SubterrainId != 0) {
+                position = Terrain.ToCell(Vector3.Transform(new Vector3(position.X + 0.5f, position.Y + 0.5f, position.Z + 0.5f), m_subterrainSystem.GlobalTransform));
+            }
+            Block block = BlocksManager.Blocks[GVDetonatorBlock.Index];
             if (pressure == 0) {
-                int value = Terrain.MakeBlockValue(GVDetonatorBlock.Index);
-                m_subsystemExplosions.TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
+                m_subsystemExplosions.AddExplosion(
+                    position.X,
+                    position.Y,
+                    position.Z,
+                    block.GetExplosionPressure(GVDetonatorBlock.Index),
+                    block.GetExplosionIncendiary(GVDetonatorBlock.Index),
+                    false
+                );
             }
             else {
-                SubsystemGVElectricity.Project.FindSubsystem<SubsystemTerrain>(true).ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, 0);
+                if (SubterrainId == 0) {
+                    SubsystemGVElectricity.SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, AirBlock.Index);
+                }
+                else {
+                    m_subterrainSystem.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, AirBlock.Index);
+                }
                 m_subsystemExplosions.AddExplosion(
-                    cellFace.X,
-                    cellFace.Y,
-                    cellFace.Z,
+                    position.X,
+                    position.Y,
+                    position.Z,
                     pressure,
-                    false,
+                    block.GetExplosionIncendiary(GVDetonatorBlock.Index),
                     false
                 );
             }
@@ -42,14 +59,26 @@ namespace Game {
                 if (num == uint.MaxValue) {
                     foreach (ComponentPlayer player in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
                         player.ComponentHealth.Injure(float.MaxValue, null, true, LanguageControl.Get(GetType().Name, 1));
-                        SubsystemTerrain subsystemTerrain = SubsystemGVElectricity.Project.FindSubsystem<SubsystemTerrain>(true);
-                        foreach (Point3 point in points) {
-                            subsystemTerrain.DestroyCell(
+                    }
+                    foreach (Point3 point in points) {
+                        if (SubterrainId == 0) {
+                            m_subterrainSystem.DestroyCell(
                                 int.MaxValue,
                                 point.X,
                                 point.Y,
                                 point.Z,
-                                0,
+                                AirBlock.Index,
+                                false,
+                                false
+                            );
+                        }
+                        else {
+                            SubsystemGVElectricity.SubsystemTerrain.DestroyCell(
+                                int.MaxValue,
+                                point.X,
+                                point.Y,
+                                point.Z,
+                                AirBlock.Index,
                                 false,
                                 false
                             );

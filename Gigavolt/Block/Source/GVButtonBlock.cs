@@ -161,6 +161,7 @@ namespace Game {
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new ButtonGVElectricElement(
             subsystemGVElectricity,
+            value,
             new GVCellFace(
                 x,
                 y,
