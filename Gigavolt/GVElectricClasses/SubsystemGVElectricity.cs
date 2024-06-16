@@ -930,7 +930,7 @@ namespace Game {
         public readonly Dictionary<uint, Dictionary<Point3, bool>> m_pointsToUpdate = new() { { 0u, new Dictionary<Point3, bool>() } };
         public readonly Dictionary<uint, Dictionary<Point3, GVElectricElement>> m_GVElectricElementsToAdd = new() { { 0u, new Dictionary<Point3, GVElectricElement>() } };
         public readonly HashSet<GVElectricElement> m_GVElectricElementsToRemove = [];
-        public readonly Dictionary<uint, HashSet<GVCellFace>> m_wiresToUpdate = new() { { 0u, [] } };
+        public readonly Dictionary<uint, HashSet<Point3>> m_wiresToUpdate = new() { { 0u, [] } };
         public readonly List<HashSet<GVElectricElement>> m_listsCache = [];
         public readonly Dictionary<int, HashSet<GVElectricElement>> m_futureSimulateLists = new();
         public HashSet<GVElectricElement> m_nextStepSimulateList;
@@ -1451,7 +1451,7 @@ namespace Game {
                         );
                         if (value == null
                             || value == GVElectricElement
-                            || value.CellFaces[0].Mask != int.MaxValue) {
+                            || !value.CellFaces.Contains(cellFace)) {
                             continue;
                         }
                     }
@@ -1562,7 +1562,7 @@ namespace Game {
                         );
                         if (GVElectricElement != null) {
                             if (GVElectricElement is WireDomainGVElectricElement) {
-                                m_wiresToUpdate[subterrainId].Add(new GVCellFace(key) { Mask = GVElectricElement.CellFaces[0].Mask });
+                                m_wiresToUpdate[subterrainId].Add(key);
                             }
                             else {
                                 m_GVElectricElementsToRemove.Add(GVElectricElement);
@@ -1573,8 +1573,8 @@ namespace Game {
                         m_persistentElementsVoltages.Remove(key);
                     }
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-                    if (block is IGVElectricWireElementBlock wire) {
-                        m_wiresToUpdate[subterrainId].Add(new GVCellFace(key) { Mask = wire.GetConnectionMask(cellValue) });
+                    if (block is IGVElectricWireElementBlock) {
+                        m_wiresToUpdate[subterrainId].Add(key);
                     }
                     else {
                         IGVElectricElementBlock GVElectricElementBlock = block as IGVElectricElementBlock;
@@ -1611,7 +1611,7 @@ namespace Game {
             foreach (Dictionary<Point3, bool> points in m_pointsToUpdate.Values) {
                 points.Clear();
             }
-            foreach (HashSet<GVCellFace> wires in m_wiresToUpdate.Values) {
+            foreach (HashSet<Point3> wires in m_wiresToUpdate.Values) {
                 wires.Clear();
             }
             m_GVElectricElementsToRemove.Clear();
@@ -1619,8 +1619,8 @@ namespace Game {
 
         public void AddWireDomains() {
             m_tmpVisited.Clear();
-            foreach ((uint subterrainId, HashSet<GVCellFace> wires) in m_wiresToUpdate) {
-                foreach (GVCellFace key in wires) {
+            foreach ((uint subterrainId, HashSet<Point3> wires) in m_wiresToUpdate) {
+                foreach (Point3 key in wires) {
                     for (int i = key.X - 1; i <= key.X + 1; i++) {
                         for (int j = key.Y - 1; j <= key.Y + 1; j++) {
                             for (int k = key.Z - 1; k <= key.Z + 1; k++) {
@@ -1659,9 +1659,9 @@ namespace Game {
         }
 
         public void RemoveWireDomains() {
-            foreach ((uint subterrainId, HashSet<GVCellFace> wires) in m_wiresToUpdate) {
+            foreach ((uint subterrainId, HashSet<Point3> wires) in m_wiresToUpdate) {
                 Dictionary<GVCellFace, GVElectricElement> elements = m_GVElectricElementsByCellFace[subterrainId];
-                foreach (GVCellFace key in wires) {
+                foreach (Point3 key in wires) {
                     for (int i = key.X - 1; i <= key.X + 1; i++) {
                         for (int j = key.Y - 1; j <= key.Y + 1; j++) {
                             for (int k = key.Z - 1; k <= key.Z + 1; k++) {
