@@ -57,17 +57,15 @@ namespace Game {
             m_lastUpdatePositions.Clear();
         }
 
-        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
-            OnNeighborBlockChanged(
-                x,
-                y,
-                z,
-                neighborX,
-                neighborY,
-                neighborZ,
-                null
-            );
-        }
+        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) => OnNeighborBlockChanged(
+            x,
+            y,
+            z,
+            neighborX,
+            neighborY,
+            neighborZ,
+            null
+        );
 
         public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) {
             Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
@@ -405,9 +403,6 @@ namespace Game {
                         Vector3 vectorPlus05Transformed = subterrainId == 0 ? new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f) : Vector3.Transform(new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f), transform);
                         if (camera.ViewFrustum.Intersection(vectorPlus05Transformed + camera.ViewDirection)) {
                             Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
-                            /*if (subterrainId != 0) {
-                                signSurfaceNormal = Vector3.Transform(signSurfaceNormal, orientation);
-                            }*/
                             Vector3 vector2 = MathUtils.Max(0.01f * Vector3.Dot(camera.ViewPosition - vectorPlus05Transformed, signSurfaceNormal), 0.005f) * signSurfaceNormal;
                             float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
                             Color color = new(num2, num2, num2);

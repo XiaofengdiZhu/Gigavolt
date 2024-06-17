@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,7 +5,7 @@ using Engine;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemGVSignalGeneratorBlockBehavior : SubsystemBlockBehavior {
+    public class SubsystemGVSignalGeneratorBlockBehavior : SubsystemBlockBehavior, IGVBlockBehavior {
         public class Data(int step, int nowAmplitude) {
             public int Step = step;
             public int NowAmplitude = nowAmplitude;
@@ -41,11 +40,11 @@ namespace Game {
             }
         }
 
-        public Data? GetData(Point3 position) => m_datas.GetValueOrDefault(position);
-        public int? GetStep(Point3 position) => m_datas.TryGetValue(position, out Data? result) ? result.Step : null;
+        public Data GetData(Point3 position) => m_datas.GetValueOrDefault(position);
+        public int? GetStep(Point3 position) => m_datas.TryGetValue(position, out Data result) ? result.Step : null;
 
         public void SetStep(Point3 position, int step) {
-            if (m_datas.TryGetValue(position, out Data? data)) {
+            if (m_datas.TryGetValue(position, out Data data)) {
                 data.Step = step;
             }
             else {
@@ -53,10 +52,10 @@ namespace Game {
             }
         }
 
-        public int? GetNowAmplitude(Point3 position) => m_datas.TryGetValue(position, out Data? result) ? result.NowAmplitude : null;
+        public int? GetNowAmplitude(Point3 position) => m_datas.TryGetValue(position, out Data result) ? result.NowAmplitude : null;
 
         public void SetNowAmplitude(Point3 position, int nowAmplitude) {
-            if (m_datas.TryGetValue(position, out Data? data)) {
+            if (m_datas.TryGetValue(position, out Data data)) {
                 data.NowAmplitude = nowAmplitude;
             }
             else {
@@ -66,34 +65,71 @@ namespace Game {
 
         public bool Remove(Point3 position) => m_datas.Remove(position);
 
-        public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) {
-            int data = Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(x, y, z));
+        public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) => OnBlockAdded(
+            value,
+            oldValue,
+            x,
+            y,
+            z,
+            null
+        );
+
+        public void OnBlockAdded(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) {
+            Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
+            int data = Terrain.ExtractData(terrain.GetCellValue(x, y, z));
             if (!GVSignalGeneratorBlock.GetIsTopPart(data)) {
                 int face = RotateableMountedGVElectricElementBlock.GetFaceFromDataStatic(data);
                 Point3 up = GVSignalGeneratorBlock.m_upPoint3[face * 4 + RotateableMountedGVElectricElementBlock.GetRotation(data)] + new Point3(x, y, z);
-                if (Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(up.X, up.Y, up.Z)) == 0) {
+                if (Terrain.ExtractContents(terrain.GetCellValue(up.X, up.Y, up.Z)) == 0) {
                     Point3 faceDirection = -CellFace.FaceToPoint3(face);
-                    int faceValue = SubsystemTerrain.Terrain.GetCellValue(up.X + faceDirection.X, up.Y + faceDirection.Y, up.Z + faceDirection.Z);
+                    int faceValue = terrain.GetCellValue(up.X + faceDirection.X, up.Y + faceDirection.Y, up.Z + faceDirection.Z);
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(faceValue)];
                     if ((block.IsCollidable_(faceValue) && !block.IsFaceTransparent(SubsystemTerrain, face, faceValue))
                         || (face == 4 && block is FenceBlock)) {
-                        SubsystemTerrain.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVSignalGeneratorBlock.Index, 0, GVSignalGeneratorBlock.SetIsTopPart(data, true)));
+                        if (system == null) {
+                            SubsystemTerrain.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVSignalGeneratorBlock.Index, 0, GVSignalGeneratorBlock.SetIsTopPart(data, true)));
+                        }
+                        else {
+                            system.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVSignalGeneratorBlock.Index, 0, GVSignalGeneratorBlock.SetIsTopPart(data, true)));
+                        }
                         return;
                     }
                 }
-                SubsystemTerrain.DestroyCell(
-                    int.MaxValue,
-                    x,
-                    y,
-                    z,
-                    0,
-                    false,
-                    false
-                );
+                if (system == null) {
+                    SubsystemTerrain.DestroyCell(
+                        int.MaxValue,
+                        x,
+                        y,
+                        z,
+                        0,
+                        false,
+                        false
+                    );
+                }
+                else {
+                    system.DestroyCell(
+                        int.MaxValue,
+                        x,
+                        y,
+                        z,
+                        0,
+                        false,
+                        false
+                    );
+                }
             }
         }
 
-        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) {
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(
+            value,
+            newValue,
+            x,
+            y,
+            z,
+            null
+        );
+
+        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
             int data = Terrain.ExtractData(value);
             int face = RotateableMountedGVElectricElementBlock.GetFaceFromDataStatic(data);
             int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
@@ -101,11 +137,16 @@ namespace Game {
             bool isUp = GVSignalGeneratorBlock.GetIsTopPart(data);
             Point3 origin = new(x, y, z);
             Point3 another = origin + upDirection * (isUp ? -1 : 1);
-            int anotherData = Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(another.X, another.Y, another.Z));
+            int anotherData = Terrain.ExtractData((system == null ? SubsystemTerrain.Terrain : system.Terrain).GetCellValue(another.X, another.Y, another.Z));
             if (GVSignalGeneratorBlock.GetIsTopPart(anotherData) != isUp
                 && RotateableMountedGVElectricElementBlock.GetFaceFromDataStatic(anotherData) == face
                 && RotateableMountedGVElectricElementBlock.GetRotation(anotherData) == rotation) {
-                SubsystemTerrain.ChangeCell(another.X, another.Y, another.Z, 0);
+                if (system == null) {
+                    SubsystemTerrain.ChangeCell(another.X, another.Y, another.Z, 0);
+                }
+                else {
+                    system.ChangeCell(another.X, another.Y, another.Z, 0);
+                }
             }
             Remove(isUp ? another : origin);
         }

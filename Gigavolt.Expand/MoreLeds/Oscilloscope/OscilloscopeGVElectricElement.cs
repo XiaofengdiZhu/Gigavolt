@@ -18,7 +18,7 @@ namespace Game {
             Vector3 vector2 = mountingFace < 4 ? Vector3.UnitY :
                 mountingFace == 4 ? -Vector3.UnitZ : Vector3.UnitZ;
             Vector3 right = Vector3.Cross(vector, vector2);
-            m_data = m_subsystemGlow.GetData(cellFace.Point);
+            m_data = m_subsystemGlow.GetData(cellFace.Point, SubterrainId);
             m_data.Position = v - 0.43f * CellFace.FaceToVector3(mountingFace);
             m_data.Forward = vector;
             m_data.Up = vector2;
@@ -26,7 +26,7 @@ namespace Game {
         }
 
         public override void OnRemoved() {
-            m_subsystemGlow.RemoveData(CellFaces[0].Point);
+            m_subsystemGlow.RemoveData(CellFaces[0].Point, SubterrainId);
         }
 
         public override bool Simulate() {

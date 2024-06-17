@@ -974,26 +974,28 @@ namespace Game {
 
         public void RemoveSubterrain(uint id) {
             HashSet<GVElectricElement> removed = [];
-            foreach (KeyValuePair<GVCellFace, GVElectricElement> pair in m_GVElectricElementsByCellFace[id]) {
-                GVElectricElement element = pair.Value;
-                if (!removed.Add(element)) {
-                    continue;
+            if (m_GVElectricElementsByCellFace.TryGetValue(id, out Dictionary<GVCellFace, GVElectricElement> elements)) {
+                foreach (KeyValuePair<GVCellFace, GVElectricElement> pair in elements) {
+                    GVElectricElement element = pair.Value;
+                    if (!removed.Add(element)) {
+                        continue;
+                    }
+                    element.OnRemoved();
+                    QueueGVElectricElementConnectionsForSimulation(element, CircuitStep + 1);
+                    m_GVElectricElements.Remove(element);
+                    foreach (GVElectricConnection connection in element.Connections) {
+                        connection.NeighborGVElectricElement.Connections.RemoveAll(connection2 => connection2.NeighborGVElectricElement == element);
+                    }
                 }
-                element.OnRemoved();
-                QueueGVElectricElementConnectionsForSimulation(element, CircuitStep + 1);
-                m_GVElectricElements.Remove(element);
-                foreach (GVElectricConnection connection in element.Connections) {
-                    connection.NeighborGVElectricElement.Connections.RemoveAll(connection2 => connection2.NeighborGVElectricElement == element);
-                }
+                m_pointsToUpdate[id].Clear();
+                m_pointsToUpdate.Remove(id);
+                m_GVElectricElementsToAdd[id].Clear();
+                m_GVElectricElementsToAdd.Remove(id);
+                m_wiresToUpdate[id].Clear();
+                m_wiresToUpdate.Remove(id);
+                m_GVElectricElementsByCellFace[id].Clear();
+                m_GVElectricElementsByCellFace.Remove(id);
             }
-            m_pointsToUpdate[id]?.Clear();
-            m_pointsToUpdate.Remove(id);
-            m_GVElectricElementsToAdd[id]?.Clear();
-            m_GVElectricElementsToAdd.Remove(id);
-            m_wiresToUpdate[id]?.Clear();
-            m_wiresToUpdate.Remove(id);
-            m_GVElectricElementsByCellFace[id]?.Clear();
-            m_GVElectricElementsByCellFace.Remove(id);
         }
 
         public void OnGVElectricElementBlockGenerated(int x, int y, int z, uint subterrainId) {

@@ -5,11 +5,10 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVJumpWireBlockBehavior : SubsystemBlockBehavior, IDrawable {
-        public PrimitivesRenderer3D m_primitivesRenderer = new();
+        public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
         public FlatBatch3D m_flatBatch;
-        public Dictionary<uint, List<JumpWireGVElectricElement>> m_tagsDictionary = new();
-        public static int[] m_drawOrders = [113];
-        public override int[] HandledBlocks => new[] { GVJumpWireBlock.Index };
+        public readonly Dictionary<uint, List<JumpWireGVElectricElement>> m_tagsDictionary = new();
+        public override int[] HandledBlocks => [GVJumpWireBlock.Index];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             m_flatBatch = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.Additive);
@@ -18,15 +17,31 @@ namespace Game {
 
         public void Draw(Camera camera, int drawOrder) {
             foreach (List<JumpWireGVElectricElement> elements in m_tagsDictionary.Values) {
-                for (int i = 0; i < elements.Count; i++) {
+                Dictionary<int, Vector3> positions = new();
+                for (int i = 0; i < elements.Count - 1; i++) {
+                    if (!positions.TryGetValue(i, out Vector3 position1)) {
+                        position1 = GetPosition(elements[i]);
+                    }
                     for (int j = i + 1; j < elements.Count; j++) {
-                        m_flatBatch.QueueLine(elements[i].m_position, elements[j].m_position, Color.Green);
+                        if (!positions.TryGetValue(j, out Vector3 position2)) {
+                            position2 = GetPosition(elements[j]);
+                        }
+                        m_flatBatch.QueueLine(position1, position2, Color.Green);
                     }
                 }
             }
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
         }
 
-        public int[] DrawOrders => m_drawOrders;
+        public static Vector3 GetPosition(JumpWireGVElectricElement element) {
+            Vector3 result = element.m_position;
+            uint subterrainId = element.SubterrainId;
+            if (subterrainId != 0) {
+                result = Vector3.Transform(result, GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform);
+            }
+            return result;
+        }
+
+        public int[] DrawOrders => [2000];
     }
 }

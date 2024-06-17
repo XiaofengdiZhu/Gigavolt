@@ -9,8 +9,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVOscilloscopeBlockBehavior : SubsystemBlockBehavior, IDrawable {
         public SubsystemSky m_subsystemSky;
-        public readonly Dictionary<Point3, GVOscilloscopeData> m_datas = new();
-        public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new();
+        public readonly Dictionary<uint, Dictionary<Point3, GVOscilloscopeData>> m_datas = new() { { 0u, new Dictionary<Point3, GVOscilloscopeData>() } };
         public readonly GVOscilloscopePrimitivesRenderer2D m_primitivesRenderer2D = new();
         public TexturedBatch2D m_numberBatch;
         public TexturedBatch2D m_arrowButtonBatch;
@@ -74,7 +73,7 @@ namespace Game {
             foreach (ValuesDictionary value3 in valuesDictionary.GetValue<ValuesDictionary>("Blocks").Values) {
                 try {
                     GVOscilloscopeData data = new(this);
-                    m_datas.Add(value3.GetValue<Point3>("Point"), data);
+                    m_datas[0u].Add(value3.GetValue<Point3>("Point"), data);
                     data.DisplayBloom = value3.GetValue<bool>("DisplayBloom");
                     data.DisplayCount = value3.GetValue<int>("DisplayCount");
                     data.MaxLevel = value3.GetValue<uint>("MaxLevel");
@@ -94,7 +93,7 @@ namespace Game {
             int num = 0;
             ValuesDictionary valuesDictionary2 = new();
             valuesDictionary.SetValue("Blocks", valuesDictionary2);
-            foreach (KeyValuePair<Point3, GVOscilloscopeData> pair in m_datas) {
+            foreach (KeyValuePair<Point3, GVOscilloscopeData> pair in m_datas[0u]) {
                 ValuesDictionary valuesDictionary3 = new();
                 valuesDictionary2.SetValue(num++.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                 valuesDictionary3.SetValue("Point", pair.Key);
@@ -106,19 +105,26 @@ namespace Game {
             }
         }
 
-        public GVOscilloscopeData GetData(Point3 point) {
-            if (m_datas.TryGetValue(point, out GVOscilloscopeData result)) {
-                return result;
+        public GVOscilloscopeData GetData(Point3 point, uint subterrainId) {
+            if (m_datas.TryGetValue(subterrainId, out Dictionary<Point3, GVOscilloscopeData> datas)) {
+                if (datas.TryGetValue(point, out GVOscilloscopeData result)) {
+                    return result;
+                }
+            }
+            else {
+                datas = new Dictionary<Point3, GVOscilloscopeData>();
+                m_datas.Add(subterrainId, datas);
             }
             GVOscilloscopeData data = new(this);
-            m_datas.Add(point, data);
+            datas.Add(point, data);
             return data;
         }
 
-        public void RemoveData(Point3 point) {
-            if (m_datas.TryGetValue(point, out GVOscilloscopeData data)) {
+        public void RemoveData(Point3 point, uint subterrainId) {
+            if (m_datas.TryGetValue(subterrainId, out Dictionary<Point3, GVOscilloscopeData> datas)
+                && datas.TryGetValue(point, out GVOscilloscopeData data)) {
                 data.Dispose();
-                m_datas.Remove(point);
+                datas.Remove(point);
             }
         }
 
@@ -126,47 +132,66 @@ namespace Game {
             if (m_isInScreen) {
                 return;
             }
-            foreach (GVOscilloscopeData data in m_datas.Values) {
-                if (data.RecordsCount > 0
-                    && data.ConnectionState.Any(state => state)) {
-                    Vector3 vector = data.Position - camera.ViewPosition;
-                    float num = Vector3.Dot(vector, camera.ViewDirection);
-                    if (num > 0.01f) {
-                        float num2 = vector.Length();
-                        if (num2 < m_subsystemSky.ViewFogRange.Y) {
-                            int newLodLevel = vector.LengthSquared() switch {
-                                < 3f => 0, //全特效
-                                < 5.3f => 1, //关闭按钮显示、降低虚线精度
-                                < 45f => 2, //降低分辨率至512*512、进一步降低虚线精度
-                                < 56f => 3, //关闭网格显示
-                                < 81f => 4, //关闭标签显示
-                                < 225f => 5, //降低分辨率至360*360，停止画点
-                                _ => 6 //关闭泛光特效，降低分辨率至160*160
-                            };
-                            if (newLodLevel != data.LodLevel) {
-                                data.LodLevel = newLodLevel;
-                                if (!data.IsTextureObsolete()) {
-                                    data.Texture = null;
+            foreach ((uint subterrainId, Dictionary<Point3, GVOscilloscopeData> datas) in m_datas) {
+                if (datas.Count == 0) {
+                    continue;
+                }
+                bool inSubterrain = subterrainId != 0;
+                Matrix transform = inSubterrain ? GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform : default;
+                foreach (GVOscilloscopeData data in datas.Values) {
+                    if (data.RecordsCount > 0
+                        && data.ConnectionState.Any(state => state)) {
+                        Vector3 position = data.Position;
+                        if (inSubterrain) {
+                            position = Vector3.Transform(data.Position, transform);
+                        }
+                        Vector3 vector = position - camera.ViewPosition;
+                        if (Vector3.Dot(vector, camera.ViewDirection) > 0.01f) {
+                            float num2 = vector.Length();
+                            if (num2 < m_subsystemSky.ViewFogRange.Y) {
+                                int newLodLevel = vector.LengthSquared() switch {
+                                    < 3f => 0, //全特效
+                                    < 5.3f => 1, //关闭按钮显示、降低虚线精度
+                                    < 45f => 2, //降低分辨率至512*512、进一步降低虚线精度
+                                    < 56f => 3, //关闭网格显示
+                                    < 81f => 4, //关闭标签显示
+                                    < 225f => 5, //降低分辨率至360*360，停止画点
+                                    _ => 6 //关闭泛光特效，降低分辨率至160*160
+                                };
+                                if (newLodLevel != data.LodLevel) {
+                                    data.LodLevel = newLodLevel;
+                                    if (!data.IsTextureObsolete()) {
+                                        data.Texture = null;
+                                    }
                                 }
+                                Vector3 right = data.Right;
+                                Vector3 up = data.Up;
+                                float size = 0.5f;
+                                if (subterrainId != 0) {
+                                    Matrix orientation = transform.OrientationMatrix;
+                                    float scale = MathF.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13);
+                                    size *= scale;
+                                    right = Vector3.Transform(right, orientation) / scale;
+                                    up = Vector3.Transform(up, orientation) / scale;
+                                }
+                                Vector3 p = position + size * (-right - up);
+                                Vector3 p2 = position + size * (right - up);
+                                Vector3 p3 = position + size * (right + up);
+                                Vector3 p4 = position + size * (-right + up);
+                                TexturedBatch3D batch = data.TexturedBatch3D;
+                                batch.QueueQuad(
+                                    p,
+                                    p2,
+                                    p3,
+                                    p4,
+                                    new Vector2(1f, 1f),
+                                    Vector2.UnitY,
+                                    Vector2.Zero,
+                                    Vector2.UnitX,
+                                    Color.White
+                                );
+                                batch.Flush(camera.ViewProjectionMatrix);
                             }
-                            const float size = 0.5f;
-                            Vector3 p = data.Position + size * (-data.Right - data.Up);
-                            Vector3 p2 = data.Position + size * (data.Right - data.Up);
-                            Vector3 p3 = data.Position + size * (data.Right + data.Up);
-                            Vector3 p4 = data.Position + size * (-data.Right + data.Up);
-                            TexturedBatch3D batch = data.TexturedBatch3D;
-                            batch.QueueQuad(
-                                p,
-                                p2,
-                                p3,
-                                p4,
-                                new Vector2(1f, 1f),
-                                Vector2.UnitY,
-                                Vector2.Zero,
-                                Vector2.UnitX,
-                                Color.White
-                            );
-                            batch.Flush(camera.ViewProjectionMatrix);
                         }
                     }
                 }
@@ -180,7 +205,7 @@ namespace Game {
             Point3 blockPoint = raycastResult.CellFace.Point;
             int face = raycastResult.CellFace.Face;
             if (GVOscilloscopeBlock.GetMountingFace(Terrain.ExtractData(raycastResult.Value)) == face
-                && m_datas.TryGetValue(blockPoint, out GVOscilloscopeData data)) {
+                && m_datas[0u].TryGetValue(blockPoint, out GVOscilloscopeData data)) {
                 Vector3 hitPosition = raycastResult.HitPoint();
                 Vector2 interactPosition = face switch {
                     0 => new Vector2(hitPosition.X - blockPoint.X, blockPoint.Y + 1 - hitPosition.Y),
@@ -199,7 +224,7 @@ namespace Game {
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             Point3 blockPoint = new(x, y, z);
-            if (m_datas.TryGetValue(blockPoint, out GVOscilloscopeData data)) {
+            if (m_datas[0u].TryGetValue(blockPoint, out GVOscilloscopeData data)) {
                 if (!ScreensManager.m_screens.ContainsKey("GVOscilloscopeScreen")) {
                     ScreensManager.AddScreen("GVOscilloscopeScreen", new GVOscilloscopeScreen());
                 }

@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using Engine;
 
 namespace Game {
     public class DisplayLedGVElectricElement : RotateableGVElectricElement {
         public SubsystemGVDisplayLedGlow m_subsystemGVDisplayLedGlow;
-        public List<GVDisplayPoint> m_glowPoints;
+        public HashSet<GVDisplayPoint> m_glowPoints;
         public Vector3 m_originalPosition;
         public int m_type;
         public bool m_complex;
@@ -50,7 +51,7 @@ namespace Game {
             int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
             m_type = GVDisplayLedBlock.GetType(data);
-            m_glowPoints = m_subsystemGVDisplayLedGlow.AddGlowPoints();
+            m_glowPoints = m_subsystemGVDisplayLedGlow.AddGlowPoints(SubterrainId);
             m_originalPosition = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             if (!m_complex) {
                 GVDisplayPoint point = new() { Type = m_type, Position = m_originalPosition, Color = Color.White, Complex = false };
@@ -70,7 +71,7 @@ namespace Game {
         }
 
         public override void OnRemoved() {
-            m_subsystemGVDisplayLedGlow.RemoveGlowPoints(m_glowPoints);
+            m_subsystemGVDisplayLedGlow.RemoveGlowPoints(m_glowPoints, SubterrainId);
             m_glowPoints.Clear();
             m_glowPoints = null;
         }
@@ -128,13 +129,12 @@ namespace Game {
                 float pitch = ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f);
                 float roll = ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f);
                 glowPoint.Rotation = new Vector3(yaw, pitch, roll);
-                if (glowPoint.isValid()
-                    && !m_glowPoints.Contains(glowPoint)) {
+                if (glowPoint.isValid()) {
                     m_glowPoints.Add(glowPoint);
                 }
             }
             else {
-                m_glowPoints[0].Value = m_inputIn;
+                m_glowPoints.First().Value = m_inputIn;
             }
             return false;
         }

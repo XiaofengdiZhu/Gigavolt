@@ -118,14 +118,14 @@ namespace Game {
         public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded) {
             int id = GetIdFromValue(value);
             if (id > 0) {
-                m_existingIds.Add(GetIdFromValue(value));
+                m_existingIds.Add(id);
             }
         }
 
         public void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded, GVSubterrainSystem system) {
             int id = GetIdFromValue(value);
             if (id > 0) {
-                m_existingIds.Add(GetIdFromValue(value));
+                m_existingIds.Add(id);
             }
         }
 
@@ -136,7 +136,7 @@ namespace Game {
             }
         }
 
-        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
+        public virtual void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
             int id = GetIdFromValue(value);
             if (id > 0) {
                 m_existingIds.Remove(id);

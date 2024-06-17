@@ -21,6 +21,7 @@ namespace Game {
         public readonly GVSubterrainUpdater TerrainUpdater;
         public readonly GVSubterrainRenderer TerrainRenderer;
         public readonly GVBlockGeometryGenerator BlockGeometryGenerator;
+        public bool m_hasDropped = false;
 
         public int m_light;
         public bool m_lightChanged;
@@ -39,7 +40,6 @@ namespace Game {
         public readonly Matrix AnchorTransform;
         public readonly Matrix OriginTransform;
         public Matrix m_baseTransform;
-        public bool m_baseTransformChanged;
 
         public Matrix BaseTransform {
             get => m_baseTransform;
@@ -48,7 +48,6 @@ namespace Game {
                     m_baseTransform = value;
                     GlobalTransform = Parent == null ? OriginTransform * value * AnchorTransform : OriginTransform * value * AnchorTransform * Parent.GlobalTransform;
                     m_invertedBaseTransform = null;
-                    m_baseTransformChanged = true;
                 }
             }
         }
@@ -62,13 +61,17 @@ namespace Game {
             }
         }
 
+        public bool m_globalTransformChanged;
         public Matrix m_globalTransform;
 
         public Matrix GlobalTransform {
             get => m_globalTransform;
             set {
-                m_globalTransform = value;
-                m_invertedGlobalTransform = null;
+                if (value != m_globalTransform) {
+                    m_globalTransform = value;
+                    m_invertedGlobalTransform = null;
+                    m_globalTransformChanged = true;
+                }
             }
         }
 
@@ -112,7 +115,11 @@ namespace Game {
             Anchor = anchor;
             AnchorTransform = Matrix.CreateTranslation(anchor.X + 0.5f, anchor.Y + 0.5f, anchor.Z + 0.5f);
             OriginTransform = Matrix.CreateTranslation(originOffset);
-            Parent = parent;
+            if (parent != null
+                && !parent.Children.ContainsKey(anchor)) {
+                Parent = parent;
+                parent.Children.Add(anchor, this);
+            }
             BaseTransform = transform == default ? Matrix.Identity : transform;
             for (int k = min.X >> 4; k <= max.X >> 4; k++) {
                 for (int l = min.Y >> 4; l <= max.Y >> 4; l++) {
@@ -145,15 +152,18 @@ namespace Game {
         }
 
         public void Update() {
+            if (m_hasDropped) {
+                return;
+            }
             if (UseParentLight) {
                 Light = Parent?.Light ?? m_subsystemTerrain.Terrain.GetCellLight(Anchor.X, Anchor.Y, Anchor.Z);
             }
             TerrainUpdater.Update(m_lightChanged);
             m_lightChanged = false;
             ProcessModifiedCells();
-            if (m_baseTransformChanged) {
+            if (m_globalTransformChanged) {
                 ArrangeChildrenTransform();
-                m_baseTransformChanged = false;
+                m_globalTransformChanged = false;
             }
             foreach (GVSubterrainSystem child in Children.Values) {
                 child.Update();
@@ -161,6 +171,9 @@ namespace Game {
         }
 
         public void Draw(Camera camera, int drawOrder) {
+            if (m_hasDropped) {
+                return;
+            }
             switch (drawOrder) {
                 case 0:
                     TerrainRenderer.PrepareForDrawing(camera);
@@ -334,7 +347,9 @@ namespace Game {
             }
         }
 
-        public void Dispose() {
+        public void Dispose() => Dispose(true);
+
+        public void Dispose(bool removeSelfFromParent) {
             foreach (TerrainChunk terrainChunk in Terrain.m_allocatedChunks) {
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {
@@ -361,7 +376,10 @@ namespace Game {
             TerrainUpdater.Dispose();
             Terrain.Dispose();
             foreach (GVSubterrainSystem child in Children.Values) {
-                child.Dispose();
+                child.Dispose(false);
+            }
+            if (removeSelfFromParent && Parent != null) {
+                Parent.Children.Remove(Anchor);
             }
         }
 

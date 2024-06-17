@@ -2,7 +2,7 @@ using Engine;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemGVDoorBlockBehavior : SubsystemBlockBehavior {
+    public class SubsystemGVDoorBlockBehavior : SubsystemBlockBehavior, IGVBlockBehavior {
         public SubsystemGVElectricity m_subsystemElectricity;
         public SubsystemAudio m_subsystemAudio;
 
@@ -91,38 +91,75 @@ namespace Game {
             }
         }
 
-        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) {
-            if (GVDoorBlock.IsTopPart(SubsystemTerrain.Terrain, x, y, z)) {
-                SubsystemTerrain.ChangeCell(x, y - 1, z, 0);
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(
+            value,
+            newValue,
+            x,
+            y,
+            z,
+            null
+        );
+
+        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
+            int offset = 0;
+            if (GVDoorBlock.IsTopPart(system == null ? SubsystemTerrain.Terrain : system.Terrain, x, y, z)) {
+                offset = -1;
             }
-            if (GVDoorBlock.IsBottomPart(SubsystemTerrain.Terrain, x, y, z)) {
-                SubsystemTerrain.ChangeCell(x, y + 1, z, 0);
+            if (GVDoorBlock.IsBottomPart(system == null ? SubsystemTerrain.Terrain : system.Terrain, x, y, z)) {
+                offset = 1;
+            }
+            if (system == null) {
+                SubsystemTerrain.ChangeCell(x, y + offset, z, 0);
+            }
+            else {
+                system.ChangeCell(x, y + offset, z, 0);
             }
         }
 
-        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
-            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) => OnNeighborBlockChanged(
+            x,
+            y,
+            z,
+            neighborX,
+            neighborY,
+            neighborZ,
+            null
+        );
+
+        public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) {
+            Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
+            int cellValue = terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             Block obj = BlocksManager.Blocks[num];
             int data = Terrain.ExtractData(cellValue);
-            if (!(obj is GVDoorBlock)) {
+            if (obj is not GVDoorBlock) {
                 return;
             }
             if (neighborX == x
                 && neighborY == y
                 && neighborZ == z) {
-                if (GVDoorBlock.IsBottomPart(SubsystemTerrain.Terrain, x, y, z)) {
-                    int value = Terrain.ReplaceData(SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z), data);
+                if (GVDoorBlock.IsBottomPart(terrain, x, y, z)) {
+                    int value = Terrain.ReplaceData(terrain.GetCellValue(x, y + 1, z), data);
                     SubsystemTerrain.ChangeCell(x, y + 1, z, value);
                 }
-                if (GVDoorBlock.IsTopPart(SubsystemTerrain.Terrain, x, y, z)) {
-                    int value2 = Terrain.ReplaceData(SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z), data);
+                if (GVDoorBlock.IsTopPart(terrain, x, y, z)) {
+                    int value2 = Terrain.ReplaceData(terrain.GetCellValue(x, y - 1, z), data);
                     SubsystemTerrain.ChangeCell(x, y - 1, z, value2);
                 }
             }
-            if (GVDoorBlock.IsBottomPart(SubsystemTerrain.Terrain, x, y, z)) {
-                int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+            bool flag = false;
+            if (GVDoorBlock.IsBottomPart(terrain, x, y, z)) {
+                int cellValue2 = terrain.GetCellValue(x, y - 1, z);
                 if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsTransparent_(cellValue2)) {
+                    flag = true;
+                }
+            }
+            if (!GVDoorBlock.IsBottomPart(terrain, x, y, z)
+                && !GVDoorBlock.IsTopPart(terrain, x, y, z)) {
+                flag = true;
+            }
+            if (flag) {
+                if (system == null) {
                     SubsystemTerrain.DestroyCell(
                         0,
                         x,
@@ -133,18 +170,17 @@ namespace Game {
                         false
                     );
                 }
-            }
-            if (!GVDoorBlock.IsBottomPart(SubsystemTerrain.Terrain, x, y, z)
-                && !GVDoorBlock.IsTopPart(SubsystemTerrain.Terrain, x, y, z)) {
-                SubsystemTerrain.DestroyCell(
-                    0,
-                    x,
-                    y,
-                    z,
-                    0,
-                    false,
-                    false
-                );
+                else {
+                    system.DestroyCell(
+                        0,
+                        x,
+                        y,
+                        z,
+                        0,
+                        false,
+                        false
+                    );
+                }
             }
         }
 

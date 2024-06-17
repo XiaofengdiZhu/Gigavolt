@@ -2,7 +2,7 @@ using Engine;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemGVTrapdoorBlockBehavior : SubsystemBlockBehavior {
+    public class SubsystemGVTrapdoorBlockBehavior : SubsystemBlockBehavior, IGVBlockBehavior {
         public SubsystemGVElectricity m_subsystemElectricity;
 
         public static Random m_random = new();
@@ -79,8 +79,19 @@ namespace Game {
             return true;
         }
 
-        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
-            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) => OnNeighborBlockChanged(
+            x,
+            y,
+            z,
+            neighborX,
+            neighborY,
+            neighborZ,
+            null
+        );
+
+        public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) {
+            Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
+            int cellValue = terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             Block obj = BlocksManager.Blocks[num];
             int data = Terrain.ExtractData(cellValue);
@@ -89,30 +100,43 @@ namespace Game {
                 bool upsideDown = GVTrapdoorBlock.GetUpsideDown(data);
                 bool flag = false;
                 Point3 point = CellFace.FaceToPoint3(rotation);
-                int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
+                int cellValue2 = terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
                 flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsTransparent_(cellValue2);
                 if (upsideDown) {
-                    int cellValue3 = SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
+                    int cellValue3 = terrain.GetCellValue(x, y + 1, z);
                     flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue3)].IsTransparent_(cellValue3);
-                    int cellValue4 = SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y + 1, z - point.Z);
+                    int cellValue4 = terrain.GetCellValue(x - point.X, y - point.Y + 1, z - point.Z);
                     flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue4)].IsTransparent_(cellValue4);
                 }
                 else {
-                    int cellValue5 = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+                    int cellValue5 = terrain.GetCellValue(x, y - 1, z);
                     flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue5)].IsTransparent_(cellValue5);
-                    int cellValue6 = SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y - 1, z - point.Z);
+                    int cellValue6 = terrain.GetCellValue(x - point.X, y - point.Y - 1, z - point.Z);
                     flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue6)].IsTransparent_(cellValue6);
                 }
                 if (!flag) {
-                    SubsystemTerrain.DestroyCell(
-                        0,
-                        x,
-                        y,
-                        z,
-                        0,
-                        false,
-                        false
-                    );
+                    if (system == null) {
+                        SubsystemTerrain.DestroyCell(
+                            0,
+                            x,
+                            y,
+                            z,
+                            0,
+                            false,
+                            false
+                        );
+                    }
+                    else {
+                        system.DestroyCell(
+                            0,
+                            x,
+                            y,
+                            z,
+                            0,
+                            false,
+                            false
+                        );
+                    }
                 }
             }
         }

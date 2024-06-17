@@ -7,48 +7,33 @@ namespace Game {
 
         public Point3 m_signPoint;
 
-        public ContainerWidget m_linesPage;
+        public readonly ContainerWidget m_linesPage;
+        public readonly ContainerWidget m_urlPage;
+        public readonly TextBoxWidget m_textBox1;
+        public readonly TextBoxWidget m_textBox2;
+        public readonly TextBoxWidget m_textBox3;
+        public readonly TextBoxWidget m_textBox4;
+        public readonly ButtonWidget m_colorButton1;
+        public readonly ButtonWidget m_colorButton2;
+        public readonly ButtonWidget m_colorButton3;
+        public readonly ButtonWidget m_colorButton4;
+        public readonly TextBoxWidget m_urlTextBox;
+        public readonly ButtonWidget m_urlTestButton;
+        public readonly ButtonWidget m_okButton;
+        public readonly ButtonWidget m_cancelButton;
+        public readonly ButtonWidget m_urlButton;
+        public readonly ButtonWidget m_linesButton;
 
-        public ContainerWidget m_urlPage;
-
-        public TextBoxWidget m_textBox1;
-
-        public TextBoxWidget m_textBox2;
-
-        public TextBoxWidget m_textBox3;
-
-        public TextBoxWidget m_textBox4;
-
-        public ButtonWidget m_colorButton1;
-
-        public ButtonWidget m_colorButton2;
-
-        public ButtonWidget m_colorButton3;
-
-        public ButtonWidget m_colorButton4;
-
-        public TextBoxWidget m_urlTextBox;
-
-        public ButtonWidget m_urlTestButton;
-
-        public ButtonWidget m_okButton;
-
-        public ButtonWidget m_cancelButton;
-
-        public ButtonWidget m_urlButton;
-
-        public ButtonWidget m_linesButton;
-
-        public Color[] m_colors = new Color[8] {
-            new(0, 0, 0),
-            new(140, 0, 0),
-            new(0, 112, 0),
-            new(0, 0, 96),
-            new(160, 0, 128),
-            new(0, 112, 112),
-            new(160, 112, 0),
-            new(180, 180, 180)
-        };
+        public Color[] m_colors = [
+            new Color(0, 0, 0),
+            new Color(140, 0, 0),
+            new Color(0, 112, 0),
+            new Color(0, 0, 96),
+            new Color(160, 0, 128),
+            new Color(0, 112, 112),
+            new Color(160, 112, 0),
+            new Color(180, 180, 180)
+        ];
 
         public EditGVSignCDialog(SubsystemGVSignBlockCBehavior subsystemSignBlockBehavior, Point3 signPoint) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditSignDialog");
@@ -71,7 +56,7 @@ namespace Game {
             m_linesButton = Children.Find<ButtonWidget>("EditSignDialog.LinesButton");
             m_subsystemSignBlockBehavior = subsystemSignBlockBehavior;
             m_signPoint = signPoint;
-            SignData signData = m_subsystemSignBlockBehavior.GetSignData(m_signPoint);
+            SignData signData = m_subsystemSignBlockBehavior.GetSignData(m_signPoint, 0u);
             if (signData != null) {
                 m_textBox1.Text = signData.Lines[0];
                 m_textBox2.Text = signData.Lines[1];
@@ -104,7 +89,13 @@ namespace Game {
             if (m_okButton.IsClicked) {
                 string[] lines = [m_textBox1.Text, m_textBox2.Text, m_textBox3.Text, m_textBox4.Text];
                 Color[] colors = [m_colorButton1.Color, m_colorButton2.Color, m_colorButton3.Color, m_colorButton4.Color];
-                m_subsystemSignBlockBehavior.SetSignData(m_signPoint, lines, colors, m_urlTextBox.Text);
+                m_subsystemSignBlockBehavior.SetSignData(
+                    m_signPoint,
+                    0u,
+                    lines,
+                    colors,
+                    m_urlTextBox.Text
+                );
                 Dismiss();
             }
             if (m_urlButton.IsClicked) {

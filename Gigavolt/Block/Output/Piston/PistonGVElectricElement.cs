@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Engine;
 
 namespace Game {
     public class PistonGVElectricElement : GVElectricElement {
@@ -7,9 +6,10 @@ namespace Game {
         public int m_lastLength = -1;
         public uint m_lastInput;
         public readonly bool m_complex;
-        public GVPistonData m_pistonData;
+        public readonly GVPistonData m_pistonData;
+        public readonly GVPoint3 m_point;
 
-        public PistonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId, bool complex) : base(
+        public PistonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVPoint3 point, bool complex) : base(
             subsystemGVElectricity,
             new List<GVCellFace> {
                 new(point.X, point.Y, point.Z, 0),
@@ -19,7 +19,7 @@ namespace Game {
                 new(point.X, point.Y, point.Z, 4),
                 new(point.X, point.Y, point.Z, 5)
             },
-            subterrainId
+            point.SubterrainId
         ) {
             m_subsystemGVPistonBlockBehavior = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVPistonBlockBehavior>(true);
             m_complex = complex;
@@ -27,12 +27,10 @@ namespace Game {
                 m_pistonData = new GVPistonData { MaxExtension = 0xFF };
                 m_subsystemGVPistonBlockBehavior.m_complexPistonData[point] = m_pistonData;
             }
+            m_point = point;
         }
 
         public override bool Simulate() {
-            if (SubterrainId != 0) {
-                return false;
-            }
             uint input = 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
@@ -48,14 +46,14 @@ namespace Game {
                     m_pistonData.Pulling = ((input >> 24) & 1u) == 1u;
                     m_pistonData.Strict = ((input >> 25) & 1u) == 1u;
                     m_pistonData.Transparent = ((input >> 26) & 1u) == 1u;
-                    m_subsystemGVPistonBlockBehavior.AdjustPiston(CellFaces[0].Point, (int)(input & 0xFFu), m_pistonData);
+                    m_subsystemGVPistonBlockBehavior.AdjustPiston(m_point, (int)(input & 0xFFu), m_pistonData);
                 }
             }
             else {
                 int length = MathUint.ToIntWithClamp(input);
                 if (length != m_lastLength) {
                     m_lastLength = length;
-                    m_subsystemGVPistonBlockBehavior.AdjustPiston(CellFaces[0].Point, length, null);
+                    m_subsystemGVPistonBlockBehavior.AdjustPiston(m_point, length, null);
                 }
             }
             return false;

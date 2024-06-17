@@ -57,6 +57,7 @@ namespace Game {
                 bool attractPickables = ((m_lastInput >> 9) & 1u) == 1u;
                 bool parabola = ((m_lastInput >> 8) & 1u) == 1u;
                 Vector3 originalPosition = SubterrainId == 0 ? m_originalPosition : Vector3.Transform(m_originalPosition, m_subterrainSystem.GlobalTransform);
+                Point3 originalPositionPoint = Terrain.ToCell(originalPosition);
                 if (speed != 0f || parabola) {
                     if (attractProjectiles) {
                         foreach (SubsystemGVProjectiles.Projectile projectile in m_subsystemGVProjectiles.m_projectiles) {
@@ -72,7 +73,7 @@ namespace Game {
                                     projectile.DisableGravity = !parabola;
                                     projectile.DisableDamping = parabola || !rebound;
                                     projectile.Transform = false;
-                                    projectile.StopAt = CellFaces[0].Point;
+                                    projectile.StopAt = originalPositionPoint;
                                 }
                             }
                         }
@@ -96,7 +97,7 @@ namespace Game {
                                         parabola || !rebound,
                                         false,
                                         false,
-                                        CellFaces[0].Point
+                                        originalPositionPoint
                                     );
                                     newProjectile.IsIncendiary = projectile.IsIncendiary;
                                     newProjectile.Light = projectile.Light;
@@ -132,7 +133,7 @@ namespace Game {
                                         parabola || !rebound,
                                         false,
                                         false,
-                                        CellFaces[0].Point
+                                        originalPositionPoint
                                     );
                                     pickable.ToRemove = true;
                                 }
@@ -164,7 +165,7 @@ namespace Game {
                                     parabola || !rebound,
                                     false,
                                     false,
-                                    CellFaces[0].Point
+                                    originalPositionPoint
                                 );
                                 projectile.IsIncendiary = explosion.IsIncendiary;
                                 projectile.OnRemoveWithSelf = self => {
@@ -209,7 +210,7 @@ namespace Game {
                                     parabola || !rebound,
                                     false,
                                     false,
-                                    CellFaces[0].Point
+                                    originalPositionPoint
                                 );
                                 projectile.OnRemoveWithSelf = self => {
                                     Vector3 stopAtVector3 = new Vector3(self.StopAt) + new Vector3(0.5f);

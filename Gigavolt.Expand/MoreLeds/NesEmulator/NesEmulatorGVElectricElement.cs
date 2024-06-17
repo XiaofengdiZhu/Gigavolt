@@ -15,7 +15,7 @@ namespace Game {
             Vector3 vector = CellFace.FaceToVector3(mountingFace);
             Vector3 vector2 = mountingFace < 4 ? Vector3.UnitY : Vector3.UnitX;
             Vector3 right = Vector3.Cross(vector, vector2);
-            m_glowPoint = m_subsystemNesEmulatorBlockBehavior.AddGlowPoint();
+            m_glowPoint = m_subsystemNesEmulatorBlockBehavior.AddGlowPoint(SubterrainId);
             m_glowPoint.Position = v - 0.43f * vector;
             m_glowPoint.Forward = vector;
             m_glowPoint.Up = vector2;
@@ -23,7 +23,7 @@ namespace Game {
         }
 
         public override void OnRemoved() {
-            m_subsystemNesEmulatorBlockBehavior.RemoveGlowPoint(m_glowPoint);
+            m_subsystemNesEmulatorBlockBehavior.RemoveGlowPoint(m_glowPoint, SubterrainId);
         }
 
         public override bool Simulate() {

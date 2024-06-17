@@ -16,6 +16,9 @@ namespace Game {
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
+            if (SubterrainId != 0) {
+                return false;
+            }
             uint voltage = m_voltage;
             bool bottomConnected = false;
             uint rightInput = 0u;

@@ -33,12 +33,19 @@ namespace Game {
         const float FloatTolerance = 0.01f;
 
         public bool DropSubterrain(GVSubterrainSystem rootSubterrainSystem) {
+            if (rootSubterrainSystem.m_hasDropped) {
+                return true;
+            }
             Dictionary<Point3, int> blocks = new();
             Dictionary<Point3, bool> isPointLoaded = new();
             Stack<GVSubterrainSystem> subterrainSystems = new();
+            HashSet<GVSubterrainSystem> dropped = new();
             subterrainSystems.Push(rootSubterrainSystem);
             while (subterrainSystems.Count > 0) {
                 GVSubterrainSystem subterrainSystem = subterrainSystems.Pop();
+                if (subterrainSystem.m_hasDropped) {
+                    continue;
+                }
                 Matrix transform = subterrainSystem.GlobalTransform;
                 if (Math.Abs(transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13 - 1) < FloatTolerance
                     && IsParallelToAxis(transform.Forward)
@@ -66,12 +73,19 @@ namespace Game {
                             }
                         }
                     }
+                    dropped.Add(subterrainSystem);
                     foreach (GVSubterrainSystem child in subterrainSystem.Children.Values) {
                         subterrainSystems.Push(child);
                     }
                 }
                 else {
                     return false;
+                }
+            }
+            foreach (GVSubterrainSystem system in dropped) {
+                if (!system.m_hasDropped) {
+                    system.m_hasDropped = true;
+                    system.Dispose(true);
                 }
             }
             foreach (KeyValuePair<Point3, int> block in blocks) {
@@ -92,12 +106,11 @@ namespace Game {
                 m_subsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, false);
                 chunkAtCell.ModificationCounter++;
             }
-            foreach (KeyValuePair<Point3, int> block in blocks) {
-                Point3 point = block.Key;
-                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(block.Value));
+            foreach ((Point3 point, int value) in blocks) {
+                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
                 foreach (SubsystemBlockBehavior behaviors in blockBehaviors) {
                     behaviors.OnBlockGenerated(
-                        block.Value,
+                        value,
                         point.X,
                         point.Y,
                         point.Z,
@@ -168,7 +181,7 @@ namespace Game {
 
         public override void Dispose() {
             foreach (GVSubterrainSystem subterrainSystem in GVStaticStorage.GVSubterrainSystemDictionary.Values) {
-                subterrainSystem.Dispose();
+                subterrainSystem.Dispose(true);
             }
             GVStaticStorage.GVSubterrainSystemDictionary.Clear();
         }

@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Game {
     public class SubsystemGVSwitchBlockBehavior : SubsystemGVEditableItemBehavior<GigaVoltageLevelData> {
         public override int[] HandledBlocks => new[] { GVSwitchBlock.Index };
@@ -39,7 +41,10 @@ namespace Game {
                     newVoltage => {
                         blockData.Data = newVoltage;
                         blockData.SaveString();
-                        SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)));
+                        int newId = StoreItemDataAtUniqueId(blockData, id);
+                        int newValue = SetIdToValue(value, newId);
+                        SubsystemTerrain.ChangeCell(x, y, z, newValue);
+                        Debug.WriteLine($"old value {value}, old id {id}, new value {newValue}, new id {newId}; debug new id {GetIdFromValue(newValue)}");
                     }
                 )
             );

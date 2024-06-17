@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using Engine;
 
@@ -39,7 +38,7 @@ namespace Game {
             if (output.HasValue) {
                 m_topTopOutput = output.Value;
             }
-            SubsystemGVSignalGeneratorBlockBehavior.Data? data = m_blockBehavior.GetData(m_bottomPoint3);
+            SubsystemGVSignalGeneratorBlockBehavior.Data data = m_blockBehavior.GetData(m_bottomPoint3);
             if (data != null) {
                 m_step = data.Step;
                 m_nowAmplitude = data.NowAmplitude;

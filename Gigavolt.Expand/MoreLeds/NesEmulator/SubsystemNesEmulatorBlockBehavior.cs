@@ -11,10 +11,8 @@ using XamariNES.Emulator;
 
 namespace Game {
     public class SubsystemNesEmulatorBlockBehavior : SubsystemEditableItemBehavior<EditGVNesEmulatorDialogData>, IDrawable {
-        public SubsystemSky m_subsystemSky;
         public SubsystemGameInfo m_subsystemGameInfo;
-        public PrimitivesRenderer3D m_primitivesRenderer = new();
-        public Dictionary<GVNesEmulatorGlowPoint, bool> m_glowPoints = new();
+        public Dictionary<uint, HashSet<GVNesEmulatorGlowPoint>> m_glowPoints = new();
         public readonly NESEmulator _emu;
         readonly BitmapRenderer _renderer;
         byte[] _frame = new byte[256 * 240];
@@ -29,7 +27,6 @@ namespace Game {
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
-            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(true);
             EditGVNesEmulatorDialogData data = GetBlockData(new Point3(-GVNesEmulatorBlock.Index));
             if (data != null
@@ -85,7 +82,14 @@ namespace Game {
 
         public static int[] m_drawOrders = [111];
 
-        public TexturedBatch3D cachedBatch;
+        public TexturedBatch3D cachedBatch = new() {
+            BlendState = BlendState.AlphaBlend,
+            DepthStencilState = DepthStencilState.DepthRead,
+            Layer = 0,
+            RasterizerState = RasterizerState.CullCounterClockwiseScissor,
+            SamplerState = SamplerState.PointClamp
+        };
+
         public int[] DrawOrders => m_drawOrders;
 
         public void Draw(Camera camera, int drawOrder) {
@@ -93,34 +97,39 @@ namespace Game {
             bool reset = false;
             byte controller1 = 0;
             //byte controller2 = 0;
-            foreach (GVNesEmulatorGlowPoint key in m_glowPoints.Keys) {
-                if (key.GetPowerOn()) {
-                    powerOn = true;
+            foreach ((uint subterrainId, HashSet<GVNesEmulatorGlowPoint> points) in m_glowPoints) {
+                if (points.Count == 0) {
+                    continue;
                 }
-                if (key.GetReset()) {
-                    reset = true;
+                foreach (GVNesEmulatorGlowPoint key in points) {
+                    if (key.GetPowerOn()) {
+                        powerOn = true;
+                    }
+                    if (key.GetReset()) {
+                        reset = true;
+                    }
+                    controller1 |= key.GetController1();
+                    //controller2 |= key.GetController2();
                 }
-                controller1 |= key.GetController1();
-                //controller2 |= key.GetController2();
-            }
-            if (reset) {
-                _emu.Reset();
-                EmuStarted = false;
-            }
-            else {
-                if (powerOn) {
-                    if (EmuStarted) {
-                        _emu.Continue();
-                    }
-                    else {
-                        _emu.Start();
-                        EmuStarted = true;
-                    }
-                    ((NESController)_emu.Controller1).ButtonStates = controller1;
+                if (reset) {
+                    _emu.Reset();
+                    EmuStarted = false;
                 }
                 else {
-                    if (EmuStarted) {
-                        _emu.Stop();
+                    if (powerOn) {
+                        if (EmuStarted) {
+                            _emu.Continue();
+                        }
+                        else {
+                            _emu.Start();
+                            EmuStarted = true;
+                        }
+                        ((NESController)_emu.Controller1).ButtonStates = controller1;
+                    }
+                    else {
+                        if (EmuStarted) {
+                            _emu.Stop();
+                        }
                     }
                 }
             }
@@ -133,109 +142,117 @@ namespace Game {
                     if (!RomValid) {
                         _frame = _renderer.GenerateNoise();
                     }
-                    if (cachedBatch != null) {
-                        cachedBatch.Texture.Dispose();
-                    }
-                    cachedBatch = m_primitivesRenderer.TexturedBatch(
-                        Texture2D.Load(_renderer.Render(_frame)),
-                        false,
-                        0,
-                        DepthStencilState.DepthRead,
-                        RasterizerState.CullCounterClockwiseScissor,
-                        BlendState.AlphaBlend,
-                        SamplerState.PointClamp
-                    );
+                    cachedBatch.Texture?.Dispose();
+                    cachedBatch.Texture = Texture2D.Load(_renderer.Render(_frame));
                 }
-                foreach (GVNesEmulatorGlowPoint key in m_glowPoints.Keys) {
-                    if (key.GetPowerOn()) {
-                        float halfSize = key.GetSize() * 0.5f;
-                        Vector3 right = key.Right * halfSize;
-                        Vector3 up = key.Up * halfSize * 0.9375f;
-                        Vector3[] offsets = [right - up, right + up, -right - up, -right + up];
-                        Vector3 min = Vector3.Zero;
-                        Vector3 max = Vector3.Zero;
-                        foreach (Vector3 offset in offsets) {
-                            min.X = Math.Min(min.X, offset.X);
-                            min.Y = Math.Min(min.Y, offset.Y);
-                            min.Z = Math.Min(min.Z, offset.Z);
-                            max.X = Math.Max(max.X, offset.X);
-                            max.Y = Math.Max(max.Y, offset.Y);
-                            max.Z = Math.Max(max.Z, offset.Z);
-                        }
-                        if (camera.ViewFrustum.Intersection(new BoundingBox(key.Position + min, key.Position + max))) {
-                            Vector3 p = key.Position - right - up;
-                            Vector3 p2 = key.Position + right - up;
-                            Vector3 p3 = key.Position + right + up;
-                            Vector3 p4 = key.Position - right + up;
-                            switch (key.GetRotation()) {
-                                case 1:
-                                    cachedBatch.QueueQuad(
-                                        p,
-                                        p2,
-                                        p3,
-                                        p4,
-                                        new Vector2(1f, 0f),
-                                        new Vector2(1f, 1f),
-                                        new Vector2(0f, 1f),
-                                        new Vector2(0f, 0f),
-                                        Color.White
-                                    );
-                                    break;
-                                case 2:
-                                    cachedBatch.QueueQuad(
-                                        p,
-                                        p2,
-                                        p3,
-                                        p4,
-                                        new Vector2(0f, 0f),
-                                        new Vector2(1f, 0f),
-                                        new Vector2(1f, 1f),
-                                        new Vector2(0f, 1f),
-                                        Color.White
-                                    );
-                                    break;
-                                case 3:
-                                    cachedBatch.QueueQuad(
-                                        p,
-                                        p2,
-                                        p3,
-                                        p4,
-                                        new Vector2(0f, 1f),
-                                        new Vector2(0f, 0f),
-                                        new Vector2(1f, 0f),
-                                        new Vector2(1f, 1f),
-                                        Color.White
-                                    );
-                                    break;
-                                default:
-                                    cachedBatch.QueueQuad(
-                                        p,
-                                        p2,
-                                        p3,
-                                        p4,
-                                        new Vector2(1f, 1f),
-                                        new Vector2(0f, 1f),
-                                        new Vector2(0f, 0f),
-                                        new Vector2(1f, 0f),
-                                        Color.White
-                                    );
-                                    break;
+                foreach ((uint subterrainId, HashSet<GVNesEmulatorGlowPoint> points) in m_glowPoints) {
+                    if (points.Count == 0) {
+                        continue;
+                    }
+                    Matrix transform = subterrainId == 0 ? default : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform;
+                    foreach (GVNesEmulatorGlowPoint key in points) {
+                        if (key.GetPowerOn()) {
+                            Vector3 position = key.Position;
+                            float halfSize = key.GetSize() * 0.5f;
+                            Vector3 right = key.Right * halfSize;
+                            Vector3 up = key.Up * halfSize * 0.9375f;
+                            if (subterrainId != 0) {
+                                position = Vector3.Transform(position, transform);
+                                Matrix orientation = transform.OrientationMatrix;
+                                right = Vector3.Transform(right, orientation);
+                                up = Vector3.Transform(up, orientation);
+                            }
+                            Vector3[] offsets = [right - up, right + up, -right - up, -right + up];
+                            Vector3 min = Vector3.Zero;
+                            Vector3 max = Vector3.Zero;
+                            foreach (Vector3 offset in offsets) {
+                                min.X = Math.Min(min.X, offset.X);
+                                min.Y = Math.Min(min.Y, offset.Y);
+                                min.Z = Math.Min(min.Z, offset.Z);
+                                max.X = Math.Max(max.X, offset.X);
+                                max.Y = Math.Max(max.Y, offset.Y);
+                                max.Z = Math.Max(max.Z, offset.Z);
+                            }
+                            if (camera.ViewFrustum.Intersection(new BoundingBox(position + min, position + max))) {
+                                Vector3 p = position - right - up;
+                                Vector3 p2 = position + right - up;
+                                Vector3 p3 = position + right + up;
+                                Vector3 p4 = position - right + up;
+                                switch (key.GetRotation()) {
+                                    case 1:
+                                        cachedBatch.QueueQuad(
+                                            p,
+                                            p2,
+                                            p3,
+                                            p4,
+                                            new Vector2(1f, 0f),
+                                            new Vector2(1f, 1f),
+                                            new Vector2(0f, 1f),
+                                            new Vector2(0f, 0f),
+                                            Color.White
+                                        );
+                                        break;
+                                    case 2:
+                                        cachedBatch.QueueQuad(
+                                            p,
+                                            p2,
+                                            p3,
+                                            p4,
+                                            new Vector2(0f, 0f),
+                                            new Vector2(1f, 0f),
+                                            new Vector2(1f, 1f),
+                                            new Vector2(0f, 1f),
+                                            Color.White
+                                        );
+                                        break;
+                                    case 3:
+                                        cachedBatch.QueueQuad(
+                                            p,
+                                            p2,
+                                            p3,
+                                            p4,
+                                            new Vector2(0f, 1f),
+                                            new Vector2(0f, 0f),
+                                            new Vector2(1f, 0f),
+                                            new Vector2(1f, 1f),
+                                            Color.White
+                                        );
+                                        break;
+                                    default:
+                                        cachedBatch.QueueQuad(
+                                            p,
+                                            p2,
+                                            p3,
+                                            p4,
+                                            new Vector2(1f, 1f),
+                                            new Vector2(0f, 1f),
+                                            new Vector2(0f, 0f),
+                                            new Vector2(1f, 0f),
+                                            Color.White
+                                        );
+                                        break;
+                                }
                             }
                         }
                     }
                 }
-                m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
+                cachedBatch.Flush(camera.ViewProjectionMatrix);
             }
         }
 
-        public GVNesEmulatorGlowPoint AddGlowPoint() {
+        public GVNesEmulatorGlowPoint AddGlowPoint(uint subterrainId) {
             GVNesEmulatorGlowPoint glowPoint = new();
-            m_glowPoints.Add(glowPoint, true);
+            if (m_glowPoints.TryGetValue(subterrainId, out HashSet<GVNesEmulatorGlowPoint> points)) {
+                points.Add(glowPoint);
+            }
+            else {
+                m_glowPoints.Add(subterrainId, [glowPoint]);
+            }
             return glowPoint;
         }
 
-        public void RemoveGlowPoint(GVNesEmulatorGlowPoint glowPoint) {
-            m_glowPoints.Remove(glowPoint);
+        public void RemoveGlowPoint(GVNesEmulatorGlowPoint glowPoint, uint subterrainId) {
+            m_glowPoints[subterrainId]?.Remove(glowPoint);
         }
 
         public void LoadRomFromPath(string path) {

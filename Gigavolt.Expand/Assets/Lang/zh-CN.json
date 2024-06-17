@@ -146,7 +146,7 @@
     },
     "GVTractorBeamBlock:0": {
       "DisplayName": "GV牵引光束",
-      "Description": ""
+      "Description": "可将一片悬浮的方块捕获并移动、旋转、缩放，其中的十亿伏特电路板可基本正常运行，详见本Mod Github页面的介绍"
     }
   },
   "ContentWidgets": {
