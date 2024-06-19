@@ -26,6 +26,8 @@ namespace Game {
         public readonly BevelledButtonWidget NumberKeyboardBackSpace;
         public readonly BevelledButtonWidget NumberKeyboardClearEntry;
         public readonly BevelledButtonWidget[] NumberKeyboard = new BevelledButtonWidget[16];
+        public readonly BevelledButtonWidget NumberKeyboardPlusPlus;
+        public readonly BevelledButtonWidget NumberKeyboardSubSub;
         public readonly BevelledButtonWidget NumberKeyboardLeft;
         public readonly BevelledButtonWidget NumberKeyboardRight;
 
@@ -67,6 +69,8 @@ namespace Game {
             for (int i = 0; i < 16; i++) {
                 NumberKeyboard[i] = Children.Find<BevelledButtonWidget>($"EditGVUintDialog.NumberKeyboard{i:X}");
             }
+            NumberKeyboardPlusPlus = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardPlusPlus");
+            NumberKeyboardSubSub = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardSubSub");
             NumberKeyboardLeft = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardLeft");
             NumberKeyboardRight = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardRight");
             ButtonOk = Children.Find<ButtonWidget>("EditGVUintDialog.OK");
@@ -192,7 +196,6 @@ namespace Game {
                 }
             }
             else {
-                //Log.Information($"{(m_lastFocusedTextBox == null ? "null" : m_lastFocusedTextBox.Text)} -> {newFocusedTextBox.Text}");
                 newFocusedTextBox.CaretPosition = newFocusedTextBox.Text.Length;
             }
             for (int i = 0; i < 16; i++) {
@@ -226,6 +229,18 @@ namespace Game {
                     if (flag) {
                         newFocusedTextBox.CaretPosition--;
                     }
+                }
+            }
+            else if (NumberKeyboardPlusPlus.IsClicked
+                || newFocusedTextBox.Input.IsKeyDownOnce(Key.Plus)) {
+                if (m_lastValidVoltage < uint.MaxValue) {
+                    ApplyNewVoltage(m_lastValidVoltage + 1);
+                }
+            }
+            else if (NumberKeyboardSubSub.IsClicked
+                || newFocusedTextBox.Input.IsKeyDownOnce(Key.Minus)) {
+                if (m_lastValidVoltage > 0u) {
+                    ApplyNewVoltage(m_lastValidVoltage - 1);
                 }
             }
             else if (NumberKeyboardLeft.IsClicked

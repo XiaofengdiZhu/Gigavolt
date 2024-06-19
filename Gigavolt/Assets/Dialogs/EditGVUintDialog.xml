@@ -137,9 +137,9 @@
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardF" Size="70, 50" Text="F" Margin="5, 5"/>
 					</StackPanelWidget>
 					<StackPanelWidget Direction="Horizontal">
-						<CanvasWidget Size="70, 50" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardPlusPlus" Size="70, 50" Text="++" Margin="5, 5"/>
+						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardSubSub" Size="70, 50" Text="--" Margin="5, 5"/>
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboard0" Size="70, 50" Text="0" Margin="5, 5"/>
-						<CanvasWidget Size="70, 50" Margin="5, 5"/>
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardLeft" Size="70, 50" Text="←" Margin="5, 5"/>
 						<BevelledButtonWidget Name="EditGVUintDialog.NumberKeyboardRight" Size="70, 50" Text="→" Margin="5, 5"/>
 					</StackPanelWidget>

@@ -1,6 +1,3 @@
-using System;
-using Engine;
-
 namespace Game {
     public class SubsystemGVBatteryBlockBehavior : SubsystemGVEditableItemBehavior<GigaVoltageLevelData> {
         public override int[] HandledBlocks => new[] { GVBatteryBlock.Index };
@@ -17,24 +14,18 @@ namespace Game {
             int count = inventory.GetSlotCount(slotIndex);
             int id = GetIdFromValue(value);
             GigaVoltageLevelData blockData = GetItemData(id, true);
-            try {
-                DialogsManager.ShowDialog(
-                    componentPlayer.GuiWidget,
-                    new EditGVUintDialog(
-                        blockData.Data,
-                        newVoltage => {
-                            blockData.Data = newVoltage;
-                            blockData.SaveString();
-                            inventory.RemoveSlotItems(slotIndex, count);
-                            inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)), count);
-                        }
-                    )
-                );
-            }
-            catch (Exception e) {
-                Log.Error(e);
-                return false;
-            }
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVUintDialog(
+                    blockData.Data,
+                    newVoltage => {
+                        blockData.Data = newVoltage;
+                        blockData.SaveString();
+                        inventory.RemoveSlotItems(slotIndex, count);
+                        inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)), count);
+                    }
+                )
+            );
             return true;
         }
 

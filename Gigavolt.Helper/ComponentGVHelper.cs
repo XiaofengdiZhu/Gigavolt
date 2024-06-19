@@ -4,7 +4,6 @@ using TemplatesDatabase;
 
 namespace Game {
     public class ComponentGVHelper : Component, IUpdateable {
-        public WidgetInput m_input;
         public ComponentPlayer m_componentPlayer;
         public ComponentGui m_componentGui;
         public ComponentBlockHighlight m_componentBlockHighlight;
@@ -47,7 +46,7 @@ namespace Game {
                 }
             }
             if (!m_componentPlayer.ComponentAimingSights.IsSightsVisible
-                && Keyboard.IsKeyDownOnce(Key.F6)
+                && m_componentPlayer.GameWidget.Input.IsKeyDownOnce(Key.F8)
                 && m_componentBlockHighlight.m_highlightRaycastResult is TerrainRaycastResult result) {
                 StaticGVHelper.GotoBlockDescriptionScreen(result.Value);
             }

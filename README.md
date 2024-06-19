@@ -50,6 +50,9 @@
       * [端口定义 Input Definition](#端口定义-input-definition-4)
       * [下端同步操作 Sync Operation by Bottom Input](#下端同步操作-sync-operation-by-bottom-input-5)
     * [JS单片机 Javascript Microcontroller](#js单片机-javascript-microcontroller)
+    * [牵引光束 Tractor Beam](#牵引光束-tractor-beam)
+      * [端口定义 Input Definition](#端口定义-input-definition-5)
+    * [兼容性 Compatibility](#兼容性-compatibility)
   * [复数方块 Multiple Blocks](#复数方块-multiple-blocks)
     * [更多两入两出电路板 More Two In Two Out Electrics](#更多两入两出电路板-more-two-in-two-out-electrics)
     * [更多单入单出电路板 More One In One Out Electrics](#更多单入单出电路板-more-one-in-one-out-electrics)
@@ -108,6 +111,8 @@ This is a mod for Survivalcraft that take a new Electric system with Gigavolt to
 | 8数字LED灯  | 和7段显示器类似，但它一次显示8位16进制数，只提供白光                                             |
 | 变压器      | 将原版电压和十亿伏特电压互相转换的变压器，十亿伏特电压转原版电压时将取二进制最低4位输出                             |
 | 调试石碑     | 提供电路运行速率调整、悬浮显示元件电压、单步运行、超视距保持运行功能的石碑，输出当前倍速，第17\~32位为整数部分，第1\~16位为小数部分。 |
+新增的其他特性：  
+* 对着开关、按钮、电池时，按住`ctrl`键并滚动鼠标滚轮，可直接调整这些元件的输出电压
 ## 详细 Details
 > 下面介绍的都是十亿伏特版元件
 ### 存储器 Memory Bank
@@ -968,7 +973,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
         <tr>
             <td colspan="2">无作用</td>
             <td>为1时，将持续显示一根线来提示当前各输入指向的位置；从0变为1时，能预览能被捕获到的方块</td>
-            <td>从0变为1时，将尝试捕获或释放方块</td>
+            <td>从0变为1时，将尝试捕获或释放方块。释放时，子地形必须与主世界平行，缩放为1.0</td>
         </tr>
     </tbody>
 </table>
@@ -1029,7 +1034,7 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 这是一个为生存战争游戏十亿伏特mod及其扩展mod带来帮助包的mod，有三种方法打开方块的帮助
 1. 将方块拖到底栏的帮助包槽上
 2. 对着方块点底栏的帮助包槽
-3. 对着方块按键盘上的F6键
+3. 对着方块按键盘上的F8键
 > 要在底栏显示帮助包槽，需要通过`调试石碑`来开启
 ## 看板娘 Yuru-chara
 <details>
