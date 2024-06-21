@@ -1,14 +1,14 @@
-﻿using Engine;
+using System;
+using Engine;
 
 namespace Game {
-    public class PressurePlateGVCElectricElement : MountedGVElectricElement {
+    public class PressurePlateGVElectricElement : MountedGVElectricElement {
         public uint m_voltage;
-
         public int m_lastPressFrameIndex;
-
         public float m_pressure;
+        public bool m_classic;
 
-        public PressurePlateGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
+        public PressurePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) => m_classic = classic;
 
         public void Press(float pressure) {
             m_lastPressFrameIndex = Time.FrameIndex;
@@ -33,11 +33,11 @@ namespace Game {
             uint voltage = m_voltage;
             if (m_pressure > 0f
                 && Time.FrameIndex - m_lastPressFrameIndex < 2) {
-                m_voltage = PressureToVoltage(m_pressure);
+                m_voltage = m_classic ? ClassicPressureToVoltage(m_pressure) : PressureToVoltage(m_pressure);
                 SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + 10);
             }
             else {
-                if (IsSignalHigh(m_voltage)) {
+                if (m_voltage > 0) {
                     GVCellFace cellFace = CellFaces[0];
                     SubsystemGVElectricity.SubsystemAudio.PlaySound(
                         "Audio/BlockPlaced",
@@ -65,7 +65,9 @@ namespace Game {
             Press(1f * block.GetDensity(worldItem.Value));
         }
 
-        public static uint PressureToVoltage(float pressure) {
+        public static uint PressureToVoltage(float pressure) => Convert.ToUInt32(pressure);
+
+        public static uint ClassicPressureToVoltage(float pressure) {
             if (pressure <= 0f) {
                 return 0u;
             }

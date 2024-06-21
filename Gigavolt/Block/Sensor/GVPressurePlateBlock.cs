@@ -7,22 +7,17 @@ namespace Game {
     public class GVPressurePlateBlock : MountedGVElectricElementBlock {
         public const int Index = 853;
 
-        public BlockMesh[] m_standaloneBlockMeshesByMaterial = new BlockMesh[2];
-
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[16];
-
-        public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[16][];
-
-        public string[] m_displayNamesByMaterial = { "木质GV压力板", "石质GV压力板" };
-
-        public int[] m_creativeValuesByMaterial = { Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, 1) };
-
-        public int[] m_textureSlotsByMaterial = { 4, 1 };
+        public readonly BlockMesh[] m_standaloneBlockMeshesByMaterial = new BlockMesh[2];
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[16];
+        public readonly BoundingBox[][] m_collisionBoxesByData = new BoundingBox[16][];
+        public readonly int[] m_textureSlotsByMaterial = [4, 1];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/PressurePlate");
+            ModelBone parentBone = model.FindMesh("PressurePlate").ParentBone;
+            ModelMeshPart meshPart = model.FindMesh("PressurePlate").MeshParts[0];
             for (int i = 0; i < 2; i++) {
-                Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("PressurePlate").ParentBone);
+                Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(parentBone);
                 int num = m_textureSlotsByMaterial[i];
                 for (int j = 0; j < 6; j++) {
                     int num2 = SetMountingFace(SetMaterial(0, i), j);
@@ -30,7 +25,7 @@ namespace Game {
                     m_blockMeshesByData[num2] = new BlockMesh();
                     m_blockMeshesByData[num2]
                     .AppendModelMeshPart(
-                        model.FindMesh("PressurePlate").MeshParts[0],
+                        meshPart,
                         boneAbsoluteTransform * matrix,
                         false,
                         false,
@@ -54,7 +49,7 @@ namespace Game {
                 m_standaloneBlockMeshesByMaterial[i] = new BlockMesh();
                 m_standaloneBlockMeshesByMaterial[i]
                 .AppendModelMeshPart(
-                    model.FindMesh("PressurePlate").MeshParts[0],
+                    meshPart,
                     boneAbsoluteTransform * identity,
                     false,
                     false,
@@ -67,23 +62,29 @@ namespace Game {
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
-            int material = GetMaterial(Terrain.ExtractData(value));
-            return m_displayNamesByMaterial[material];
+            int data = Terrain.ExtractData(value);
+            string typeName = GetType().Name;
+            string result = LanguageControl.Get(typeName, GetMaterial(data) == 0 ? "WoodDisplayName" : "StoneDisplayName");
+            if (GetClassic(data)) {
+                result += LanguageControl.Get(typeName, "ClassicName");
+            }
+            return result;
         }
 
-        public override IEnumerable<int> GetCreativeValues() => m_creativeValuesByMaterial;
+        public override string GetDescription(int value) => GetClassic(Terrain.ExtractData(value)) ? LanguageControl.Get(GetType().Name, "ClassicDescription") : LanguageControl.Get(GetType().Name, "Description");
+        public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
+        public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 23 : 12;
 
-        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
-            int material = GetMaterial(Terrain.ExtractData(value));
-            return new BlockDebrisParticleSystem(
-                subsystemTerrain,
-                position,
-                strength,
-                DestructionDebrisScale,
-                Color.White,
-                m_textureSlotsByMaterial[material]
-            );
-        }
+        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetMaterial(0, 1)), Terrain.MakeBlockValue(Index, 0, SetClassic(0, true)), Terrain.MakeBlockValue(Index, 0, SetClassic(SetMaterial(0, 1), true))];
+
+        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) => new(
+            subsystemTerrain,
+            position,
+            strength,
+            DestructionDebrisScale,
+            Color.White,
+            m_textureSlotsByMaterial[GetMaterial(Terrain.ExtractData(value))]
+        );
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);
@@ -95,17 +96,14 @@ namespace Game {
         }
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
-            int material = GetMaterial(Terrain.ExtractData(oldValue));
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetMaterial(0, material)), Count = 1 });
+            int oldData = Terrain.ExtractData(oldValue);
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetClassic(SetMaterial(0, GetMaterial(oldData)), GetClassic(oldData))), Count = 1 });
             showDebris = true;
         }
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {
             int num = Terrain.ExtractData(value);
-            if (num >= m_collisionBoxesByData.Length) {
-                return null;
-            }
-            return m_collisionBoxesByData[num];
+            return num >= m_collisionBoxesByData.Length ? null : m_collisionBoxesByData[num];
         }
 
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) => face != CellFace.OppositeFace(GetFace(value));
@@ -138,19 +136,16 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            int material = GetMaterial(Terrain.ExtractData(value));
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneBlockMeshesByMaterial[material],
-                color,
-                2f * size,
-                ref matrix,
-                environmentData
-            );
-        }
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) => BlocksManager.DrawMeshBlock(
+            primitivesRenderer,
+            m_standaloneBlockMeshesByMaterial[GetMaterial(Terrain.ExtractData(value))],
+            color,
+            2f * size,
+            ref matrix,
+            environmentData
+        );
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new PressurePlateGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new PressurePlateGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId, GetClassic(Terrain.ExtractData(value)));
 
         public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int face2 = GetFace(value);
@@ -170,5 +165,8 @@ namespace Game {
         public static int SetMountingFace(int data, int face) => (data & -15) | ((face & 7) << 1);
 
         public override int GetFace(int value) => GetMountingFace(Terrain.ExtractData(value));
+
+        public static bool GetClassic(int data) => (data & 16) != 0;
+        public static int SetClassic(int data, bool classic) => (data & -17) | (classic ? 16 : 0);
     }
 }

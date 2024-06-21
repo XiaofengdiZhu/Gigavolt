@@ -242,7 +242,7 @@
 		<Compile Include="Block\Sensor\GVMotionDetectorBlock.cs"/>
 		<Compile Include="Block\Sensor\GVPhotodiodeBlock.cs"/>
 		<Compile Include="Block\Sensor\GVPressurePlateBlock.cs"/>
-		<Compile Include="Block\Sensor\GVPressurePlateElectricElement.cs"/>
+		<Compile Include="Block\Sensor\PressurePlateGVElectricElement.cs"/>
 		<Compile Include="Block\Sensor\GVTargetBlock.cs"/>
 		<Compile Include="Block\Sensor\MotionDetectorGVElectricElement.cs"/>
 		<Compile Include="Block\Sensor\PhotodiodeGVElectricElement.cs"/>
@@ -283,14 +283,12 @@
 		<Compile Include="ClassicBlock\GVMemoryBankCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVMulticoloredLedCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVOneLedCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVPressurePlateCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVSRLatchCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVTargetCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVTruthTableCircuitCBlock.cs"/>
 		<Compile Include="ClassicBlock\MemoryBankGVCElectricElement.cs"/>
 		<Compile Include="ClassicBlock\MulticoloredLedGVCElectricElement.cs"/>
 		<Compile Include="ClassicBlock\OneLedGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\PressurePlateGVCElectricElement.cs"/>
 		<Compile Include="ClassicBlock\SRLatchGVCElectricElement.cs"/>
 		<Compile Include="ClassicBlock\SubsystemGVMemoryBankCBlockBehavior.cs"/>
 		<Compile Include="ClassicBlock\SubsystemGVTruthTableCircuitCBlockBehavior.cs"/>

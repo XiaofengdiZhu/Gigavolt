@@ -40,7 +40,6 @@ namespace Game {
             { GVInventoryFetcherBlock.Index, blockData => GVInventoryFetcherBlock.SetType(0, GVInventoryFetcherBlock.GetType(blockData)) },
             { GVEWireThroughBlock.Index, blockData => GVEWireThroughBlock.SetColor(blockData, null) },
             { GVPressurePlateBlock.Index, blockData => GVPressurePlateBlock.SetMaterial(0, GVPressurePlateBlock.GetMaterial(blockData)) },
-            { GVPressurePlateCBlock.Index, blockData => GVPressurePlateCBlock.SetMaterial(0, GVPressurePlateCBlock.GetMaterial(blockData)) },
             { GVLightbulbBlock.Index, blockData => GVLightbulbBlock.SetColor(0, GVLightbulbBlock.GetColor(blockData)) },
             { GVWoodenPostedSignCBlock.Index, blockData => GVPostedSignCBlock.SetColor(0, GVPostedSignCBlock.GetColor(blockData)) },
             { GVIronPostedSignCBlock.Index, blockData => GVPostedSignCBlock.SetColor(0, GVPostedSignCBlock.GetColor(blockData)) }

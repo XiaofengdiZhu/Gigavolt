@@ -5,8 +5,7 @@ namespace Game {
     public class SubsystemGVElectricBlockBehavior : SubsystemBlockBehavior, IGVBlockBehavior {
         public SubsystemGVElectricity m_subsystemGVElectric;
 
-        public override int[] HandledBlocks => new[] {
-            GVPressurePlateCBlock.Index,
+        public override int[] HandledBlocks => [
             GVSRLatchCBlock.Index,
             GVDetonatorCBlock.Index,
             GVOneLedCBlock.Index,
@@ -74,7 +73,7 @@ namespace Game {
             GVDebugBlock.Index,
             GVWireHarnessBlock.Index,
             FurnitureBlock.Index
-        };
+        ];
 
         public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded) {
             m_subsystemGVElectric.OnGVElectricElementBlockGenerated(x, y, z, 0);

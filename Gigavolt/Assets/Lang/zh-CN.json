@@ -42,6 +42,13 @@
   "DetonatorGVElectricElement": {
     "1": "愚蠢！\n以玩家的生命为代价，避免了世界毁灭"
   },
+  "GVPressurePlateBlock": {
+    "WoodDisplayName": "GV木质压力板",
+    "StoneDisplayName": "GV石质压力板",
+    "ClassicName": "经典",
+    "Description": "压力板，压力板受压后会输出一个电信号(该电信号由重物的重量决定)，一旦重物离开，输出立即变为0V。参考十六进制结果：男性玩家46V，虎鲸5DC V。该板的所有侧面都是输出端，便于连接。它可以放置在任何表面上。",
+    "ClassicDescription": "经典压力板，压力板受压后会输出一个电信号(该电信号由重物的重量决定)，一旦重物离开，输出立即变为0.0V(模拟信号0)。0.8V(模拟信号8)最轻，1.5V(模拟信号F)最重。一般情况下，木制品重量对应模拟信号8，钻制品为9，铁制品为A。该板的所有侧面都是输出端，便于连接。它可以放置在任何表面上。"
+  },
   "Blocks": {
     "GVWireBlock:0": {
       "DisplayName": "GV导线",
@@ -195,12 +202,7 @@
     "GVPressurePlateBlock:0": {
       "DisplayName": "GV压力板",
       "Description": "压力板，压力板受压后会输出一个电信号(该电信号由重物的重量决定)，一旦重物离开，输出立即变为0V。参考十六进制结果：男性玩家46V，虎鲸5DC V。该板的所有侧面都是输出端，便于连接。它可以放置在任何表面上。",
-      "CRDescription:0": "用铜和木板合成压力板"
-    },
-    "GVPressurePlateCBlock:0": {
-      "DisplayName": "GV压力板经典",
-      "Description": "压力板，压力板受压后会输出一个电信号(该电信号由重物的重量决定)，一旦重物离开，输出立即变为0.0V(模拟信号0)。0.8V(模拟信号8)最轻，1.5V(模拟信号F)最重。一般情况下，木制品重量对应模拟信号8，钻制品为9，铁制品为A。该板的所有侧面都是输出端，便于连接。它可以放置在任何表面上。",
-      "CRDescription:0": "用铜和木板合成压力板"
+      "CRDescription:0": "用铜和木板或石头合成压力板"
     },
     "GVMotionDetectorBlock:0": {
       "DisplayName": "GV运动传感器",
@@ -296,11 +298,6 @@
       "DisplayName": "GV电子雷管经典",
       "Description": "含少量敏感炸药的电子雷管，能引爆威力大而不敏感的炸药，例如火药桶。它敏感到一旦被硬物撞击或有电流经过就会瞬间爆炸。能置于任意表面。",
       "CRDescription:0": "用铜和火药合成电子雷管"
-    },
-    "GVPressurePlateBlock:1": {
-      "DisplayName": "GV压力板",
-      "Description": "压力板，压力板受压后会输出一个电信号(该电信号由重物的重量决定)，一旦重物离开，输出立即变为0.0V(模拟信号0)。0.8V(模拟信号8)最轻，1.5V(模拟信号F)最重。一般情况下，木制品重量对应模拟信号8，钻制品为9，铁制品为A。该板的所有侧面都是输出端，便于连接。它可以放置在任何表面上。",
-      "CRDescription:0": "用铜和石头合成压力板"
     },
     "GVPistonBlock:448": {
       "DisplayName": "GV活塞",
