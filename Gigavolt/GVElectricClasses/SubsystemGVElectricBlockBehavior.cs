@@ -6,7 +6,6 @@ namespace Game {
         public SubsystemGVElectricity m_subsystemGVElectric;
 
         public override int[] HandledBlocks => [
-            GVSRLatchCBlock.Index,
             GVDetonatorCBlock.Index,
             GVOneLedCBlock.Index,
             GVMulticoloredLedCBlock.Index,

@@ -1,18 +1,17 @@
 namespace Game {
     public class SRLatchGVElectricElement : RotateableGVElectricElement {
         public bool m_setAllowed = true;
-
         public bool m_resetAllowed = true;
-
         public bool m_clockAllowed = true;
-
         public uint m_voltage;
+        public readonly bool m_classic;
 
-        public SRLatchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public SRLatchGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) {
             uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point, SubterrainId);
             if (num.HasValue) {
                 m_voltage = num.Value;
             }
+            m_classic = classic;
         }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
@@ -35,7 +34,7 @@ namespace Game {
                         }
                         else if (connectorDirection == GVElectricConnectorDirection.Left) {
                             sVoltage = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                            flag = sVoltage > 0;
+                            flag = m_classic ? IsSignalHigh(sVoltage) : sVoltage > 0;
                         }
                         else if (connectorDirection == GVElectricConnectorDirection.Bottom) {
                             flag3 = IsSignalHigh(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
@@ -48,10 +47,10 @@ namespace Game {
                 if (flag3 && m_clockAllowed) {
                     m_clockAllowed = false;
                     if (flag && flag2) {
-                        m_voltage = m_voltage == 0u ? sVoltage : 0u;
+                        m_voltage = (m_classic ? !IsSignalHigh(m_voltage) : m_voltage == 0u) ? m_classic ? uint.MaxValue : sVoltage : 0u;
                     }
                     else if (flag) {
-                        m_voltage = sVoltage;
+                        m_voltage = m_classic ? uint.MaxValue : sVoltage;
                     }
                     else if (flag2) {
                         m_voltage = 0u;
@@ -60,7 +59,7 @@ namespace Game {
             }
             else if (flag && m_setAllowed) {
                 m_setAllowed = false;
-                m_voltage = sVoltage;
+                m_voltage = m_classic ? uint.MaxValue : sVoltage;
             }
             else if (flag2 && m_resetAllowed) {
                 m_resetAllowed = false;

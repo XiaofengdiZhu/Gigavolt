@@ -63,10 +63,9 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
-            string typeName = GetType().Name;
-            string result = LanguageControl.Get(typeName, GetMaterial(data) == 0 ? "WoodDisplayName" : "StoneDisplayName");
+            string result = LanguageControl.Get(GetType().Name, GetMaterial(data) == 0 ? "WoodDisplayName" : "StoneDisplayName");
             if (GetClassic(data)) {
-                result += LanguageControl.Get(typeName, "ClassicName");
+                result += LanguageControl.Get("Gigavolt", "ClassicName");
             }
             return result;
         }

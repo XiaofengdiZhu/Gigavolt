@@ -8,7 +8,7 @@ GVNandGateBlock,GV Electrics Regular,805,6,1,
 GVNorGateBlock,GV Electrics Regular,806,7,1,
 GVDelayGateBlock,GV Electrics Regular,807,8,1,
 GVAdjustableDelayGateBlock,GV Electrics Regular,808,9,1,
-GVSRLatchCBlock,GV Electrics Regular,809,10,1,
+GVSRLatchCBlock,GV Electrics Regular,809,10,1,Deleted
 GVCounterCBlock,GV Electrics Regular,810,11,1,
 GVMemoryBankCBlock,GV Electrics Regular,811,12,1,
 GVTruthTableCircuitCBlock,GV Electrics Regular,812,13,1,

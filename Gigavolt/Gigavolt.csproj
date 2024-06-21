@@ -283,13 +283,11 @@
 		<Compile Include="ClassicBlock\GVMemoryBankCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVMulticoloredLedCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVOneLedCBlock.cs"/>
-		<Compile Include="ClassicBlock\GVSRLatchCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVTargetCBlock.cs"/>
 		<Compile Include="ClassicBlock\GVTruthTableCircuitCBlock.cs"/>
 		<Compile Include="ClassicBlock\MemoryBankGVCElectricElement.cs"/>
 		<Compile Include="ClassicBlock\MulticoloredLedGVCElectricElement.cs"/>
 		<Compile Include="ClassicBlock\OneLedGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\SRLatchGVCElectricElement.cs"/>
 		<Compile Include="ClassicBlock\SubsystemGVMemoryBankCBlockBehavior.cs"/>
 		<Compile Include="ClassicBlock\SubsystemGVTruthTableCircuitCBlockBehavior.cs"/>
 		<Compile Include="ClassicBlock\TargetGVCElectricElement.cs"/>
