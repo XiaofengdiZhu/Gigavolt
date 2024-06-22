@@ -9,8 +9,6 @@ namespace Game {
             GVDetonatorCBlock.Index,
             GVOneLedCBlock.Index,
             GVMulticoloredLedCBlock.Index,
-            GVAnalogToDigitalConverterCBlock.Index,
-            GVDigitalToAnalogConverterCBlock.Index,
             GVSoundGeneratorCBlock.Index,
             GVCounterCBlock.Index,
             GVMemoryBankCBlock.Index,

@@ -14,8 +14,8 @@ GVMemoryBankCBlock,GV Electrics Regular,811,12,1,
 GVTruthTableCircuitCBlock,GV Electrics Regular,812,13,1,
 GVRealTimeClockCBlock,GV Electrics Regular,813,14,1,
 GVRandomGeneratorBlock,GV Electrics Regular,814,15,1,
-GVDigitalToAnalogConverterCBlock,GV Electrics Regular,815,16,1,
-GVAnalogToDigitalConverterCBlock,GV Electrics Regular,816,17,1,
+GVDigitalToAnalogConverterCBlock,GV Electrics Regular,815,16,1,Deleted
+GVAnalogToDigitalConverterCBlock,GV Electrics Regular,816,17,1,Deleted
 GVSoundGeneratorCBlock,GV Electrics Regular,817,18,1,
 GVBatteryBlock,GV Electrics Regular,818,19,1,
 GVLightbulbBlock,GV Electrics Regular,819,20,1,

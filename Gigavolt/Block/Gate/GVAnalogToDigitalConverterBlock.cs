@@ -29,7 +29,8 @@ namespace Game {
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
-            int num = Terrain.ExtractData(value) & 0x1F;
+            int data = Terrain.ExtractData(value);
+            int num = data & 0x1F;
             generator.GenerateMeshVertices(
                 this,
                 x,
@@ -38,7 +39,7 @@ namespace Game {
                 m_blockMeshes[num],
                 Color.White,
                 null,
-                geometry.GetGeometry(textures[GetType(Terrain.ExtractData(value))]).SubsetOpaque
+                geometry.GetGeometry(textures[GetType(data)]).SubsetOpaque
             );
             GVBlockGeometryGenerator.GenerateGVWireVertices(
                 generator,
@@ -59,30 +60,38 @@ namespace Game {
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-                if (connectorDirection == GVElectricConnectorDirection.In) {
-                    return GVElectricConnectorType.Input;
-                }
-                if (connectorDirection == GVElectricConnectorDirection.Bottom
-                    || connectorDirection == GVElectricConnectorDirection.Top
-                    || connectorDirection == GVElectricConnectorDirection.Right
-                    || connectorDirection == GVElectricConnectorDirection.Left) {
-                    return GVElectricConnectorType.Output;
+                switch (connectorDirection) {
+                    case GVElectricConnectorDirection.In: return GVElectricConnectorType.Input;
+                    case GVElectricConnectorDirection.Bottom:
+                    case GVElectricConnectorDirection.Top:
+                    case GVElectricConnectorDirection.Right:
+                    case GVElectricConnectorDirection.Left: return GVElectricConnectorType.Output;
                 }
             }
             return null;
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
-            int type = GetType(Terrain.ExtractData(value));
-            switch (type) {
-                case 1: return "GV 8位拆分2位器";
-                case 2: return "GV 16位拆分4位器";
-                case 3: return "GV 32位拆分8位器";
-                default: return "GV 4位拆分1位器";
+            int data = Terrain.ExtractData(value);
+            if (GetClassic(data)) {
+                return LanguageControl.Get(GetType().Name, "ClassicDisplayName");
             }
+            int type = GetType(Terrain.ExtractData(value));
+            string format = LanguageControl.Get(GetType().Name, "DisplayName");
+            return type switch {
+                1 => string.Format(format, 8, 2),
+                2 => string.Format(format, 16, 4),
+                3 => string.Format(format, 32, 8),
+                _ => string.Format(format, 4, 1)
+            };
         }
 
+        public override string GetDescription(int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDescription" : "Description");
+        public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
+        public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 17 : 10;
+
         public override IEnumerable<int> GetCreativeValues() {
+            yield return Terrain.MakeBlockValue(Index, 0, SetClassic(0, true));
             for (int i = 0; i < 4; i++) {
                 yield return Terrain.MakeBlockValue(Index, 0, SetType(0, i));
             }
@@ -90,12 +99,14 @@ namespace Game {
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetType(data, GetType(data))), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, GetClassic(data) ? SetClassic(0, true) : SetType(0, GetType(data))), Count = 1 });
             showDebris = true;
         }
 
         public static int GetType(int data) => (data >> 5) & 3;
 
         public static int SetType(int data, int color) => (data & -97) | ((color & 3) << 5);
+        public static bool GetClassic(int data) => (data & 128) != 0;
+        public static int SetClassic(int data, bool classic) => (data & -129) | (classic ? 128 : 0);
     }
 }
