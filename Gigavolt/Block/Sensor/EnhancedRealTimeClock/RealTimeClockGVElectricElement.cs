@@ -5,36 +5,56 @@ using Engine;
 namespace Game {
     public class RealTimeClockGVElectricElement : RotateableGVElectricElement {
         public uint m_input;
-        public readonly uint[] m_outputs = { 0u, 0u, 0u, 0u };
+        public readonly uint[] m_outputs = [0u, 0u, 0u, 0u];
         public int circuitAdd = 1;
+        public uint m_lastClockValue;
         public readonly SubsystemWeather m_subsystemWeather;
         public readonly SubsystemGameInfo m_subsystemGameInfo;
+        public SubsystemTimeOfDay m_subsystemTimeOfDay;
+        public readonly bool m_classic;
 
-        public RealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public RealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemWeather = subsystemGVElectricity.Project.FindSubsystem<SubsystemWeather>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
+            m_subsystemTimeOfDay = subsystemGVElectricity.Project.FindSubsystem<SubsystemTimeOfDay>(true);
+            m_classic = classic;
         }
 
         public override uint GetOutputVoltage(int face) {
             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
             if (connectorDirection.HasValue) {
                 if (connectorDirection.Value == GVElectricConnectorDirection.Top) {
-                    return m_outputs[0];
+                    return m_classic ? GetClockValue() & 0xFu : m_outputs[0];
                 }
                 if (connectorDirection.Value == GVElectricConnectorDirection.Right) {
-                    return m_outputs[1];
+                    return m_classic ? (GetClockValue() >> 4) & 0xFu : m_outputs[1];
                 }
                 if (connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
-                    return m_outputs[2];
+                    return m_classic ? (GetClockValue() >> 8) & 0xFu : m_outputs[2];
                 }
                 if (connectorDirection.Value == GVElectricConnectorDirection.Left) {
-                    return m_outputs[3];
+                    return m_classic ? (GetClockValue() >> 12) & 0xFu : m_outputs[3];
+                }
+                if (connectorDirection.Value == GVElectricConnectorDirection.In) {
+                    return m_classic ? (GetClockValue() >> 16) & 0xFu : 0u;
                 }
             }
             return 0u;
         }
 
         public override bool Simulate() {
+            if (m_classic) {
+                double day = m_subsystemTimeOfDay.Day;
+                int num = (int)(((Math.Ceiling(day * 4096.0) + 0.5) / 4096.0 - day) * 1200.0 / 0.0099999997764825821);
+                int circuitStep = Math.Max(SubsystemGVElectricity.FrameStartCircuitStep + num, SubsystemGVElectricity.CircuitStep + 1);
+                SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, circuitStep);
+                uint clockValue = GetClockValue();
+                if (clockValue != m_lastClockValue) {
+                    m_lastClockValue = clockValue;
+                    return true;
+                }
+                return false;
+            }
             bool noInput = true;
             uint input = m_input;
             uint[] outputs = (uint[])m_outputs.Clone();
@@ -66,13 +86,13 @@ namespace Game {
                         break;
                 }
             }
-            SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, MathUtils.Max(SubsystemGVElectricity.FrameStartCircuitStep + circuitAdd, SubsystemGVElectricity.CircuitStep + 1));
+            SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + MathUtils.Max(circuitAdd, 1));
             switch (m_input) {
                 case 0:
-                    m_outputs[0] = (uint)now.Hour;
-                    m_outputs[1] = (uint)now.Minute;
-                    m_outputs[2] = (uint)now.Second;
-                    m_outputs[3] = (uint)now.Millisecond;
+                    m_outputs[0] = (uint)now.Millisecond;
+                    m_outputs[1] = (uint)now.Second;
+                    m_outputs[2] = (uint)now.Minute;
+                    m_outputs[3] = (uint)now.Hour;
                     break;
                 case 1:
                     m_outputs[0] = (uint)now.DayOfWeek;
@@ -101,7 +121,9 @@ namespace Game {
                     m_outputs[3] = 0u;
                     break;
             }
-            return m_outputs.SequenceEqual(outputs);
+            return !m_outputs.SequenceEqual(outputs);
         }
+
+        public uint GetClockValue() => (uint)(m_subsystemTimeOfDay.Day * 4096);
     }
 }

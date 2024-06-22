@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
@@ -20,7 +21,8 @@ namespace Game {
             BlockPlacementData result = default;
             if (raycastResult.CellFace.Face < 4) {
                 result.CellFace = raycastResult.CellFace;
-                result.Value = Terrain.MakeBlockValue(Index, 0, SetMountingFace(0, raycastResult.CellFace.Face));
+                int data = Terrain.ExtractData(value);
+                result.Value = Terrain.MakeBlockValue(Index, 0, SetMountingFace(SetClassic(data, GetClassic(data)), raycastResult.CellFace.Face));
             }
             return result;
         }
@@ -262,7 +264,7 @@ namespace Game {
 
         public override int GetFace(int value) => GetMountingFace(Terrain.ExtractData(value));
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new TargetGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new TargetGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId, GetClassic(Terrain.ExtractData(value)));
 
         public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int face2 = GetFace(value);
@@ -272,5 +274,13 @@ namespace Game {
             }
             return null;
         }
+
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDisplayName" : "DisplayName");
+        public override string GetDescription(int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDescription" : "Description");
+        public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
+        public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 14 : 8;
+        public override IEnumerable<int> GetCreativeValues() => [Index, Terrain.MakeBlockValue(Index, 0, SetClassic(0, true))];
+        public static bool GetClassic(int data) => (data & 4) != 0;
+        public static int SetClassic(int data, bool classic) => (data & -5) | (classic ? 4 : 0);
     }
 }

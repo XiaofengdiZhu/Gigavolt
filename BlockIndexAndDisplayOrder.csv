@@ -12,7 +12,7 @@ GVSRLatchCBlock,GV Electrics Regular,809,10,1,Deleted
 GVCounterCBlock,GV Electrics Regular,810,11,1,
 GVMemoryBankCBlock,GV Electrics Regular,811,12,1,
 GVTruthTableCircuitCBlock,GV Electrics Regular,812,13,1,
-GVRealTimeClockCBlock,GV Electrics Regular,813,14,1,
+GVRealTimeClockCBlock,GV Electrics Regular,813,14,1,Deleted
 GVRandomGeneratorBlock,GV Electrics Regular,814,15,1,
 GVDigitalToAnalogConverterCBlock,GV Electrics Regular,815,16,1,Deleted
 GVAnalogToDigitalConverterCBlock,GV Electrics Regular,816,17,1,Deleted
@@ -34,8 +34,8 @@ GVOneLedCBlock,GV Electrics Regular,831,32,1,
 GVLedBlock,GV Electrics Regular,832,33,8,
 GVFourLedBlock,GV Electrics Regular,833,34,8,
 GVSevenSegmentDisplayBlock,GV Electrics Regular,834,35,8,
-GVTargetCBlock,GV Electrics Regular,835,36,1,
-GVDetonatorCBlock,GV Electrics Regular,836,37,1,
+GVTargetCBlock,GV Electrics Regular,835,36,1,Deleted
+GVDetonatorCBlock,GV Electrics Regular,836,37,1,Deleted
 GVWoodenPostedSignCBlock,GV Electrics Regular,837,38,1,
 GVWoodenAttachedSignCBlock,GV Electrics Regular,838,39,0,
 GVIronPostedSignCBlock,GV Electrics Regular,839,40,1,

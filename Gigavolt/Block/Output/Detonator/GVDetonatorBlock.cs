@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
@@ -6,11 +7,9 @@ namespace Game {
     public class GVDetonatorBlock : MountedGVElectricElementBlock {
         public const int Index = 861;
 
-        public BlockMesh m_standaloneBlockMesh = new();
-
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[6];
-
-        public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[6][];
+        public readonly BlockMesh m_standaloneBlockMesh = new();
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[6];
+        public readonly BoundingBox[][] m_collisionBoxesByData = new BoundingBox[6][];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Detonator");
@@ -47,13 +46,13 @@ namespace Game {
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
-            result.Value = Terrain.ReplaceData(value, raycastResult.CellFace.Face);
+            result.Value = Terrain.ReplaceData(value, SetClassic(raycastResult.CellFace.Face, GetClassic(Terrain.ExtractData(value))));
             result.CellFace = raycastResult.CellFace;
             return result;
         }
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {
-            int num = Terrain.ExtractData(value);
+            int num = GetFace(value);
             if (num >= m_collisionBoxesByData.Length) {
                 return null;
             }
@@ -61,7 +60,7 @@ namespace Game {
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
-            int num = Terrain.ExtractData(value);
+            int num = GetFace(value);
             if (num < m_blockMeshesByData.Length) {
                 generator.GenerateMeshVertices(
                     this,
@@ -98,7 +97,7 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DetonatorGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DetonatorGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId, GetClassic(Terrain.ExtractData(value)));
 
         public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
             int face2 = GetFace(value);
@@ -108,5 +107,13 @@ namespace Game {
             }
             return null;
         }
+
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDisplayName" : "DisplayName");
+        public override string GetDescription(int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDescription" : "Description");
+        public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
+        public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 37 : 20;
+        public override IEnumerable<int> GetCreativeValues() => [Index, Terrain.MakeBlockValue(Index, 0, SetClassic(0, true))];
+        public static bool GetClassic(int data) => (data & 8) != 0;
+        public static int SetClassic(int data, bool classic) => (data & -9) | (classic ? 8 : 0);
     }
 }

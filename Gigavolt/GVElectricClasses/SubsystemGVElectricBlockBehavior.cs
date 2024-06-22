@@ -6,14 +6,12 @@ namespace Game {
         public SubsystemGVElectricity m_subsystemGVElectric;
 
         public override int[] HandledBlocks => [
-            GVDetonatorCBlock.Index,
             GVOneLedCBlock.Index,
             GVMulticoloredLedCBlock.Index,
             GVSoundGeneratorCBlock.Index,
             GVCounterCBlock.Index,
             GVMemoryBankCBlock.Index,
             GVTruthTableCircuitCBlock.Index,
-            GVTargetCBlock.Index,
             GVWoodenPostedSignCBlock.Index,
             GVWoodenAttachedSignCBlock.Index,
             GVWireBlock.Index,
@@ -46,7 +44,6 @@ namespace Game {
             GVSevenSegmentDisplayBlock.Index,
             GVMemoryBankBlock.Index,
             GVRealTimeClockBlock.Index,
-            GVRealTimeClockCBlock.Index,
             GVTruthTableCircuitBlock.Index,
             GVTargetBlock.Index,
             GVIronPostedSignCBlock.Index,

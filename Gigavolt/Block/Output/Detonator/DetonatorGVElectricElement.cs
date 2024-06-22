@@ -4,7 +4,12 @@ using Engine;
 namespace Game {
     public class DetonatorGVElectricElement : MountedGVElectricElement {
         public readonly GVSubterrainSystem m_subterrainSystem;
-        public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subterrainSystem = subterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
+        public readonly bool m_classic;
+
+        public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            m_subterrainSystem = subterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
+            m_classic = classic;
+        }
 
         public void Detonate(uint pressure) {
             SubsystemExplosions m_subsystemExplosions = SubsystemGVElectricity.Project.FindSubsystem<SubsystemExplosions>(true);
@@ -55,7 +60,12 @@ namespace Game {
                     }
                 }
             }
-            if (num > 0u) {
+            if (m_classic) {
+                if (IsSignalHigh(num)) {
+                    Detonate(0u);
+                }
+            }
+            else if (num > 0u) {
                 if (num == uint.MaxValue) {
                     foreach (ComponentPlayer player in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
                         player.ComponentHealth.Injure(float.MaxValue, null, true, LanguageControl.Get(GetType().Name, 1));
