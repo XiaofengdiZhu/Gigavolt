@@ -36,10 +36,11 @@ GVFourLedBlock,GV Electrics Regular,833,34,8,
 GVSevenSegmentDisplayBlock,GV Electrics Regular,834,35,8,
 GVTargetCBlock,GV Electrics Regular,835,36,1,Deleted
 GVDetonatorCBlock,GV Electrics Regular,836,37,1,Deleted
-GVWoodenPostedSignCBlock,GV Electrics Regular,837,38,1,
-GVWoodenAttachedSignCBlock,GV Electrics Regular,838,39,0,
-GVIronPostedSignCBlock,GV Electrics Regular,839,40,1,
-GVIronAttachedSignCBlock,GV Electrics Regular,840,41,0,
+GVWoodenPostedSignCBlock,GV Electrics Regular,837,38,1,Deleted
+GVWoodenAttachedSignCBlock,GV Electrics Regular,838,39,0,Deleted
+GVIronPostedSignCBlock,GV Electrics Regular,839,40,1,Deleted
+GVIronAttachedSignCBlock,GV Electrics Regular,840,41,0,Deleted
+GVSignCBlock,GV Electrics Regular,837,38,1,
 GVDispenserCBlock,GV Electrics Regular,841,42,1,
 GVDebugBlock,GV Electrics Shift,842,26,1,
 GV2OTransformerBlock,GV Electrics Shift,843,2,1,

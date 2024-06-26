@@ -94,6 +94,7 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="BaseBlock\GVBaseSignBlock.cs"/>
 		<Compile Include="Block\Furniture\ButtonFurnitureGVElectricElement.cs"/>
 		<Compile Include="Block\Furniture\FurnitureGVElectricElement.cs"/>
 		<Compile Include="Block\Furniture\GVFurnitureBlock.cs"/>
@@ -128,6 +129,7 @@
 		<Compile Include="Block\LED\OneLed\OneLedGVElectricElement.cs"/>
 		<Compile Include="Block\LED\SevenSegmentDisplay\GVSevenSegmentDisplayBlock.cs"/>
 		<Compile Include="Block\LED\SevenSegmentDisplay\SevenSegmentDisplayGVElectricElement.cs"/>
+		<Compile Include="Block\LED\Sign\GVAttachedSignBlock.cs"/>
 		<Compile Include="Block\LED\Sign\SignGVElectricElement.cs"/>
 		<Compile Include="Block\LED\Sign\GVSignBlock.cs"/>
 		<Compile Include="Block\LED\Sign\GVSignTextData.cs"/>
@@ -174,14 +176,8 @@
 		<Compile Include="Block\Wire\GVWireHarnessBlock.cs"/>
 		<Compile Include="ClassicBlock\Dispenser\GVDispenserCBlock.cs"/>
 		<Compile Include="ClassicBlock\Dispenser\DispenserGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVAttachedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVIronAttachedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVIronPostedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVPostedSignCBlock.cs"/>
 		<Compile Include="ClassicBlock\Sign\GVSignCBlock.cs"/>
 		<Compile Include="ClassicBlock\Sign\SignGVCElectricElement.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVWoodenAttachedSignCBlock.cs"/>
-		<Compile Include="ClassicBlock\Sign\GVWoodenPostedSignCBlock.cs"/>
 		<Compile Include="ClassicBlock\Sign\SubsystemGVSignBlockCBehavior.cs"/>
 		<Compile Include="Dialog\BaseEditGVMemoryBankDialog.cs"/>
 		<Compile Include="Dialog\EditGVUintDialog.cs"/>

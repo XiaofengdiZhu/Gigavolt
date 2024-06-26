@@ -6,11 +6,8 @@ using TemplatesDatabase;
 namespace Game {
     public class ComponentGVDispenser : ComponentInventoryBase {
         public SubsystemTerrain m_subsystemTerrain;
-
         public SubsystemAudio m_subsystemAudio;
-
         public SubsystemPickables m_subsystemPickables;
-
         public SubsystemGVProjectiles m_subsystemGVProjectiles;
         public SubsystemProjectiles m_subsystemProjectiles;
 

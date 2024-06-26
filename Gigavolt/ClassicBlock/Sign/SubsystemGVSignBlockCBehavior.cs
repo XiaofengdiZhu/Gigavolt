@@ -21,7 +21,7 @@ namespace Game {
         public readonly PrimitivesRenderer2D m_primitivesRenderer2D = new();
         public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new();
 
-        public override int[] HandledBlocks => new[] { GVWoodenPostedSignCBlock.Index, GVWoodenAttachedSignCBlock.Index, GVIronPostedSignCBlock.Index, GVIronAttachedSignCBlock.Index };
+        public override int[] HandledBlocks => new[] { GVSignCBlock.Index };
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -64,8 +64,11 @@ namespace Game {
             int num = Terrain.ExtractContents(cellValueFast);
             int data = Terrain.ExtractData(cellValueFast);
             Block block = BlocksManager.Blocks[num];
-            if (block is AttachedSignBlock) {
-                Point3 point = CellFace.FaceToPoint3(AttachedSignBlock.GetFace(data));
+            if (block is not GVSignCBlock) {
+                return;
+            }
+            if (GVSignCBlock.GetPose(data) == 0) {
+                Point3 point = CellFace.FaceToPoint3(GVSignCBlock.GetFace(data));
                 int x2 = x - point.X;
                 int y2 = y - point.Y;
                 int z2 = z - point.Z;
@@ -96,8 +99,8 @@ namespace Game {
                     }
                 }
             }
-            else if (block is PostedSignBlock) {
-                int num2 = PostedSignBlock.GetHanging(data) ? terrain.GetCellValue(x, y + 1, z) : terrain.GetCellValue(x, y - 1, z);
+            else {
+                int num2 = GVSignCBlock.GetHanging(data) ? terrain.GetCellValue(x, y + 1, z) : terrain.GetCellValue(x, y - 1, z);
                 if (!BlocksManager.Blocks[Terrain.ExtractContents(num2)].IsCollidable_(num2)) {
                     if (system == null) {
                         SubsystemTerrain.DestroyCell(
@@ -393,7 +396,7 @@ namespace Game {
                     }
                     int cellValue = m_subsystemTerrain.Terrain.GetCellValue(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
                     int num = Terrain.ExtractContents(cellValue);
-                    if (!(BlocksManager.Blocks[num] is GVSignCBlock signBlock)) {
+                    if (!(BlocksManager.Blocks[num] is GVBaseSignBlock signBlock)) {
                         continue;
                     }
                     int data = Terrain.ExtractData(cellValue);

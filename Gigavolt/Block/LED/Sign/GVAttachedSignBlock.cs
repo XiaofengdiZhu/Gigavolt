@@ -6,7 +6,7 @@ using Engine.Graphics;
 // ReSharper disable PossibleLossOfFraction
 
 namespace Game {
-    public abstract class GVAttachedSignCBlock : GVSignCBlock, IGVElectricElementBlock, IPaintableBlock {
+    public abstract class GVAttachedSignBlock : GVBaseSignBlock, IGVElectricElementBlock, IPaintableBlock {
         public string m_modelName;
 
         public int m_coloredTextureSlot;
@@ -27,7 +27,7 @@ namespace Game {
 
         public BoundingBox[][] m_collisionBoxes = new BoundingBox[4][];
 
-        public GVAttachedSignCBlock(string modelName, int coloredTextureSlot, int postedSignBlockIndex) {
+        public GVAttachedSignBlock(string modelName, int coloredTextureSlot, int postedSignBlockIndex) {
             m_modelName = modelName;
             m_coloredTextureSlot = coloredTextureSlot;
             m_postedSignBlockIndex = postedSignBlockIndex;
@@ -89,7 +89,7 @@ namespace Game {
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             showDebris = true;
             int? color = GetColor(Terrain.ExtractData(oldValue));
-            int data = GVPostedSignCBlock.SetColor(0, color);
+            int data = SetColor(0, color);
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(m_postedSignBlockIndex, 0, data), Count = 1 });
         }
 

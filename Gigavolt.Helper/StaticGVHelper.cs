@@ -41,8 +41,7 @@ namespace Game {
             { GVEWireThroughBlock.Index, blockData => GVEWireThroughBlock.SetColor(blockData, null) },
             { GVPressurePlateBlock.Index, blockData => GVPressurePlateBlock.SetMaterial(0, GVPressurePlateBlock.GetMaterial(blockData)) },
             { GVLightbulbBlock.Index, blockData => GVLightbulbBlock.SetColor(0, GVLightbulbBlock.GetColor(blockData)) },
-            { GVWoodenPostedSignCBlock.Index, blockData => GVPostedSignCBlock.SetColor(0, GVPostedSignCBlock.GetColor(blockData)) },
-            { GVIronPostedSignCBlock.Index, blockData => GVPostedSignCBlock.SetColor(0, GVPostedSignCBlock.GetColor(blockData)) }
+            { GVSignCBlock.Index, blockData => GVSignCBlock.SetColor(0, GVSignCBlock.GetColor(blockData)) }
         };
 
         public static void GotoBlockDescriptionScreen(int blockValue) {

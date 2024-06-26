@@ -807,9 +807,9 @@ namespace Game {
                         case AttachedSignBlock _:
                             isEnd = true;
                             return pistonFace == AttachedSignBlock.GetFace(data);
-                        case GVAttachedSignCBlock _:
+                        case GVAttachedSignBlock _:
                             isEnd = true;
-                            return pistonFace == GVAttachedSignCBlock.GetFace(data);
+                            return pistonFace == GVAttachedSignBlock.GetFace(data);
                     }
                     return !block.IsNonDuplicable_(value) && (block.IsCollidable_(value) || (!block.IsDiggingTransparent && block.DestructionDebrisScale == 0f));
                 }

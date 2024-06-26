@@ -357,7 +357,8 @@ namespace Game {
                 }
                 case IGVElectricElementBlock: {
                     blockFace = block switch {
-                        GVAttachedSignCBlock => GVAttachedSignCBlock.GetFace(blockData),
+                        GVAttachedSignBlock => GVAttachedSignBlock.GetFace(blockData),
+                        GVSignCBlock => GVSignCBlock.GetPose(blockData) == 1 ? blockFace : GVSignCBlock.GetFace(blockData),
                         GVDoorBlock => GVDoorBlock.GetHingeFace(blockData),
                         GVTrapdoorBlock => GVTrapdoorBlock.GetMountingFace(blockData),
                         GVFenceGateBlock => GVFenceGateBlock.GetHingeFace(blockData),

@@ -12,8 +12,6 @@ namespace Game {
             GVCounterCBlock.Index,
             GVMemoryBankCBlock.Index,
             GVTruthTableCircuitCBlock.Index,
-            GVWoodenPostedSignCBlock.Index,
-            GVWoodenAttachedSignCBlock.Index,
             GVWireBlock.Index,
             GVNandGateBlock.Index,
             GVNorGateBlock.Index,
@@ -46,8 +44,6 @@ namespace Game {
             GVRealTimeClockBlock.Index,
             GVTruthTableCircuitBlock.Index,
             GVTargetBlock.Index,
-            GVIronPostedSignCBlock.Index,
-            GVIronAttachedSignCBlock.Index,
             GVWireThroughBricksBlock.Index,
             GVAdjustableDelayGateBlock.Index,
             GVPistonBlock.Index,
@@ -66,7 +62,8 @@ namespace Game {
             GVDispenserBlock.Index,
             GVDebugBlock.Index,
             GVWireHarnessBlock.Index,
-            FurnitureBlock.Index
+            FurnitureBlock.Index,
+            GVSignCBlock.Index
         ];
 
         public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded) {
