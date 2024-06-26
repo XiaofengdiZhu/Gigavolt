@@ -90,6 +90,14 @@
     "WoodDisplayName": "GV木告示牌",
     "IronDisplayName": "GV铁告示牌"
   },
+  "GVAdjustableDelayGateBlock": {
+    "DisplayName": "GV可调延迟门",
+    "Description": "可调延迟元件(D板)，底部输入，顶部输出，背面调整延迟时长，初始延迟0.01秒，背面输入电压每加1V，延迟增加0.01秒，背面输入大于等于0xFF V时，延迟达到最大值2.56秒；不可手动调整延迟时长。",
+    "ClassicDisplayName": "GV可调延迟门经典",
+    "ClassicDescription": "可调延迟元件(D板)，底部输入，顶部和背面输出。它产生的延迟可以0.01s的精度调节，范围为0.01~2.56s。可以放在任何表面上并旋转到所需的方向。",
+    "ColoredDisplayName": "单向二极管",
+    "ColoredDescription": "电压只能单向导通的二极管（延迟0.01秒），只提供彩色版本，本质上是延迟门。"
+  },
   "Blocks": {
     "GVWireBlock:0": {
       "DisplayName": "GV导线",
@@ -132,8 +140,6 @@
       "CRDescription:0": "用铜和锗合成延迟门"
     },
     "GVAdjustableDelayGateBlock:0": {
-      "DisplayName": "GV可调延迟门",
-      "Description": "可调延迟元件(D板)，底部输入，顶部和背面输出。它产生的延迟可以0.01s的精度调节，范围为0.01~2.56s。可以放在任何表面上并旋转到所需的方向。",
       "CRDescription:0": "用铜，锗，铁制作逻辑可调延时门"
     },
     "GVSRLatchBlock:0": {

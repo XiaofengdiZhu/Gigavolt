@@ -3,10 +3,8 @@ using System.Collections.Generic;
 namespace Game {
     public abstract class BaseDelayGateGVElectricElement : RotateableGVElectricElement {
         public uint m_voltage;
-
         public uint m_lastStoredVoltage;
-
-        public Dictionary<int, uint> m_voltagesHistory = new();
+        public readonly Dictionary<int, uint> m_voltagesHistory = new();
 
         public abstract int DelaySteps { get; }
         public BaseDelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
@@ -15,7 +13,6 @@ namespace Game {
 
         public override bool Simulate() {
             uint voltage = m_voltage;
-            int delaySteps = DelaySteps;
             uint num = 0;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
@@ -24,7 +21,7 @@ namespace Game {
                     break;
                 }
             }
-            if (delaySteps > 0) {
+            if (DelaySteps > 0) {
                 if (m_voltagesHistory.TryGetValue(SubsystemGVElectricity.CircuitStep, out uint value)) {
                     m_voltage = value;
                     m_voltagesHistory.Remove(SubsystemGVElectricity.CircuitStep);

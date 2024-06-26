@@ -11,10 +11,10 @@ namespace Game {
         public const int Index = 867;
         public static Texture2D WhiteTexture;
 
-        public int m_handleTextureSlot = 47;
-        public int m_headTextureSlot = 77;
-        public BlockMesh m_standaloneBlockMesh_Handle = new();
-        public BlockMesh m_standaloneBlockMesh_Head = new();
+        public const int m_handleTextureSlot = 47;
+        public const int m_headTextureSlot = 77;
+        public readonly BlockMesh m_standaloneBlockMesh_Handle = new();
+        public readonly BlockMesh m_standaloneBlockMesh_Head = new();
 
         public override void Initialize() {
             if (WhiteTexture == null

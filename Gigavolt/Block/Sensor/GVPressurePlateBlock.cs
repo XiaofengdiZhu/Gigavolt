@@ -72,7 +72,7 @@ namespace Game {
 
         public override string GetDescription(int value) => GetClassic(Terrain.ExtractData(value)) ? LanguageControl.Get(GetType().Name, "ClassicDescription") : LanguageControl.Get(GetType().Name, "Description");
         public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
-        public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 23 : 12;
+        public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 23 : 18;
 
         public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetMaterial(0, 1)), Terrain.MakeBlockValue(Index, 0, SetClassic(0, true)), Terrain.MakeBlockValue(Index, 0, SetClassic(SetMaterial(0, 1), true))];
 

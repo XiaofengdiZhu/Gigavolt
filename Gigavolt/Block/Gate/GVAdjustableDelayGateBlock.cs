@@ -76,9 +76,9 @@ namespace Game {
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             showDebris = true;
             if (toolLevel >= RequiredToolLevel) {
-                int delay = GetDelay(Terrain.ExtractData(oldValue));
-                int data = SetDelay(0, delay);
-                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, data), Count = 1 });
+                int oldData = Terrain.ExtractData(oldValue);
+                bool classic = GetClassic(oldData);
+                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, classic ? SetDelay(SetClassic(0, true), GetDelay(oldData)) : SetColor(0, GetColor(oldData))), Count = 1 });
             }
         }
 
@@ -161,12 +161,10 @@ namespace Game {
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-                if (connectorDirection == GVElectricConnectorDirection.Bottom) {
-                    return GVElectricConnectorType.Input;
-                }
-                if (connectorDirection == GVElectricConnectorDirection.Top
-                    || connectorDirection == GVElectricConnectorDirection.In) {
-                    return GVElectricConnectorType.Output;
+                switch (connectorDirection) {
+                    case GVElectricConnectorDirection.Bottom: return GVElectricConnectorType.Input;
+                    case GVElectricConnectorDirection.Top: return GVElectricConnectorType.Output;
+                    case GVElectricConnectorDirection.In: return GetClassic(data) || GetColor(data).HasValue ? GVElectricConnectorType.Output : GVElectricConnectorType.Input;
                 }
             }
             return null;
@@ -177,7 +175,8 @@ namespace Game {
         public static int SetDelay(int data, int delay) => (data & -8161) | ((delay & 0xFF) << 5);
 
         public override IEnumerable<int> GetCreativeValues() {
-            yield return Terrain.MakeBlockValue(Index);
+            yield return Terrain.MakeBlockValue(Index, 0, SetClassic(0, true));
+            yield return Index;
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 0));
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 8));
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 15));
@@ -194,17 +193,40 @@ namespace Game {
             yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 10));
         }
 
-        public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
-        public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 12 : base.GetDisplayOrder(value);
-
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
-            int? paintColor = GetColor(Terrain.ExtractData(value));
-            return paintColor.HasValue ? SubsystemPalette.GetName(subsystemTerrain, paintColor, "单向二极管") : base.GetDisplayName(subsystemTerrain, value);
+        public override string GetCategory(int value) {
+            int data = Terrain.ExtractData(value);
+            if (GetClassic(data)) {
+                return "GV Electrics Regular";
+            }
+            return GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Shift";
         }
 
-        public override string GetDescription(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "电压只能单向导通的二极管（有延迟），只提供彩色版本，本质上是延迟门" : base.GetDescription(value);
+        public override int GetDisplayOrder(int value) {
+            int data = Terrain.ExtractData(value);
+            if (GetClassic(data)) {
+                return 9;
+            }
+            return GetColor(data).HasValue ? 12 : 5;
+        }
 
-        public override bool IsEditable_(int value) => !GetColor(Terrain.ExtractData(value)).HasValue;
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
+            int data = Terrain.ExtractData(value);
+            if (GetClassic(data)) {
+                return LanguageControl.Get(GetType().Name, "ClassicDisplayName");
+            }
+            int? paintColor = GetColor(data);
+            return paintColor.HasValue ? SubsystemPalette.GetName(subsystemTerrain, paintColor, LanguageControl.Get(GetType().Name, "ColoredDisplayName")) : LanguageControl.Get(GetType().Name, "DisplayName");
+        }
+
+        public override string GetDescription(int value) {
+            int data = Terrain.ExtractData(value);
+            if (GetClassic(data)) {
+                return LanguageControl.Get(GetType().Name, "ClassicDescription");
+            }
+            return GetColor(Terrain.ExtractData(value)).HasValue ? LanguageControl.Get(GetType().Name, "ColoredDescription") : LanguageControl.Get(GetType().Name, "Description");
+        }
+
+        public override bool IsEditable_(int value) => GetClassic(Terrain.ExtractData(value));
 
         public override int GetConnectionMask(int value) {
             int? color = GetColor(Terrain.ExtractData(value));
@@ -235,5 +257,7 @@ namespace Game {
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
         public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) => Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
+        public static bool GetClassic(int data) => data >> 13 == 1;
+        public static int SetClassic(int data, bool classic) => (data & -8193) | (classic ? 8192 : 0);
     }
 }
