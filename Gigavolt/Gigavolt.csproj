@@ -92,6 +92,9 @@
 		<None Update="Assets\Shaders\GVSubterrainTransparent.vsh">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Assets\Textures\Gui\GVMouseScroll.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="BaseBlock\GVBaseSignBlock.cs"/>

@@ -14,10 +14,10 @@ namespace Game {
         public SubsystemGVSwitchBlockBehavior m_subsystemGVSwitchBlockBehavior;
         public SubsystemGVButtonBlockBehavior m_subsystemGVButtonBlockBehavior;
         public TexturedBatch3D m_8NumberBatch;
+        public TexturedBatch3D m_mouseScrollBatch;
         public ComponentPlayer m_componentPlayer;
         public ComponentBlockHighlight m_componentBlockHighlight;
 
-        public CellFace? m_lastCellFace;
         public uint? m_forceDisplayVoltage;
 
 
@@ -25,7 +25,7 @@ namespace Game {
         public UpdateOrder UpdateOrder => UpdateOrder.Reset;
 
         public void Draw(Camera camera, int drawOrder) {
-            if ((GVStaticStorage.DisplayVoltage || m_lastCellFace.HasValue)
+            if ((GVStaticStorage.DisplayVoltage || m_forceDisplayVoltage.HasValue)
                 && camera.GameWidget.PlayerData == m_componentPlayer.PlayerData
                 && drawOrder == DrawOrders[0]
                 && !camera.UsesMovementControls
@@ -39,6 +39,7 @@ namespace Game {
                     DisplayVoltage(result.CellFace);
                 }
                 m_8NumberBatch.Flush(camera.ViewProjectionMatrix);
+                m_mouseScrollBatch.Flush(camera.ViewProjectionMatrix);
             }
         }
 
@@ -48,19 +49,15 @@ namespace Game {
                 && m_componentBlockHighlight.m_highlightRaycastResult is TerrainRaycastResult result) {
                 int wheelMovement = m_componentPlayer.GameWidget.Input.MouseWheelMovement;
                 CellFace cellFace = result.CellFace;
-                if (wheelMovement == 0) {
-                    if (result.CellFace != m_lastCellFace) {
-                        m_lastCellFace = null;
-                        m_forceDisplayVoltage = null;
+                int contents = Terrain.ExtractContents(result.Value);
+                SubsystemGVEditableItemBehavior<GigaVoltageLevelData> behavior;
+                if (contents == GVButtonBlock.Index) {
+                    int id = m_subsystemGVButtonBlockBehavior.GetIdFromValue(result.Value);
+                    GVButtonData blockData = m_subsystemGVButtonBlockBehavior.GetItemData(id, true);
+                    if (wheelMovement == 0) {
+                        m_forceDisplayVoltage = blockData.GigaVoltageLevel;
                     }
-                }
-                else {
-                    m_lastCellFace = cellFace;
-                    int contents = Terrain.ExtractContents(result.Value);
-                    SubsystemGVEditableItemBehavior<GigaVoltageLevelData> behavior;
-                    if (contents == GVButtonBlock.Index) {
-                        int id = m_subsystemGVButtonBlockBehavior.GetIdFromValue(result.Value);
-                        GVButtonData blockData = m_subsystemGVButtonBlockBehavior.GetItemData(id, true);
+                    else {
                         if (wheelMovement > 0) {
                             if (blockData.GigaVoltageLevel == uint.MaxValue) {
                                 return;
@@ -78,21 +75,25 @@ namespace Game {
                         blockData.SaveString();
                         m_subsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, m_subsystemGVButtonBlockBehavior.SetIdToValue(result.Value, m_subsystemGVButtonBlockBehavior.StoreItemDataAtUniqueId(blockData, id)));
                     }
+                }
+                else {
+                    switch (contents) {
+                        case GVBatteryBlock.Index:
+                            behavior = m_subsystemGVBatteryBlockBehavior;
+                            break;
+                        case GVSwitchBlock.Index:
+                            behavior = m_subsystemGVSwitchBlockBehavior;
+                            break;
+                        default:
+                            m_forceDisplayVoltage = null;
+                            return;
+                    }
+                    int id = behavior.GetIdFromValue(result.Value);
+                    GigaVoltageLevelData blockData = behavior.GetItemData(id, true);
+                    if (wheelMovement == 0) {
+                        m_forceDisplayVoltage = blockData.Data;
+                    }
                     else {
-                        switch (contents) {
-                            case GVBatteryBlock.Index:
-                                behavior = m_subsystemGVBatteryBlockBehavior;
-                                break;
-                            case GVSwitchBlock.Index:
-                                behavior = m_subsystemGVSwitchBlockBehavior;
-                                break;
-                            default:
-                                m_lastCellFace = null;
-                                m_forceDisplayVoltage = null;
-                                return;
-                        }
-                        int id = behavior.GetIdFromValue(result.Value);
-                        GigaVoltageLevelData blockData = behavior.GetItemData(id, true);
                         if (wheelMovement > 0) {
                             if (blockData.Data == uint.MaxValue) {
                                 return;
@@ -113,7 +114,6 @@ namespace Game {
                 }
             }
             else {
-                m_lastCellFace = null;
                 m_forceDisplayVoltage = null;
             }
         }
@@ -126,6 +126,14 @@ namespace Game {
             m_subsystemGVButtonBlockBehavior = Project.FindSubsystem<SubsystemGVButtonBlockBehavior>(true);
             m_subsystemGVBatteryBlockBehavior = Project.FindSubsystem<SubsystemGVBatteryBlockBehavior>(true);
             m_8NumberBatch = Project.FindSubsystem<SubsystemGV8NumberLedGlow>(true).batchCache;
+            m_mouseScrollBatch = new TexturedBatch3D {
+                BlendState = BlendState.AlphaBlend,
+                SamplerState = SamplerState.PointClamp,
+                Texture = ContentManager.Get<Texture2D>("Textures/Gui/GVMouseScroll"),
+                DepthStencilState = DepthStencilState.Default,
+                RasterizerState = RasterizerState.CullCounterClockwiseScissor,
+                UseAlphaTest = false
+            };
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>(true);
             m_componentBlockHighlight = Entity.FindComponent<ComponentBlockHighlight>(true);
         }
@@ -171,6 +179,32 @@ namespace Game {
                         };
                         Vector3 right = Vector3.Cross(forward, up);
                         const float size = 0.1f;
+                        if (m_forceDisplayVoltage.HasValue) {
+                            SubsystemGV8NumberLedGlow.Draw8Number(
+                                m_8NumberBatch,
+                                m_forceDisplayVoltage.Value,
+                                position,
+                                size,
+                                right,
+                                up,
+                                Color.Cyan
+                            );
+                            Vector3 mouseScrollPosition = position + up * 0.4f + right * 0.1f;
+                            Vector3 mouseScrollRight = right * 0.2f;
+                            Vector3 mouseScrollUp = up * 0.2f;
+                            m_mouseScrollBatch.QueueQuad(
+                                mouseScrollPosition,
+                                mouseScrollPosition - mouseScrollRight,
+                                mouseScrollPosition - mouseScrollRight - mouseScrollUp,
+                                mouseScrollPosition - mouseScrollUp,
+                                Vector2.Zero,
+                                Vector2.UnitX,
+                                Vector2.One,
+                                Vector2.UnitY,
+                                Color.White
+                            );
+                            break;
+                        }
                         for (int connectorFace = 0; connectorFace < 6; connectorFace++) {
                             GVElectricConnectorType? connectorType = mountedBlock.GetGVConnectorType(
                                 m_subsystemGVSubterrain,
@@ -189,7 +223,7 @@ namespace Game {
                                     case GVElectricConnectorType.Output:
                                         SubsystemGV8NumberLedGlow.Draw8Number(
                                             m_8NumberBatch,
-                                            m_forceDisplayVoltage ?? element.GetOutputVoltage(connectorFace),
+                                            element.GetOutputVoltage(connectorFace),
                                             position + offset,
                                             size,
                                             right,
@@ -263,8 +297,24 @@ namespace Game {
                             size,
                             right,
                             up,
-                            Color.Red
+                            m_forceDisplayVoltage.HasValue ? Color.Cyan : Color.Red
                         );
+                        if (m_forceDisplayVoltage.HasValue) {
+                            Vector3 mouseScrollPosition = position + up * 0.4f + right * 0.1f;
+                            Vector3 mouseScrollRight = right * 0.2f;
+                            Vector3 mouseScrollUp = up * 0.2f;
+                            m_mouseScrollBatch.QueueQuad(
+                                mouseScrollPosition,
+                                mouseScrollPosition - mouseScrollRight,
+                                mouseScrollPosition - mouseScrollRight - mouseScrollUp,
+                                mouseScrollPosition - mouseScrollUp,
+                                Vector2.Zero,
+                                Vector2.UnitX,
+                                Vector2.One,
+                                Vector2.UnitY,
+                                Color.White
+                            );
+                        }
                     }
                     break;
                 }

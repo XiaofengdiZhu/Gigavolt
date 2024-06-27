@@ -10,7 +10,6 @@ namespace Game {
         public SubsystemSky m_subsystemSky;
 
         public readonly Dictionary<uint, HashSet<GV8NumberGlowPoint>> m_glowPoints = new();
-        public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
         public TexturedBatch3D batchCache;
 
         public int[] DrawOrders => [110];
@@ -101,15 +100,14 @@ namespace Game {
 
         public override void Load(ValuesDictionary valuesDictionary) {
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
-            batchCache = m_primitivesRenderer.TexturedBatch(
-                ContentManager.Get<Texture2D>("Textures/GV8NumberLed"),
-                false,
-                0,
-                DepthStencilState.Default,
-                RasterizerState.CullCounterClockwiseScissor,
-                BlendState.AlphaBlend,
-                SamplerState.PointClamp
-            );
+            batchCache = new TexturedBatch3D {
+                BlendState = BlendState.AlphaBlend,
+                SamplerState = SamplerState.PointClamp,
+                Texture = ContentManager.Get<Texture2D>("Textures/GV8NumberLed"),
+                DepthStencilState = DepthStencilState.Default,
+                RasterizerState = RasterizerState.CullCounterClockwiseScissor,
+                UseAlphaTest = false
+            };
         }
     }
 }
