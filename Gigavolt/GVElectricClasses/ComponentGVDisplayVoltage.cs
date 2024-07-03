@@ -144,6 +144,12 @@ namespace Game {
             int blockData = Terrain.ExtractData(blockValue);
             int blockFace = 4;
             Block block = BlocksManager.Blocks[blockContents];
+            if (m_forceDisplayVoltage.HasValue
+                && blockContents != GVSwitchBlock.Index
+                && blockContents != GVButtonBlock.Index
+                && blockContents != GVBatteryBlock.Index) {
+                return;
+            }
             Dictionary<GVCellFace, GVElectricElement> elements = m_subsystemGVElectricity.m_GVElectricElementsByCellFace[0];
             switch (block) {
                 case MountedGVElectricElementBlock mountedBlock: {

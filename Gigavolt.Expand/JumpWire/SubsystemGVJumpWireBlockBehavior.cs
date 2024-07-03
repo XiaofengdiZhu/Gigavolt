@@ -21,10 +21,12 @@ namespace Game {
                 for (int i = 0; i < elements.Count - 1; i++) {
                     if (!positions.TryGetValue(i, out Vector3 position1)) {
                         position1 = GetPosition(elements[i]);
+                        positions.Add(i, position1);
                     }
                     for (int j = i + 1; j < elements.Count; j++) {
                         if (!positions.TryGetValue(j, out Vector3 position2)) {
                             position2 = GetPosition(elements[j]);
+                            positions.Add(j, position2);
                         }
                         m_flatBatch.QueueLine(position1, position2, Color.Green);
                     }

@@ -54,8 +54,6 @@ namespace Game {
             if (rawY != lastInputTop >> 16) {
                 m_targetOffset.Y = (rawY & 0x7FFFu) / (rawY >> 15 == 1u ? -8f : 8f);
             }
-            bool inSubterrain = SubterrainId != 0;
-            Matrix transform = inSubterrain ? GVStaticStorage.GVSubterrainSystemDictionary[SubterrainId].GlobalTransform : default;
             Point3 tractorBeamBlockPoint = cellFace.Point;
             if ((m_inputLeft & 2u) == 2u) {
                 m_subsystemBlockBehavior.SetIndicatorLine(cellFace, SubterrainId, m_targetOffset);

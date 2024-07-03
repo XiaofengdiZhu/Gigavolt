@@ -97,7 +97,7 @@ namespace Game {
             bool reset = false;
             byte controller1 = 0;
             //byte controller2 = 0;
-            foreach ((uint subterrainId, HashSet<GVNesEmulatorGlowPoint> points) in m_glowPoints) {
+            foreach ((uint _, HashSet<GVNesEmulatorGlowPoint> points) in m_glowPoints) {
                 if (points.Count == 0) {
                     continue;
                 }
