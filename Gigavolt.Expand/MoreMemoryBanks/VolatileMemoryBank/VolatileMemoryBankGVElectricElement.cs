@@ -2,11 +2,15 @@ namespace Game {
     public class VolatileMemoryBankGVElectricElement : RotateableGVElectricElement {
         public SubsystemGVVolatileMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
 
+        public readonly GVVolatileMemoryBankData m_data;
         public uint m_voltage;
         public bool m_writeAllowed;
         public bool m_clockAllowed;
 
-        public VolatileMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
+        public VolatileMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
+            m_data = m_SubsystemGVMemoryBankBlockBehavior.GetItemData(m_SubsystemGVMemoryBankBlockBehavior.GetIdFromValue(value));
+        }
 
         public override void OnAdded() { }
         public override uint GetOutputVoltage(int face) => m_voltage;
@@ -48,23 +52,18 @@ namespace Game {
                     }
                 }
             }
-            GVVolatileMemoryBankData memoryBankData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
-            if (memoryBankData == null) {
-                memoryBankData = new GVVolatileMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), new uint[] { 0 }, 1, 1);
-                m_SubsystemGVMemoryBankBlockBehavior.SetBlockData(CellFaces[0].Point, memoryBankData);
-            }
             if (flag2) {
                 if (flag && m_clockAllowed) {
                     m_clockAllowed = false;
-                    m_voltage = memoryBankData.Read(num2, num3);
+                    m_voltage = m_data.Read(num2, num3);
                 }
                 else if (flag3 && m_writeAllowed) {
                     m_writeAllowed = false;
-                    memoryBankData.Write(num2, num3, num);
+                    m_data.Write(num2, num3, num);
                 }
             }
             else {
-                m_voltage = memoryBankData.Read(num2, num3);
+                m_voltage = m_data.Read(num2, num3);
             }
             if (!flag) {
                 m_clockAllowed = true;
@@ -73,7 +72,7 @@ namespace Game {
                 m_writeAllowed = true;
             }
             if (!hasInput) {
-                m_voltage = memoryBankData.m_ID;
+                m_voltage = m_data.m_ID;
             }
             return m_voltage != voltage;
         }

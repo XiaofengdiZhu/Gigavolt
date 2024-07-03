@@ -17,7 +17,7 @@ namespace Game {
             }
         }
 
-        public override int[] HandledBlocks => new[] { GVMemoryBankBlock.Index };
+        public override int[] HandledBlocks => [GVMemoryBankBlock.Index];
 
         public SubsystemGVMemoryBankBlockBehavior() : base(GVMemoryBankBlock.Index) { }
 
@@ -41,7 +41,7 @@ namespace Game {
                 componentPlayer.GuiWidget,
                 new EditGVMemoryBankDialog(
                     memoryBankData,
-                    delegate {
+                    () => {
                         inventory.RemoveSlotItems(slotIndex, count);
                         inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id)), count);
                     }

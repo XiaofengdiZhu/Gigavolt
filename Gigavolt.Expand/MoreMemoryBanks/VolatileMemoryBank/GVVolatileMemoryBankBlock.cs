@@ -6,11 +6,7 @@ namespace Game {
         public new const int Index = 871;
         public Texture2D m_texture;
 
-        public GVVolatileMemoryBankBlock() {
-            m_modelName = "Models/GVMemoryBank";
-            m_meshName = "MemoryBank";
-            m_centerBoxSize = 0.875f;
-        }
+        public GVVolatileMemoryBankBlock() => m_modelName = "Models/GVMemoryBank";
 
         public override void Initialize() {
             RotateableMountedGVElectricElementBlockInitialize();
@@ -54,6 +50,14 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new VolatileMemoryBankGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new VolatileMemoryBankGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), value, subterrainId);
+
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+            SubsystemGVVolatileMemoryBankBlockBehavior subsystem = subsystemTerrain.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
+            if (subsystem.GetIdFromValue(value) == 0) {
+                value = subsystem.SetIdToValue(value, subsystem.StoreItemDataAtUniqueId(new GVVolatileMemoryBankData()));
+            }
+            return base.GetPlacementValue(subsystemTerrain, componentMiner, value, raycastResult);
+        }
     }
 }
