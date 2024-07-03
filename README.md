@@ -1045,8 +1045,25 @@ This is a mod for Survivalcraft Gigavolt mod that take more circuit components a
 </details>
 
 # 构建提示 Build Tips
-构建前，你需要先安装[Python](https://www.python.org/downloads/)，然后运行以下命令来安装[antlr4-tools](https://github.com/antlr/antlr4-tools)，最后即可顺利构建项目
+
+1. 首先使用 [Git](https://git-scm.com/downloads) 克隆此仓库
+```bat
+git clone https://github.com/XiaofengdiZhu/Gigavolt/
+```
+
+2. 进入此仓库
+```bat
+cd Gigavolt
+```
+
+3. 更新子模块
+```bat
+git submodule update --init
+```
+4. 使用[Python](https://www.python.org/downloads/)安装[antlr4-tools](https://github.com/antlr/antlr4-tools)
 ```
 pip install antlr4-tools
 ```
-> 可能每个步骤完成后都需要重启电脑才能进行下一步
+> 可能需要重启电脑
+
+5. 使用[Visual Studio](https://visualstudio.microsoft.com/)打开`Gigavolt`目录中的`Gigavolt.sln`，点击`生成`-`生成解决方案`，如果报错未安装相应功能，请按提示完成安装

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Engine;
 using Engine.Serialization;
 using TemplatesDatabase;
@@ -42,19 +43,45 @@ namespace Game {
             base.Load(valuesDictionary);
             m_subsystemItemsScanner = Project.FindSubsystem<SubsystemItemsScanner>(true);
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
-            foreach (KeyValuePair<string, object> item2 in valuesDictionary.GetValue<ValuesDictionary>("Items")) {
-                int key2 = HumanReadableConverter.ConvertFromString<int>(item2.Key);
-                if (key2 == 0) {
-                    foreach (string item in ((string)item2.Value).Split(',')) {
-                        if (int.TryParse(item, out int number)) {
+            foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("Items")) {
+                int id = HumanReadableConverter.ConvertFromString<int>(item.Key);
+                if (id == 0) {
+                    foreach (string numberString in ((string)item.Value).Split(',')) {
+                        if (int.TryParse(numberString, out int number)) {
                             m_existingIds.Add(number);
                         }
                     }
                 }
                 else {
                     T value2 = new();
-                    value2.LoadString((string)item2.Value);
-                    m_itemsData[key2] = value2;
+                    value2.LoadString((string)item.Value);
+                    m_itemsData[id] = value2;
+                }
+            }
+            //兼容原版SubsystemEditableItemBehavior
+            ValuesDictionary blocks = valuesDictionary.GetValue<ValuesDictionary>("Blocks", null);
+            if (blocks != null) {
+                Terrain terrain = m_subsystemTerrain.Terrain;
+                foreach (KeyValuePair<string, object> block in blocks) {
+                    Point3 point = HumanReadableConverter.ConvertFromString<Point3>(block.Key);
+                    int chunkX = point.X >> 4;
+                    int chunkZ = point.Z >> 4;
+                    TerrainChunk chunkAtCell = terrain.GetChunkAtCoords(chunkX, chunkZ);
+                    if (chunkAtCell == null) {
+                        chunkAtCell = terrain.AllocateChunk(chunkX, chunkZ);
+                        while (chunkAtCell.ThreadState <= TerrainChunkState.NotLoaded) {
+                            m_subsystemTerrain.TerrainUpdater.UpdateChunkSingleStep(chunkAtCell, 0);
+                        }
+                    }
+                    int value = terrain.GetCellValue(point.X, point.Y, point.Z);
+                    if (HandledBlocks.Contains(Terrain.ExtractContents(value))) {
+                        T data = new();
+                        data.LoadString((string)block.Value);
+                        int id = StoreItemDataAtUniqueId(data);
+                        m_subsystemTerrain.ChangeCell(point.X, point.Y, point.Z, SetIdToValue(value, StoreItemDataAtUniqueId(data)));
+                        m_existingIds.Add(id);
+                        m_itemsData[id] = data;
+                    }
                 }
             }
             m_subsystemItemsScanner.ItemsScanned += GarbageCollectItems;
@@ -64,8 +91,8 @@ namespace Game {
             base.Save(valuesDictionary);
             ValuesDictionary valuesDictionary3 = new();
             valuesDictionary.SetValue("Items", valuesDictionary3);
-            foreach (KeyValuePair<int, T> itemsDatum in m_itemsData) {
-                valuesDictionary3.SetValue(HumanReadableConverter.ConvertToString(itemsDatum.Key), itemsDatum.Value.SaveString());
+            foreach (KeyValuePair<int, T> itemsData in m_itemsData) {
+                valuesDictionary3.SetValue(HumanReadableConverter.ConvertToString(itemsData.Key), itemsData.Value.SaveString());
             }
             valuesDictionary3.SetValue(HumanReadableConverter.ConvertToString(0), string.Join(",", m_existingIds));
         }

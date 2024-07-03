@@ -1,35 +1,32 @@
 namespace Game {
     public class MemoryBankGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
-        public SubsystemGameInfo m_subsystemGameInfo;
+        public readonly SubsystemGVMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
+        public readonly SubsystemGameInfo m_subsystemGameInfo;
 
+        public GVMemoryBankData m_data;
         public uint m_voltage;
-
         public bool m_writeAllowed;
-
         public bool m_clockAllowed;
 
-        public MemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public MemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVMemoryBankBlockBehavior>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
-            GVMemoryBankData blockData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(cellFace.Point);
-            if (blockData != null) {
-                m_voltage = blockData.LastOutput;
-            }
-        }
-
-        public override void OnAdded() {
-            GVMemoryBankData memoryBankData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
-            if (memoryBankData != null
-                && memoryBankData.m_worldDirectory == null) {
-                memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
-                memoryBankData.LoadData();
+            m_data = m_SubsystemGVMemoryBankBlockBehavior.GetItemData(m_SubsystemGVMemoryBankBlockBehavior.GetIdFromValue(value));
+            if (m_data != null) {
+                m_voltage = m_data.LastOutput;
+                if (m_data.m_worldDirectory == null) {
+                    m_data.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
+                    m_data.LoadData();
+                }
             }
         }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
+            if (m_data == null) {
+                return false;
+            }
             uint voltage = m_voltage;
             bool flag = false;
             bool flag2 = false;
@@ -66,36 +63,33 @@ namespace Game {
                     }
                 }
             }
-            GVMemoryBankData memoryBankData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
-            if (memoryBankData != null) {
-                if (memoryBankData.m_worldDirectory == null) {
-                    memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
-                    memoryBankData.LoadData();
-                }
-                if (flag2) {
-                    if (flag && m_clockAllowed) {
-                        m_clockAllowed = false;
-                        m_voltage = memoryBankData.Read(num2, num3);
-                    }
-                    else if (flag3 && m_writeAllowed) {
-                        m_writeAllowed = false;
-                        memoryBankData.Write(num2, num3, num);
-                    }
-                }
-                else {
-                    m_voltage = memoryBankData.Read(num2, num3);
-                }
-                if (!flag) {
-                    m_clockAllowed = true;
-                }
-                if (!flag3) {
-                    m_writeAllowed = true;
-                }
-                if (!hasInput) {
-                    m_voltage = memoryBankData.m_ID;
-                }
-                memoryBankData.LastOutput = m_voltage;
+            if (m_data.m_worldDirectory == null) {
+                m_data.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
+                m_data.LoadData();
             }
+            if (flag2) {
+                if (flag && m_clockAllowed) {
+                    m_clockAllowed = false;
+                    m_voltage = m_data.Read(num2, num3);
+                }
+                else if (flag3 && m_writeAllowed) {
+                    m_writeAllowed = false;
+                    m_data.Write(num2, num3, num);
+                }
+            }
+            else {
+                m_voltage = m_data.Read(num2, num3);
+            }
+            if (!flag) {
+                m_clockAllowed = true;
+            }
+            if (!flag3) {
+                m_writeAllowed = true;
+            }
+            if (!hasInput) {
+                m_voltage = m_data.m_ID;
+            }
+            m_data.LastOutput = m_voltage;
             return m_voltage != voltage;
         }
     }

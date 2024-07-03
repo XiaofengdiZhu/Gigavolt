@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
@@ -142,6 +143,11 @@ namespace Game {
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetRotation(num5, rotation));
             result.CellFace = raycastResult.CellFace;
             return result;
+        }
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, Terrain.ExtractData(oldValue) & -32), Count = 1 });
+            showDebris = DestructionDebrisScale > 0f;
         }
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {

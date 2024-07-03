@@ -1,7 +1,7 @@
 ﻿<Mod>
 	<Folder Name="Abstract" Guid="e6fcac21-922d-4234-97c0-fe6feb5a0697">
 		<SubsystemTemplate Name="GVEditableItemBehavior" Guid="5ac0a57e-c339-4c46-8e0a-e500e3b9e295" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
-			<ParameterSet Name="Items" Description="Contains memory banks associated with items" Guid="edc2d637-6375-4163-a389-0060ebee2a38"/>
+			<ParameterSet Name="Items" Description="Contains data associated with items" Guid="edc2d637-6375-4163-a389-0060ebee2a38"/>
 		</SubsystemTemplate>
 		<SubsystemTemplate Name="GVBlockBehavior" Guid="0f40208e-af0e-4bca-978a-e79445378b05" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb"/>
 	</Folder>
@@ -14,7 +14,7 @@
 			<Parameter Name="GigaVoltagesByCell" Description="A list of int voltage electric elements voltages, by cell. Semicolon separated." Guid="cde035c9-ca00-97b3-0ae7-e3ccf1117af1" Value="" Type="string"/>
 			<Parameter Name="Class" Guid="a20d5a1b-f38d-4c80-bb75-280852883cac" Value="Game.SubsystemGVElectricity" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVMemoryBankBlockBehavior" Guid="e1051573-185b-079a-a47d-a5784972c271" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVMemoryBankBlockBehavior" Guid="e1051573-185b-079a-a47d-a5784972c271" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="484d126d-81e5-f7d6-1530-d281cff58ed2" Value="Game.SubsystemGVMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVMemoryBankCBlockBehavior" Guid="9c8968df-3758-3909-e6a7-87e8cf63c51e" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
