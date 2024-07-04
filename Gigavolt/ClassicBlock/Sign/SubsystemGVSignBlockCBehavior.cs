@@ -21,7 +21,7 @@ namespace Game {
         public readonly PrimitivesRenderer2D m_primitivesRenderer2D = new();
         public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new();
 
-        public override int[] HandledBlocks => new[] { GVSignCBlock.Index };
+        public override int[] HandledBlocks => [GVSignCBlock.Index];
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -178,8 +178,8 @@ namespace Game {
                 SetSignData(
                     value,
                     subterrainId,
-                    new[] { value2, value3, value4, value5 },
-                    new[] { value6, value7, value8, value9 },
+                    [value2, value3, value4, value5],
+                    [value6, value7, value8, value9],
                     value10
                 );
             }
@@ -261,8 +261,8 @@ namespace Game {
             if (!textData.TextureLocation.HasValue) {
                 return;
             }
-            List<string> list = new();
-            List<Color> list2 = new();
+            List<string> list = [];
+            List<Color> list2 = [];
             for (int i = 0; i < textData.Lines.Length; i++) {
                 if (!string.IsNullOrEmpty(textData.Lines[i])) {
                     list.Add(textData.Lines[i].Replace("\\", "").ToUpper());

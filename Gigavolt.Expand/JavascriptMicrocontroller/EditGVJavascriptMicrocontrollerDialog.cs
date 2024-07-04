@@ -15,7 +15,7 @@ namespace Game {
 
         public GVJavascriptMicrocontrollerData m_blockData;
         public readonly int[] m_tempPortsDefinition;
-        public readonly string[] m_state2String = { LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 8), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 9), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 10) };
+        public readonly string[] m_state2String = [LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 8), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 9), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 10)];
 
         public EditGVJavascriptMicrocontrollerDialog(GVJavascriptMicrocontrollerData blockData, Action<bool> handler) {
             try {

@@ -21,7 +21,7 @@ namespace Game {
         public readonly PrimitivesRenderer2D m_primitivesRenderer2D = new();
         public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new();
 
-        public override int[] HandledBlocks => new[] { GVSignBlock.Index };
+        public override int[] HandledBlocks => [GVSignBlock.Index];
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 

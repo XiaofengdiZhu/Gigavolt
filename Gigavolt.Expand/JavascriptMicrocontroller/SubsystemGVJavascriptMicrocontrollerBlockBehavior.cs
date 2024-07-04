@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class SubsystemGVJavascriptMicrocontrollerBlockBehavior : SubsystemEditableItemBehavior<GVJavascriptMicrocontrollerData> {
-        public override int[] HandledBlocks => new[] { GVJavascriptMicrocontrollerBlock.Index };
+        public override int[] HandledBlocks => [GVJavascriptMicrocontrollerBlock.Index];
 
         public SubsystemGVJavascriptMicrocontrollerBlockBehavior() : base(GVJavascriptMicrocontrollerBlock.Index) { }
 

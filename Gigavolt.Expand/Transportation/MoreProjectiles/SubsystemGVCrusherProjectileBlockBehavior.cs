@@ -5,7 +5,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVCrusherProjectileBlockBehavior : SubsystemBlockBehavior {
         public SubsystemBlockBehaviors m_subsystemBlockBehaviors;
-        public override int[] HandledBlocks => new[] { GVCrusherProjectileBlock.Index };
+        public override int[] HandledBlocks => [GVCrusherProjectileBlock.Index];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
@@ -27,7 +27,7 @@ namespace Game {
                 }
                 else {
                     try {
-                        ComponentMiner componentMiner = new ComponentMiner();
+                        ComponentMiner componentMiner = new();
                         SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z)));
                         for (int i = 0; i < blockBehaviors.Length; i++) {
                             blockBehaviors[i].OnInteract(new TerrainRaycastResult { CellFace = cellFace.Value }, componentMiner);

@@ -6,17 +6,17 @@ using Engine.Graphics;
 namespace Game {
     public class GVFenceGateBlock : FenceBlock, IGVElectricElementBlock, IPaintableBlock {
         public const int Index = 866;
-        public DynamicArray<GVElectricConnectionPath> m_GVtmpConnectionPaths = new();
-        public float[] m_pivotDistance = { 0.0625f, 0.0443f };
+        public DynamicArray<GVElectricConnectionPath> m_GVtmpConnectionPaths = [];
+        public float[] m_pivotDistance = [0.0625f, 0.0443f];
 
-        public bool[] m_doubleSidedAndUseAlphaTest = { false, true };
+        public bool[] m_doubleSidedAndUseAlphaTest = [false, true];
 
-        public int[] _m_defaultTextureSlot = { 4, 58 };
-        public int[] _m_coloredTextureSlot = { 23, 58 };
+        public int[] _m_defaultTextureSlot = [4, 58];
+        public int[] _m_coloredTextureSlot = [23, 58];
 
-        public Color[] _m_postColor = { Color.White, new(192, 192, 192) };
+        public Color[] _m_postColor = [Color.White, new Color(192, 192, 192)];
 
-        public Color[] _m_unpaintedColor = { Color.White, new(80, 80, 80) };
+        public Color[] _m_unpaintedColor = [Color.White, new Color(80, 80, 80)];
 
         public BlockMesh[] _m_standaloneBlockMesh = new BlockMesh[2];
         public BlockMesh[] _m_standaloneColoredBlockMesh = new BlockMesh[2];
@@ -27,7 +27,7 @@ namespace Game {
 
         public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
         public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
-        public string[] m_displayNamesByModel = { "GV木栅栏门", "GV铁栅栏门" };
+        public string[] m_displayNamesByModel = ["GV木栅栏门", "GV铁栅栏门"];
 
         public override void Initialize() {
             Model[] model = new Model[2];
@@ -433,7 +433,7 @@ namespace Game {
             boundingBox.Max.X = MathUtils.Saturate(boundingBox.Max.X);
             boundingBox.Max.Y = MathUtils.Saturate(boundingBox.Max.Y);
             boundingBox.Max.Z = MathUtils.Saturate(boundingBox.Max.Z);
-            box = new[] { boundingBox };
+            box = [boundingBox];
             m_cachedCollisionBoxes.Add(data, box);
         }
 

@@ -5,21 +5,21 @@ using System.Linq;
 namespace Game {
     public static class StaticGVHelper {
         public static readonly Dictionary<int, string[]> BlockIndex2HelperInfo = new() {
-            { GVMemoryBankBlock.Index, new[] { "存储器-memory-bank", "GVMemoryBankBlock" } },
-            { GVTruthTableCircuitBlock.Index, new[] { "真值表-truth-table", "GVTruthTableCircuitBlock" } },
-            { GVRealTimeClockBlock.Index, new[] { "实时钟-real-time-clock", "GVRealTimeClockBlock" } },
-            { GVSoundGeneratorBlock.Index, new[] { "声音生成器-sound-generator", "GVSoundGeneratorBlock" } },
-            { GVDispenserBlock.Index, new[] { "发射器-dispenser", "GVDispenserBlock" } },
-            { GVSignBlock.Index, new[] { "告示牌-sign", "GVSignBlock" } },
-            { GVMultiplexerBlock.Index, new[] { "路选器-multiplexer", "GVMultiplexerBlock" } },
-            { GVListMemoryBankBlock.Index, new[] { "一维存储器-list-memory-bank", "GVListMemoryBankBlock" } },
-            { GVMemoryBanksOperatorBlock.Index, new[] { "多存储器操作器-memory-banks-operator", "GVMemoryBanksOperatorBlock" } },
-            { GVTerrainRaycastDetectorBlock.Index, new[] { "地形射线探测器-terrain-raycast-detector", "GVTerrainRaycastDetectorBlock" } },
-            { GVTerrainScannerBlock.Index, new[] { "地形扫描仪-terrain-scanner", "GVTerrainScannerBlock" } },
-            { GVNesEmulatorBlock.Index, new[] { "红白机模拟器-nes-emulator", "GVNesEmulatorBlock" } },
-            { GVGuidedDispenserBlock.Index, new[] { "制导发射器-guided-dispenser", "GVGuidedDispenserBlock" } },
-            { GVInventoryControllerBlock.Index, new[] { "箱子控制器-inventory-controller", "GVInventoryControllerBlock" } },
-            { GVJavascriptMicrocontrollerBlock.Index, new[] { "js单片机-javascript-microcontroller", "GVJavascriptMicrocontrollerBlock" } }
+            { GVMemoryBankBlock.Index, ["存储器-memory-bank", "GVMemoryBankBlock"] },
+            { GVTruthTableCircuitBlock.Index, ["真值表-truth-table", "GVTruthTableCircuitBlock"] },
+            { GVRealTimeClockBlock.Index, ["实时钟-real-time-clock", "GVRealTimeClockBlock"] },
+            { GVSoundGeneratorBlock.Index, ["声音生成器-sound-generator", "GVSoundGeneratorBlock"] },
+            { GVDispenserBlock.Index, ["发射器-dispenser", "GVDispenserBlock"] },
+            { GVSignBlock.Index, ["告示牌-sign", "GVSignBlock"] },
+            { GVMultiplexerBlock.Index, ["路选器-multiplexer", "GVMultiplexerBlock"] },
+            { GVListMemoryBankBlock.Index, ["一维存储器-list-memory-bank", "GVListMemoryBankBlock"] },
+            { GVMemoryBanksOperatorBlock.Index, ["多存储器操作器-memory-banks-operator", "GVMemoryBanksOperatorBlock"] },
+            { GVTerrainRaycastDetectorBlock.Index, ["地形射线探测器-terrain-raycast-detector", "GVTerrainRaycastDetectorBlock"] },
+            { GVTerrainScannerBlock.Index, ["地形扫描仪-terrain-scanner", "GVTerrainScannerBlock"] },
+            { GVNesEmulatorBlock.Index, ["红白机模拟器-nes-emulator", "GVNesEmulatorBlock"] },
+            { GVGuidedDispenserBlock.Index, ["制导发射器-guided-dispenser", "GVGuidedDispenserBlock"] },
+            { GVInventoryControllerBlock.Index, ["箱子控制器-inventory-controller", "GVInventoryControllerBlock"] },
+            { GVJavascriptMicrocontrollerBlock.Index, ["js单片机-javascript-microcontroller", "GVJavascriptMicrocontrollerBlock"] }
         };
 
         public static readonly Dictionary<int, Func<int, int>> BlockIndex2DataHandler = new() {

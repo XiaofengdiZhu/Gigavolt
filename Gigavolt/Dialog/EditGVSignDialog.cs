@@ -23,17 +23,17 @@ namespace Game {
         public readonly ButtonWidget m_copyButton;
         public readonly ButtonWidget m_convertButton;
 
-        public Color[] m_colors = {
-            new(0, 0, 0),
-            new(140, 0, 0),
-            new(0, 112, 0),
-            new(0, 0, 96),
-            new(160, 0, 128),
-            new(0, 112, 112),
-            new(160, 112, 0),
-            new(180, 180, 180),
+        public Color[] m_colors = [
+            new Color(0, 0, 0),
+            new Color(140, 0, 0),
+            new Color(0, 112, 0),
+            new Color(0, 0, 96),
+            new Color(160, 0, 128),
+            new Color(0, 112, 112),
+            new Color(160, 112, 0),
+            new Color(180, 180, 180),
             Color.White
-        };
+        ];
 
         public EditGVSignDialog(SubsystemGVSignBlockBehavior subsystemSignBlockBehavior, Point3 signPoint) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVSignDialog");
@@ -128,7 +128,7 @@ namespace Game {
 
         public static string string2UintHexString(string input) {
             byte[] bytes = Encoding.UTF8.GetBytes(input);
-            List<uint> uints = new();
+            List<uint> uints = [];
             int i;
             for (i = 0; i < bytes.Length / 4; i++) {
                 uints.Add(bytes[i * 4 + 3] | ((uint)bytes[i * 4 + 2] << 8) | ((uint)bytes[i * 4 + 1] << 16) | ((uint)bytes[i * 4] << 24));

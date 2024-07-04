@@ -4,7 +4,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVInventoryControllerBlockBehavior : SubsystemBlockBehavior {
         public SubsystemBlockEntities m_subsystemBlockEntities;
-        public override int[] HandledBlocks => new[] { GVInventoryControllerBlock.Index };
+        public override int[] HandledBlocks => [GVInventoryControllerBlock.Index];
 
         public override bool OnUse(Ray3 ray, ComponentMiner componentMiner) {
             TerrainRaycastResult? terrainRaycastResult = componentMiner.Raycast<TerrainRaycastResult>(ray, RaycastMode.Interaction);

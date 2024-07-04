@@ -129,7 +129,7 @@ namespace Game {
                                 right = Vector3.Transform(right, orientation);
                                 up = Vector3.Transform(up, orientation);
                             }
-                            Vector3[] offsets = { right - up, right + up, -right - up, -right + up };
+                            Vector3[] offsets = [right - up, right + up, -right - up, -right + up];
                             Vector3 min = new(float.MaxValue);
                             Vector3 max = new(float.MinValue);
                             foreach (Vector3 offset in offsets) {

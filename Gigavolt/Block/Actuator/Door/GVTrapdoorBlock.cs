@@ -12,8 +12,8 @@ namespace Game {
         public ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[2];
         public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
         public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
-        public string[] m_displayNamesByModel = { "GV木活板门", "GV铁活板门" };
-        public int[] m_creativeValuesByModel = { Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1)) };
+        public string[] m_displayNamesByModel = ["GV木活板门", "GV铁活板门"];
+        public int[] m_creativeValuesByModel = [Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1))];
 
         public override void Initialize() {
             base.Initialize();
@@ -243,7 +243,7 @@ namespace Game {
             blockMesh.GenerateSidesData();
             m_cachedBlockMeshes.Add(data, blockMesh);
             BoundingBox boundingBox = blockMesh.CalculateBoundingBox();
-            box = new[] { boundingBox };
+            box = [boundingBox];
             m_cachedCollisionBoxes.Add(data, box);
         }
     }

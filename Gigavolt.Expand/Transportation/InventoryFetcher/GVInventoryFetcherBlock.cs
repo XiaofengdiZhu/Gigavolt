@@ -32,7 +32,7 @@ namespace Game {
                         false,
                         Color.White
                     );
-                    m_collisionBoxesByData[num] = new[] { m_blockMeshesByData[num].CalculateBoundingBox() };
+                    m_collisionBoxesByData[num] = [m_blockMeshesByData[num].CalculateBoundingBox()];
                 }
             }
             Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("FetcherHead").ParentBone);

@@ -8,13 +8,13 @@ using JsEngine = Jint.Engine;
 
 namespace Game {
     public class GVJavascriptMicrocontrollerData : IEditableItemData {
-        public static readonly int[] DefaultPortsDefinition = {
+        public static readonly int[] DefaultPortsDefinition = [
             -1,
             -1,
             -1,
             -1,
             -1
-        }; //-1:No input or output. 0:Input. 1:Output
+        ]; //-1:No input or output. 0:Input. 1:Output
 
         public int[] m_portsDefinition = (int[])DefaultPortsDefinition.Clone();
         public int m_executeAgain;
@@ -73,13 +73,13 @@ namespace Game {
             catch (Exception e) {
                 Log.Error(e);
             }
-            uint[] outputs = {
+            uint[] outputs = [
                 0,
                 0,
                 0,
                 0,
                 0
-            };
+            ];
             for (int i = 0; i < 5; i++) {
                 if (m_portsDefinition[i] == 1) {
                     try {
@@ -176,7 +176,7 @@ namespace Game {
         public void LoadString(string str, out string error) {
             error = null;
             try {
-                string[] splitStr = str.Split(new[] { ":::" }, StringSplitOptions.None);
+                string[] splitStr = str.Split([":::"], StringSplitOptions.None);
                 if (splitStr.Length != 2) {
                     throw new Exception("不是正确的JS单片机存储的数据");
                 }

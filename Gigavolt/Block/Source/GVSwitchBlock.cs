@@ -44,7 +44,7 @@ namespace Game {
                         false,
                         Color.White
                     );
-                    m_collisionBoxesByIndex[num] = new[] { m_blockMeshesByIndex_Body[num].CalculateBoundingBox() };
+                    m_collisionBoxesByIndex[num] = [m_blockMeshesByIndex_Body[num].CalculateBoundingBox()];
                     //拉杆模型
                     m_blockMeshesByIndex_Lever[num] = new BlockMesh();
                     m_blockMeshesByIndex_Lever[num]

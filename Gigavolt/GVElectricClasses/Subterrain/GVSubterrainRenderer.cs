@@ -26,7 +26,7 @@ namespace Game {
             m_subsystemSky = project.FindSubsystem<SubsystemSky>(true);
             m_subsystemAnimatedTextures = project.FindSubsystem<SubsystemAnimatedTextures>(true);
             OpaqueShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"));
-            AlphatestedShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"), new ShaderMacro[] { new("ALPHATESTED") });
+            AlphatestedShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"), [new ShaderMacro("ALPHATESTED")]);
             TransparentShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.psh"));
             Display.DeviceReset += Display_DeviceReset;
         }
@@ -70,7 +70,7 @@ namespace Game {
                         int num5 = i % 16;
                         TerrainGeometrySubset terrainGeometrySubset = geometry[num5].Subsets[num4];
                         if (vertexTransform != null) {
-                            DynamicArray<TerrainVertex> tmpList = new();
+                            DynamicArray<TerrainVertex> tmpList = [];
                             foreach (TerrainVertex t in terrainGeometrySubset.Vertices) {
                                 TerrainVertex vertex = vertexTransform(t);
                                 tmpList.Add(vertex);

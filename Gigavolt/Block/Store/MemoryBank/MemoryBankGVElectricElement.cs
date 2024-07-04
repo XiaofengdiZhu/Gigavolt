@@ -3,7 +3,7 @@ namespace Game {
         public readonly SubsystemGVMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
         public readonly SubsystemGameInfo m_subsystemGameInfo;
 
-        public GVMemoryBankData m_data;
+        public readonly GVMemoryBankData m_data;
         public uint m_voltage;
         public bool m_writeAllowed;
         public bool m_clockAllowed;

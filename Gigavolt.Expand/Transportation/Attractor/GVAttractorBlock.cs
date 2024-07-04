@@ -28,7 +28,7 @@ namespace Game {
                     false,
                     Color.White
                 );
-                m_collisionBoxesByData[i] = new BoundingBox[1] { m_meshesByData[i].CalculateBoundingBox() };
+                m_collisionBoxesByData[i] = [m_meshesByData[i].CalculateBoundingBox()];
             }
             m_standaloneMesh.AppendModelMeshPart(
                 model.FindMesh("Magnet").MeshParts[0],

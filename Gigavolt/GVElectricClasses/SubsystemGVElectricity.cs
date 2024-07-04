@@ -13,8 +13,8 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVElectricity : Subsystem, IUpdateable, IDrawable {
-        public static readonly GVElectricConnectionPath[] m_connectionPathsTable = new GVElectricConnectionPath[120] {
-            new(
+        public static readonly GVElectricConnectionPath[] m_connectionPathsTable = [
+            new GVElectricConnectionPath(
                 0,
                 1,
                 -1,
@@ -22,7 +22,7 @@ namespace Game {
                 4,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 0,
@@ -30,7 +30,7 @@ namespace Game {
                 4,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 -1,
@@ -38,7 +38,7 @@ namespace Game {
                 4,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -46,7 +46,7 @@ namespace Game {
                 4,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 -1,
@@ -54,7 +54,7 @@ namespace Game {
                 3,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 0,
@@ -62,7 +62,7 @@ namespace Game {
                 3,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 -1,
@@ -70,7 +70,7 @@ namespace Game {
                 3,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -78,7 +78,7 @@ namespace Game {
                 3,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 -1,
@@ -86,7 +86,7 @@ namespace Game {
                 5,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 0,
@@ -94,7 +94,7 @@ namespace Game {
                 5,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 -1,
@@ -102,7 +102,7 @@ namespace Game {
                 5,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -110,7 +110,7 @@ namespace Game {
                 5,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 -1,
@@ -118,7 +118,7 @@ namespace Game {
                 1,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 0,
@@ -126,7 +126,7 @@ namespace Game {
                 1,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 -1,
@@ -134,7 +134,7 @@ namespace Game {
                 1,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -142,7 +142,7 @@ namespace Game {
                 1,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 -1,
@@ -153,7 +153,7 @@ namespace Game {
             null,
             null,
             null,
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 1,
                 0,
@@ -161,7 +161,7 @@ namespace Game {
                 4,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 0,
@@ -169,7 +169,7 @@ namespace Game {
                 4,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 1,
                 0,
@@ -177,7 +177,7 @@ namespace Game {
                 4,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -185,7 +185,7 @@ namespace Game {
                 4,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 1,
@@ -193,7 +193,7 @@ namespace Game {
                 0,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 1,
@@ -201,7 +201,7 @@ namespace Game {
                 0,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 1,
@@ -209,7 +209,7 @@ namespace Game {
                 0,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -217,7 +217,7 @@ namespace Game {
                 0,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 -1,
                 0,
@@ -225,7 +225,7 @@ namespace Game {
                 5,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 0,
@@ -233,7 +233,7 @@ namespace Game {
                 5,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 -1,
                 0,
@@ -241,7 +241,7 @@ namespace Game {
                 5,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -249,7 +249,7 @@ namespace Game {
                 5,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 -1,
@@ -257,7 +257,7 @@ namespace Game {
                 2,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 -1,
@@ -265,7 +265,7 @@ namespace Game {
                 2,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 -1,
@@ -273,7 +273,7 @@ namespace Game {
                 2,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -281,7 +281,7 @@ namespace Game {
                 2,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 0,
@@ -292,7 +292,7 @@ namespace Game {
             null,
             null,
             null,
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 1,
@@ -300,7 +300,7 @@ namespace Game {
                 4,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 0,
@@ -308,7 +308,7 @@ namespace Game {
                 4,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 1,
@@ -316,7 +316,7 @@ namespace Game {
                 4,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -324,7 +324,7 @@ namespace Game {
                 4,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 1,
@@ -332,7 +332,7 @@ namespace Game {
                 1,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 0,
@@ -340,7 +340,7 @@ namespace Game {
                 1,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 1,
@@ -348,7 +348,7 @@ namespace Game {
                 1,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -356,7 +356,7 @@ namespace Game {
                 1,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 1,
@@ -364,7 +364,7 @@ namespace Game {
                 5,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 0,
@@ -372,7 +372,7 @@ namespace Game {
                 5,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 1,
@@ -380,7 +380,7 @@ namespace Game {
                 5,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -388,7 +388,7 @@ namespace Game {
                 5,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 1,
@@ -396,7 +396,7 @@ namespace Game {
                 3,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 0,
@@ -404,7 +404,7 @@ namespace Game {
                 3,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 1,
@@ -412,7 +412,7 @@ namespace Game {
                 3,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -420,7 +420,7 @@ namespace Game {
                 3,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 1,
@@ -431,7 +431,7 @@ namespace Game {
             null,
             null,
             null,
-            new(
+            new GVElectricConnectionPath(
                 1,
                 1,
                 0,
@@ -439,7 +439,7 @@ namespace Game {
                 4,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 0,
@@ -447,7 +447,7 @@ namespace Game {
                 4,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 1,
                 0,
@@ -455,7 +455,7 @@ namespace Game {
                 4,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -463,7 +463,7 @@ namespace Game {
                 4,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 -1,
@@ -471,7 +471,7 @@ namespace Game {
                 2,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 -1,
@@ -479,7 +479,7 @@ namespace Game {
                 2,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 -1,
@@ -487,7 +487,7 @@ namespace Game {
                 2,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -495,7 +495,7 @@ namespace Game {
                 2,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 -1,
                 0,
@@ -503,7 +503,7 @@ namespace Game {
                 5,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 0,
@@ -511,7 +511,7 @@ namespace Game {
                 5,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 -1,
                 0,
@@ -519,7 +519,7 @@ namespace Game {
                 5,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -527,7 +527,7 @@ namespace Game {
                 5,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 1,
@@ -535,7 +535,7 @@ namespace Game {
                 0,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 1,
@@ -543,7 +543,7 @@ namespace Game {
                 0,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 1,
@@ -551,7 +551,7 @@ namespace Game {
                 0,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -559,7 +559,7 @@ namespace Game {
                 0,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 0,
@@ -570,7 +570,7 @@ namespace Game {
             null,
             null,
             null,
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 -1,
@@ -578,7 +578,7 @@ namespace Game {
                 2,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 -1,
@@ -586,7 +586,7 @@ namespace Game {
                 2,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 -1,
@@ -594,7 +594,7 @@ namespace Game {
                 2,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -602,7 +602,7 @@ namespace Game {
                 2,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 -1,
                 0,
@@ -610,7 +610,7 @@ namespace Game {
                 3,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 0,
@@ -618,7 +618,7 @@ namespace Game {
                 3,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 -1,
                 0,
@@ -626,7 +626,7 @@ namespace Game {
                 3,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -634,7 +634,7 @@ namespace Game {
                 3,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 1,
@@ -642,7 +642,7 @@ namespace Game {
                 0,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 1,
@@ -650,7 +650,7 @@ namespace Game {
                 0,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 1,
@@ -658,7 +658,7 @@ namespace Game {
                 0,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -666,7 +666,7 @@ namespace Game {
                 0,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 -1,
                 0,
@@ -674,7 +674,7 @@ namespace Game {
                 1,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 0,
@@ -682,7 +682,7 @@ namespace Game {
                 1,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 -1,
                 0,
@@ -690,7 +690,7 @@ namespace Game {
                 1,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -698,7 +698,7 @@ namespace Game {
                 1,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 -1,
                 0,
@@ -709,7 +709,7 @@ namespace Game {
             null,
             null,
             null,
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 -1,
@@ -717,7 +717,7 @@ namespace Game {
                 2,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 -1,
@@ -725,7 +725,7 @@ namespace Game {
                 2,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 -1,
@@ -733,7 +733,7 @@ namespace Game {
                 2,
                 0
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -741,7 +741,7 @@ namespace Game {
                 2,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 1,
                 0,
@@ -749,7 +749,7 @@ namespace Game {
                 1,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 0,
                 0,
@@ -757,7 +757,7 @@ namespace Game {
                 1,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 1,
                 1,
                 0,
@@ -765,7 +765,7 @@ namespace Game {
                 1,
                 3
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -773,7 +773,7 @@ namespace Game {
                 1,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 1,
@@ -781,7 +781,7 @@ namespace Game {
                 0,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 1,
@@ -789,7 +789,7 @@ namespace Game {
                 0,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 1,
@@ -797,7 +797,7 @@ namespace Game {
                 0,
                 2
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -805,7 +805,7 @@ namespace Game {
                 0,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 1,
                 0,
@@ -813,7 +813,7 @@ namespace Game {
                 3,
                 5
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 0,
                 0,
@@ -821,7 +821,7 @@ namespace Game {
                 3,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 -1,
                 1,
                 0,
@@ -829,7 +829,7 @@ namespace Game {
                 3,
                 1
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 0,
                 0,
@@ -837,7 +837,7 @@ namespace Game {
                 3,
                 4
             ),
-            new(
+            new GVElectricConnectionPath(
                 0,
                 1,
                 0,
@@ -848,9 +848,9 @@ namespace Game {
             null,
             null,
             null
-        };
+        ];
 
-        public static readonly GVElectricConnectorDirection?[] m_connectorDirectionsTable = new GVElectricConnectorDirection?[36] {
+        public static readonly GVElectricConnectorDirection?[] m_connectorDirectionsTable = [
             null,
             GVElectricConnectorDirection.Right,
             GVElectricConnectorDirection.In,
@@ -887,9 +887,9 @@ namespace Game {
             GVElectricConnectorDirection.Left,
             GVElectricConnectorDirection.In,
             null
-        };
+        ];
 
-        public static readonly int[] m_connectorFacesTable = new int[30] {
+        public static readonly int[] m_connectorFacesTable = [
             4,
             3,
             5,
@@ -920,7 +920,7 @@ namespace Game {
             2,
             3,
             4
-        };
+        ];
 
         public float m_remainingSimulationTime;
 
@@ -1372,7 +1372,7 @@ namespace Game {
                 int num = 0;
                 while (true) {
                     if (num < array.Length) {
-                        string[] array2 = array[num].Split(new[] { "," }, StringSplitOptions.None);
+                        string[] array2 = array[num].Split([","], StringSplitOptions.None);
                         if (array2.Length != 4) {
                             break;
                         }

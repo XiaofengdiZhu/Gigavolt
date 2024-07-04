@@ -8,16 +8,16 @@ namespace Game {
         //abcdO
         public uint[] m_nodesVoltage;
 
-        public readonly uint[] default_nodesVoltage = {
+        public readonly uint[] default_nodesVoltage = [
             0,
             0,
             0,
             0,
             0
-        };
+        ];
 
         //1~20常断，21~28常通
-        public readonly bool[] default_switched = {
+        public readonly bool[] default_switched = [
             false,
             false,
             false,
@@ -46,14 +46,14 @@ namespace Game {
             true,
             true,
             true
-        };
+        ];
 
         public bool[] m_switches;
         public List<int>[] m_nodesRelations;
         public Queue<int> m_nodesToUpdate;
 
         //1 parent A child a, 2 parent a child A...
-        public int[] switch2parentChildNode = {
+        public int[] switch2parentChildNode = [
             -1,
             0,
             0,
@@ -110,7 +110,7 @@ namespace Game {
             4,
             4,
             3
-        };
+        ];
 
         public bool m_noInInput = true;
 
@@ -263,11 +263,11 @@ namespace Game {
                 return;
             }
             if (m_nodesRelations[child * 2] == null) {
-                m_nodesRelations[child * 2] = new List<int>();
+                m_nodesRelations[child * 2] = [];
             }
             m_nodesRelations[child * 2].Add(parent);
             if (m_nodesRelations[parent * 2 + 1] == null) {
-                m_nodesRelations[parent * 2 + 1] = new List<int>();
+                m_nodesRelations[parent * 2 + 1] = [];
             }
             m_nodesRelations[parent * 2 + 1].Add(child);
         }

@@ -5,7 +5,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVDebugBlockBehavior : SubsystemEditableItemBehavior<GVDebugData> {
         public SubsystemGVElectricity m_subsystemGVElectricity;
-        public HashSet<DebugGVElectricElement> m_elementHashSet = new HashSet<DebugGVElectricElement>();
+        public HashSet<DebugGVElectricElement> m_elementHashSet = [];
         public SubsystemGVDebugBlockBehavior() : base(GVDebugBlock.Index) { }
 
         public override void Load(ValuesDictionary valuesDictionary) {
@@ -19,7 +19,7 @@ namespace Game {
             }
         }
 
-        public override int[] HandledBlocks => new[] { GVDebugBlock.Index };
+        public override int[] HandledBlocks => [GVDebugBlock.Index];
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {

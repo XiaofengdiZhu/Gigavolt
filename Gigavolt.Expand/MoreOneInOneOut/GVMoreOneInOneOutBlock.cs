@@ -7,7 +7,7 @@ namespace Game {
         public const int Index = 881;
         public Texture2D[] textures = new Texture2D[16];
 
-        public string[] textureNames = {
+        public string[] textureNames = [
             "Sin",
             "Cos",
             "Tan",
@@ -24,7 +24,7 @@ namespace Game {
             "Rad2Deg",
             "SMR",
             "TCR"
-        };
+        ];
 
         public override void Initialize() {
             base.Initialize();

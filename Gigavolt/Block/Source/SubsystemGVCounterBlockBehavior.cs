@@ -4,7 +4,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVCounterBlockBehavior : SubsystemGVEditableItemBehavior<GVCounterData> {
         public SubsystemGVElectricity m_subsystemGVElectricity;
-        public override int[] HandledBlocks => new[] { GVCounterBlock.Index };
+        public override int[] HandledBlocks => [GVCounterBlock.Index];
 
         public SubsystemGVCounterBlockBehavior() : base(GVCounterBlock.Index) { }
 

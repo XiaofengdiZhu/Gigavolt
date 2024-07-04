@@ -8,16 +8,16 @@ namespace Game {
         public const int Index = 832;
 
         // ReSharper disable once RedundantExplicitArraySize
-        public static readonly Color[] LedColors = new Color[8] {
-            new(255, 255, 255),
-            new(0, 255, 255),
-            new(255, 0, 0),
-            new(0, 0, 255),
-            new(255, 240, 0),
-            new(0, 255, 0),
-            new(255, 120, 0),
-            new(255, 0, 255)
-        };
+        public static readonly Color[] LedColors = [
+            new Color(255, 255, 255),
+            new Color(0, 255, 255),
+            new Color(255, 0, 0),
+            new Color(0, 0, 255),
+            new Color(255, 240, 0),
+            new Color(0, 255, 0),
+            new Color(255, 120, 0),
+            new Color(255, 0, 255)
+        ];
 
 
         public BlockMesh[] m_standaloneBlockMeshesByColor = new BlockMesh[8];
@@ -82,7 +82,7 @@ namespace Game {
                         false,
                         color
                     );
-                    m_collisionBoxesByData[num] = new[] { m_blockMeshesByData[num].CalculateBoundingBox() };
+                    m_collisionBoxesByData[num] = [m_blockMeshesByData[num].CalculateBoundingBox()];
                 }
             }
         }

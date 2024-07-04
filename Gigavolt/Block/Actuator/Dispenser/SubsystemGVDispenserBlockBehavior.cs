@@ -12,7 +12,7 @@ namespace Game {
 
         public SubsystemAudio m_subsystemAudio;
 
-        public override int[] HandledBlocks => new int[1] { GVDispenserBlock.Index };
+        public override int[] HandledBlocks => [GVDispenserBlock.Index];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
@@ -24,7 +24,7 @@ namespace Game {
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) {
             DatabaseObject databaseObject = Project.GameDatabase.Database.FindDatabaseObject("GVDispenser", Project.GameDatabase.EntityTemplateType, true);
-            ValuesDictionary valuesDictionary = new ValuesDictionary();
+            ValuesDictionary valuesDictionary = new();
             valuesDictionary.PopulateFromDatabaseObject(databaseObject);
             valuesDictionary.GetValue<ValuesDictionary>("BlockEntity").SetValue("Coordinates", new Point3(x, y, z));
             Entity entity = Project.CreateEntity(valuesDictionary);

@@ -6,8 +6,8 @@ namespace Game {
     public class GVDisplayLedBlock : RotateableMountedGVElectricElementBlock {
         public const int Index = 874;
         readonly Texture2D[] textures = new Texture2D[6];
-        readonly string[] names = { "方块展示板", "图片显示器", "地层显示器" };
-        public Color topColor = new(4281917775);
+        readonly string[] names = ["方块展示板", "图片显示器", "地层显示器"];
+        public Color topColor = new(0xFF38E14F);
 
         public override void Initialize() {
             base.Initialize();

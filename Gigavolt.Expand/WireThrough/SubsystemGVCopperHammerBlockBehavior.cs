@@ -203,7 +203,7 @@ namespace Game {
             return true;
         }
 
-        public int[] DrawOrders => new[] { 114 };
+        public int[] DrawOrders => [114];
 
         public override void Dispose() {
             GVEWireThroughBlock.m_harnessTexture = null;

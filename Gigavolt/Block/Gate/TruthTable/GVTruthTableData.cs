@@ -100,7 +100,7 @@ namespace Game {
             replacedString = hexRegex.Replace(replacedString, m => long.Parse(m.Value.Substring(2), NumberStyles.HexNumber).ToString());
             replacedString = binRegex.Replace(replacedString, m => Convert.ToUInt32(m.Value.Substring(2), 2).ToString());
             replacedString = replacedString.Replace("\n", "").Replace("PI()", "3.141592653589793").Replace("E()", "2.718281828459045");
-            string[] linesString = replacedString.Split(new[] { "::" }, StringSplitOptions.None);
+            string[] linesString = replacedString.Split(["::"], StringSplitOptions.None);
             foreach (string lineString in linesString) {
                 Line line = new();
                 string[] temp = lineString.Split(':');
