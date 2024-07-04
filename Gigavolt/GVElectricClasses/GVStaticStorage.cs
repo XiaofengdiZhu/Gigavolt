@@ -39,5 +39,7 @@ namespace Game {
 
         public static bool GVHelperAvailable = false;
         public static bool GVHelperSlotActive = false;
+
+        public static HashSet<TerrainChunk> EditableItemBehaviorChangedChunks = [];
     }
 }

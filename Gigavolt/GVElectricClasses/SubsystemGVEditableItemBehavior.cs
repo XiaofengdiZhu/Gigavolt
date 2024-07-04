@@ -12,7 +12,7 @@ namespace Game {
         public readonly int m_contents;
 
         public readonly Dictionary<int, T> m_itemsData = new();
-        public readonly HashSet<int> m_existingIds = new();
+        public readonly HashSet<int> m_existingIds = [];
 
         public SubsystemGVEditableItemBehavior(int contents) => m_contents = contents;
 
@@ -69,6 +69,7 @@ namespace Game {
                     TerrainChunk chunkAtCell = terrain.GetChunkAtCoords(chunkX, chunkZ);
                     if (chunkAtCell == null) {
                         chunkAtCell = terrain.AllocateChunk(chunkX, chunkZ);
+                        GVStaticStorage.EditableItemBehaviorChangedChunks.Add(chunkAtCell);
                         while (chunkAtCell.ThreadState <= TerrainChunkState.NotLoaded) {
                             m_subsystemTerrain.TerrainUpdater.UpdateChunkSingleStep(chunkAtCell, 0);
                         }
@@ -78,7 +79,7 @@ namespace Game {
                         T data = new();
                         data.LoadString((string)block.Value);
                         int id = StoreItemDataAtUniqueId(data);
-                        m_subsystemTerrain.ChangeCell(point.X, point.Y, point.Z, SetIdToValue(value, StoreItemDataAtUniqueId(data)));
+                        m_subsystemTerrain.ChangeCell(point.X, point.Y, point.Z, SetIdToValue(value, id));
                         m_existingIds.Add(id);
                         m_itemsData[id] = data;
                     }
