@@ -34,7 +34,7 @@ namespace Game {
         public GVListMemoryBankData() {
             m_ID = GVStaticStorage.GetUniqueGVMBID();
             m_worldDirectory = null;
-            m_data = new List<uint>();
+            m_data = [];
             m_isDataInitialized = true;
             m_updateTime = DateTime.Now;
         }
@@ -78,7 +78,7 @@ namespace Game {
             }
         }
 
-        public override IEditableItemData Copy() => new GVListMemoryBankData(m_ID, m_worldDirectory, m_isDataInitialized ? new List<uint>(Data) : null, LastOutput);
+        public override IEditableItemData Copy() => new GVListMemoryBankData(m_ID, m_worldDirectory, m_isDataInitialized ? [..Data] : null, LastOutput);
 
         public override void LoadData() {
             if (m_worldDirectory != null) {

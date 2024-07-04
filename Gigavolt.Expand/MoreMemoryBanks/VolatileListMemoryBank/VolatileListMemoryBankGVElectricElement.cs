@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace Game {
     public class VolatileListMemoryBankGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVVolatileListMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
-        public SubsystemGameInfo m_subsystemGameInfo;
+        public readonly SubsystemGVVolatileListMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
 
+        public readonly GVVolatileListMemoryBankData m_data;
         public uint m_voltage;
         public uint m_lastBottomInput;
 
-        public VolatileListMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public VolatileListMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileListMemoryBankBlockBehavior>(true);
-            m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
+            m_data = m_SubsystemGVMemoryBankBlockBehavior.GetItemData(m_SubsystemGVMemoryBankBlockBehavior.GetIdFromValue(value));
         }
 
         public override void OnAdded() { }
@@ -56,11 +56,6 @@ namespace Game {
                     }
                 }
             }
-            GVVolatileListMemoryBankData memoryBankData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
-            if (memoryBankData == null) {
-                memoryBankData = new GVVolatileListMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), new List<uint>(256));
-                m_SubsystemGVMemoryBankBlockBehavior.SetBlockData(CellFaces[0].Point, memoryBankData);
-            }
             if (bottomConnected) {
                 if (bottomInput != m_lastBottomInput) {
                     m_lastBottomInput = bottomInput;
@@ -76,18 +71,18 @@ namespace Game {
                         int leftInputInt = MathUint.ToIntWithClamp(leftInput);
                         int rightInputInt = MathUint.ToIntWithClamp(rightInput);
                         int inInputInt = MathUint.ToIntWithClamp(inInput);
-                        List<uint> data = memoryBankData.Data;
+                        List<uint> data = m_data.Data;
                         switch (bottomInput) {
                             case 1u:
-                                m_voltage = memoryBankData.Read(rightInput);
+                                m_voltage = m_data.Read(rightInput);
                                 break;
                             case 2u:
                                 for (uint i = bigIndex; i >= smallIndex; i--) {
-                                    memoryBankData.Write(i, inInput);
+                                    m_data.Write(i, inInput);
                                 }
                                 break;
                             case 3u:
-                                if (smallIndexInt < memoryBankData.Data.Count) {
+                                if (smallIndexInt < m_data.Data.Count) {
                                     data.InsertRange(smallIndexInt, Enumerable.Repeat(inInput, bigIndexInt - smallIndexInt + 1));
                                 }
                                 else {
@@ -95,22 +90,22 @@ namespace Game {
                                     data.AddRange(Enumerable.Repeat(0u, smallIndexInt - data.Count));
                                     data.AddRange(Enumerable.Repeat(inInput, bigIndexInt - smallIndexInt + 1));
                                 }
-                                memoryBankData.m_updateTime = DateTime.Now;
-                                memoryBankData.m_dataChanged = true;
+                                m_data.m_updateTime = DateTime.Now;
+                                m_data.m_dataChanged = true;
                                 break;
                             case 4u:
-                                m_voltage = memoryBankData.Read(rightInput);
+                                m_voltage = m_data.Read(rightInput);
                                 if (rightInputInt < data.Count) {
                                     data.RemoveAt(rightInputInt);
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    memoryBankData.m_dataChanged = true;
+                                    m_data.m_updateTime = DateTime.Now;
+                                    m_data.m_dataChanged = true;
                                 }
                                 break;
                             case 5u:
                                 if (smallIndexInt < data.Count) {
                                     data.RemoveRange(smallIndexInt, Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt));
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    memoryBankData.m_dataChanged = true;
+                                    m_data.m_updateTime = DateTime.Now;
+                                    m_data.m_dataChanged = true;
                                 }
                                 break;
                             case 6u:
@@ -126,19 +121,19 @@ namespace Game {
                             case 8u:
                                 int oldCount = data.Count;
                                 if (smallIndexInt < data.Count) {
-                                    memoryBankData.Data = data.Where((u, i) => i >= smallIndex && i <= bigIndexInt && u == inInput).ToList();
-                                    m_voltage = (uint)(memoryBankData.Data.Count - oldCount);
+                                    m_data.Data = data.Where((u, i) => i >= smallIndex && i <= bigIndexInt && u == inInput).ToList();
+                                    m_voltage = (uint)(m_data.Data.Count - oldCount);
                                 }
                                 break;
                             case 9u:
                                 m_voltage = (uint)data.Where((u, i) => i >= smallIndex && i <= bigIndexInt && u == inInput).Count();
                                 break;
                             case 10u:
-                                memoryBankData.Write(leftInput, memoryBankData.Read(rightInput));
+                                m_data.Write(leftInput, m_data.Read(rightInput));
                                 break;
                             case 11u: {
-                                uint temp = memoryBankData.Read(rightInput);
-                                if (leftInputInt < memoryBankData.Data.Count) {
+                                uint temp = m_data.Read(rightInput);
+                                if (leftInputInt < m_data.Data.Count) {
                                     data.Insert(leftInputInt, temp);
                                 }
                                 else {
@@ -146,15 +141,15 @@ namespace Game {
                                     data.AddRange(Enumerable.Repeat(0u, leftInputInt - data.Count));
                                     data.Add(temp);
                                 }
-                                memoryBankData.m_updateTime = DateTime.Now;
-                                memoryBankData.m_dataChanged = true;
+                                m_data.m_updateTime = DateTime.Now;
+                                m_data.m_dataChanged = true;
                                 break;
                             }
                             case 12u:
                                 if (smallIndexInt < data.Count) {
                                     data.Reverse(smallIndexInt, Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt));
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    memoryBankData.m_dataChanged = true;
+                                    m_data.m_updateTime = DateTime.Now;
+                                    m_data.m_dataChanged = true;
                                 }
                                 break;
                             case 13u:
@@ -173,271 +168,271 @@ namespace Game {
                             case 16u:
                             case 32u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, (uint)(memoryBankData.Read(i) + (ulong)inInput));
+                                    m_data.Write(i, (uint)(m_data.Read(i) + (ulong)inInput));
                                 }
                                 break;
                             case 17u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) - inInput);
+                                    m_data.Write(i, m_data.Read(i) - inInput);
                                 }
                                 break;
                             case 33u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput - memoryBankData.Read(i));
+                                    m_data.Write(i, inInput - m_data.Read(i));
                                 }
                                 break;
                             case 18u:
                             case 34u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, (uint)(memoryBankData.Read(i) * (ulong)inInput));
+                                    m_data.Write(i, (uint)(m_data.Read(i) * (ulong)inInput));
                                 }
                                 break;
                             case 19u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput == 0u ? 0u : memoryBankData.Read(i) / inInput);
+                                    m_data.Write(i, inInput == 0u ? 0u : m_data.Read(i) / inInput);
                                 }
                                 break;
                             case 35u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    uint temp = memoryBankData.Read(i);
-                                    memoryBankData.Write(i, temp == 0u ? 0u : inInput / temp);
+                                    uint temp = m_data.Read(i);
+                                    m_data.Write(i, temp == 0u ? 0u : inInput / temp);
                                 }
                                 break;
                             case 20u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput == 0u ? 0u : memoryBankData.Read(i) % inInput);
+                                    m_data.Write(i, inInput == 0u ? 0u : m_data.Read(i) % inInput);
                                 }
                                 break;
                             case 36u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    uint temp = memoryBankData.Read(i);
-                                    memoryBankData.Write(i, temp == 0u ? 0u : inInput % temp);
+                                    uint temp = m_data.Read(i);
+                                    m_data.Write(i, temp == 0u ? 0u : inInput % temp);
                                 }
                                 break;
                             case 21u:
                             case 37u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) == inInput ? uint.MaxValue : 0u);
+                                    m_data.Write(i, m_data.Read(i) == inInput ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 22u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) > inInput ? uint.MaxValue : 0u);
+                                    m_data.Write(i, m_data.Read(i) > inInput ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 38u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput > memoryBankData.Read(i) ? uint.MaxValue : 0u);
+                                    m_data.Write(i, inInput > m_data.Read(i) ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 23u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) >= inInput ? uint.MaxValue : 0u);
+                                    m_data.Write(i, m_data.Read(i) >= inInput ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 39u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput >= memoryBankData.Read(i) ? uint.MaxValue : 0u);
+                                    m_data.Write(i, inInput >= m_data.Read(i) ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 24u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) < inInput ? uint.MaxValue : 0u);
+                                    m_data.Write(i, m_data.Read(i) < inInput ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 40u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput < memoryBankData.Read(i) ? uint.MaxValue : 0u);
+                                    m_data.Write(i, inInput < m_data.Read(i) ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 25u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) <= inInput ? uint.MaxValue : 0u);
+                                    m_data.Write(i, m_data.Read(i) <= inInput ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 41u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput <= memoryBankData.Read(i) ? uint.MaxValue : 0u);
+                                    m_data.Write(i, inInput <= m_data.Read(i) ? uint.MaxValue : 0u);
                                 }
                                 break;
                             case 26u:
                             case 42u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MathUint.Max(memoryBankData.Read(i), inInput));
+                                    m_data.Write(i, MathUint.Max(m_data.Read(i), inInput));
                                 }
                                 break;
                             case 27u:
                             case 43u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MathUint.Min(memoryBankData.Read(i), inInput));
+                                    m_data.Write(i, MathUint.Min(m_data.Read(i), inInput));
                                 }
                                 break;
                             case 28u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) << inInputInt);
+                                    m_data.Write(i, m_data.Read(i) << inInputInt);
                                 }
                                 break;
                             case 44u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput << MathUint.ToIntWithClamp(memoryBankData.Read(i)));
+                                    m_data.Write(i, inInput << MathUint.ToIntWithClamp(m_data.Read(i)));
                                 }
                                 break;
                             case 29u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) >> inInputInt);
+                                    m_data.Write(i, m_data.Read(i) >> inInputInt);
                                 }
                                 break;
                             case 45u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, inInput >> MathUint.ToIntWithClamp(memoryBankData.Read(i)));
+                                    m_data.Write(i, inInput >> MathUint.ToIntWithClamp(m_data.Read(i)));
                                 }
                                 break;
                             case 30u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, (uint)Math.Pow(memoryBankData.Read(i), inInput));
+                                    m_data.Write(i, (uint)Math.Pow(m_data.Read(i), inInput));
                                 }
                                 break;
                             case 46u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, (uint)Math.Pow(inInput, memoryBankData.Read(i)));
+                                    m_data.Write(i, (uint)Math.Pow(inInput, m_data.Read(i)));
                                 }
                                 break;
                             case 31u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, (uint)Math.Log(memoryBankData.Read(i), inInput));
+                                    m_data.Write(i, (uint)Math.Log(m_data.Read(i), inInput));
                                 }
                                 break;
                             case 47u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, (uint)Math.Log(inInput, memoryBankData.Read(i)));
+                                    m_data.Write(i, (uint)Math.Log(inInput, m_data.Read(i)));
                                 }
                                 break;
                             case 48u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Sin(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Sin(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 49u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Cos(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Cos(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 50u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Tan(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Tan(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 51u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Tan(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Tan(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 52u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Cos(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Cos(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 53u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Sin(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(1 / Math.Sin(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 54u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Asin(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Asin(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 55u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Acos(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Acos(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 56u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Atan(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Atan(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 57u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Sinh(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Sinh(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 58u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Cosh(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Cosh(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 59u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Tanh(Uint2Double(memoryBankData.Read(i)))));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Math.Tanh(Uint2Double(m_data.Read(i)))));
                                 }
                                 break;
                             case 60u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Uint2Double(memoryBankData.Read(i)) * Math.PI / 180));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Uint2Double(m_data.Read(i)) * Math.PI / 180));
                                 }
                                 break;
                             case 61u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Uint2Double(memoryBankData.Read(i)) * 180 / Math.PI));
+                                    m_data.Write(i, MoreOneInOneOutGVElectricElement.Double2Uint(Uint2Double(m_data.Read(i)) * 180 / Math.PI));
                                 }
                                 break;
                             case 62u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) ^ (1u << 31));
+                                    m_data.Write(i, m_data.Read(i) ^ (1u << 31));
                                 }
                                 break;
                             case 63u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    uint input = memoryBankData.Read(i);
-                                    memoryBankData.Write(i, input >> 31 == 0u ? ~input + 1 : ~(input - 1));
+                                    uint input = m_data.Read(i);
+                                    m_data.Write(i, input >> 31 == 0u ? ~input + 1 : ~(input - 1));
                                 }
                                 break;
                             case 64u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, ~memoryBankData.Read(i));
+                                    m_data.Write(i, ~m_data.Read(i));
                                 }
                                 break;
                             case 65u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) + 1);
+                                    m_data.Write(i, m_data.Read(i) + 1);
                                 }
                                 break;
                             case 66u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
-                                    memoryBankData.Write(i, memoryBankData.Read(i) - 1);
+                                    m_data.Write(i, m_data.Read(i) - 1);
                                 }
                                 break;
                             case 256u:
-                                memoryBankData.m_width = inInput;
-                                memoryBankData.m_updateTime = DateTime.Now;
+                                m_data.m_width = inInput;
+                                m_data.m_updateTime = DateTime.Now;
                                 break;
                             case 257u:
-                                memoryBankData.m_height = inInput;
-                                memoryBankData.m_updateTime = DateTime.Now;
+                                m_data.m_height = inInput;
+                                m_data.m_updateTime = DateTime.Now;
                                 break;
                             case 258u:
-                                memoryBankData.m_offset = inInput;
-                                memoryBankData.m_updateTime = DateTime.Now;
+                                m_data.m_offset = inInput;
+                                m_data.m_updateTime = DateTime.Now;
                                 break;
                             case 272u:
-                                m_voltage = memoryBankData.m_width;
+                                m_voltage = m_data.m_width;
                                 break;
                             case 273u:
-                                m_voltage = memoryBankData.m_height;
+                                m_voltage = m_data.m_height;
                                 break;
                             case 274u:
-                                m_voltage = memoryBankData.m_offset;
+                                m_voltage = m_data.m_offset;
                                 break;
                         }
                     }
                 }
             }
             else {
-                m_voltage = memoryBankData.Read(rightInput);
+                m_voltage = m_data.Read(rightInput);
             }
             if (!hasInput) {
-                m_voltage = memoryBankData.m_ID;
+                m_voltage = m_data.m_ID;
             }
             return m_voltage != voltage;
         }

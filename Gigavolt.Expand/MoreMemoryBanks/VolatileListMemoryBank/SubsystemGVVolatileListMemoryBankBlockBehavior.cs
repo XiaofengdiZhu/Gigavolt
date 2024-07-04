@@ -2,10 +2,13 @@
 using Engine;
 
 namespace Game {
-    public class SubsystemGVVolatileListMemoryBankBlockBehavior : SubsystemEditableItemBehavior<GVVolatileListMemoryBankData> {
-        public override int[] HandledBlocks => new[] { GVVolatileListMemoryBankBlock.Index };
+    public class SubsystemGVVolatileListMemoryBankBlockBehavior : SubsystemGVEditableItemBehavior<GVVolatileListMemoryBankData> {
+        public override int[] HandledBlocks => [GVVolatileListMemoryBankBlock.Index];
 
         public SubsystemGVVolatileListMemoryBankBlockBehavior() : base(GVVolatileListMemoryBankBlock.Index) { }
+
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             try {
@@ -15,18 +18,15 @@ namespace Game {
                 }
                 int value = inventory.GetSlotValue(slotIndex);
                 int count = inventory.GetSlotCount(slotIndex);
-                int id = Terrain.ExtractData(value);
-                GVVolatileListMemoryBankData memoryBankData = GetItemData(id);
-                memoryBankData = memoryBankData ?? new GVVolatileListMemoryBankData(GVStaticStorage.GetUniqueGVMBID());
+                int id = GetIdFromValue(value);
+                GVVolatileListMemoryBankData memoryBankData = GetItemData(id, true);
                 DialogsManager.ShowDialog(
                     componentPlayer.GuiWidget,
                     new EditGVListMemoryBankDialog(
                         memoryBankData,
                         delegate {
-                            int data = StoreItemDataAtUniqueId(memoryBankData);
-                            int value2 = Terrain.ReplaceData(value, data);
                             inventory.RemoveSlotItems(slotIndex, count);
-                            inventory.AddSlotItems(slotIndex, value2, count);
+                            inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id)), count);
                         }
                     )
                 );
@@ -38,33 +38,9 @@ namespace Game {
         }
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
-            try {
-                GVVolatileListMemoryBankData memoryBankData = GetBlockData(new Point3(x, y, z)) ?? new GVVolatileListMemoryBankData(GVStaticStorage.GetUniqueGVMBID());
-                DialogsManager.ShowDialog(
-                    componentPlayer.GuiWidget,
-                    new EditGVListMemoryBankDialog(
-                        memoryBankData,
-                        delegate {
-                            SetBlockData(new Point3(x, y, z), memoryBankData);
-                            int face = ((GVVolatileListMemoryBankBlock)BlocksManager.Blocks[GVVolatileListMemoryBankBlock.Index]).GetFace(value);
-                            SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                            GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
-                                x,
-                                y,
-                                z,
-                                face,
-                                0
-                            );
-                            if (GVElectricElement != null) {
-                                subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
-                            }
-                        }
-                    )
-                );
-            }
-            catch (Exception e) {
-                Log.Error(e);
-            }
+            int id = GetIdFromValue(value);
+            GVVolatileListMemoryBankData memoryBankData = GetItemData(id, true);
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVListMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
             return true;
         }
     }

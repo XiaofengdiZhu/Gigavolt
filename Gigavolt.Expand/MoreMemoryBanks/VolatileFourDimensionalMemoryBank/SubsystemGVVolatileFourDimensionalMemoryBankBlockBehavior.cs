@@ -1,69 +1,38 @@
-﻿using System;
-using Engine;
-
-namespace Game {
-    public class SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior : SubsystemEditableItemBehavior<GVVolatileFourDimensionalMemoryBankData> {
-        public override int[] HandledBlocks => new[] { GVVolatileFourDimensionalMemoryBankBlock.Index };
+﻿namespace Game {
+    public class SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior : SubsystemGVEditableItemBehavior<GVVolatileFourDimensionalMemoryBankData> {
+        public override int[] HandledBlocks => [GVVolatileFourDimensionalMemoryBankBlock.Index];
         public SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior() : base(GVVolatileListMemoryBankBlock.Index) { }
 
+
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
+
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
-            try {
-                bool isDragInProgress = componentPlayer.DragHostWidget.IsDragInProgress;
-                if (isDragInProgress) {
-                    return false;
-                }
-                int value = inventory.GetSlotValue(slotIndex);
-                int count = inventory.GetSlotCount(slotIndex);
-                int id = Terrain.ExtractData(value);
-                GVVolatileFourDimensionalMemoryBankData memoryBankData = GetItemData(id);
-                memoryBankData = memoryBankData ?? new GVVolatileFourDimensionalMemoryBankData(GVStaticStorage.GetUniqueGVMBID());
-                DialogsManager.ShowDialog(
-                    componentPlayer.GuiWidget,
-                    new EditGVFourDimensionalMemoryBankDialog(
-                        memoryBankData,
-                        delegate {
-                            int data = StoreItemDataAtUniqueId(memoryBankData);
-                            int value2 = Terrain.ReplaceData(value, data);
-                            inventory.RemoveSlotItems(slotIndex, count);
-                            inventory.AddSlotItems(slotIndex, value2, count);
-                        }
-                    )
-                );
+            bool isDragInProgress = componentPlayer.DragHostWidget.IsDragInProgress;
+            if (isDragInProgress) {
+                return false;
             }
-            catch (Exception e) {
-                Log.Error(e);
-            }
+            int value = inventory.GetSlotValue(slotIndex);
+            int count = inventory.GetSlotCount(slotIndex);
+            int id = GetIdFromValue(value);
+            GVVolatileFourDimensionalMemoryBankData memoryBankData = GetItemData(id, true);
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVFourDimensionalMemoryBankDialog(
+                    memoryBankData,
+                    delegate {
+                        inventory.RemoveSlotItems(slotIndex, count);
+                        inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id)), count);
+                    }
+                )
+            );
             return true;
         }
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
-            try {
-                GVVolatileFourDimensionalMemoryBankData memoryBankData = GetBlockData(new Point3(x, y, z)) ?? new GVVolatileFourDimensionalMemoryBankData(GVStaticStorage.GetUniqueGVMBID());
-                DialogsManager.ShowDialog(
-                    componentPlayer.GuiWidget,
-                    new EditGVFourDimensionalMemoryBankDialog(
-                        memoryBankData,
-                        delegate {
-                            SetBlockData(new Point3(x, y, z), memoryBankData);
-                            int face = ((GVVolatileListMemoryBankBlock)BlocksManager.Blocks[GVVolatileListMemoryBankBlock.Index]).GetFace(value);
-                            SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                            GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
-                                x,
-                                y,
-                                z,
-                                face,
-                                0
-                            );
-                            if (GVElectricElement != null) {
-                                subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
-                            }
-                        }
-                    )
-                );
-            }
-            catch (Exception e) {
-                Log.Error(e);
-            }
+            int id = GetIdFromValue(value);
+            GVVolatileFourDimensionalMemoryBankData memoryBankData = GetItemData(id, true);
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVFourDimensionalMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
             return true;
         }
     }

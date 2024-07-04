@@ -15,16 +15,16 @@
 		<MemberSubsystemTemplate Name="GVVolatileMemoryBankBlockBehavior" Guid="095c4cc2-2064-453e-8b46-13aee174f144" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="b28ff894-ed25-490e-b341-942310361adf" Value="Game.SubsystemGVVolatileMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVListMemoryBankBlockBehavior" Guid="8bfcf9dc-4e2d-443d-b02e-6f70079f77b5" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVListMemoryBankBlockBehavior" Guid="8bfcf9dc-4e2d-443d-b02e-6f70079f77b5" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="003607e2-97cc-4389-838a-faf393ed370c" Value="Game.SubsystemGVListMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVVolatileListMemoryBankBlockBehavior" Guid="b77494ea-c0bf-4ac4-9534-18f4dd49a0b3" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVVolatileListMemoryBankBlockBehavior" Guid="b77494ea-c0bf-4ac4-9534-18f4dd49a0b3" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="b78384b3-a2b2-41fe-9e95-2a6dea9d3765" Value="Game.SubsystemGVVolatileListMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVFourDimensionalMemoryBankBlockBehavior" Guid="6a51c8d2-2c5d-4340-9aad-899ff1da1cd6" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVFourDimensionalMemoryBankBlockBehavior" Guid="6a51c8d2-2c5d-4340-9aad-899ff1da1cd6" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="aa8241c6-c71d-4051-8c27-777c66c47d67" Value="Game.SubsystemGVFourDimensionalMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVVolatileFourDimensionalMemoryBankBlockBehavior" Guid="6aa3e402-de3e-4e7d-9a6b-64995e145348" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVVolatileFourDimensionalMemoryBankBlockBehavior" Guid="6aa3e402-de3e-4e7d-9a6b-64995e145348" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="8c913f0a-18c0-495b-9dc6-aba393dde631" Value="Game.SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVCrusherProjectileBlockBehavior" Guid="f91dbbdc-f15b-48c6-a149-d69b4573c329" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">

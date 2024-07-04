@@ -2,12 +2,16 @@ using System;
 
 namespace Game {
     public class VolatileFourDimensionalMemoryBankGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
+        public readonly SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
 
+        public readonly GVVolatileFourDimensionalMemoryBankData m_data;
         public uint m_voltage;
         public uint m_lastBottomInput;
 
-        public VolatileFourDimensionalMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
+        public VolatileFourDimensionalMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
+            m_data = m_SubsystemGVMemoryBankBlockBehavior.GetItemData(m_SubsystemGVMemoryBankBlockBehavior.GetIdFromValue(value));
+        }
 
         public override void OnAdded() { }
 
@@ -50,84 +54,81 @@ namespace Game {
                     }
                 }
             }
-            GVVolatileFourDimensionalMemoryBankData memoryBankData = m_SubsystemGVMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
-            if (memoryBankData != null) {
-                int x = (int)(rightInput & 0xffffu);
-                int y = (int)(rightInput >> 16);
-                int z = (int)(leftInput & 0xffffu);
-                int w = (int)(leftInput >> 16);
-                if (bottomConnected) {
-                    if (bottomInput != m_lastBottomInput) {
-                        m_lastBottomInput = bottomInput;
-                        if (bottomInput > 0u) {
-                            m_voltage = 0u;
-                            switch (bottomInput) {
-                                case 1u:
-                                    m_voltage = memoryBankData.Read(x, y, z, w);
-                                    break;
-                                case 2u:
-                                    memoryBankData.Write(
-                                        x,
-                                        y,
-                                        z,
-                                        w,
-                                        inInput
-                                    );
-                                    break;
-                                case 256u:
-                                    memoryBankData.m_xSize = MathUint.ToIntWithClamp(inInput);
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    break;
-                                case 257u:
-                                    memoryBankData.m_ySize = MathUint.ToIntWithClamp(inInput);
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    break;
-                                case 258u:
-                                    memoryBankData.m_xOffset = MathUint.ToIntWithClamp(inInput);
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    break;
-                                case 259u:
-                                    memoryBankData.m_yOffset = MathUint.ToIntWithClamp(inInput);
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    break;
-                                case 260u:
-                                    memoryBankData.m_zOffset = MathUint.ToIntWithClamp(inInput);
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    break;
-                                case 261u:
-                                    memoryBankData.m_wOffset = MathUint.ToIntWithClamp(inInput);
-                                    memoryBankData.m_updateTime = DateTime.Now;
-                                    break;
-                                case 272u:
-                                    m_voltage = (uint)memoryBankData.m_xSize;
-                                    break;
-                                case 273u:
-                                    m_voltage = (uint)memoryBankData.m_ySize;
-                                    break;
-                                case 274u:
-                                    m_voltage = (uint)memoryBankData.m_xOffset;
-                                    break;
-                                case 275u:
-                                    m_voltage = (uint)memoryBankData.m_yOffset;
-                                    break;
-                                case 276u:
-                                    m_voltage = (uint)memoryBankData.m_zOffset;
-                                    break;
-                                case 277u:
-                                    m_voltage = (uint)memoryBankData.m_wOffset;
-                                    break;
-                            }
+            int x = (int)(rightInput & 0xffffu);
+            int y = (int)(rightInput >> 16);
+            int z = (int)(leftInput & 0xffffu);
+            int w = (int)(leftInput >> 16);
+            if (bottomConnected) {
+                if (bottomInput != m_lastBottomInput) {
+                    m_lastBottomInput = bottomInput;
+                    if (bottomInput > 0u) {
+                        m_voltage = 0u;
+                        switch (bottomInput) {
+                            case 1u:
+                                m_voltage = m_data.Read(x, y, z, w);
+                                break;
+                            case 2u:
+                                m_data.Write(
+                                    x,
+                                    y,
+                                    z,
+                                    w,
+                                    inInput
+                                );
+                                break;
+                            case 256u:
+                                m_data.m_xSize = MathUint.ToIntWithClamp(inInput);
+                                m_data.m_updateTime = DateTime.Now;
+                                break;
+                            case 257u:
+                                m_data.m_ySize = MathUint.ToIntWithClamp(inInput);
+                                m_data.m_updateTime = DateTime.Now;
+                                break;
+                            case 258u:
+                                m_data.m_xOffset = MathUint.ToIntWithClamp(inInput);
+                                m_data.m_updateTime = DateTime.Now;
+                                break;
+                            case 259u:
+                                m_data.m_yOffset = MathUint.ToIntWithClamp(inInput);
+                                m_data.m_updateTime = DateTime.Now;
+                                break;
+                            case 260u:
+                                m_data.m_zOffset = MathUint.ToIntWithClamp(inInput);
+                                m_data.m_updateTime = DateTime.Now;
+                                break;
+                            case 261u:
+                                m_data.m_wOffset = MathUint.ToIntWithClamp(inInput);
+                                m_data.m_updateTime = DateTime.Now;
+                                break;
+                            case 272u:
+                                m_voltage = (uint)m_data.m_xSize;
+                                break;
+                            case 273u:
+                                m_voltage = (uint)m_data.m_ySize;
+                                break;
+                            case 274u:
+                                m_voltage = (uint)m_data.m_xOffset;
+                                break;
+                            case 275u:
+                                m_voltage = (uint)m_data.m_yOffset;
+                                break;
+                            case 276u:
+                                m_voltage = (uint)m_data.m_zOffset;
+                                break;
+                            case 277u:
+                                m_voltage = (uint)m_data.m_wOffset;
+                                break;
                         }
                     }
                 }
-                else {
-                    m_voltage = memoryBankData.Read(x, y, z, w);
-                }
-                if (!hasInput) {
-                    m_voltage = memoryBankData.m_ID;
-                }
-                memoryBankData.LastOutput = m_voltage;
             }
+            else {
+                m_voltage = m_data.Read(x, y, z, w);
+            }
+            if (!hasInput) {
+                m_voltage = m_data.m_ID;
+            }
+            m_data.LastOutput = m_voltage;
             return m_voltage != voltage;
         }
     }
