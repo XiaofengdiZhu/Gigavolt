@@ -50,10 +50,11 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new JavascriptMicrocontrollerGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new JavascriptMicrocontrollerGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), value, subterrainId);
 
         public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
-            GVJavascriptMicrocontrollerData blockData = subsystem.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true).GetBlockData(new Point3(x, y, z));
+            SubsystemGVJavascriptMicrocontrollerBlockBehavior blockBehavior = subsystem.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
+            GVJavascriptMicrocontrollerData blockData = blockBehavior.GetItemData(blockBehavior.GetIdFromValue(value));
             if (blockData == null) {
                 return null;
             }

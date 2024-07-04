@@ -17,13 +17,13 @@
 		<MemberSubsystemTemplate Name="GVMemoryBankBlockBehavior" Guid="e1051573-185b-079a-a47d-a5784972c271" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="484d126d-81e5-f7d6-1530-d281cff58ed2" Value="Game.SubsystemGVMemoryBankBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVMemoryBankCBlockBehavior" Guid="9c8968df-3758-3909-e6a7-87e8cf63c51e" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVMemoryBankCBlockBehavior" Guid="9c8968df-3758-3909-e6a7-87e8cf63c51e" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="6bc97f96-7cd4-4f72-f658-b4103abaea7e" Value="Game.SubsystemGVMemoryBankCBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVTruthTableCircuitBlockBehavior" Guid="aeff186f-b4e7-80fa-13fe-8d8afe1b9785" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVTruthTableCircuitBlockBehavior" Guid="aeff186f-b4e7-80fa-13fe-8d8afe1b9785" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="9dc13493-2178-2a61-7002-8593cf12982a" Value="Game.SubsystemGVTruthTableCircuitBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVTruthTableCircuitCBlockBehavior" Guid="41f0a0cc-c25f-f64a-3641-528b046a9786" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+		<MemberSubsystemTemplate Name="GVTruthTableCircuitCBlockBehavior" Guid="41f0a0cc-c25f-f64a-3641-528b046a9786" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="e2b5e6f9-788a-377e-3b6f-8feaa81c5808" Value="Game.SubsystemGVTruthTableCircuitCBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVAdjustableDelayGateBlockBehavior" Guid="3742de89-9569-07ab-9923-1e96cba9f279" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">

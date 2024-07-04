@@ -14,55 +14,32 @@ namespace Game {
 
         public uint[] m_inputs = (uint[])DefaultOutputs.Clone();
         public uint[] m_outputs = (uint[])DefaultOutputs.Clone();
-        public bool m_blockDataInitiated;
-        public GVJavascriptMicrocontrollerData m_blockData;
+        public readonly GVJavascriptMicrocontrollerData m_blockData;
         public readonly SubsystemGVJavascriptMicrocontrollerBlockBehavior m_subsystemJavascriptMicrocontrollerBlockBehavior;
-        public readonly SubsystemTerrain m_subsystemTerrain;
-        public bool m_dataChanged;
         public int m_executeAgainCircuitStep = -1;
 
-        public JavascriptMicrocontrollerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public JavascriptMicrocontrollerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemJavascriptMicrocontrollerBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
-            m_subsystemTerrain = subsystemGVElectricity.Project.FindSubsystem<SubsystemTerrain>(true);
+            m_blockData = m_subsystemJavascriptMicrocontrollerBlockBehavior.GetItemData(m_subsystemJavascriptMicrocontrollerBlockBehavior.GetIdFromValue(value));
         }
 
         public override uint GetOutputVoltage(int face) {
-            if (face == 123456) {
-                m_dataChanged = true;
-                return 0u;
-            }
-            if (m_blockDataInitiated) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
-                if (connectorDirection.HasValue) {
-                    int direction = (int)connectorDirection.Value;
-                    if (m_blockData.m_portsDefinition[direction] == 1) {
-                        return m_outputs[direction];
-                    }
+            GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
+            if (connectorDirection.HasValue) {
+                int direction = (int)connectorDirection.Value;
+                if (m_blockData.m_portsDefinition[direction] == 1) {
+                    return m_outputs[direction];
                 }
             }
             return 0u;
         }
 
         public override bool Simulate() {
-            bool flag = true;
-            if (!m_blockDataInitiated) {
-                m_blockData = m_subsystemJavascriptMicrocontrollerBlockBehavior.GetBlockData(CellFaces[0].Point);
-                flag = false;
-            }
-            if (m_dataChanged) {
-                m_blockData = m_subsystemJavascriptMicrocontrollerBlockBehavior.GetBlockData(CellFaces[0].Point);
-                m_dataChanged = false;
-                flag = false;
-            }
             if (m_blockData == null) {
-                m_blockDataInitiated = false;
                 return false;
             }
-            if (m_executeAgainCircuitStep == SubsystemGVElectricity.CircuitStep) {
-                flag = false;
-            }
+            bool flag = m_executeAgainCircuitStep != SubsystemGVElectricity.CircuitStep;
             m_executeAgainCircuitStep = -1;
-            m_blockDataInitiated = true;
             int rotation = Rotation;
             uint[] lastInputs = (uint[])m_inputs.Clone();
             m_inputs = (uint[])DefaultOutputs.Clone();
@@ -87,11 +64,20 @@ namespace Game {
                 Log.Error(e);
             }
             if (!m_blockData.m_portsDefinition.SequenceEqual(lastPortsDefinition)) {
-                TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(CellFaces[0].X, CellFaces[0].Z);
-                ++chunkAtCell.ModificationCounter;
-                m_subsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, true);
-                m_subsystemTerrain.m_modifiedCells[CellFaces[0].Point] = true;
-                m_dataChanged = true;
+                Point3 point = CellFaces[0].Point;
+                if (SubterrainId == 0) {
+                    TerrainChunk chunkAtCell = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetChunkAtCell(point.X, point.Z);
+                    ++chunkAtCell.ModificationCounter;
+                    SubsystemGVElectricity.SubsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, true);
+                    SubsystemGVElectricity.SubsystemTerrain.m_modifiedCells[point] = true;
+                }
+                else {
+                    GVSubterrainSystem system = GVStaticStorage.GVSubterrainSystemDictionary[SubterrainId];
+                    TerrainChunk chunkAtCell = system.Terrain.GetChunkAtCell(point.X, point.Z);
+                    ++chunkAtCell.ModificationCounter;
+                    system.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, true);
+                    system.m_modifiedCells[point] = true;
+                }
             }
             if (m_blockData.m_executeAgain > 0) {
                 m_executeAgainCircuitStep = SubsystemGVElectricity.CircuitStep + m_blockData.m_executeAgain;

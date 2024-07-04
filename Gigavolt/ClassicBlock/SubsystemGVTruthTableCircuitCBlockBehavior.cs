@@ -1,10 +1,11 @@
-using Engine;
-
 namespace Game {
-    public class SubsystemGVTruthTableCircuitCBlockBehavior : SubsystemEditableItemBehavior<TruthTableData> {
+    public class SubsystemGVTruthTableCircuitCBlockBehavior : SubsystemGVEditableItemBehavior<TruthTableData> {
         public override int[] HandledBlocks => [GVTruthTableCircuitCBlock.Index];
 
         public SubsystemGVTruthTableCircuitCBlockBehavior() : base(GVTruthTableCircuitCBlock.Index) { }
+
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
@@ -12,18 +13,17 @@ namespace Game {
             }
             int value = inventory.GetSlotValue(slotIndex);
             int count = inventory.GetSlotCount(slotIndex);
-            int id = Terrain.ExtractData(value);
-            TruthTableData TruthTableData = GetItemData(id);
-            TruthTableData = TruthTableData != null ? (TruthTableData)TruthTableData.Copy() : new TruthTableData();
+            int id = GetIdFromValue(value);
+            TruthTableData truthTableData = GetItemData(id, true);
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditTruthTableDialog(
-                    TruthTableData,
-                    delegate {
-                        int data = StoreItemDataAtUniqueId(TruthTableData);
-                        int value2 = Terrain.ReplaceData(value, data);
-                        inventory.RemoveSlotItems(slotIndex, count);
-                        inventory.AddSlotItems(slotIndex, value2, count);
+                    truthTableData,
+                    result => {
+                        if (result) {
+                            inventory.RemoveSlotItems(slotIndex, count);
+                            inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(truthTableData, id)), count);
+                        }
                     }
                 )
             );
@@ -31,24 +31,15 @@ namespace Game {
         }
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
-            TruthTableData TruthTableData = GetBlockData(new Point3(x, y, z)) ?? new TruthTableData();
+            int id = GetIdFromValue(value);
+            TruthTableData truthTableData = GetItemData(id, true);
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
                 new EditTruthTableDialog(
-                    TruthTableData,
-                    delegate {
-                        SetBlockData(new Point3(x, y, z), TruthTableData);
-                        int face = ((GVTruthTableCircuitCBlock)BlocksManager.Blocks[GVTruthTableCircuitCBlock.Index]).GetFace(value);
-                        SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
-                            x,
-                            y,
-                            z,
-                            face,
-                            0
-                        );
-                        if (GVElectricElement != null) {
-                            subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
+                    truthTableData,
+                    result => {
+                        if (result) {
+                            SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(truthTableData, id)));
                         }
                     }
                 )

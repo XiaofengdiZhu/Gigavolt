@@ -4,7 +4,7 @@ using Engine;
 
 namespace Game {
     public class EditGVTruthTableDialog : Dialog {
-        public readonly Action<bool> m_handler;
+        public readonly Action m_handler;
 
         public readonly ButtonWidget m_okButton;
         public readonly ButtonWidget m_cancelButton;
@@ -16,7 +16,7 @@ namespace Game {
 
         public bool m_ignoreTextChanges;
 
-        public EditGVTruthTableDialog(GVTruthTableData truthTableData, Action<bool> handler) {
+        public EditGVTruthTableDialog(GVTruthTableData truthTableData, Action handler) {
             try {
                 XElement node = ContentManager.Get<XElement>("Dialogs/EditGVTruthTableDialog");
                 LoadContents(this, node);
@@ -68,7 +68,9 @@ namespace Game {
 
         public void Dismiss(bool result) {
             DialogsManager.HideDialog(this);
-            m_handler?.Invoke(result);
+            if (m_handler != null && result) {
+                m_handler();
+            }
         }
     }
 }

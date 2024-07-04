@@ -1,14 +1,21 @@
 namespace Game {
     public class TruthTableCCircuitGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVTruthTableCircuitCBlockBehavior m_subsystemTruthTableCircuitBlockBehavior;
+        public readonly SubsystemGVTruthTableCircuitCBlockBehavior m_subsystemTruthTableCircuitBlockBehavior;
 
+        public TruthTableData m_data;
         public uint m_voltage;
 
-        public TruthTableCCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitCBlockBehavior>(true);
+        public TruthTableCCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitCBlockBehavior>(true);
+            m_data = m_subsystemTruthTableCircuitBlockBehavior.GetItemData(m_subsystemTruthTableCircuitBlockBehavior.GetIdFromValue(value));
+        }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
+            if (m_data == null) {
+                return false;
+            }
             uint voltage = m_voltage;
             uint num = 0;
             int rotation = Rotation;
@@ -39,8 +46,7 @@ namespace Game {
                     }
                 }
             }
-            TruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
-            m_voltage = blockData != null ? blockData.Data[num] > 0u ? uint.MaxValue : 0u : 0u;
+            m_voltage = m_data.Data[num] > 0u ? uint.MaxValue : 0u;
             return m_voltage != voltage;
         }
     }

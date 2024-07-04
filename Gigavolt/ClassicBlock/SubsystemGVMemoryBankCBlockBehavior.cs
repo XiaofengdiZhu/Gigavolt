@@ -1,10 +1,11 @@
-﻿using Engine;
-
-namespace Game {
-    public class SubsystemGVMemoryBankCBlockBehavior : SubsystemEditableItemBehavior<MemoryBankData> {
+﻿namespace Game {
+    public class SubsystemGVMemoryBankCBlockBehavior : SubsystemGVEditableItemBehavior<MemoryBankData> {
         public override int[] HandledBlocks => [GVMemoryBankCBlock.Index];
 
         public SubsystemGVMemoryBankCBlockBehavior() : base(GVMemoryBankCBlock.Index) { }
+
+        public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
+        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
@@ -12,19 +13,16 @@ namespace Game {
             }
             int value = inventory.GetSlotValue(slotIndex);
             int count = inventory.GetSlotCount(slotIndex);
-            int id = Terrain.ExtractData(value);
-            MemoryBankData memoryBankData = GetItemData(id);
-            memoryBankData = memoryBankData != null ? (MemoryBankData)memoryBankData.Copy() : new MemoryBankData();
+            int id = GetIdFromValue(value);
+            MemoryBankData memoryBankData = GetItemData(id, true);
             if (SettingsManager.UsePrimaryMemoryBank) {
                 DialogsManager.ShowDialog(
                     componentPlayer.GuiWidget,
                     new EditMemoryBankDialog(
                         memoryBankData,
                         () => {
-                            int data = StoreItemDataAtUniqueId(memoryBankData);
-                            int value2 = Terrain.ReplaceData(value, data);
                             inventory.RemoveSlotItems(slotIndex, count);
-                            inventory.AddSlotItems(slotIndex, value2, count);
+                            inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id)), count);
                         }
                     )
                 );
@@ -34,7 +32,7 @@ namespace Game {
                     componentPlayer.GuiWidget,
                     new EditMemoryBankDialogAPI(
                         memoryBankData,
-                        delegate {
+                        () => {
                             int data = StoreItemDataAtUniqueId(memoryBankData);
                             int value2 = Terrain.ReplaceData(value, data);
                             inventory.RemoveSlotItems(slotIndex, count);
@@ -47,52 +45,13 @@ namespace Game {
         }
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
-            MemoryBankData memoryBankData = GetBlockData(new Point3(x, y, z)) ?? new MemoryBankData();
+            int id = GetIdFromValue(value);
+            MemoryBankData memoryBankData = GetItemData(id, true);
             if (SettingsManager.UsePrimaryMemoryBank) {
-                DialogsManager.ShowDialog(
-                    componentPlayer.GuiWidget,
-                    new EditMemoryBankDialog(
-                        memoryBankData,
-                        () => {
-                            SetBlockData(new Point3(x, y, z), memoryBankData);
-                            int face = ((GVMemoryBankCBlock)BlocksManager.Blocks[GVMemoryBankCBlock.Index]).GetFace(value);
-                            SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                            GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(
-                                x,
-                                y,
-                                z,
-                                face,
-                                0
-                            );
-                            if (electricElement != null) {
-                                subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
-                            }
-                        }
-                    )
-                );
+                DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
             }
             else {
-                DialogsManager.ShowDialog(
-                    componentPlayer.GuiWidget,
-                    new EditMemoryBankDialogAPI(
-                        memoryBankData,
-                        delegate {
-                            SetBlockData(new Point3(x, y, z), memoryBankData);
-                            int face = ((GVMemoryBankCBlock)BlocksManager.Blocks[GVMemoryBankCBlock.Index]).GetFace(value);
-                            SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                            GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(
-                                x,
-                                y,
-                                z,
-                                face,
-                                0
-                            );
-                            if (electricElement != null) {
-                                subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
-                            }
-                        }
-                    )
-                );
+                DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditMemoryBankDialogAPI(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
             }
             return true;
         }

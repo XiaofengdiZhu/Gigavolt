@@ -4,7 +4,7 @@ using Engine;
 
 namespace Game {
     public class EditGVJavascriptMicrocontrollerDialog : Dialog {
-        public Action<bool> m_handler;
+        public readonly Action m_handler;
 
         public readonly ButtonWidget m_okButton;
         public readonly ButtonWidget m_cancelButton;
@@ -13,11 +13,11 @@ namespace Game {
         public readonly BitmapButtonWidget m_deleteDataButton;
         public readonly BevelledButtonWidget[] m_portButtons = new BevelledButtonWidget[5];
 
-        public GVJavascriptMicrocontrollerData m_blockData;
+        public readonly GVJavascriptMicrocontrollerData m_blockData;
         public readonly int[] m_tempPortsDefinition;
         public readonly string[] m_state2String = [LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 8), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 9), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 10)];
 
-        public EditGVJavascriptMicrocontrollerDialog(GVJavascriptMicrocontrollerData blockData, Action<bool> handler) {
+        public EditGVJavascriptMicrocontrollerDialog(GVJavascriptMicrocontrollerData blockData, Action handler) {
             try {
                 XElement node = ContentManager.Get<XElement>("Dialogs/EditGVJavascriptMicrocontrollerDialog");
                 LoadContents(this, node);
@@ -83,7 +83,9 @@ namespace Game {
 
         public void Dismiss(bool result) {
             DialogsManager.HideDialog(this);
-            m_handler?.Invoke(result);
+            if (m_handler != null && result) {
+                m_handler();
+            }
         }
     }
 }
