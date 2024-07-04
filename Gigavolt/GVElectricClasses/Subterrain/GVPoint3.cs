@@ -2,10 +2,10 @@
 
 namespace Game {
     public struct GVPoint3 : IEquatable<GVPoint3> {
-        public int X;
-        public int Y;
-        public int Z;
-        public uint SubterrainId;
+        public readonly int X;
+        public readonly int Y;
+        public readonly int Z;
+        public readonly uint SubterrainId;
 
         public GVPoint3(int x, int y, int z, uint subterrainId = 0) {
             X = x;

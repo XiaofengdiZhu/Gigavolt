@@ -20,7 +20,7 @@ namespace Game {
         public int m_executeAgain;
         public Prepared<Script> m_script;
         public string LastLoadedCode = string.Empty;
-        public JsEngine m_jsEngine;
+        public readonly JsEngine m_jsEngine;
 
         public Point3 m_position;
 

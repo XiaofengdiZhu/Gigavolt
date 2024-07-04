@@ -20,11 +20,11 @@ namespace Game {
         ];
 
 
-        public BlockMesh[] m_standaloneBlockMeshesByColor = new BlockMesh[8];
+        public readonly BlockMesh[] m_standaloneBlockMeshesByColor = new BlockMesh[8];
 
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[64];
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[64];
 
-        public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[64][];
+        public readonly BoundingBox[][] m_collisionBoxesByData = new BoundingBox[64][];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Leds");

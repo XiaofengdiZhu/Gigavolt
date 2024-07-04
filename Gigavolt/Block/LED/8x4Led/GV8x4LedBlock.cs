@@ -9,9 +9,9 @@ namespace Game {
 
         public BlockMesh m_standaloneBlockMesh;
 
-        public BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
+        public readonly BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
 
-        public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+        public readonly BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
         public Texture2D emptyTexture;
         readonly Texture2D[] fullTexture = new Texture2D[3];
 

@@ -7,7 +7,7 @@ namespace Game {
         public int Y = y;
         public int Z = z;
         public int Face = face;
-        public int Mask = mask;
+        public readonly int Mask = mask;
 
         public GVCellFace(CellFace cellFace) : this(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face) { }
         public GVCellFace(Point3 point3) : this(point3.X, point3.Y, point3.Z, 0) { }

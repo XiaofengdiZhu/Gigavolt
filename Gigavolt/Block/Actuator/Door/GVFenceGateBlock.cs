@@ -7,27 +7,27 @@ namespace Game {
     public class GVFenceGateBlock : FenceBlock, IGVElectricElementBlock, IPaintableBlock {
         public const int Index = 866;
         public DynamicArray<GVElectricConnectionPath> m_GVtmpConnectionPaths = [];
-        public float[] m_pivotDistance = [0.0625f, 0.0443f];
+        public readonly float[] m_pivotDistance = [0.0625f, 0.0443f];
 
-        public bool[] m_doubleSidedAndUseAlphaTest = [false, true];
+        public readonly bool[] m_doubleSidedAndUseAlphaTest = [false, true];
 
-        public int[] _m_defaultTextureSlot = [4, 58];
-        public int[] _m_coloredTextureSlot = [23, 58];
+        public readonly int[] _m_defaultTextureSlot = [4, 58];
+        public readonly int[] _m_coloredTextureSlot = [23, 58];
 
-        public Color[] _m_postColor = [Color.White, new Color(192, 192, 192)];
+        public readonly Color[] _m_postColor = [Color.White, new Color(192, 192, 192)];
 
-        public Color[] _m_unpaintedColor = [Color.White, new Color(80, 80, 80)];
+        public readonly Color[] _m_unpaintedColor = [Color.White, new Color(80, 80, 80)];
 
-        public BlockMesh[] _m_standaloneBlockMesh = new BlockMesh[2];
-        public BlockMesh[] _m_standaloneColoredBlockMesh = new BlockMesh[2];
-        public Matrix[] m_boneAbsoluteTransform = new Matrix[2];
-        public Matrix[] m_boneAbsoluteTransform2 = new Matrix[2];
-        public ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[2];
-        public ModelMeshPart[] m_modelMeshPart2 = new ModelMeshPart[2];
+        public readonly BlockMesh[] _m_standaloneBlockMesh = new BlockMesh[2];
+        public readonly BlockMesh[] _m_standaloneColoredBlockMesh = new BlockMesh[2];
+        public readonly Matrix[] m_boneAbsoluteTransform = new Matrix[2];
+        public readonly Matrix[] m_boneAbsoluteTransform2 = new Matrix[2];
+        public readonly ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[2];
+        public readonly ModelMeshPart[] m_modelMeshPart2 = new ModelMeshPart[2];
 
-        public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
-        public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
-        public string[] m_displayNamesByModel = ["GV木栅栏门", "GV铁栅栏门"];
+        public readonly Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
+        public readonly Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
+        public readonly string[] m_displayNamesByModel = ["GV木栅栏门", "GV铁栅栏门"];
 
         public override void Initialize() {
             Model[] model = new Model[2];

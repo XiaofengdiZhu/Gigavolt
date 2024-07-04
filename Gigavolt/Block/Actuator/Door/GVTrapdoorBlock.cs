@@ -7,13 +7,13 @@ namespace Game {
     public class GVTrapdoorBlock : Block, IGVElectricElementBlock {
         public const int Index = 865;
 
-        public BlockMesh[] m_standaloneBlockMesh = new BlockMesh[2];
-        public Matrix[] m_boneAbsoluteTransform = new Matrix[2];
-        public ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[2];
-        public Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
-        public Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
-        public string[] m_displayNamesByModel = ["GV木活板门", "GV铁活板门"];
-        public int[] m_creativeValuesByModel = [Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1))];
+        public readonly BlockMesh[] m_standaloneBlockMesh = new BlockMesh[2];
+        public readonly Matrix[] m_boneAbsoluteTransform = new Matrix[2];
+        public readonly ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[2];
+        public readonly Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
+        public readonly Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
+        public readonly string[] m_displayNamesByModel = ["GV木活板门", "GV铁活板门"];
+        public readonly int[] m_creativeValuesByModel = [Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1))];
 
         public override void Initialize() {
             base.Initialize();

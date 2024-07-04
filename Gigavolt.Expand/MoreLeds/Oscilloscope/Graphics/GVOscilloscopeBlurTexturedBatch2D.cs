@@ -1,7 +1,7 @@
 namespace Engine.Graphics {
     public class GVOscilloscopeBlurTexturedBatch2D : TexturedBatch2D {
-        public static GVOscilloscopeBlurShader1 GVOscilloscopeBlurShader1 = new();
-        public static GVOscilloscopeBlurShader2 GVOscilloscopeBlurShader2 = new();
+        public static readonly GVOscilloscopeBlurShader1 GVOscilloscopeBlurShader1 = new();
+        public static readonly GVOscilloscopeBlurShader2 GVOscilloscopeBlurShader2 = new();
 
         public void FlushBlur(RenderTarget2D tempRenderTarget) {
             RenderTarget2D originRenderTarget = Display.RenderTarget;

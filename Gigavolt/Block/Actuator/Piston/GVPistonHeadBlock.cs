@@ -6,7 +6,7 @@ namespace Game {
     public class GVPistonHeadBlock : Block {
         public const int Index = 855;
 
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[48];
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[48];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Pistons");

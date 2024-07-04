@@ -1,6 +1,6 @@
 namespace Game {
     public class TrapDoorGVElectricElement : GVElectricElement {
-        public SubsystemGVTrapdoorBlockBehavior m_subsystem;
+        public readonly SubsystemGVTrapdoorBlockBehavior m_subsystem;
         public int m_lastChangeCircuitStep;
 
         public bool m_needsReset;

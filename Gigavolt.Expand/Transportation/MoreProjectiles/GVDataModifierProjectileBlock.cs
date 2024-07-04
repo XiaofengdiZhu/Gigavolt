@@ -5,7 +5,7 @@ namespace Game {
     public class GVDataModifierProjectileBlock : Block {
         public const int Index = 884;
 
-        public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+        public readonly BlockMesh m_standaloneBlockMesh = new();
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/MoreProjectiles");

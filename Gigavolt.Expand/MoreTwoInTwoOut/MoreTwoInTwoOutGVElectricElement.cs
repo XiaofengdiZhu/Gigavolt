@@ -3,7 +3,7 @@ using Engine;
 
 namespace Game {
     public class MoreTwoInTwoOutGVElectricElement : RotateableGVElectricElement {
-        public int m_type;
+        public readonly int m_type;
         public uint m_output;
         public uint m_overflow;
 

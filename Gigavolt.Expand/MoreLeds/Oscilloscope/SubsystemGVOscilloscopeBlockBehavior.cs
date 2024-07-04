@@ -18,7 +18,7 @@ namespace Game {
         public TexturedBatch2D m_sunButtonBatch;
         public bool m_isInScreen;
 
-        public static int[] m_drawOrders = [110];
+        public static readonly int[] m_drawOrders = [110];
 
         public int[] DrawOrders => m_drawOrders;
 

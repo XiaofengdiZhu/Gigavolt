@@ -12,7 +12,7 @@ namespace Game {
 
         public Color m_color;
 
-        public Vector2[] m_centers = [
+        public readonly Vector2[] m_centers = [
             new Vector2(0f, 6f),
             new Vector2(-4f, 3f),
             new Vector2(-4f, -3f),
@@ -22,7 +22,7 @@ namespace Game {
             new Vector2(0f, 0f)
         ];
 
-        public Vector2[] m_sizes = [
+        public readonly Vector2[] m_sizes = [
             new Vector2(3.2f, 1f),
             new Vector2(1f, 2.3f),
             new Vector2(1f, 2.3f),

@@ -6,8 +6,8 @@ namespace Game {
     public class InventoryFetcherGVElectricElement : GVElectricElement {
         public readonly SubsystemBlockEntities m_subsystemBlockEntities;
         public readonly SubsystemPickables m_subsystemPickables;
-        public int m_originType;
-        public int m_originFace;
+        public readonly int m_originType;
+        public readonly int m_originFace;
         public uint m_voltage;
 
         public InventoryFetcherGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, Point3 point, uint subterrainId) : base(

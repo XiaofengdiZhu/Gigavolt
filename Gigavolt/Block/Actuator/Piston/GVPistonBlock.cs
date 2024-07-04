@@ -7,9 +7,9 @@ namespace Game {
     public class GVPistonBlock : Block, IGVElectricElementBlock {
         public const int Index = 854;
 
-        public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[4];
+        public readonly BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[4];
 
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[48];
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[48];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Pistons");

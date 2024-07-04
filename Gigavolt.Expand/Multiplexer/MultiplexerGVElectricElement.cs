@@ -50,10 +50,10 @@ namespace Game {
 
         public bool[] m_switches;
         public List<int>[] m_nodesRelations;
-        public Queue<int> m_nodesToUpdate;
+        public readonly Queue<int> m_nodesToUpdate;
 
         //1 parent A child a, 2 parent a child A...
-        public int[] switch2parentChildNode = [
+        public readonly int[] switch2parentChildNode = [
             -1,
             0,
             0,

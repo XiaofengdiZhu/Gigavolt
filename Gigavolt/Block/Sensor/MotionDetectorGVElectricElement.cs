@@ -26,7 +26,7 @@ namespace Game {
         public Vector2 m_corner2Transformed;
         public Vector2 m_corner1Transformed;
 
-        public DynamicArray<ComponentBody> m_bodies = new();
+        public readonly DynamicArray<ComponentBody> m_bodies = new();
 
         public MotionDetectorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemBodies = subsystemGVElectricity.Project.FindSubsystem<SubsystemBodies>(true);

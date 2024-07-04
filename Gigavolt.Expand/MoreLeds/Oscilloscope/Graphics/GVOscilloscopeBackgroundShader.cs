@@ -2,11 +2,11 @@ using Game;
 
 namespace Engine.Graphics {
     public class GVOscilloscopeBackgroundShader : Shader {
-        public ShaderParameter m_worldViewProjectionMatrixParameter;
-        public ShaderParameter m_horizontalSpacing;
-        public ShaderParameter m_verticalSpacing;
-        public ShaderParameter m_dashLength;
-        public ShaderParameter m_dashAndGapLength;
+        public readonly ShaderParameter m_worldViewProjectionMatrixParameter;
+        public readonly ShaderParameter m_horizontalSpacing;
+        public readonly ShaderParameter m_verticalSpacing;
+        public readonly ShaderParameter m_dashLength;
+        public readonly ShaderParameter m_dashAndGapLength;
 
         public readonly ShaderTransforms Transforms;
 

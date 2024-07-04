@@ -6,7 +6,7 @@ namespace Game {
 
         public uint m_voltage;
 
-        public static Random s_random = new();
+        public static readonly Random s_random = new();
 
         public RandomGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             uint? num = SubsystemGVElectricity.ReadPersistentVoltage(CellFaces[0].Point, SubterrainId);

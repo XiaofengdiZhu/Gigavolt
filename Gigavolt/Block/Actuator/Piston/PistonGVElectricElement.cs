@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Game {
     public class PistonGVElectricElement : GVElectricElement {
-        public SubsystemGVPistonBlockBehavior m_subsystemGVPistonBlockBehavior;
+        public readonly SubsystemGVPistonBlockBehavior m_subsystemGVPistonBlockBehavior;
         public int m_lastLength = -1;
         public uint m_lastInput;
         public readonly bool m_complex;

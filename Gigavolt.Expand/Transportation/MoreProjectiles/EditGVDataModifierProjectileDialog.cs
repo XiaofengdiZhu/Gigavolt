@@ -12,7 +12,7 @@ namespace Game {
 
         public readonly ButtonWidget m_okButton;
 
-        public BevelledButtonWidget[] m_binaryKeys = new BevelledButtonWidget[14];
+        public readonly BevelledButtonWidget[] m_binaryKeys = new BevelledButtonWidget[14];
 
         public int m_data;
 

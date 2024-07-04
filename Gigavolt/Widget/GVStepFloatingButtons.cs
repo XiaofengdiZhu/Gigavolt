@@ -13,7 +13,7 @@ namespace Game {
         public readonly RectangleWidget m_pauseIcon;
         public readonly Subtexture m_continueSubtexture;
         public readonly Subtexture m_pauseSubtexture;
-        public SubsystemGVElectricity m_subsystem;
+        public readonly SubsystemGVElectricity m_subsystem;
 
         public GVStepFloatingButtons(SubsystemGVElectricity subsystem) {
             XElement node = ContentManager.Get<XElement>("Widgets/GVStepFloatingButtons");

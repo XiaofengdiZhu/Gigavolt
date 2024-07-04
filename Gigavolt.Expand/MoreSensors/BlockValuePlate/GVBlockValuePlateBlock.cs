@@ -8,9 +8,9 @@ namespace Game {
 
         public BlockMesh m_standaloneBlockMeshesByMaterial;
 
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[16];
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[16];
 
-        public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[16][];
+        public readonly BoundingBox[][] m_collisionBoxesByData = new BoundingBox[16][];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/PressurePlate");

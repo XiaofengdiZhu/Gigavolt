@@ -6,9 +6,9 @@ namespace Game {
     public class GVWireBlock : Block, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 800;
 
-        public BlockMesh m_standaloneBlockMesh = new();
+        public readonly BlockMesh m_standaloneBlockMesh = new();
 
-        public BoundingBox[] m_collisionBoxesByFace = new BoundingBox[6];
+        public readonly BoundingBox[] m_collisionBoxesByFace = new BoundingBox[6];
 
         public static readonly Color WireColor = new(79, 36, 21);
 

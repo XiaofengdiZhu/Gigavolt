@@ -7,11 +7,11 @@ namespace Game {
     public class GVAttractorBlock : Block, IGVElectricElementBlock {
         public const int Index = 996;
 
-        public BlockMesh[] m_meshesByData = new BlockMesh[2];
+        public readonly BlockMesh[] m_meshesByData = new BlockMesh[2];
 
-        public BlockMesh m_standaloneMesh = new();
+        public readonly BlockMesh m_standaloneMesh = new();
 
-        public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[2][];
+        public readonly BoundingBox[][] m_collisionBoxesByData = new BoundingBox[2][];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/GVAttractor");

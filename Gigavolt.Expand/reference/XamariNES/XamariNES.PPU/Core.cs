@@ -88,7 +88,7 @@ namespace XamariNES.PPU {
         /// <summary>
         ///     PPU Memory Space
         /// </summary>
-        public Memory PPUMemory;
+        public readonly Memory PPUMemory;
 
         /// <summary>
         ///     PPU Constructor

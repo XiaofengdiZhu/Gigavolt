@@ -11,7 +11,7 @@ namespace Game {
         public readonly SubsystemParticles m_subsystemParticles;
         public readonly SubsystemGameWidgets m_subsystemViews;
         public readonly SubsystemGVBlockBehaviors m_subsystemGVBlockBehaviors;
-        public SubsystemGVElectricity m_subsystemGVElectricity;
+        public readonly SubsystemGVElectricity m_subsystemGVElectricity;
 
         public readonly uint ID;
         public readonly GVSubterrainSystem Parent;

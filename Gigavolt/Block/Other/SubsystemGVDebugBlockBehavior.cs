@@ -5,7 +5,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVDebugBlockBehavior : SubsystemEditableItemBehavior<GVDebugData> {
         public SubsystemGVElectricity m_subsystemGVElectricity;
-        public HashSet<DebugGVElectricElement> m_elementHashSet = [];
+        public readonly HashSet<DebugGVElectricElement> m_elementHashSet = [];
         public SubsystemGVDebugBlockBehavior() : base(GVDebugBlock.Index) { }
 
         public override void Load(ValuesDictionary valuesDictionary) {

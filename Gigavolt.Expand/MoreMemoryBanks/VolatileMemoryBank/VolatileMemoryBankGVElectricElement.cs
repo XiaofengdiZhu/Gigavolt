@@ -1,6 +1,6 @@
 namespace Game {
     public class VolatileMemoryBankGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVVolatileMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
+        public readonly SubsystemGVVolatileMemoryBankBlockBehavior m_SubsystemGVMemoryBankBlockBehavior;
 
         public readonly GVVolatileMemoryBankData m_data;
         public uint m_voltage;

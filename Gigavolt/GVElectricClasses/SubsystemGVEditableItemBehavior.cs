@@ -9,10 +9,10 @@ namespace Game {
         public SubsystemItemsScanner m_subsystemItemsScanner;
         public SubsystemTerrain m_subsystemTerrain;
 
-        public int m_contents;
+        public readonly int m_contents;
 
-        public Dictionary<int, T> m_itemsData = new();
-        public HashSet<int> m_existingIds = new();
+        public readonly Dictionary<int, T> m_itemsData = new();
+        public readonly HashSet<int> m_existingIds = new();
 
         public SubsystemGVEditableItemBehavior(int contents) => m_contents = contents;
 

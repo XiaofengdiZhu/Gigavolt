@@ -1,6 +1,6 @@
 namespace Game {
     public class CounterGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVCounterBlockBehavior m_subsystemGVCounterBlockBehavior;
+        public readonly SubsystemGVCounterBlockBehavior m_subsystemGVCounterBlockBehavior;
 
         public bool m_plusAllowed = true;
         public bool m_minusAllowed = true;
@@ -8,7 +8,7 @@ namespace Game {
         public uint m_counter;
         public bool m_overflow;
         public bool m_edited;
-        public GVCounterData m_blockData;
+        public readonly GVCounterData m_blockData;
 
         public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);

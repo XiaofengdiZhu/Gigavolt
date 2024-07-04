@@ -35,9 +35,9 @@ namespace Game {
         readonly List<uint[]> Records = new(5100);
         readonly TexturedBatch2D m_numberBatch;
         readonly TexturedBatch2D m_arrowButtonBatch;
-        public TexturedBatch2D m_autoButtonBatch;
-        public TexturedBatch2D m_moonButtonBatch;
-        public TexturedBatch2D m_sunButtonBatch;
+        public readonly TexturedBatch2D m_autoButtonBatch;
+        public readonly TexturedBatch2D m_moonButtonBatch;
+        public readonly TexturedBatch2D m_sunButtonBatch;
         readonly GVOscilloscopeWaveFlatBatch2D m_waveBatch;
         RenderTarget2D m_texture;
 

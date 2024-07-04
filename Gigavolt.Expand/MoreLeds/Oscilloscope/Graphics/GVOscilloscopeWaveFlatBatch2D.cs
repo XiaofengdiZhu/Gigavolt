@@ -11,8 +11,8 @@ namespace Engine.Graphics {
         public readonly DynamicArray<int> PointsIndices = [];
         public readonly DynamicArray<VertexPositionColor> LineStripeVertices = [];
         public readonly DynamicArray<int> LineStripeIndices = [];
-        public static GVOscilloscopeBackgroundShader GVOscilloscopeBackgroundShader = new();
-        public static GVOscilloscopeWaveShader GVOscilloscopeWaveShader = new();
+        public static readonly GVOscilloscopeBackgroundShader GVOscilloscopeBackgroundShader = new();
+        public static readonly GVOscilloscopeWaveShader GVOscilloscopeWaveShader = new();
         public override bool IsEmpty() => LineIndices.Count == 0 && TriangleIndices.Count == 0 && PointsIndices.Count == 0 && LineStripeIndices.Count == 0;
 
         public override void Clear() {

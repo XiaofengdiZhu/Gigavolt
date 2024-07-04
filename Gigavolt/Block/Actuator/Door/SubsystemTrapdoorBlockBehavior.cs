@@ -5,7 +5,7 @@ namespace Game {
     public class SubsystemGVTrapdoorBlockBehavior : SubsystemBlockBehavior, IGVBlockBehavior {
         public SubsystemGVElectricity m_subsystemElectricity;
 
-        public static Random m_random = new();
+        public static readonly Random m_random = new();
 
         public override int[] HandledBlocks => [GVTrapdoorBlock.Index];
 

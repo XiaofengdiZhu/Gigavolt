@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,19 +11,19 @@ namespace Game {
     public class GVMBExternalContentScreen : Screen {
         public Screen m_previousScreen;
 
-        public LabelWidget m_directoryLabel;
+        public readonly LabelWidget m_directoryLabel;
 
-        public ListPanelWidget m_directoryList;
+        public readonly ListPanelWidget m_directoryList;
 
-        public ButtonWidget m_upDirectoryButton;
-        public ButtonWidget m_exportButton;
-        public ButtonWidget m_actionButton;
+        public readonly ButtonWidget m_upDirectoryButton;
+        public readonly ButtonWidget m_exportButton;
+        public readonly ButtonWidget m_actionButton;
 
         public string m_path;
 
         public bool m_listDirty;
 
-        public IExternalContentProvider m_externalContentProvider = ExternalContentManager.DefaultProvider;
+        public readonly IExternalContentProvider m_externalContentProvider = ExternalContentManager.DefaultProvider;
 
         BaseEditGVMemoryBankDialog m_dialog;
         GVArrayData m_arrayData;

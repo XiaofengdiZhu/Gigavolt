@@ -1,6 +1,6 @@
 namespace Game {
     public class DoorGVElectricElement : GVElectricElement {
-        public SubsystemGVDoorBlockBehavior m_subsystem;
+        public readonly SubsystemGVDoorBlockBehavior m_subsystem;
         public int m_lastChangeCircuitStep;
 
         public bool m_needsReset;

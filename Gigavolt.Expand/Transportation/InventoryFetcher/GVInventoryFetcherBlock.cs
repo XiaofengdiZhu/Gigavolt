@@ -10,7 +10,7 @@ namespace Game {
         public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[32];
         public readonly BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[4];
         public readonly BoundingBox[][] m_collisionBoxesByData = new BoundingBox[32][];
-        public Texture2D[] m_textures = new Texture2D[3];
+        public readonly Texture2D[] m_textures = new Texture2D[3];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/GVFetcher");

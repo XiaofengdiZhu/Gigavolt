@@ -6,11 +6,11 @@ namespace Game {
     public class GVBatteryBlock : Block, IGVElectricElementBlock {
         public const int Index = 818;
 
-        public BlockMesh m_standaloneBlockMesh = new();
+        public readonly BlockMesh m_standaloneBlockMesh = new();
 
-        public BlockMesh m_blockMesh = new();
+        public readonly BlockMesh m_blockMesh = new();
 
-        public BoundingBox[] m_collisionBoxes = new BoundingBox[1];
+        public readonly BoundingBox[] m_collisionBoxes = new BoundingBox[1];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Battery");

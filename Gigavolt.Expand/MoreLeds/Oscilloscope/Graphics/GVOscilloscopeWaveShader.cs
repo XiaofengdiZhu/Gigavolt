@@ -2,7 +2,7 @@ using Game;
 
 namespace Engine.Graphics {
     public class GVOscilloscopeWaveShader : Shader {
-        public ShaderParameter m_worldViewProjectionMatrixParameter;
+        public readonly ShaderParameter m_worldViewProjectionMatrixParameter;
 
         public readonly ShaderTransforms Transforms;
 

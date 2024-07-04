@@ -10,7 +10,7 @@ namespace Game {
         public uint m_lastClockValue;
         public readonly SubsystemWeather m_subsystemWeather;
         public readonly SubsystemGameInfo m_subsystemGameInfo;
-        public SubsystemTimeOfDay m_subsystemTimeOfDay;
+        public readonly SubsystemTimeOfDay m_subsystemTimeOfDay;
         public readonly bool m_classic;
 
         public RealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) {

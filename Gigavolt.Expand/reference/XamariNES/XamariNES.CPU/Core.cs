@@ -45,7 +45,7 @@ namespace XamariNES.CPU {
         /// <summary>
         ///     CPU Memory Space
         /// </summary>
-        public Memory CPUMemory;
+        public readonly Memory CPUMemory;
 
         /// <summary>
         ///     Total Cycles the core has executed since starting

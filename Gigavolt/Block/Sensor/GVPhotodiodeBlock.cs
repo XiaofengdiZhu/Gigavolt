@@ -6,11 +6,11 @@ namespace Game {
     public class GVPhotodiodeBlock : MountedGVElectricElementBlock {
         public const int Index = 829;
 
-        public BlockMesh m_standaloneBlockMesh = new();
+        public readonly BlockMesh m_standaloneBlockMesh = new();
 
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[6];
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[6];
 
-        public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[6][];
+        public readonly BoundingBox[][] m_collisionBoxesByData = new BoundingBox[6][];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Photodiode");

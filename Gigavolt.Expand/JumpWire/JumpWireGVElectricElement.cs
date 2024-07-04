@@ -4,7 +4,7 @@ using Engine;
 
 namespace Game {
     public class JumpWireGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVJumpWireBlockBehavior m_subsystem;
+        public readonly SubsystemGVJumpWireBlockBehavior m_subsystem;
         public Vector3 m_position;
         public uint m_output;
         public uint m_tag;

@@ -15,8 +15,8 @@ namespace Game {
 
         public Task m_task;
         public volatile bool m_quitUpdateThread;
-        public AutoResetEvent m_updateEvent = new(true);
-        public ManualResetEvent m_pauseEvent = new(true);
+        public readonly AutoResetEvent m_updateEvent = new(true);
+        public readonly ManualResetEvent m_pauseEvent = new(true);
         public readonly object m_unpauseLock = new();
         public bool m_unpauseUpdateThread;
         public readonly object m_updateParametersLock = new();

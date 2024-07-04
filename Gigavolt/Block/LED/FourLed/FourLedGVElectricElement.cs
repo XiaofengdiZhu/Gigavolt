@@ -2,11 +2,11 @@ using Engine;
 
 namespace Game {
     public class FourLedGVElectricElement : MountedGVElectricElement {
-        public SubsystemGVGlow m_subsystemGlow;
+        public readonly SubsystemGVGlow m_subsystemGlow;
 
         public uint m_voltage;
         public Color m_color;
-        public GVGlowPoint[] m_glowPoints = new GVGlowPoint[4];
+        public readonly GVGlowPoint[] m_glowPoints = new GVGlowPoint[4];
 
         public FourLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVGlow>(true);
 

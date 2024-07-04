@@ -6,7 +6,7 @@ namespace Game {
         public SubsystemGVElectricity m_subsystemElectricity;
         public SubsystemAudio m_subsystemAudio;
 
-        public static Random m_random = new();
+        public static readonly Random m_random = new();
 
         public override int[] HandledBlocks => [GVDoorBlock.Index];
 

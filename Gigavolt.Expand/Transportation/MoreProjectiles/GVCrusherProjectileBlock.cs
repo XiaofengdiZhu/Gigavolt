@@ -6,7 +6,7 @@ namespace Game {
     public class GVCrusherProjectileBlock : Block {
         public const int Index = 883;
 
-        public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[2];
+        public readonly BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[2];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/MoreProjectiles");

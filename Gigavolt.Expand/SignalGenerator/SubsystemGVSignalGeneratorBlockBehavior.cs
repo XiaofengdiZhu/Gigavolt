@@ -11,7 +11,7 @@ namespace Game {
             public int NowAmplitude = nowAmplitude;
         }
 
-        public Dictionary<Point3, Data> m_datas = new();
+        public readonly Dictionary<Point3, Data> m_datas = new();
         public override int[] HandledBlocks => [GVSignalGeneratorBlock.Index];
 
         public override void Load(ValuesDictionary valuesDictionary) {

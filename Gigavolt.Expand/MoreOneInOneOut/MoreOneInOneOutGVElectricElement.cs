@@ -2,7 +2,7 @@ using System;
 
 namespace Game {
     public class MoreOneInOneOutGVElectricElement : RotateableGVElectricElement {
-        public int m_type;
+        public readonly int m_type;
         public uint m_output;
 
         public MoreOneInOneOutGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_type = GVMoreOneInOneOutBlock.GetType(Terrain.ExtractData(value));

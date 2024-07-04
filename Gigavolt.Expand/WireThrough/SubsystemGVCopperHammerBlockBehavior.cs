@@ -10,7 +10,7 @@ namespace Game {
     public class SubsystemGVCopperHammerBlockBehavior : SubsystemBlockBehavior, IDrawable {
         SubsystemAudio m_subsystemAudio;
         SubsystemGVElectricity m_subsystemGVElectricity;
-        public PrimitivesRenderer3D m_primitivesRenderer = new();
+        public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
         public FlatBatch3D m_flatBatch;
         public int m_texture;
         public bool m_isHarness;

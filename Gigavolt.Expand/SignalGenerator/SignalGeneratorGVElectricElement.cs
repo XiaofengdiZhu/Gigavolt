@@ -27,7 +27,7 @@ namespace Game {
         public readonly Point3 m_bottomPoint3;
         public bool firstRun = true;
         public int m_nowAmplitude;
-        public Random m_random = new();
+        public readonly Random m_random = new();
 
         public SignalGeneratorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace[] cellFaces, uint subterrainId) : base(subsystemGVElectricity, cellFaces, subterrainId) {
             m_subsystemTerrain = SubsystemGVElectricity.SubsystemTerrain;

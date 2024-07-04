@@ -12,12 +12,12 @@ using XamariNES.Emulator;
 namespace Game {
     public class SubsystemNesEmulatorBlockBehavior : SubsystemEditableItemBehavior<EditGVNesEmulatorDialogData>, IDrawable {
         public SubsystemGameInfo m_subsystemGameInfo;
-        public Dictionary<uint, HashSet<GVNesEmulatorGlowPoint>> m_glowPoints = new();
+        public readonly Dictionary<uint, HashSet<GVNesEmulatorGlowPoint>> m_glowPoints = new();
         public readonly NESEmulator _emu;
         readonly BitmapRenderer _renderer;
         byte[] _frame = new byte[256 * 240];
         public bool EmuStarted;
-        public bool RomValid;
+        public readonly bool RomValid;
 
         public SubsystemNesEmulatorBlockBehavior() : base(GVNesEmulatorBlock.Index) {
             _emu = new NESEmulator(GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.MoreLeds.NesEmulator.nestest.nes")), GetFrameFromEmulator);
@@ -80,9 +80,9 @@ namespace Game {
 
         DateTime _lastUpdatedTime = DateTime.MinValue;
 
-        public static int[] m_drawOrders = [111];
+        public static readonly int[] m_drawOrders = [111];
 
-        public TexturedBatch3D cachedBatch = new() {
+        public readonly TexturedBatch3D cachedBatch = new() {
             BlendState = BlendState.AlphaBlend,
             DepthStencilState = DepthStencilState.DepthRead,
             Layer = 0,

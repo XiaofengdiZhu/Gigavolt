@@ -9,19 +9,13 @@ namespace Game {
         public readonly GVTruthTableData m_data;
         public uint m_voltage;
         public List<GVTruthTableData.SectionInput> lastInputs = new() { Capacity = 20 };
-        public bool m_dataChanged;
 
         public TruthTableCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitBlockBehavior>(true);
             m_data = m_subsystemTruthTableCircuitBlockBehavior.GetItemData(m_subsystemTruthTableCircuitBlockBehavior.GetIdFromValue(value));
         }
 
-        public override uint GetOutputVoltage(int face) {
-            if (face == 123456) {
-                m_dataChanged = true;
-            }
-            return m_voltage;
-        }
+        public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override bool Simulate() {
             if (m_data == null) {
@@ -57,10 +51,6 @@ namespace Game {
                     if (lastInputs.Count > 16) {
                         lastInputs = lastInputs.GetRange(lastInputs.Count - 16, 16);
                     }
-                    m_voltage = m_data.Exe(lastInputs);
-                }
-                else if (m_dataChanged) {
-                    m_dataChanged = false;
                     m_voltage = m_data.Exe(lastInputs);
                 }
             }

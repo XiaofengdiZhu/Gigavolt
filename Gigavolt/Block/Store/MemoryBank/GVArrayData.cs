@@ -22,7 +22,7 @@ namespace Game {
         public DateTime m_cachedTexture2DTime;
         public RenderTarget2D m_cachedTerrainTexture2D;
         public DateTime m_cachedTerrainTexture2DTime;
-        public PrimitivesRenderer2D m_primitivesRenderer2D = new();
+        public readonly PrimitivesRenderer2D m_primitivesRenderer2D = new();
         public SamplerState m_samplerState;
         public virtual string ExportExtension => ".png";
         static readonly Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);

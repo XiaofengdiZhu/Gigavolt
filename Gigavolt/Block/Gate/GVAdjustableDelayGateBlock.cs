@@ -15,9 +15,9 @@ namespace Game {
         public GVAdjustableDelayGateBlock() : base("Models/GVAdjustableDelayGate", "Body", 0.375f) { }
 
         //顶部有颜色的部分
-        public BlockMesh[] m_blockMeshes_Top = new BlockMesh[24];
+        public readonly BlockMesh[] m_blockMeshes_Top = new BlockMesh[24];
 
-        public BlockMesh m_standaloneBlockMesh_Top = new();
+        public readonly BlockMesh m_standaloneBlockMesh_Top = new();
 
         public override void Initialize() {
             //原先获取主体模型部分保留

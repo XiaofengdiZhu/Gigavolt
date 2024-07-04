@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public abstract class GVWireThroughBlock : CubeBlock, IGVElectricWireElementBlock {
-        public int m_wiredTextureSlot;
+        public readonly int m_wiredTextureSlot;
 
         public readonly int m_unwiredTextureSlot;
 

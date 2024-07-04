@@ -7,25 +7,25 @@ using Engine.Graphics;
 
 namespace Game {
     public abstract class GVAttachedSignBlock : GVBaseSignBlock, IGVElectricElementBlock, IPaintableBlock {
-        public string m_modelName;
+        public readonly string m_modelName;
 
-        public int m_coloredTextureSlot;
+        public readonly int m_coloredTextureSlot;
 
-        public int m_postedSignBlockIndex;
+        public readonly int m_postedSignBlockIndex;
 
-        public BlockMesh m_standaloneBlockMesh = new();
+        public readonly BlockMesh m_standaloneBlockMesh = new();
 
-        public BlockMesh m_standaloneColoredBlockMesh = new();
+        public readonly BlockMesh m_standaloneColoredBlockMesh = new();
 
-        public BlockMesh[] m_blockMeshes = new BlockMesh[4];
+        public readonly BlockMesh[] m_blockMeshes = new BlockMesh[4];
 
-        public BlockMesh[] m_coloredBlockMeshes = new BlockMesh[4];
+        public readonly BlockMesh[] m_coloredBlockMeshes = new BlockMesh[4];
 
-        public BlockMesh[] m_surfaceMeshes = new BlockMesh[4];
+        public readonly BlockMesh[] m_surfaceMeshes = new BlockMesh[4];
 
-        public Vector3[] m_surfaceNormals = new Vector3[4];
+        public readonly Vector3[] m_surfaceNormals = new Vector3[4];
 
-        public BoundingBox[][] m_collisionBoxes = new BoundingBox[4][];
+        public readonly BoundingBox[][] m_collisionBoxes = new BoundingBox[4][];
 
         public GVAttachedSignBlock(string modelName, int coloredTextureSlot, int postedSignBlockIndex) {
             m_modelName = modelName;

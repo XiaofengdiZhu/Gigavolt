@@ -4,7 +4,7 @@ using Engine;
 namespace Game {
     public static class GVStaticStorage {
         public static readonly Random random = new();
-        public static Dictionary<uint, GVArrayData> GVMBIDDataDictionary = new();
+        public static readonly Dictionary<uint, GVArrayData> GVMBIDDataDictionary = new();
 
         public static uint GetUniqueGVMBID() {
             while (true) {
@@ -17,7 +17,7 @@ namespace Game {
             }
         }
 
-        public static Dictionary<uint, GVSubterrainSystem> GVSubterrainSystemDictionary = new();
+        public static readonly Dictionary<uint, GVSubterrainSystem> GVSubterrainSystemDictionary = new();
 
         public static uint GetUniqueGVSubterrainID() {
             while (true) {
@@ -30,10 +30,10 @@ namespace Game {
             }
         }
 
-        public static List<SoundGeneratorGVElectricElement> GVSGCFEEList = new();
+        public static readonly List<SoundGeneratorGVElectricElement> GVSGCFEEList = new();
 
         public static bool PreventChunkFromBeingFree = false;
-        public static HashSet<Point2> GVUsingChunks = new();
+        public static readonly HashSet<Point2> GVUsingChunks = new();
 
         public static bool DisplayVoltage = false;
 

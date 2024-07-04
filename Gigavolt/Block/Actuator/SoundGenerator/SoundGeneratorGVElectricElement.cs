@@ -4,9 +4,9 @@ using Engine.Audio;
 
 namespace Game {
     public class SoundGeneratorGVElectricElement : RotateableGVElectricElement {
-        public SubsystemNoise m_subsystemNoise;
-        public SubsystemAudio m_subsystemAudio;
-        public SubsystemGameInfo m_subsystemGameInfo;
+        public readonly SubsystemNoise m_subsystemNoise;
+        public readonly SubsystemAudio m_subsystemAudio;
+        public readonly SubsystemGameInfo m_subsystemGameInfo;
 
         public uint m_lastTopInput;
         public uint m_lastRightInput;

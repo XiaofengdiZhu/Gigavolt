@@ -16,7 +16,7 @@ namespace Game {
         public readonly ButtonWidget m_cancelButton;
 
         public readonly Action m_handler;
-        public GVPistonData m_pistonData;
+        public readonly GVPistonData m_pistonData;
 
         public int m_speed;
 
@@ -40,7 +40,7 @@ namespace Game {
             "4x快"
         ];
 
-        public string m_languageType;
+        public readonly string m_languageType;
 
         public EditGVPistonDialog(GVPistonMode mode, GVPistonData pistonData, Action handler) {
             try {

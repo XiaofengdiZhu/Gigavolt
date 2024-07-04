@@ -6,12 +6,12 @@ using GameEntitySystem;
 
 namespace Game {
     public class GVSubterrainRenderer : IDisposable {
-        public GVSubterrainSystem m_subterrainSystem;
-        public SubsystemSky m_subsystemSky;
+        public readonly GVSubterrainSystem m_subterrainSystem;
+        public readonly SubsystemSky m_subsystemSky;
         public SubsystemAnimatedTextures m_subsystemAnimatedTextures;
 
-        public DynamicArray<TerrainChunk> m_chunksToDraw = [];
-        public static DynamicArray<int> m_tmpIndices = [];
+        public readonly DynamicArray<TerrainChunk> m_chunksToDraw = [];
+        public static readonly DynamicArray<int> m_tmpIndices = [];
 
         public static Shader OpaqueShader;
         public static Shader AlphatestedShader;

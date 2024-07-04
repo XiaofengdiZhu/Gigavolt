@@ -9,9 +9,9 @@ namespace Game {
 
         public BlockMesh m_standaloneBlockMesh;
 
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[6];
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[6];
 
-        public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[6][];
+        public readonly BoundingBox[][] m_collisionBoxesByData = new BoundingBox[6][];
 
         public override void Initialize() {
             Model model = ContentManager.Get<Model>("Models/Leds");

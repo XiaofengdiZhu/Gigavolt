@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class OscilloscopeGVElectricElement : MountedGVElectricElement {
-        public SubsystemGVOscilloscopeBlockBehavior m_subsystemGlow;
+        public readonly SubsystemGVOscilloscopeBlockBehavior m_subsystemGlow;
         public GVOscilloscopeData m_data;
         public uint m_lastInInput;
         public int m_lastCircuitStep;

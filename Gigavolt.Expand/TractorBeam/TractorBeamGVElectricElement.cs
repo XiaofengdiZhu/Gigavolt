@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class TractorBeamGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVTractorBeamBlockBehavior m_subsystemBlockBehavior;
+        public readonly SubsystemGVTractorBeamBlockBehavior m_subsystemBlockBehavior;
         public GVSubterrainSystem m_subterrainSystem;
         public uint m_inputTop;
         public uint m_inputRight;

@@ -3,7 +3,7 @@ using Engine;
 
 namespace Game {
     public class EditGVSignCDialog : Dialog {
-        public SubsystemGVSignBlockCBehavior m_subsystemSignBlockBehavior;
+        public readonly SubsystemGVSignBlockCBehavior m_subsystemSignBlockBehavior;
 
         public Point3 m_signPoint;
 
@@ -24,7 +24,7 @@ namespace Game {
         public readonly ButtonWidget m_urlButton;
         public readonly ButtonWidget m_linesButton;
 
-        public Color[] m_colors = [
+        public readonly Color[] m_colors = [
             new Color(0, 0, 0),
             new Color(140, 0, 0),
             new Color(0, 112, 0),

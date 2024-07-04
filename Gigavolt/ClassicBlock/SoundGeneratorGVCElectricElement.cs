@@ -10,12 +10,12 @@ namespace Game {
         public readonly SoundParticleSystem m_particleSystem;
         public readonly GVSubterrainSystem m_subterrainSystem;
 
-        public Random m_random = new();
+        public readonly Random m_random = new();
 
         public uint m_lastToneInput;
         public double m_playAllowedTime;
 
-        public string[] m_tones = [
+        public readonly string[] m_tones = [
             "",
             "Bell",
             "Organ",
@@ -34,7 +34,7 @@ namespace Game {
             "Piano"
         ];
 
-        public int[] m_maxOctaves = [
+        public readonly int[] m_maxOctaves = [
             0,
             5,
             5,
@@ -53,7 +53,7 @@ namespace Game {
             6
         ];
 
-        public string[] m_drums = [
+        public readonly string[] m_drums = [
             "Snare",
             "BassDrum",
             "ClosedHiHat",

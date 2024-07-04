@@ -4,7 +4,7 @@ using Engine;
 
 namespace Game {
     public class GuidedDispenserGVElectricElement : GVElectricElement {
-        public SubsystemBlockEntities m_subsystemBlockEntities;
+        public readonly SubsystemBlockEntities m_subsystemBlockEntities;
         public uint m_voltage;
 
         public GuidedDispenserGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(

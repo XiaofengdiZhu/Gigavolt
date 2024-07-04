@@ -2,9 +2,9 @@ using Engine;
 
 namespace Game {
     public class ButtonGVElectricElement : MountedGVElectricElement {
-        public SubsystemGVButtonBlockBehavior m_subsystemGVButtonBlockBehavior;
+        public readonly SubsystemGVButtonBlockBehavior m_subsystemGVButtonBlockBehavior;
 
-        public GVButtonData m_blockData;
+        public readonly GVButtonData m_blockData;
         public uint m_voltage;
         public bool m_wasPressed;
 

@@ -2,12 +2,12 @@ using Game;
 
 namespace Engine.Graphics {
     public class GVOscilloscopeBlurShader1 : Shader {
-        public ShaderParameter m_worldViewProjectionMatrixParameter;
+        public readonly ShaderParameter m_worldViewProjectionMatrixParameter;
 
-        public ShaderParameter m_horizontal;
-        public ShaderParameter m_textureSizeParameter;
-        public ShaderParameter m_textureParameter;
-        public ShaderParameter m_samplerStateParameter;
+        public readonly ShaderParameter m_horizontal;
+        public readonly ShaderParameter m_textureSizeParameter;
+        public readonly ShaderParameter m_textureParameter;
+        public readonly ShaderParameter m_samplerStateParameter;
 
         public readonly ShaderTransforms Transforms;
 

@@ -943,13 +943,13 @@ namespace Game {
 
         public bool debugMode;
         public bool keyboardDebug = false;
-        public Dictionary<ComponentPlayer, GVStepFloatingButtons> m_debugButtonsDictionary = new();
+        public readonly Dictionary<ComponentPlayer, GVStepFloatingButtons> m_debugButtonsDictionary = new();
         public DateTime lastUpdate;
-        public Queue<DateTime> last1000Updates = new(1002);
-        public PrimitivesRenderer3D m_primitivesRenderer = new();
+        public readonly Queue<DateTime> last1000Updates = new(1002);
+        public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
         public FlatBatch3D m_flatBatch;
         public TexturedBatch3D m_8NumberBatch;
-        public List<Vector3> m_debugDrawPositions = [];
+        public readonly List<Vector3> m_debugDrawPositions = [];
 
         public SubsystemTime SubsystemTime { get; set; }
 
@@ -963,7 +963,7 @@ namespace Game {
         public int CircuitStep { get; set; }
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public static GVFurnitureBlock GVFurnitureBlock = new();
+        public static readonly GVFurnitureBlock GVFurnitureBlock = new();
 
         public void AddSubterrain(uint id) {
             m_pointsToUpdate.Add(id, new Dictionary<Point3, bool>());

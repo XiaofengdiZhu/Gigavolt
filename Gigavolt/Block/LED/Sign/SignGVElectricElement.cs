@@ -5,7 +5,7 @@ using Engine;
 
 namespace Game {
     public class SignGVElectricElement : MountedGVElectricElement {
-        public SubsystemGVSignBlockBehavior m_subsystemGVSignBlockBehavior;
+        public readonly SubsystemGVSignBlockBehavior m_subsystemGVSignBlockBehavior;
         public GVSignTextData m_glowPoint;
         public Vector3 m_originalPosition;
         public uint m_inputIn;

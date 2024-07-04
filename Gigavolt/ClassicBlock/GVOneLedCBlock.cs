@@ -9,9 +9,9 @@ namespace Game {
 
         public BlockMesh m_standaloneBlockMesh;
 
-        public BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
+        public readonly BlockMesh[] m_blockMeshesByFace = new BlockMesh[6];
 
-        public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
+        public readonly BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
 
         public override void Initialize() {
             ModelMesh modelMesh = ContentManager.Get<Model>("Models/Leds").FindMesh("OneLed");

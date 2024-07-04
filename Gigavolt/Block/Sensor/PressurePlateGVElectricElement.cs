@@ -6,7 +6,7 @@ namespace Game {
         public uint m_voltage;
         public int m_lastPressFrameIndex;
         public float m_pressure;
-        public bool m_classic;
+        public readonly bool m_classic;
 
         public PressurePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) => m_classic = classic;
 

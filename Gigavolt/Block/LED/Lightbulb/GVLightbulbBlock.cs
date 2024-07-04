@@ -7,18 +7,18 @@ namespace Game {
     public class GVLightbulbBlock : MountedGVElectricElementBlock, IPaintableBlock {
         public const int Index = 819;
 
-        public BlockMesh m_standaloneBulbBlockMesh = new();
+        public readonly BlockMesh m_standaloneBulbBlockMesh = new();
 
-        public BlockMesh m_standaloneSidesBlockMesh = new();
+        public readonly BlockMesh m_standaloneSidesBlockMesh = new();
 
-        public BlockMesh[] m_bulbBlockMeshes = new BlockMesh[6];
+        public readonly BlockMesh[] m_bulbBlockMeshes = new BlockMesh[6];
 
-        public BlockMesh[] m_bulbBlockMeshesLit = new BlockMesh[6];
+        public readonly BlockMesh[] m_bulbBlockMeshesLit = new BlockMesh[6];
 
-        public BlockMesh[] m_sidesBlockMeshes = new BlockMesh[6];
+        public readonly BlockMesh[] m_sidesBlockMeshes = new BlockMesh[6];
 
-        public BoundingBox[][] m_collisionBoxes = new BoundingBox[6][];
-        public new static string fName = "GVLightbulbBlock";
+        public readonly BoundingBox[][] m_collisionBoxes = new BoundingBox[6][];
+        public new static readonly string fName = "GVLightbulbBlock";
         public Color m_copperColor = new(118, 56, 32);
 
         public override void Initialize() {

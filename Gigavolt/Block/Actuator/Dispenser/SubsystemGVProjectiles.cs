@@ -47,15 +47,15 @@ namespace Game {
 
         public SubsystemFireBlockBehavior m_subsystemFireBlockBehavior;
 
-        public List<Projectile> m_projectiles = [];
+        public readonly List<Projectile> m_projectiles = [];
 
-        public List<Projectile> m_projectilesToRemove = [];
+        public readonly List<Projectile> m_projectilesToRemove = [];
 
-        public PrimitivesRenderer3D m_primitivesRenderer = new();
+        public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
 
-        public Random m_random = new();
+        public readonly Random m_random = new();
 
-        public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new();
+        public readonly DrawBlockEnvironmentData m_drawBlockEnvironmentData = new();
 
         public const float BodyInflateAmount = 0.2f;
 

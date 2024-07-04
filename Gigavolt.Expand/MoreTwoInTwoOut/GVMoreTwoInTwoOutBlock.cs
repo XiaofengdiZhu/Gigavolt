@@ -5,9 +5,9 @@ using Engine.Graphics;
 namespace Game {
     public class GVMoreTwoInTwoOutBlock : RotateableMountedGVElectricElementBlock {
         public const int Index = 879;
-        public Texture2D[] textures = new Texture2D[16];
+        public readonly Texture2D[] textures = new Texture2D[16];
 
-        public string[] textureNames = [
+        public readonly string[] textureNames = [
             "Adder",
             "Subtracter",
             "Multiplier",

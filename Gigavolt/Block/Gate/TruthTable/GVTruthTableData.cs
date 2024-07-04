@@ -90,8 +90,8 @@ namespace Game {
             return 0u;
         }
 
-        public Regex hexRegex = new(@"0[xX][\dabcdefABCDEF]+");
-        public Regex binRegex = new(@"0[bB][01]+");
+        public readonly Regex hexRegex = new(@"0[xX][\dabcdefABCDEF]+");
+        public readonly Regex binRegex = new(@"0[bB][01]+");
 
         public void LoadString(string str, out string error) {
             error = null;
@@ -155,9 +155,9 @@ namespace Game {
             LastLoadedString = str;
         }
 
-        public Regex addBracketRegex = new(@"(i\d)");
+        public readonly Regex addBracketRegex = new(@"(i\d)");
 
-        public string[] notCookOperators = [
+        public readonly string[] notCookOperators = [
             "=",
             "!",
             "not",

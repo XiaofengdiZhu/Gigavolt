@@ -34,7 +34,7 @@ namespace Game {
         public readonly ButtonWidget ButtonOk;
         public readonly ButtonWidget ButtonCancel;
 
-        public uint m_originalVoltage;
+        public readonly uint m_originalVoltage;
         public uint m_lastValidVoltage;
         public string m_lastOctString = "0";
         public string m_lastDecString = "0";

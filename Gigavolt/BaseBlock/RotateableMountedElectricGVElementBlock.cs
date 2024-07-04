@@ -7,9 +7,9 @@ namespace Game {
     public abstract class RotateableMountedGVElectricElementBlock : MountedGVElectricElementBlock {
         public string m_modelName;
 
-        public string m_meshName;
+        public readonly string m_meshName;
 
-        public float m_centerBoxSize;
+        public readonly float m_centerBoxSize;
 
         public readonly BlockMesh[] m_blockMeshes = new BlockMesh[24];
 

@@ -7,7 +7,7 @@ namespace Game {
 
         public double? m_lastDispenseTime;
 
-        public SubsystemBlockEntities m_subsystemBlockEntities;
+        public readonly SubsystemBlockEntities m_subsystemBlockEntities;
 
         public DispenserGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(
             subsystemGVElectricity,

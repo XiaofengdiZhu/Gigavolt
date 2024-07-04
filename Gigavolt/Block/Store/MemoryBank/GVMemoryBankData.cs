@@ -18,7 +18,7 @@ namespace Game {
         public uint m_height;
         public bool m_dataChanged;
 
-        public static PngEncoder DefaultPngEncoder = new() { ColorType = PngColorType.RgbWithAlpha, BitDepth = PngBitDepth.Bit8, TransparentColorMode = PngTransparentColorMode.Preserve };
+        public static readonly PngEncoder DefaultPngEncoder = new() { ColorType = PngColorType.RgbWithAlpha, BitDepth = PngBitDepth.Bit8, TransparentColorMode = PngTransparentColorMode.Preserve };
 
         public uint[] Data {
             get => m_data;

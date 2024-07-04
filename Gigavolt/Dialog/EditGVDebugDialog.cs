@@ -23,7 +23,7 @@ namespace Game {
 
         public readonly SubsystemGVElectricity m_subsystemGVElectricity;
 
-        public string m_lastSpeedText;
+        public readonly string m_lastSpeedText;
 
         public EditGVDebugDialog(GVDebugData blockData, SubsystemGVElectricity subsystem, Action handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVDebugDialog");

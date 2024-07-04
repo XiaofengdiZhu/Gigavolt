@@ -3,19 +3,19 @@ using System.Xml.Linq;
 
 namespace Game {
     public class EditGVNesEmulatorDialog : Dialog {
-        public Action m_handler;
+        public readonly Action m_handler;
 
-        public ButtonWidget m_okButton;
+        public readonly ButtonWidget m_okButton;
 
-        public ButtonWidget m_cancelButton;
+        public readonly ButtonWidget m_cancelButton;
 
-        public TextBoxWidget m_romPathTextBox;
+        public readonly TextBoxWidget m_romPathTextBox;
 
-        public EditGVNesEmulatorDialogData m_blockData;
+        public readonly EditGVNesEmulatorDialogData m_blockData;
 
-        public SubsystemNesEmulatorBlockBehavior m_subsystem;
+        public readonly SubsystemNesEmulatorBlockBehavior m_subsystem;
 
-        public string m_lastRomPath;
+        public readonly string m_lastRomPath;
 
         public EditGVNesEmulatorDialog(EditGVNesEmulatorDialogData blockData, SubsystemNesEmulatorBlockBehavior subsystem, Action handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVNesEmulatorDialog");

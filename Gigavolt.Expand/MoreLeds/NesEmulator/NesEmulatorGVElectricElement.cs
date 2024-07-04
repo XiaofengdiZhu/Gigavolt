@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class NesEmulatorGVElectricElement : RotateableGVElectricElement {
-        public SubsystemNesEmulatorBlockBehavior m_subsystemNesEmulatorBlockBehavior;
+        public readonly SubsystemNesEmulatorBlockBehavior m_subsystemNesEmulatorBlockBehavior;
         public GVNesEmulatorGlowPoint m_glowPoint;
 
         public NesEmulatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemNesEmulatorBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemNesEmulatorBlockBehavior>(true);

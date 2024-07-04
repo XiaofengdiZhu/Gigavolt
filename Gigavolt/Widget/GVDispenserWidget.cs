@@ -3,21 +3,21 @@ using Engine;
 
 namespace Game {
     public class GVDispenserWidget : CanvasWidget {
-        public SubsystemTerrain m_subsystemTerrain;
+        public readonly SubsystemTerrain m_subsystemTerrain;
 
-        public ComponentGVDispenser m_componentDispenser;
+        public readonly ComponentGVDispenser m_componentDispenser;
 
-        public ComponentBlockEntity m_componentBlockEntity;
+        public readonly ComponentBlockEntity m_componentBlockEntity;
 
-        public GridPanelWidget m_inventoryGrid;
+        public readonly GridPanelWidget m_inventoryGrid;
 
-        public GridPanelWidget m_dispenserGrid;
+        public readonly GridPanelWidget m_dispenserGrid;
 
-        public ButtonWidget m_dispenseButton;
+        public readonly ButtonWidget m_dispenseButton;
 
-        public ButtonWidget m_shootButton;
+        public readonly ButtonWidget m_shootButton;
 
-        public CheckboxWidget m_acceptsDropsBox;
+        public readonly CheckboxWidget m_acceptsDropsBox;
 
         public GVDispenserWidget(IInventory inventory, ComponentGVDispenser componentDispenser) {
             m_componentDispenser = componentDispenser;
@@ -33,7 +33,7 @@ namespace Game {
             int num = 0;
             for (int i = 0; i < m_dispenserGrid.RowsCount; i++) {
                 for (int j = 0; j < m_dispenserGrid.ColumnsCount; j++) {
-                    InventorySlotWidget inventorySlotWidget = new InventorySlotWidget();
+                    InventorySlotWidget inventorySlotWidget = new();
                     inventorySlotWidget.AssignInventorySlot(componentDispenser, num++);
                     m_dispenserGrid.Children.Add(inventorySlotWidget);
                     m_dispenserGrid.SetWidgetCell(inventorySlotWidget, new Point2(j, i));
@@ -42,7 +42,7 @@ namespace Game {
             num = 10;
             for (int k = 0; k < m_inventoryGrid.RowsCount; k++) {
                 for (int l = 0; l < m_inventoryGrid.ColumnsCount; l++) {
-                    InventorySlotWidget inventorySlotWidget2 = new InventorySlotWidget();
+                    InventorySlotWidget inventorySlotWidget2 = new();
                     inventorySlotWidget2.AssignInventorySlot(inventory, num++);
                     m_inventoryGrid.Children.Add(inventorySlotWidget2);
                     m_inventoryGrid.SetWidgetCell(inventorySlotWidget2, new Point2(l, k));

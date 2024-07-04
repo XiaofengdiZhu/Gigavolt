@@ -4,7 +4,7 @@ using Engine;
 
 namespace Game {
     public class DisplayLedGVElectricElement : RotateableGVElectricElement {
-        public SubsystemGVDisplayLedGlow m_subsystemGVDisplayLedGlow;
+        public readonly SubsystemGVDisplayLedGlow m_subsystemGVDisplayLedGlow;
         public HashSet<GVDisplayPoint> m_glowPoints;
         public Vector3 m_originalPosition;
         public int m_type;

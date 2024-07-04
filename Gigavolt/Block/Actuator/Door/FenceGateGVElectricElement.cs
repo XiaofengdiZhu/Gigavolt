@@ -1,6 +1,6 @@
 namespace Game {
     public class FenceGateGVElectricElement : GVElectricElement {
-        public SubsystemGVFenceGateBlockBehavior m_subsystem;
+        public readonly SubsystemGVFenceGateBlockBehavior m_subsystem;
         public int m_lastChangeCircuitStep;
 
         public bool m_needsReset;

@@ -1,6 +1,6 @@
 namespace Game {
     public class BatteryGVElectricElement : GVElectricElement {
-        public SubsystemGVBatteryBlockBehavior m_subsystemGVBatteryBlockBehavior;
+        public readonly SubsystemGVBatteryBlockBehavior m_subsystemGVBatteryBlockBehavior;
         readonly GigaVoltageLevelData m_blockdata;
         public uint m_voltage;
         public bool m_edited;

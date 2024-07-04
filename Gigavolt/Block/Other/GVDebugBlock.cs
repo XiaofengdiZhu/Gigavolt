@@ -6,8 +6,8 @@ namespace Game {
     public class GVDebugBlock : Block, IGVElectricElementBlock {
         public const int Index = 842;
 
-        public BlockMesh[] m_blockMeshesByData = new BlockMesh[4];
-        public BlockMesh m_standaloneBlockMesh = new();
+        public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[4];
+        public readonly BlockMesh m_standaloneBlockMesh = new();
         public Texture2D texture;
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DebugGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, 4), subterrainId);
 

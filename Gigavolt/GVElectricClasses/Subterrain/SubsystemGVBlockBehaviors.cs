@@ -4,7 +4,7 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVBlockBehaviors : Subsystem {
-        public HashSet<IGVBlockBehavior> BlockBehaviors = [];
+        public readonly HashSet<IGVBlockBehavior> BlockBehaviors = [];
         public List<IGVBlockBehavior>[] m_blockBehaviorsByContents;
         public List<IGVBlockBehavior> GetBlockBehaviors(int contents) => m_blockBehaviorsByContents[contents];
 

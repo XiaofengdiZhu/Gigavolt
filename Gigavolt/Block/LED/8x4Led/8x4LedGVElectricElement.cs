@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game {
     public class _8x4LedGVElectricElement : MountedGVElectricElement {
-        public SubsystemGV8x4LedGlow m_subsystemGV8x4LedGlow;
+        public readonly SubsystemGV8x4LedGlow m_subsystemGV8x4LedGlow;
 
         public uint m_voltage;
 
