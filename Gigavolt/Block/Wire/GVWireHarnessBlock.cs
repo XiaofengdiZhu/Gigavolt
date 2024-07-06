@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVWireHarnessBlock : Block, IGVElectricWireElementBlock {
+    public class GVWireHarnessBlock : Block, IGVElectricWireElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 890;
         public readonly BlockMesh m_standaloneBlockMesh = new();
         public readonly BoundingBox[] m_collisionBoxesByFace = new BoundingBox[6];
@@ -159,5 +160,6 @@ namespace Game {
 
         public bool IsWireHarness(int value) => true;
         public bool IsWireThrough() => false;
+        public List<int> GetCustomWheelPanelValues(int centerValue) => BlocksManager.Blocks[GVWireBlock.Index].GetCreativeValues().ToList();
     }
 }

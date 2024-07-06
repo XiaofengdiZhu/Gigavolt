@@ -98,6 +98,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="BaseBlock\GVBaseSignBlock.cs"/>
+		<Compile Include="BaseBlock\IGVCustomWheelPanelBlock.cs"/>
 		<Compile Include="Block\Furniture\ButtonFurnitureGVElectricElement.cs"/>
 		<Compile Include="Block\Furniture\FurnitureGVElectricElement.cs"/>
 		<Compile Include="Block\Furniture\GVFurnitureBlock.cs"/>
@@ -109,10 +110,10 @@
 		<Compile Include="Block\Gate\Transformer\O2GVTransformerBlock.cs"/>
 		<Compile Include="Block\Gate\Transformer\O2GVTransformerElectricElement.cs"/>
 		<Compile Include="Block\Gate\Transformer\O2GVTransformerGVElectricElement.cs"/>
-		<Compile Include="Block\Gate\TruthTable\GVTruthTableCircuitBlock.cs" />
-		<Compile Include="Block\Gate\TruthTable\GVTruthTableData.cs" />
-		<Compile Include="Block\Gate\TruthTable\SubsystemGVTruthTableCircuitBlockBehavior.cs" />
-		<Compile Include="Block\Gate\TruthTable\TruthTableCircuitGVElectricElement.cs" />
+		<Compile Include="Block\Gate\TruthTable\GVTruthTableCircuitBlock.cs"/>
+		<Compile Include="Block\Gate\TruthTable\GVTruthTableData.cs"/>
+		<Compile Include="Block\Gate\TruthTable\SubsystemGVTruthTableCircuitBlockBehavior.cs"/>
+		<Compile Include="Block\Gate\TruthTable\TruthTableCircuitGVElectricElement.cs"/>
 		<Compile Include="Block\LED\8NumberLed\GV8NumberGlowPoint.cs"/>
 		<Compile Include="Block\LED\8NumberLed\GV8NumberLedBlock.cs"/>
 		<Compile Include="Block\LED\8NumberLed\SubsystemGV8NumberLedGlow.cs"/>
@@ -142,31 +143,31 @@
 		<Compile Include="Block\LED\Sign\GVSignTextData.cs"/>
 		<Compile Include="Block\LED\Sign\SubsystemGVSignBlockBehavior.cs"/>
 		<Compile Include="Block\Other\DebugGVElectricElement.cs"/>
-		<Compile Include="Block\Actuator\Detonator\DetonatorGVElectricElement.cs" />
-		<Compile Include="Block\Actuator\Detonator\GVDetonatorBlock.cs" />
-		<Compile Include="Block\Actuator\Dispenser\ComponentGVDispenser.cs" />
-		<Compile Include="Block\Actuator\Dispenser\DispenserGVElectricElement.cs" />
-		<Compile Include="Block\Actuator\Dispenser\GVDispenserBlock.cs" />
-		<Compile Include="Block\Actuator\Dispenser\SubsystemGVDispenserBlockBehavior.cs" />
-		<Compile Include="Block\Actuator\Dispenser\SubsystemGVProjectiles.cs" />
-		<Compile Include="Block\Actuator\Door\DoorGVElectricElement.cs" />
-		<Compile Include="Block\Actuator\Door\GVFenceGateBlock.cs" />
-		<Compile Include="Block\Actuator\Door\FenceGateGVElectricElement.cs" />
-		<Compile Include="Block\Actuator\Door\GVDoorBlock.cs" />
-		<Compile Include="Block\Actuator\Door\SubsystemGVFenceGateBlockBehavior.cs" />
-		<Compile Include="Block\Actuator\Door\SubsystemGVDoorBlockBehavior.cs" />
-		<Compile Include="Block\Actuator\Door\GVTrapdoorBlock.cs" />
-		<Compile Include="Block\Actuator\Door\SubsystemTrapdoorBlockBehavior.cs" />
-		<Compile Include="Block\Actuator\Door\TrapDoorElectricElement.cs" />
-		<Compile Include="Block\Actuator\Piston\GVPistonBlock.cs" />
-		<Compile Include="Block\Actuator\Piston\GVPistonData.cs" />
-		<Compile Include="Block\Actuator\Piston\GVPistonHeadBlock.cs" />
-		<Compile Include="Block\Actuator\Piston\GVPistonMode.cs" />
-		<Compile Include="Block\Actuator\Piston\PistonGVElectricElement.cs" />
-		<Compile Include="Block\Actuator\Piston\SubsystemGVMovingBlocks.cs" />
-		<Compile Include="Block\Actuator\Piston\SubsystemGVPistonBlockBehavior.cs" />
-		<Compile Include="Block\Actuator\SoundGenerator\GVSoundGeneratorBlock.cs" />
-		<Compile Include="Block\Actuator\SoundGenerator\SoundGeneratorGVElectricElement.cs" />
+		<Compile Include="Block\Actuator\Detonator\DetonatorGVElectricElement.cs"/>
+		<Compile Include="Block\Actuator\Detonator\GVDetonatorBlock.cs"/>
+		<Compile Include="Block\Actuator\Dispenser\ComponentGVDispenser.cs"/>
+		<Compile Include="Block\Actuator\Dispenser\DispenserGVElectricElement.cs"/>
+		<Compile Include="Block\Actuator\Dispenser\GVDispenserBlock.cs"/>
+		<Compile Include="Block\Actuator\Dispenser\SubsystemGVDispenserBlockBehavior.cs"/>
+		<Compile Include="Block\Actuator\Dispenser\SubsystemGVProjectiles.cs"/>
+		<Compile Include="Block\Actuator\Door\DoorGVElectricElement.cs"/>
+		<Compile Include="Block\Actuator\Door\GVFenceGateBlock.cs"/>
+		<Compile Include="Block\Actuator\Door\FenceGateGVElectricElement.cs"/>
+		<Compile Include="Block\Actuator\Door\GVDoorBlock.cs"/>
+		<Compile Include="Block\Actuator\Door\SubsystemGVFenceGateBlockBehavior.cs"/>
+		<Compile Include="Block\Actuator\Door\SubsystemGVDoorBlockBehavior.cs"/>
+		<Compile Include="Block\Actuator\Door\GVTrapdoorBlock.cs"/>
+		<Compile Include="Block\Actuator\Door\SubsystemTrapdoorBlockBehavior.cs"/>
+		<Compile Include="Block\Actuator\Door\TrapDoorElectricElement.cs"/>
+		<Compile Include="Block\Actuator\Piston\GVPistonBlock.cs"/>
+		<Compile Include="Block\Actuator\Piston\GVPistonData.cs"/>
+		<Compile Include="Block\Actuator\Piston\GVPistonHeadBlock.cs"/>
+		<Compile Include="Block\Actuator\Piston\GVPistonMode.cs"/>
+		<Compile Include="Block\Actuator\Piston\PistonGVElectricElement.cs"/>
+		<Compile Include="Block\Actuator\Piston\SubsystemGVMovingBlocks.cs"/>
+		<Compile Include="Block\Actuator\Piston\SubsystemGVPistonBlockBehavior.cs"/>
+		<Compile Include="Block\Actuator\SoundGenerator\GVSoundGeneratorBlock.cs"/>
+		<Compile Include="Block\Actuator\SoundGenerator\SoundGeneratorGVElectricElement.cs"/>
 		<Compile Include="Block\Sensor\EnhancedRealTimeClock\RealTimeClockGVElectricElement.cs"/>
 		<Compile Include="Block\Sensor\EnhancedRealTimeClock\GVRealTimeClockBlock.cs"/>
 		<Compile Include="Block\Source\GVButtonData.cs"/>
@@ -200,6 +201,7 @@
 		<Compile Include="GVElectricClasses\Subterrain\IGVBlockBehavior.cs"/>
 		<Compile Include="GVElectricClasses\Subterrain\SubsystemGVBlockBehaviors.cs"/>
 		<Compile Include="GVElectricClasses\Subterrain\SubsystemGVSubterrain.cs"/>
+		<Compile Include="Widget\GVBlockIconWidget.cs"/>
 		<Compile Include="Widget\GVDispenserWidget.cs"/>
 		<Compile Include="Widget\GVStepFloatingButtons.cs"/>
 		<Compile Include="BaseBlock\GVWireThroughBlock.cs"/>
@@ -298,6 +300,7 @@
 		<Compile Include="Properties\AssemblyInfo.cs"/>
 		<Compile Include="Screen\GVMBExternalContentScreen.cs"/>
 		<Compile Include="Widget\GVTextBoxWidget.cs"/>
+		<Compile Include="Widget\GVWheelPanelWidget.cs"/>
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Assets\Dialogs\EditGVButtonDialog.xml">

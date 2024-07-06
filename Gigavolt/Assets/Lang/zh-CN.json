@@ -33,6 +33,9 @@
     "16": "导入成功",
     "17": "一般"
   },
+  "GVWheelPanelWidget": {
+    "1": "背包空间不足"
+  },
   "BlocksManager": {
     "GV Electrics Regular": "十亿伏特 常规",
     "GV Electrics Shift": "十亿伏特 变体",

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Engine;
 using Engine.Graphics;
 using Engine.Input;
@@ -6,7 +8,7 @@ using GameEntitySystem;
 using TemplatesDatabase;
 
 namespace Game {
-    public class ComponentGVDisplayVoltage : Component, IDrawable, IUpdateable {
+    public class ComponentGigavolt : Component, IDrawable, IUpdateable {
         public SubsystemGVSubterrain m_subsystemGVSubterrain;
         public SubsystemTerrain m_subsystemTerrain;
         public SubsystemGVElectricity m_subsystemGVElectricity;
@@ -18,7 +20,14 @@ namespace Game {
         public ComponentPlayer m_componentPlayer;
         public ComponentBlockHighlight m_componentBlockHighlight;
 
+        public bool m_isCreativeMode;
+        public bool m_categoryColorNotSet = true;
         public uint? m_forceDisplayVoltage;
+        public CanvasWidget m_controlsContainer;
+        public DragHostWidget m_dragHostWidget;
+        public GVWheelPanelWidget m_wheelPanelWidget;
+        public DateTime? m_dragStartTime;
+        public Vector2 m_dragStartPosition;
 
 
         public int[] DrawOrders => [2001];
@@ -44,6 +53,71 @@ namespace Game {
         }
 
         public void Update(float dt) {
+            if (m_isCreativeMode) {
+                //设置创造模式背包中的分类颜色
+                if (m_categoryColorNotSet) {
+                    if (m_componentPlayer.ComponentGui.ModalPanelWidget is CreativeInventoryWidget widget) {
+                        foreach (CreativeInventoryWidget.Category c in widget.m_categories) {
+                            if (c.Name.StartsWith("GV ")) {
+                                if (c.Color.B == 243) {
+                                    break;
+                                }
+                                if (c.Name.EndsWith("Expand")
+                                    || c.Name.EndsWith("Multiple")) {
+                                    c.Color = new Color(233, 85, 227);
+                                }
+                                else {
+                                    c.Color = new Color(30, 213, 243);
+                                }
+                            }
+                        }
+                        m_categoryColorNotSet = false;
+                    }
+                }
+                if (m_dragHostWidget.m_dragWidget == null) {
+                    m_dragStartTime = null;
+                }
+                else {
+                    if (m_dragStartTime == null) {
+                        m_dragStartTime = DateTime.Now;
+                        m_dragStartPosition = m_dragHostWidget.m_dragPosition;
+                    }
+                    else {
+                        Vector2 transformedDragPosition = m_controlsContainer.ScreenToWidget(m_dragHostWidget.m_dragPosition);
+                        const float edgeDistance = (GVWheelPanelWidget.FirstRingDiameter + GVWheelPanelWidget.RingSpacing) / 2f;
+                        if (Vector2.DistanceSquared(m_dragHostWidget.m_dragPosition, m_dragStartPosition) < 50
+                            && transformedDragPosition.X > edgeDistance
+                            && transformedDragPosition.X < m_controlsContainer.ActualSize.X - edgeDistance
+                            && transformedDragPosition.Y > edgeDistance
+                            && transformedDragPosition.Y < m_controlsContainer.ActualSize.Y - edgeDistance) {
+                            if ((DateTime.Now - m_dragStartTime.Value).TotalMilliseconds > 400
+                                && m_dragHostWidget.m_dragData is InventoryDragData data) {
+                                int centerBlockValue = data.Inventory.GetSlotValue(data.SlotIndex);
+                                m_wheelPanelWidget.CenterBlockValue = centerBlockValue;
+                                Block centerBlock = BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)];
+                                IGVCustomWheelPanelBlock customWheelPanelBlock = centerBlock as IGVCustomWheelPanelBlock;
+                                List<int> outerBlocksValue = customWheelPanelBlock == null ? BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList() : customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue);
+                                outerBlocksValue.Remove(centerBlockValue);
+                                if (outerBlocksValue.Count > 0) {
+                                    m_wheelPanelWidget.OuterBlocksValue = outerBlocksValue;
+                                    m_wheelPanelWidget.IsVisible = true;
+                                    m_controlsContainer.SetWidgetPosition(m_wheelPanelWidget, transformedDragPosition - m_wheelPanelWidget.Size / 2);
+                                    m_wheelPanelWidget.m_inventoryDragData = data;
+                                    m_dragHostWidget.Children.Remove(m_dragHostWidget.m_dragWidget);
+                                    m_dragHostWidget.m_dragWidget = null;
+                                    m_dragHostWidget.m_dragData = null;
+                                    m_dragHostWidget.m_dragEndedHandler = null;
+                                }
+                            }
+                        }
+                        else {
+                            m_dragStartTime = DateTime.Now;
+                            m_dragStartPosition = m_dragHostWidget.m_dragPosition;
+                        }
+                    }
+                }
+            }
+            //Ctrl键+鼠标滚轮编辑电压
             if (!m_componentPlayer.ComponentAimingSights.IsSightsVisible
                 && m_componentPlayer.GameWidget.Input.IsKeyDown(Key.Control)
                 && m_componentBlockHighlight.m_highlightRaycastResult is TerrainRaycastResult result) {
@@ -136,6 +210,11 @@ namespace Game {
             };
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>(true);
             m_componentBlockHighlight = Entity.FindComponent<ComponentBlockHighlight>(true);
+            m_isCreativeMode = Project.FindSubsystem<SubsystemGameInfo>(true).WorldSettings.GameMode == GameMode.Creative;
+            m_controlsContainer = m_componentPlayer.GuiWidget.Children.Find<CanvasWidget>("ControlsContainer");
+            m_dragHostWidget = m_componentPlayer.DragHostWidget;
+            m_wheelPanelWidget = new GVWheelPanelWidget(m_componentPlayer.ComponentGui) { IsVisible = false, SubsystemTerrain = m_subsystemTerrain };
+            Entity.FindComponent<ComponentGui>(true).ControlsContainerWidget.AddChildren(m_wheelPanelWidget);
         }
 
         public void DisplayVoltage(CellFace cellFace) {

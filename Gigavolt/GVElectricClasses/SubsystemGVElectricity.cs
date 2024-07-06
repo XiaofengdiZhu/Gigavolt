@@ -13,6 +13,8 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVElectricity : Subsystem, IUpdateable, IDrawable {
+        #region SomeLongVariables
+
         public static readonly GVElectricConnectionPath[] m_connectionPathsTable = [
             new GVElectricConnectionPath(
                 0,
@@ -921,6 +923,8 @@ namespace Game {
             3,
             4
         ];
+
+        #endregion
 
         public float m_remainingSimulationTime;
 
