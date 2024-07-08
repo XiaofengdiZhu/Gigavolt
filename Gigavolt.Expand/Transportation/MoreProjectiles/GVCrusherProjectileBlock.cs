@@ -3,7 +3,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVCrusherProjectileBlock : Block {
+    public class GVCrusherProjectileBlock : Block, IGVCustomWheelPanelBlock {
         public const int Index = 883;
 
         public readonly BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[2];
@@ -54,5 +54,7 @@ namespace Game {
                 default: return 45;
             }
         }
+
+        public List<int> GetCustomWheelPanelValues(int centerValue) => [Index, Terrain.MakeBlockValue(Index, 0, 1), GVDataModifierProjectileBlock.Index];
     }
 }

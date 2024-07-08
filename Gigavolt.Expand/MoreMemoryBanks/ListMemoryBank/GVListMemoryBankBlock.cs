@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVListMemoryBankBlock : RotateableMountedGVElectricElementBlock {
+    public class GVListMemoryBankBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 872;
         public Texture2D m_texture;
 
@@ -11,6 +12,15 @@ namespace Game {
         public override void Initialize() {
             base.Initialize();
             m_texture = ContentManager.Get<Texture2D>("Textures/GVListMemoryBankBlock");
+            IGVCustomWheelPanelBlock.MemoryBankValues.AddRange(
+                [
+                    GVVolatileMemoryBankBlock.Index,
+                    Index,
+                    GVVolatileListMemoryBankBlock.Index,
+                    GVFourDimensionalMemoryBankBlock.Index,
+                    GVVolatileFourDimensionalMemoryBankBlock.Index
+                ]
+            );
         }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
@@ -66,5 +76,7 @@ namespace Game {
             }
             return null;
         }
+
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.MemoryBankValues;
     }
 }

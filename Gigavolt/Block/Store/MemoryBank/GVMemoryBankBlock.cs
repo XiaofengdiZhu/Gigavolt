@@ -1,5 +1,7 @@
+using System.Collections.Generic;
+
 namespace Game {
-    public class GVMemoryBankBlock : RotateableMountedGVElectricElementBlock {
+    public class GVMemoryBankBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 847;
 
         public GVMemoryBankBlock() : base("Models/Gates", "MemoryBank", 0.875f) { }
@@ -20,5 +22,7 @@ namespace Game {
             }
             return null;
         }
+
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.MemoryBankValues;
     }
 }

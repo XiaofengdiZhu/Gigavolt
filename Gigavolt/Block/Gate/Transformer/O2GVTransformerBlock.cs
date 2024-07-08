@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class O2GVTransformerBlock : RotateableMountedGVElectricElementBlock, IElectricElementBlock {
+    public class O2GVTransformerBlock : RotateableMountedGVElectricElementBlock, IElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 844;
         public readonly Texture2D texture;
 
@@ -79,5 +80,7 @@ namespace Game {
                 environmentData
             );
         }
+
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.TransformerValues;
     }
 }

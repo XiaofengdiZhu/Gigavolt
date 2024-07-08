@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using Engine;
 
 namespace Game {
-    public abstract class GVWireThroughBlock : CubeBlock, IGVElectricWireElementBlock {
+    public abstract class GVWireThroughBlock : CubeBlock, IGVElectricWireElementBlock, IGVCustomWheelPanelBlock {
         public readonly int m_wiredTextureSlot;
 
         public readonly int m_unwiredTextureSlot;
@@ -82,5 +83,6 @@ namespace Game {
 
         public bool IsWireHarness(int value) => false;
         public bool IsWireThrough() => true;
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.WireThroughValues;
     }
 }

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
+
 namespace Game {
-    public class GVOrGateBlock : RotateableMountedGVElectricElementBlock {
+    public class GVOrGateBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 803;
 
         public GVOrGateBlock() : base("Models/Gates", "OrGate", 0.375f) { }
@@ -21,5 +23,7 @@ namespace Game {
             }
             return null;
         }
+
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.BasicElementsValues;
     }
 }

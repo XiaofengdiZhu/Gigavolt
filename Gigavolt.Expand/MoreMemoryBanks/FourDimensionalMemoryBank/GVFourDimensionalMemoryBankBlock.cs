@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVFourDimensionalMemoryBankBlock() : RotateableMountedGVElectricElementBlock("Models/GVMemoryBank", "MemoryBank", 0.875f) {
+    public class GVFourDimensionalMemoryBankBlock() : RotateableMountedGVElectricElementBlock("Models/GVMemoryBank", "MemoryBank", 0.875f), IGVCustomWheelPanelBlock {
         public const int Index = 891;
         public Texture2D m_texture;
 
@@ -64,5 +65,7 @@ namespace Game {
             }
             return null;
         }
+
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.MemoryBankValues;
     }
 }

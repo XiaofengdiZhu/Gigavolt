@@ -97,8 +97,11 @@ namespace Game {
                                 Block centerBlock = BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)];
                                 IGVCustomWheelPanelBlock customWheelPanelBlock = centerBlock as IGVCustomWheelPanelBlock;
                                 List<int> outerBlocksValue = customWheelPanelBlock == null ? BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList() : customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue);
-                                outerBlocksValue.Remove(centerBlockValue);
-                                if (outerBlocksValue.Count > 0) {
+                                int outerBlocksValueCount = outerBlocksValue.Count;
+                                if (outerBlocksValue.Contains(centerBlockValue)) {
+                                    outerBlocksValueCount--;
+                                }
+                                if (outerBlocksValueCount > 0) {
                                     m_wheelPanelWidget.OuterBlocksValue = outerBlocksValue;
                                     m_wheelPanelWidget.IsVisible = true;
                                     m_controlsContainer.SetWidgetPosition(m_wheelPanelWidget, transformedDragPosition - m_wheelPanelWidget.Size / 2);

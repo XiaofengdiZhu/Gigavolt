@@ -3,7 +3,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVDigitalToAnalogConverterBlock : RotateableMountedGVElectricElementBlock {
+    public class GVDigitalToAnalogConverterBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 850;
         readonly Texture2D[] textures = new Texture2D[4];
 
@@ -109,5 +109,16 @@ namespace Game {
         public static int SetType(int data, int color) => (data & -97) | ((color & 3) << 5);
         public static bool GetClassic(int data) => (data & 128) != 0;
         public static int SetClassic(int data, bool classic) => (data & -129) | (classic ? 128 : 0);
+
+        public List<int> GetCustomWheelPanelValues(int centerValue) {
+            List<int> result = [];
+            for (int i = 0; i < 4; i++) {
+                result.Add(Terrain.MakeBlockValue(Index, 0, SetType(0, i)));
+            }
+            for (int i = 0; i < 4; i++) {
+                result.Add(Terrain.MakeBlockValue(GVAnalogToDigitalConverterBlock.Index, 0, GVAnalogToDigitalConverterBlock.SetType(0, i)));
+            }
+            return result;
+        }
     }
 }

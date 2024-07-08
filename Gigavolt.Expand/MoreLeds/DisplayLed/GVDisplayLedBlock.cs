@@ -3,7 +3,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVDisplayLedBlock : RotateableMountedGVElectricElementBlock {
+    public class GVDisplayLedBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 874;
         readonly Texture2D[] textures = new Texture2D[6];
         readonly string[] names = ["方块展示板", "图片显示器", "地层显示器"];
@@ -14,6 +14,8 @@ namespace Game {
             for (int i = 0; i < 6; i++) {
                 textures[i] = ContentManager.Get<Texture2D>("Textures/GVDisplayLedBlock" + i);
             }
+            IGVCustomWheelPanelBlock.LedValues.AddRange(GetCreativeValues());
+            IGVCustomWheelPanelBlock.LedValues.Add(GVOscilloscopeBlock.Index);
         }
 
         public GVDisplayLedBlock() : base("Models/GigavoltGates", "OneLed", 0.5f) { }
@@ -122,5 +124,6 @@ namespace Game {
         public static int GetType(int data) => (data >> 6) & 3;
 
         public static int SetType(int data, int type) => (data & -193) | ((type & 3) << 6);
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.LedValues;
     }
 }

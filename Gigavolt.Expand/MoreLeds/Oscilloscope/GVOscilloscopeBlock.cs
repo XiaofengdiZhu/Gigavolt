@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVOscilloscopeBlock : MountedGVElectricElementBlock {
+    public class GVOscilloscopeBlock : MountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 898;
 
         public BlockMesh m_standaloneBlockMesh;
@@ -124,5 +124,6 @@ namespace Game {
         public static int GetMountingFace(int data) => data & 7;
 
         public static int SetMountingFace(int data, int face) => (data & -8) | (face & 7);
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.LedValues;
     }
 }

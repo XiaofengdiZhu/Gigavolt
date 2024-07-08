@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Engine;
 using Engine.Graphics;
 
@@ -33,22 +32,29 @@ namespace Game {
         public List<int> OuterBlocksValue {
             get => m_outerBlocksValue;
             set {
-                value = value.Select(x => Terrain.ReplaceLight(x, 15)).ToList();
-                value.Remove(CenterBlockValue);
-                m_ringCount = value.Count > 8 ? 2 : 1;
+                List<int> blocksValue = [];
+                foreach (int blockValue in value) {
+                    int newBlockValue = Terrain.ReplaceLight(blockValue, 15);
+                    if (newBlockValue != CenterBlockValue) {
+                        blocksValue.Add(newBlockValue);
+                    }
+                }
+                //new List<int>(value).Select(x => Terrain.ReplaceLight(x, 15)).ToList();
+                //blocksValue.Remove(CenterBlockValue);
+                m_ringCount = blocksValue.Count > 8 ? 2 : 1;
                 Size = new Vector2(m_ringCount * 2 * RingSpacing + FirstRingDiameter);
-                m_outerBlocksValue = value;
+                m_outerBlocksValue = blocksValue;
                 foreach (GVBlockIconWidget widget in OuterBlocksWidgets) {
                     RemoveChildren(widget);
                 }
                 OuterBlocksWidgets.Clear();
-                int firstLevelCount = Math.Min(value.Count >= 28 ? 12 : 8, value.Count);
-                int secondLevelCount = Math.Max(value.Count - firstLevelCount, firstLevelCount);
+                int firstLevelCount = Math.Min(blocksValue.Count >= 28 ? 12 : 8, blocksValue.Count);
+                int secondLevelCount = Math.Max(blocksValue.Count - firstLevelCount, firstLevelCount);
                 float center = RingSpacing * m_ringCount + FirstRingDiameter / 2f;
                 const float firstLevelRadius = (RingSpacing + FirstRingDiameter) / 2f;
                 const float secondLevelRadius = RingSpacing * 1.5f + FirstRingDiameter / 2f;
-                for (int i = 0; i < Math.Min(value.Count, 36); i++) {
-                    int blockValue = value[i];
+                for (int i = 0; i < Math.Min(blocksValue.Count, 36); i++) {
+                    int blockValue = blocksValue[i];
                     GVBlockIconWidget widget = new() { Value = blockValue, SubsystemTerrain = SubsystemTerrain, Size = new Vector2(48f) };
                     OuterBlocksWidgets.Add(widget);
                     AddChildren(widget);

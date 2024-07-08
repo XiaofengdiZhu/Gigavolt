@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GV8x4LedBlock : MountedGVElectricElementBlock {
+    public class GV8x4LedBlock : MountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 857;
 
         public BlockMesh m_standaloneBlockMesh;
@@ -152,5 +152,6 @@ namespace Game {
         public static int GetType(int data) => (data >> 5) & 3;
 
         public static int SetType(int data, int color) => (data & -97) | ((color & 3) << 5);
+        public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.LedValues;
     }
 }
