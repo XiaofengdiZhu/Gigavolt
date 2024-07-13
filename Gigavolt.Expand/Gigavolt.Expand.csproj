@@ -64,7 +64,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Esprima" Version="3.0.5"/>
-		<PackageReference Include="Jint" Version="3.1.1"/>
+		<PackageReference Include="Jint" Version="3.1.4"/>
 		<PackageReference Include="OpenTK" Version="3.3.3.0">
 			<Aliases>OpenTKForWindows</Aliases>
 		</PackageReference>

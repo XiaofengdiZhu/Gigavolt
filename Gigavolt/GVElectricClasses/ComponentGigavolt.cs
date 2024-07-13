@@ -74,6 +74,7 @@ namespace Game {
                         m_categoryColorNotSet = false;
                     }
                 }
+                //快捷轮盘
                 if (m_dragHostWidget.m_dragWidget == null) {
                     m_dragStartTime = null;
                 }
@@ -93,7 +94,6 @@ namespace Game {
                             if ((DateTime.Now - m_dragStartTime.Value).TotalMilliseconds > 400
                                 && m_dragHostWidget.m_dragData is InventoryDragData data) {
                                 int centerBlockValue = data.Inventory.GetSlotValue(data.SlotIndex);
-                                m_wheelPanelWidget.CenterBlockValue = centerBlockValue;
                                 Block centerBlock = BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)];
                                 IGVCustomWheelPanelBlock customWheelPanelBlock = centerBlock as IGVCustomWheelPanelBlock;
                                 List<int> outerBlocksValue = customWheelPanelBlock == null ? BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList() : customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue);
@@ -102,6 +102,7 @@ namespace Game {
                                     outerBlocksValueCount--;
                                 }
                                 if (outerBlocksValueCount > 0) {
+                                    m_wheelPanelWidget.CenterBlockValue = centerBlockValue;
                                     m_wheelPanelWidget.OuterBlocksValue = outerBlocksValue;
                                     m_wheelPanelWidget.IsVisible = true;
                                     m_controlsContainer.SetWidgetPosition(m_wheelPanelWidget, transformedDragPosition - m_wheelPanelWidget.Size / 2);
@@ -217,7 +218,7 @@ namespace Game {
             m_controlsContainer = m_componentPlayer.GuiWidget.Children.Find<CanvasWidget>("ControlsContainer");
             m_dragHostWidget = m_componentPlayer.DragHostWidget;
             m_wheelPanelWidget = new GVWheelPanelWidget(m_componentPlayer.ComponentGui) { IsVisible = false, SubsystemTerrain = m_subsystemTerrain };
-            Entity.FindComponent<ComponentGui>(true).ControlsContainerWidget.AddChildren(m_wheelPanelWidget);
+            m_componentPlayer.ComponentGui.ControlsContainerWidget.AddChildren(m_wheelPanelWidget);
         }
 
         public void DisplayVoltage(CellFace cellFace) {

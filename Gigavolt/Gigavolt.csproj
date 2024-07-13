@@ -95,6 +95,9 @@
 		<None Update="Assets\Textures\Gui\GVMouseScroll.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Assets\Textures\Gui\GVRecipaedia.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="BaseBlock\GVBaseSignBlock.cs"/>
@@ -189,7 +192,7 @@
 		<Compile Include="Dialog\EditGVCounterDialog.cs"/>
 		<Compile Include="Dialog\EditGVSignCDialog.cs"/>
 		<Compile Include="Dialog\EditGVSignDialog.cs"/>
-		<Compile Include="GVElectricClasses\ComponentGVDisplayVoltage.cs"/>
+		<Compile Include="GVElectricClasses\ComponentGigavolt.cs"/>
 		<Compile Include="GVElectricClasses\GVCellFace.cs"/>
 		<Compile Include="GVElectricClasses\SubsystemGVEditableItemBehavior.cs"/>
 		<Compile Include="GVElectricClasses\Subterrain\GVBlockGeometryGenerator.cs"/>
@@ -201,6 +204,7 @@
 		<Compile Include="GVElectricClasses\Subterrain\IGVBlockBehavior.cs"/>
 		<Compile Include="GVElectricClasses\Subterrain\SubsystemGVBlockBehaviors.cs"/>
 		<Compile Include="GVElectricClasses\Subterrain\SubsystemGVSubterrain.cs"/>
+		<Compile Include="Widget\GVBlockHelperWidget.cs"/>
 		<Compile Include="Widget\GVBlockIconWidget.cs"/>
 		<Compile Include="Widget\GVDispenserWidget.cs"/>
 		<Compile Include="Widget\GVStepFloatingButtons.cs"/>

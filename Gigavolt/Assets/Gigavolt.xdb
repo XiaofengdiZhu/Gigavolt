@@ -106,6 +106,7 @@
 	<Folder Name="Rendering" Guid="dec469ce-9b77-465f-a2a8-36d2640424db">
 		<ComponentTemplate Name="Gigavolt" Guid="81f98c4f-2b04-4461-903d-5b766344b6ba" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 			<Parameter Name="Class" Guid="4348fbb0-b11f-401e-b048-644a1a19fa85" Value="Game.ComponentGigavolt" Type="string"/>
+			<Parameter Name="LoadOrder" Guid="c272987d-1ce0-4f9e-8486-04d0df3272b0" Value="2147483647" Type="int"/>
 		</ComponentTemplate>
 	</Folder>
 </Mod>

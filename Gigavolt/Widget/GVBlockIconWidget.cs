@@ -4,8 +4,8 @@ namespace Game {
     public class GVBlockIconWidget : CanvasWidget {
         public static readonly Color LostFocusColorTransform = new(178, 178, 178);
 
-        public LabelWidget NameLabel = new() { FontScale = 0.7f, HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Near, IsVisible = false };
-        public BlockIconWidget Icon = new() { IsDrawRequired = true, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Center, ColorTransform = LostFocusColorTransform };
+        public readonly LabelWidget NameLabel = new() { FontScale = 0.7f, HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Near, IsVisible = false };
+        public readonly BlockIconWidget Icon = new() { IsDrawRequired = true, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Center, ColorTransform = LostFocusColorTransform };
         public float FullHeight => Size.Y - NameLabel.Margin.Y;
         public float NameLabelMarginY => NameLabel.Margin.Y;
 

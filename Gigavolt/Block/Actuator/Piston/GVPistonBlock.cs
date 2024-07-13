@@ -142,6 +142,16 @@ namespace Game {
             }
         }
 
+        public override string GetCategory(int value) => GetMode(Terrain.ExtractData(value)) switch {
+            GVPistonMode.Complex => "GV Electrics Shift",
+            _ => "GV Electrics Regular"
+        };
+
+        public override int GetDisplayOrder(int value) => GetMode(Terrain.ExtractData(value)) switch {
+            GVPistonMode.Complex => 19,
+            _ => 25
+        };
+
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             float num = float.PositiveInfinity;

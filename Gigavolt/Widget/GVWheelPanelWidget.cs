@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Engine;
 using Engine.Graphics;
 
@@ -19,14 +20,15 @@ namespace Game {
             set {
                 value = Terrain.ReplaceLight(value, 15);
                 if (value != CenterBlockWidget.Value) {
-                    CenterBlockWidget.IsVisible = value != 0;
                     CenterBlockWidget.Value = value;
-                    SetPosition(CenterBlockWidget, new Vector2(m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.Size.X) / 2, m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.FullHeight) * 0.5f - CenterBlockWidget.NameLabelMarginY));
+                    int noLightValue = Terrain.ReplaceLight(value, 0);
+                    RecipaediaWidget.RecipaediaCount = CraftingRecipesManager.Recipes.Count(r => r.ResultValue == noLightValue);
+                    AdjustFixedWidgets();
                 }
             }
         }
 
-        public readonly GVBlockIconWidget CenterBlockWidget = new() { AlwaysInFocus = true, Size = new Vector2(60f), IsVisible = false };
+        public readonly GVBlockIconWidget CenterBlockWidget = new() { AlwaysInFocus = true, Size = new Vector2(60f) };
         public List<int> m_outerBlocksValue;
 
         public List<int> OuterBlocksValue {
@@ -39,8 +41,6 @@ namespace Game {
                         blocksValue.Add(newBlockValue);
                     }
                 }
-                //new List<int>(value).Select(x => Terrain.ReplaceLight(x, 15)).ToList();
-                //blocksValue.Remove(CenterBlockValue);
                 m_ringCount = blocksValue.Count > 8 ? 2 : 1;
                 Size = new Vector2(m_ringCount * 2 * RingSpacing + FirstRingDiameter);
                 m_outerBlocksValue = blocksValue;
@@ -65,16 +65,18 @@ namespace Game {
                         SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i / secondLevelCount) * secondLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i / secondLevelCount) * secondLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
                     }
                 }
-                SetPosition(CenterBlockWidget, new Vector2(m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.Size.X) / 2, m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.FullHeight) * 0.5f - CenterBlockWidget.NameLabelMarginY));
+                AdjustFixedWidgets();
             }
         }
 
         public readonly List<GVBlockIconWidget> OuterBlocksWidgets = [];
+        public readonly GVBlockHelperWidget DescribeWidget = new() { RecipaediaCount = -1 };
+        public readonly GVBlockHelperWidget RecipaediaWidget = new() { RecipaediaCount = 0 };
         public SubsystemTerrain m_subsystemTerrain;
 
         public SubsystemTerrain SubsystemTerrain {
             get => m_subsystemTerrain;
-            set {
+            init {
                 m_subsystemTerrain = value;
                 CenterBlockWidget.SubsystemTerrain = value;
                 foreach (GVBlockIconWidget blockIconWidget in OuterBlocksWidgets) {
@@ -86,6 +88,8 @@ namespace Game {
         public GVWheelPanelWidget(ComponentGui componentGui) {
             IsDrawRequired = true;
             AddChildren(CenterBlockWidget);
+            AddChildren(DescribeWidget);
+            AddChildren(RecipaediaWidget);
             m_componentGui = componentGui;
         }
 
@@ -129,7 +133,8 @@ namespace Game {
                 m_dragPosition = Input.Drag.Value;
                 m_dragPosition.X = Math.Clamp(m_dragPosition.X, GlobalBounds.Min.X, GlobalBounds.Max.X - 1f);
                 m_dragPosition.Y = Math.Clamp(m_dragPosition.Y, GlobalBounds.Min.Y, GlobalBounds.Max.Y - 1f);
-                GVBlockIconWidget newFocusedWidget = HitTestGlobal(m_dragPosition, widget => widget is GVBlockIconWidget) as GVBlockIconWidget;
+                Widget hitTestWidget = HitTestGlobal(m_dragPosition, widget => widget is GVBlockIconWidget or GVBlockHelperWidget);
+                GVBlockIconWidget newFocusedWidget = hitTestWidget as GVBlockIconWidget;
                 if (newFocusedWidget != m_lastFocusedWidget) {
                     if (newFocusedWidget != null) {
                         newFocusedWidget.HasFocus = true;
@@ -139,6 +144,9 @@ namespace Game {
                         m_lastFocusedWidget.HasFocus = false;
                     }
                     m_lastFocusedWidget = newFocusedWidget;
+                }
+                if (hitTestWidget is GVBlockHelperWidget blockHelperWidget) {
+                    blockHelperWidget.Action(CenterBlockValue);
                 }
             }
         }
@@ -185,14 +193,10 @@ namespace Game {
             base.Draw(dc);
         }
 
-        public override void MeasureOverride(Vector2 parentAvailableSize) {
-            if (CenterBlockValue > 0) {
-                CenterBlockWidget.IsVisible = true;
-            }
-            else {
-                CenterBlockWidget.IsVisible = false;
-            }
-            base.MeasureOverride(parentAvailableSize);
+        public void AdjustFixedWidgets() {
+            SetPosition(CenterBlockWidget, new Vector2(m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.Size.X) / 2, m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.FullHeight) * 0.5f - CenterBlockWidget.NameLabelMarginY));
+            SetPosition(DescribeWidget, new Vector2(-16, Size.Y - DescribeWidget.Size.Y + 8));
+            SetPosition(RecipaediaWidget, Size - DescribeWidget.Size + new Vector2(16, 8));
         }
     }
 }
