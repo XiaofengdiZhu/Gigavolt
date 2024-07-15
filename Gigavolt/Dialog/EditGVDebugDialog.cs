@@ -95,6 +95,10 @@ namespace Game {
                     }
                     else {
                         if (float.TryParse(m_speedTextBox.Text, out float newSpeed)) {
+                            if (newSpeed < 0.1f) {
+                                newSpeed = 0.1f;
+                                m_speedTextBox.Text = "0.10";
+                            }
                             m_subsystemGVElectricity.SetSpeed(newSpeed);
                             m_blockData.Data = m_speedTextBox.Text;
                             m_blockData.SaveString();

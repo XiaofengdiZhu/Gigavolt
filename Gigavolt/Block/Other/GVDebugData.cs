@@ -5,9 +5,9 @@
         public IEditableItemData Copy() => new GVDebugData { Data = Data };
 
         public void LoadString(string data) {
-            Data = data;
+            Data = "1.00";
         }
 
-        public string SaveString() => Data;
+        public string SaveString() => "1.00";
     }
 }

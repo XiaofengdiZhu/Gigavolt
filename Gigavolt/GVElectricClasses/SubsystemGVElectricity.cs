@@ -1786,6 +1786,9 @@ namespace Game {
         }
 
         public void SetSpeed(float speed) {
+            if (speed < 0.1f) {
+                speed = 0.1f;
+            }
             SpeedFactor = speed;
             CircuitStepDuration = 0.01f / speed;
         }

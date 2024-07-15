@@ -91,7 +91,7 @@ namespace Game {
                             && transformedDragPosition.X < m_controlsContainer.ActualSize.X - edgeDistance
                             && transformedDragPosition.Y > edgeDistance
                             && transformedDragPosition.Y < m_controlsContainer.ActualSize.Y - edgeDistance) {
-                            if ((DateTime.Now - m_dragStartTime.Value).TotalMilliseconds > 400
+                            if ((DateTime.Now - m_dragStartTime.Value).TotalMilliseconds > 800
                                 && m_dragHostWidget.m_dragData is InventoryDragData data) {
                                 int centerBlockValue = data.Inventory.GetSlotValue(data.SlotIndex);
                                 Block centerBlock = BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)];

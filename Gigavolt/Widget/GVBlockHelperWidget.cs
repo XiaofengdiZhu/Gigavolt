@@ -13,18 +13,16 @@ namespace Game {
             set {
                 if (m_recipaediaCount != value) {
                     m_recipaediaCount = value;
-                    if (m_icon.Subtexture == null) {
-                        m_icon.Subtexture = value switch {
-                            >= 0 => new Subtexture(ContentManager.Get<Texture2D>("Textures/Gui/GVRecipaedia"), Vector2.Zero, Vector2.One),
-                            _ => ContentManager.Get<Subtexture>("Textures/Atlas/HelpTopicIcon")
-                        };
-                    }
                     m_label.Text = value switch {
                         > 0 => $"{m_recipaediaCount} {LanguageControl.Get("ContentWidgets", "RecipaediaScreen", "2")}", //"{0} 配方"
                         0 => LanguageControl.Get("RecipaediaScreen", "3"), //"没有配方"
                         _ => LanguageControl.Get("ContentWidgets", "RecipaediaScreen", "1") //"描述"
                     };
                 }
+                m_icon.Subtexture ??= value switch {
+                    >= 0 => ContentManager.Get<Subtexture>("Textures/Gui/GVRecipaedia"),
+                    _ => ContentManager.Get<Subtexture>("Textures/Atlas/HelpTopicIcon")
+                };
             }
         }
 

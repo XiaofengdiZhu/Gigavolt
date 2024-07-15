@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Xml.Linq;
 using Engine;
 using Engine.Input;
@@ -8,8 +8,7 @@ namespace Game {
         public readonly ButtonWidget m_pauseButton;
         public readonly ButtonWidget m_stepButton;
         public readonly ButtonWidget m_jumpButton;
-        public readonly LabelWidget m_count;
-        public readonly LabelWidget m_time;
+        public readonly LabelWidget m_label;
         public readonly RectangleWidget m_pauseIcon;
         public readonly Subtexture m_continueSubtexture;
         public readonly Subtexture m_pauseSubtexture;
@@ -21,8 +20,7 @@ namespace Game {
             m_pauseButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Pause");
             m_stepButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Step");
             m_jumpButton = Children.Find<ButtonWidget>("GVStepFloatingButtons.Jump");
-            m_count = Children.Find<LabelWidget>("GVStepFloatingButtons.Count");
-            m_time = Children.Find<LabelWidget>("GVStepFloatingButtons.Time");
+            m_label = Children.Find<LabelWidget>("GVStepFloatingButtons.Label");
             m_pauseIcon = Children.Find<RectangleWidget>("GVStepFloatingButtons.PauseIcon");
             m_continueSubtexture = ContentManager.Get<Subtexture>("Textures/Gui/GVContinue");
             m_pauseSubtexture = ContentManager.Get<Subtexture>("Textures/Gui/GVPause");
@@ -76,9 +74,8 @@ namespace Game {
                     }
                 }
             }
-            m_count.Text = (m_subsystem.last1000Updates.Count - 1).ToString();
             double time = (m_subsystem.lastUpdate - (m_subsystem.last1000Updates.Count > 0 ? m_subsystem.last1000Updates.Peek() : m_subsystem.lastUpdate)).TotalSeconds;
-            m_time.Text = time.ToString(time < 1 ? "f4" : "f2");
+            m_label.Text = string.Format(LanguageControl.Get(GetType().Name, "1"), m_subsystem.last1000Updates.Count - 1, time.ToString(time < 1 ? "f4" : "f2"));
             m_pauseIcon.Subtexture = m_subsystem.debugMode ? m_continueSubtexture : m_pauseSubtexture;
         }
     }
