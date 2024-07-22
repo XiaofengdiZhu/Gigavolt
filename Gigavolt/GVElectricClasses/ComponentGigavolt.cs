@@ -75,48 +75,50 @@ namespace Game {
                     }
                 }
                 //快捷轮盘
-                if (m_dragHostWidget.m_dragWidget == null) {
-                    m_dragStartTime = null;
-                }
-                else {
-                    if (m_dragStartTime == null) {
-                        m_dragStartTime = DateTime.Now;
-                        m_dragStartPosition = m_dragHostWidget.m_dragPosition;
+                if (GVStaticStorage.WheelPanelEnabled) {
+                    if (m_dragHostWidget.m_dragWidget == null) {
+                        m_dragStartTime = null;
                     }
                     else {
-                        Vector2 transformedDragPosition = m_controlsContainer.ScreenToWidget(m_dragHostWidget.m_dragPosition);
-                        const float edgeDistance = (GVWheelPanelWidget.FirstRingDiameter + GVWheelPanelWidget.RingSpacing) / 2f;
-                        if (Vector2.DistanceSquared(m_dragHostWidget.m_dragPosition, m_dragStartPosition) < 50
-                            && transformedDragPosition.X > edgeDistance
-                            && transformedDragPosition.X < m_controlsContainer.ActualSize.X - edgeDistance
-                            && transformedDragPosition.Y > edgeDistance
-                            && transformedDragPosition.Y < m_controlsContainer.ActualSize.Y - edgeDistance) {
-                            if ((DateTime.Now - m_dragStartTime.Value).TotalMilliseconds > 800
-                                && m_dragHostWidget.m_dragData is InventoryDragData data) {
-                                int centerBlockValue = data.Inventory.GetSlotValue(data.SlotIndex);
-                                Block centerBlock = BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)];
-                                IGVCustomWheelPanelBlock customWheelPanelBlock = centerBlock as IGVCustomWheelPanelBlock;
-                                List<int> outerBlocksValue = customWheelPanelBlock == null ? BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList() : customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue);
-                                int outerBlocksValueCount = outerBlocksValue.Count;
-                                if (outerBlocksValue.Contains(centerBlockValue)) {
-                                    outerBlocksValueCount--;
-                                }
-                                if (outerBlocksValueCount > 0) {
-                                    m_wheelPanelWidget.CenterBlockValue = centerBlockValue;
-                                    m_wheelPanelWidget.OuterBlocksValue = outerBlocksValue;
-                                    m_wheelPanelWidget.IsVisible = true;
-                                    m_controlsContainer.SetWidgetPosition(m_wheelPanelWidget, transformedDragPosition - m_wheelPanelWidget.Size / 2);
-                                    m_wheelPanelWidget.m_inventoryDragData = data;
-                                    m_dragHostWidget.Children.Remove(m_dragHostWidget.m_dragWidget);
-                                    m_dragHostWidget.m_dragWidget = null;
-                                    m_dragHostWidget.m_dragData = null;
-                                    m_dragHostWidget.m_dragEndedHandler = null;
-                                }
-                            }
-                        }
-                        else {
+                        if (m_dragStartTime == null) {
                             m_dragStartTime = DateTime.Now;
                             m_dragStartPosition = m_dragHostWidget.m_dragPosition;
+                        }
+                        else {
+                            Vector2 transformedDragPosition = m_controlsContainer.ScreenToWidget(m_dragHostWidget.m_dragPosition);
+                            const float edgeDistance = (GVWheelPanelWidget.FirstRingDiameter + GVWheelPanelWidget.RingSpacing) / 2f;
+                            if (Vector2.DistanceSquared(m_dragHostWidget.m_dragPosition, m_dragStartPosition) < 50
+                                && transformedDragPosition.X > edgeDistance
+                                && transformedDragPosition.X < m_controlsContainer.ActualSize.X - edgeDistance
+                                && transformedDragPosition.Y > edgeDistance
+                                && transformedDragPosition.Y < m_controlsContainer.ActualSize.Y - edgeDistance) {
+                                if ((DateTime.Now - m_dragStartTime.Value).TotalMilliseconds > 800
+                                    && m_dragHostWidget.m_dragData is InventoryDragData data) {
+                                    int centerBlockValue = data.Inventory.GetSlotValue(data.SlotIndex);
+                                    Block centerBlock = BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)];
+                                    IGVCustomWheelPanelBlock customWheelPanelBlock = centerBlock as IGVCustomWheelPanelBlock;
+                                    List<int> outerBlocksValue = customWheelPanelBlock == null ? BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList() : customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue);
+                                    int outerBlocksValueCount = outerBlocksValue.Count;
+                                    if (outerBlocksValue.Contains(centerBlockValue)) {
+                                        outerBlocksValueCount--;
+                                    }
+                                    if (outerBlocksValueCount > 0) {
+                                        m_wheelPanelWidget.CenterBlockValue = centerBlockValue;
+                                        m_wheelPanelWidget.OuterBlocksValue = outerBlocksValue;
+                                        m_wheelPanelWidget.IsVisible = true;
+                                        m_controlsContainer.SetWidgetPosition(m_wheelPanelWidget, transformedDragPosition - m_wheelPanelWidget.Size / 2);
+                                        m_wheelPanelWidget.m_inventoryDragData = data;
+                                        m_dragHostWidget.Children.Remove(m_dragHostWidget.m_dragWidget);
+                                        m_dragHostWidget.m_dragWidget = null;
+                                        m_dragHostWidget.m_dragData = null;
+                                        m_dragHostWidget.m_dragEndedHandler = null;
+                                    }
+                                }
+                            }
+                            else {
+                                m_dragStartTime = DateTime.Now;
+                                m_dragStartPosition = m_dragHostWidget.m_dragPosition;
+                            }
                         }
                     }
                 }
@@ -217,7 +219,7 @@ namespace Game {
             m_isCreativeMode = Project.FindSubsystem<SubsystemGameInfo>(true).WorldSettings.GameMode == GameMode.Creative;
             m_controlsContainer = m_componentPlayer.GuiWidget.Children.Find<CanvasWidget>("ControlsContainer");
             m_dragHostWidget = m_componentPlayer.DragHostWidget;
-            m_wheelPanelWidget = new GVWheelPanelWidget(m_componentPlayer.ComponentGui) { IsVisible = false, SubsystemTerrain = m_subsystemTerrain };
+            m_wheelPanelWidget = new GVWheelPanelWidget(Project, m_componentPlayer.ComponentGui) { IsVisible = false, SubsystemTerrain = m_subsystemTerrain };
             m_componentPlayer.ComponentGui.ControlsContainerWidget.AddChildren(m_wheelPanelWidget);
         }
 

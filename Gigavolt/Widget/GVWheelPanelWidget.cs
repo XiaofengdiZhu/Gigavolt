@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine;
 using Engine.Graphics;
+using GameEntitySystem;
 
 namespace Game {
     public class GVWheelPanelWidget : CanvasWidget {
@@ -10,9 +11,11 @@ namespace Game {
         public const float RingSpacing = 72f;
 
         public int m_ringCount;
-        public GVBlockIconWidget m_lastFocusedWidget;
+        public GVBlockIconWidget m_lastFocusedBlockIconWidget;
+        public GVBlockHelperWidget m_lastFocusedBlockHelperWidget;
         public Vector2 m_dragPosition;
         public InventoryDragData m_inventoryDragData;
+        public readonly Project m_project;
         public readonly ComponentGui m_componentGui;
 
         public int CenterBlockValue {
@@ -22,7 +25,7 @@ namespace Game {
                 if (value != CenterBlockWidget.Value) {
                     CenterBlockWidget.Value = value;
                     int noLightValue = Terrain.ReplaceLight(value, 0);
-                    RecipaediaWidget.RecipaediaCount = CraftingRecipesManager.Recipes.Count(r => r.ResultValue == noLightValue);
+                    RecipesWidget.RecipesCount = CraftingRecipesManager.Recipes.Count(r => r.ResultValue == noLightValue);
                     AdjustFixedWidgets();
                 }
             }
@@ -70,8 +73,9 @@ namespace Game {
         }
 
         public readonly List<GVBlockIconWidget> OuterBlocksWidgets = [];
-        public readonly GVBlockHelperWidget DescribeWidget = new() { RecipaediaCount = -1 };
-        public readonly GVBlockHelperWidget RecipaediaWidget = new() { RecipaediaCount = 0 };
+        public readonly GVBlockHelperWidget DescriptionWidget = new() { Mode = GVBlockHelperWidget.DisplayMode.Description };
+        public readonly GVBlockHelperWidget RecipesWidget = new() { Mode = GVBlockHelperWidget.DisplayMode.Recipes, RecipesCount = 0 };
+        public readonly GVBlockHelperWidget DuplicateWidget = new() { Mode = GVBlockHelperWidget.DisplayMode.Duplicate };
         public SubsystemTerrain m_subsystemTerrain;
 
         public SubsystemTerrain SubsystemTerrain {
@@ -85,20 +89,22 @@ namespace Game {
             }
         }
 
-        public GVWheelPanelWidget(ComponentGui componentGui) {
+        public GVWheelPanelWidget(Project project, ComponentGui componentGui) {
             IsDrawRequired = true;
             AddChildren(CenterBlockWidget);
-            AddChildren(DescribeWidget);
-            AddChildren(RecipaediaWidget);
+            AddChildren(DescriptionWidget);
+            AddChildren(RecipesWidget);
+            AddChildren(DuplicateWidget);
+            m_project = project;
             m_componentGui = componentGui;
         }
 
         public override void Update() {
             if (Input.Drag == null) {
                 IsVisible = false;
-                if (m_lastFocusedWidget != null) {
+                if (m_lastFocusedBlockIconWidget != null) {
                     int oldValue = Terrain.ReplaceLight(m_inventoryDragData.Inventory.GetSlotValue(m_inventoryDragData.SlotIndex), 0);
-                    int newValue = Terrain.ReplaceLight(m_lastFocusedWidget.Value, 0);
+                    int newValue = Terrain.ReplaceLight(m_lastFocusedBlockIconWidget.Value, 0);
                     if (newValue > 0
                         && newValue != oldValue) {
                         if (m_inventoryDragData.DragMode == DragMode.AllItems) {
@@ -126,27 +132,62 @@ namespace Game {
                             }
                         }
                     }
-                    m_lastFocusedWidget = null;
+                    m_lastFocusedBlockIconWidget = null;
+                }
+                if (m_lastFocusedBlockHelperWidget != null) {
+                    int value = Terrain.ReplaceLight(CenterBlockValue, 0);
+                    switch (m_lastFocusedBlockHelperWidget.Mode) {
+                        case GVBlockHelperWidget.DisplayMode.Recipes:
+                            ScreensManager.SwitchScreen("RecipaediaRecipes", value);
+                            break;
+                        case GVBlockHelperWidget.DisplayMode.Description:
+                            ScreensManager.SwitchScreen("RecipaediaDescription", [value, new List<int> { value }]);
+                            break;
+                        case GVBlockHelperWidget.DisplayMode.Duplicate:
+                            int content = Terrain.ExtractContents(value);
+                            int newValue;
+                            if (BlocksManager.Blocks[content] is IGVCustomWheelPanelBlock block) {
+                                newValue = block.GetCustomCopyBlock(m_project, value);
+                            }
+                            else {
+                                newValue = value;
+                            }
+                            GameWidget gameWidget = m_componentGui.m_componentPlayer.PlayerData.GameWidget;
+                            Vector3 vector2 = Vector3.Normalize(gameWidget.ActiveCamera.ScreenToWorld(new Vector3(m_dragPosition.X, m_dragPosition.Y, 1f), Matrix.Identity) - gameWidget.ActiveCamera.ViewPosition) * 4f;
+                            m_project.FindSubsystem<SubsystemPickables>(true)
+                            .AddPickable(
+                                newValue,
+                                1,
+                                gameWidget.ActiveCamera.ViewPosition,
+                                vector2,
+                                null
+                            );
+                            break;
+                    }
+                    m_lastFocusedBlockHelperWidget = null;
                 }
             }
             else {
                 m_dragPosition = Input.Drag.Value;
-                m_dragPosition.X = Math.Clamp(m_dragPosition.X, GlobalBounds.Min.X, GlobalBounds.Max.X - 1f);
-                m_dragPosition.Y = Math.Clamp(m_dragPosition.Y, GlobalBounds.Min.Y, GlobalBounds.Max.Y - 1f);
                 Widget hitTestWidget = HitTestGlobal(m_dragPosition, widget => widget is GVBlockIconWidget or GVBlockHelperWidget);
-                GVBlockIconWidget newFocusedWidget = hitTestWidget as GVBlockIconWidget;
-                if (newFocusedWidget != m_lastFocusedWidget) {
-                    if (newFocusedWidget != null) {
-                        newFocusedWidget.HasFocus = true;
+                GVBlockIconWidget newFocusedBlockIconWidget = hitTestWidget as GVBlockIconWidget;
+                if (newFocusedBlockIconWidget != m_lastFocusedBlockIconWidget) {
+                    if (newFocusedBlockIconWidget != null) {
+                        newFocusedBlockIconWidget.HasFocus = true;
                         AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                     }
-                    if (m_lastFocusedWidget != null) {
-                        m_lastFocusedWidget.HasFocus = false;
+                    if (m_lastFocusedBlockIconWidget != null) {
+                        m_lastFocusedBlockIconWidget.HasFocus = false;
                     }
-                    m_lastFocusedWidget = newFocusedWidget;
+                    m_lastFocusedBlockIconWidget = newFocusedBlockIconWidget;
+                    m_lastFocusedBlockHelperWidget = null;
                 }
-                if (hitTestWidget is GVBlockHelperWidget blockHelperWidget) {
-                    blockHelperWidget.Action(CenterBlockValue);
+                GVBlockHelperWidget newFocusedBlockHelperWidget = hitTestWidget as GVBlockHelperWidget;
+                if (newFocusedBlockHelperWidget != m_lastFocusedBlockHelperWidget) {
+                    if (newFocusedBlockHelperWidget != null) {
+                        m_lastFocusedBlockHelperWidget = newFocusedBlockHelperWidget;
+                        m_lastFocusedBlockIconWidget = null;
+                    }
                 }
             }
         }
@@ -195,8 +236,18 @@ namespace Game {
 
         public void AdjustFixedWidgets() {
             SetPosition(CenterBlockWidget, new Vector2(m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.Size.X) / 2, m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.FullHeight) * 0.5f - CenterBlockWidget.NameLabelMarginY));
-            SetPosition(DescribeWidget, new Vector2(-16, Size.Y - DescribeWidget.Size.Y + 8));
-            SetPosition(RecipaediaWidget, Size - DescribeWidget.Size + new Vector2(16, 8));
+            switch (m_ringCount) {
+                case 1:
+                    SetPosition(DescriptionWidget, new Vector2(-36f, Size.Y - DescriptionWidget.Size.Y + 28f));
+                    SetPosition(RecipesWidget, Size - RecipesWidget.Size + new Vector2(36f, 28f));
+                    SetPosition(DuplicateWidget, new Vector2(-36f, -28f));
+                    break;
+                case 2:
+                    SetPosition(DescriptionWidget, new Vector2(-16f, Size.Y - DescriptionWidget.Size.Y + 8f));
+                    SetPosition(RecipesWidget, Size - RecipesWidget.Size + new Vector2(16f, 8f));
+                    SetPosition(DuplicateWidget, new Vector2(-16f, -8f));
+                    break;
+            }
         }
     }
 }

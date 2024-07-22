@@ -27,7 +27,7 @@ namespace Game {
             set { }
         }
 
-        public override IEditableItemData Copy() => new GVVolatileListMemoryBankData(m_ID, m_isDataInitialized ? new List<uint>(Data) : null, m_width, m_height);
+        public override IEditableItemData Copy() => new GVVolatileListMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), m_isDataInitialized ? new List<uint>(Data) : null, m_width, m_height);
 
         public override void LoadString(string data) {
             string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);

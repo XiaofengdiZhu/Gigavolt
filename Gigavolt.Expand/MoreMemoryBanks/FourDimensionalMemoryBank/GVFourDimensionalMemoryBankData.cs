@@ -154,14 +154,13 @@ namespace Game {
         }
 
         public override IEditableItemData Copy() => new GVFourDimensionalMemoryBankData(
-            m_ID,
+            GVStaticStorage.GetUniqueGVMBID(),
             m_worldDirectory,
-            m_isDataInitialized ? Data : null,
+            m_isDataInitialized ? Data.Select(pair => new KeyValuePair<int, Image<Rgba32>>(pair.Key, pair.Value.Clone())).ToDictionary() : null,
             m_xLength,
             m_yLength,
             m_zLength,
-            m_wLength,
-            LastOutput
+            m_wLength
         );
 
         public override void LoadData() {

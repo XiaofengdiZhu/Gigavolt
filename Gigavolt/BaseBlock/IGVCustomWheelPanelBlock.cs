@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameEntitySystem;
 
 namespace Game {
     public interface IGVCustomWheelPanelBlock {
-        public List<int> GetCustomWheelPanelValues(int centerValue);
+        public List<int> GetCustomWheelPanelValues(int centerValue) => [centerValue];
+        public int GetCustomCopyBlock(Project project, int centerValue) => centerValue;
 
         public static readonly List<int> BasicElementsValues = [
             GVNotGateBlock.Index,

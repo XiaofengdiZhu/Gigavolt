@@ -1,5 +1,7 @@
+using GameEntitySystem;
+
 namespace Game {
-    public class GVTruthTableCircuitBlock : RotateableMountedGVElectricElementBlock {
+    public class GVTruthTableCircuitBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 848;
 
         public GVTruthTableCircuitBlock() : base("Models/Gates", "TruthTableCircuit", 0.5f) { }
@@ -22,5 +24,11 @@ namespace Game {
         }
 
         public override bool IsNonDuplicable_(int value) => Terrain.ExtractData(value) > 0;
+
+        public int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVTruthTableCircuitBlockBehavior subsystem = project.FindSubsystem<SubsystemGVTruthTableCircuitBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVTruthTableData)subsystem.GetItemData(id).Copy()));
+        }
     }
 }

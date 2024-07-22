@@ -91,12 +91,11 @@ namespace Game {
         }
 
         public override IEditableItemData Copy() => new GVMemoryBankData(
-            m_ID,
+            GVStaticStorage.GetUniqueGVMBID(),
             m_worldDirectory,
             m_isDataInitialized ? (uint[])Data.Clone() : null,
             m_width,
-            m_height,
-            LastOutput
+            m_height
         );
 
         public override void LoadData() {

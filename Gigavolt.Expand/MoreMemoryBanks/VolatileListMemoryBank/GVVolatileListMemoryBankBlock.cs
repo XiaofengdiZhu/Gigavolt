@@ -1,4 +1,5 @@
 using Engine.Graphics;
+using GameEntitySystem;
 
 namespace Game {
     public class GVVolatileListMemoryBankBlock : GVListMemoryBankBlock {
@@ -17,6 +18,12 @@ namespace Game {
                 value = subsystem.SetIdToValue(value, subsystem.StoreItemDataAtUniqueId(new GVVolatileListMemoryBankData()));
             }
             return base.GetPlacementValue(subsystemTerrain, componentMiner, value, raycastResult);
+        }
+
+        public override int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVVolatileListMemoryBankBlockBehavior subsystem = project.FindSubsystem<SubsystemGVVolatileListMemoryBankBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVVolatileListMemoryBankData)subsystem.GetItemData(id).Copy()));
         }
     }
 }

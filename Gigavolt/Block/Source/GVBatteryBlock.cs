@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
+using GameEntitySystem;
 
 namespace Game {
-    public class GVBatteryBlock : Block, IGVElectricElementBlock {
+    public class GVBatteryBlock : Block, IGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 818;
 
         public readonly BlockMesh m_standaloneBlockMesh = new();
@@ -93,5 +94,11 @@ namespace Game {
 
         public int GetConnectionMask(int value) => int.MaxValue;
         public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 1) & 4095) > 0;
+
+        public int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVBatteryBlockBehavior subsystem = project.FindSubsystem<SubsystemGVBatteryBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GigaVoltageLevelData)subsystem.GetItemData(id).Copy()));
+        }
     }
 }

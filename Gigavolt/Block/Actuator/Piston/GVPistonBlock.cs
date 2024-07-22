@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
+using GameEntitySystem;
 
 namespace Game {
-    public class GVPistonBlock : Block, IGVElectricElementBlock {
+    public class GVPistonBlock : Block, IGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 854;
 
         public readonly BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[4];
@@ -194,5 +195,11 @@ namespace Game {
         public static int GetFace(int data) => (data >> 3) & 7;
 
         public static int SetFace(int data, int face) => (data & -57) | ((face & 7) << 3);
+
+        public int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVPistonBlockBehavior subsystem = project.FindSubsystem<SubsystemGVPistonBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVPistonData)subsystem.GetItemData(id).Copy()));
+        }
     }
 }

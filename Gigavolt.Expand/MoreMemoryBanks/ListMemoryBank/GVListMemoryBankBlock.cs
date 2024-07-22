@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
+using GameEntitySystem;
 
 namespace Game {
     public class GVListMemoryBankBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
@@ -78,5 +79,11 @@ namespace Game {
         }
 
         public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.MemoryBankValues;
+
+        public virtual int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVListMemoryBankBlockBehavior subsystem = project.FindSubsystem<SubsystemGVListMemoryBankBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVListMemoryBankData)subsystem.GetItemData(id).Copy()));
+        }
     }
 }

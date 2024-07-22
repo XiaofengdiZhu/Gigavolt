@@ -52,10 +52,7 @@ namespace Game {
             m_jsEngine.SetValue("executeAgain", ExecuteAgain);
         }
 
-        public IEditableItemData Copy() {
-            GVJavascriptMicrocontrollerData result = new() { m_portsDefinition = (int[])m_portsDefinition.Clone(), m_script = JsEngine.PrepareScript(LastLoadedCode) };
-            return result;
-        }
+        public IEditableItemData Copy() => new GVJavascriptMicrocontrollerData { m_portsDefinition = (int[])m_portsDefinition.Clone(), m_script = JsEngine.PrepareScript(LastLoadedCode), LastLoadedCode = LastLoadedCode };
 
         public uint[] Exe(uint[] inputs, Point3 position) {
             m_position = position;

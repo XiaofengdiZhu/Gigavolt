@@ -1,5 +1,7 @@
+using GameEntitySystem;
+
 namespace Game {
-    public class GVMemoryBankCBlock : RotateableMountedGVElectricElementBlock {
+    public class GVMemoryBankCBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 811;
 
         public GVMemoryBankCBlock() : base("Models/Gates", "MemoryBank", 0.875f) { }
@@ -27,6 +29,12 @@ namespace Game {
                 value = subsystem.SetIdToValue(value, subsystem.StoreItemDataAtUniqueId(new MemoryBankData()));
             }
             return base.GetPlacementValue(subsystemTerrain, componentMiner, value, raycastResult);
+        }
+
+        public int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVMemoryBankCBlockBehavior subsystem = project.FindSubsystem<SubsystemGVMemoryBankCBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((MemoryBankData)subsystem.GetItemData(id).Copy()));
         }
     }
 }

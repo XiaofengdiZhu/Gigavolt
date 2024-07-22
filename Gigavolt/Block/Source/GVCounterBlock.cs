@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using GameEntitySystem;
 
 namespace Game {
-    public class GVCounterBlock : RotateableMountedGVElectricElementBlock {
+    public class GVCounterBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 846;
 
         public GVCounterBlock() : base("Models/Gates", "Counter", 0.5f) { }
@@ -29,5 +30,11 @@ namespace Game {
         }
 
         public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 5) & 4095) > 0;
+
+        public int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVCounterBlockBehavior subsystem = project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVCounterData)subsystem.GetItemData(id).Copy()));
+        }
     }
 }

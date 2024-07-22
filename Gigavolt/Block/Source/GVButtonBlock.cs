@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
+using GameEntitySystem;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using Color = Engine.Color;
 using Image = Engine.Media.Image;
 
 namespace Game {
-    public class GVButtonBlock : MountedGVElectricElementBlock, IPaintableBlock {
+    public class GVButtonBlock : MountedGVElectricElementBlock, IPaintableBlock, IGVCustomWheelPanelBlock {
         public const int Index = 821;
 
         public readonly BlockMesh m_standaloneBlockMesh_Body = new();
@@ -238,5 +239,11 @@ namespace Game {
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
         public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) => Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
+
+        public int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVButtonBlockBehavior subsystem = project.FindSubsystem<SubsystemGVButtonBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVButtonData)subsystem.GetItemData(id).Copy()));
+        }
     }
 }

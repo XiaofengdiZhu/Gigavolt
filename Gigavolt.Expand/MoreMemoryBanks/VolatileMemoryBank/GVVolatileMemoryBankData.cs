@@ -66,7 +66,7 @@ namespace Game {
             Write(row * m_width + col, data);
         }
 
-        public override IEditableItemData Copy() => new GVVolatileMemoryBankData(m_ID, m_isDataInitialized ? (uint[])Data.Clone() : null, m_width, m_height);
+        public override IEditableItemData Copy() => new GVVolatileMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), m_isDataInitialized ? (uint[])Data.Clone() : null, m_width, m_height);
 
         public override void LoadString(string data) {
             string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);

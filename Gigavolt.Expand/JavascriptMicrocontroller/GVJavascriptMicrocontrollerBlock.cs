@@ -1,8 +1,9 @@
 using Engine;
 using Engine.Graphics;
+using GameEntitySystem;
 
 namespace Game {
-    public class GVJavascriptMicrocontrollerBlock : RotateableMountedGVElectricElementBlock {
+    public class GVJavascriptMicrocontrollerBlock : RotateableMountedGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 889;
         Texture2D texture;
 
@@ -70,6 +71,12 @@ namespace Game {
                 }
             }
             return null;
+        }
+
+        public int GetCustomCopyBlock(Project project, int centerValue) {
+            SubsystemGVJavascriptMicrocontrollerBlockBehavior subsystem = project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
+            int id = subsystem.GetIdFromValue(centerValue);
+            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVJavascriptMicrocontrollerData)subsystem.GetItemData(id).Copy()));
         }
     }
 }
