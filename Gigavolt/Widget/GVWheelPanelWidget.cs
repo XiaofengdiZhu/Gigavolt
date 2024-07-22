@@ -65,7 +65,8 @@ namespace Game {
                         SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i / firstLevelCount) * firstLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i / firstLevelCount) * firstLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
                     }
                     else {
-                        SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i / secondLevelCount) * secondLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i / secondLevelCount) * secondLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
+                        int i2 = i - firstLevelCount;
+                        SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i2 / secondLevelCount) * secondLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i2 / secondLevelCount) * secondLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
                     }
                 }
                 AdjustFixedWidgets();
@@ -103,6 +104,7 @@ namespace Game {
             if (Input.Drag == null) {
                 IsVisible = false;
                 if (m_lastFocusedBlockIconWidget != null) {
+                    m_lastFocusedBlockIconWidget.HasFocus = false;
                     int oldValue = Terrain.ReplaceLight(m_inventoryDragData.Inventory.GetSlotValue(m_inventoryDragData.SlotIndex), 0);
                     int newValue = Terrain.ReplaceLight(m_lastFocusedBlockIconWidget.Value, 0);
                     if (newValue > 0
@@ -113,8 +115,7 @@ namespace Game {
                         }
                         else {
                             int oldCount = m_inventoryDragData.Inventory.GetSlotCount(m_inventoryDragData.SlotIndex);
-                            if (oldCount == 1
-                                || oldCount == 9999) {
+                            if (oldCount is 1 or 9999) {
                                 m_inventoryDragData.Inventory.RemoveSlotItems(m_inventoryDragData.SlotIndex, int.MaxValue);
                                 m_inventoryDragData.Inventory.AddSlotItems(m_inventoryDragData.SlotIndex, newValue, 1);
                                 AudioManager.PlaySound("Audio/UI/ItemMoved", 1f, 0f, 0f);
@@ -135,13 +136,16 @@ namespace Game {
                     m_lastFocusedBlockIconWidget = null;
                 }
                 if (m_lastFocusedBlockHelperWidget != null) {
+                    m_lastFocusedBlockHelperWidget.HasFocus = false;
                     int value = Terrain.ReplaceLight(CenterBlockValue, 0);
                     switch (m_lastFocusedBlockHelperWidget.Mode) {
                         case GVBlockHelperWidget.DisplayMode.Recipes:
                             ScreensManager.SwitchScreen("RecipaediaRecipes", value);
+                            AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             break;
                         case GVBlockHelperWidget.DisplayMode.Description:
                             ScreensManager.SwitchScreen("RecipaediaDescription", [value, new List<int> { value }]);
+                            AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             break;
                         case GVBlockHelperWidget.DisplayMode.Duplicate:
                             int content = Terrain.ExtractContents(value);
@@ -162,6 +166,7 @@ namespace Game {
                                 vector2,
                                 null
                             );
+                            AudioManager.PlaySound("Audio/UI/ItemMoved", 1f, 0f, 0f);
                             break;
                     }
                     m_lastFocusedBlockHelperWidget = null;
@@ -185,9 +190,13 @@ namespace Game {
                 GVBlockHelperWidget newFocusedBlockHelperWidget = hitTestWidget as GVBlockHelperWidget;
                 if (newFocusedBlockHelperWidget != m_lastFocusedBlockHelperWidget) {
                     if (newFocusedBlockHelperWidget != null) {
-                        m_lastFocusedBlockHelperWidget = newFocusedBlockHelperWidget;
-                        m_lastFocusedBlockIconWidget = null;
+                        newFocusedBlockHelperWidget.HasFocus = true;
                     }
+                    if (m_lastFocusedBlockHelperWidget != null) {
+                        m_lastFocusedBlockHelperWidget.HasFocus = false;
+                    }
+                    m_lastFocusedBlockHelperWidget = newFocusedBlockHelperWidget;
+                    m_lastFocusedBlockIconWidget = null;
                 }
             }
         }

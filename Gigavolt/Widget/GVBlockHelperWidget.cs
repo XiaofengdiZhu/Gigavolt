@@ -6,8 +6,8 @@ namespace Game {
     public class GVBlockHelperWidget : CanvasWidget {
         public enum DisplayMode { Recipes, Description, Duplicate }
 
-        public readonly LabelWidget m_label = new() { FontScale = 0.7f, HorizontalAlignment = WidgetAlignment.Center };
-        public readonly RectangleWidget m_icon = new() { Size = new Vector2(60f), FillColor = Color.White, OutlineThickness = 0f };
+        public readonly LabelWidget m_label = new() { FontScale = 0.7f, Color = Color.LightGray, HorizontalAlignment = WidgetAlignment.Center };
+        public readonly RectangleWidget m_icon = new() { Size = new Vector2(60f), FillColor = Color.LightGray, OutlineThickness = 0f };
         public DisplayMode m_mode;
 
         public DisplayMode Mode {
@@ -67,11 +67,31 @@ namespace Game {
                     };
                     if (value > 0) {
                         m_label.Text = $"{m_recipesCount} {LanguageControl.Get("ContentWidgets", "RecipaediaScreen", "2")}"; //"{0} 配方"
+                        m_label.Color = Color.LightGray;
+                        m_icon.FillColor = Color.LightGray;
+                    }
+                    else {
+                        m_label.Text = LanguageControl.Get("RecipaediaScreen", "3"); //"没有配方"
+                        m_label.Color = Color.Gray;
+                        m_icon.FillColor = Color.Gray;
+                    }
+                }
+            }
+        }
+
+        public bool m_hasFocus;
+
+        public bool HasFocus {
+            get => m_hasFocus;
+            set {
+                m_hasFocus = value;
+                if (Mode != DisplayMode.Recipes
+                    || RecipesCount > 0) {
+                    if (value) {
                         m_label.Color = Color.White;
                         m_icon.FillColor = Color.White;
                     }
                     else {
-                        m_label.Text = LanguageControl.Get("RecipaediaScreen", "3"); //"没有配方"
                         m_label.Color = Color.LightGray;
                         m_icon.FillColor = Color.LightGray;
                     }
