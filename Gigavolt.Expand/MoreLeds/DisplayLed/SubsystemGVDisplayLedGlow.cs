@@ -143,6 +143,8 @@ namespace Game {
                             if (camera.ViewFrustum.Intersection(new BoundingBox(position + forward + min, position + forward + max))) {
                                 SamplerState samplerState = key.CustomBit ? SamplerState.PointClamp : SamplerState.AnisotropicClamp;
                                 Color color = Color.MultiplyColorOnly(key.Color, LightingManager.LightIntensityByLightValue[lightValue]);
+                                Vector3 direction = position - camera.ViewPosition;
+                                position -= (0.01f + 0.02f * Vector3.Dot(direction, camera.ViewDirection)) / direction.Length() * direction;
                                 if (key.Type == 2) {
                                     // 绘制地层
                                     TexturedBatch3D batch = new() {

@@ -38,9 +38,10 @@ namespace Game {
                 foreach (GV8NumberGlowPoint key in points) {
                     if (key.Voltage > 0) {
                         Vector3 position = subterrainId == 0 ? key.Position : Vector3.Transform(key.Position, transform);
-                        Vector3 vector = position - camera.ViewPosition;
-                        if (Vector3.Dot(vector, camera.ViewDirection) > 0.01f) {
-                            float distance = vector.Length();
+                        Vector3 direction = position - camera.ViewPosition;
+                        float dotResult = Vector3.Dot(direction, camera.ViewDirection);
+                        if (Vector3.Dot(direction, camera.ViewDirection) > 0.01f) {
+                            float distance = direction.Length();
                             if (distance < m_subsystemSky.ViewFogRange.Y) {
                                 Vector3 right = key.Right;
                                 Vector3 up = key.Up;
@@ -54,7 +55,7 @@ namespace Game {
                                 Draw8Number(
                                     batchCache,
                                     key.Voltage,
-                                    position,
+                                    position - (0.01f + 0.02f * dotResult) / distance * direction,
                                     size,
                                     right,
                                     up,

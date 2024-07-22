@@ -53,7 +53,7 @@ namespace Game {
             }
         }
 
-        public int m_recipesCount;
+        public int m_recipesCount = -1;
 
         public int RecipesCount {
             get => m_recipesCount;

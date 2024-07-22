@@ -40,9 +40,10 @@ namespace Game {
                 foreach (GVGlowPoint key in points) {
                     if (key.Color.A > 0) {
                         Vector3 position = subterrainId == 0 ? key.Position : Vector3.Transform(key.Position, transform);
-                        Vector3 vector = position - camera.ViewPosition;
-                        if (Vector3.Dot(vector, camera.ViewDirection) > 0.01f) {
-                            float distance = vector.Length();
+                        Vector3 direction = position - camera.ViewPosition;
+                        float dotResult = Vector3.Dot(direction, camera.ViewDirection);
+                        if (dotResult > 0.01f) {
+                            float distance = direction.Length();
                             if (distance < m_subsystemSky.ViewFogRange.Y) {
                                 Vector3 right = key.Right;
                                 Vector3 up = key.Up;
@@ -54,6 +55,7 @@ namespace Game {
                                     right = Vector3.Transform(right, orientation) / scale;
                                     up = Vector3.Transform(up, orientation) / scale;
                                 }
+                                position -= (0.01f + 0.02f * dotResult) / distance * direction;
                                 Vector3 p = position + size * (-right - up);
                                 Vector3 p2 = position + size * (right - up);
                                 Vector3 p3 = position + size * (right + up);

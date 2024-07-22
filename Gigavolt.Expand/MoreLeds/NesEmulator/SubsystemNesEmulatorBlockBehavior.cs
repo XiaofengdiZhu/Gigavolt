@@ -174,6 +174,8 @@ namespace Game {
                                 max.Z = Math.Max(max.Z, offset.Z);
                             }
                             if (camera.ViewFrustum.Intersection(new BoundingBox(position + min, position + max))) {
+                                Vector3 direction = position - camera.ViewPosition;
+                                position -= (0.01f + 0.02f * Vector3.Dot(direction, camera.ViewDirection)) / direction.Length() * direction;
                                 Vector3 p = position - right - up;
                                 Vector3 p2 = position + right - up;
                                 Vector3 p3 = position + right + up;

@@ -145,11 +145,12 @@ namespace Game {
                         if (inSubterrain) {
                             position = Vector3.Transform(data.Position, transform);
                         }
-                        Vector3 vector = position - camera.ViewPosition;
-                        if (Vector3.Dot(vector, camera.ViewDirection) > 0.01f) {
-                            float num2 = vector.Length();
-                            if (num2 < m_subsystemSky.ViewFogRange.Y) {
-                                int newLodLevel = vector.LengthSquared() switch {
+                        Vector3 direction = position - camera.ViewPosition;
+                        float dotResult = Vector3.Dot(direction, camera.ViewDirection);
+                        if (dotResult > 0.01f) {
+                            float distance = direction.Length();
+                            if (distance < m_subsystemSky.ViewFogRange.Y) {
+                                int newLodLevel = direction.LengthSquared() switch {
                                     < 3f => 0, //全特效
                                     < 5.3f => 1, //关闭按钮显示、降低虚线精度
                                     < 45f => 2, //降低分辨率至512*512、进一步降低虚线精度
@@ -174,6 +175,7 @@ namespace Game {
                                     right = Vector3.Transform(right, orientation) / scale;
                                     up = Vector3.Transform(up, orientation) / scale;
                                 }
+                                position -= (0.01f + 0.02f * dotResult) / distance * direction;
                                 Vector3 p = position + size * (-right - up);
                                 Vector3 p2 = position + size * (right - up);
                                 Vector3 p3 = position + size * (right + up);
