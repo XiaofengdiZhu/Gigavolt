@@ -78,7 +78,7 @@
     },
     "GVGuidedDispenserBlock:0": {
       "DisplayName": "GV制导发射器",
-      "Description": "和发射器类似，但不是指定速度和角度，而是直接指定要投射到的位置，而且能设置抵达指定位置时是否将投射物放置到世界中，不受空气阻力影响，详见本Mod Github页面的介绍"
+      "Description": "和发射器类似，但不是指定速度和角度，而是直接指定要投射到的位置，而且能设置抵达指定位置时是否将投射物放置到世界中，不受空气阻力影响，默认为发射模式，详见本Mod Github页面的介绍"
     },
     "GVCrusherProjectileBlock:0": {
       "DisplayName": "GV破坏球",

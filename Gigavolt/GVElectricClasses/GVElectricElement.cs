@@ -1,16 +1,15 @@
 using System.Collections.Generic;
-using Engine;
 
 namespace Game {
     public abstract class GVElectricElement {
         public SubsystemGVElectricity SubsystemGVElectricity { get; set; }
-        public ReadOnlyList<GVCellFace> CellFaces { get; set; }
+        public List<GVCellFace> CellFaces { get; }
         public List<GVElectricConnection> Connections { get; set; }
         public readonly uint SubterrainId;
 
         public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, IEnumerable<GVCellFace> cellFaces, uint subterrainId) {
             SubsystemGVElectricity = subsystemGVElectricity;
-            CellFaces = new ReadOnlyList<GVCellFace>(new List<GVCellFace>(cellFaces));
+            CellFaces = new List<GVCellFace>(cellFaces);
             Connections = [];
             SubterrainId = subterrainId;
         }

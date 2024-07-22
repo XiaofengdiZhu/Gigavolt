@@ -116,15 +116,15 @@ namespace Game {
             }
         }
 
-        public override int GetHashCode() {
-            int hash = 17;
+        public override int GetHashCode() =>
+            /*int hash = 17;
             hash = hash * 23 + X;
             hash = hash * 23 + Y;
             hash = hash * 23 + Z;
             hash = hash * 23 + Face;
             hash = hash * 23 + Mask;
-            return hash;
-        }
+            return hash;*/
+            (X << 21) + (Z << 9) + (Y << 3) + Face + Mask * 23;
 
         public override bool Equals(object obj) => obj is GVCellFace cellFace && Equals(cellFace);
 

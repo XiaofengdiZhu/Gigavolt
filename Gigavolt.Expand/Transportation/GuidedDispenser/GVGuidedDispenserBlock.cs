@@ -82,7 +82,7 @@ namespace Game {
         public static int SetDirection(int data, int direction) => (data & -8) | (direction & 7);
 
         public static Mode GetMode(int data) {
-            if ((data & 8) != 0) {
+            if ((data & 8) == 0) {
                 return Mode.Shoot;
             }
             return Mode.Dispense;

@@ -1422,9 +1422,16 @@ namespace Game {
 
         public void AddGVElectricElement(GVElectricElement GVElectricElement) {
             Dictionary<GVCellFace, GVElectricElement> elements = m_GVElectricElementsByCellFace[GVElectricElement.SubterrainId];
-            if (GVElectricElement.CellFaces.Intersect(elements.Keys).Any()) {
+            // 移除了检测，可能不安全，待进一步测试
+            /*if (GVElectricElement.CellFaces.Intersect(elements.Keys).Any()) {
                 return;
-            }
+            }*/
+            /*HashSet<GVCellFace> set = new(GVElectricElement.CellFaces);
+            foreach (GVCellFace item in elements.Keys) {
+                if (set.Contains(item)) {
+                    return;
+                }
+            }*/
             m_GVElectricElements.Add(GVElectricElement);
             foreach (GVCellFace cellFace2 in GVElectricElement.CellFaces) {
                 elements.Add(cellFace2, GVElectricElement);
@@ -1700,9 +1707,13 @@ namespace Game {
         }
 
         public void ScanWireDomain(GVCellFace startCellFace, uint subterrainId, HashSet<GVCellFace> visited, HashSet<GVCellFace> result) {
-            DynamicArray<GVCellFace> dynamicArray = [startCellFace];
+            if (visited.Contains(startCellFace)) {
+                return;
+            }
+            Stack<GVCellFace> dynamicArray = new(4);
+            dynamicArray.Push(startCellFace);
             while (dynamicArray.Count > 0) {
-                GVCellFace key = dynamicArray.Array[--dynamicArray.Count];
+                GVCellFace key = dynamicArray.Pop();
                 if (visited.Contains(key)) {
                     continue;
                 }
@@ -1756,7 +1767,7 @@ namespace Game {
                             m_tmpConnectionPaths
                         );
                         foreach (GVElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths) {
-                            dynamicArray.Add(
+                            dynamicArray.Push(
                                 new GVCellFace(
                                     key2.X + tmpConnectionPath.NeighborOffsetX,
                                     key2.Y + tmpConnectionPath.NeighborOffsetY,
