@@ -1638,6 +1638,13 @@ namespace Game {
                         for (int j = key.Y - 1; j <= key.Y + 1; j++) {
                             for (int k = key.Z - 1; k <= key.Z + 1; k++) {
                                 for (int l = 0; l < 6; l++) {
+                                    m_tmpResult.Clear();
+                                    ScanWireDomain(new GVCellFace(i, j, k, l), subterrainId, m_tmpVisited, m_tmpResult);
+                                    if (m_tmpResult.Count > 0) {
+                                        WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult, subterrainId);
+                                        AddGVElectricElement(GVElectricElement);
+                                        continue;
+                                    }
                                     for (int m = 0; m < 16; m++) {
                                         m_tmpResult.Clear();
                                         ScanWireDomain(
@@ -1655,13 +1662,8 @@ namespace Game {
                                         if (m_tmpResult.Count > 0) {
                                             WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult, subterrainId);
                                             AddGVElectricElement(GVElectricElement);
+                                            break;
                                         }
-                                    }
-                                    m_tmpResult.Clear();
-                                    ScanWireDomain(new GVCellFace(i, j, k, l), subterrainId, m_tmpVisited, m_tmpResult);
-                                    if (m_tmpResult.Count > 0) {
-                                        WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult, subterrainId);
-                                        AddGVElectricElement(GVElectricElement);
                                     }
                                 }
                             }

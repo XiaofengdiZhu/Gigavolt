@@ -77,6 +77,7 @@ namespace Game {
                 //快捷轮盘
                 if (GVStaticStorage.WheelPanelEnabled) {
                     if (m_dragHostWidget.m_dragWidget == null) {
+                        m_wheelPanelWidget.m_hide = false;
                         m_dragStartTime = null;
                     }
                     else {
@@ -105,7 +106,8 @@ namespace Game {
                                     m_wheelPanelWidget.m_originalInventoryDragData = data;
                                 }
                             }
-                            else if (!m_wheelPanelWidget.IsVisible) {
+                            else if (!m_wheelPanelWidget.IsVisible
+                                && !m_wheelPanelWidget.m_hide) {
                                 m_dragStartTime = DateTime.Now;
                                 m_dragStartPosition = m_dragHostWidget.m_dragPosition;
                             }

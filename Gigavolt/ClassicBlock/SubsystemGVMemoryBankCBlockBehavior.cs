@@ -33,10 +33,8 @@
                     new EditMemoryBankDialogAPI(
                         memoryBankData,
                         () => {
-                            int data = StoreItemDataAtUniqueId(memoryBankData);
-                            int value2 = Terrain.ReplaceData(value, data);
                             inventory.RemoveSlotItems(slotIndex, count);
-                            inventory.AddSlotItems(slotIndex, value2, count);
+                            inventory.AddSlotItems(slotIndex, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id)), count);
                         }
                     )
                 );

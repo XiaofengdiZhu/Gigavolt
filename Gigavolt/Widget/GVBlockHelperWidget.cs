@@ -4,41 +4,29 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVBlockHelperWidget : CanvasWidget {
-        public enum DisplayMode { Recipes, Description, Duplicate }
+        public enum DisplayMode { Recipes, Description, Duplicate, Cancel }
 
         public readonly LabelWidget m_label = new() { FontScale = 0.7f, Color = Color.LightGray, HorizontalAlignment = WidgetAlignment.Center };
-        public readonly RectangleWidget m_icon = new() { Size = new Vector2(60f), FillColor = Color.LightGray, OutlineThickness = 0f };
+        public readonly RectangleWidget m_icon = new() { FillColor = Color.LightGray, OutlineThickness = 0f };
         public DisplayMode m_mode;
 
         public DisplayMode Mode {
             get => m_mode;
             set {
                 m_mode = value;
-                m_icon.Subtexture ??= value switch {
-                    DisplayMode.Recipes => ContentManager.Get<Subtexture>("Textures/Gui/GVRecipaedia"),
-                    DisplayMode.Description => ContentManager.Get<Subtexture>("Textures/Atlas/HelpTopicIcon"),
-                    DisplayMode.Duplicate => ContentManager.Get<Subtexture>("Textures/Gui/GVCopy"),
-                    _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
-                };
-                m_label.Text = value switch {
-                    DisplayMode.Recipes => $"{m_recipesCount} {LanguageControl.Get("ContentWidgets", "RecipaediaScreen", "2")}", //"{0} 配方"
-                    DisplayMode.Description => LanguageControl.Get("ContentWidgets", "RecipaediaScreen", "1"), //"描述"
-                    DisplayMode.Duplicate => LanguageControl.Get("ContentWidgets", "MoreCommunityLinkDialog", "8"), //"复制"
-                    _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
-                };
-                m_label.VerticalAlignment = value switch {
-                    DisplayMode.Duplicate => WidgetAlignment.Near,
-                    _ => WidgetAlignment.Far
-                };
                 switch (value) {
                     case DisplayMode.Recipes:
                         m_icon.Subtexture = ContentManager.Get<Subtexture>("Textures/Gui/GVRecipaedia");
                         m_icon.TextureLinearFilter = false;
+                        m_icon.Size = new Vector2(56f);
+                        SetPosition(m_icon, new Vector2(4f));
                         m_label.Text = $"{m_recipesCount} {LanguageControl.Get("ContentWidgets", "RecipaediaScreen", "2")}"; //"{0} 配方"
                         m_label.VerticalAlignment = WidgetAlignment.Far;
                         break;
                     case DisplayMode.Description:
                         m_icon.Subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/HelpTopicIcon");
+                        m_icon.Size = new Vector2(60f);
+                        SetPosition(m_icon, new Vector2(2f));
                         m_label.Text = LanguageControl.Get("ContentWidgets", "RecipaediaScreen", "1"); //"描述"
                         m_label.VerticalAlignment = WidgetAlignment.Far;
                         break;
@@ -49,6 +37,14 @@ namespace Game {
                         SetPosition(m_icon, new Vector2(16f, 36f));
                         m_label.Text = LanguageControl.Get("ContentWidgets", "MoreCommunityLinkDialog", "8"); //"复制"
                         break;
+                    case DisplayMode.Cancel:
+                        m_icon.Subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Plus");
+                        m_icon.Size = new Vector2(48f);
+                        SetPosition(m_icon, new Vector2(2f));
+                        m_icon.RenderTransform *= Matrix.CreateRotationZ(MathF.PI / 4f) * Matrix.CreateTranslation(24f, -8.485f, 0f);
+                        SetPosition(m_icon, new Vector2(8f, 28f));
+                        m_label.Text = LanguageControl.Get("Usual", "cancel"); //"取消"
+                        break;
                 }
             }
         }
@@ -58,7 +54,8 @@ namespace Game {
         public int RecipesCount {
             get => m_recipesCount;
             set {
-                if (m_recipesCount != value) {
+                if (Mode == DisplayMode.Recipes
+                    && m_recipesCount != value) {
                     m_recipesCount = value;
                     m_label.Text = value switch {
                         > 0 => $"{m_recipesCount} {LanguageControl.Get("ContentWidgets", "RecipaediaScreen", "2")}", //"{0} 配方"
@@ -104,11 +101,10 @@ namespace Game {
             IsDrawRequired = true;
             AddChildren(m_icon);
             AddChildren(m_label);
-            SetPosition(m_icon, new Vector2(2f));
         }
 
         public override void Draw(DrawContext dc) {
-            Vector2 center = Vector2.Transform(new Vector2(Size.X / 2f, Mode == DisplayMode.Duplicate ? Size.Y - Size.X / 2f : Size.X / 2f), GlobalTransform);
+            Vector2 center = Vector2.Transform(new Vector2(Size.X / 2f, Mode is DisplayMode.Duplicate or DisplayMode.Cancel ? Size.Y - Size.X / 2f : Size.X / 2f), GlobalTransform);
             Color color1 = new Color(0, 0, 0, 128) * GlobalColorTransform;
             Color color2 = new Color(0, 0, 0, 96) * GlobalColorTransform;
             Color color3 = new Color(0, 0, 0, 64) * GlobalColorTransform;

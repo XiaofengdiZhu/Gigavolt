@@ -13,9 +13,9 @@ namespace Game {
 
             public int GetSlotCount(int slotIndex) => 1;
 
-            public int GetSlotCapacity(int slotIndex, int value) => 1;
+            public int GetSlotCapacity(int slotIndex, int value) => int.MaxValue;
 
-            public int GetSlotProcessCapacity(int slotIndex, int value) => 1;
+            public int GetSlotProcessCapacity(int slotIndex, int value) => int.MaxValue;
 
             public void AddSlotItems(int slotIndex, int value, int count) { }
 
@@ -51,6 +51,7 @@ namespace Game {
         public Vector2 m_dragPosition;
         public InventoryDragData m_originalInventoryDragData;
         public InventoryDragData m_inventoryDragData;
+        public bool m_hide;
         public readonly Project m_project;
         public readonly ComponentGui m_componentGui;
         public readonly GVWheelPanelInventory m_inventory;
@@ -71,6 +72,8 @@ namespace Game {
 
         public readonly GVBlockIconWidget CenterBlockWidget = new() { AlwaysInFocus = true, Size = new Vector2(60f) };
         public List<int> m_outerBlocksValue;
+        public int m_firstLevelCount;
+        public int m_secondLevelCount;
 
         public List<int> OuterBlocksValue {
             get => m_outerBlocksValue;
@@ -93,22 +96,25 @@ namespace Game {
                     RemoveChildren(widget);
                 }
                 OuterBlocksWidgets.Clear();
-                int firstLevelCount = Math.Min(blocksValue.Count >= 28 ? 12 : 8, blocksValue.Count);
-                int secondLevelCount = Math.Min(Math.Max(blocksValue.Count - firstLevelCount, firstLevelCount), 36 - firstLevelCount);
+                m_firstLevelCount = m_ringCount > 0 ? Math.Min(blocksValue.Count >= 28 ? 12 : 8, blocksValue.Count) : 0;
+                m_secondLevelCount = m_ringCount > 1 ? Math.Min(Math.Max(blocksValue.Count - m_firstLevelCount, m_firstLevelCount), 36 - m_firstLevelCount) : 0;
+                if (m_secondLevelCount is > 8 and < 24) {
+                    m_secondLevelCount++;
+                }
                 float center = RingSpacing * m_ringCount + FirstRingDiameter / 2f;
                 const float firstLevelRadius = (RingSpacing + FirstRingDiameter) / 2f;
                 const float secondLevelRadius = RingSpacing * 1.5f + FirstRingDiameter / 2f;
-                for (int i = 0; i < Math.Min(blocksValue.Count, 36); i++) {
+                for (int i = 0; i < Math.Min(blocksValue.Count, 35); i++) {
                     int blockValue = blocksValue[i];
                     GVBlockIconWidget widget = new() { Value = blockValue, SubsystemTerrain = SubsystemTerrain, Size = new Vector2(48f) };
                     OuterBlocksWidgets.Add(widget);
                     AddChildren(widget);
-                    if (i < firstLevelCount) {
-                        SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i / firstLevelCount) * firstLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i / firstLevelCount) * firstLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
+                    if (i < m_firstLevelCount) {
+                        SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i / m_firstLevelCount) * firstLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i / m_firstLevelCount) * firstLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
                     }
                     else {
-                        int i2 = i - firstLevelCount;
-                        SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i2 / secondLevelCount) * secondLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i2 / secondLevelCount) * secondLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
+                        int i2 = i - m_firstLevelCount;
+                        SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i2 / m_secondLevelCount) * secondLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i2 / m_secondLevelCount) * secondLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
                     }
                 }
                 AdjustFixedWidgets();
@@ -119,6 +125,7 @@ namespace Game {
         public readonly GVBlockHelperWidget DescriptionWidget = new() { Mode = GVBlockHelperWidget.DisplayMode.Description };
         public readonly GVBlockHelperWidget RecipesWidget = new() { Mode = GVBlockHelperWidget.DisplayMode.Recipes, RecipesCount = 0 };
         public readonly GVBlockHelperWidget DuplicateWidget = new() { Mode = GVBlockHelperWidget.DisplayMode.Duplicate };
+        public readonly GVBlockHelperWidget CancelWidget = new() { Mode = GVBlockHelperWidget.DisplayMode.Cancel };
         public SubsystemTerrain m_subsystemTerrain;
 
         public SubsystemTerrain SubsystemTerrain {
@@ -138,8 +145,9 @@ namespace Game {
             AddChildren(DescriptionWidget);
             AddChildren(RecipesWidget);
             AddChildren(DuplicateWidget);
+            AddChildren(CancelWidget);
             m_inventory = new GVWheelPanelInventory { m_project = project };
-            m_inventoryDragData = new InventoryDragData { DragMode = DragMode.SingleItem, Inventory = m_inventory, SlotIndex = 0 };
+            m_inventoryDragData = new InventoryDragData { DragMode = DragMode.AllItems, Inventory = m_inventory, SlotIndex = 0 };
             m_project = project;
             m_componentGui = componentGui;
         }
@@ -154,23 +162,24 @@ namespace Game {
                     dragHostWidget.m_dragWidget = null;
                     dragHostWidget.m_dragData = null;
                     dragHostWidget.m_dragEndedHandler = null;
+                    int value = Terrain.ReplaceLight(CenterBlockValue, 0);
                     switch (m_lastFocusedBlockHelperWidget.Mode) {
                         case GVBlockHelperWidget.DisplayMode.Recipes:
-                            ScreensManager.SwitchScreen("RecipaediaRecipes", m_inventory.Value);
+                            ScreensManager.SwitchScreen("RecipaediaRecipes", value);
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             break;
                         case GVBlockHelperWidget.DisplayMode.Description:
-                            ScreensManager.SwitchScreen("RecipaediaDescription", [m_inventory.Value, new List<int> { m_inventory.Value }]);
+                            ScreensManager.SwitchScreen("RecipaediaDescription", [value, new List<int> { value }]);
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             break;
                         case GVBlockHelperWidget.DisplayMode.Duplicate:
-                            int content = Terrain.ExtractContents(m_inventory.Value);
+                            int content = Terrain.ExtractContents(value);
                             int newValue;
                             if (BlocksManager.Blocks[content] is IGVCustomWheelPanelBlock block) {
-                                newValue = block.GetCustomCopyBlock(m_project, m_inventory.Value);
+                                newValue = block.GetCustomCopyBlock(m_project, value);
                             }
                             else {
-                                newValue = m_inventory.Value;
+                                newValue = value;
                             }
                             GameWidget gameWidget = m_componentGui.m_componentPlayer.PlayerData.GameWidget;
                             Vector3 vector2 = Vector3.Normalize(gameWidget.ActiveCamera.ScreenToWorld(new Vector3(m_dragPosition.X, m_dragPosition.Y, 1f), Matrix.Identity) - gameWidget.ActiveCamera.ViewPosition) * 4f;
@@ -206,6 +215,12 @@ namespace Game {
                     else {
                         m_inventory.Value = Terrain.ReplaceLight(newFocusedBlockIconWidget.Value, 0);
                         dragHostWidget.m_dragData = m_inventoryDragData;
+                        if (m_secondLevelCount > 8) {
+                            int index = OuterBlocksWidgets.IndexOf(newFocusedBlockIconWidget);
+                            if (index < m_firstLevelCount) {
+                                AdjustOuterBlocksWidgets(index);
+                            }
+                        }
                     }
                     if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
                         containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").Value = newFocusedBlockIconWidget.Value;
@@ -219,6 +234,16 @@ namespace Game {
                 if (newFocusedBlockHelperWidget != m_lastFocusedBlockHelperWidget) {
                     if (newFocusedBlockHelperWidget != null) {
                         newFocusedBlockHelperWidget.HasFocus = true;
+                        DragHostWidget dragHostWidget = m_componentGui.m_componentPlayer.DragHostWidget;
+                        dragHostWidget.m_dragData = m_originalInventoryDragData;
+                        if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
+                            containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").Value = CenterBlockValue;
+                            containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = BlocksManager.Blocks[Terrain.ExtractContents(CenterBlockValue)].GetDisplayName(m_subsystemTerrain, CenterBlockValue);
+                        }
+                        if (newFocusedBlockHelperWidget.Mode == GVBlockHelperWidget.DisplayMode.Cancel) {
+                            IsVisible = false;
+                            m_hide = true;
+                        }
                     }
                     if (m_lastFocusedBlockHelperWidget != null) {
                         m_lastFocusedBlockHelperWidget.HasFocus = false;
@@ -291,17 +316,39 @@ namespace Game {
                     SetPosition(DescriptionWidget, new Vector2(-56f, Size.Y - DescriptionWidget.Size.Y + 48f));
                     SetPosition(RecipesWidget, Size - RecipesWidget.Size + new Vector2(56f, 48f));
                     SetPosition(DuplicateWidget, new Vector2(-56f, -48f));
+                    SetPosition(CancelWidget, new Vector2(Size.X - CancelWidget.Size.X + 56f, -48f));
                     break;
                 case 1:
                     SetPosition(DescriptionWidget, new Vector2(-36f, Size.Y - DescriptionWidget.Size.Y + 28f));
                     SetPosition(RecipesWidget, Size - RecipesWidget.Size + new Vector2(36f, 28f));
                     SetPosition(DuplicateWidget, new Vector2(-36f, -28f));
+                    SetPosition(CancelWidget, new Vector2(Size.X - CancelWidget.Size.X + 36f, -28f));
                     break;
                 case 2:
                     SetPosition(DescriptionWidget, new Vector2(-16f, Size.Y - DescriptionWidget.Size.Y + 8f));
                     SetPosition(RecipesWidget, Size - RecipesWidget.Size + new Vector2(16f, 8f));
                     SetPosition(DuplicateWidget, new Vector2(-16f, -8f));
+                    SetPosition(CancelWidget, new Vector2(Size.X - CancelWidget.Size.X + 16f, -8f));
                     break;
+            }
+        }
+
+        public void AdjustOuterBlocksWidgets(int index) {
+            int blocksCount = OuterBlocksValue.Count;
+            if (blocksCount <= 8) {
+                return;
+            }
+            float center = RingSpacing * m_ringCount + FirstRingDiameter / 2f;
+            const float secondLevelRadius = RingSpacing * 1.5f + FirstRingDiameter / 2f;
+            if (m_secondLevelCount > m_firstLevelCount) {
+                index = (int)MathF.Round((float)index / m_firstLevelCount * m_secondLevelCount);
+            }
+            for (int i = 0; i < Math.Min(m_secondLevelCount, blocksCount - m_firstLevelCount); i++) {
+                if (i == index) {
+                    continue;
+                }
+                GVBlockIconWidget widget = OuterBlocksWidgets[i + m_firstLevelCount - (i > index ? 1 : 0)];
+                SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i / m_secondLevelCount) * secondLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i / m_secondLevelCount) * secondLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
             }
         }
     }
