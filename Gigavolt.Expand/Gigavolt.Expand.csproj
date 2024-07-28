@@ -63,12 +63,11 @@
 		</ProjectReference>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Esprima" Version="3.0.5"/>
-		<PackageReference Include="Jint" Version="3.1.4"/>
+		<PackageReference Include="Jint" Version="4.0.0"/>
 		<PackageReference Include="OpenTK" Version="3.3.3.0">
 			<Aliases>OpenTKForWindows</Aliases>
 		</PackageReference>
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4"/>
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="JavascriptMicrocontroller\EditGVJavascriptMicrocontrollerDialog.cs"/>
