@@ -117,7 +117,7 @@ namespace Game {
             if (m_exportButton.IsClicked) {
                 MemoryStream stream = m_arrayData.GetStream();
                 if (stream != null) {
-                    ExportFile($"{m_path}/{m_arrayData.m_ID:X}{m_arrayData.ExportExtension}", stream);
+                    ExportFile($"{m_path}/{m_arrayData.ID:X}{m_arrayData.ExportExtension}", stream);
                 }
             }
             if (m_actionButton.IsClicked

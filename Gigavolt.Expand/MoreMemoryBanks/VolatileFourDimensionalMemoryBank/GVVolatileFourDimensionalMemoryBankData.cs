@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -8,7 +9,7 @@ using SixLabors.ImageSharp.PixelFormats;
 namespace Game {
     public class GVVolatileFourDimensionalMemoryBankData : GVFourDimensionalMemoryBankData {
         public GVVolatileFourDimensionalMemoryBankData() {
-            m_ID = GVStaticStorage.GetUniqueGVMBID();
+            ID = GVStaticStorage.GetUniqueGVMBID();
             m_worldDirectory = null;
             m_data = null;
             m_isDataInitialized = false;
@@ -16,7 +17,7 @@ namespace Game {
         }
 
         public GVVolatileFourDimensionalMemoryBankData(uint ID, Dictionary<int, Image<Rgba32>> image = null, int xLength = 0, int yLength = 0, int zLength = 0, int wLength = 0) {
-            m_ID = ID;
+            this.ID = ID;
             m_data = image;
             m_xLength = xLength;
             m_yLength = yLength;
@@ -26,7 +27,6 @@ namespace Game {
             m_wLength = wLength;
             m_totalLength = m_xyzProduct * wLength;
             m_isDataInitialized = image != null;
-            GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             m_updateTime = DateTime.Now;
         }
 
@@ -35,12 +35,22 @@ namespace Game {
             set { }
         }
 
+        public override IEditableItemData Copy() => Copy(GVStaticStorage.GetUniqueGVMBID());
+
+        public override IEditableItemData Copy(uint id) => new GVVolatileFourDimensionalMemoryBankData(
+            id,
+            m_isDataInitialized ? Data.Select(pair => new KeyValuePair<int, Image<Rgba32>>(pair.Key, pair.Value.Clone())).ToDictionary() : null,
+            m_xLength,
+            m_yLength,
+            m_zLength,
+            m_wLength
+        );
+
         public override void LoadString(string data) {
             string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             if (array.Length >= 1) {
                 string text = array[0];
-                m_ID = uint.Parse(text, NumberStyles.HexNumber, null);
-                GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
+                ID = uint.Parse(text, NumberStyles.HexNumber, null);
             }
             if (array.Length >= 2) {
                 string[] array2 = array[1].Split(',');
@@ -61,7 +71,7 @@ namespace Game {
 
         public override string SaveString() {
             StringBuilder stringBuilder = new();
-            stringBuilder.Append(m_ID.ToString("X"));
+            stringBuilder.Append(ID.ToString("X"));
             stringBuilder.Append($";{m_xLength},{m_yLength},{m_zLength},{m_wLength},{m_xOffset},{m_yOffset},{m_zOffset},{m_wOffset},{m_xSize},{m_ySize}");
             return stringBuilder.ToString();
         }

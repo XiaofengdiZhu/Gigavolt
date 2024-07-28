@@ -6,7 +6,24 @@ using Engine.Media;
 
 namespace Game {
     public abstract class GVArrayData : IEditableItemData {
-        public uint m_ID;
+        public uint m_id;
+
+        public uint ID {
+            get => m_id;
+            set {
+                if (m_id != value) {
+                    if (m_id != 0) {
+                        GVStaticStorage.GVMBIDDataDictionary.Remove(m_id);
+                    }
+                    if (GVStaticStorage.GVMBIDDataDictionary.TryGetValue(value, out GVArrayData data)) {
+                        data.Dispose();
+                    }
+                    GVStaticStorage.GVMBIDDataDictionary[value] = this;
+                    m_id = value;
+                }
+            }
+        }
+
         public string m_worldDirectory;
         public DateTime m_updateTime;
         public bool m_isDataInitialized;
@@ -39,6 +56,7 @@ namespace Game {
         public abstract uint Read(uint index);
         public abstract void Write(uint index, uint data);
         public abstract IEditableItemData Copy();
+        public abstract IEditableItemData Copy(uint id);
 
         public abstract void LoadData();
         public abstract void LoadString(string data);
@@ -280,7 +298,8 @@ namespace Game {
         public virtual uint[] Data2UintArray() => null;
         public uint[] GetUintArray() => m_isDataInitialized ? Data2UintArray() : null;
 
-        public void ClearCache() {
+        public void Dispose() {
+            m_isDataInitialized = false;
             m_cachedTexture2D?.Dispose();
             m_cachedTexture2D = null;
             m_cachedTerrainTexture2D?.Dispose();

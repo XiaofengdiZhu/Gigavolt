@@ -63,7 +63,7 @@ namespace Game {
 
         public override void Dispose() {
             try {
-                IEnumerable<uint> worldIDList = m_itemsData.Values.Select(d => d.m_ID);
+                IEnumerable<uint> worldIDList = m_itemsData.Values.Select(d => d.ID);
                 List<string> fileList = Storage.ListFileNames($"{m_subsystemGameInfo.DirectoryName}/GVLMB/").ToList();
                 uint[] fileNumberList = fileList.Select(
                         fileName => {

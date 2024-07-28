@@ -35,7 +35,7 @@ namespace Game {
         }
 
         public GVMemoryBankData() {
-            m_ID = GVStaticStorage.GetUniqueGVMBID();
+            ID = GVStaticStorage.GetUniqueGVMBID();
             m_worldDirectory = null;
             m_data = null;
             m_isDataInitialized = false;
@@ -43,14 +43,13 @@ namespace Game {
         }
 
         public GVMemoryBankData(uint ID, string worldDirectory, uint[] image = null, uint width = 0, uint height = 0, uint lastOutput = 0) {
-            m_ID = ID;
+            this.ID = ID;
             m_worldDirectory = worldDirectory;
             m_data = image;
             m_width = width;
             m_height = height;
             m_isDataInitialized = image != null;
             LastOutput = lastOutput;
-            GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             m_updateTime = DateTime.Now;
         }
 
@@ -90,8 +89,10 @@ namespace Game {
             }
         }
 
-        public override IEditableItemData Copy() => new GVMemoryBankData(
-            GVStaticStorage.GetUniqueGVMBID(),
+        public override IEditableItemData Copy() => Copy(GVStaticStorage.GetUniqueGVMBID());
+
+        public override IEditableItemData Copy(uint id) => new GVMemoryBankData(
+            id,
             m_worldDirectory,
             m_isDataInitialized ? (uint[])Data.Clone() : null,
             m_width,
@@ -101,7 +102,7 @@ namespace Game {
         public override void LoadData() {
             if (m_worldDirectory != null) {
                 try {
-                    string path = $"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png";
+                    string path = $"{m_worldDirectory}/GVMB/{ID.ToString("X", null)}.png";
                     if (Storage.FileExists(path)) {
                         Image2Data(Image.Load(path, ImageFileFormat.Png));
                     }
@@ -116,9 +117,8 @@ namespace Game {
             string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             if (array.Length >= 1) {
                 string text = array[0];
-                m_ID = uint.Parse(text, NumberStyles.HexNumber, null);
+                ID = uint.Parse(text, NumberStyles.HexNumber, null);
                 LoadData();
-                GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             }
             if (array.Length >= 2) {
                 LastOutput = uint.Parse(array[1], NumberStyles.HexNumber, null);
@@ -129,14 +129,14 @@ namespace Game {
 
         public string SaveString(bool saveLastOutput) {
             StringBuilder stringBuilder = new();
-            stringBuilder.Append(m_ID.ToString("X", null));
+            stringBuilder.Append(ID.ToString("X", null));
             if (saveLastOutput) {
                 stringBuilder.Append(';');
                 stringBuilder.Append(LastOutput.ToString("X", null));
             }
             if (m_isDataInitialized && m_dataChanged) {
                 try {
-                    using (Stream stream = Storage.OpenFile($"{m_worldDirectory}/GVMB/{m_ID.ToString("X", null)}.png", OpenFileMode.CreateOrOpen)) {
+                    using (Stream stream = Storage.OpenFile($"{m_worldDirectory}/GVMB/{ID.ToString("X", null)}.png", OpenFileMode.CreateOrOpen)) {
                         GetImage().m_trueImage.SaveAsPng(stream, DefaultPngEncoder);
                         stream.Flush();
                         stream.Close();

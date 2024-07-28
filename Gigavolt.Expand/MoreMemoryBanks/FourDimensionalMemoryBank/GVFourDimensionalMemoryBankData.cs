@@ -53,7 +53,7 @@ namespace Game {
         }
 
         public GVFourDimensionalMemoryBankData() {
-            m_ID = GVStaticStorage.GetUniqueGVMBID();
+            ID = GVStaticStorage.GetUniqueGVMBID();
             m_worldDirectory = null;
             m_data = null;
             m_isDataInitialized = false;
@@ -61,7 +61,7 @@ namespace Game {
         }
 
         public GVFourDimensionalMemoryBankData(uint ID, string worldDirectory, Dictionary<int, Image<Rgba32>> image = null, int xLength = 0, int yLength = 0, int zLength = 0, int wLength = 0, uint lastOutput = 0) {
-            m_ID = ID;
+            this.ID = ID;
             m_worldDirectory = worldDirectory;
             m_data = image;
             m_xLength = xLength;
@@ -73,7 +73,6 @@ namespace Game {
             m_totalLength = m_xyzProduct * wLength;
             m_isDataInitialized = image != null;
             LastOutput = lastOutput;
-            GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             m_updateTime = DateTime.Now;
         }
 
@@ -153,8 +152,10 @@ namespace Game {
             }
         }
 
-        public override IEditableItemData Copy() => new GVFourDimensionalMemoryBankData(
-            GVStaticStorage.GetUniqueGVMBID(),
+        public override IEditableItemData Copy() => Copy(GVStaticStorage.GetUniqueGVMBID());
+
+        public override IEditableItemData Copy(uint id) => new GVFourDimensionalMemoryBankData(
+            id,
             m_worldDirectory,
             m_isDataInitialized ? Data.Select(pair => new KeyValuePair<int, Image<Rgba32>>(pair.Key, pair.Value.Clone())).ToDictionary() : null,
             m_xLength,
@@ -166,7 +167,7 @@ namespace Game {
         public override void LoadData() {
             if (m_worldDirectory != null) {
                 try {
-                    string directory = $"{m_worldDirectory}/GVFDMB/{m_ID:X}";
+                    string directory = $"{m_worldDirectory}/GVFDMB/{ID:X}";
                     if (Storage.DirectoryExists(directory)) {
                         List<string> files = Storage.ListFileNames(directory).ToList();
                         HashSet<int> hashSet = [];
@@ -212,8 +213,7 @@ namespace Game {
             string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             if (array.Length >= 1) {
                 string text = array[0];
-                m_ID = uint.Parse(text, NumberStyles.HexNumber, null);
-                GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
+                ID = uint.Parse(text, NumberStyles.HexNumber, null);
             }
             if (array.Length >= 2) {
                 string[] array2 = array[1].Split(',');
@@ -247,7 +247,7 @@ namespace Game {
 
         public string SaveString(bool saveLastOutput) {
             StringBuilder stringBuilder = new();
-            stringBuilder.Append(m_ID.ToString("X"));
+            stringBuilder.Append(ID.ToString("X"));
             stringBuilder.Append($";{m_xLength},{m_yLength},{m_zLength},{m_wLength},{m_xOffset},{m_yOffset},{m_zOffset},{m_wOffset},{m_xSize},{m_ySize};");
             stringBuilder.Append(string.Join(',', Data.Keys));
             if (saveLastOutput) {
@@ -255,7 +255,7 @@ namespace Game {
                 stringBuilder.Append(LastOutput.ToString("X"));
             }
             if (m_isDataInitialized && m_dataChanged) {
-                string directory = $"{m_worldDirectory}/GVFDMB/{m_ID:X}";
+                string directory = $"{m_worldDirectory}/GVFDMB/{ID:X}";
                 if (!Storage.DirectoryExists(directory)) {
                     Storage.CreateDirectory(directory);
                 }
@@ -488,13 +488,10 @@ namespace Game {
         public override void Image2Data(Image image) {
             m_xLength = image.Width;
             m_yLength = image.Height;
-            Span<byte> bytes = new byte[m_xLength * m_yLength * 4];
-            image.m_trueImage.Frames[0].CopyPixelDataTo(bytes);
-            Image<Rgba32> newImage = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(DefaultImageConfiguration, bytes, m_xLength, m_yLength);
-            Data = new Dictionary<int, Image<Rgba32>> { { 0, newImage } };
+            Data = new Dictionary<int, Image<Rgba32>> { { 0, image.m_trueImage.Clone() } };
             m_xyProduct = m_xLength * m_yLength;
-            m_zLength = 1;
-            m_xyzProduct = m_xyProduct;
+            m_zLength = image.m_trueImage.Frames.Count;
+            m_xyzProduct = m_xyProduct * m_zLength;
             m_wLength = 1;
             m_totalLength = m_xyProduct;
         }
@@ -504,7 +501,7 @@ namespace Game {
                 string comment = SaveString();
                 MemoryStream stream = new();
                 using (ZipArchive zip = ZipArchive.Create(stream, true)) {
-                    string directory = $"{m_worldDirectory}/GVFDMB/{m_ID:X}";
+                    string directory = $"{m_worldDirectory}/GVFDMB/{ID:X}";
                     List<string> files = Storage.ListFileNames(directory).ToList();
                     foreach (string file in files) {
                         using (Stream stream2 = Storage.OpenFile($"{directory}/{file}", OpenFileMode.Read)) {

@@ -32,7 +32,7 @@ namespace Game {
         }
 
         public GVListMemoryBankData() {
-            m_ID = GVStaticStorage.GetUniqueGVMBID();
+            ID = GVStaticStorage.GetUniqueGVMBID();
             m_worldDirectory = null;
             m_data = [];
             m_isDataInitialized = true;
@@ -40,11 +40,10 @@ namespace Game {
         }
 
         public GVListMemoryBankData(uint ID, string worldDirectory, List<uint> image = null, uint lastOutput = 0) {
-            m_ID = ID;
+            this.ID = ID;
             m_worldDirectory = worldDirectory;
             m_data = image;
             m_isDataInitialized = image != null;
-            GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             m_updateTime = DateTime.Now;
             LastOutput = lastOutput;
         }
@@ -67,9 +66,6 @@ namespace Game {
                 }
                 else {
                     Data.Capacity = intIndex + 1;
-                    for (int i = Data.Count; i < intIndex; i++) {
-                        Data.Add(0u);
-                    }
                     Data.AddRange(Enumerable.Repeat(0u, intIndex - Data.Count));
                     Data.Add(data);
                 }
@@ -78,12 +74,14 @@ namespace Game {
             }
         }
 
-        public override IEditableItemData Copy() => new GVListMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), m_worldDirectory, m_isDataInitialized ? new List<uint>(Data) : null, LastOutput);
+        public override IEditableItemData Copy() => Copy(GVStaticStorage.GetUniqueGVMBID());
+
+        public override IEditableItemData Copy(uint id) => new GVListMemoryBankData(id, m_worldDirectory, m_isDataInitialized ? new List<uint>(Data) : null, LastOutput);
 
         public override void LoadData() {
             if (m_worldDirectory != null) {
                 try {
-                    string path = $"{m_worldDirectory}/GVLMB/{m_ID.ToString("X", null)}.bin";
+                    string path = $"{m_worldDirectory}/GVLMB/{ID.ToString("X", null)}.bin";
                     if (Storage.FileExists(path)) {
                         using (Stream stream = Storage.OpenFile(path, OpenFileMode.Read)) {
                             Stream2Data(stream);
@@ -100,9 +98,8 @@ namespace Game {
             string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             if (array.Length >= 1) {
                 string text = array[0];
-                m_ID = uint.Parse(text, NumberStyles.HexNumber, null);
+                ID = uint.Parse(text, NumberStyles.HexNumber, null);
                 LoadData();
-                GVStaticStorage.GVMBIDDataDictionary[m_ID] = this;
             }
             if (array.Length >= 5) {
                 m_width = uint.Parse(array[1]);
@@ -116,7 +113,7 @@ namespace Game {
 
         public string SaveString(bool saveLastOutput) {
             StringBuilder stringBuilder = new();
-            stringBuilder.Append(m_ID.ToString("X", null));
+            stringBuilder.Append(ID.ToString("X", null));
             stringBuilder.Append($";{m_width};{m_height};{m_offset}");
             if (saveLastOutput) {
                 stringBuilder.Append(';');
@@ -124,7 +121,7 @@ namespace Game {
             }
             if (m_isDataInitialized && m_dataChanged) {
                 try {
-                    Stream stream = Storage.OpenFile($"{m_worldDirectory}/GVLMB/{m_ID.ToString("X", null)}.bin", OpenFileMode.CreateOrOpen);
+                    Stream stream = Storage.OpenFile($"{m_worldDirectory}/GVLMB/{ID.ToString("X", null)}.bin", OpenFileMode.CreateOrOpen);
                     byte[] bytes = GetBytes();
                     stream.Write(bytes, 0, bytes.Length);
                     stream.Flush();

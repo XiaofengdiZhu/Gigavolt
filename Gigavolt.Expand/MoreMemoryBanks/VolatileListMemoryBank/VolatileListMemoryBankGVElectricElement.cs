@@ -432,7 +432,7 @@ namespace Game {
                 m_voltage = m_data.Read(rightInput);
             }
             if (!hasInput) {
-                m_voltage = m_data.m_ID;
+                m_voltage = m_data.ID;
             }
             return m_voltage != voltage;
         }

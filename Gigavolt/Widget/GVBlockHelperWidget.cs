@@ -8,11 +8,11 @@ namespace Game {
 
         public readonly LabelWidget m_label = new() { FontScale = 0.7f, Color = Color.LightGray, HorizontalAlignment = WidgetAlignment.Center };
         public readonly RectangleWidget m_icon = new() { FillColor = Color.LightGray, OutlineThickness = 0f };
-        public DisplayMode m_mode;
+        public readonly DisplayMode m_mode;
 
         public DisplayMode Mode {
             get => m_mode;
-            set {
+            init {
                 m_mode = value;
                 switch (value) {
                     case DisplayMode.Recipes:

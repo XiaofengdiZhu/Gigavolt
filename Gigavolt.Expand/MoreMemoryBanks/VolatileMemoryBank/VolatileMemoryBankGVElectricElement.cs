@@ -72,7 +72,7 @@ namespace Game {
                 m_writeAllowed = true;
             }
             if (!hasInput) {
-                m_voltage = m_data.m_ID;
+                m_voltage = m_data.ID;
             }
             return m_voltage != voltage;
         }

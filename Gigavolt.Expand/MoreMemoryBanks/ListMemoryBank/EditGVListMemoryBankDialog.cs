@@ -38,7 +38,7 @@ namespace Game {
             m_widthTextBox = Children.Find<TextBoxWidget>("EditGVListMemoryBankDialog.Width");
             m_heightTextBox = Children.Find<TextBoxWidget>("EditGVListMemoryBankDialog.Height");
             m_IDLabel = Children.Find<LabelWidget>("EditGVListMemoryBankDialog.ID");
-            m_IDLabel.Text += $"ID: {memoryBankData.m_ID.ToString("X", null)}";
+            m_IDLabel.Text += $"ID: {memoryBankData.ID.ToString("X", null)}";
             m_copyIDButton = Children.Find<BitmapButtonWidget>("EditGVListMemoryBankDialog.CopyID");
             m_copyDataButton = Children.Find<BitmapButtonWidget>("EditGVListMemoryBankDialog.CopyData");
             m_deleteDataButton = Children.Find<BitmapButtonWidget>("EditGVListMemoryBankDialog.DeleteData");
@@ -128,7 +128,7 @@ namespace Game {
                 }
             }
             if (m_copyIDButton.IsClicked) {
-                ClipboardManager.ClipboardString = m_memoryBankData.m_ID.ToString("X");
+                ClipboardManager.ClipboardString = m_memoryBankData.ID.ToString("X");
             }
             if (m_copyDataButton.IsClicked
                 && m_linearTextBox.Text.Length > 0) {

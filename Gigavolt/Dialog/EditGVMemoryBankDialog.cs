@@ -36,7 +36,7 @@ namespace Game {
             m_colCountTextBox = Children.Find<TextBoxWidget>("EditGVMemoryBankDialog.ColCount");
             m_colCountTextLabel = Children.Find<LabelWidget>("EditGVMemoryBankDialog.ColCountLabel");
             m_IDLabel = Children.Find<LabelWidget>("EditGVMemoryBankDialog.ID");
-            m_IDLabel.Text += $"ID: {memoryBankData.m_ID.ToString("X", null)}";
+            m_IDLabel.Text += $"ID: {memoryBankData.ID.ToString("X", null)}";
             m_copyIDButton = Children.Find<BitmapButtonWidget>("EditGVMemoryBankDialog.CopyID");
             m_copyDataButton = Children.Find<BitmapButtonWidget>("EditGVMemoryBankDialog.CopyData");
             m_deleteDataButton = Children.Find<BitmapButtonWidget>("EditGVMemoryBankDialog.DeleteData");
@@ -110,7 +110,7 @@ namespace Game {
                 }
             }
             if (m_copyIDButton.IsClicked) {
-                ClipboardManager.ClipboardString = m_memoryBankData.m_ID.ToString("X");
+                ClipboardManager.ClipboardString = m_memoryBankData.ID.ToString("X");
             }
             if (m_copyDataButton.IsClicked
                 && m_linearTextBox.Text.Length > 0) {
