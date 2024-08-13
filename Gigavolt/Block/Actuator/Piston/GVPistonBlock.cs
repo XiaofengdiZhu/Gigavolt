@@ -134,14 +134,7 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Mode2Name(GetMode(Terrain.ExtractData(value)));
 
-        public static string Mode2Name(GVPistonMode mode) {
-            switch (mode) {
-                case GVPistonMode.Pulling: return "GV粘性活塞";
-                case GVPistonMode.StrictPulling: return "GV严格粘性活塞";
-                case GVPistonMode.Complex: return "GV复杂活塞";
-                default: return "GV活塞";
-            }
-        }
+        public static string Mode2Name(GVPistonMode mode) => LanguageControl.Get("GVPistonBlock", mode.ToString());
 
         public override string GetCategory(int value) => GetMode(Terrain.ExtractData(value)) switch {
             GVPistonMode.Complex => "GV Electrics Shift",

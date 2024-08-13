@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Linq;
+using Engine;
 using Engine.Input;
 
 namespace Game {
@@ -19,6 +20,7 @@ namespace Game {
         public readonly BitmapButtonWidget CopyHex;
         public readonly LabelWidget FixedLabel;
         public readonly BitmapButtonWidget CopyFixed;
+        public readonly RectangleWidget ColorRectangle;
 
         public readonly BevelledButtonWidget NumberKeyboardShiftLeft;
         public readonly BevelledButtonWidget NumberKeyboardShiftRight;
@@ -61,6 +63,7 @@ namespace Game {
             CopyHex = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyHex");
             FixedLabel = Children.Find<LabelWidget>("EditGVUintDialog.FixedLabel");
             CopyFixed = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyFixed");
+            ColorRectangle = Children.Find<RectangleWidget>("EditGVUintDialog.Color");
             NumberKeyboardShiftLeft = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardShiftLeft");
             NumberKeyboardShiftRight = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardShiftRight");
             NumberKeyboardNegate = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardNegate");
@@ -329,6 +332,7 @@ namespace Game {
                     BinKeyboard[i].IsChecked = !newBit;
                 }
             }
+            ColorRectangle.FillColor = new Color(newVoltage);
             m_lastValidVoltage = newVoltage;
         }
 

@@ -72,7 +72,7 @@
 			<StackPanelWidget Direction="Horizontal">
 				<StackPanelWidget Direction="Vertical">
 					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
-						<CheckboxWidget Name="EditGVUintDialog.OctCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24" VerticalAlignment="Center"/>
+						<CheckboxWidget Name="EditGVUintDialog.OctCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24"/>
 						<LabelWidget Text="[EditGVUintDialog:4]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
@@ -81,7 +81,7 @@
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyOct" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
 					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
-						<CheckboxWidget Name="EditGVUintDialog.DecCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24" VerticalAlignment="Center"/>
+						<CheckboxWidget Name="EditGVUintDialog.DecCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24"/>
 						<LabelWidget Text="[EditGVUintDialog:5]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
@@ -90,7 +90,7 @@
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyDec" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
 					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
-						<CheckboxWidget Name="EditGVUintDialog.HexCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24" VerticalAlignment="Center"/>
+						<CheckboxWidget Name="EditGVUintDialog.HexCheckbox" IsAutoCheckingEnabled="false" CheckboxSize="24, 24"/>
 						<LabelWidget Text="[EditGVUintDialog:6]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
@@ -104,6 +104,12 @@
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyFixed" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
 					<CanvasWidget Size="448, 0"/>
+					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
+						<LabelWidget Text="[EditGVUintDialog:8]" Size="144, 34"/>
+						<CanvasWidget Size="164, 34">
+							<RectangleWidget Name="EditGVUintDialog.Color" FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						</CanvasWidget>
+					</StackPanelWidget>
 				</StackPanelWidget>
 				<StackPanelWidget Direction="Vertical">
 					<StackPanelWidget Direction="Horizontal">
@@ -145,7 +151,7 @@
 					</StackPanelWidget>
 				</StackPanelWidget>
 				<StackPanelWidget Direction="Vertical" VerticalAlignment="Center" HorizontalAlignment="Far" Margin="20, 0">
-					<BevelledButtonWidget Name="EditGVUintDialog.OK" Size="60, 100" Text="[EditGVUintDialog:1]" Margin="0, 10"/>
+					<BevelledButtonWidget Name="EditGVUintDialog.OK" Size="60, 100" Text="[EditGVUintDialog:1]" Margin="0, 10" CenterColor="50, 150, 35" BevelColor="50, 150, 35"/>
 					<BevelledButtonWidget Name="EditGVUintDialog.Cancel" Size="60, 100" Text="[EditGVUintDialog:2]" Margin="0, 10"/>
 				</StackPanelWidget>
 			</StackPanelWidget>

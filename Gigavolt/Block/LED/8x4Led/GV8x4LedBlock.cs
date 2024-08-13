@@ -128,14 +128,7 @@ namespace Game {
 
         public static int SetMountingFace(int data, int face) => (data & -8) | (face & 7);
 
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
-            int type = GetType(Terrain.ExtractData(value));
-            switch (type) {
-                case 1: return "GV4x4面LED灯";
-                case 2: return "GV8x4面LED灯";
-                default: return "GV4x2面LED灯";
-            }
-        }
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetType(Terrain.ExtractData(value)));
 
         public override IEnumerable<int> GetCreativeValues() {
             for (int i = 0; i < 3; i++) {

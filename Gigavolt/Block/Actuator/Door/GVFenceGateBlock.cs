@@ -27,7 +27,6 @@ namespace Game {
 
         public readonly Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
         public readonly Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
-        public readonly string[] m_displayNamesByModel = ["GV木栅栏门", "GV铁栅栏门"];
 
         public override void Initialize() {
             Model[] model = new Model[2];
@@ -80,7 +79,7 @@ namespace Game {
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
             int? color = GetColor(data);
-            return SubsystemPalette.GetName(subsystemTerrain, color, m_displayNamesByModel[GetModel(data)]);
+            return SubsystemPalette.GetName(subsystemTerrain, color, LanguageControl.Get(GetType().Name, GetModel(data)));
         }
 
         public override string GetCategory(int value) {

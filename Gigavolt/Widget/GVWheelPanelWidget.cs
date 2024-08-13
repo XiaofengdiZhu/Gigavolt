@@ -165,8 +165,10 @@ namespace Game {
                     int value = Terrain.ReplaceLight(CenterBlockValue, 0);
                     switch (m_lastFocusedBlockHelperWidget.Mode) {
                         case GVBlockHelperWidget.DisplayMode.Recipes:
-                            ScreensManager.SwitchScreen("RecipaediaRecipes", value);
-                            AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
+                            if (m_lastFocusedBlockHelperWidget.RecipesCount > 0) {
+                                ScreensManager.SwitchScreen("RecipaediaRecipes", value);
+                                AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
+                            }
                             break;
                         case GVBlockHelperWidget.DisplayMode.Description:
                             ScreensManager.SwitchScreen("RecipaediaDescription", [value, new List<int> { value }]);

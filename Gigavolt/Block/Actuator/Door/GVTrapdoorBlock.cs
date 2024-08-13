@@ -12,7 +12,6 @@ namespace Game {
         public readonly ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[2];
         public readonly Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
         public readonly Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
-        public readonly string[] m_displayNamesByModel = ["GV木活板门", "GV铁活板门"];
         public readonly int[] m_creativeValuesByModel = [Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1))];
 
         public override void Initialize() {
@@ -104,7 +103,7 @@ namespace Game {
         public override bool IsHeatBlocker(int value) => GetOpen(Terrain.ExtractData(value)) >= 90;
 
         public override IEnumerable<int> GetCreativeValues() => m_creativeValuesByModel;
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => m_displayNamesByModel[GetModel(Terrain.ExtractData(value))];
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetModel(Terrain.ExtractData(value)));
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int model = GetModel(Terrain.ExtractData(oldValue));

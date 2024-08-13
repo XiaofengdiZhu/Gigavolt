@@ -79,12 +79,12 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int? paintColor = GetColor(Terrain.ExtractData(value));
-            return paintColor.HasValue ? SubsystemPalette.GetName(subsystemTerrain, paintColor, "遥控器") : base.GetDisplayName(subsystemTerrain, value);
+            return paintColor.HasValue ? SubsystemPalette.GetName(subsystemTerrain, paintColor, LanguageControl.Get(GetType().Name, 0)) : base.GetDisplayName(subsystemTerrain, value);
         }
 
         public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Expand";
 
-        public override string GetDescription(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "远程操作和遥控器同色的开关、按钮" : base.GetDescription(value);
+        public override string GetDescription(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? LanguageControl.Get(GetType().Name, 1) : base.GetDescription(value);
 
         public override IEnumerable<int> GetCreativeValues() {
             yield return Terrain.MakeBlockValue(Index);

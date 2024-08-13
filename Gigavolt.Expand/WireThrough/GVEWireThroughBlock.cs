@@ -32,7 +32,7 @@ namespace Game {
 
         public static Texture2D m_harnessTexture;
 
-        public Texture2D HarnessTexture => m_harnessTexture ?? BlocksTexturesManager.DefaultBlocksTexture;
+        public static Texture2D HarnessTexture => m_harnessTexture ?? BlocksTexturesManager.DefaultBlocksTexture;
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => null;
 
@@ -112,17 +112,18 @@ namespace Game {
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
+            string typeName = GetType().Name;
             int data = Terrain.ExtractData(value);
-            return SubsystemPalette.GetName(subsystemTerrain, GetColor(data), $"GV{(GetWireFacesBitmask(data) == 63 ? "六" : "多")}面{(GetIsCross(data) ? "跨" : "穿")}{(GetIsWireHarness(data) ? "总" : "")}线块");
+            string str1 = LanguageControl.Get(typeName, GetWireFacesBitmask(data) == 63 ? "0" : "1");
+            string str2 = LanguageControl.Get(typeName, GetIsCross(data) ? "2" : "3");
+            string str3 = GetIsWireHarness(data) ? LanguageControl.Get(typeName, "4") : "";
+            return SubsystemPalette.GetName(subsystemTerrain, GetColor(data), $"{str1}{str2}{str3}{LanguageControl.Get(typeName, "6")}");
         }
 
         public override string GetDescription(int value) {
             int data = Terrain.ExtractData(value);
-            if (GetIsCross(data)) {
-                return "仅相对的两面互相导通；可染色，仅影响外观，不影响接线";
-            }
-            string name = GetIsWireHarness(data) ? "总" : "导";
-            return $"使用铜锤将一格范围内已摆放好的{name}线转换成的穿线块，已摆放{name}线的面将互相连通，未摆放{name}线的面不互通；对其多次使用铜锤将改变外观，第4次恢复为普通的{name}线；染色不影响接线，仅影响外观";
+            string typeName = GetType().Name;
+            return GetIsCross(data) ? LanguageControl.Get(typeName, "7") : string.Format(LanguageControl.Get(typeName, "8"), LanguageControl.Get(typeName, GetIsWireHarness(data) ? "4" : "5"));
         }
 
         public override IEnumerable<int> GetCreativeValues() {

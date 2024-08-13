@@ -67,9 +67,9 @@ namespace Game {
             yield return Terrain.MakeBlockValue(Index, 0, SetComplex(0, true));
         }
 
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => $"{(GetComplex(Terrain.ExtractData(value)) ? "GV复杂" : "GV简单")}照相机";
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, "DisplayName", GetComplex(Terrain.ExtractData(value)) ? "2" : "1");
 
-        public override string GetDescription(int value) => GetComplex(Terrain.ExtractData(value)) ? "用于拍照，可进行非常详尽的参数调整，详见本Mod Github页面的介绍" : "输入指定的存储板ID，每次输入发生变化时，就会对着该方块面对的方向拍照，并把图像传输到指定的存储板里，分辨率为512*512，视角为90度";
+        public override string GetDescription(int value) => LanguageControl.Get(GetType().Name, "Description", GetComplex(Terrain.ExtractData(value)) ? "2" : "1");
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);

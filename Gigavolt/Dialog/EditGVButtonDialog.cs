@@ -34,7 +34,7 @@ namespace Game {
             if (m_okButton.IsClicked) {
                 if (uint.TryParse(m_gigaVoltageLevelButton.Text, NumberStyles.HexNumber, null, out uint voltage)
                     && int.TryParse(m_durationTextBox.Text, out int duration)
-                    && duration > 0) {
+                    && duration > 1) {
                     m_blockData.GigaVoltageLevel = voltage;
                     m_blockData.Duration = duration;
                     m_blockData.SaveString();

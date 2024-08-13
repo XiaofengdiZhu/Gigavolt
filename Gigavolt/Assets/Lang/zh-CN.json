@@ -1,7 +1,4 @@
 {
-  "Language": {
-    "Name": "中文"
-  },
   "Gigavolt": {
     "ClassicName": "经典"
   },
@@ -104,6 +101,30 @@
     "ColoredDisplayName": "单向二极管",
     "ColoredDescription": "电压只能单向导通的二极管（延迟0.01秒），只提供彩色版本，本质上是延迟门。"
   },
+  "GVPistonBlock": {
+    "Pushing": "GV活塞",
+    "Pulling": "GV粘性活塞",
+    "StrictPulling": "GV严格粘性活塞",
+    "Complex": "GV复杂活塞"
+  },
+  "GV8x4LedBlock": [
+    "GV4x2面LED灯",
+    "GV4x4面LED灯",
+    "GV8x4面LED灯"
+  ],
+  "GVDoorBlock": [
+    "GV木门",
+    "GV铁门",
+    "GV铁栅门"
+  ],
+  "GVTrapdoorBlock": [
+    "GV木活板门",
+    "GV铁活板门"
+  ],
+  "GVFenceGateBlock": [
+    "GV木栅栏门",
+    "GV铁栅栏门"
+  ],
   "Blocks": {
     "GVWireBlock:0": {
       "DisplayName": "GV导线",
@@ -392,7 +413,7 @@
       "4": "确定",
       "5": "取消",
       "6": "持续周期：",
-      "7": "（十进制，大于0）"
+      "7": "（十进制，大于1）"
     },
     "EditGVMemoryBankDialog": {
       "1": "编辑存储器数据",
@@ -471,7 +492,8 @@
       "4": "八进制：",
       "5": "十进制：",
       "6": "十六进制：",
-      "7": "二进制\n键盘"
+      "7": "二进制\n键盘",
+      "8": "颜色："
     }
   }
 }

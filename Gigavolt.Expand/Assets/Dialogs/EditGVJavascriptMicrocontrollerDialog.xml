@@ -7,7 +7,7 @@
 			<CanvasWidget Size="Infinity, 50" Margin="30, 10">
 				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
 					<LabelWidget Color="128, 128, 128" Text="[EditGVJavascriptMicrocontrollerDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
-					<LinkWidget Color="128, 128, 128" Text="https://github.com/XiaofengdiZhu/Gigavolt#js单片机-javascript-microcontroller" FontScale="0.7" HorizontalAlignment="Center" Url="https://github.com/XiaofengdiZhu/Gigavolt#js单片机-javascript-microcontroller"/>
+					<LinkWidget Color="128, 128, 128" Text="https://xiaofengdizhu.github.io/GigavoltDoc/zh/expand/gates/javascript_microcontroller.html" FontScale="0.7" HorizontalAlignment="Center" Url="https://xiaofengdizhu.github.io/GigavoltDoc/zh/expand/gates/javascript_microcontroller.html"/>
 				</StackPanelWidget>
 			</CanvasWidget>
 			<CanvasWidget Size="0, 15"/>
