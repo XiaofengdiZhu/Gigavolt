@@ -97,8 +97,7 @@ namespace Game {
                                     && m_dragHostWidget.m_dragData is InventoryDragData data) {
                                     int centerBlockValue = data.Inventory.GetSlotValue(data.SlotIndex);
                                     Block centerBlock = BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)];
-                                    IGVCustomWheelPanelBlock customWheelPanelBlock = centerBlock as IGVCustomWheelPanelBlock;
-                                    List<int> outerBlocksValue = customWheelPanelBlock == null ? BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList() : customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue);
+                                    List<int> outerBlocksValue = centerBlock is IGVCustomWheelPanelBlock customWheelPanelBlock ? customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue) : BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList();
                                     m_wheelPanelWidget.CenterBlockValue = centerBlockValue;
                                     m_wheelPanelWidget.OuterBlocksValue = outerBlocksValue;
                                     m_wheelPanelWidget.IsVisible = true;

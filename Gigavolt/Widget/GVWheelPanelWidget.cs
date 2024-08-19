@@ -9,24 +9,74 @@ namespace Game {
     public class GVWheelPanelWidget : CanvasWidget {
         public class GVWheelPanelInventory : IInventory {
             public int Value;
+            public int Count;
             public int GetSlotValue(int slotIndex) => Value;
 
-            public int GetSlotCount(int slotIndex) => 1;
+            public int GetSlotCount(int slotIndex) => Count;
 
-            public int GetSlotCapacity(int slotIndex, int value) => int.MaxValue;
-
-            public int GetSlotProcessCapacity(int slotIndex, int value) => int.MaxValue;
-
-            public void AddSlotItems(int slotIndex, int value, int count) { }
-
-            public void ProcessSlotItems(int slotIndex, int value, int count, int processCount, out int processedValue, out int processedCount) {
-                processedValue = Value;
-                processedCount = 1;
+            public int GetSlotCapacity(int slotIndex, int value) {
+                Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+                return block.IsNonDuplicable_(value) ? 1 : block.GetMaxStacking(value);
             }
 
-            public int RemoveSlotItems(int slotIndex, int count) => 1;
+            public int GetSlotProcessCapacity(int slotIndex, int value) {
+                if (Count > 0
+                    && Value != 0) {
+                    SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(true).GetBlockBehaviors(Terrain.ExtractContents(Value));
+                    for (int i = 0; i < blockBehaviors.Length; i++) {
+                        int processInventoryItemCapacity = blockBehaviors[i].GetProcessInventoryItemCapacity(this, slotIndex, value);
+                        if (processInventoryItemCapacity > 0) {
+                            return processInventoryItemCapacity;
+                        }
+                    }
+                }
+                return 0;
+            }
 
-            public void DropAllItems(Vector3 position) { }
+            public void AddSlotItems(int slotIndex, int value, int count) {
+                if (value == Value) {
+                    Count = Math.Min(GetSlotCapacity(0, value), Count + count);
+                }
+                else {
+                    Value = value;
+                    Count = count;
+                }
+            }
+
+            public void ProcessSlotItems(int slotIndex, int value, int count, int processCount, out int processedValue, out int processedCount) {
+                if (Count > 0
+                    && Value != 0) {
+                    foreach (SubsystemBlockBehavior subsystemBlockBehavior in Project.FindSubsystem<SubsystemBlockBehaviors>(true).GetBlockBehaviors(Terrain.ExtractContents(Value))) {
+                        int processInventoryItemCapacity = subsystemBlockBehavior.GetProcessInventoryItemCapacity(this, slotIndex, value);
+                        if (processInventoryItemCapacity > 0) {
+                            subsystemBlockBehavior.ProcessInventoryItem(
+                                this,
+                                slotIndex,
+                                value,
+                                count,
+                                MathUtils.Min(processInventoryItemCapacity, processCount),
+                                out processedValue,
+                                out processedCount
+                            );
+                            return;
+                        }
+                    }
+                }
+                processedValue = value;
+                processedCount = count;
+            }
+
+            public int RemoveSlotItems(int slotIndex, int count) {
+                int result = Math.Min(count, Count);
+                Count -= result;
+                return result;
+            }
+
+            public void DropAllItems(Vector3 position) {
+                Value = 0;
+                Count = 0;
+            }
+
             public Project m_project;
             public Project Project => m_project;
             public int SlotsCount => 1;
@@ -65,6 +115,7 @@ namespace Game {
                     int noLightValue = Terrain.ReplaceLight(value, 0);
                     RecipesWidget.RecipesCount = CraftingRecipesManager.Recipes.Count(r => r.ResultValue == noLightValue);
                     m_inventory.Value = noLightValue;
+                    m_inventory.Count = 1;
                     AdjustFixedWidgets();
                 }
             }
@@ -153,11 +204,11 @@ namespace Game {
         }
 
         public override void Update() {
+            DragHostWidget dragHostWidget = m_componentGui.m_componentPlayer.DragHostWidget;
             if (Input.Drag == null) {
                 IsVisible = false;
                 if (m_lastFocusedBlockHelperWidget != null) {
                     m_lastFocusedBlockHelperWidget.HasFocus = false;
-                    DragHostWidget dragHostWidget = m_componentGui.m_componentPlayer.DragHostWidget;
                     dragHostWidget.m_dragWidget.IsVisible = false;
                     dragHostWidget.m_dragWidget = null;
                     dragHostWidget.m_dragData = null;
@@ -210,12 +261,15 @@ namespace Game {
                     }
                     m_lastFocusedBlockIconWidget = newFocusedBlockIconWidget;
                     newFocusedBlockIconWidget.HasFocus = true;
-                    DragHostWidget dragHostWidget = m_componentGui.m_componentPlayer.DragHostWidget;
                     if (newFocusedBlockIconWidget == CenterBlockWidget) {
                         dragHostWidget.m_dragData = m_originalInventoryDragData;
                     }
                     else {
-                        m_inventory.Value = Terrain.ReplaceLight(newFocusedBlockIconWidget.Value, 0);
+                        int noLightValue = Terrain.ReplaceLight(newFocusedBlockIconWidget.Value, 0);
+                        if (m_inventory.Count > 1) {
+                            m_inventory.Count = Math.Min(m_inventory.Count, m_inventory.GetSlotCapacity(0, noLightValue));
+                        }
+                        m_inventory.Value = noLightValue;
                         dragHostWidget.m_dragData = m_inventoryDragData;
                         if (m_secondLevelCount > 8) {
                             int index = OuterBlocksWidgets.IndexOf(newFocusedBlockIconWidget);
@@ -236,7 +290,6 @@ namespace Game {
                 if (newFocusedBlockHelperWidget != m_lastFocusedBlockHelperWidget) {
                     if (newFocusedBlockHelperWidget != null) {
                         newFocusedBlockHelperWidget.HasFocus = true;
-                        DragHostWidget dragHostWidget = m_componentGui.m_componentPlayer.DragHostWidget;
                         dragHostWidget.m_dragData = m_originalInventoryDragData;
                         if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
                             containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").Value = CenterBlockValue;
@@ -260,9 +313,53 @@ namespace Game {
                 if (newFocusedBlockIconWidget == null) {
                     if (m_lastFocusedBlockIconWidget != null) {
                         if (HitTestGlobal(m_dragPosition, widget => widget == this) == null) {
-                            if (m_componentGui.m_componentPlayer.DragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
+                            if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
                                 containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = BlocksManager.Blocks[Terrain.ExtractContents(m_lastFocusedBlockIconWidget.Value)].GetDisplayName(m_subsystemTerrain, m_lastFocusedBlockIconWidget.Value);
                             }
+                        }
+                    }
+                }
+                int mouseWheelMovement = Input.MouseWheelMovement;
+                if (mouseWheelMovement != 0) {
+                    if (dragHostWidget.m_dragData == m_originalInventoryDragData) {
+                        IInventory inventory = m_originalInventoryDragData.Inventory;
+                        if (inventory is ComponentCreativeInventory) {
+                            if (mouseWheelMovement > 0) {
+                                int value = inventory.GetSlotValue(m_originalInventoryDragData.SlotIndex);
+                                if (!BlocksManager.Blocks[Terrain.ExtractContents(value)].IsNonDuplicable_(value)) {
+                                    m_inventory.Value = value;
+                                    m_inventory.Count = 1;
+                                    dragHostWidget.m_dragData = m_inventoryDragData;
+                                }
+                            }
+                        }
+                        else {
+                            int index = m_originalInventoryDragData.SlotIndex;
+                            int value = inventory.GetSlotValue(index);
+                            int count = inventory.GetSlotCount(index);
+                            int capacity = inventory.GetSlotCapacity(index, value);
+                            if (mouseWheelMovement > 0
+                                && count < capacity) {
+                                inventory.AddSlotItems(index, value, 1);
+                                count++;
+                            }
+                            else if (Input.MouseWheelMovement < 0
+                                && count > 1) {
+                                inventory.RemoveSlotItems(index, 1);
+                                count--;
+                            }
+                            if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
+                                LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count");
+                                labelWidget.Text = count.ToString();
+                            }
+                        }
+                    }
+                    if (dragHostWidget.m_dragData == m_inventoryDragData) {
+                        m_inventory.Count = mouseWheelMovement > 0 ? Math.Min(m_inventory.Count + 1, m_inventory.GetSlotCapacity(0, m_inventory.Value)) : Math.Max(m_inventory.Count - 1, 1);
+                        if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
+                            LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count");
+                            labelWidget.Text = m_inventory.Count.ToString();
+                            labelWidget.IsVisible = m_inventory.Count > 1;
                         }
                     }
                 }
