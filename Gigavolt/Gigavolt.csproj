@@ -98,6 +98,9 @@
 		<None Update="Assets\Textures\Gui\GVRecipaedia.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Assets\Lang\en-US.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="BaseBlock\GVBaseSignBlock.cs"/>

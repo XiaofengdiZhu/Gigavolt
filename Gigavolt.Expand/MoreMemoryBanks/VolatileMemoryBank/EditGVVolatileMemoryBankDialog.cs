@@ -2,6 +2,13 @@
 
 namespace Game {
     public class EditGVVolatileMemoryBankDialog(GVVolatileMemoryBankData memoryBankData, Action handler) : EditGVMemoryBankDialog(memoryBankData, handler) {
+        public static Action m_volatileHelpAction = () => {
+            bool zh = ModsManager.Configs["Language"]?.StartsWith("zh") ?? false;
+            WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(zh ? "zh" : "en")}/expand/memory_banks/volatile_memory_banks.html#{(zh ? "易失性存储器" : "volatile-memory-bank")}");
+        };
+
+        public override Action HelpAction => m_volatileHelpAction;
+
         public override void UpdateFromData() {
             if (m_memoryBankData.Data != null) {
                 m_rowCountTextBox.Text = m_memoryBankData.m_height.ToString();

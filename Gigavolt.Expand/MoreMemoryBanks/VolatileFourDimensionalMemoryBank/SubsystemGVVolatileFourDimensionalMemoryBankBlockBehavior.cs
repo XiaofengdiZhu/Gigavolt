@@ -18,7 +18,7 @@
             GVVolatileFourDimensionalMemoryBankData memoryBankData = GetItemData(id, true);
             DialogsManager.ShowDialog(
                 componentPlayer.GuiWidget,
-                new EditGVFourDimensionalMemoryBankDialog(
+                new EditGVVolatileFourDimensionalMemoryBankDialog(
                     memoryBankData,
                     delegate {
                         inventory.RemoveSlotItems(slotIndex, count);
@@ -32,7 +32,7 @@
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GVVolatileFourDimensionalMemoryBankData memoryBankData = GetItemData(id, true);
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVFourDimensionalMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVVolatileFourDimensionalMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
             return true;
         }
     }

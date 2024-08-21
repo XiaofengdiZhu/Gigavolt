@@ -11,10 +11,13 @@ namespace Game {
         public readonly BitmapButtonWidget m_copyDataButton;
         public readonly BitmapButtonWidget m_deleteDataButton;
         public readonly TextBoxWidget m_linearTextBox;
+        public readonly BevelledButtonWidget m_helpButton;
 
         public readonly GVTruthTableData m_truthTableData;
 
         public bool m_ignoreTextChanges;
+
+        public static Action m_helpAction = () => { WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/base/shift/truth_table.html"); };
 
         public EditGVTruthTableDialog(GVTruthTableData truthTableData, Action handler) {
             try {
@@ -25,6 +28,7 @@ namespace Game {
                 m_copyDataButton = Children.Find<BitmapButtonWidget>("EditGVTruthTableDialog.CopyData");
                 m_deleteDataButton = Children.Find<BitmapButtonWidget>("EditGVTruthTableDialog.DeleteData");
                 m_linearTextBox = Children.Find<TextBoxWidget>("EditGVTruthTableDialog.LinearText");
+                m_helpButton = Children.Find<BevelledButtonWidget>("EditGVTruthTableDialog.Help");
                 m_handler = handler;
                 m_truthTableData = truthTableData;
                 m_linearTextBox.Text = m_truthTableData.LastLoadedString;
@@ -59,6 +63,9 @@ namespace Game {
             }
             if (m_deleteDataButton.IsClicked) {
                 m_linearTextBox.Text = string.Empty;
+            }
+            if (m_helpButton.IsClicked) {
+                m_helpAction();
             }
             if (Input.Cancel
                 || m_cancelButton.IsClicked) {

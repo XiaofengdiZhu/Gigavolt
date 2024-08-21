@@ -29,10 +29,15 @@ namespace Game {
         public readonly BitmapButtonWidget m_copyIDButton;
         public readonly BitmapButtonWidget m_copyDataButton;
         public readonly BitmapButtonWidget m_deleteDataButton;
+        public readonly BevelledButtonWidget m_helpButton;
 
         public readonly GVFourDimensionalMemoryBankData m_memoryBankData;
 
         public string m_enterString;
+
+        public static Action m_helpAction = () => { WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/expand/memory_banks/four_dimensional_memory_bank.html"); };
+
+        public virtual Action HelpAction => m_helpAction;
 
         public EditGVFourDimensionalMemoryBankDialog(GVFourDimensionalMemoryBankData memoryBankData, Action handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVFourDimensionalMemoryBankDialog");
@@ -60,6 +65,7 @@ namespace Game {
             m_copyIDButton = Children.Find<BitmapButtonWidget>("EditGVFourDimensionalMemoryBankDialog.CopyID");
             m_copyDataButton = Children.Find<BitmapButtonWidget>("EditGVFourDimensionalMemoryBankDialog.CopyData");
             m_deleteDataButton = Children.Find<BitmapButtonWidget>("EditGVFourDimensionalMemoryBankDialog.DeleteData");
+            m_helpButton = Children.Find<BevelledButtonWidget>("EditGVFourDimensionalMemoryBankDialog.Help");
             m_handler = handler;
             m_memoryBankData = memoryBankData;
             UpdateFromData();
@@ -196,6 +202,9 @@ namespace Game {
                     ScreensManager.AddScreen("GVMBExternalContent", new GVMBExternalContentScreen());
                 }
                 ScreensManager.SwitchScreen("GVMBExternalContent", this);
+            }
+            if (m_helpButton.IsClicked) {
+                HelpAction();
             }
             if (Input.Cancel
                 || m_cancelButton.IsClicked) {

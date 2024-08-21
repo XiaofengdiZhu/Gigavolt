@@ -5,10 +5,7 @@
 			<LabelWidget Text="[EditGVListMemoryBankDialog:1]" HorizontalAlignment="Center"/>
 			<CanvasWidget Size="0, 5"/>
 			<CanvasWidget Size="Infinity, 70" Margin="30, 10">
-				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">
-					<LabelWidget Color="128, 128, 128" Text="[EditGVListMemoryBankDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
-					<LinkWidget Color="128, 128, 128" Text="https://xiaofengdizhu.github.io/GigavoltDoc/zh/expand/memory_banks/list_memory_bank.html" FontScale="0.7" HorizontalAlignment="Center" Url="https://xiaofengdizhu.github.io/GigavoltDoc/zh/expand/memory_banks/list_memory_bank.html"/>
-				</StackPanelWidget>
+				<LabelWidget Color="128, 128, 128" Text="[EditGVListMemoryBankDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true" Margin="30, 0"/>
 			</CanvasWidget>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 				<LabelWidget Name="EditGVListMemoryBankDialog.ID" HorizontalAlignment="Center"/>
@@ -63,5 +60,8 @@
 				<BevelledButtonWidget Name="EditGVListMemoryBankDialog.More" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVListMemoryBankDialog:23]" Margin="20, 0"/>
 			</StackPanelWidget>
 		</StackPanelWidget>
+		<BevelledButtonWidget Name="EditGVListMemoryBankDialog.Help" Size="48, 48" Margin="15, 15">
+			<RectangleWidget Size="30, 30" Name="BevelledButton.Image" Subtexture="{Textures/Atlas/HelpTopicIcon}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="true"/>
+		</BevelledButtonWidget>
 	</CanvasWidget>
 </CanvasWidget>

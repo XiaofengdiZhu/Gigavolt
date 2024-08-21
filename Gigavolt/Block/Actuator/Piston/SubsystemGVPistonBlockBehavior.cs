@@ -500,7 +500,7 @@ namespace Game {
                     && num3 < pullCount + 1) {
                     return false;
                 }
-                if (!IsBlockBlocking(terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z))) {
+                if (!IsBlockBlocking(terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z), position.Y + offset.Y)) {
                     Point3 p = position.Point + (length - num) * faceDirection;
                     if (num5 > 30) {
                         int count = (num5 + 1) / 16;
@@ -737,7 +737,7 @@ namespace Game {
             int num = p.X * point2.X + p.Y * point2.Y + p.Z * point2.Z;
             int num2 = point.X * point2.X + point.Y * point2.Y + point.Z * point2.Z;
             if (num > num2) {
-                if (IsBlockBlocking(SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y, p.Z))) {
+                if (IsBlockBlocking(SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y, p.Z), p.Y)) {
                     movingBlockSet.Stop();
                 }
                 else {
@@ -770,6 +770,9 @@ namespace Game {
 
         public static bool IsBlockMovable(int value, int pistonFace, int y, out bool isEnd) {
             isEnd = false;
+            if (y is <= 0 or >= 255) {
+                return false;
+            }
             int num = Terrain.ExtractContents(value);
             int data = Terrain.ExtractData(value);
             switch (num) {
@@ -787,8 +790,8 @@ namespace Game {
                 case PistonBlock.Index: return !PistonBlock.GetIsExtended(data);
                 case GVPistonBlock.Index: return !GVPistonBlock.GetIsExtended(data);
                 case PistonHeadBlock.Index:
-                case GVPistonHeadBlock.Index: return false;
-                case BedrockBlock.Index: return y > 1;
+                case GVPistonHeadBlock.Index:
+                case BedrockBlock.Index: return false;
                 default: {
                     Block block = BlocksManager.Blocks[num];
                     switch (block) {
@@ -816,7 +819,10 @@ namespace Game {
             }
         }
 
-        public static bool IsBlockBlocking(int value) {
+        public static bool IsBlockBlocking(int value, int y) {
+            if (y is <= 0 or >= 255) {
+                return true;
+            }
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
             return block.IsCollidable_(value) || (!block.IsDiggingTransparent && block.DestructionDebrisScale == 0f);
         }

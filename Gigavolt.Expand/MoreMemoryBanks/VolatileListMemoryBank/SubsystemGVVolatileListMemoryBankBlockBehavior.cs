@@ -22,7 +22,7 @@ namespace Game {
                 GVVolatileListMemoryBankData memoryBankData = GetItemData(id, true);
                 DialogsManager.ShowDialog(
                     componentPlayer.GuiWidget,
-                    new EditGVListMemoryBankDialog(
+                    new EditGVVolatileListMemoryBankDialog(
                         memoryBankData,
                         delegate {
                             inventory.RemoveSlotItems(slotIndex, count);
@@ -40,7 +40,7 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GVVolatileListMemoryBankData memoryBankData = GetItemData(id, true);
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVListMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVVolatileListMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
             return true;
         }
     }

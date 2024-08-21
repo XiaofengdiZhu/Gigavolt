@@ -12,10 +12,13 @@ namespace Game {
         public readonly BitmapButtonWidget m_copyDataButton;
         public readonly BitmapButtonWidget m_deleteDataButton;
         public readonly BevelledButtonWidget[] m_portButtons = new BevelledButtonWidget[5];
+        public readonly BevelledButtonWidget m_helpButton;
 
         public readonly GVJavascriptMicrocontrollerData m_blockData;
         public readonly int[] m_tempPortsDefinition;
         public readonly string[] m_state2String = [LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 8), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 9), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 10)];
+
+        public static Action m_helpAction = () => { WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/expand/gates/javascript_microcontroller.html"); };
 
         public EditGVJavascriptMicrocontrollerDialog(GVJavascriptMicrocontrollerData blockData, Action handler) {
             try {
@@ -32,6 +35,7 @@ namespace Game {
                     button.Text = m_state2String[m_tempPortsDefinition[i] + 1];
                     m_portButtons[i] = button;
                 }
+                m_helpButton = Children.Find<BevelledButtonWidget>("EditGVJavascriptMicrocontrollerDialog.Help");
                 m_handler = handler;
                 m_blockData = blockData;
                 m_linearTextBox.Text = m_blockData.LastLoadedCode;
@@ -74,6 +78,9 @@ namespace Game {
                         )
                     );
                 }
+            }
+            if (m_helpButton.IsClicked) {
+                m_helpAction();
             }
             if (Input.Cancel
                 || m_cancelButton.IsClicked) {

@@ -26,7 +26,7 @@
     },
     "Description": {
       "1": "输入指定的存储板ID，每次输入发生变化时，就会对着该方块面对的方向拍照，并把图像传输到指定的存储板里，分辨率为512*512，视角为90度",
-      "2": "用于拍照，可进行非常详尽的参数调整，详见本Mod Github页面的介绍"
+      "2": "用于拍照，可进行非常详尽的参数调整，详见本Mod文档"
     }
   },
   "GVDisplayLedBlock": {
@@ -45,7 +45,7 @@
       "3": "输入等于存储了地层数据的存储板ID的电压，就会在其面前显示地层"
     },
     "ComplexDescription": {
-      "0": "通过各端的电压控制其显示的{0}，详见本Mod Github页面的介绍",
+      "0": "通过各端的电压控制其显示的{0}，详见本Mod文档",
       "1": "方块",
       "2": "图片",
       "3": "地层"
@@ -163,7 +163,7 @@
   "Blocks": {
     "GVNesEmulatorBlock:0": {
       "DisplayName": "GV红白机模拟器",
-      "Description": "可以模拟红白机的模拟器，详见本Mod Github页面的介绍",
+      "Description": "可以模拟红白机的模拟器，详见本Mod文档",
       "CRDescription:0": "无"
     },
     "GVCopperHammerBlock:0": {
@@ -178,7 +178,7 @@
     },
     "GVMultiplexerBlock:0": {
       "DisplayName": "GV路选器",
-      "Description": "可以通过背面控制正面四个端点的导通和断开，详见本Mod Github页面的介绍",
+      "Description": "可以通过背面控制正面四个端点的导通和断开，详见本Mod文档",
       "CRDescription:0": "无"
     },
     "GVJumpWireBlock:0": {
@@ -196,7 +196,7 @@
     },
     "GVTerrainRaycastDetectorBlock:0": {
       "DisplayName": "GV地形射线探测器",
-      "Description": "向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见本Mod Github页面的介绍"
+      "Description": "向探测器面对的方向逐格探测是否存在非空气方块，并返回方块值、距离、连续多少个相同方块，需要先设置探测距离；还具有探测指定方块等功能，详见本Mod文档"
     },
     "GVVolatileMemoryBankBlock:0": {
       "DisplayName": "GV易失性存储器",
@@ -204,11 +204,11 @@
     },
     "GVListMemoryBankBlock:0": {
       "DisplayName": "GV一维存储器",
-      "Description": "和存储器相似，但只能存储一行数据，但是有很多实用功能，无需初始化即可使用，详见本Mod Github页面的介绍"
+      "Description": "和存储器相似，但只能存储一行数据，但是有很多实用功能，无需初始化即可使用，详见本Mod文档"
     },
     "GVMemoryBanksOperatorBlock:0": {
       "DisplayName": "GV多存储器操作器",
-      "Description": "左右两边各指定一个存储板ID，按下端输入进行不同操作后，将结果输出到由上端输入指定ID的存储板，详见本Mod Github页面的介绍"
+      "Description": "左右两边各指定一个存储板ID，按下端输入进行不同操作后，将结果输出到由上端输入指定ID的存储板，详见本Mod文档"
     },
     "GVVolatileListMemoryBankBlock:0": {
       "DisplayName": "GV易失性一维存储器",
@@ -216,11 +216,11 @@
     },
     "GVTerrainScannerBlock:0": {
       "DisplayName": "GV地形扫描仪",
-      "Description": "向扫描仪面对的面平行扫描方块，将结果保存到指定存储器，可指定距离和范围，详见本Mod Github页面的介绍"
+      "Description": "向扫描仪面对的面平行扫描方块，将结果保存到指定存储器，可指定距离和范围，详见本Mod文档"
     },
     "GVGuidedDispenserBlock:0": {
       "DisplayName": "GV制导发射器",
-      "Description": "和发射器类似，但不是指定速度和角度，而是直接指定要投射到的位置，而且能设置抵达指定位置时是否将投射物放置到世界中，投射器均不受空气阻力影响，默认为发射模式，详见本Mod Github页面的介绍"
+      "Description": "和发射器类似，但不是指定速度和角度，而是直接指定要投射到的位置，而且能设置抵达指定位置时是否将投射物放置到世界中，投射器均不受空气阻力影响，默认为发射模式，详见本Mod文档"
     },
     "GVCrusherProjectileBlock:0": {
       "DisplayName": "GV破坏球",
@@ -248,7 +248,7 @@
     },
     "GVInventoryControllerBlock:0": {
       "DisplayName": "GV箱子控制器",
-      "Description": "用于控制箱子、熔炉、发射器等可存储物品的方块中的物品，也可以控制生存模式玩家背包中的物品，详见本Mod Github页面的介绍"
+      "Description": "用于控制箱子、熔炉、发射器等可存储物品的方块中的物品，也可以控制生存模式玩家背包中的物品，详见本Mod文档"
     },
     "GVSolidifiedAirBlock:0": {
       "DisplayName": "固化空气",
@@ -256,7 +256,7 @@
     },
     "GVJavascriptMicrocontrollerBlock:0": {
       "DisplayName": "GV JS单片机",
-      "Description": "可以运行Javascript的单片机，理论上可实现一切功能，详见本Mod Github页面的介绍"
+      "Description": "可以运行Javascript的单片机，理论上可实现一切功能，详见本Mod文档"
     },
     "GVFourDimensionalMemoryBankBlock:0": {
       "DisplayName": "GV四维存储器",
@@ -268,19 +268,19 @@
     },
     "GVPlayerMonitorBlock:0": {
       "DisplayName": "GV玩家监视器",
-      "Description": "用于获取玩家的各种信息，详见本Mod Github页面的介绍"
+      "Description": "用于获取玩家的各种信息，详见本Mod文档"
     },
     "GVPlayerControllerBlock:0": {
       "DisplayName": "GV玩家控制器",
-      "Description": "用于控制玩家的各种信息，如果参数输入端没有连接导线或元件，将不改变对应的信息，详见本Mod Github页面的介绍"
+      "Description": "用于控制玩家的各种信息，如果参数输入端没有连接导线或元件，将不改变对应的信息，详见本Mod文档"
     },
     "GVAttractorBlock:0": {
       "DisplayName": "GV吸引器",
-      "Description": "可吸引掉落物、抛射物、动物等，每次输入电压变化都会尝试进行吸引，详见本Mod Github页面的介绍"
+      "Description": "可吸引掉落物、抛射物、动物等，每次输入电压变化都会尝试进行吸引，详见本Mod文档"
     },
     "GVSignalGeneratorBlock:0": {
       "DisplayName": "GV信号发生器",
-      "Description": "用于产生正弦波、三角波、锯齿波、方波，占用两格，如果空间不足将无法放置或旋转，详见本Mod Github页面的介绍"
+      "Description": "用于产生正弦波、三角波、锯齿波、方波，占用两格，如果空间不足将无法放置或旋转，详见本Mod文档"
     },
     "GVOscilloscopeBlock:0": {
       "DisplayName": "GV示波器",
@@ -288,7 +288,7 @@
     },
     "GVTractorBeamBlock:0": {
       "DisplayName": "GV牵引光束",
-      "Description": "可将一片悬浮的方块捕获并移动、旋转、缩放，其中的十亿伏特电路板可基本正常运行，详见本Mod Github页面的介绍"
+      "Description": "可将一片悬浮的方块捕获并移动、旋转、缩放，其中的十亿伏特电路板可基本正常运行，详见本Mod文档"
     }
   },
   "ContentWidgets": {
@@ -299,7 +299,7 @@
     },
     "EditGVListMemoryBankDialog": {
       "1": "编辑一维存储器数据",
-      "2": "一维存储器以List列表形式储存32位二进制数字(十六进制0到FFFFFFFF)，每个数字用英文逗号,分开，更多说明详见",
+      "2": "一维存储器以List列表形式储存32位二进制数字(十六进制0到FFFFFFFF)，每个数字用英文逗号,分开，更多说明详见文档",
       "3": "指定新长度：",
       "4": "出图用宽度：",
       "5": "出图用高度：",
@@ -311,7 +311,7 @@
     },
     "EditGVFourDimensionalMemoryBankDialog": {
       "1": "编辑四维存储器数据",
-      "2": "更多说明详见",
+      "2": "更多说明详见文档",
       "3": "X范围 ",
       "4": "Y范围 ",
       "5": "Z范围 ",
@@ -338,7 +338,7 @@
     },
     "EditGVJavascriptMicrocontrollerDialog": {
       "1": "编辑JS单片机",
-      "2": "理论上可实现一切功能，说明详见",
+      "2": "理论上可实现一切功能，说明详见文档",
       "3": "P0后",
       "4": "P1上",
       "5": "P2右",

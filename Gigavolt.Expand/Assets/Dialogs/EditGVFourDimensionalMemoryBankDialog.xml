@@ -98,5 +98,8 @@
 			<LabelWidget Name="EditGVFourDimensionalMemoryBankDialog.ID"/>
 			<BitmapButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.CopyID" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 		</StackPanelWidget>
+		<BevelledButtonWidget Name="EditGVFourDimensionalMemoryBankDialog.Help" Size="48, 48" Margin="15, 15">
+			<RectangleWidget Size="30, 30" Name="BevelledButton.Image" Subtexture="{Textures/Atlas/HelpTopicIcon}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="true"/>
+		</BevelledButtonWidget>
 	</CanvasWidget>
 </CanvasWidget>
