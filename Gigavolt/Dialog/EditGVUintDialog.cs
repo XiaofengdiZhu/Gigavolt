@@ -336,19 +336,23 @@ namespace Game {
             m_lastValidVoltage = newVoltage;
         }
 
-        public static void ShowErrorDialog(Exception exception, int fromBase = 10) {
+        public void ShowErrorDialog(Exception exception, int fromBase = 10) {
+            string typeName = GetType().Name;
             DialogsManager.ShowDialog(
                 null,
                 new MessageDialog(
-                    "发生错误",
+                    LanguageControl.Get("ContentWidgets", typeName, "9"),
                     exception switch {
-                        ArgumentOutOfRangeException => "输入不能为空",
-                        FormatException => $"不能输入0到{(fromBase == 8 ? "7" : "9")}{(fromBase == 16 ? "和A到F" : "")}以外的字符{(fromBase == 16 ? "（不区分大小写）" : "")}",
-                        OverflowException => $"不能输入负数或大于{fromBase switch {
-                            8 => "八进制37777777777",
-                            16 => "十六进制FFFFFFFF",
-                            _ => "十进制4294967295"
-                        }}的数",
+                        ArgumentOutOfRangeException => LanguageControl.Get("ContentWidgets", typeName, "10"),
+                        FormatException => string.Format(LanguageControl.Get("ContentWidgets", typeName, "11"), fromBase == 8 ? "7" : "9", fromBase == 16 ? LanguageControl.Get("ContentWidgets", typeName, "12") : "", fromBase == 16 ? LanguageControl.Get("ContentWidgets", typeName, "13") : ""),
+                        OverflowException => string.Format(
+                            LanguageControl.Get("ContentWidgets", typeName, "14"),
+                            fromBase switch {
+                                8 => LanguageControl.Get("ContentWidgets", typeName, "15"),
+                                16 => LanguageControl.Get("ContentWidgets", typeName, "16"),
+                                _ => LanguageControl.Get("ContentWidgets", typeName, "17")
+                            }
+                        ),
                         _ => exception.ToString()
                     },
                     "OK",

@@ -291,7 +291,6 @@
 		<Compile Include="ClassicBlock\SubsystemGVTruthTableCircuitCBlockBehavior.cs"/>
 		<Compile Include="ClassicBlock\TruthTableCircuitGVCElectricElement.cs"/>
 		<Compile Include="Dialog\EditGVMemoryBankDialog.cs"/>
-		<Compile Include="Dialog\EditGigaVoltageLevelDialog.cs"/>
 		<Compile Include="Dialog\EditGVPistonDialog.cs"/>
 		<Compile Include="Dialog\EditGVTruthTableDialog.cs"/>
 		<Compile Include="GVElectricClasses\GigavoltModLoader.cs"/>
@@ -332,9 +331,6 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="modinfo.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Dialogs\EditGigaVoltageLevelDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Dialogs\EditGVMemoryBankDialog.xml">

@@ -14,7 +14,6 @@
 			</StackPanelWidget>
 			<CanvasWidget Size="0, 15"/>
 			<StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
-				<CanvasWidget Size="0, Infinity"/>
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 					<LabelWidget Name="EditGVMemoryBankDialog.RowCountLabel" Text="[EditGVMemoryBankDialog:3]"/>
 					<CanvasWidget Size="104, 34">
@@ -38,10 +37,9 @@
 					</CanvasWidget>
 					<BitmapButtonWidget Name="EditGVMemoryBankDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					<BitmapButtonWidget Name="EditGVMemoryBankDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVDelete}" ClickedSubtexture="{Textures/Gui/GVDelete}" Margin="10, 0"/>
-					<CanvasWidget Size="0, Infinity"/>
 				</StackPanelWidget>
 			</StackPanelWidget>
-			<CanvasWidget Size="0, 15"/>
+			<CanvasWidget Size="0, Infinity"/>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 				<BevelledButtonWidget Name="EditGVMemoryBankDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVMemoryBankDialog:21]" Margin="20, 0"/>
 				<BevelledButtonWidget Name="EditGVMemoryBankDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVMemoryBankDialog:22]"/>

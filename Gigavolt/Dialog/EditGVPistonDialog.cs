@@ -20,26 +20,6 @@ namespace Game {
 
         public int m_speed;
 
-        public static readonly string[] m_speedNames = [
-            "Very Slow",
-            "Slow",
-            "Medium",
-            "Fast",
-            "2xFast",
-            "3xFast",
-            "4xFast"
-        ];
-
-        public static readonly string[] m_speedCNNames = [
-            "非常慢",
-            "慢",
-            "中",
-            "快",
-            "2x快",
-            "3x快",
-            "4x快"
-        ];
-
         public readonly string m_languageType;
 
         public EditGVPistonDialog(GVPistonMode mode, GVPistonData pistonData, Action handler) {
@@ -124,7 +104,7 @@ namespace Game {
 
         public void UpdateControls() {
             m_slider3.Value = m_speed;
-            m_slider3.Text = m_languageType == "zh-CN" ? m_speedCNNames[m_speed] : m_speedNames[m_speed];
+            m_slider3.Text = LanguageControl.Get(GetType().Name + "Speed", m_speed);
         }
 
         public void Dismiss(bool result) {

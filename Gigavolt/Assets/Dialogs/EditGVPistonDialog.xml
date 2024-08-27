@@ -3,46 +3,36 @@
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="15, 15">
 			<LabelWidget Name="EditGVPistonDialog.Title" HorizontalAlignment="Center"/>
-			<CanvasWidget Size="0, Infinity"/>
-			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-				<CanvasWidget>
-					<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Far" VerticalAlignment="Center">
-						<CanvasWidget Size="100, -1" VerticalAlignment="Center">
-							<LabelWidget Name="EditGVPistonDialog.Label1" Text="[EditGVPistonDialog:1]" HorizontalAlignment="Center"/>
-						</CanvasWidget>
-						<CanvasWidget Size="104, 34">
-							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-							<TextBoxWidget Name="EditGVPistonDialog.MaxExtension" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
-						</CanvasWidget>
-					</StackPanelWidget>
-				</CanvasWidget>
-				<CanvasWidget Name="EditGVPistonDialog.Panel2" Margin="30, 0">
-					<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Near" VerticalAlignment="Center">
-						<CanvasWidget Size="100, -1" VerticalAlignment="Center">
-							<LabelWidget Name="EditGVPistonDialog.Label2" HorizontalAlignment="Center"/>
-						</CanvasWidget>
-						<CanvasWidget Size="104, 34">
-							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
-							<TextBoxWidget Name="EditGVPistonDialog.PullCount" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
-						</CanvasWidget>
-					</StackPanelWidget>
+			<CanvasWidget Size="0, 45"/>
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<LabelWidget Name="EditGVPistonDialog.Label1" Text="[EditGVPistonDialog:1]" VerticalAlignment="Center"/>
+				<CanvasWidget Size="20, 0"/>
+				<CanvasWidget Size="104, 34">
+					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+					<TextBoxWidget Name="EditGVPistonDialog.MaxExtension" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 				</CanvasWidget>
 			</StackPanelWidget>
-			<CanvasWidget Size="Infinity, 75">
-				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-					<LabelWidget Text="[EditGVPistonDialog:2]"/>
-					<CanvasWidget Size="20, 0"/>
-					<CheckboxWidget Name="EditGVPistonDialog.Transparent" CheckboxSize="24, 24" IsAutoCheckingEnabled="true" Margin="0, 10" VerticalAlignment="Center"/>
-				</StackPanelWidget>
-			</CanvasWidget>
-			<CanvasWidget Size="Infinity, 75">
-				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-					<CanvasWidget Size="180, -1" VerticalAlignment="Center">
-						<LabelWidget Name="EditGVPistonDialog.Label3" Text="[EditGVPistonDialog:3]" HorizontalAlignment="Center"/>
-					</CanvasWidget>
-					<SliderWidget Name="EditGVPistonDialog.Slider3" VerticalAlignment="Center" LabelWidth="120"/>
-				</StackPanelWidget>
-			</CanvasWidget>
+			<CanvasWidget Margin="0, 15"/>
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<LabelWidget Name="EditGVPistonDialog.Label2" VerticalAlignment="Center"/>
+				<CanvasWidget Size="20, 0"/>
+				<CanvasWidget Size="104, 34">
+					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+					<TextBoxWidget Name="EditGVPistonDialog.PullCount" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+				</CanvasWidget>
+			</StackPanelWidget>
+			<CanvasWidget Size="0, 15"/>
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<LabelWidget Text="[EditGVPistonDialog:2]" VerticalAlignment="Center"/>
+				<CanvasWidget Size="20, 0"/>
+				<CheckboxWidget Name="EditGVPistonDialog.Transparent" CheckboxSize="24, 24" IsAutoCheckingEnabled="true" VerticalAlignment="Center"/>
+			</StackPanelWidget>
+			<CanvasWidget Size="0, 15"/>
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<LabelWidget Name="EditGVPistonDialog.Label3" Text="[EditGVPistonDialog:3]" VerticalAlignment="Center"/>
+				<CanvasWidget Size="20, 0"/>
+				<SliderWidget Name="EditGVPistonDialog.Slider3" VerticalAlignment="Center" LabelWidth="100"/>
+			</StackPanelWidget>
 			<CanvasWidget Size="0, Infinity"/>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 				<BevelledButtonWidget Name="EditGVPistonDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVPistonDialog:4]" Margin="20, 0"/>

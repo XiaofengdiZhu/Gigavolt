@@ -54,5 +54,8 @@
 				<BevelledButtonWidget Name="EditGVDebugDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVDebugDialog:3]"/>
 			</StackPanelWidget>
 		</StackPanelWidget>
+		<BevelledButtonWidget Name="EditGVDebugDialog.Help" Size="48, 48" Margin="15, 15">
+			<RectangleWidget Size="30, 30" Name="BevelledButton.Image" Subtexture="{Textures/Atlas/HelpTopicIcon}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="true"/>
+		</BevelledButtonWidget>
 	</CanvasWidget>
 </CanvasWidget>

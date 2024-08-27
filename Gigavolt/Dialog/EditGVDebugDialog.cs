@@ -15,6 +15,7 @@ namespace Game {
         public readonly CheckboxWidget m_preventChunkFromBeingFreeCheckbox;
         public readonly CheckboxWidget m_displayVoltageCheckbox;
         public readonly CheckboxWidget m_wheelPanelEnabledCheckbox;
+        public readonly BevelledButtonWidget m_helpButton;
 
         public readonly StackPanelWidget m_GVHelperPanel;
         public readonly CheckboxWidget m_GVHelperSlotActiveCheckbox;
@@ -24,6 +25,8 @@ namespace Game {
         public readonly SubsystemGVElectricity m_subsystemGVElectricity;
 
         public readonly string m_lastSpeedText;
+
+        public static Action m_helpAction = () => { WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/base/new/debug.html"); };
 
         public EditGVDebugDialog(SubsystemGVDebugBlockBehavior subsystem, SubsystemGVElectricity subsystemGVElectricity, Action handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVDebugDialog");
@@ -38,6 +41,7 @@ namespace Game {
             m_wheelPanelEnabledCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.WheelPanelEnabled");
             m_GVHelperPanel = Children.Find<StackPanelWidget>("EditGVDebugDialog.GVHelperPanel");
             m_GVHelperSlotActiveCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.GVHelperSlotActive");
+            m_helpButton = Children.Find<BevelledButtonWidget>("EditGVDebugDialog.Help");
             if (GVStaticStorage.GVHelperAvailable) {
                 m_GVHelperPanel.IsVisible = true;
                 m_GVHelperSlotActiveCheckbox.IsChecked = GVStaticStorage.GVHelperSlotActive;
@@ -118,6 +122,9 @@ namespace Game {
                 m_subsystem.SetKeyboardDebug(m_keyboardControlCheckbox.IsChecked);
                 GVStaticStorage.GVHelperSlotActive = m_GVHelperSlotActiveCheckbox.IsChecked;
                 Dismiss(false);
+            }
+            if (m_helpButton.IsClicked) {
+                m_helpAction();
             }
             if (Input.Cancel
                 || m_cancelButton.IsClicked) {

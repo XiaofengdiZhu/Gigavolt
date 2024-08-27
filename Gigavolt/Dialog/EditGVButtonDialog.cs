@@ -45,11 +45,12 @@ namespace Game {
                         || m_durationTextBox.Text.Length == 0) {
                         Dismiss(false);
                     }
+                    string typeName = GetType().Name;
                     DialogsManager.ShowDialog(
                         null,
                         new MessageDialog(
-                            "发生错误",
-                            "输入的数字不符合要求",
+                            LanguageControl.Get("ContentWidgets", typeName, "8"),
+                            LanguageControl.Get("ContentWidgets", typeName, "9"),
                             "OK",
                             null,
                             null
