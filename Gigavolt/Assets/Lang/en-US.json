@@ -1,0 +1,511 @@
+{
+  "Gigavolt": {
+    "ClassicName": " Classic"
+  },
+  "EditGVPistonDialog": {
+    "1": "{0} Blocks",
+    "2": "Push&Pull Count",
+    "3": "Push Count"
+  },
+  "EditGVPistonDialogSpeed": [
+    "Very Slow",
+    "Slow",
+    "Medium",
+    "Fast",
+    "2xFast",
+    "3xFast",
+    "4xFast"
+  ],
+  "EditGVMemoryBankDialog": {
+    "1": "Too many datas, edit them in local.",
+    "2": "Unknown error, convert failed",
+    "3": "Row and column count should be positive integer."
+  },
+  "GVMBExternalContentScreen": {
+    "1": "Enter",
+    "2": "Import",
+    "3": "Content {0}",
+    "4": "png image",
+    "5": "wav audio",
+    "6": "Import memory bank data from {0} successfully. The png image's width is {1}, height is {2}.",
+    "7": "The channel count of {0} is not 2.",
+    "8": "Import memory bank data from {0} successfully. The wav audio's sample rate is {1}, length is {2}, duration is {3}.",
+    "9": "Retrieving Directory",
+    "10": "Downloading",
+    "11": "Import memory bank data from {0} successfully. The {2} file length is {1}.",
+    "12": "Importing",
+    "13": "Exporting",
+    "14": "Export Successfully",
+    "16": "Import Successfully",
+    "17": "common"
+  },
+  "GVWheelPanelWidget": {
+    "1": "Your inventory's capacity is not enough."
+  },
+  "GVStepFloatingButtons": {
+    "1": "Recent {0} circles cost {1}s"
+  },
+  "BlocksManager": {
+    "GV Electrics Regular": "GV Electrics Regular",
+    "GV Electrics Shift": "GV Electrics Shift",
+    "GV Electrics Expand": "GV Electrics Expand",
+    "GV Electrics Multiple": "GV Electrics Multiple"
+  },
+  "GVLightbulbBlock": {
+    "1": "GV Lightbulb"
+  },
+  "DetonatorGVElectricElement": {
+    "1": "Stupid! \nAt the cost of the player's life, the world was spared from destruction."
+  },
+  "GVPressurePlateBlock": {
+    "WoodDisplayName": "GV Wooden Pressure Plat",
+    "StoneDisplayName": "GV Stone Pressure Plat",
+    "Description": "Electric pressure plate. The pressure plate generates a signal when it is pressed, for example by something heavy resting on it, or by a projectile striking it. The voltage generated depends on the weight of item. As soon as the pressure is removed, the output signal returns to 0V. Reference result: male player 0x46V, orcad 0x5DCV. The plate has outputs on all sides for easy connection. It can be placed on any surface.",
+    "ClassicDescription": "Classic electric pressure plate. The pressure plate generates a signal when it is pressed, for example by something heavy resting on it, or by a projectile striking it. The voltage generated depends on the weight of item and is between 0.8V (lightest) and 1.5V (heaviest), therefore the pressure plate can be used as a weight. As soon as the pressure is removed, the output signal returns to 0V. The plate has outputs on all sides for easy connection. It can be placed on any surface."
+  },
+  "GVSRLatchBlock": {
+    "DisplayName": "GV SR Latch",
+    "Description": "Logic SR latch. Can be used as a memory element holding a single signal. Has three inputs (S, R and clock), and one output. A signal on S input sets the stored signal to S input voltage. A signal on R input resets the stored signal to 0. Output always indicates the stored signal of the latch. Can work in synchronous or asynchronous mode, depending on whether clock input is connected. In synchronous mode the states of S and R inputs are read only during a rising edge on the clock input. Can be placed on any surface and rotated to desired orientation.",
+    "ClassicDescription": "Classic logic SR latch. Can be used as a memory element holding a single bit. Has three inputs (S, R and clock), and one output. A signal on S input sets the state to 1. A signal on R input resets the state to 0. Output always indicates the current state of the latch. Can work in synchronous or asynchronous mode, depending on whether clock input is connected. In synchronous mode the states of S and R inputs are read only during a rising edge on the clock input. Can be placed on any surface and rotated to desired orientation."
+  },
+  "GVAnalogToDigitalConverterBlock": {
+    "DisplayName": "GV Split {0} to {1} Converter",
+    "Description": "The Analog to Digital Converter has been changed to 4 splitters. Before splitting, the converter takes the lowest n bits of each input, and outputs the split result in order.  Can be placed on any surface and rotated to desired orientation.",
+    "ClassicDisplayName": "GV Analog to Digital Converter Classic",
+    "ClassicDescription": "Electric ADC. Converts one analog signal fed to its back to 4 digital signals output through its sides. You need to place DAC on a WireThroughBlock element to be able provide the input signal. Can be placed on any surface and rotated to desired orientation."
+  },
+  "GVDigitalToAnalogConverterBlock": {
+    "DisplayName": "GV Combine {0} to {1} Converter",
+    "Description": "The Digital to Analog Converter has been changed to 4 combiners. The converter takes the lowest n bits of each input, and combines them in order, finally outputs the result at the back. Can be placed on any surface and rotated to desired orientation.",
+    "ClassicDisplayName": "GV Digital to Analog Converter Classic",
+    "ClassicDescription": "Electric DAC. Converts 4 digital signals fed to its sides to one analog signal at the back. You need to place DAC on a WireThroughBlock element to be able to access the output signal. Can be placed on any surface and rotated to desired orientation."
+  },
+  "GVTargetBlock": {
+    "DisplayName": "GV Target",
+    "Description": "A target can be used for shooting practice. It will signal a hit with an electric signal.  The voltage of the signal between 0 and 0xFFFFFF00 V determines how close to the center the hit occurred. Because of coordinate precision of the game, the lowest 8 bits are always 0. Voltages below 0V indicate no hit has been registered.",
+    "ClassicDisplayName": "GV Target Classic",
+    "ClassicDescription": "A target can be used for shooting practice. It will signal a hit with an analog electric signal. The voltage of the signal determines how close to the center the hit occurred, from 0.8V at the outside of the target to 1.5V at the center. Voltages below 0.8V indicate no hit has been registered."
+  },
+  "GVDetonatorBlock": {
+    "DisplayName": "GV Electric Detonator",
+    "Description": "A detonator contains sensitive explosive and is used to initiate larger, less sensitive explosives, such as gunpowder kegs. Because it is very sensitive, it will explode when hit by a hard object, or when an electric current flows through it. The higher the voltage, the more powerful the explosion. Can be used to electrically initiate explosives, with instant explosion. Can be placed on any surface.",
+    "ClassicDisplayName": "GV Electric Detonator Classic",
+    "ClassicDescription": "A detonator contains a small amount of sensitive explosive and is used to initiate larger, less sensitive explosives, such as gunpowder kegs. Because it is very sensitive, it will explode when hit by a hard object, or when an electric current flows through it. Can be used to electrically initiate explosives, with instant explosion. Can be placed on any surface."
+  },
+  "GVRealTimeClockBlock": {
+    "DisplayName": "GV Real Time Clock",
+    "Description": "It's similar to the vanilla version, but outputs the true real time (from the running device). More details is in the document.",
+    "ClassicDisplayName": "GV Real Time Clock Classic",
+    "ClassicDescription": "A real time clock that provides an accurate and always up to date readout of time. The clock value changes even if it's far away from the player. Zero value of the clock is at the point when the game started. You cannot reset the clock, it always tells the time since the game started. The clock outputs time via 5 outputs, each of them 4-bit analog signal. Sixteen least significant bits are on the four sides, and the 5th output (containing the most significant 4 bits) is on the back (you must place the clock on a wire-through-block to access the 5th output). The clock is set up so that it advances by exactly 4096 ticks each day. That means each tick is about 0.3 seconds long and that 4th output contains number of days since the game started. Combined value of outputs 1, 2 and 3 contains time of day, to about 0.3 second accuracy. 4th output alone will overflow after 16 days. Use 5th output to extend the overflow period to 256 days."
+  },
+  "GVSignCBlock": {
+    "WoodDisplayName": "GV Wooden Sign",
+    "IronDisplayName": "GV Iron Sign"
+  },
+  "GVAdjustableDelayGateBlock": {
+    "DisplayName": "GV Adjustable Delay Gate",
+    "Description": "An adjustable delay gate with two input and one output. The delay time can only be adjusted by the voltage from the back. The initial delay time is 0.01 seconds, when the back input voltage increases 1 V, the delay time increases 0.01 seconds. If the back input voltage is greater than or equal to 0xFF V, the delay time reaches the maximum value of 2.56 seconds. You can't manually adjust the delay time.",
+    "ClassicDisplayName": "GV Adjustable Delay Gate Classic",
+    "ClassicDescription": "An adjustable delay gate with one input and one output. The delay of the gate can be adjusted in 0.01s increments by editing it. Can be placed on any surface and rotated to desired orientation.",
+    "ColoredDisplayName": "GV Diode",
+    "ColoredDescription": "Diode can only pass signals from bottom port to top port with 1 electric cycle delay (0.01 second. It's essentially a Delay Gate). Only colored version in `Gigavolt Multiple` category."
+  },
+  "GVPistonBlock": {
+    "Pushing": "GV Piston",
+    "Pulling": "GV Pulling Piston",
+    "StrictPulling": "GV Strict Pulling Piston",
+    "Complex": "GV Complex Piston"
+  },
+  "GV8x4LedBlock": [
+    "GV 4x2 LED",
+    "GV 4x4 LED",
+    "GV 8x4 LED"
+  ],
+  "GVDoorBlock": [
+    "GV Wooden Door",
+    "GV Iron Door",
+    "GV Cell Gate"
+  ],
+  "GVTrapdoorBlock": [
+    "GV Wooden Trapdoor",
+    "GV Cell Trapdoor"
+  ],
+  "GVFenceGateBlock": [
+    "GV Wooden Fence Gate",
+    "GV Iron Fence Gate"
+  ],
+  "Blocks": {
+    "GVWireBlock:0": {
+      "DisplayName": "GV Electric Wire",
+      "Description": "A thin wire made of copper, it conducts electricity very well. Used for making electric circuits. Wire can be placed on any surface and connections with all nearby wires will be created automatically. A wire will connect between edges of diagonally adjacent blocks, allowing you to make hidden connections.",
+      "CRDescription:0": "Work copper ingots into a length of electric wire"
+    },
+    "GVNotGateBlock:0": {
+      "DisplayName": "GV Logic NOT Gate",
+      "Description": "Logic NOT gate. Has one input and one output. Inverts the electric signal coming on the input. The output is 1 when input is 0, otherwise it is 0. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Logic NOT gates from copper and germanium"
+    },
+    "GVAndGateBlock:0": {
+      "DisplayName": "GV Logic AND Gate",
+      "Description": "Logic AND gate. Has two inputs on the sides and one output. The output is 1 when both inputs are 1, otherwise it is 0. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Logic AND gates from copper and germanium"
+    },
+    "GVOrGateBlock:0": {
+      "DisplayName": "GV Logic OR Gate",
+      "Description": "Logic OR gate. Has two inputs on the sides and one output. The output is 1 when any of the inputs is 1, otherwise it is 0. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Logic OR gates from copper and germanium"
+    },
+    "GVXorGateBlock:0": {
+      "DisplayName": "GV Logic XOR Gate",
+      "Description": "Logic XOR gate. Has two inputs on the sides and one output. The output is 1 when exactly one of the inputs is 1, otherwise it is 0. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Logic XOR gates from copper and germanium"
+    },
+    "GVNandGateBlock:0": {
+      "DisplayName": "GV Logic NAND Gate",
+      "Description": "Logic NAND gate. Has two inputs on the sides and one output. The output is 0 when both inputs are 1, otherwise it is 1. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Logic NAND gates from copper and germanium"
+    },
+    "GVNorGateBlock:0": {
+      "DisplayName": "GV Logic NOR Gate",
+      "Description": "Logic NOR gate. Has two inputs on the sides and one output. The output is 0 when any of the inputs is 1, otherwise it is 1. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Logic NOR gates from copper and germanium"
+    },
+    "GVDelayGateBlock:0": {
+      "DisplayName": "GV Delay Gate",
+      "Description": "A delay gate with one input and one output. A single gate will delay any signal for about 0.2 seconds. Chaining 2 gates directly (without a wire in between), gives a delay of 1 second. Chaining 3 gates directly gives a delay of 5 seconds. Chaining delay gates with a wire between simply combines the delays. Two gates will give a delay of 0.4 seconds, 3 gates will give 0.6 seconds, and so on. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Logic Delay gates from copper and germanium"
+    },
+    "GVAdjustableDelayGateBlock:0": {
+      "CRDescription:0": "Craft Logic Adjustable Delay gates from copper, germanium and iron"
+    },
+    "GVSRLatchBlock:0": {
+      "CRDescription:0": "Craft Logic SR Latches from copper and germanium"
+    },
+    "GVCounterBlock:0": {
+      "DisplayName": "GV Counter",
+      "Description": "An electric 32 bit counter with increment, decrement, reset and overflow detection capabilities (useful for chaining counters). Signal on the right input increments the counter. Signal on the left input decrements it. Both increment and decrement wrap around when reach above (the overflow voltage - 1V) or below 0V, in which case an overflow signal is generated at the bottom output. The back input (use wire-though-block element to access it) resets the counter to 0. Plus, minus and reset inputs are activated by rising edge of the signal. The counter can be mounted on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft 4-bit Counters from copper and germanium"
+    },
+    "GVCounterCBlock:0": {
+      "DisplayName": "GV 4-Bit Counter Classic",
+      "Description": "An electric 4 bit counter with increment, decrement, reset and overflow detection capabilities (useful for chaining counters). Outputs its current value at the top via an analog signal. You can use analog-to-digital converter to extract the actual 4 bits, if needed. Signal on the right input increments the counter. Signal on the left input decrements it. Both increment and decrement wrap around when reach above 15 or below 0, in which case an overflow signal is generated at the bottom output. The back input (use wire-though-block element to access it) resets the counter to 0. Plus, minus and reset inputs are activated by rising edge of the signal. The counter can be mounted on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft 4-bit Counters from copper and germanium"
+    },
+    "GVMemoryBankBlock:0": {
+      "DisplayName": "GV Memory Bank",
+      "Description": "Writeable memory bank containing up to 2^32-1 32-bit datas. You must manually set width and height to initialize the memory bank before store data. The width and height cannot be modified after initialization. (But may be overwritten by other operations.) The memory can be addressed using two 32-bit address lines placed on the left and right. If an address line is not connected, it's assumed to be zero. Value stored in the memory bank under the specified address can be read at the top output. Bottom input is used as a clock in a similar fashion to SR Latch. If the clock line is not connected, reads are immediate. To write to the memory bank, supply the value to be written on the back input (you must use wire-through-block). The write is triggered by setting clock input to a low voltage between 0.1 and 0.7 volts (a value of 0.8 and larger will trigger a read). If only the top is connected, it outputs its ID. The contents of memory block can be manually edited by tapping edit button when block is held in hand or looked at. Can be placed on any surface and rotated to desired orientation. More details is in the document.",
+      "CRDescription:0": "Craft Memory Bank from copper and germanium"
+    },
+    "GVMemoryBankCBlock:0": {
+      "DisplayName": "GV Memory Bank Classic",
+      "Description": "Writeable memory bank containing 256 4-bit words. The memory can be addressed using two 4-bit address lines placed on the left and right. If an address line is not connected, it's assumed to be zero. Value stored in the memory bank under the specified address can be read at the top output. Bottom input is used as a clock in a similar fashion to SR Latch. If the clock line is not connected, reads are immediate. To write to the memory bank, supply the value to be written on the back input (you must use wire-through-block). The write is triggered by setting clock input to a low voltage between 0.1 and 0.7 volts (a value of 0.8 and larger will trigger a read). The contents of memory block can be manually edited by tapping edit button when block is held in hand or looked at. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Memory Bank from copper and germanium"
+    },
+    "GVTruthTableCircuitBlock:0": {
+      "DisplayName": "GV Truth Table Circuit",
+      "Description": "An element that can determine the output for all possible combination of the inputs. It can not only output the voltage according to the specified inputs, but can also calculate the expressions stored in it. Its port definition is the same as the vanilla version. More details is in the document.",
+      "CRDescription:0": "用铜和锗合成真值表"
+    },
+    "GVTruthTableCircuitCBlock:0": {
+      "DisplayName": "GV Truth Table Circuit Classic",
+      "Description": "A programmable circuit that uses a user-entered truth table to determine value of the output for all possible combination of the inputs. There are 4 inputs on all sides and one output at the back (to access the output element must be placed on a wire-through-block). The truth table must be entered manually by tapping edit button while holding the item in hand. Truth table contains output values for all possible input value combinations. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Truth Table Circuit from copper and germanium"
+    },
+    "GVRealTimeClockBlock:0": {
+      "CRDescription:0": "Craft Real Time Clocks from copper, germanium and glass"
+    },
+    "GVRandomGeneratorBlock:0": {
+      "DisplayName": "GV Random Generator",
+      "Description": "Electric random generator. Can be used to generate random electric signals. Has a single clock input and one random output. Output is an analog signal and always indicates the latest result of the random generator. Can work in synchronous or asynchronous mode, depending on whether clock input is connected. In synchronous mode the random value is generated only during a rising edge on the clock input, otherwise it is generated continuously with average frequency of about 2 Hz. Can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Random Generators from copper and germanium"
+    },
+    "GVDigitalToAnalogConverterBlock:0": {
+      "CRDescription:0": "Craft Combine Converters from copper and germanium"
+    },
+    "GVAnalogToDigitalConverterBlock:0": {
+      "CRDescription:0": "Craft Split Digital Converters from copper and germanium"
+    },
+    "GVSoundGeneratorBlock:0": {
+      "DisplayName": "GV Sound Generator",
+      "Description": "Sound Generator can generate any sound through the inputs and the data from memory bank. Some animals, especially birds, are afraid of the loud sounds. This element can be placed on any surface and rotated to desired orientation. More details is in the document.",
+      "CRDescription:0": "Craft Sound Generators from copper, germanium and iron"
+    },
+    "GVSoundGeneratorCBlock:0": {
+      "DisplayName": "GV Sound Generator Classic",
+      "Description": "Electric sound generator. Takes 4 inputs: pitch (left), octave (right), volume (top) and tone (bottom). All of these inputs are analog. The pitch ranges from C note (value of 0V) to D note in the next octave (value of 1.4V). 1.5V at pitch input means pause, no sound is played. The octave input can be used to shift the pitch by up to two octaves. The volume input sets the volume of played sound, with 0V being muted and 1.5V being the loudest. The actual sound is played whenever tone input goes from zero to non-zero. The value supplied to the tone input when it goes from zero to non-zero determines which instrument should be played: 0.1=bell, 0.2=Organ, 0.3=Ping, 0.4=String, 0.5=Trumpet, 0.6=Voice, 0.7=Piano, 0.8=PianoSustain, 0.9=Drums. With drums, pitch input determines one of 10 drums: 0.0=Snare, 0.1=BassDrum, 0.2=ClosedHiHat, 0.3=PedalHiHat, 0.4=OpenHiHat, 0.5=LowTom, 0.6=HighTom, 0.7=Crash, 0.8=Ride, 0.9=HandClap. Some animals, especially birds, are afraid of the loud sounds. This element can be placed on any surface and rotated to desired orientation.",
+      "CRDescription:0": "Craft Sound Generators from copper, germanium and iron"
+    },
+    "GVBatteryBlock:0": {
+      "DisplayName": "GV Battery",
+      "Description": "An electric battery used to power electric circuits. Will connect to any wire placed next to it and power it to a constant voltage, which is 0xFFFFFFFF by default. The voltage can be adjusted by editing the battery.",
+      "CRDescription:0": "Craft batteries from copper and coal"
+    },
+    "GVLightbulbBlock:0": {
+      "DisplayName": "GV Lightbulb",
+      "Description": "Electric lightbulb, emits a lot of light when connected to a source of electricity. Can be placed on any surface.",
+      "CRDescription:0": "Craft lightbulbs from copper and glass"
+    },
+    "GVSwitchBlock:0": {
+      "DisplayName": "GV Switch",
+      "Description": "An electric switch. It is used to set the state of an electric circuit to 0xFFFFFFFF (lever up) or 0V (lever down). The voltage remains in the selected state until the lever is moved again. A switch has outputs on all sides for easy connection, and can be placed on any surface. Colored Switch cannot connect to wires with different color besides wire harness.",
+      "CRDescription:0": "Craft electric switches from copper and sticks"
+    },
+    "GVButtonBlock:0": {
+      "DisplayName": "GV Button",
+      "Description": "An electric button. Used to momentarily set the state of an electric circuit to 0xFFFFFFFF in maximum. The duration of the pulse generated by a single button click can be manually adjusted, after which time the outputs return to 0V state. A button can be triggered by a projectile striking it. It has outputs on all sides for easy connection and can be placed on any surface.",
+      "CRDescription:0": "Craft electric buttons from copper and planks"
+    },
+    "GVPressurePlateBlock:0": {
+      "CRDescription:0": "Craft electric pressure plates from copper and planks"
+    },
+    "GVMotionDetectorBlock:0": {
+      "DisplayName": "GV Motion Detector",
+      "Description": "An electric motion detector. The detector will produce signal whenever it detects motion in front of its face, up to about 8 blocks away. When motion is detected, the output of the motion detector is between 0.8 and 1.5V, indicating how close to the detector the object is moving. It has outputs on all sides for easy connection and can be placed on any surface.",
+      "CRDescription:0": "Craft motion detectors from copper, glass and marble"
+    },
+    "GVPistonHeadBlock:0": {
+      "DisplayName": "GV Piston Head",
+      "Description": "Pistons can be used to push and pull blocks. The extension of piston is controlled by voltage applied to it. 1V will make piston extend to one block, 2V to two etc. Pistons can also be edited to limit the maximum extension to lower values. If the piston is a pull piston, it will also pull blocks back when retracting. If the piston is a strict pull piston, it will not retract unless it is pulling back enough blocks. Number of pulled blocks can be adjusted by editing.But complex piston is completely controlled by input voltage, so you can't edit it. More details is in the document."
+    },
+    "GVWireThroughPlanksBlock:0": {
+      "DisplayName": "GV Wire Through Planks",
+      "Description": "A planks block with a wire running across a hole drilled through the middle. This block behaves exactly the same as planks, but can conduct electricity when both ends of the embedded wire are a connected to something. This block can be placed with ends pointing north\/south, east\/west or up\/down. It is very useful when there is a need to run electricity through solid walls, or to insulate the wire from unwanted connections with other wires.",
+      "CRDescription:0": "Drill a hole in the planks block and put an electric wire through it"
+    },
+    "GVWireThroughStoneBlock:0": {
+      "DisplayName": "GV Wire Through Stone",
+      "Description": "A granite block with a wire running across a hole drilled through the middle. This block behaves exactly the same as granite, but can conduct electricity when both ends of the embedded wire are a connected to something. This block can be placed with ends pointing north\/south, east\/west or up\/down. It is very useful when there is a need to run electricity through solid walls, or to insulate the wire from unwanted connections with other wires.",
+      "CRDescription:0": "Drill a hole in the stone block and put an electric wire through it"
+    },
+    "GVWireThroughBricksBlock:0": {
+      "DisplayName": "GV Wire Through Bricks",
+      "Description": "A bricks block with a wire running across a hole drilled through the middle. This block behaves exactly the same as bricks, but can conduct electricity when both ends of the embedded wire are a connected to something. This block can be placed with ends pointing north\/south, east\/west or up\/down. It is very useful when there is a need to run electricity through solid walls, or to insulate the wire from unwanted connections with other wires.",
+      "CRDescription:0": "Drill a hole in the bricks block and put an electric wire through it"
+    },
+    "GVWireThroughSemiconductorBlock:0": {
+      "DisplayName": "GV Wire Through Semiconductor",
+      "Description": "A semiconductor block with a wire running across a hole drilled through the middle. This block can conduct electricity when both ends of the embedded wire are a connected to something. It can be placed with ends pointing north\/south, east\/west or up\/down. It is very useful when there is a need to run electricity through solid walls, or to insulate the wire from unwanted connections with other wires.",
+      "CRDescription:0": "Drill a hole in semiconductor block and put an electric wire through it"
+    },
+    "GVWireThroughCobblestoneBlock:0": {
+      "DisplayName": "GV Wire Through Cobblestone",
+      "Description": "A cobblestone block with a wire running across a hole drilled through the middle. This block can conduct electricity when both ends of the embedded wire are a connected to something. It can be placed with ends pointing north\/south, east\/west or up\/down. It is very useful when there is a need to run electricity through solid walls, or to insulate the wire from unwanted connections with other wires.",
+      "CRDescription:0": "Drill a hole in cobblestone block and put an electric wire through it"
+    },
+    "GVLedBlock:0": {
+      "DisplayName": "GV LED",
+      "Description": "A light emitting diode. When connected to a power source emits weak colored light. The light is too weak to light up the surroundings, but it's easily visible. It has inputs on all sides for easy connection and can be placed on any surface."
+    },
+    "GVFourLedBlock:0": {
+      "DisplayName": "GV 4-LED",
+      "Description": "A set of 4 square light emitting diodes. When connected to a power source, leds emit weak colored light. The element splits the analog signal into 4 bits to determine which of the 4 diodes should be lit. The light is too weak to light up the surroundings, but it's easily visible. Useful for creating high resolution screens. It has inputs on all sides for easy connection and can be placed on any surface."
+    },
+    "GVSevenSegmentDisplayBlock:0": {
+      "DisplayName": "GV 7-Segment Display",
+      "Description": "A 7-segment display. Displays one of the 16 hexadecimal characters: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F based on a single analog input supplied to it. The input value is converted to 4-bit digital form and used as a hexadecimal character to be displayed. Can be placed on any vertical surface."
+    },
+    "GVMulticoloredLedBlock:0": {
+      "DisplayName": "GV Multicolored LED",
+      "Description": "A light emitting diode. When connected to a power source emits weak colored light. The color of the light depends on the value of signal applied to the diode in ABGR color mode. The light is too weak to light up the surroundings, but it's easily visible. Useful for creating status lights. It has inputs on all sides for easy connection and can be placed on any surface."
+    },
+    "GVMulticoloredLedCBlock:0": {
+      "DisplayName": "GV Multicolored LED Classic",
+      "Description": "A light emitting diode. When connected to a power source emits weak colored light. The color of the light depends on the value of signal applied to the diode. 0.8V or above produces light of 8 different colors. The light is too weak to light up the surroundings, but it's easily visible. Useful for creating status lights. It has inputs on all sides for easy connection and can be placed on any surface."
+    },
+    "GVOneLedBlock:0": {
+      "DisplayName": "GV 1-LED",
+      "Description": "A large square light emitting diode. When connected to a power source, leds emit weak colored light from the whole surface. The color of the light depends on the value of signal applied to the diode in ABGR color mode. The light is too weak to light up the surroundings, but it's easily visible. Useful for creating color screens. It has inputs on all sides for easy connection and can be placed on any surface."
+    },
+    "GVOneLedCBlock:0": {
+      "DisplayName": "GV 1-LED Classic",
+      "Description": "A large square light emitting diode. When connected to a power source, leds emit weak colored light. The color of the light depends on the value of signal applied to the diode. 0.8V or above produces light of 8 different colors. The light is too weak to light up the surroundings, but it's easily visible. Useful for creating color screens. It has inputs on all sides for easy connection and can be placed on any surface."
+    },
+    "GV8x4LedBlock:0": {
+      "DisplayName": "GV 8x4 LED",
+      "Description": "A set of light emitting diodes. When connected to a power source, leds emit weak colored light. It's similar to 4-LED, but it has more LEDs. Only white color version."
+    },
+    "GVPhotodiodeBlock:0": {
+      "DisplayName": "GV Photodiode",
+      "Description": "An electric photodiode. Used to detect light. The diode will generate a signal when light is hitting its surface. The voltage depends on intensity of the light and is between 0.8V (dimmest) to 1.5V (brightest). 0V means no light. The diode has outputs on all sides for easy connection and can be placed on any surface.",
+      "CRDescription:0": "Craft photodiodes from copper and glass"
+    },
+    "GVTargetBlock:0": {
+      "CRDescription:0": "Put together white and black planks to make a shooting target."
+    },
+    "GVDetonatorBlock:0": {
+      "CRDescription:0": "Craft electric detonators from copper and gunpowder"
+    },
+    "GVPistonBlock:0": {
+      "DisplayName": "GV Piston",
+      "Description": "Pistons can be used to push blocks. The extension of piston is controlled by voltage applied to it. 1V will make piston extend to one block, 2V to two etc. Pistons can also be edited to limit the maximum extension to lower values. If the piston is a strict pull piston, it will not retract unless it is pulling back enough blocks. Number of pulled blocks can be adjusted by editing. ",
+      "CRDescription:0": "Use planks, semiconductor and copper to make a piston"
+    },
+    "GVPistonBlock:2": {
+      "DisplayName": "GV Pulling Piston",
+      "Description": "Pulling pistons can be used to push and pull blocks. The extension of piston is controlled by voltage applied to it. 1V will make piston extend to one block, 2V to two etc. Pistons can also be edited to limit the maximum extension to lower values. The pull piston will pull blocks back when retracting. Number of pulled blocks can be adjusted by editing.",
+      "CRDescription:0": "Add iron hooks to piston to make a pulling piston"
+    },
+    "GVPistonBlock:4": {
+      "DisplayName": "GV Strict Pulling Piston",
+      "Description": "Strict pulling pistons can be used to push and pull blocks. The extension of piston is controlled by voltage applied to it. 1V will make piston extend to one block, 2V to two etc. Pistons can also be edited to limit the maximum extension to lower values. The strict pulling pistons will pull blocks back when retracting, but it will not retract unless it is pulling back enough blocks. Number of pulled blocks can be adjusted by editing.",
+      "CRDescription:0": "Add copper hooks to piston to make a strict pulling piston"
+    },
+    "GVPistonBlock:6": {
+      "DisplayName": "GV Complex Piston",
+      "Description": "Complex pistons can be used to push and pull blocks. It's completely controlled by input voltage. When the input voltage changes, it will try to adjust. More details is in the document.",
+      "CRDescription:0": ""
+    },
+    "GVDebugBlock:0": {
+      "DisplayName": "GV Debug Panel",
+      "Description": "Hold this block on hand and edit it，or place it in the terrain chunk and edit it or interact with it，then the debug panel dialog shown bellow will pop up. The block outputs the value of running speed option, and the radix point is located between the 16th and 17th bit.",
+      "CRDescription:0": "Not available"
+    },
+    "GVSignCBlock:0": {
+      "DisplayName": "GV Sign Classic",
+      "Description": "Signs can contain up to 4 lines of black or colored text. They can be affixed to a vertical surface, placed on a post anchored in the ground, or hung from the ceiling. A sign can be made to act as an internet link by specifying a URL (URLs only work in Adventure mode). When attached to a copper wire, the sign message will be displayed on the screen on the rising edge of an electric signal. Use \\ (backslash) to continue message in the same line. Can be painted.",
+      "CRDescription:0": "Make printable wooden signs from wood or iron"
+    },
+    "GVSignBlock:0": {
+      "DisplayName": "GV Sign",
+      "Description": "Signs can contain up to 1 line of black or colored text. They can be affixed to a vertical surface. A sign can be made to act as an internet link by specifying a URL (URLs only work in Adventure mode). When attached to a copper wire, the sign text can be floating displayed. More details is in the document."
+    },
+    "GV2OTransformerBlock:0": {
+      "DisplayName": "Gigavolt to Original Transformer",
+      "Description": "Connect the bottom port to a Gigavolt element or wire, then the transformer will take the lowest 4 bits of the input 32-bit voltage and output it to the top port. The top port can only connect to a vanilla element or wire."
+    },
+    "O2GVTransformerBlock:0": {
+      "DisplayName": "Original to Gigavolt Transformer",
+      "Description": "Connect the bottom port to a vanilla element or wire, then the transformer will output 32-bit voltage equals to the input 4-bit voltage to the top port. The top port can only connect to a Gigavolt element or wire."
+    },
+    "GVDoorBlock:0": {
+      "DisplayName": "GV Door",
+      "Description": "门用于进出建筑物。单击它们可以打开和关闭它们。当连接到铜线上时，门将根据电压强度打开或部分打开，0V关门，0x2D V打开45度，0x5A V及以上完全打开。连上电路后，铁门、铁栅门无法手动操作。Doors are used to make entrances to buildings. They can be opened and closed by clicking on them. When connected to a copper wire, the opening degree is controlled by the input voltage, 0V closed, 0x2D V opens 45 degrees, 0x5A V and above fully open. Doors cannot be operated manually when electrically connected."
+    },
+    "GVTrapdoorBlock:0": {
+      "DisplayName": "GV Trapdoor",
+      "Description": "Trapdoors are used to make vertical entrances to buildings. They can be opened and closed by clicking on them. When connected to a copper wire, the opening degree is controlled by the input voltage, 0V closed, 0x2D V opens 45 degrees, 0x5A V and above fully open. Trapdoors cannot be operated manually when electrically connected. They can be placed normally or upside-down, depending whether they are attached to top or bottom side of the block. Upside-down trapdoors will stop falling blocks."
+    },
+    "GVFenceGateBlock:0": {
+      "DisplayName": "GV Fence Gate",
+      "Description": "Gates are used to make entrances to fenced areas. They can be opened and closed by clicking on them. When connected to a copper wire, the opening degree is controlled by the input voltage, 0V closed, 0x2D V opens 45 degrees, 0x5A V and above fully open. Animals can't jump a fence gate. Can be painted."
+    },
+    "GV8NumberLedBlock:0": {
+      "DisplayName": "GV 8 Numerical LED",
+      "Description": "Equivalent to eight 7-Segment displays. It displays the 32-bit voltage intuitively. When connected to a power source emits weak white light."
+    },
+    "GVDispenserBlock:0": {
+      "DisplayName": "GV Dispenser",
+      "Description": "A dispenser stores items in a similar way to a chest, but allows dispensing them through the hole when the input voltage changes. It can either dispense the item or shoot it as projectile, depending on the setting. The shoot mode is default. More details is in the document."
+    },
+    "GVDispenserCBlock:0": {
+      "DisplayName": "GV Dispenser Classic",
+      "Description": "A dispenser stores items in a similar way to a chest, but allows dispensing them through the hole when triggered via rising edge of an electric signal. It can either dispense the item or shoot it as projectile, depending on the setting."
+    },
+    "GVWireHarnessBlock:0": {
+      "DisplayName": "GV Wire Harness",
+      "Description": "They can only connect to colored wires or colored elements. The signals from different colored wires or elements can transmit independently in the wire harnesses."
+    }
+  },
+  "ContentWidgets": {
+    "EditGVButtonDialog": {
+      "1": "Edit Button",
+      "2": "Voltage: ",
+      "3": "(In HEX)",
+      "4": "OK",
+      "5": "Cancel",
+      "6": "Duration",
+      "7": "（In DEC, >1）",
+      "8": "Error Occupies",
+      "9": "The number doesn't meet the requirements."
+    },
+    "EditGVMemoryBankDialog": {
+      "1": "Edit Memory Bank Data",
+      "2": "Memory bank contains 32-bit datas in a table. Data should written in HEX, separated with ',' and separated every line with ';'. More details in the document.",
+      "3": "Specify Row Count: ",
+      "4": "Column Count: ",
+      "20": "If string length is more than 100,000,\nplease edit the exported image and import it again.",
+      "21": "OK",
+      "22": "Cancel",
+      "23": "Imp/Exp"
+    },
+    "EditGVTruthTableDialog": {
+      "1": "Edit Truth Table",
+      "2": "Truth table can determine the output for all possible combination of the inputs. It's totally different from the vanilla version. More details in the document.",
+      "21": "OK",
+      "22": "Cancel"
+    },
+    "EditGVPistonDialog": {
+      "1": "Max Extension",
+      "2": "Hide Pole",
+      "3": "Speed Setting",
+      "4": "OK",
+      "5": "Cancel"
+    },
+    "GVMBExternalContentScreen": {
+      "1": "",
+      "2": "Export",
+      "5": "-"
+    },
+    "EditGVDebugDialog": {
+      "1": "GV Debug Panel",
+      "2": "OK",
+      "3": "Cancel",
+      "4": "Running Speed",
+      "5": "Floating Step\nDebugging Widget",
+      "6": "Keyboard Debugging",
+      "7": "Keep Running Out\nof Visibility",
+      "8": "Hover Display\nVoltage",
+      "9": "Display Help Slot\n at the bottom",
+      "10": "Enable Shortcut\nWheel Panel"
+    },
+    "EditGVCounterDialog": {
+      "1": "Edit Counter",
+      "2": "Overflow Voltage: ",
+      "3": "(In HEX)",
+      "4": "OK",
+      "5": "Cancel",
+      "6": "Current Voltage: ",
+      "7": "Initial Voltage: "
+    },
+    "EditGVSignDialog": {
+      "1": "Enter Sign Text Line",
+      "2": "Line 1",
+      "3": "HEX UTF8",
+      "4": "Convert to the string that memory bank can use",
+      "6": "Enter Sign URL",
+      "7": "When playing in adventure mode only, tapping",
+      "8": "the sign will open this URL in the browser",
+      "9": "Try",
+      "10": "OK",
+      "11": "URL",
+      "12": "Lines",
+      "13": "Cancel"
+    },
+    "GVDispenserWidget": {
+      "1": "GV Dispenser",
+      "2": "Inventory",
+      "3": "Dispense",
+      "4": "Shoot",
+      "5": "Accepts Drops"
+    },
+    "EditGVUintDialog": {
+      "1": "OK",
+      "2": "Cxl",
+      "3": "Fraction: ",
+      "4": "OCT:",
+      "5": "DEC:",
+      "6": "HEX:",
+      "7": "Binary\nKeyboard",
+      "8": "Color:",
+      "9": "Error Occupies",
+      "10": "Input cannot be empty.",
+      "11": "You can't input characters besides from 0 to {0} and {1}. {2}",
+      "12": "and from A to F",
+      "13": "(Case insensitive)",
+      "14": "You can't input negative number or the number greater than {0}.",
+      "15": "37777777777 in OCT",
+      "16": "FFFFFFFF in HEX",
+      "17": "4294967295 in DEC"
+    }
+  }
+}
