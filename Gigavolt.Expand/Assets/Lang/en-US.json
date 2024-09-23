@@ -1,0 +1,370 @@
+﻿{
+  "EditGVListMemoryBankDialog": {
+    "1": "Too many datas, export and edit them in local.",
+    "2": "Convert failed, details are in the log.",
+    "3": "The length should be positive integer. The width, height, offset for image display should be natural number."
+  },
+  "EditGVFourDimensionalMemoryBankDialog": {
+    "1": "Too many datas, export and edit them in local.",
+    "2": "Convert failed, details are in the log.",
+    "3": "The ranges should be positive integer. The width, height, offsets for image display should be natural number."
+  },
+  "GVListMemoryBankData": {
+    "1": "Specialized format for GV List Memory Bank."
+  },
+  "GVFourDimensionalMemoryBankData": {
+    "1": "Specialized format for GV Four Dimensional Memory Bank."
+  },
+  "GVCopperHammerBlock": [
+    "GV Remote Controller",
+    "When you use it, it will trigger the switch and button with the same color. There is no distance limit."
+  ],
+  "GVCameraBlock": {
+    "DisplayName": {
+      "1": "GV Simple Camera",
+      "2": "GV Complex Camera"
+    },
+    "Description": {
+      "1": "Input the ID of the memory bank that you want to store the photo in, and the camera will take a photo towards the direction that block faces to. The view angle is 90 degrees, and the resolution is 512×512.",
+      "2": "For taking photos, you can control all parameters of it. More details is in the document."
+    }
+  },
+  "GVDisplayLedBlock": {
+    "DisplayNamePrefix": {
+      "1": "GV Simple",
+      "2": "GV Complex"
+    },
+    "DisplayName": {
+      "1": "Block Show Board",
+      "2": "Image Display",
+      "3": "Terrain Stratum Display"
+    },
+    "SimpleDescription": {
+      "1": "Input the value of the block you want to display, and a floating 3D block will be displayed in front of it.",
+      "2": "Input the ID of the memory bank that contains the image you want to display, and the image will be displayed on the surface of it.",
+      "3": "Input the ID of the memory bank that contains the terrain stratum data you want to display, and the terrain stratum will be displayed on the surface of it."
+    },
+    "ComplexDescription": {
+      "0": "You can control all parameters of the floating {0}. More details is in the document.",
+      "1": "block",
+      "2": "image",
+      "3": "terrain stratum"
+    }
+  },
+  "GVEWireThroughBlock": {
+    "Format": "{0}{2}{1}{3}",
+    "0": "GV Six-Face",
+    "1": "GV Multi-Face",
+    "2": "Jumper",
+    "3": "Wire Through",
+    "4": "Harness",
+    "5": "",
+    "6": "Block",
+    "7": "Only the faces against each other are conductive, and the neighboring faces are not conductive. It Can be painted, but it only affects the appearance, and the essence is still a colorless wire.",
+    "8": "When you use the Copper Hammer on a {0} wire, the block will be converted to a {0} Wire Through Plank. If the face has wire before using, the face on the converted block can be connected. And the faces, which have wires before using, are conductive with each other. When you use the Copper Hammer on a {0} Wire Through Block, the block's material will be changed. The 4th time, it will be restored to a wire block or a wire harness block.The converted {0} Wire Through Block can be painted, but it only affects the appearance, and the essence is still a colorless wire."
+  },
+  "GVMoreTwoInTwoOutBlock": {
+    "DisplayName": {
+      "0": "GV Adder",
+      "1": "GV Subtracter",
+      "2": "GV Multiplier",
+      "3": "GV Divider",
+      "4": "GV Remainder",
+      "5": "GV Equaler",
+      "6": "GV Greater",
+      "7": "GV No Lesser",
+      "8": "GV Lesser",
+      "9": "GV No Greater",
+      "10": "GV Maximumer",
+      "11": "GV Minimumer",
+      "12": "GV Left Shifter",
+      "13": "GV Right Shifter",
+      "14": "GV Power",
+      "15": "GV Logarithmer"
+    },
+    "DescriptionFormat": "{0}. For {1}：\nBase output: {2}\nOverflow, borrowing output: {3}",
+    "DescriptionStart": "The left and right port are input ports. The top and back ports are the base output ports, and they output the same voltage. The bottom port is overflow, borrowing, etc. output port.",
+    "DescriptionBase": {
+      "0": "Left + Right. Output the lowest 32 bits when overflow.",
+      "1": "Left - Right. Add 0xFFFFFFFF when the result is less than 0.",
+      "2": "Left * Right. Output the lowest 32 bits when overflow.",
+      "3": "Left / Right. Only the integer part of the result is retained during integer calculation.",
+      "4": "Left % Right. Only the integer part of the result is retained during integer calculation.",
+      "5": "Output 0xFFFFFFFF when Left == Right, otherwise 0.",
+      "6": "Output 0xFFFFFFFF when Left > Right, otherwise 0.",
+      "7": "Output 0xFFFFFFFF when Left >= Right, otherwise 0.",
+      "8": "Output 0xFFFFFFFF when Left < Right, otherwise 0.",
+      "9": "Output 0xFFFFFFFF when Left <= Right, otherwise 0.",
+      "10": "Take the larger value of the two inputs as the output.",
+      "11": "Take the smaller value of the two inputs as the output.",
+      "12": "Left << Right. Output the lowest 32 bits when overflow.",
+      "13": "Left >> Right",
+      "14": "Left ^ Right. Output the lowest 32 bits when overflow.",
+      "15": "lg(Left)/lg(Right). Only the integer part of the result is retained during integer calculation."
+    },
+    "DescriptionOverflow": {
+      "0": "Output 1 when overflow.",
+      "1": "Output 1 when borrow.",
+      "2": "Output the 33rd to 64th bits of the result when overflow.",
+      "3": "0V",
+      "4": "0V",
+      "5": "0V",
+      "6": "0V",
+      "7": "0V",
+      "8": "0V",
+      "9": "0V",
+      "10": "0V",
+      "11": "0V",
+      "15": "0V",
+      "12": "Output the 33rd to 64th bits of the result when overflow.",
+      "13": "The lowest 32 bits of the result of (((Left Input) << 32) >> (Right Input)).",
+      "14": "Output the 33rd to 64th bits of the result when overflow."
+    }
+  },
+  "GVMoreOneInOneOutBlock": {
+    "DisplayName": {
+      "0": "GV Sin Gate",
+      "1": "GV Cos Gate",
+      "2": "GV Tan Gate",
+      "3": "GV Cot Gate",
+      "4": "GV Sec Gate",
+      "5": "GV Csc Gate",
+      "6": "GV Asin Gate",
+      "7": "GV Acos Gate",
+      "8": "GV Atan Gate",
+      "9": "GV Sinh Gate",
+      "10": "GV Cosh Gate",
+      "11": "GV Tanh Gate",
+      "12": "GV Deg2Rad Gate",
+      "13": "GV Rad2Deg Gate",
+      "14": "GV Sign Magnitude Reverse Gate",
+      "15": "GV Two's Complement Reverse Gate"
+    },
+    "DescriptionFormat": "{0}\nFor {1}, It {2}, and outputs the result",
+    "DescriptionStart": "The bottom port is the input port. The top and back port are the output port with the same voltage.The highest(leftmost) bit of the voltages represents the sign, the radix point is between the 16th and 17th bit. The unit of measurement related to trigonometric functions is radian.",
+    "DescriptionEnd": {
+      "0": "calculates the sine of the input",
+      "1": "calculates the cosine of the input",
+      "2": "calculates the tangent of the input",
+      "3": "calculates the cotangent of the input",
+      "4": "calculates the secant of the input",
+      "5": "calculates the cosecant of the input",
+      "6": "calculates the arcsine of the input",
+      "7": "calculates the arccosine of the input",
+      "8": "calculates the arctangent of the input",
+      "9": "calculates the hyperbolic sine of the input",
+      "10": "calculates the hyperbolic cosine of the input",
+      "11": "calculates the hyperbolic tangent of the input",
+      "12": "treats the input as an angle and convert it to radians,",
+      "13": "treats the input as an radians and convert it to angle,",
+      "14": "reverts the highest bit",
+      "15": "If the highest bit of the input is 0, it will perform a bitwise NOT operation on all bits and add 1. If the highest bit of the input is 1, it will subtract 1 from the input and perform a bitwise NOT operation on all bits."
+    }
+  },
+  "Blocks": {
+    "GVNesEmulatorBlock:0": {
+      "DisplayName": "GV Nes Emulator",
+      "Description": "Can emulate Nintendo Entertainment System games. More details is in the document.",
+      "CRDescription:0": "None"
+    },
+    "GVCopperHammerBlock:0": {
+      "DisplayName": "GV Copper Hammer",
+      "Description": "Two Usage:\n1. Convert Wires and Wire Through Blocks: When you use the Copper Hammer on a wire block or a wire harness, the block will be converted to a Wire Through Plank or a Wire Harness Through Plank. If the face has wire before using, the face on the converted block can be connected. And the faces, which have wires before using, are conductive with each other. When you use it on a Wire Through Block or a Wire Through Harness Block, the block's material will be changed. The 5th time, it will be restored to a wire block or a wire harness block. The converted Wire Through Block can be painted, but it only affects the appearance, and the essence is still a colorless wire.\n2. Wiring：Use the Copper Hammer on the start point and the end point, then the green frame will connect to the end point. At last, use the Copper Hammer on the end point to confirm; then the Wire Through Blocks will be placed on the path.",
+      "CRDescription:0": "None"
+    },
+    "GVEWireThroughBlock:0": {
+      "DisplayName": "GV Wire Through Block",
+      "Description": "",
+      "CRDescription:0": "None"
+    },
+    "GVMultiplexerBlock:0": {
+      "DisplayName": "GV Multiplexer",
+      "Description": "The states and relations of four ports on the front can be totally controlled by the back input. More details is in the document.",
+      "CRDescription:0": "None"
+    },
+    "GVJumpWireBlock:0": {
+      "DisplayName": "GV Jump Wire",
+      "Description": "The Jump Wires with the same tag can read the bottom inputs of each other, which can be used to transmit signals wirelessly. The transmission delay is 1 electric cycle (0.01 seconds). More details is in the document.",
+      "CRDescription:0": "None"
+    },
+    "GVBlockValuePlateBlock:0": {
+      "DisplayName": "GV Block Value Plate",
+      "Description": "When blocks rest on it, it will output the value of the last block. If all blocks are removed, the output will be 0 V."
+    },
+    "GVDisplayBlockLedBlock:0": {
+      "DisplayName": "GV Block Show Board",
+      "Description": "For showing blocks. More details is in the document."
+    },
+    "GVTerrainRaycastDetectorBlock:0": {
+      "DisplayName": "GV Terrain Raycast Detector",
+      "Description": "When any input changes, the detector will detect the blocks in the direction it faces, then return the distance and other information. You can also specify which block to detect. More details is in the document."
+    },
+    "GVVolatileMemoryBankBlock:0": {
+      "DisplayName": "GV Volatile Memory Bank",
+      "Description": "It's similar to Memory Bank, but will discard all data when exiting the world, except for ID and some settings. It can be used without initialization."
+    },
+    "GVListMemoryBankBlock:0": {
+      "DisplayName": "GV List Memory Bank",
+      "Description": "It's similar to Memory Bank, it can only store one row of data, but it has many useful functions. And it can be used without initialization. More details is in the document."
+    },
+    "GVMemoryBanksOperatorBlock:0": {
+      "DisplayName": "GV Memory Banks Operator",
+      "Description": "Two usages:\n1. Specify two memory banks by set their IDs at the left and right port, then set the bottom port to different voltages to perform different operations, and the result will be output to the memory bank with the ID specified at the top port.\n2. Specify a memory bank as the template by set its ID at the left port, and a memory bank to store the result by set its ID at the top port. Set range and other parameters at the right port and back port. When the bottom input changes to 256 V (0x100), the Memory Banks Operator will try to initialize in batch.\nMore details is in the document."
+    },
+    "GVVolatileListMemoryBankBlock:0": {
+      "DisplayName": "GV Volatile List Memory Bank",
+      "Description": "It's similar to List Memory Bank, but will discard all data when exiting the world, except for ID and some settings. It can be used without initialization."
+    },
+    "GVTerrainScannerBlock:0": {
+      "DisplayName": "GV Terrain Scanner",
+      "Description": "Scans the blocks parallel to the face of the scanner, and stores the result to the specified memory bank. You can adjust the start distance and range. More details is in the document."
+    },
+    "GVGuidedDispenserBlock:0": {
+      "DisplayName": "GV Guided Dispenser",
+      "Description": "Similar to the Dispenser, but the speed and angle of it cannot be specified, but the destination (not guaranteed). You can also set whether to place the projectile in the terrain chunk when it arrives at the destination, and whether the projectile is affected by air resistance or gravity. By default, it is in shooting mode. More details is in the document."
+    },
+    "GVCrusherProjectileBlock:0": {
+      "DisplayName": "GV Crusher",
+      "Description": "Crush what it hits when it is thrown or shot (Hitting actually is necessary). If you use dispenser in this mod to shoot it and enable the option of \"Ignore Gravity\" or \"Ignore Resistance\", it can crush non-cube blocks (Hitting actually is still necessary). And if you use Guided Dispenser to shoot it, when it arrives at the destination, even if it does not hit a block, it will still crush the block at the destination."
+    },
+    "GVCrusherProjectileBlock:1": {
+      "DisplayName": "GV Interactor",
+      "Description": "Interact with what it hits when it is thrown or shot (Hitting actually is necessary). If you use dispenser in this mod to shoot it and enable the option of \"Ignore Gravity\" or \"Ignore Resistance\", it can interact with non-cube blocks (Hitting actually is still necessary). And if you use Guided Dispenser to shoot it, when it arrives at the destination, even if it does not hit a block, it will still try to interact with the block at the destination."
+    },
+    "GVDataModifierProjectileBlock:0": {
+      "DisplayName": "GV Block Data Modifier",
+      "Description": "Modify the block data of what it hits when it is thrown or shot (Hitting actually is necessary). If you use dispenser in this mod to shoot it and enable the option of \"Ignore Gravity\" or \"Ignore Resistance\", it can modify the block data of  non-cube blocks (Hitting actually is still necessary). And if you use Guided Dispenser to shoot it, when it arrives at the destination, even if it does not hit a block, it will still modify the block data of  the block at the destination."
+    },
+    "GVInventoryFetcherBlock:0": {
+      "DisplayName": "GV Inventory Fetcher - Specify Slot",
+      "Description": "You can use it to fetch items stored in the inventory of a block like a chest, furnace, and dispenser.\nThe shape of this element is T-shaped. The back of the horizontal line should connect to a block that stores items. The front of the vertical line has four situations: 1. If a block that can store items, the element will store the fetched items into it. 2. If one or several [extension poles](#about-extension-pole), the fetched items will be transported to the other side of the poles, then stored into a block that can store items, or dispense the items. 3. If an inventory fetcher with an opposite direction, and a block that can store items is behind the opposite inventory fetcher, the opposite inventory fetcher will be considered as an extension pole. (There can be more extension poles between them.) 4. Not the situations above, the fetcher will try to dispense the fetched items. When the input voltages change, it will try to fetch the items. The final input is generated by performing a bitwise OR operation between the inputs from all ports.\n More details is in the document."
+    },
+    "GVInventoryFetcherBlock:1": {
+      "DisplayName": "GV Extension Pole of Inventory Fetcher",
+      "Description": "For the inventory fetcher to be able to transport items to a farther place with no delay. It is bidirectional. But they cannot intersect each other at right angles."
+    },
+    "GVInventoryFetcherBlock:2": {
+      "DisplayName": "GV Inventory Fetcher - Specify Content",
+      "Description": "You can use it to fetch items stored in the inventory of a block like a chest, furnace, and dispenser.\nThe shape of this element is T-shaped. The back of the horizontal line should connect to a block that stores items. The front of the vertical line has four situations: 1. If a block that can store items, the element will store the fetched items into it. 2. If one or several [extension poles](#about-extension-pole), the fetched items will be transported to the other side of the poles, then stored into a block that can store items, or dispense the items. 3. If an inventory fetcher with an opposite direction, and a block that can store items is behind the opposite inventory fetcher, the opposite inventory fetcher will be considered as an extension pole. (There can be more extension poles between them.) 4. Not the situations above, the fetcher will try to dispense the fetched items. When the input voltages change, it will try to fetch the items. The final input is generated by performing a bitwise OR operation between the inputs from all ports.\n More details is in the document."
+    },
+    "GVInventoryControllerBlock:0": {
+      "DisplayName": "GV Inventory Controller",
+      "Description": "For controlling items stored in the inventory of a block like a chest, furnace, and dispenser, or a player's inventory. More details is in the document."
+    },
+    "GVSolidifiedAirBlock:0": {
+      "DisplayName": "GV Solidified Air",
+      "Description": "Solidified transparent air, can be placed, mined, and pushed."
+    },
+    "GVJavascriptMicrocontrollerBlock:0": {
+      "DisplayName": "GV JS Microcontroller",
+      "Description": "A JS Microcontroller can run JavaScript (JS). It is theoretically capable of doing anything. More details is in the document."
+    },
+    "GVFourDimensionalMemoryBankBlock:0": {
+      "DisplayName": "GV Four Dimensional Memory Bank",
+      "Description": "It's similar to Memory Bank, but it has four dimensions but not two. The lowest 16 bits of the right input are representing X-coordinate. The highest 16 bits of the right input are representing Y-coordinate. The lowest 16 bits of the left input are representing Z-coordinate. The highest 16 bits of the left input are representing W-coordinate. You must manually set the ranges of four dimensions to initialize it before store data. Please avoid using W and Z axis, or set the value as small as possible when initializing. Because the performance of multidimensional data in saving and other operations is poor, which may cause lag."
+    },
+    "GVVolatileFourDimensionalMemoryBankBlock:0": {
+      "DisplayName": "GV Volatile Four Dimensional Memory Bank",
+      "Description": "It's similar to Four Dimensional Memory Bank, but will discard all data when exiting the world, except for ID and some settings. It can be used without initialization. It still needs initialization."
+    },
+    "GVPlayerMonitorBlock:0": {
+      "DisplayName": "GV Player Monitor",
+      "Description": "For getting various information about a player. More details is in the document."
+    },
+    "GVPlayerControllerBlock:0": {
+      "DisplayName": "GV Player Controller",
+      "Description": "For controlling various information of a player. If a parameter input port is not connected to a wire or element, or being intercepted, the corresponding information will not be changed. More details is in the document."
+    },
+    "GVAttractorBlock:0": {
+      "DisplayName": "GV Attractor",
+      "Description": "Can attract drop items, projectiles, animals, etc. When the input voltage changes, it will try to attract. More details is in the document."
+    },
+    "GVSignalGeneratorBlock:0": {
+      "DisplayName": "GV Signal Generator",
+      "Description": "For generating sine waves, triangular waves, sawtooth waves, and square waves. It occupies two blocks. If there is no enough room, you will not be able to place or rotate it. More details is in the document."
+    },
+    "GVOscilloscopeBlock:0": {
+      "DisplayName": "GV Oscilloscope",
+      "Description": "Displays the signals received from the front ports like an oscilloscope. You can manually adjust the upper and lower limits (automatically adjusted by default), the number of records, and whether bloom. Clicking anywhere blank will hide these buttons. When the back port is connected, only if the voltage of this port changes from 0 to not 0, this element will accept new changes from the front ports. And you can click the edit button to enter fullscreen mode."
+    },
+    "GVTractorBeamBlock:0": {
+      "DisplayName": "GV Tractor Beam",
+      "Description": "Can catch several floating blocks and move, rotate and scale them. Only Gigavolt elements can work normally in the caught blocks. More details is in the document."
+    }
+  },
+  "ContentWidgets": {
+    "EditGVNesEmulatorDialog": {
+      "1": "ROM path",
+      "2": "OK",
+      "3": "Cancel"
+    },
+    "EditGVListMemoryBankDialog": {
+      "1": "Edit GV List Memory Bank Data",
+      "2": "List Memory bank contains 32-bit datas in a list. Data should written in HEX, separated with ','. More details in the document.",
+      "3": "Length ",
+      "4": "Width For\nImage Display ",
+      "5": "Height For\nImage Display ",
+      "6": "Offset For\nImage Display ",
+      "20": "If string length is more than 100,000,\nplease edit the exported image and import it again.",
+      "21": "OK",
+      "22": "Cancel",
+      "23": "Imp/Exp"
+    },
+    "EditGVFourDimensionalMemoryBankDialog": {
+      "1": "Edit GV Four Dimensional Memory Bank Data",
+      "2": " More details is in the document.",
+      "3": "X Range ",
+      "4": "Y Range ",
+      "5": "Z Range ",
+      "6": "W Range ",
+      "7": "X Offset ",
+      "8": "Y Offset ",
+      "9": "Z Offset ",
+      "10": "W Offset ",
+      "11": "Width ",
+      "12": "Height ",
+      "13": "Initial Ranges",
+      "14": "For Image Display",
+      "20": "If string length is more than 100,000,\nplease edit the exported image and import it again.",
+      "21": "OK",
+      "22": "Cancel",
+      "23": "Imp/Exp"
+    },
+    "EditGVDataModifierProjectileDialog": {
+      "1": "Edit the data of block",
+      "2": "Data：",
+      "3": "(Dec 0 - 16383)",
+      "4": "OK",
+      "5": "Cancel"
+    },
+    "EditGVJavascriptMicrocontrollerDialog": {
+      "1": "Edit JS Microcontroller",
+      "2": "It is theoretically capable of doing anything. More details is in the document.",
+      "3": "P0 Back",
+      "4": "P1 Top",
+      "5": "P2 Right",
+      "6": "P3 Bottom",
+      "7": "P4 Left",
+      "8": "Disable",
+      "9": "Input",
+      "10": "Output",
+      "11": "Code",
+      "21": "OK",
+      "22": "Cancel"
+    },
+    "EditGVCopperHammerDialog": {
+      "1": "Edit Copper Hammer",
+      "2": "OK",
+      "3": "Cancel",
+      "4": "Material for wiring",
+      "5": "Wire Harness Mode"
+    },
+    "GVOscilloscopeScreen": {
+      "1": "GV Oscilloscope {0}",
+      "2": "Top {0} V",
+      "3": "Right {0} V",
+      "4": "Bottom {0} V",
+      "5": "Left {0} V"
+    }
+  }
+}

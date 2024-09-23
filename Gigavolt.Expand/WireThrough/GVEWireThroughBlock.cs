@@ -117,7 +117,17 @@ namespace Game {
             string str1 = LanguageControl.Get(typeName, GetWireFacesBitmask(data) == 63 ? "0" : "1");
             string str2 = LanguageControl.Get(typeName, GetIsCross(data) ? "2" : "3");
             string str3 = GetIsWireHarness(data) ? LanguageControl.Get(typeName, "4") : "";
-            return SubsystemPalette.GetName(subsystemTerrain, GetColor(data), $"{str1}{str2}{str3}{LanguageControl.Get(typeName, "6")}");
+            return SubsystemPalette.GetName(
+                subsystemTerrain,
+                GetColor(data),
+                string.Format(
+                    LanguageControl.Get(typeName, "Format"),
+                    str1,
+                    str2,
+                    str3,
+                    LanguageControl.Get(typeName, "6")
+                )
+            );
         }
 
         public override string GetDescription(int value) {

@@ -17,7 +17,7 @@
     "4xFast"
   ],
   "EditGVMemoryBankDialog": {
-    "1": "Too many datas, edit them in local.",
+    "1": "Too many datas, export and edit them in local.",
     "2": "Unknown error, convert failed",
     "3": "Row and column count should be positive integer."
   },

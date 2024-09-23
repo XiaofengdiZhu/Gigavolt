@@ -447,6 +447,9 @@
 		<None Update="Assets\Textures\GVTractorBeamBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Assets\Lang\en-US.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes"/>
