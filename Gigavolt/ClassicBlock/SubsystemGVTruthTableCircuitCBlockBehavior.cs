@@ -1,8 +1,8 @@
 namespace Game {
     public class SubsystemGVTruthTableCircuitCBlockBehavior : SubsystemGVEditableItemBehavior<TruthTableData> {
-        public override int[] HandledBlocks => [GVTruthTableCircuitCBlock.Index];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVTruthTableCircuitCBlock>()];
 
-        public SubsystemGVTruthTableCircuitCBlockBehavior() : base(GVTruthTableCircuitCBlock.Index) { }
+        public SubsystemGVTruthTableCircuitCBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVTruthTableCircuitCBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
         public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));

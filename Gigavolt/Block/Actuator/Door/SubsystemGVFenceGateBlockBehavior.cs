@@ -7,7 +7,7 @@ namespace Game {
 
         public static readonly Random m_random = new();
 
-        public override int[] HandledBlocks => [GVFenceGateBlock.Index];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVFenceGateBlock>()];
 
         public bool OpenCloseGate(int x, int y, int z, bool open) {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);

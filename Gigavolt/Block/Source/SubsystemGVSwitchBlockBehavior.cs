@@ -1,7 +1,7 @@
 namespace Game {
     public class SubsystemGVSwitchBlockBehavior : SubsystemGVEditableItemBehavior<GigaVoltageLevelData> {
-        public override int[] HandledBlocks => new[] { GVSwitchBlock.Index };
-        public SubsystemGVSwitchBlockBehavior() : base(GVSwitchBlock.Index) { }
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVSwitchBlock>()];
+        public SubsystemGVSwitchBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVSwitchBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 4) & 1023;
         public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -16369) | ((id & 1023) << 4));

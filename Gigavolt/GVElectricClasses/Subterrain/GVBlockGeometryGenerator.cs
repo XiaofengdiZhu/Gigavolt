@@ -1260,6 +1260,8 @@ namespace Game {
                 }
                 case null: return;
             }
+            int GVWireHarnessBlockIndex = GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>();
+            int GVWireBlockIndex = GVBlocksManager.GetBlockIndex<GVWireBlock>();
             int num2 = Terrain.ExtractLight(value);
             float num3 = LightingManager.LightIntensityByLightValue[num2];
             Vector3 v = new Vector3(x + 0.5f, y + 0.5f, z + 0.5f) - 0.5f * CellFace.FaceToVector3(mountingFace);
@@ -1291,18 +1293,18 @@ namespace Game {
                         Color innerBottomColor2 = innerBottomColor;
                         Color outerTopColor = innerTopColor2;
                         Color outerBottomColor = innerBottomColor2;
-                        if (num != GVWireBlock.Index) {
+                        if (num != GVWireBlockIndex) {
                             int cellValue = generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ);
                             Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
                             if (block is IPaintableBlock paintableBlock) {
                                 int? color4 = paintableBlock.GetPaintColor(cellValue);
                                 outerTopColor = color4.HasValue ? SubsystemPalette.GetColor(generator, color4) : GVWireBlock.WireColor;
                                 outerBottomColor = outerTopColor;
-                                innerTopColor2 = num == GVWireHarnessBlock.Index ? GVWireHarnessBlock.WireColor1 : outerTopColor;
-                                innerBottomColor2 = num == GVWireHarnessBlock.Index ? GVWireHarnessBlock.WireColor2 : outerBottomColor;
+                                innerTopColor2 = num == GVWireHarnessBlockIndex ? GVWireHarnessBlock.WireColor1 : outerTopColor;
+                                innerBottomColor2 = num == GVWireHarnessBlockIndex ? GVWireHarnessBlock.WireColor2 : outerBottomColor;
                             }
                             else if (block is IGVElectricElementBlock and not GVWireHarnessBlock
-                                && num == GVWireHarnessBlock.Index) {
+                                && num == GVWireHarnessBlockIndex) {
                                 outerTopColor = GVWireBlock.WireColor;
                                 outerBottomColor = outerTopColor;
                             }
@@ -1431,7 +1433,7 @@ namespace Game {
                 }
             }
             if (centerBoxSize != 0f
-                || (num4 == 0 && num != GVWireBlock.Index && num != GVWireHarnessBlock.Index)) {
+                || (num4 == 0 && num != GVWireBlockIndex && num != GVWireHarnessBlockIndex)) {
                 return;
             }
             for (int i = 0; i < 6; i++) {

@@ -258,7 +258,7 @@ namespace Game {
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(faceValue)];
                 if ((block.IsCollidable_(faceValue) && !block.IsFaceTransparent(m_subsystemTerrain, face, faceValue))
                     || (face == 4 && block is FenceBlock)) {
-                    m_subsystemTerrain.ChangeCell(nextUp.X, nextUp.Y, nextUp.Z, Terrain.MakeBlockValue(GVSignalGeneratorBlock.Index, 0, RotateableMountedGVElectricElementBlock.SetRotation(GVSignalGeneratorBlock.SetIsTopPart(data, true), nextRotation)));
+                    m_subsystemTerrain.ChangeCell(nextUp.X, nextUp.Y, nextUp.Z, Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<GVSignalGeneratorBlock>(), 0, RotateableMountedGVElectricElementBlock.SetRotation(GVSignalGeneratorBlock.SetIsTopPart(data, true), nextRotation)));
                     Rotation = nextRotation;
                     Point3 upDirection = GVSignalGeneratorBlock.m_upPoint3[face * 4 + rotation];
                     m_subsystemTerrain.ChangeCell(upDirection.X + bottomCellFace.X, upDirection.Y + bottomCellFace.Y, upDirection.Z + bottomCellFace.Z, 0);

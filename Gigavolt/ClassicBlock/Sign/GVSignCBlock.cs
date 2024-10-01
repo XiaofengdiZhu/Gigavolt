@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
@@ -211,10 +211,10 @@ namespace Game {
             int data = SetPose(0, 1);
             for (int material = 0; material < 2; material++) {
                 data = SetMaterial(data, material);
-                yield return Terrain.MakeBlockValue(Index, 0, SetColor(data, null));
+                yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(data, null));
                 int i = 0;
                 while (i < 16) {
-                    yield return Terrain.MakeBlockValue(Index, 0, SetColor(data, i));
+                    yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(data, i));
                     int num = i + 1;
                     i = num;
                 }
@@ -224,7 +224,7 @@ namespace Game {
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             showDebris = true;
             int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetMaterial(SetColor(SetPose(0, 1), GetColor(data)), GetMaterial(data))), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetMaterial(SetColor(SetPose(0, 1), GetColor(data)), GetMaterial(data))), Count = 1 });
         }
 
         public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
@@ -334,7 +334,7 @@ namespace Game {
             BlockPlacementData result;
             if (raycastResult.CellFace.Face < 4) {
                 result = default;
-                result.Value = Terrain.MakeBlockValue(Index, 0, SetFace(SetMaterial(SetColor(0, color), GetMaterial(data)), raycastResult.CellFace.Face));
+                result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetFace(SetMaterial(SetColor(0, color), GetMaterial(data)), raycastResult.CellFace.Face));
                 result.CellFace = raycastResult.CellFace;
                 return result;
             }
@@ -349,7 +349,7 @@ namespace Game {
                 }
             }
             result = default;
-            result.Value = Terrain.MakeBlockValue(Index, 0, SetHanging(SetDirection(SetMaterial(SetColor(SetPose(data, 1), color), GetMaterial(data)), direction), raycastResult.CellFace.Face == 5));
+            result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetHanging(SetDirection(SetMaterial(SetColor(SetPose(data, 1), color), GetMaterial(data)), direction), raycastResult.CellFace.Face == 5));
             result.CellFace = raycastResult.CellFace;
             return result;
         }

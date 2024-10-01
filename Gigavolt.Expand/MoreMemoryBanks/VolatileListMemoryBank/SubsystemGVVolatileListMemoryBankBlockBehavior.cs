@@ -3,9 +3,9 @@ using Engine;
 
 namespace Game {
     public class SubsystemGVVolatileListMemoryBankBlockBehavior : SubsystemGVEditableItemBehavior<GVVolatileListMemoryBankData> {
-        public override int[] HandledBlocks => [GVVolatileListMemoryBankBlock.Index];
+        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVVolatileListMemoryBankBlock>()];
 
-        public SubsystemGVVolatileListMemoryBankBlockBehavior() : base(GVVolatileListMemoryBankBlock.Index) { }
+        public SubsystemGVVolatileListMemoryBankBlockBehavior() : base(BlocksManager.GetBlockIndex<GVVolatileListMemoryBankBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
         public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));

@@ -149,28 +149,28 @@ namespace Game {
             for (int i = 0; i < 6; i++) {
                 if (WireExistsOnFace(oldValue, i)
                     && !WireExistsOnFace(newValue, i)) {
-                    dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetColor(0, paintColor)), Count = 1 });
+                    dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, paintColor)), Count = 1 });
                 }
             }
             showDebris = dropValues.Count > 0;
         }
 
         public override IEnumerable<int> GetCreativeValues() {
-            yield return Terrain.MakeBlockValue(Index);
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 0));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 8));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 15));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 11));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 12));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 13));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 14));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 1));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 2));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 3));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 4));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 5));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 6));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 10));
+            yield return Terrain.MakeBlockValue(BlockIndex);
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 0));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 8));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 15));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 11));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 12));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 13));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 14));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 1));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 2));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 3));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 4));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 5));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 6));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 10));
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
@@ -241,6 +241,6 @@ namespace Game {
 
         public bool IsWireHarness(int value) => false;
         public bool IsWireThrough() => false;
-        public List<int> GetCustomWheelPanelValues(int centerValue) => GetCreativeValues().Append(GVWireHarnessBlock.Index).ToList();
+        public List<int> GetCustomWheelPanelValues(int centerValue) => GetCreativeValues().Append(GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>()).ToList();
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
@@ -68,7 +68,7 @@ namespace Game {
         }
 
         /*public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes() {
-            CraftingRecipe craftingRecipe = new CraftingRecipe { ResultCount = 4, ResultValue = Terrain.MakeBlockValue(Index, 0, 0), RequiredHeatLevel = 0f, Description = LanguageControl.Get(GetType().Name, 1) };
+            CraftingRecipe craftingRecipe = new CraftingRecipe { ResultCount = 4, ResultValue = Terrain.MakeBlockValue(BlockIndex, 0, 0), RequiredHeatLevel = 0f, Description = LanguageControl.Get(GetType().Name, 1) };
             craftingRecipe.Ingredients[1] = "glass";
             craftingRecipe.Ingredients[4] = "wire";
             craftingRecipe.Ingredients[6] = "copperingot";
@@ -80,7 +80,7 @@ namespace Game {
         public override int GetFace(int value) => GetMountingFace(Terrain.ExtractData(value));
 
         public override IEnumerable<int> GetCreativeValues() {
-            yield return Terrain.MakeBlockValue(Index, 0, 0);
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, 0);
         }
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {

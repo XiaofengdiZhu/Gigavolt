@@ -1,8 +1,8 @@
 ﻿namespace Game {
     public class SubsystemGVMemoryBankCBlockBehavior : SubsystemGVEditableItemBehavior<MemoryBankData> {
-        public override int[] HandledBlocks => [GVMemoryBankCBlock.Index];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVMemoryBankCBlock>()];
 
-        public SubsystemGVMemoryBankCBlockBehavior() : base(GVMemoryBankCBlock.Index) { }
+        public SubsystemGVMemoryBankCBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVMemoryBankCBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
         public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 using SixLabors.ImageSharp;
@@ -87,21 +87,21 @@ namespace Game {
         public override string GetDescription(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? LanguageControl.Get(GetType().Name, 1) : base.GetDescription(value);
 
         public override IEnumerable<int> GetCreativeValues() {
-            yield return Terrain.MakeBlockValue(Index);
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 0));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 8));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 15));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 11));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 12));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 13));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 14));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 1));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 2));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 3));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 4));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 5));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 6));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 10));
+            yield return Terrain.MakeBlockValue(BlockIndex);
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 0));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 8));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 15));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 11));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 12));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 13));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 14));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 1));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 2));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 3));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 4));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 5));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 6));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 10));
         }
 
         public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 20 : base.GetDisplayOrder(value);

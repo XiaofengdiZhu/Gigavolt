@@ -86,7 +86,7 @@ namespace Game {
         }
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, Terrain.ExtractData(SetFace(oldValue, 0))), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, Terrain.ExtractData(SetFace(oldValue, 0))), Count = 1 });
             showDebris = true;
         }
 
@@ -185,21 +185,21 @@ namespace Game {
         public override bool IsNonDuplicable_(int value) => ((Terrain.ExtractData(value) >> 3) & 2047) > 0;
 
         public override IEnumerable<int> GetCreativeValues() {
-            yield return Terrain.MakeBlockValue(Index);
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 0));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 8));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 15));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 11));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 12));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 13));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 14));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 1));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 2));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 3));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 4));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 5));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 6));
-            yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 10));
+            yield return Terrain.MakeBlockValue(BlockIndex);
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 0));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 8));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 15));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 11));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 12));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 13));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 14));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 1));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 2));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 3));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 4));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 5));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 6));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 10));
         }
 
         public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";

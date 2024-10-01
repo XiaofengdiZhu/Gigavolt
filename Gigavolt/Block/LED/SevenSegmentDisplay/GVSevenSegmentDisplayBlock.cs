@@ -52,7 +52,7 @@ namespace Game {
                 var craftingRecipe = new CraftingRecipe
                 {
                     ResultCount = 4,
-                    ResultValue = Terrain.MakeBlockValue(Index, 0, SetColor(0, color)),
+                    ResultValue = Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, color)),
                     RemainsCount = 1,
                     RemainsValue = Terrain.MakeBlockValue(90),
                     RequiredHeatLevel = 0f,
@@ -86,7 +86,7 @@ namespace Game {
         public override IEnumerable<int> GetCreativeValues() {
             int i = 0;
             while (i < 8) {
-                yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, i));
+                yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, i));
                 int num = i + 1;
                 i = num;
             }
@@ -108,7 +108,7 @@ namespace Game {
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int color = GetColor(Terrain.ExtractData(oldValue));
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetColor(0, color)), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, color)), Count = 1 });
             showDebris = true;
         }
 

@@ -65,7 +65,7 @@ namespace Game {
             m_textures[2] = ContentManager.Get<Texture2D>("Textures/GVFetcherBlock2");
         }
 
-        public override IEnumerable<int> GetCreativeValues() => new[] { Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, 2), Terrain.MakeBlockValue(Index, 0, 1) };
+        public override IEnumerable<int> GetCreativeValues() => new[] { Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, 2), Terrain.MakeBlockValue(BlockIndex, 0, 1) };
 
         public override int GetShadowStrength(int value) => !GetIsShaft(Terrain.ExtractData(value)) ? base.GetShadowStrength(value) : 0;
 
@@ -128,7 +128,7 @@ namespace Game {
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetType(SetFace(0, 0), GetType(data))), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetType(SetFace(0, 0), GetType(data))), Count = 1 });
             showDebris = true;
         }
 

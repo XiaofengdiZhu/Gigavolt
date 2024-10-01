@@ -86,7 +86,7 @@ namespace Game {
             }
         }
 
-        public override int[] HandledBlocks => [GVOscilloscopeBlock.Index];
+        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVOscilloscopeBlock>()];
 
         public override void Save(ValuesDictionary valuesDictionary) {
             base.Save(valuesDictionary);

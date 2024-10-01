@@ -7,7 +7,7 @@ namespace Game {
 
         public static readonly Random m_random = new();
 
-        public override int[] HandledBlocks => [GVTrapdoorBlock.Index];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVTrapdoorBlock>()];
 
         public bool IsTrapdoorElectricallyConnected(int x, int y, int z, uint subterrainId) {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);

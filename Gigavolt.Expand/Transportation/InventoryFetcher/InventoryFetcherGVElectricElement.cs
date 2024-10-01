@@ -97,7 +97,7 @@ namespace Game {
                     position += originFaceDirection;
                     int value = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z);
                     int contents = Terrain.ExtractContents(value);
-                    if (contents == GVInventoryFetcherBlock.Index) {
+                    if (contents == GVBlocksManager.GetBlockIndex<GVInventoryFetcherBlock>()) {
                         int data = Terrain.ExtractData(value);
                         int type = GVInventoryFetcherBlock.GetType(data);
                         int face = GVInventoryFetcherBlock.GetFace(data);

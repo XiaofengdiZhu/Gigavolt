@@ -12,7 +12,7 @@ namespace Game {
         }
 
         public readonly Dictionary<Point3, Data> m_datas = new();
-        public override int[] HandledBlocks => [GVSignalGeneratorBlock.Index];
+        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVSignalGeneratorBlock>()];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
@@ -87,10 +87,10 @@ namespace Game {
                     if ((block.IsCollidable_(faceValue) && !block.IsFaceTransparent(SubsystemTerrain, face, faceValue))
                         || (face == 4 && block is FenceBlock)) {
                         if (system == null) {
-                            SubsystemTerrain.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVSignalGeneratorBlock.Index, 0, GVSignalGeneratorBlock.SetIsTopPart(data, true)));
+                            SubsystemTerrain.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<GVSignalGeneratorBlock>(), 0, GVSignalGeneratorBlock.SetIsTopPart(data, true)));
                         }
                         else {
-                            system.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVSignalGeneratorBlock.Index, 0, GVSignalGeneratorBlock.SetIsTopPart(data, true)));
+                            system.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<GVSignalGeneratorBlock>(), 0, GVSignalGeneratorBlock.SetIsTopPart(data, true)));
                         }
                         return;
                     }

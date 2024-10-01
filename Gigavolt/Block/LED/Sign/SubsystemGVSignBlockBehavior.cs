@@ -21,7 +21,7 @@ namespace Game {
         public readonly PrimitivesRenderer2D m_primitivesRenderer2D = new();
         public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new();
 
-        public override int[] HandledBlocks => [GVSignBlock.Index];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVSignBlock>()];
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -73,7 +73,7 @@ namespace Game {
             int data = Terrain.ExtractData(cellValueFast);
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast)];
             if (block is GVSignBlock) {
-                Point3 point = CellFace.FaceToPoint3(GVAttachedSignBlock.GetFace(data));
+                Point3 point = CellFace.FaceToPoint3(GVSignBlock.GetFace(data));
                 int x2 = x - point.X;
                 int y2 = y - point.Y;
                 int z2 = z - point.Z;

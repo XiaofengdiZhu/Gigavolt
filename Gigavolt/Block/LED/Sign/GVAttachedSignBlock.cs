@@ -6,12 +6,10 @@ using Engine.Graphics;
 // ReSharper disable PossibleLossOfFraction
 
 namespace Game {
-    public abstract class GVAttachedSignBlock : GVBaseSignBlock, IGVElectricElementBlock, IPaintableBlock {
+    public abstract class GVAttachedSignBlock<T> : GVBaseSignBlock, IGVElectricElementBlock, IPaintableBlock {
         public readonly string m_modelName;
 
         public readonly int m_coloredTextureSlot;
-
-        public readonly int m_postedSignBlockIndex;
 
         public readonly BlockMesh m_standaloneBlockMesh = new();
 
@@ -27,10 +25,9 @@ namespace Game {
 
         public readonly BoundingBox[][] m_collisionBoxes = new BoundingBox[4][];
 
-        public GVAttachedSignBlock(string modelName, int coloredTextureSlot, int postedSignBlockIndex) {
+        public GVAttachedSignBlock(string modelName, int coloredTextureSlot) {
             m_modelName = modelName;
             m_coloredTextureSlot = coloredTextureSlot;
-            m_postedSignBlockIndex = postedSignBlockIndex;
         }
 
         public override void Initialize() {
@@ -90,7 +87,7 @@ namespace Game {
             showDebris = true;
             int? color = GetColor(Terrain.ExtractData(oldValue));
             int data = SetColor(0, color);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(m_postedSignBlockIndex, 0, data), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<T>(), 0, data), Count = 1 });
         }
 
         public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {

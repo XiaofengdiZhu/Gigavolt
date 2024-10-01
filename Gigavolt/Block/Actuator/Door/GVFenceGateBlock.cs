@@ -14,9 +14,9 @@ namespace Game {
         public readonly int[] _m_defaultTextureSlot = [4, 58];
         public readonly int[] _m_coloredTextureSlot = [23, 58];
 
-        public readonly Color[] _m_postColor = [Color.White, new Color(192, 192, 192)];
+        public readonly Color[] _m_postColor = [Color.White, new(192, 192, 192)];
 
-        public readonly Color[] _m_unpaintedColor = [Color.White, new Color(80, 80, 80)];
+        public readonly Color[] _m_unpaintedColor = [Color.White, new(80, 80, 80)];
 
         public readonly BlockMesh[] _m_standaloneBlockMesh = new BlockMesh[2];
         public readonly BlockMesh[] _m_standaloneColoredBlockMesh = new BlockMesh[2];

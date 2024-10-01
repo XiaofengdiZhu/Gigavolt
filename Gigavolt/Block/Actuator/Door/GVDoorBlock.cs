@@ -13,7 +13,6 @@ namespace Game {
         public readonly ModelMeshPart[] m_modelMeshPart = new ModelMeshPart[3];
         public readonly Dictionary<int, BlockMesh> m_cachedBlockMeshes = new();
         public readonly Dictionary<int, BoundingBox[]> m_cachedCollisionBoxes = new();
-        public readonly int[] m_creativeValuesByModel = [Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetModel(0, 1)), Terrain.MakeBlockValue(Index, 0, SetModel(0, 2))];
 
         public override void Initialize() {
             base.Initialize();
@@ -143,12 +142,12 @@ namespace Game {
 
         public override bool IsHeatBlocker(int value) => GetOpen(Terrain.ExtractData(value)) >= 90;
 
-        public override IEnumerable<int> GetCreativeValues() => m_creativeValuesByModel;
+        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, 1)), Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, 2))];
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetModel(Terrain.ExtractData(value)));
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int model = GetModel(Terrain.ExtractData(oldValue));
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetModel(0, model)), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, model)), Count = 1 });
             showDebris = true;
         }
 

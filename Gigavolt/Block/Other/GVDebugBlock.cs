@@ -103,7 +103,7 @@ namespace Game {
                 data = 1;
             }
             BlockPlacementData result = default;
-            result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, Index), data);
+            result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, BlockIndex), data);
             result.CellFace = raycastResult.CellFace;
             return result;
         }

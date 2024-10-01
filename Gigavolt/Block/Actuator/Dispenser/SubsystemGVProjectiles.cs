@@ -317,7 +317,7 @@ namespace Game {
                             if (projectile.Velocity.Length() > 10f) {
                                 ComponentMiner.AttackBody(
                                     bodyRaycastResult.Value.ComponentBody,
-                                    projectile.Owner,
+                                    projectile.Owner.Entity,
                                     bodyRaycastResult.Value.HitPoint(),
                                     Vector3.Normalize(projectile.Velocity),
                                     block.GetProjectilePower(projectile.Value),

@@ -121,8 +121,7 @@ namespace Game {
                 int wheelMovement = m_componentPlayer.GameWidget.Input.MouseWheelMovement;
                 CellFace cellFace = result.CellFace;
                 int contents = Terrain.ExtractContents(result.Value);
-                SubsystemGVEditableItemBehavior<GigaVoltageLevelData> behavior;
-                if (contents == GVButtonBlock.Index) {
+                if (contents == GVBlocksManager.GetBlockIndex<GVButtonBlock>()) {
                     int id = m_subsystemGVButtonBlockBehavior.GetIdFromValue(result.Value);
                     GVButtonData blockData = m_subsystemGVButtonBlockBehavior.GetItemData(id, true);
                     if (wheelMovement == 0) {
@@ -148,16 +147,16 @@ namespace Game {
                     }
                 }
                 else {
-                    switch (contents) {
-                        case GVBatteryBlock.Index:
-                            behavior = m_subsystemGVBatteryBlockBehavior;
-                            break;
-                        case GVSwitchBlock.Index:
-                            behavior = m_subsystemGVSwitchBlockBehavior;
-                            break;
-                        default:
-                            m_forceDisplayVoltage = null;
-                            return;
+                    SubsystemGVEditableItemBehavior<GigaVoltageLevelData> behavior;
+                    if (contents == GVBlocksManager.GetBlockIndex<GVBatteryBlock>()) {
+                        behavior = m_subsystemGVBatteryBlockBehavior;
+                    }
+                    else if (contents == GVBlocksManager.GetBlockIndex<GVSwitchBlock>()) {
+                        behavior = m_subsystemGVSwitchBlockBehavior;
+                    }
+                    else {
+                        m_forceDisplayVoltage = null;
+                        return;
                     }
                     int id = behavior.GetIdFromValue(result.Value);
                     GigaVoltageLevelData blockData = behavior.GetItemData(id, true);
@@ -221,9 +220,7 @@ namespace Game {
             int blockFace = 4;
             Block block = BlocksManager.Blocks[blockContents];
             if (m_forceDisplayVoltage.HasValue
-                && blockContents != GVSwitchBlock.Index
-                && blockContents != GVButtonBlock.Index
-                && blockContents != GVBatteryBlock.Index) {
+                && block is not GVSwitchBlock and not GVButtonBlock and not GVBatteryBlock) {
                 return;
             }
             Dictionary<GVCellFace, GVElectricElement> elements = m_subsystemGVElectricity.m_GVElectricElementsByCellFace[0];
@@ -489,7 +486,7 @@ namespace Game {
                 }
                 case IGVElectricElementBlock: {
                     blockFace = block switch {
-                        GVAttachedSignBlock => GVAttachedSignBlock.GetFace(blockData),
+                        GVSignBlock => GVSignBlock.GetFace(blockData),
                         GVSignCBlock => GVSignCBlock.GetPose(blockData) == 1 ? blockFace : GVSignCBlock.GetFace(blockData),
                         GVDoorBlock => GVDoorBlock.GetHingeFace(blockData),
                         GVTrapdoorBlock => GVTrapdoorBlock.GetMountingFace(blockData),

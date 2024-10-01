@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
@@ -25,8 +25,8 @@ namespace Game {
                     Color.White
                 );
             }
-            SubsystemGVProjectiles.m_crusherBlockValue = Index;
-            SubsystemGVProjectiles.m_interactorBlockValue = Terrain.MakeBlockValue(Index, 0, 1);
+            SubsystemGVProjectiles.m_crusherBlockValue = BlockIndex;
+            SubsystemGVProjectiles.m_interactorBlockValue = Terrain.MakeBlockValue(BlockIndex, 0, 1);
             base.Initialize();
         }
 
@@ -46,7 +46,7 @@ namespace Game {
             }
         }
 
-        public override IEnumerable<int> GetCreativeValues() => new[] { Index, Terrain.MakeBlockValue(Index, 0, 1) };
+        public override IEnumerable<int> GetCreativeValues() => [BlockIndex, Terrain.MakeBlockValue(BlockIndex, 0, 1)];
 
         public override int GetFaceTextureSlot(int face, int value) {
             switch (Terrain.ExtractData(value)) {
@@ -55,6 +55,6 @@ namespace Game {
             }
         }
 
-        public List<int> GetCustomWheelPanelValues(int centerValue) => [Index, Terrain.MakeBlockValue(Index, 0, 1), GVDataModifierProjectileBlock.Index];
+        public List<int> GetCustomWheelPanelValues(int centerValue) => [BlockIndex, Terrain.MakeBlockValue(BlockIndex, 0, 1), GVBlocksManager.GetBlockIndex<GVDataModifierProjectileBlock>()];
     }
 }

@@ -17,9 +17,9 @@ namespace Game {
             }
         }
 
-        public override int[] HandledBlocks => [GVFourDimensionalMemoryBankBlock.Index];
+        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVFourDimensionalMemoryBankBlock>()];
 
-        public SubsystemGVFourDimensionalMemoryBankBlockBehavior() : base(GVFourDimensionalMemoryBankBlock.Index) { }
+        public SubsystemGVFourDimensionalMemoryBankBlockBehavior() : base(BlocksManager.GetBlockIndex<GVFourDimensionalMemoryBankBlock>()) { }
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
         public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 

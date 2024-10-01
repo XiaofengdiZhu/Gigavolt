@@ -18,14 +18,15 @@ namespace Game {
             if (SubterrainId != 0) {
                 position = Terrain.ToCell(Vector3.Transform(new Vector3(position.X + 0.5f, position.Y + 0.5f, position.Z + 0.5f), m_subterrainSystem.GlobalTransform));
             }
-            Block block = BlocksManager.Blocks[GVDetonatorBlock.Index];
+            int blockIndex = GVBlocksManager.GetBlockIndex<GVDetonatorBlock>();
+            Block block = BlocksManager.Blocks[blockIndex];
             if (pressure == 0) {
                 m_subsystemExplosions.AddExplosion(
                     position.X,
                     position.Y,
                     position.Z,
-                    block.GetExplosionPressure(GVDetonatorBlock.Index),
-                    block.GetExplosionIncendiary(GVDetonatorBlock.Index),
+                    block.GetExplosionPressure(blockIndex),
+                    block.GetExplosionIncendiary(blockIndex),
                     false
                 );
             }
@@ -41,7 +42,7 @@ namespace Game {
                     position.Y,
                     position.Z,
                     pressure,
-                    block.GetExplosionIncendiary(GVDetonatorBlock.Index),
+                    block.GetExplosionIncendiary(blockIndex),
                     false
                 );
             }

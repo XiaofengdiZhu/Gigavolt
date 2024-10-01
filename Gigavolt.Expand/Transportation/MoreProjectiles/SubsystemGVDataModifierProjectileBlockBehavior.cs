@@ -1,6 +1,6 @@
 ﻿namespace Game {
     public class SubsystemGVDataModifierProjectileBlockBehavior : SubsystemBlockBehavior {
-        public override int[] HandledBlocks => new[] { GVDataModifierProjectileBlock.Index };
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVDataModifierProjectileBlock>()];
 
         public override bool OnHitAsProjectile(CellFace? cellFace, ComponentBody componentBody, WorldItem worldItem) {
             if (cellFace.HasValue) {

@@ -122,7 +122,7 @@ namespace Game {
             }
             if (!subsystemGVElectricity.m_GVElectricElementsToAdd[subterrainId].ContainsKey(another)) {
                 int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(another.X, another.Y, another.Z);
-                if (Terrain.ExtractContents(anotherValue) == Index
+                if (Terrain.ExtractContents(anotherValue) == BlockIndex
                     && GetFace(anotherValue) == face) {
                     int anotherData = Terrain.ExtractData(anotherValue);
                     if (GetRotation(anotherData) == rotation

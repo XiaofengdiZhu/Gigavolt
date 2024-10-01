@@ -5,7 +5,7 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVCrusherProjectileBlockBehavior : SubsystemBlockBehavior {
         public SubsystemBlockBehaviors m_subsystemBlockBehaviors;
-        public override int[] HandledBlocks => [GVCrusherProjectileBlock.Index];
+        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVCrusherProjectileBlock>()];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);

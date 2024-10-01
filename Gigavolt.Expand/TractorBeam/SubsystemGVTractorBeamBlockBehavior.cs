@@ -13,7 +13,7 @@ namespace Game {
         public readonly Dictionary<uint, Dictionary<Point3, GVSubterrainSystem>> m_subterrainSystems = new();
         public readonly FlatBatch3D m_flatBatch = new() { Layer = 0, DepthStencilState = DepthStencilState.None, RasterizerState = RasterizerState.CullNoneScissor, BlendState = BlendState.AlphaBlend };
 
-        public override int[] HandledBlocks => [GVTractorBeamBlock.Index];
+        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVTractorBeamBlock>()];
         public UpdateOrder UpdateOrder => UpdateOrder.Terrain;
         public int[] DrawOrders => [2000];
 
@@ -76,7 +76,7 @@ namespace Game {
             uint subterrainId = system?.ID ?? 0;
             RemoveSubterrain(tractorBeamBlockPoint, subterrainId, true);
             RemovePreview(tractorBeamBlockPoint, subterrainId);
-            RemoveIndicatorLine(new GVCellFace(x, y, z, (BlocksManager.Blocks[GVTractorBeamBlock.Index] as GVTractorBeamBlock)?.GetFace(value) ?? 0), subterrainId);
+            RemoveIndicatorLine(new GVCellFace(x, y, z, GVBlocksManager.GetBlock<GVTractorBeamBlock>()?.GetFace(value) ?? 0), subterrainId);
         }
 
         public void SetIndicatorLine(GVCellFace cellFace, uint subterrainId, Vector3 targetOffset) {

@@ -15,7 +15,7 @@ namespace Game {
                 textures[i] = ContentManager.Get<Texture2D>("Textures/GVDisplayLedBlock" + i);
             }
             IGVCustomWheelPanelBlock.LedValues.AddRange(GetCreativeValues());
-            IGVCustomWheelPanelBlock.LedValues.Add(GVOscilloscopeBlock.Index);
+            IGVCustomWheelPanelBlock.LedValues.Add(GVBlocksManager.GetBlockIndex<GVOscilloscopeBlock>());
         }
 
         public GVDisplayLedBlock() : base("Models/GigavoltGates", "OneLed", 0.5f) { }
@@ -84,7 +84,7 @@ namespace Game {
 
         public override IEnumerable<int> GetCreativeValues() {
             for (int i = 0; i < 6; i++) {
-                yield return Terrain.MakeBlockValue(Index, 0, i << 5);
+                yield return Terrain.MakeBlockValue(BlockIndex, 0, i << 5);
             }
         }
 
@@ -102,7 +102,7 @@ namespace Game {
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetComplex(SetType(0, GetType(data)), GetComplex(data))), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetComplex(SetType(0, GetType(data)), GetComplex(data))), Count = 1 });
             showDebris = true;
         }
 

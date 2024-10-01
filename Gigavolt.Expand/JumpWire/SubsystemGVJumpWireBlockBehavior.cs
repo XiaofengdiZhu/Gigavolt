@@ -8,7 +8,7 @@ namespace Game {
         public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
         public FlatBatch3D m_flatBatch;
         public readonly Dictionary<uint, List<JumpWireGVElectricElement>> m_tagsDictionary = new();
-        public override int[] HandledBlocks => [GVJumpWireBlock.Index];
+        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVJumpWireBlock>()];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             m_flatBatch = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.Additive);

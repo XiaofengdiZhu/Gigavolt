@@ -1,10 +1,10 @@
-﻿using Engine;
+using Engine;
 using Engine.Graphics;
 
 namespace Game {
     public class GVSolidifiedAirBlock : Block {
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            Color newColor = new Color(color.RGB, 100);
+            Color newColor = new(color.RGB, 100);
             DrawCubeBlock(
                 primitivesRenderer,
                 value,

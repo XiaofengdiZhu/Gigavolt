@@ -41,7 +41,7 @@ namespace Game {
             showDebris = true;
             if (toolLevel >= RequiredToolLevel) {
                 int data = Terrain.ExtractData(oldValue);
-                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, data), Count = 1 });
+                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, data), Count = 1 });
             }
         }
 

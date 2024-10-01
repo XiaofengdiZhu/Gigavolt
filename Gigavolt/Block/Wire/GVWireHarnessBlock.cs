@@ -138,7 +138,7 @@ namespace Game {
             for (int i = 0; i < 6; i++) {
                 if (WireExistsOnFace(oldValue, i)
                     && !WireExistsOnFace(newValue, i)) {
-                    dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, 0), Count = 1 });
+                    dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, 0), Count = 1 });
                 }
             }
             showDebris = dropValues.Count > 0;
@@ -160,6 +160,6 @@ namespace Game {
 
         public bool IsWireHarness(int value) => true;
         public bool IsWireThrough() => false;
-        public List<int> GetCustomWheelPanelValues(int centerValue) => BlocksManager.Blocks[GVWireBlock.Index].GetCreativeValues().ToList();
+        public List<int> GetCustomWheelPanelValues(int centerValue) => GVBlocksManager.GetBlock<GVWireBlock>().GetCreativeValues().ToList();
     }
 }

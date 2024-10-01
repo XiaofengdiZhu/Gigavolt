@@ -1,6 +1,6 @@
 namespace Game {
     public class SubsystemGVAdjustableDelayGateBlockBehavior : SubsystemBlockBehavior {
-        public override int[] HandledBlocks => new[] { GVAdjustableDelayGateBlock.Index };
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVAdjustableDelayGateBlock>()];
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             int value = inventory.GetSlotValue(slotIndex);
@@ -36,7 +36,7 @@ namespace Game {
                         if (num != data) {
                             int value2 = Terrain.ReplaceData(value, num);
                             SubsystemTerrain.ChangeCell(x, y, z, value2);
-                            int face = ((GVAdjustableDelayGateBlock)BlocksManager.Blocks[GVAdjustableDelayGateBlock.Index]).GetFace(value);
+                            int face = GVBlocksManager.GetBlock<GVAdjustableDelayGateBlock>().GetFace(value);
                             SubsystemGVElectricity subsystemGVElectricity = Project.FindSubsystem<SubsystemGVElectricity>(true);
                             GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
                                 x,

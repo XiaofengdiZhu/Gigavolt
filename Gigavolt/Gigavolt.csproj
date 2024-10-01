@@ -196,6 +196,7 @@
 		<Compile Include="Dialog\EditGVSignCDialog.cs"/>
 		<Compile Include="Dialog\EditGVSignDialog.cs"/>
 		<Compile Include="GVElectricClasses\ComponentGigavolt.cs"/>
+		<Compile Include="GVElectricClasses\GVBlocksManager.cs"/>
 		<Compile Include="GVElectricClasses\GVCellFace.cs"/>
 		<Compile Include="GVElectricClasses\SubsystemGVEditableItemBehavior.cs"/>
 		<Compile Include="GVElectricClasses\Subterrain\GVBlockGeometryGenerator.cs"/>

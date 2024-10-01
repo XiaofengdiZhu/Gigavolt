@@ -139,12 +139,12 @@ namespace Game {
                         }
                     }
                     int sourceContents = leftData switch {
-                        GVVolatileMemoryBankData => GVVolatileMemoryBankBlock.Index,
-                        GVMemoryBankData => GVMemoryBankBlock.Index,
-                        GVVolatileListMemoryBankData => GVVolatileListMemoryBankBlock.Index,
-                        GVListMemoryBankData => GVListMemoryBankBlock.Index,
-                        GVVolatileFourDimensionalMemoryBankData => GVVolatileFourDimensionalMemoryBankBlock.Index,
-                        GVFourDimensionalMemoryBankData => GVFourDimensionalMemoryBankBlock.Index,
+                        GVVolatileMemoryBankData => GVBlocksManager.GetBlockIndex<GVVolatileMemoryBankBlock>(),
+                        GVMemoryBankData => GVBlocksManager.GetBlockIndex<GVMemoryBankBlock>(),
+                        GVVolatileListMemoryBankData => GVBlocksManager.GetBlockIndex<GVVolatileListMemoryBankBlock>(),
+                        GVListMemoryBankData => GVBlocksManager.GetBlockIndex<GVListMemoryBankBlock>(),
+                        GVVolatileFourDimensionalMemoryBankData => GVBlocksManager.GetBlockIndex<GVVolatileFourDimensionalMemoryBankBlock>(),
+                        GVFourDimensionalMemoryBankData => GVBlocksManager.GetBlockIndex<GVFourDimensionalMemoryBankBlock>(),
                         _ => -1
                     };
                     GVSubterrainSystem subterrain = SubterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[SubterrainId];
@@ -159,8 +159,8 @@ namespace Game {
                                 }
                                 uint newId = 0u;
                                 int newValue;
-                                switch (sourceContents) {
-                                    case GVVolatileMemoryBankBlock.Index: {
+                                switch (BlocksManager.Blocks[sourceContents]) {
+                                    case GVVolatileMemoryBankBlock: {
                                         SubsystemGVVolatileMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
@@ -183,7 +183,7 @@ namespace Game {
                                         }
                                         break;
                                     }
-                                    case GVMemoryBankBlock.Index: {
+                                    case GVMemoryBankBlock: {
                                         SubsystemGVMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
@@ -206,7 +206,7 @@ namespace Game {
                                         }
                                         break;
                                     }
-                                    case GVVolatileListMemoryBankBlock.Index: {
+                                    case GVVolatileListMemoryBankBlock: {
                                         SubsystemGVVolatileListMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileListMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
@@ -229,7 +229,7 @@ namespace Game {
                                         }
                                         break;
                                     }
-                                    case GVListMemoryBankBlock.Index: {
+                                    case GVListMemoryBankBlock: {
                                         SubsystemGVListMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVListMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
@@ -252,7 +252,7 @@ namespace Game {
                                         }
                                         break;
                                     }
-                                    case GVVolatileFourDimensionalMemoryBankBlock.Index: {
+                                    case GVVolatileFourDimensionalMemoryBankBlock: {
                                         SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
@@ -275,7 +275,7 @@ namespace Game {
                                         }
                                         break;
                                     }
-                                    case GVFourDimensionalMemoryBankBlock.Index: {
+                                    case GVFourDimensionalMemoryBankBlock: {
                                         SubsystemGVFourDimensionalMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVFourDimensionalMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {

@@ -1,7 +1,7 @@
 namespace Game {
     public class SubsystemGVBatteryBlockBehavior : SubsystemGVEditableItemBehavior<GigaVoltageLevelData> {
-        public override int[] HandledBlocks => new[] { GVBatteryBlock.Index };
-        public SubsystemGVBatteryBlockBehavior() : base(GVBatteryBlock.Index) { }
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVBatteryBlock>()];
+        public SubsystemGVBatteryBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVBatteryBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 1) & 4095;
         public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -8191) | ((id & 4095) << 1));

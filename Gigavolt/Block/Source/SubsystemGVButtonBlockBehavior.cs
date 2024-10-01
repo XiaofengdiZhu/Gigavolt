@@ -1,8 +1,8 @@
 namespace Game {
     public class SubsystemGVButtonBlockBehavior : SubsystemGVEditableItemBehavior<GVButtonData> {
-        public override int[] HandledBlocks => new[] { GVButtonBlock.Index };
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVButtonBlock>()];
 
-        public SubsystemGVButtonBlockBehavior() : base(GVButtonBlock.Index) { }
+        public SubsystemGVButtonBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVButtonBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 3) & 2047;
         public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -16377) | ((id & 2047) << 3));

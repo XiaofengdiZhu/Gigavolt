@@ -7,12 +7,12 @@ namespace Game {
         public SubsystemGVElectricity m_subsystemGVElectricity;
         public readonly HashSet<DebugGVElectricElement> m_elementHashSet = [];
         public GVDebugData m_data;
-        public SubsystemGVDebugBlockBehavior() : base(GVDebugBlock.Index) { }
+        public SubsystemGVDebugBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVDebugBlock>()) { }
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
             m_subsystemGVElectricity = Project.FindSubsystem<SubsystemGVElectricity>(true);
-            m_data = GetBlockData(new Point3(-GVDebugBlock.Index)) ?? new GVDebugData();
+            m_data = GetBlockData(new Point3(-842)) ?? new GVDebugData();
             if (m_data != null) {
                 SetSpeed(m_data.Speed, true);
                 SetDisplayStepFloatingButtons(m_data.DisplayStepFloatingButtons, true);
@@ -21,11 +21,11 @@ namespace Game {
         }
 
         public override void Save(ValuesDictionary valuesDictionary) {
-            SetBlockData(new Point3(-GVDebugBlock.Index), m_data ?? new GVDebugData());
+            SetBlockData(new Point3(-842), m_data ?? new GVDebugData());
             base.Save(valuesDictionary);
         }
 
-        public override int[] HandledBlocks => [GVDebugBlock.Index];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVDebugBlock>()];
 
         public void SetDisplayStepFloatingButtons(bool enable, bool force = false) {
             if (force || m_data.DisplayStepFloatingButtons != enable) {

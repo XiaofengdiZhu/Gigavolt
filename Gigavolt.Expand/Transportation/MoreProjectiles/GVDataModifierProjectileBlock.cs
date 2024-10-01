@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
@@ -20,7 +20,7 @@ namespace Game {
                 false,
                 Color.White
             );
-            SubsystemGVProjectiles.m_dataModifierBlockContent = Index;
+            SubsystemGVProjectiles.m_dataModifierBlockContent = BlockIndex;
             base.Initialize();
         }
 
@@ -37,6 +37,9 @@ namespace Game {
             );
         }
 
-        public List<int> GetCustomWheelPanelValues(int centerValue) => [GVCrusherProjectileBlock.Index, Terrain.MakeBlockValue(GVCrusherProjectileBlock.Index, 0, 1), Index];
+        public List<int> GetCustomWheelPanelValues(int centerValue) {
+            int index = GVBlocksManager.GetBlockIndex<GVCrusherProjectileBlock>();
+            return [index, Terrain.MakeBlockValue(index, 0, 1), BlockIndex];
+        }
     }
 }

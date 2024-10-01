@@ -98,13 +98,13 @@ namespace Game {
             int bitmask = GetWireFacesBitmask(data);
             if (bitmask == 63
                 && GetIsCross(data)) {
-                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetColor(data, null)), Count = 1 });
+                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetColor(data, null)), Count = 1 });
             }
             else {
                 for (int i = 0; i < 6; i++) {
                     if (WireExistsOnFace(oldValue, i)
                         && !WireExistsOnFace(newValue, i)) {
-                        dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GetIsWireHarness(data) ? GVWireHarnessBlock.Index : GVWireBlock.Index, 0, SetColor(0, paintColor)), Count = 1 });
+                        dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GetIsWireHarness(data) ? GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>() : GVBlocksManager.GetBlockIndex<GVWireBlock>(), 0, SetColor(0, paintColor)), Count = 1 });
                     }
                 }
             }
@@ -137,10 +137,10 @@ namespace Game {
         }
 
         public override IEnumerable<int> GetCreativeValues() {
-            yield return Terrain.MakeBlockValue(Index, 0, 63);
-            yield return Terrain.MakeBlockValue(Index, 0, SetIsCross(63, true));
-            yield return Terrain.MakeBlockValue(Index, 0, SetIsWireHarness(63, true));
-            yield return Terrain.MakeBlockValue(Index, 0, SetIsWireHarness(SetIsCross(63, true), true));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, 63);
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetIsCross(63, true));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetIsWireHarness(63, true));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetIsWireHarness(SetIsCross(63, true), true));
         }
 
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));

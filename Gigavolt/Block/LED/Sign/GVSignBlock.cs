@@ -1,10 +1,10 @@
 using Engine;
 
 namespace Game {
-    public class GVSignBlock : GVAttachedSignBlock {
+    public class GVSignBlock : GVAttachedSignBlock<GVSignBlock> {
         public const int Index = 862;
 
-        public GVSignBlock() : base("Models/IronSign", 78, Index) { }
+        public GVSignBlock() : base("Models/IronSign", 78) { }
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new SignGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(Terrain.ExtractData(value))), subterrainId);
 
@@ -13,7 +13,7 @@ namespace Game {
             if (raycastResult.CellFace.Face < 4) {
                 int data = SetFace(SetColor(0, color), raycastResult.CellFace.Face);
                 BlockPlacementData result = default;
-                result.Value = Terrain.MakeBlockValue(Index, 0, data);
+                result.Value = Terrain.MakeBlockValue(BlockIndex, 0, data);
                 result.CellFace = raycastResult.CellFace;
                 return result;
             }

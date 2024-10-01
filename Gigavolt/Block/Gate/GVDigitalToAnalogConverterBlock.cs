@@ -92,15 +92,15 @@ namespace Game {
         public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 16 : 10;
 
         public override IEnumerable<int> GetCreativeValues() {
-            yield return Terrain.MakeBlockValue(Index, 0, SetClassic(0, true));
+            yield return Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(0, true));
             for (int i = 0; i < 4; i++) {
-                yield return Terrain.MakeBlockValue(Index, 0, SetType(0, i));
+                yield return Terrain.MakeBlockValue(BlockIndex, 0, SetType(0, i));
             }
         }
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, GetClassic(data) ? SetClassic(0, true) : SetType(0, GetType(data))), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, GetClassic(data) ? SetClassic(0, true) : SetType(0, GetType(data))), Count = 1 });
             showDebris = true;
         }
 
@@ -113,10 +113,11 @@ namespace Game {
         public List<int> GetCustomWheelPanelValues(int centerValue) {
             List<int> result = [];
             for (int i = 0; i < 4; i++) {
-                result.Add(Terrain.MakeBlockValue(Index, 0, SetType(0, i)));
+                result.Add(Terrain.MakeBlockValue(BlockIndex, 0, SetType(0, i)));
             }
+            int blockIndex = GVBlocksManager.GetBlockIndex<GVAnalogToDigitalConverterBlock>();
             for (int i = 0; i < 4; i++) {
-                result.Add(Terrain.MakeBlockValue(GVAnalogToDigitalConverterBlock.Index, 0, GVAnalogToDigitalConverterBlock.SetType(0, i)));
+                result.Add(Terrain.MakeBlockValue(blockIndex, 0, GVAnalogToDigitalConverterBlock.SetType(0, i)));
             }
             return result;
         }

@@ -32,7 +32,7 @@ namespace Game {
                                         point.Y,
                                         point.Z,
                                         SubterrainId,
-                                        Terrain.MakeBlockValue(GVAdjustableDelayGateBlock.Index, 0, GVAdjustableDelayGateBlock.SetDelay(oldData, delay))
+                                        Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<GVAdjustableDelayGateBlock>(), 0, GVAdjustableDelayGateBlock.SetDelay(oldData, delay))
                                     );
                                 }
                                 break;

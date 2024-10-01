@@ -74,7 +74,7 @@ namespace Game {
         public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
         public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 23 : 18;
 
-        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(Index, 0, 0), Terrain.MakeBlockValue(Index, 0, SetMaterial(0, 1)), Terrain.MakeBlockValue(Index, 0, SetClassic(0, true)), Terrain.MakeBlockValue(Index, 0, SetClassic(SetMaterial(0, 1), true))];
+        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, SetMaterial(0, 1)), Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(0, true)), Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(SetMaterial(0, 1), true))];
 
         public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) => new(
             subsystemTerrain,
@@ -96,7 +96,7 @@ namespace Game {
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
             int oldData = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetClassic(SetMaterial(0, GetMaterial(oldData)), GetClassic(oldData))), Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(SetMaterial(0, GetMaterial(oldData)), GetClassic(oldData))), Count = 1 });
             showDebris = true;
         }
 

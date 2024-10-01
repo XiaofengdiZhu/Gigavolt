@@ -10,7 +10,7 @@ namespace Game {
         public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
         public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 10 : 6;
 
-        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(Index, 0, SetClassic(0, false)), Terrain.MakeBlockValue(Index, 0, SetClassic(0, true))];
+        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(0, false)), Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(0, true))];
 
         public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new SRLatchGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId, GetClassic(Terrain.ExtractData(value)));
 

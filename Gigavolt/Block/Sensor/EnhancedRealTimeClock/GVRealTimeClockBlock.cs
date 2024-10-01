@@ -29,7 +29,7 @@ namespace Game {
         public override string GetDescription(int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDescription" : "Description");
         public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
         public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 14 : 12;
-        public override IEnumerable<int> GetCreativeValues() => [Index, Terrain.MakeBlockValue(Index, 0, SetClassic(0, true))];
+        public override IEnumerable<int> GetCreativeValues() => [BlockIndex, Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(0, true))];
         public static bool GetClassic(int data) => (data & 32) != 0;
         public static int SetClassic(int data, bool classic) => (data & -33) | (classic ? 32 : 0);
     }

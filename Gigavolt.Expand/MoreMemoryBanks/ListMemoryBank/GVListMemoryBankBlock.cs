@@ -15,11 +15,11 @@ namespace Game {
             m_texture = ContentManager.Get<Texture2D>("Textures/GVListMemoryBankBlock");
             IGVCustomWheelPanelBlock.MemoryBankValues.AddRange(
                 [
-                    GVVolatileMemoryBankBlock.Index,
-                    Index,
-                    GVVolatileListMemoryBankBlock.Index,
-                    GVFourDimensionalMemoryBankBlock.Index,
-                    GVVolatileFourDimensionalMemoryBankBlock.Index
+                    GVBlocksManager.GetBlockIndex<GVVolatileMemoryBankBlock>(),
+                    BlockIndex,
+                    GVBlocksManager.GetBlockIndex<GVVolatileListMemoryBankBlock>(),
+                    GVBlocksManager.GetBlockIndex<GVFourDimensionalMemoryBankBlock>(),
+                    GVBlocksManager.GetBlockIndex<GVVolatileFourDimensionalMemoryBankBlock>()
                 ]
             );
         }

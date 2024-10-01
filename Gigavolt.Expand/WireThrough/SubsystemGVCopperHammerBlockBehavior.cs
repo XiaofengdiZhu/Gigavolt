@@ -40,67 +40,63 @@ namespace Game {
                 CellFace cellFace = terrainRaycastResult.Value.CellFace;
                 int value = terrainRaycastResult.Value.Value;
                 int contents = Terrain.ExtractContents(value);
-                switch (contents) {
-                    case GVWireBlock.Index:
-                        flag = true;
-                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, Terrain.MakeBlockValue(GVEWireThroughBlock.Index, Terrain.ExtractLight(value), Terrain.ExtractData(value)));
-                        break;
-                    case GVWireHarnessBlock.Index: {
-                        flag = true;
-                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, Terrain.MakeBlockValue(GVEWireThroughBlock.Index, Terrain.ExtractLight(value), GVEWireThroughBlock.SetIsWireHarness(GVEWireThroughBlock.SetWireFacesBitmask(0, GVWireHarnessBlock.GetWireFacesBitmask(value)), true)));
-                        break;
-                    }
-                    case GVEWireThroughBlock.Index: {
-                        flag = true;
-                        int data = Terrain.ExtractData(value);
-                        if (GVEWireThroughBlock.GetIsCross(data)) {
-                            break;
-                        }
+                int GVWireBlockIndex = GVBlocksManager.GetBlockIndex<GVEWireThroughBlock>();
+                int GVEWireThroughBlockIndex = GVBlocksManager.GetBlockIndex<GVEWireThroughBlock>();
+                if (contents == GVWireBlockIndex) {
+                    flag = true;
+                    SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, Terrain.MakeBlockValue(GVEWireThroughBlockIndex, Terrain.ExtractLight(value), Terrain.ExtractData(value)));
+                }
+                else if (contents == GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>()) {
+                    flag = true;
+                    SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, Terrain.MakeBlockValue(GVEWireThroughBlockIndex, Terrain.ExtractLight(value), GVEWireThroughBlock.SetIsWireHarness(GVEWireThroughBlock.SetWireFacesBitmask(0, GVWireHarnessBlock.GetWireFacesBitmask(value)), true)));
+                }
+                else if (contents == GVBlocksManager.GetBlockIndex<GVEWireThroughBlock>()) {
+                    flag = true;
+                    int data = Terrain.ExtractData(value);
+                    if (!GVEWireThroughBlock.GetIsCross(data)) {
                         int mask = GVEWireThroughBlock.GetWireFacesBitmask(data);
-                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVEWireThroughBlock.GetTexture(data) == 3 ? GVEWireThroughBlock.GetIsWireHarness(data) ? GVWireHarnessBlock.SetWireFacesBitmask(GVWireHarnessBlock.Index, mask) : GVWireBlock.SetWireFacesBitmask(Terrain.MakeBlockValue(GVWireBlock.Index, 0, GVWireBlock.SetColor(0, GVEWireThroughBlock.GetColor(data))), mask) : Terrain.ReplaceData(value, GVEWireThroughBlock.SetTexture(data, (GVEWireThroughBlock.GetTexture(data) + 1) % 4)));
-                        break;
+                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVEWireThroughBlock.GetTexture(data) == 3 ? GVEWireThroughBlock.GetIsWireHarness(data) ? GVWireHarnessBlock.SetWireFacesBitmask(GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>(), mask) : GVWireBlock.SetWireFacesBitmask(Terrain.MakeBlockValue(GVWireBlockIndex, 0, GVWireBlock.SetColor(0, GVEWireThroughBlock.GetColor(data))), mask) : Terrain.ReplaceData(value, GVEWireThroughBlock.SetTexture(data, (GVEWireThroughBlock.GetTexture(data) + 1) % 4)));
                     }
-                    default: {
-                        Point3 point3 = cellFace.Point + CellFace.FaceToPoint3(cellFace.Face);
-                        int content = SubsystemTerrain.Terrain.GetCellContents(point3.X, point3.Y, point3.Z);
-                        if (content == 0) {
-                            flag = true;
-                            if (m_startPoint == null) {
-                                if (m_endPoint == point3) {
-                                    m_endPoint = null;
-                                    bool isEmpty = true;
-                                    foreach (Point3 glowPoint in m_glowPoints) {
-                                        if (SubsystemTerrain.Terrain.GetCellContentsFast(glowPoint.X, glowPoint.Y, glowPoint.Z) != 0) {
-                                            isEmpty = false;
-                                        }
-                                    }
-                                    if (isEmpty) {
-                                        for (int i = 0; i < m_glowPoints.Length; i++) {
-                                            Point3 glowPoint = m_glowPoints[i];
-                                            int face1 = CellFace.Point3ToFace(i == 0 ? m_glowPoints[1] - glowPoint : glowPoint - m_glowPoints[i - 1], 6);
-                                            int face2 = CellFace.Point3ToFace(i == m_glowPoints.Length - 1 ? m_glowPoints[i - 1] - glowPoint : glowPoint - m_glowPoints[i + 1], 6);
-                                            SubsystemTerrain.ChangeCell(m_glowPoints[i].X, m_glowPoints[i].Y, m_glowPoints[i].Z, Terrain.MakeBlockValue(GVEWireThroughBlock.Index, 0, GVEWireThroughBlock.SetWireFacesBitmask(GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetIsWireHarness(0, m_isHarness), m_texture), (1 << face1) | (1 << face2))));
-                                        }
-                                        m_glowPoints = Array.Empty<Point3>();
+                }
+                else {
+                    Point3 point3 = cellFace.Point + CellFace.FaceToPoint3(cellFace.Face);
+                    int content = SubsystemTerrain.Terrain.GetCellContents(point3.X, point3.Y, point3.Z);
+                    if (content == 0) {
+                        flag = true;
+                        if (m_startPoint == null) {
+                            if (m_endPoint == point3) {
+                                m_endPoint = null;
+                                bool isEmpty = true;
+                                foreach (Point3 glowPoint in m_glowPoints) {
+                                    if (SubsystemTerrain.Terrain.GetCellContentsFast(glowPoint.X, glowPoint.Y, glowPoint.Z) != 0) {
+                                        isEmpty = false;
                                     }
                                 }
-                                else {
-                                    m_startPoint = point3;
+                                if (isEmpty) {
+                                    for (int i = 0; i < m_glowPoints.Length; i++) {
+                                        Point3 glowPoint = m_glowPoints[i];
+                                        int face1 = CellFace.Point3ToFace(i == 0 ? m_glowPoints[1] - glowPoint : glowPoint - m_glowPoints[i - 1], 6);
+                                        int face2 = CellFace.Point3ToFace(i == m_glowPoints.Length - 1 ? m_glowPoints[i - 1] - glowPoint : glowPoint - m_glowPoints[i + 1], 6);
+                                        SubsystemTerrain.ChangeCell(m_glowPoints[i].X, m_glowPoints[i].Y, m_glowPoints[i].Z, Terrain.MakeBlockValue(GVEWireThroughBlockIndex, 0, GVEWireThroughBlock.SetWireFacesBitmask(GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetIsWireHarness(0, m_isHarness), m_texture), (1 << face1) | (1 << face2))));
+                                    }
+                                    m_glowPoints = Array.Empty<Point3>();
                                 }
-                                m_glowPoints = Array.Empty<Point3>();
                             }
                             else {
-                                if (point3 != m_startPoint) {
-                                    Stack<Point3> path = GVAStar.FindPath(m_startPoint.Value, point3, SubsystemTerrain.Terrain);
-                                    if (path != null) {
-                                        m_glowPoints = path.ToArray();
-                                        m_endPoint = point3;
-                                    }
-                                }
-                                m_startPoint = null;
+                                m_startPoint = point3;
                             }
+                            m_glowPoints = Array.Empty<Point3>();
                         }
-                        break;
+                        else {
+                            if (point3 != m_startPoint) {
+                                Stack<Point3> path = GVAStar.FindPath(m_startPoint.Value, point3, SubsystemTerrain.Terrain);
+                                if (path != null) {
+                                    m_glowPoints = path.ToArray();
+                                    m_endPoint = point3;
+                                }
+                            }
+                            m_startPoint = null;
+                        }
                     }
                 }
                 if (flag) {

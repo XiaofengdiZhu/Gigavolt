@@ -1,4 +1,4 @@
-﻿namespace Game {
+namespace Game {
     public class GVCounterCBlock : RotateableMountedGVElectricElementBlock {
         public const int Index = 810;
 
