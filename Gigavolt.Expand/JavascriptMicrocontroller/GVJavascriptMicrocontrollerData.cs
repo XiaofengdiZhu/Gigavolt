@@ -29,8 +29,15 @@ namespace Game {
             var Game = importNamespace("Game");
             var Engine = importNamespace("Engine");
             var GameEntitySystem = importNamespace("GameEntitySystem");
-            var findSubsystem = Game.JsInterface.findSubsystem;//根据名字寻找特定Subsystem，名字不带Subsystem
-            var Project = Game.JsInterface.getProject();
+            function findSubsystem(name) {//根据名字寻找特定Subsystem，名字不带Subsystem
+                let type = Game["Subsystem" + name];
+                let project = getProject();
+                if (!type || !project) {
+                    return null;
+                }
+                return System.Convert.ChangeType(project.FindSubsystem(type, null, false), type);
+            }
+            var Project = Game.GameManager.Project;
             var P0 = 0, P1 = 0, P2 = 0, P3 = 0, P4 = 0;
             """
         );
