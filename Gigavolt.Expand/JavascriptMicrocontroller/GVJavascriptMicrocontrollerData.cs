@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Acornima.Ast;
 using Engine;
-using GameEntitySystem;
 using Jint;
 using JsEngine = Jint.Engine;
 
@@ -45,8 +44,7 @@ namespace Game {
         public GVJavascriptMicrocontrollerData() {
             m_jsEngine = new JsEngine(
                 delegate(Options options) {
-                    options.AllowClr();
-                    options.AllowClr(typeof(Program).Assembly, typeof(Matrix).Assembly, typeof(Project).Assembly);
+                    options.AllowClr(AppDomain.CurrentDomain.GetAssemblies());
                     options.TimeoutInterval(TimeSpan.FromSeconds(5));
                 }
             );
