@@ -15,6 +15,17 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<Prefer32Bit>false</Prefer32Bit>
+		<Title>Gigavolt 十亿伏特</Title>
+		<Authors>销锋镝铸 XiaofengdiZhu</Authors>
+		<Description>A mod for Survivalcraft that take a new Electric system with Gigavolt to the game. 一个为生存战争游戏带来十亿伏特电力系统的mod。</Description>
+		<Copyright>销锋镝铸 XiaofengdiZhu</Copyright>
+		<PackageProjectUrl>https://xiaofengdizhu.github.io/GigavoltDoc/</PackageProjectUrl>
+		<PackageLicenseUrl>https://raw.githubusercontent.com/XiaofengdiZhu/Gigavolt/refs/heads/main/LICENSE.txt</PackageLicenseUrl>
+		<RepositoryUrl>https://xiaofengdizhu.github.io/Gigavolt/</RepositoryUrl>
+		<RepositoryType>GitHub</RepositoryType>
+		<Version>2.0.0</Version>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<FileVersion>2.0.0</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<DebugSymbols>true</DebugSymbols>
@@ -51,7 +62,7 @@
 		<ProjectReference Include="reference\NCalc2\src\NCalc\NCalc.csproj" Private="true" PrivateAssets="all"/>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" GeneratePathProperty="true"/>
+		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" GeneratePathProperty="true" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
 	</ItemGroup>
 	<ItemGroup>
