@@ -41,11 +41,11 @@ namespace Game {
                 && m_componentPlayer.ComponentHealth.Health > 0
                 && m_componentPlayer.ComponentGui.ControlsContainerWidget.IsVisible) {
                 if (m_componentPlayer.ComponentMiner.DigCellFace.HasValue) {
-                    DisplayVoltage(m_componentPlayer.ComponentMiner.DigCellFace.Value);
+                    DisplayVoltage(m_componentPlayer.ComponentMiner.DigCellFace.Value, camera.ViewDirection);
                 }
                 else if (!m_componentPlayer.ComponentAimingSights.IsSightsVisible
                     && m_componentBlockHighlight.m_highlightRaycastResult is TerrainRaycastResult result) {
-                    DisplayVoltage(result.CellFace);
+                    DisplayVoltage(result.CellFace, camera.ViewDirection);
                 }
                 m_8NumberBatch.Flush(camera.ViewProjectionMatrix);
                 m_mouseScrollBatch.Flush(camera.ViewProjectionMatrix);
@@ -213,7 +213,7 @@ namespace Game {
             m_componentPlayer.ComponentGui.ControlsContainerWidget.AddChildren(m_wheelPanelWidget);
         }
 
-        public void DisplayVoltage(CellFace cellFace) {
+        public void DisplayVoltage(CellFace cellFace, Vector3 viewDirection) {
             int blockValue = m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int blockContents = Terrain.ExtractContents(blockValue);
             int blockData = Terrain.ExtractData(blockValue);
@@ -250,12 +250,8 @@ namespace Game {
                         if (mountedBlock is RotateableMountedGVElectricElementBlock) {
                             rotation = RotateableMountedGVElectricElementBlock.GetRotation(blockData);
                         }
-                        Vector3 up = blockFace < 4 ? Vector3.UnitY : rotation switch {
-                            1 => Vector3.UnitZ,
-                            2 => -Vector3.UnitX,
-                            3 => -Vector3.UnitZ,
-                            _ => Vector3.UnitX
-                        };
+                        Vector3 up = blockFace < 4 ? Vector3.UnitY :
+                            Math.Abs(viewDirection.X) > Math.Abs(viewDirection.Z) ? new Vector3((viewDirection.X > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1), 0, 0) : new Vector3(0, 0, (viewDirection.Z > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1));
                         Vector3 right = Vector3.Cross(forward, up);
                         const float size = 0.1f;
                         if (m_forceDisplayVoltage.HasValue) {

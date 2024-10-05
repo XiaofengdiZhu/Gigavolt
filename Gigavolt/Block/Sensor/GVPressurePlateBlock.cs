@@ -101,14 +101,14 @@ namespace Game {
         }
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {
-            int num = Terrain.ExtractData(value);
+            int num = SetClassic(Terrain.ExtractData(value), false);
             return num >= m_collisionBoxesByData.Length ? null : m_collisionBoxesByData[num];
         }
 
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) => face != CellFace.OppositeFace(GetFace(value));
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
-            int num = Terrain.ExtractData(value);
+            int num = SetClassic(Terrain.ExtractData(value), false);
             if (num < m_blockMeshesByData.Length
                 && m_blockMeshesByData[num] != null) {
                 generator.GenerateMeshVertices(

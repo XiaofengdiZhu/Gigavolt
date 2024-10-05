@@ -82,7 +82,7 @@ namespace Game {
                 Rotation = Vector3.Zero,
                 AngularVelocity = angularVelocity,
                 CreationTime = m_subsystemGameInfo.TotalElapsedGameTime,
-                IsInWater = IsWater(position),
+                IsInFluid = IsWater(position),
                 Owner = owner,
                 ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable,
                 DisableGravity = disableGravity,
@@ -547,7 +547,7 @@ namespace Game {
                                 }
                             }
                         }
-                        float num5 = projectile.IsInWater ? MathF.Pow(0.001f, dt) : MathF.Pow(block.GetProjectileDamping(projectile.Value), dt);
+                        float num5 = projectile.IsInFluid ? MathF.Pow(0.001f, dt) : MathF.Pow(block.GetProjectileDamping(projectile.Value), dt);
                         if (!projectile.DisableGravity) {
                             projectile.Velocity.Y += -10f * dt;
                         }
@@ -563,12 +563,12 @@ namespace Game {
                             }
                             Vector3 v4 = projectile.TrailOffset != Vector3.Zero ? Vector3.TransformNormal(projectile.TrailOffset, Matrix.CreateFromAxisAngle(Vector3.Normalize(projectile.Rotation), projectile.Rotation.Length())) : Vector3.Zero;
                             projectile.TrailParticleSystem.Position = newPosition + v4;
-                            if (projectile.IsInWater) {
+                            if (projectile.IsInFluid) {
                                 projectile.TrailParticleSystem.IsStopped = true;
                             }
                         }
                         bool flag2 = IsWater(newPosition);
-                        if (projectile.IsInWater != flag2) {
+                        if (projectile.IsInFluid != flag2) {
                             if (flag2) {
                                 float num6 = new Vector2(projectile.Velocity.X + projectile.Velocity.Z).Length();
                                 if (num6 > 6f
@@ -594,7 +594,7 @@ namespace Game {
                                     MakeProjectileNoise(projectile);
                                 }
                             }
-                            projectile.IsInWater = flag2;
+                            projectile.IsInFluid = flag2;
                         }
                         if (IsMagma(newPosition)) {
                             m_subsystemParticles.AddParticleSystem(new MagmaSplashParticleSystem(m_subsystemTerrain, newPosition, false));
