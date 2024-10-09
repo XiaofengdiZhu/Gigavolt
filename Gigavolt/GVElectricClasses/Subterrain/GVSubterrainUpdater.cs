@@ -288,70 +288,47 @@ namespace Game {
         }
 
         public void GenerateChunkSunLightAndHeight(TerrainChunk chunk, int skylightValue) {
-            for (int i = 0; i < 16; i++) {
-                for (int j = 0; j < 16; j++) {
-                    int num = 0;
-                    int num2 = 255;
-                    int num3 = 0;
-                    int num4 = 255;
-                    int num5 = TerrainChunk.CalculateCellIndex(i, 255, j);
-                    while (num4 >= 0) {
-                        int cellValueFast = chunk.GetCellValueFast(num5);
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    int topHeight = 0;
+                    int bottomHeight = 255;
+                    int nowHeight = 255;
+                    int cellIndex = TerrainChunk.CalculateCellIndex(x, 255, z);
+                    while (nowHeight >= 0) {
+                        int cellValueFast = chunk.GetCellValueFast(cellIndex);
                         if (Terrain.ExtractContents(cellValueFast) != 0) {
-                            num = num4;
+                            topHeight = nowHeight;
                             break;
                         }
                         cellValueFast = Terrain.ReplaceLight(cellValueFast, skylightValue);
-                        chunk.SetCellValueFast(num5, cellValueFast);
-                        num4--;
-                        num5--;
+                        chunk.SetCellValueFast(cellIndex, cellValueFast);
+                        nowHeight--;
+                        cellIndex--;
                     }
-                    num4 = 0;
-                    num5 = TerrainChunk.CalculateCellIndex(i, 0, j);
-                    while (num4 <= num + 1) {
-                        int cellValueFast2 = chunk.GetCellValueFast(num5);
-                        int num6 = Terrain.ExtractContents(cellValueFast2);
-                        if (BlocksManager.Blocks[num6].IsTransparent_(cellValueFast2)) {
-                            num2 = num4;
+                    nowHeight = 0;
+                    cellIndex = TerrainChunk.CalculateCellIndex(x, 0, z);
+                    while (nowHeight <= topHeight + 1) {
+                        int cellValueFast2 = chunk.GetCellValueFast(cellIndex);
+                        if (BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast2)].IsTransparent_(cellValueFast2)) {
+                            bottomHeight = nowHeight;
                             break;
                         }
-                        cellValueFast2 = Terrain.ReplaceLight(cellValueFast2, 0);
-                        chunk.SetCellValueFast(num5, cellValueFast2);
-                        num4++;
-                        num5++;
+                        cellValueFast2 = Terrain.ReplaceLight(cellValueFast2, skylightValue);
+                        chunk.SetCellValueFast(cellIndex, cellValueFast2);
+                        nowHeight++;
+                        cellIndex++;
                     }
-                    int num7 = skylightValue;
-                    num4 = num;
-                    num5 = TerrainChunk.CalculateCellIndex(i, num, j);
-                    if (num7 > 0) {
-                        while (num4 >= num2) {
-                            int cellValueFast3 = chunk.GetCellValueFast(num5);
-                            int num8 = Terrain.ExtractContents(cellValueFast3);
-                            if (num8 != 0) {
-                                Block block = BlocksManager.Blocks[num8];
-                                if (!block.IsTransparent_(cellValueFast3)
-                                    || block.LightAttenuation >= num7) {
-                                    break;
-                                }
-                                num7 -= block.LightAttenuation;
-                            }
-                            cellValueFast3 = Terrain.ReplaceLight(cellValueFast3, num7);
-                            chunk.SetCellValueFast(num5, cellValueFast3);
-                            num4--;
-                            num5--;
-                        }
+                    nowHeight = topHeight;
+                    cellIndex = TerrainChunk.CalculateCellIndex(x, topHeight, z);
+                    while (nowHeight >= bottomHeight) {
+                        int cellValueFast4 = chunk.GetCellValueFast(cellIndex);
+                        cellValueFast4 = Terrain.ReplaceLight(cellValueFast4, skylightValue);
+                        chunk.SetCellValueFast(cellIndex, cellValueFast4);
+                        nowHeight--;
+                        cellIndex--;
                     }
-                    num3 = num4 + 1;
-                    while (num4 >= num2) {
-                        int cellValueFast4 = chunk.GetCellValueFast(num5);
-                        cellValueFast4 = Terrain.ReplaceLight(cellValueFast4, 0);
-                        chunk.SetCellValueFast(num5, cellValueFast4);
-                        num4--;
-                        num5--;
-                    }
-                    chunk.SetTopHeightFast(i, j, num);
-                    chunk.SetBottomHeightFast(i, j, num2);
-                    chunk.SetSunlightHeightFast(i, j, num3);
+                    chunk.SetTopHeightFast(x, z, topHeight);
+                    chunk.SetBottomHeightFast(x, z, bottomHeight);
                 }
             }
         }
@@ -676,72 +653,70 @@ namespace Game {
             TerrainChunk chunkAtCoords6 = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y + 1);
             TerrainChunk chunkAtCoords7 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y + 1);
             TerrainChunk chunkAtCoords8 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y + 1);
-            int num1 = 0;
-            int num2 = 0;
-            int num3 = 16;
-            int num4 = 16;
+            int minX = 0;
+            int minZ = 0;
+            int maxX = 16;
+            int maxZ = 16;
             if (chunkAtCoords4 == null) {
-                ++num1;
+                ++minX;
             }
             if (chunkAtCoords2 == null) {
-                ++num2;
+                ++minZ;
             }
             if (chunkAtCoords5 == null) {
-                --num3;
+                --maxX;
             }
             if (chunkAtCoords7 == null) {
-                --num4;
+                --maxZ;
             }
-            for (int index = 0; index < 16; ++index) {
-                if (index % 2 == stage) {
-                    chunk.SliceContentsHashes[index] = CalculateChunkSliceContentsHash(chunk, index);
-                    int generateHash = chunk.GeneratedSliceContentsHashes[index];
+            for (int i = 0; i < 16; ++i) {
+                if (i % 2 == stage) {
+                    chunk.SliceContentsHashes[i] = CalculateChunkSliceContentsHash(chunk, i);
+                    int generateHash = chunk.GeneratedSliceContentsHashes[i];
                     if (generateHash != 0
-                        && generateHash == chunk.SliceContentsHashes[index]) {
+                        && generateHash == chunk.SliceContentsHashes[i]) {
                         continue;
                     }
                     foreach (KeyValuePair<Texture2D, TerrainGeometry[]> c in chunk.Draws) {
-                        TerrainGeometrySubset[] subsets = c.Value[index].Subsets;
+                        TerrainGeometrySubset[] subsets = c.Value[i].Subsets;
                         for (int p = 0; p < subsets.Length; p++) {
                             subsets[p].Vertices.Clear();
                             subsets[p].Indices.Clear();
                         }
                     }
-                    for (int x1 = num1; x1 < num3; ++x1) {
-                        for (int z1 = num2; z1 < num4; ++z1) {
-                            switch (x1) {
+                    for (int xInChunk = minX; xInChunk < maxX; ++xInChunk) {
+                        for (int zInChunk = minZ; zInChunk < maxZ; ++zInChunk) {
+                            switch (xInChunk) {
                                 case 0:
-                                    if ((z1 == 0 && chunkAtCoords1 == null)
-                                        || (z1 == 15 && chunkAtCoords6 == null)) {
+                                    if ((zInChunk == 0 && chunkAtCoords1 == null)
+                                        || (zInChunk == 15 && chunkAtCoords6 == null)) {
                                         break;
                                     }
                                     goto default;
                                 case 15:
-                                    if ((z1 == 0 && chunkAtCoords3 == null)
-                                        || (z1 == 15 && chunkAtCoords8 == null)) {
+                                    if ((zInChunk == 0 && chunkAtCoords3 == null)
+                                        || (zInChunk == 15 && chunkAtCoords8 == null)) {
                                         break;
                                     }
                                     goto default;
                                 default:
-                                    int x2 = x1 + chunk.Origin.X;
-                                    int z2 = z1 + chunk.Origin.Y;
-                                    int x2_1 = MathUtils.Min(chunk.GetBottomHeightFast(x1, z1) - 1, MathUtils.Min(m_terrain.GetBottomHeight(x2 - 1, z2), m_terrain.GetBottomHeight(x2 + 1, z2), m_terrain.GetBottomHeight(x2, z2 - 1), m_terrain.GetBottomHeight(x2, z2 + 1)));
-                                    int x2_2 = chunk.GetTopHeightFast(x1, z1) + 1;
-                                    int num5 = MathUtils.Max(16 * index, x2_1, 1);
-                                    int num6 = MathUtils.Min(16 * (index + 1), x2_2, byte.MaxValue);
-                                    int cellIndex = TerrainChunk.CalculateCellIndex(x1, 0, z1);
-                                    for (int y = num5; y < num6; ++y) {
+                                    int xInWorld = xInChunk + chunk.Origin.X;
+                                    int zInWorld = zInChunk + chunk.Origin.Y;
+                                    int bottom = MathUtils.Max(16 * i, 0, MathUtils.Min(chunk.GetBottomHeightFast(xInChunk, zInChunk) - 1, MathUtils.Min(m_terrain.GetBottomHeight(xInWorld - 1, zInWorld), m_terrain.GetBottomHeight(xInWorld + 1, zInWorld), m_terrain.GetBottomHeight(xInWorld, zInWorld - 1), m_terrain.GetBottomHeight(xInWorld, zInWorld + 1))));
+                                    int top = MathUtils.Min(16 * (i + 1), byte.MaxValue, chunk.GetTopHeightFast(xInChunk, zInChunk) + 1);
+                                    int cellIndex = TerrainChunk.CalculateCellIndex(xInChunk, 0, zInChunk);
+                                    for (int y = bottom; y < top; ++y) {
                                         int cellValueFast = chunk.GetCellValueFast(cellIndex + y);
                                         int contents = Terrain.ExtractContents(cellValueFast);
                                         if (contents != 0) {
                                             BlocksManager.Blocks[contents]
                                             .GenerateTerrainVertices(
                                                 m_subterrainSystem.BlockGeometryGenerator,
-                                                terrainGeometry[index],
+                                                terrainGeometry[i],
                                                 cellValueFast,
-                                                x2,
+                                                xInWorld,
                                                 y,
-                                                z2
+                                                zInWorld
                                             );
                                         }
                                     }
@@ -759,7 +734,6 @@ namespace Game {
             num *= 31;
             num += m_terrain.SeasonHumidity;
             num *= 31;
-            TerrainChunkGeometry geometry = chunk.Geometry;
             for (int i = 0; i < 16; i++) {
                 chunk.SliceContentsHashes[i] = num;
             }
