@@ -21,7 +21,7 @@ namespace Game {
         public ComponentBlockHighlight m_componentBlockHighlight;
 
         public bool m_isCreativeMode;
-        public bool m_categoryColorNotSet = true;
+        public bool m_categoryNotAdjusted = true;
         public uint? m_forceDisplayVoltage;
         public CanvasWidget m_controlsContainer;
         public DragHostWidget m_dragHostWidget;
@@ -55,23 +55,46 @@ namespace Game {
         public void Update(float dt) {
             if (m_isCreativeMode) {
                 //设置创造模式背包中的分类颜色
-                if (m_categoryColorNotSet) {
+                if (m_categoryNotAdjusted) {
                     if (m_componentPlayer.ComponentGui.ModalPanelWidget is CreativeInventoryWidget widget) {
-                        foreach (CreativeInventoryWidget.Category c in widget.m_categories) {
-                            if (c.Name.StartsWith("GV ")) {
-                                if (c.Color.B == 243) {
+                        List<CreativeInventoryWidget.Category> categories = widget.m_categories;
+                        int regularIndex = -1;
+                        int shiftIndex = -1;
+                        int multipleIndex = -1;
+                        int expandIndex = -1;
+                        for (int i = 0; i < categories.Count; i++) {
+                            CreativeInventoryWidget.Category category = categories[i];
+                            switch (category.Name) {
+                                case "GV Electrics Regular":
+                                    regularIndex = i;
+                                    category.Color = new Color(30, 213, 243);
                                     break;
-                                }
-                                if (c.Name.EndsWith("Expand")
-                                    || c.Name.EndsWith("Multiple")) {
-                                    c.Color = new Color(233, 85, 227);
-                                }
-                                else {
-                                    c.Color = new Color(30, 213, 243);
-                                }
+                                case "GV Electrics Shift":
+                                    shiftIndex = i;
+                                    category.Color = new Color(30, 213, 243);
+                                    break;
+                                case "GV Electrics Multiple":
+                                    multipleIndex = i;
+                                    category.Color = new Color(233, 85, 227);
+                                    break;
+                                case "GV Electrics Expand":
+                                    expandIndex = i;
+                                    category.Color = new Color(233, 85, 227);
+                                    break;
                             }
                         }
-                        m_categoryColorNotSet = false;
+                        CreativeInventoryWidget.Category shiftCategory = categories[shiftIndex];
+                        CreativeInventoryWidget.Category multipleCategory = categories[multipleIndex];
+                        categories.RemoveAt(shiftIndex);
+                        categories.RemoveAt(multipleIndex);
+                        categories.Insert(regularIndex, shiftCategory);
+                        categories.Insert(regularIndex + 1, multipleCategory);
+                        if (expandIndex > 0) {
+                            CreativeInventoryWidget.Category expandCategory = categories[expandIndex];
+                            categories.RemoveAt(expandIndex);
+                            categories.Insert(regularIndex + 2, expandCategory);
+                        }
+                        m_categoryNotAdjusted = false;
                     }
                 }
                 //快捷轮盘
