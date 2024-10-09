@@ -34,22 +34,10 @@
 		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 	<ItemGroup>
-		<Reference Include="Engine">
-			<HintPath>..\Gigavolt\reference\Engine.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="EntitySystem">
-			<HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
 		<Reference Include="OpenTK-1.0.2moded">
 			<HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
 			<Private>False</Private>
 			<Aliases>OpenTKForAndroid</Aliases>
-		</Reference>
-		<Reference Include="Survivalcraft">
-			<HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
-			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
@@ -68,6 +56,9 @@
 			<Aliases>OpenTKForWindows</Aliases>
 		</PackageReference>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="JavascriptMicrocontroller\EditGVJavascriptMicrocontrollerDialog.cs"/>

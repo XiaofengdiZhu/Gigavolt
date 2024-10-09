@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gigavolt.Expand", "Gigavolt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gigavolt.Helper", "Gigavolt.Helper\Gigavolt.Helper.csproj", "{BF5E7A9F-747E-43E5-901A-297576F627B6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCalc", "Gigavolt\reference\NCalc2\src\NCalc\NCalc.csproj", "{F3E0F86D-52E4-4B30-9131-A5AE87C9269C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamariNES", "Gigavolt.Expand\reference\XamariNES\XamariNES.csproj", "{5875710C-1FDC-4CC1-9B58-FB6704900075}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{BF5E7A9F-747E-43E5-901A-297576F627B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF5E7A9F-747E-43E5-901A-297576F627B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF5E7A9F-747E-43E5-901A-297576F627B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3E0F86D-52E4-4B30-9131-A5AE87C9269C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3E0F86D-52E4-4B30-9131-A5AE87C9269C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3E0F86D-52E4-4B30-9131-A5AE87C9269C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3E0F86D-52E4-4B30-9131-A5AE87C9269C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5875710C-1FDC-4CC1-9B58-FB6704900075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5875710C-1FDC-4CC1-9B58-FB6704900075}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5875710C-1FDC-4CC1-9B58-FB6704900075}.Release|Any CPU.ActiveCfg = Release|Any CPU

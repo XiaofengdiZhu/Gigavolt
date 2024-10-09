@@ -104,7 +104,7 @@ namespace Game {
                                     newProjectile.NoChunk = projectile.NoChunk;
                                     newProjectile.CreationTime = projectile.CreationTime;
                                     newProjectile.TrailOffset = projectile.TrailOffset;
-                                    newProjectile.IsInWater = projectile.IsInWater;
+                                    newProjectile.IsInFluid = projectile.IsInFluid;
                                     newProjectile.LastNoiseTime = projectile.LastNoiseTime;
                                     newProjectile.TrailParticleSystem = projectile.TrailParticleSystem;
                                     projectile.ToRemove = true;

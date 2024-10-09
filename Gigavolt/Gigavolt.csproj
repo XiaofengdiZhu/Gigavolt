@@ -45,19 +45,21 @@
 		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="reference\NCalc2\src\NCalc\NCalc.csproj" Private="true" PrivateAssets="all"/>
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" GeneratePathProperty="true"/>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2" />
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2" />
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2" />
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2"/>
+		<PackageReference Include="CoreCLR-NCalc-Mod" Version="3.1.1" GeneratePathProperty="true"/>
 	</ItemGroup>
 	<ItemGroup>
 		<None Link="reference\Antlr4.Runtime.Standard.dll" Include="$(PkgAntlr4_Runtime_Standard)\lib\netstandard2.0\Antlr4.Runtime.Standard.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>Antlr4.Runtime.Standard.dll</TargetPath>
+		</None>
+		<None Link="reference\NCalc.dll" Include="$(PkgCoreCLR-NCalc-Mod)\lib\net8.0\NCalc.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>NCalc.dll</TargetPath>
 		</None>
 		<None Update="Assets\Textures\GV8NumberLed.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
