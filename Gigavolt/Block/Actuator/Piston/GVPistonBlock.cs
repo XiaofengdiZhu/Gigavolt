@@ -194,5 +194,7 @@ namespace Game {
             int id = subsystem.GetIdFromValue(centerValue);
             return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVPistonData)subsystem.GetItemData(id).Copy()));
         }
+
+        public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value) => true;
     }
 }

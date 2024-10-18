@@ -244,5 +244,13 @@ namespace Game {
             box = [boundingBox];
             m_cachedCollisionBoxes.Add(data, box);
         }
+
+        public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value) {
+            int data = Terrain.ExtractData(value);
+            if (GetUpsideDown(data)) {
+                return GetOpen(data) != 0;
+            }
+            return false;
+        }
     }
 }

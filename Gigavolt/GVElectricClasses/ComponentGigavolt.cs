@@ -58,41 +58,38 @@ namespace Game {
                 if (m_categoryNotAdjusted) {
                     if (m_componentPlayer.ComponentGui.ModalPanelWidget is CreativeInventoryWidget widget) {
                         List<CreativeInventoryWidget.Category> categories = widget.m_categories;
-                        int regularIndex = -1;
-                        int shiftIndex = -1;
-                        int multipleIndex = -1;
-                        int expandIndex = -1;
+                        CreativeInventoryWidget.Category regularCategory = null;
+                        CreativeInventoryWidget.Category shiftCategory = null;
+                        CreativeInventoryWidget.Category multipleCategory = null;
+                        CreativeInventoryWidget.Category expandCategory = null;
                         for (int i = 0; i < categories.Count; i++) {
                             CreativeInventoryWidget.Category category = categories[i];
                             switch (category.Name) {
                                 case "GV Electrics Regular":
-                                    regularIndex = i;
+                                    regularCategory = category;
                                     category.Color = new Color(30, 213, 243);
                                     break;
                                 case "GV Electrics Shift":
-                                    shiftIndex = i;
+                                    shiftCategory = category;
                                     category.Color = new Color(30, 213, 243);
                                     break;
                                 case "GV Electrics Multiple":
-                                    multipleIndex = i;
+                                    multipleCategory = category;
                                     category.Color = new Color(233, 85, 227);
                                     break;
                                 case "GV Electrics Expand":
-                                    expandIndex = i;
+                                    expandCategory = category;
                                     category.Color = new Color(233, 85, 227);
                                     break;
                             }
                         }
-                        CreativeInventoryWidget.Category shiftCategory = categories[shiftIndex];
-                        CreativeInventoryWidget.Category multipleCategory = categories[multipleIndex];
-                        categories.RemoveAt(shiftIndex);
-                        categories.RemoveAt(multipleIndex);
-                        categories.Insert(regularIndex, shiftCategory);
-                        categories.Insert(regularIndex + 1, multipleCategory);
-                        if (expandIndex > 0) {
-                            CreativeInventoryWidget.Category expandCategory = categories[expandIndex];
-                            categories.RemoveAt(expandIndex);
-                            categories.Insert(regularIndex + 2, expandCategory);
+                        categories.Remove(shiftCategory);
+                        categories.Insert(categories.IndexOf(regularCategory) + 1, shiftCategory);
+                        categories.Remove(multipleCategory);
+                        categories.Insert(categories.IndexOf(shiftCategory) + 1, multipleCategory);
+                        if (expandCategory != null) {
+                            categories.Remove(expandCategory);
+                            categories.Insert(categories.IndexOf(multipleCategory) + 1, expandCategory);
                         }
                         m_categoryNotAdjusted = false;
                     }
