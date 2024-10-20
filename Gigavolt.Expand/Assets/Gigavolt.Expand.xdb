@@ -56,5 +56,8 @@
 		<MemberSubsystemTemplate Name="GVTractorBeamBlockBehavior" Guid="db243681-13fb-444c-95ea-9b521d05c9bf" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="ad1192e6-1b54-4839-8929-f7c911fedd26" Value="Game.SubsystemGVTractorBeamBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVSolid8NumberLedGlow" Guid="a0c5614d-062b-42e5-a81b-21a48f3c0c82" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="Class" Guid="ab9bc292-207f-4a18-aeb0-4c84b78d2751" Value="Game.SubsystemGVSolid8NumberLedGlow" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

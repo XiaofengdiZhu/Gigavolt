@@ -89,6 +89,10 @@
 		<Compile Include="MoreLeds\Oscilloscope\GVVoltageRectangleWidget.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\OscilloscopeGVElectricElement.cs"/>
 		<Compile Include="MoreLeds\Oscilloscope\SubsystemGVOscilloscopeBlockBehavior.cs"/>
+		<Compile Include="MoreLeds\Solid8NumberLed\GV8NumberGlowPoint.cs"/>
+		<Compile Include="MoreLeds\Solid8NumberLed\GVSolid8NumberLedBlock.cs"/>
+		<Compile Include="MoreLeds\Solid8NumberLed\Solid8NumberLedGVElectricElement.cs"/>
+		<Compile Include="MoreLeds\Solid8NumberLed\SubsystemGVSolid8NumberLedGlow.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\EditGVFourDimensionalMemoryBankDialog.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankData.cs"/>
 		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankBlock.cs"/>
@@ -439,6 +443,12 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Lang\en-US.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVSolid8NumberLedBlockFull.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVSolid8NumberLedBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

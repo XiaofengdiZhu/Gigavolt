@@ -290,6 +290,10 @@
     "GVTractorBeamBlock:0": {
       "DisplayName": "GV Tractor Beam",
       "Description": "Can catch several floating blocks and move, rotate and scale them. Only Gigavolt elements can work normally in the caught blocks. More details is in the document."
+    },
+    "GVSolid8NumberLedBlock:0": {
+      "DisplayName": "GV Solid 8 Numerical LED",
+      "Description": "Similar to GV 8 Numerical LED, but it displays on six faces. When connected to a power source emits weak white light."
     }
   },
   "ContentWidgets": {

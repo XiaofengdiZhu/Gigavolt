@@ -290,6 +290,10 @@
     "GVTractorBeamBlock:0": {
       "DisplayName": "GV牵引光束",
       "Description": "可将一片悬浮的方块捕获并移动、旋转、缩放，其中的十亿伏特电路板可基本正常运行，详见本Mod文档"
+    },
+    "GVSolid8NumberLedBlock:0": {
+      "DisplayName": "GV 六面8数字LED灯",
+      "Description": "多数字的发光二极管，当连接到电源时，LED会发出微弱的白光。和GV 8数字LED灯类似，但它在六个面上显示。"
     }
   },
   "ContentWidgets": {
