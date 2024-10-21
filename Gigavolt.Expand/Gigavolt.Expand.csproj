@@ -61,6 +61,7 @@
 		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2"/>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="GigavoltExpandModLoader.cs"/>
 		<Compile Include="JavascriptMicrocontroller\EditGVJavascriptMicrocontrollerDialog.cs"/>
 		<Compile Include="JumpWire\GVJumpWireBlock.cs"/>
 		<Compile Include="JumpWire\JumpWireGVElectricElement.cs"/>

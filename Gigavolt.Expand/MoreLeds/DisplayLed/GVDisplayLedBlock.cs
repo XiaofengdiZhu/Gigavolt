@@ -14,8 +14,6 @@ namespace Game {
             for (int i = 0; i < 6; i++) {
                 textures[i] = ContentManager.Get<Texture2D>("Textures/GVDisplayLedBlock" + i);
             }
-            IGVCustomWheelPanelBlock.LedValues.AddRange(GetCreativeValues());
-            IGVCustomWheelPanelBlock.LedValues.Add(GVBlocksManager.GetBlockIndex<GVOscilloscopeBlock>());
         }
 
         public GVDisplayLedBlock() : base("Models/GigavoltGates", "OneLed", 0.5f) { }

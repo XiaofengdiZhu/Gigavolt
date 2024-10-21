@@ -13,15 +13,6 @@ namespace Game {
         public override void Initialize() {
             base.Initialize();
             m_texture = ContentManager.Get<Texture2D>("Textures/GVListMemoryBankBlock");
-            IGVCustomWheelPanelBlock.MemoryBankValues.AddRange(
-                [
-                    GVBlocksManager.GetBlockIndex<GVVolatileMemoryBankBlock>(),
-                    BlockIndex,
-                    GVBlocksManager.GetBlockIndex<GVVolatileListMemoryBankBlock>(),
-                    GVBlocksManager.GetBlockIndex<GVFourDimensionalMemoryBankBlock>(),
-                    GVBlocksManager.GetBlockIndex<GVVolatileFourDimensionalMemoryBankBlock>()
-                ]
-            );
         }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
