@@ -100,5 +100,6 @@ namespace Game {
         public static int SetFace(int data, int face) => (data & -57) | ((face & 7) << 3);
         public static bool GetTransparent(int data) => ((data >> 6) & 1) == 1;
         public static int SetTransparent(int data, bool transparent) => (data & -65) | (transparent ? 64 : 0);
+        public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value) => true;
     }
 }

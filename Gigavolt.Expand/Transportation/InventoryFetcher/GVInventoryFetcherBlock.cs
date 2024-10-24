@@ -145,7 +145,7 @@ namespace Game {
         public static int SetFace(int data, int face) => (data & -57) | ((face & 7) << 2);
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => GetIsShaft(Terrain.ExtractData(value)) ? null : new InventoryFetcherGVElectricElement(subsystemGVElectricity, value, new Point3(x, y, z), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
             int data = Terrain.ExtractData(value);
             int type = GetType(data);
             if (type == 1) {

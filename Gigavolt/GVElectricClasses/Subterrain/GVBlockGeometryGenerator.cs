@@ -1228,10 +1228,8 @@ namespace Game {
 
         public static void GenerateGVWireVertices(BlockGeometryGenerator generator, int value, int x, int y, int z, int mountingFace, float centerBoxSize, Vector2 centerOffset, TerrainGeometrySubset subset) {
             SubsystemGVElectricity SubsystemGVElectricity;
-            uint subterrainId = 0u;
             if (generator is GVBlockGeometryGenerator GVGenerator) {
                 SubsystemGVElectricity = GVGenerator.SubsystemGVElectricity;
-                subterrainId = GVGenerator.m_subterrainSystem.ID;
             }
             else {
                 SubsystemGVElectricity = generator.SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
@@ -1280,7 +1278,7 @@ namespace Game {
                 y,
                 z,
                 mountingFace,
-                subterrainId,
+                generator.Terrain,
                 m_GVtmpConnectionPaths
             );
             foreach (GVElectricConnectionPath tmpConnectionPath in m_GVtmpConnectionPaths) {

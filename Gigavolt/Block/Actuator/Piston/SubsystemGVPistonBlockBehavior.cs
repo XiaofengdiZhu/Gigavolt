@@ -28,12 +28,13 @@ namespace Game {
         public readonly Dictionary<GVPoint3, GVPistonData> m_complexPistonData = new();
 
         public const string IdString = "GVPiston";
-        public int m_GVPistonBlockIndex = GVBlocksManager.GetBlockIndex<GVPistonBlock>();
-        public int m_GVPistonHeadBlockIndex = GVBlocksManager.GetBlockIndex<GVPistonHeadBlock>();
+        public int m_GVPistonBlockIndex;
+        public int m_GVPistonHeadBlockIndex;
 
         public UpdateOrder UpdateOrder => m_subsystemMovingBlocks.UpdateOrder + 1;
 
-        public override int[] HandledBlocks => [m_GVPistonBlockIndex, m_GVPistonHeadBlockIndex];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVPistonBlock>(), GVBlocksManager.GetBlockIndex<GVPistonHeadBlock>()];
+
         public SubsystemGVPistonBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVPistonBlock>()) { }
 
         public void AdjustPiston(GVPoint3 position, int length, GVPistonData pistonData) {
@@ -248,6 +249,8 @@ namespace Game {
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
+            m_GVPistonBlockIndex = GVBlocksManager.GetBlockIndex<GVPistonBlock>();
+            m_GVPistonHeadBlockIndex = GVBlocksManager.GetBlockIndex<GVPistonHeadBlock>();
             m_subsystemTime = Project.FindSubsystem<SubsystemTime>(true);
             m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
             m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(true);

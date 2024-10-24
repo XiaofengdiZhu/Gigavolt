@@ -388,7 +388,7 @@ namespace Game {
             );
             foreach ((uint subterrainId, Dictionary<Point3, TextData> points) in m_textsByPoint) {
                 GVSubterrainSystem subterrainSystem = subterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
-                Matrix transform = subterrainId == 0 ? default : subterrainSystem.GlobalTransform;
+                Matrix transform = subterrainId == 0 ? default : subterrainSystem?.GlobalTransform ?? default;
                 Matrix orientation = subterrainId == 0 ? default : transform.OrientationMatrix;
                 foreach (TextData nearText in points.Values) {
                     if (!nearText.TextureLocation.HasValue) {

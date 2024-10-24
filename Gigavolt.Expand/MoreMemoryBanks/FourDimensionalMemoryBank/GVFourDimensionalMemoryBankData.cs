@@ -339,44 +339,43 @@ namespace Game {
                     result1.Add(wIndex, zList);
                 }
             }
-            if (maxXLength == 0
-                || maxYLength == 0
-                || maxZLength == 0
-                || maxWLength == 0) {
-                return;
-            }
             Dictionary<int, Image<Rgba32>> result2 = new();
             int realXLength = Math.Max(maxXLength, xLength);
             int realYLength = Math.Max(maxYLength, yLength);
             int realZLength = Math.Max(maxZLength, zLength);
             int realWLength = Math.Max(maxWLength, wLength);
-            foreach (KeyValuePair<int, List<List<List<uint>>>> pair in result1) {
-                if (pair.Value.Count > 0) {
-                    Image<Rgba32> image = new(DefaultImageConfiguration, realXLength, realYLength);
-                    image.Metadata.GetWebpMetadata().FileFormat = WebpFileFormatType.Lossless;
-                    while (image.Frames.Count < realZLength) {
-                        image.Frames.AddFrame(image.Frames.RootFrame);
-                    }
-                    for (int zIndex = 0; zIndex < maxZLength; zIndex++) {
-                        List<List<uint>> z = pair.Value[zIndex];
-                        if (z == null) {
-                            continue;
+            if (maxXLength > 0
+                && maxYLength > 0
+                && maxZLength > 0
+                && maxWLength > 0) {
+                foreach (KeyValuePair<int, List<List<List<uint>>>> pair in result1) {
+                    if (pair.Value.Count > 0) {
+                        Image<Rgba32> image = new(DefaultImageConfiguration, realXLength, realYLength);
+                        image.Metadata.GetWebpMetadata().FileFormat = WebpFileFormatType.Lossless;
+                        while (image.Frames.Count < realZLength) {
+                            image.Frames.AddFrame(image.Frames.RootFrame);
                         }
-                        for (int yIndex = 0; yIndex < maxYLength; yIndex++) {
-                            List<uint> y = z[yIndex];
-                            if (y == null) {
+                        for (int zIndex = 0; zIndex < maxZLength; zIndex++) {
+                            List<List<uint>> z = pair.Value[zIndex];
+                            if (z == null) {
                                 continue;
                             }
-                            for (int xIndex = 0; xIndex < maxXLength; xIndex++) {
-                                uint x = y[xIndex];
-                                if (x == 0) {
+                            for (int yIndex = 0; yIndex < maxYLength; yIndex++) {
+                                List<uint> y = z[yIndex];
+                                if (y == null) {
                                     continue;
                                 }
-                                image.Frames[zIndex][xIndex, yIndex] = new Rgba32(x);
+                                for (int xIndex = 0; xIndex < maxXLength; xIndex++) {
+                                    uint x = y[xIndex];
+                                    if (x == 0) {
+                                        continue;
+                                    }
+                                    image.Frames[zIndex][xIndex, yIndex] = new Rgba32(x);
+                                }
                             }
                         }
+                        result2.Add(pair.Key, image);
                     }
-                    result2.Add(pair.Key, image);
                 }
             }
             Data = result2;
@@ -525,7 +524,7 @@ namespace Game {
         }
 
         public override string Stream2Data(Stream stream, string extension = "") {
-            if (extension == ".gvfdmb") {
+            if (extension.ToLower() == ".gvfdmb") {
                 Dictionary<int, Image<Rgba32>> newData = new();
                 string comment;
                 using (ZipArchive zip = ZipArchive.Open(stream)) {

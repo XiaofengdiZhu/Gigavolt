@@ -17,7 +17,7 @@ namespace Game {
             return null;
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
             int data = Terrain.ExtractData(value);
             int rotation = FurnitureBlock.GetRotation(data);
             int designIndex = FurnitureBlock.GetDesignIndex(data);
@@ -27,7 +27,7 @@ namespace Game {
                 if ((design.MountingFacesMask & (1 << num)) != 0
                     && SubsystemGVElectricity.GetConnectorDirection(face, 0, connectorFace).HasValue) {
                     Point3 point = CellFace.FaceToPoint3(face);
-                    int cellValue = subsystem.GetTerrain(subterrainId).GetCellValue(x - point.X, y - point.Y, z - point.Z);
+                    int cellValue = terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
                     if (!BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsFaceTransparent(subsystem.m_subsystemTerrain, CellFace.OppositeFace(num), cellValue)) {
                         switch (design.InteractionMode) {
                             case FurnitureInteractionMode.Multistate:

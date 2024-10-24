@@ -157,7 +157,7 @@ namespace Game {
                                 if (contents != sourceContents) {
                                     continue;
                                 }
-                                uint newId = 0u;
+                                uint newId;
                                 int newValue;
                                 switch (BlocksManager.Blocks[sourceContents]) {
                                     case GVVolatileMemoryBankBlock: {

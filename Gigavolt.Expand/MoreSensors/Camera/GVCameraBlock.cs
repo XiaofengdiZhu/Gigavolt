@@ -54,7 +54,7 @@ namespace Game {
             );
         }
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
             if (GetFace(value) == face
                 && SubsystemGVElectricity.GetConnectorDirection(GetFace(value), 0, connectorFace).HasValue) {
                 return GVElectricConnectorType.Input;

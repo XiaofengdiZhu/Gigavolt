@@ -239,7 +239,7 @@ namespace Game {
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DoorGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetHingeFace(Terrain.ExtractData(value))), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
             int hingeFace = GetHingeFace(Terrain.ExtractData(value));
             if (face == hingeFace) {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(hingeFace, 0, connectorFace);

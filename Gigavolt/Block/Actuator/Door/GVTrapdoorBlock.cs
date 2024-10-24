@@ -171,7 +171,7 @@ namespace Game {
             return new TrapDoorGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetMountingFace(data)), subterrainId);
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (face == GetMountingFace(data)) {
                 int rotation = GetRotation(data);

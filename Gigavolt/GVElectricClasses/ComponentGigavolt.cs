@@ -309,7 +309,7 @@ namespace Game {
                                 cellFace.X,
                                 cellFace.Y,
                                 cellFace.Z,
-                                0
+                                m_subsystemTerrain.Terrain
                             );
                             GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(blockFace, rotation, connectorFace);
                             Vector3 offset = connectorDirection == GVElectricConnectorDirection.In ? -0.4f * (up + right) : 0.4f * CellFace.FaceToVector3(connectorFace);

@@ -74,7 +74,7 @@ namespace Game {
                     new EditGVUintDialog(
                         m_initial,
                         newInitial => {
-                            if (newInitial >= m_overflow) {
+                            if (m_overflow != 0 && newInitial >= m_overflow) {
                                 newInitial = m_overflow - 1;
                             }
                             m_initial = newInitial;
@@ -97,7 +97,7 @@ namespace Game {
                             if (newCurrent < m_initial) {
                                 newCurrent = m_initial;
                             }
-                            else if (newCurrent >= m_overflow) {
+                            else if (m_overflow != 0 && newCurrent >= m_overflow) {
                                 newCurrent = m_overflow - 1;
                             }
                             m_current = newCurrent;

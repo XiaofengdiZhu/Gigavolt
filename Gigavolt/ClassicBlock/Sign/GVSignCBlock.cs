@@ -363,7 +363,7 @@ namespace Game {
             return new SignGVCElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetPose(data) == 1 ? GetHanging(data) ? 5 : 4 : GetFace(data)), subterrainId);
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (GetPose(data) == 1) {
                 if (GetHanging(data)) {

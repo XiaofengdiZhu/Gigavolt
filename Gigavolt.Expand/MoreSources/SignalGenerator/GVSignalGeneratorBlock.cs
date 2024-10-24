@@ -179,7 +179,7 @@ namespace Game {
             return GetIsTopPart(data) ? m_bottomCollisionBoxes[data & 0x1F] : m_collisionBoxes[data & 0x1F];
         }
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
             int data = Terrain.ExtractData(value);
             bool isUp = GetIsTopPart(data);
             if (GetFace(value) == face) {

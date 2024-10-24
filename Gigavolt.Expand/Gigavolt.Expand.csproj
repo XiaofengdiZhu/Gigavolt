@@ -56,9 +56,9 @@
 			<Aliases>OpenTKForWindows</Aliases>
 		</PackageReference>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2"/>
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2.1"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2.1"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2.1"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="GigavoltExpandModLoader.cs"/>
@@ -135,6 +135,9 @@
 		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs"/>
 		<Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs"/>
 		<Compile Include="MoreSensors\TerrainScanner\TerrainScannerGVElectricElement.cs"/>
+		<Compile Include="MoreSources\SignalGenerator\GVSignalGeneratorBlock.cs"/>
+		<Compile Include="MoreSources\SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
+		<Compile Include="MoreSources\SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
 		<Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs"/>
 		<Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs"/>
 		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
@@ -142,9 +145,6 @@
 		<Compile Include="PlayerController\GVPlayerControllerBlock.cs"/>
 		<Compile Include="PlayerController\PlayerControllerGVElectricElement.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
-		<Compile Include="SignalGenerator\GVSignalGeneratorBlock.cs"/>
-		<Compile Include="SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
-		<Compile Include="SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
 		<Compile Include="TractorBeam\GVTractorBeamBlock.cs"/>
 		<Compile Include="TractorBeam\SubsystemGVTractorBeamBlockBehavior.cs"/>
 		<Compile Include="TractorBeam\TractorBeamGVElectricElement.cs"/>

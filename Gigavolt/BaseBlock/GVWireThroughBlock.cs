@@ -14,7 +14,7 @@ namespace Game {
 
         public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => null;
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, uint subterrainId) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
             int wiredFace = GetWiredFace(Terrain.ExtractData(value));
             if ((face == wiredFace || face == CellFace.OppositeFace(wiredFace))
                 && connectorFace == CellFace.OppositeFace(face)) {
