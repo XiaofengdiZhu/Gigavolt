@@ -68,19 +68,11 @@ namespace Game {
                         false,
                         Color.White
                     );
-                    m_blockMeshes[num] = blockMesh;
-                    m_collisionBoxes[num] = [blockMesh.CalculateBoundingBox()];
-                    BlockMesh blockMesh2 = new();
-                    blockMesh2.AppendModelMeshPart(
-                        modelMeshPart,
-                        boneAbsoluteTransform * m * Matrix.CreateTranslation(new Vector3(-m_upPoint3[num])),
-                        false,
-                        false,
-                        false,
-                        false,
-                        Color.White
-                    );
-                    m_bottomCollisionBoxes[num] = [blockMesh2.CalculateBoundingBox()];
+                    m_blockMeshes[i] = blockMesh;
+                    BoundingBox boundingBox = blockMesh.CalculateBoundingBox();
+                    m_collisionBoxes[i] = [boundingBox];
+                    Vector3 bottomTranslation = new(-m_upPoint3[i << 2]);
+                    m_bottomCollisionBoxes[i] = [new BoundingBox(boundingBox.Min + bottomTranslation, boundingBox.Max + bottomTranslation)];
                 }
             }
             Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
@@ -114,11 +106,7 @@ namespace Game {
                 bottom = new GVCellFace(another.X, another.Y, another.Z, face);
             }
             else {
-                bottom = new GVCellFace(x, y, z, face);
-                another.X = bottom.X + upDirection.X;
-                another.Y = bottom.Y + upDirection.Y;
-                another.Z = bottom.Z + upDirection.Z;
-                up = new GVCellFace(another.X, another.Y, another.Z, face);
+                return null;
             }
             if (!subsystemGVElectricity.m_GVElectricElementsToAdd[subterrainId].ContainsKey(another)) {
                 int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(another.X, another.Y, another.Z);
@@ -126,7 +114,7 @@ namespace Game {
                     && GetFace(anotherValue) == face) {
                     int anotherData = Terrain.ExtractData(anotherValue);
                     if (GetRotation(anotherData) == rotation
-                        && GetIsTopPart(anotherData) != isUp) {
+                        && !GetIsTopPart(anotherData)) {
                         return new SignalGeneratorGVElectricElement(subsystemGVElectricity, [bottom, up], subterrainId);
                     }
                 }

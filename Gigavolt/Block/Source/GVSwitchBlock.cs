@@ -18,12 +18,11 @@ namespace Game {
         public readonly BlockMesh[] m_blockMeshesByIndex_Lever = new BlockMesh[12];
         public readonly BoundingBox[][] m_collisionBoxesByIndex = new BoundingBox[12][];
 
-        public static Texture2D WhiteTexture;
 
         public override void Initialize() {
-            if (WhiteTexture == null
-                || WhiteTexture.m_isDisposed) {
-                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+            if (GVStaticStorage.WhiteTexture == null
+                || GVStaticStorage.WhiteTexture.m_isDisposed) {
+                GVStaticStorage.WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
             }
             Model model = ContentManager.Get<Model>("Models/Switch");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Body").ParentBone);
@@ -127,7 +126,7 @@ namespace Game {
                     m_blockMeshesByIndex_Lever[num],
                     blockColor.HasValue ? SubsystemPalette.GetColor(generator, blockColor) : Color.White,
                     null,
-                    blockColor.HasValue ? geometry.GetGeometry(WhiteTexture).SubsetOpaque : geometry.SubsetOpaque
+                    blockColor.HasValue ? geometry.GetGeometry(GVStaticStorage.WhiteTexture).SubsetOpaque : geometry.SubsetOpaque
                 );
                 GVBlockGeometryGenerator.GenerateGVWireVertices(
                     generator,
@@ -158,7 +157,7 @@ namespace Game {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 switchLeverMesh,
-                blockColor.HasValue ? WhiteTexture :
+                blockColor.HasValue ? GVStaticStorage.WhiteTexture :
                 environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,

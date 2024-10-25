@@ -138,6 +138,9 @@
 		<Compile Include="MoreSources\SignalGenerator\GVSignalGeneratorBlock.cs"/>
 		<Compile Include="MoreSources\SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
 		<Compile Include="MoreSources\SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
+		<Compile Include="MoreSources\SwitchCabinet\GVSwitchCabinetBlock.cs"/>
+		<Compile Include="MoreSources\SwitchCabinet\SubsystemGVSwitchCabinetBlockBehavior.cs"/>
+		<Compile Include="MoreSources\SwitchCabinet\SwitchCabinetGVElectricElement.cs"/>
 		<Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs"/>
 		<Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs"/>
 		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
@@ -450,6 +453,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVSolid8NumberLedBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVSwitchCabinetBlock.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

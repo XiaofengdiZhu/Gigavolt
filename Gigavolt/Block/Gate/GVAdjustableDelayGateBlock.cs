@@ -10,7 +10,6 @@ using Image = Engine.Media.Image;
 namespace Game {
     public class GVAdjustableDelayGateBlock : RotateableMountedGVElectricElementBlock, IPaintableBlock {
         public const int Index = 808;
-        public static Texture2D WhiteTexture;
 
         public GVAdjustableDelayGateBlock() : base("Models/GVAdjustableDelayGate", "Body", 0.375f) { }
 
@@ -22,9 +21,9 @@ namespace Game {
         public override void Initialize() {
             //原先获取主体模型部分保留
             base.Initialize();
-            if (WhiteTexture == null
-                || WhiteTexture.m_isDisposed) {
-                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+            if (GVStaticStorage.WhiteTexture == null
+                || GVStaticStorage.WhiteTexture.m_isDisposed) {
+                GVStaticStorage.WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
             }
             //获取顶部模型
             Model model = ContentManager.Get<Model>("Models/GVAdjustableDelayGate");
@@ -97,7 +96,7 @@ namespace Game {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh_Top,
-                blockColor.HasValue ? WhiteTexture :
+                blockColor.HasValue ? GVStaticStorage.WhiteTexture :
                 environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,
@@ -128,7 +127,7 @@ namespace Game {
                     m_blockMeshes_Top[num],
                     blockColor.HasValue ? SubsystemPalette.GetColor(generator, blockColor) : Color.White,
                     null,
-                    blockColor.HasValue ? geometry.GetGeometry(WhiteTexture).SubsetOpaque : geometry.SubsetOpaque
+                    blockColor.HasValue ? geometry.GetGeometry(GVStaticStorage.WhiteTexture).SubsetOpaque : geometry.SubsetOpaque
                 );
                 GVBlockGeometryGenerator.GenerateGVWireVertices(
                     generator,

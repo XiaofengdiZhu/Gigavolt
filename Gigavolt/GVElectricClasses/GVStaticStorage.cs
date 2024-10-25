@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Engine;
+using Engine.Graphics;
 
 namespace Game {
     public static class GVStaticStorage {
@@ -43,5 +44,7 @@ namespace Game {
         public static bool GVHelperSlotActive = false;
 
         public static HashSet<TerrainChunk> EditableItemBehaviorChangedChunks = [];
+
+        public static Texture2D WhiteTexture;
     }
 }

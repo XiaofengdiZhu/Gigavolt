@@ -294,6 +294,10 @@
     "GVSolid8NumberLedBlock:0": {
       "DisplayName": "GV Solid 8 Numerical LED",
       "Description": "Similar to GV 8 Numerical LED, but it displays on six faces. When connected to a power source emits weak white light."
+    },
+    "GVSwitchCabinetBlock:0": {
+      "DisplayName": "GV Switch Cabinet",
+      "Description": "A Switch Cabinet has 14 colored switches, and it can be connected to wire harness. The output voltage is fixed at 0xFFFFFFFF V."
     }
   },
   "ContentWidgets": {

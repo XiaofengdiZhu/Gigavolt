@@ -293,7 +293,11 @@
     },
     "GVSolid8NumberLedBlock:0": {
       "DisplayName": "GV 六面8数字LED灯",
-      "Description": "多数字的发光二极管，当连接到电源时，LED会发出微弱的白光。和GV 8数字LED灯类似，但它在六个面上显示。"
+      "Description": "多数字的发光二极管，当连接到电源时，LED会发出微弱的白光。和GV 8数字LED灯类似，但它在六个面上显示"
+    },
+    "GVSwitchCabinetBlock:0": {
+      "DisplayName": "GV开关柜",
+      "Description": "拥有14色开关的开关柜，可直接与总线相连，输出电压固定为0xFFFFFFFF V"
     }
   },
   "ContentWidgets": {
