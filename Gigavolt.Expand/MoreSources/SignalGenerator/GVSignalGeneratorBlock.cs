@@ -68,11 +68,11 @@ namespace Game {
                         false,
                         Color.White
                     );
-                    m_blockMeshes[i] = blockMesh;
+                    m_blockMeshes[num] = blockMesh;
                     BoundingBox boundingBox = blockMesh.CalculateBoundingBox();
-                    m_collisionBoxes[i] = [boundingBox];
+                    m_collisionBoxes[num] = [boundingBox];
                     Vector3 bottomTranslation = new(-m_upPoint3[i << 2]);
-                    m_bottomCollisionBoxes[i] = [new BoundingBox(boundingBox.Min + bottomTranslation, boundingBox.Max + bottomTranslation)];
+                    m_bottomCollisionBoxes[num] = [new BoundingBox(boundingBox.Min + bottomTranslation, boundingBox.Max + bottomTranslation)];
                 }
             }
             Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);

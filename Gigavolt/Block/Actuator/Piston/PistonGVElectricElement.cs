@@ -30,7 +30,13 @@ namespace Game {
             m_point = point;
         }
 
+        public bool m_firstSimulate = true;
+
         public override bool Simulate() {
+            if (m_firstSimulate) {
+                m_firstSimulate = false;
+                return false;
+            }
             uint input = 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output

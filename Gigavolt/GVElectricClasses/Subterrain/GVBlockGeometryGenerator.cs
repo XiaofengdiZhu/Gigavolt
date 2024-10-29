@@ -1241,9 +1241,10 @@ namespace Game {
             }
             Color innerTopColor = GVWireBlock.WireColor;
             Color innerBottomColor = innerTopColor;
-            int num = Terrain.ExtractContents(value);
-            IGVElectricElementBlock innerBlock = BlocksManager.Blocks[num] as IGVElectricElementBlock;
+            int innerContents = Terrain.ExtractContents(value);
+            IGVElectricElementBlock innerBlock = BlocksManager.Blocks[innerContents] as IGVElectricElementBlock;
             switch (innerBlock) {
+                case null: return;
                 case GVWireHarnessBlock:
                     innerTopColor = GVWireHarnessBlock.WireColor1;
                     innerBottomColor = GVWireHarnessBlock.WireColor2;
@@ -1256,12 +1257,20 @@ namespace Game {
                     }
                     break;
                 }
-                case null: return;
+                default: {
+                    int mask = innerBlock.GetConnectionMask(value);
+                    if (mask != int.MaxValue
+                        && mask != 1
+                        && mask % 2 != 0) {
+                        innerTopColor = GVWireHarnessBlock.WireColor1;
+                        innerBottomColor = GVWireHarnessBlock.WireColor2;
+                    }
+                    break;
+                }
             }
             int GVWireHarnessBlockIndex = GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>();
             int GVWireBlockIndex = GVBlocksManager.GetBlockIndex<GVWireBlock>();
-            int num2 = Terrain.ExtractLight(value);
-            float num3 = LightingManager.LightIntensityByLightValue[num2];
+            float innerLightValue = LightingManager.LightIntensityByLightValue[Terrain.ExtractLight(value)];
             Vector3 v = new Vector3(x + 0.5f, y + 0.5f, z + 0.5f) - 0.5f * CellFace.FaceToVector3(mountingFace);
             Vector3 vector = CellFace.FaceToVector3(mountingFace);
             Vector2 v2 = new(0.9376f, 0.0001f);
@@ -1291,20 +1300,28 @@ namespace Game {
                         Color innerBottomColor2 = innerBottomColor;
                         Color outerTopColor = innerTopColor2;
                         Color outerBottomColor = innerBottomColor2;
-                        if (num != GVWireBlockIndex) {
-                            int cellValue = generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ);
-                            Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-                            if (block is IPaintableBlock paintableBlock) {
-                                int? color4 = paintableBlock.GetPaintColor(cellValue);
+                        if (innerContents != GVWireBlockIndex) {
+                            int outerValue = generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ);
+                            IGVElectricElementBlock outerBlock = BlocksManager.Blocks[Terrain.ExtractContents(outerValue)] as IGVElectricElementBlock;
+                            if (outerBlock == null) {
+                                continue;
+                            }
+                            if (outerBlock is IPaintableBlock paintableBlock) {
+                                int? color4 = paintableBlock.GetPaintColor(outerValue);
                                 outerTopColor = color4.HasValue ? SubsystemPalette.GetColor(generator, color4) : GVWireBlock.WireColor;
                                 outerBottomColor = outerTopColor;
-                                innerTopColor2 = num == GVWireHarnessBlockIndex ? GVWireHarnessBlock.WireColor1 : outerTopColor;
-                                innerBottomColor2 = num == GVWireHarnessBlockIndex ? GVWireHarnessBlock.WireColor2 : outerBottomColor;
+                                innerTopColor2 = innerContents == GVWireHarnessBlockIndex ? GVWireHarnessBlock.WireColor1 : outerTopColor;
+                                innerBottomColor2 = innerContents == GVWireHarnessBlockIndex ? GVWireHarnessBlock.WireColor2 : outerBottomColor;
                             }
-                            else if (block is IGVElectricElementBlock and not GVWireHarnessBlock
-                                && num == GVWireHarnessBlockIndex) {
-                                outerTopColor = GVWireBlock.WireColor;
-                                outerBottomColor = outerTopColor;
+                            else if (innerContents == GVWireHarnessBlockIndex
+                                && outerBlock is not GVWireHarnessBlock) {
+                                int mask = outerBlock.GetConnectionMask(outerValue);
+                                if (mask == int.MaxValue
+                                    || mask == 1
+                                    || mask % 2 == 0) {
+                                    outerTopColor = GVWireBlock.WireColor;
+                                    outerBottomColor = outerTopColor;
+                                }
                             }
                         }
                         Vector3 vector3 = connectorDirection != GVElectricConnectorDirection.In ? CellFace.FaceToVector3(tmpConnectionPath.ConnectorFace) : -Vector3.Normalize(vector2);
@@ -1334,15 +1351,15 @@ namespace Game {
                         Vector2 vector15 = v2 + v3 * new Vector2(num6 * 2f, 0.5f);
                         int num7 = Terrain.ExtractLight(generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ));
                         float num8 = LightingManager.LightIntensityByLightValue[num7];
-                        float num9 = 0.5f * (num3 + num8);
+                        float num9 = 0.5f * (innerLightValue + num8);
                         float num10 = LightingManager.CalculateLighting(-vector4);
                         float num11 = LightingManager.CalculateLighting(vector4);
                         float num12 = LightingManager.CalculateLighting(vector);
-                        float num13 = num10 * num3;
+                        float num13 = num10 * innerLightValue;
                         float num14 = num10 * num9;
                         float num15 = num11 * num9;
-                        float num16 = num11 * num3;
-                        float num17 = num12 * num3;
+                        float num16 = num11 * innerLightValue;
+                        float num17 = num12 * innerLightValue;
                         float num18 = num12 * num9;
                         Color color5 = new((byte)(innerBottomColor2.R * num13), (byte)(innerBottomColor2.G * num13), (byte)(innerBottomColor2.B * num13)); //内部底部
                         Color color6 = new((byte)(outerBottomColor.R * num14), (byte)(outerBottomColor.G * num14), (byte)(outerBottomColor.B * num14)); //外面底部
@@ -1431,7 +1448,7 @@ namespace Game {
                 }
             }
             if (centerBoxSize != 0f
-                || (num4 == 0 && num != GVWireBlockIndex && num != GVWireHarnessBlockIndex)) {
+                || (num4 == 0 && innerContents != GVWireBlockIndex && innerContents != GVWireHarnessBlockIndex)) {
                 return;
             }
             for (int i = 0; i < 6; i++) {
@@ -1452,8 +1469,8 @@ namespace Game {
                     Vector2 vector19 = v2 + v3 * new Vector2(0.0625f, 0f);
                     Vector2 vector20 = v2 + v3 * new Vector2(0.0625f, 1f);
                     Vector2 vector21 = v2 + v3 * new Vector2(0f, 0.5f);
-                    float num19 = LightingManager.CalculateLighting(vector16) * num3;
-                    float num20 = LightingManager.CalculateLighting(vector) * num3;
+                    float num19 = LightingManager.CalculateLighting(vector16) * innerLightValue;
+                    float num20 = LightingManager.CalculateLighting(vector) * innerLightValue;
                     Color color11 = new((byte)(innerBottomColor.R * num19), (byte)(innerBottomColor.G * num19), (byte)(innerBottomColor.B * num19));
                     Color color12 = new((byte)(innerTopColor.R * num20), (byte)(innerTopColor.G * num20), (byte)(innerTopColor.B * num20));
                     int count3 = subset.Vertices.Count;

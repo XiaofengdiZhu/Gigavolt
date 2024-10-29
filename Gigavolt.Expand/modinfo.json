@@ -1,13 +1,13 @@
 {
   "Name": "Gigavolt.Expand 十亿伏特·扩展",
-  "Version": "1.0",
-  "ApiVersion": "1.60",
+  "Version": "2.0",
+  "ApiVersion": "1.72",
   "Description": "这是一个为生存战争游戏十亿伏特mod带来更多电路板和功能的mod",
   "ScVersion": "2.3.0.0",
   "Link": "https://github.com/XiaofengdiZhu/Gigavolt#gigavoltageexpand-%E5%8D%81%E4%BA%BF%E4%BC%8F%E7%89%B9%E6%89%A9%E5%B1%95",
   "Author": "销锋镝铸",
   "PackageName": "xfdz.Gigavolt.Expand",
   "Dependencies": [
-    "xfdz.Gigavolt:1.0"
+    "xfdz.Gigavolt:2.0"
   ]
 }

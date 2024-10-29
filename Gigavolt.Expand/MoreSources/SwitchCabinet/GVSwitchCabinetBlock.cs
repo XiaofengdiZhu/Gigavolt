@@ -53,9 +53,9 @@ namespace Game {
             10,
             11,
             12,
-            0,
+            -1,
             1,
-            0,
+            -1,
             13,
             3,
             4,
@@ -288,11 +288,21 @@ namespace Game {
         public static int SetFace(int data, int face) => (data & -8) | (face & 7);
         public static bool GetIsTopPart(int data) => (data & 131072) != 0;
         public static int SetIsTopPart(int data, bool isUp) => (data & -131073) | (isUp ? 131072 : 0);
-        public static bool GetLeverState(int data, int color) => (data & (1 << (Color2ColorIndex[color] + 3))) != 0;
+
+        public static bool GetLeverState(int data, int color) {
+            int colorIndex = Color2ColorIndex[color];
+            if (colorIndex < 0) {
+                return false;
+            }
+            return (data & (1 << (colorIndex + 3))) != 0;
+        }
 
         public static int SetLeverState(int data, int color, bool state) {
             int colorIndex = Color2ColorIndex[color];
-            return (data & (-1 - (1 << (Color2ColorIndex[color] + 3)))) | (state ? 1 << (colorIndex + 3) : 0);
+            if (colorIndex < 0) {
+                return data;
+            }
+            return (data & (-1 - (1 << (colorIndex + 3)))) | (state ? 1 << (colorIndex + 3) : 0);
         }
 
         public static int GetState(int data) => data & 131071;

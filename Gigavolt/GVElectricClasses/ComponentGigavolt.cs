@@ -300,6 +300,37 @@ namespace Game {
                             );
                             break;
                         }
+                        int mask = mountedBlock.GetConnectionMask(blockValue);
+                        if (mask != int.MaxValue
+                            && mask != 1
+                            && mask % 2 != 0) {
+                            for (int i = 0; i < 16; i++) {
+                                if (elements.TryGetValue(
+                                        new GVCellFace(
+                                            cellFace.X,
+                                            cellFace.Y,
+                                            cellFace.Z,
+                                            blockFace,
+                                            1 << i
+                                        ),
+                                        out GVElectricElement element2
+                                    )) {
+                                    uint voltage = element2.GetOutputVoltage(blockFace);
+                                    if (voltage > 0) {
+                                        SubsystemGV8NumberLedGlow.Draw8Number(
+                                            m_8NumberBatch,
+                                            voltage,
+                                            position - (i % 4 * 2 - 3) / 8f * right - (i / 4 * 2 - 3) / 8f * up,
+                                            size,
+                                            right,
+                                            up,
+                                            SubsystemPalette.GetColor(m_subsystemTerrain, i)
+                                        );
+                                    }
+                                }
+                            }
+                            break;
+                        }
                         for (int connectorFace = 0; connectorFace < 6; connectorFace++) {
                             GVElectricConnectorType? connectorType = mountedBlock.GetGVConnectorType(
                                 m_subsystemGVSubterrain,
@@ -427,6 +458,10 @@ namespace Game {
                         }
                     }
                     if (wireBlock.IsWireHarness(blockValue)) {
+                        Vector3 forward = CellFace.FaceToVector3(cellFace.Face);
+                        Vector3 up = cellFace.Face < 4 ? Vector3.UnitY :
+                            Math.Abs(viewDirection.X) > Math.Abs(viewDirection.Z) ? new Vector3((viewDirection.X > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1), 0, 0) : new Vector3(0, 0, (viewDirection.Z > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1));
+                        Vector3 right = Vector3.Cross(forward, up);
                         for (int i = 0; i < 16; i++) {
                             if (elements.TryGetValue(
                                     new GVCellFace(
@@ -440,9 +475,6 @@ namespace Game {
                                 )) {
                                 uint voltage = element.GetOutputVoltage(blockFace);
                                 if (voltage > 0) {
-                                    Vector3 forward = CellFace.FaceToVector3(cellFace.Face);
-                                    Vector3 up = cellFace.Face < 4 ? Vector3.UnitY : Vector3.UnitX;
-                                    Vector3 right = Vector3.Cross(forward, up);
                                     Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) - (i % 4 * 2 - 3) / 8f * right - (i / 4 * 2 - 3) / 8f * up;
                                     if (wireBlock.IsWireThrough()) {
                                         position += forward * 0.55f;
