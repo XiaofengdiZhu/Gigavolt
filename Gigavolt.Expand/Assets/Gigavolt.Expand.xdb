@@ -62,5 +62,8 @@
 		<MemberSubsystemTemplate Name="GVSwitchCabinetBlockBehavior" Guid="7b36f114-97ff-41c2-b086-0c8324fcdbed" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="4368f29f-17a1-46ec-ab3b-4bed4511fe85" Value="Game.SubsystemGVSwitchCabinetBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVButtonCabinetBlockBehavior" Guid="0ee27acb-1953-4a93-9599-15e02abdea8a" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="99c7adbe-8494-4f99-98f0-bd900f8a49eb" Value="Game.SubsystemGVButtonCabinetBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

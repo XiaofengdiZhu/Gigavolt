@@ -41,10 +41,6 @@ namespace Game {
                     Dismiss(true, voltage);
                 }
                 else {
-                    if (m_gigaVoltageLevelButton.Text.Length == 0
-                        || m_durationTextBox.Text.Length == 0) {
-                        Dismiss(false);
-                    }
                     string typeName = GetType().Name;
                     DialogsManager.ShowDialog(
                         null,

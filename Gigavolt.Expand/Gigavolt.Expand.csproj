@@ -135,6 +135,10 @@
 		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs"/>
 		<Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs"/>
 		<Compile Include="MoreSensors\TerrainScanner\TerrainScannerGVElectricElement.cs"/>
+		<Compile Include="MoreSources\ButtonCabinet\EditGVButtonCabinetDialog.cs"/>
+		<Compile Include="MoreSources\ButtonCabinet\GVButtonCabinetBlock.cs"/>
+		<Compile Include="MoreSources\ButtonCabinet\SubsystemGVButtonCabinetBlockBehavior.cs"/>
+		<Compile Include="MoreSources\ButtonCabinet\ButtonCabinetGVElectricElement.cs"/>
 		<Compile Include="MoreSources\SignalGenerator\GVSignalGeneratorBlock.cs"/>
 		<Compile Include="MoreSources\SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
 		<Compile Include="MoreSources\SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
@@ -456,6 +460,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVSwitchCabinetBlock.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Dialogs\EditGVButtonCabinetDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

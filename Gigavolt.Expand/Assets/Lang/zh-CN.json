@@ -298,6 +298,10 @@
     "GVSwitchCabinetBlock:0": {
       "DisplayName": "GV开关柜",
       "Description": "拥有14色开关的开关柜，可直接与总线相连，输出电压固定为0xFFFFFFFF V"
+    },
+    "GVButtonCabinetBlock:0": {
+      "DisplayName": "GV按钮柜",
+      "Description": "拥有14色按钮的按钮柜，可直接与总线相连，输出电压固定为0xFFFFFFFF V，可编辑持续周期，不会被投掷物击中而触发"
     }
   },
   "ContentWidgets": {
@@ -373,6 +377,15 @@
       "3": "右端 {0} V",
       "4": "下端 {0} V",
       "5": "左端 {0} V"
+    },
+    "EditGVButtonCabinetDialog": {
+      "1": "编辑按钮柜",
+      "4": "确定",
+      "5": "取消",
+      "6": "持续周期：",
+      "7": "（十进制，2至16383）",
+      "8": "发生错误",
+      "9": "输入的数字不符合要求"
     }
   }
 }

@@ -4,20 +4,20 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVSwitchCabinetBlock : MountedGVElectricElementBlock {
-        public class StateInfo {
+    public class GVButtonCabinetBlock : MountedGVElectricElementBlock {
+        public class FaceInfo {
             public BlockMesh BaseBlockMesh;
-            public BlockMesh SwitchBodyBlockMesh;
-            public BlockMesh SwitchLeverBlockMesh;
+            public BlockMesh ButtonBodyBlockMesh;
+            public BlockMesh ButtonTopBlockMesh;
             public BoundingBox[] TopCollisionBoxes;
-            public BoundingBox[] BottomCollisionBoxes;
+            public BoundingBox[] ButtonCollisionBoxes;
         }
 
         Texture2D m_baseTexture;
         public readonly BlockMesh m_standaloneBaseBlockMesh = new();
-        public readonly BlockMesh m_standaloneSwitchBodyBlockMesh = new();
-        public readonly BlockMesh m_standaloneSwitchLeverBlockMesh = new();
-        readonly Dictionary<int, StateInfo> m_cachedStateInfos = new();
+        public readonly BlockMesh m_standaloneButtonBodyBlockMesh = new();
+        public readonly BlockMesh m_standaloneButtonTopBlockMesh = new();
+        readonly Dictionary<int, FaceInfo> m_cachedFaceInfos = new();
 
         public static readonly Point3[] m_upPoint3 = [
             Point3.UnitY,
@@ -68,13 +68,13 @@ namespace Game {
         public static ModelMesh m_baseModelMesh;
         public static ModelMeshPart m_baseModelMeshPart;
         public static Matrix m_baseBoneAbsoluteTransform;
-        public static Model m_switchModel;
-        public static ModelMesh m_switchBodyMesh;
-        public static ModelMeshPart m_switchBodyMeshPart;
-        public static Matrix m_switchBodyBoneAbsoluteTransform;
-        public static ModelMesh m_switchLeverMesh;
-        public static ModelMeshPart m_switchLeverMeshPart;
-        public static Matrix m_switchLeverBoneAbsoluteTransform;
+        public static Model m_buttonModel;
+        public static ModelMesh m_buttonBodyMesh;
+        public static ModelMeshPart m_buttonBodyMeshPart;
+        public static Matrix m_buttonBodyBoneAbsoluteTransform;
+        public static ModelMesh m_buttonTopMesh;
+        public static ModelMeshPart m_buttonTopMeshPart;
+        public static Matrix m_buttonTopBoneAbsoluteTransform;
 
         public override void Initialize() {
             m_baseTexture = ContentManager.Get<Texture2D>("Textures/GVSwitchCabinetBlock");
@@ -82,13 +82,13 @@ namespace Game {
                 m_baseModelMesh = ContentManager.Get<Model>("Models/GVSignalGenerator").FindMesh("GVSignalGenerator");
                 m_baseModelMeshPart = m_baseModelMesh.MeshParts[0];
                 m_baseBoneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(m_baseModelMesh.ParentBone);
-                m_switchModel = ContentManager.Get<Model>("Models/Switch");
-                m_switchBodyMesh = m_switchModel.FindMesh("Body");
-                m_switchBodyMeshPart = m_switchBodyMesh.MeshParts[0];
-                m_switchBodyBoneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(m_switchBodyMesh.ParentBone);
-                m_switchLeverMesh = m_switchModel.FindMesh("Lever");
-                m_switchLeverMeshPart = m_switchLeverMesh.MeshParts[0];
-                m_switchLeverBoneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(m_switchLeverMesh.ParentBone);
+                m_buttonModel = ContentManager.Get<Model>("Models/GVButton");
+                m_buttonBodyMesh = m_buttonModel.FindMesh("Button");
+                m_buttonBodyMeshPart = m_buttonBodyMesh.MeshParts[0];
+                m_buttonBodyBoneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(m_buttonBodyMesh.ParentBone);
+                m_buttonTopMesh = m_buttonModel.FindMesh("Top");
+                m_buttonTopMeshPart = m_buttonTopMesh.MeshParts[0];
+                m_buttonTopBoneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(m_buttonTopMesh.ParentBone);
                 m_modelsNotInitialized = true;
             }
             Matrix standaloneMatrix = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
@@ -101,11 +101,13 @@ namespace Game {
                 false,
                 Color.White
             );
+            BlockMesh buttonBodyBlockMesh = new();
+            BlockMesh buttonTopBlockMesh = new();
             for (int colorIndex = 0; colorIndex < 14; colorIndex++) {
-                Matrix switchMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
-                m_standaloneSwitchBodyBlockMesh.AppendModelMeshPart(
-                    m_switchBodyMeshPart,
-                    m_switchBodyBoneAbsoluteTransform * switchMatrix * standaloneMatrix,
+                Matrix buttonMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
+                m_standaloneButtonBodyBlockMesh.AppendModelMeshPart(
+                    m_buttonBodyMeshPart,
+                    m_buttonBodyBoneAbsoluteTransform * buttonMatrix * standaloneMatrix,
                     false,
                     false,
                     false,
@@ -113,9 +115,9 @@ namespace Game {
                     Color.White
                 );
                 int color = ColorIndex2Color[colorIndex];
-                m_standaloneSwitchLeverBlockMesh.AppendModelMeshPart(
-                    m_switchLeverMeshPart,
-                    m_switchLeverBoneAbsoluteTransform * Matrix.CreateRotationX(MathF.PI / 6) * switchMatrix * standaloneMatrix,
+                m_standaloneButtonTopBlockMesh.AppendModelMeshPart(
+                    m_buttonTopMeshPart,
+                    m_buttonTopBoneAbsoluteTransform * buttonMatrix * standaloneMatrix,
                     false,
                     false,
                     false,
@@ -147,7 +149,7 @@ namespace Game {
                     if (!GetIsTopPart(anotherData)) {
                         GVElectricElement[] result = new GVElectricElement[16];
                         for (int color = 0; color < 16; color++) {
-                            result[color] = new SwitchCabinetGVElectricElement(
+                            result[color] = new ButtonCabinetGVElectricElement(
                                 subsystemGVElectricity,
                                 [
                                     new GVCellFace(
@@ -166,7 +168,7 @@ namespace Game {
                                     )
                                 ],
                                 subterrainId,
-                                GetLeverState(data, color)
+                                GetDuration(data)
                             );
                         }
                         return result;
@@ -188,7 +190,7 @@ namespace Game {
             );
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
-                m_standaloneSwitchBodyBlockMesh,
+                m_standaloneButtonBodyBlockMesh,
                 color,
                 2f * size,
                 ref matrix,
@@ -196,7 +198,7 @@ namespace Game {
             );
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
-                m_standaloneSwitchLeverBlockMesh,
+                m_standaloneButtonTopBlockMesh,
                 GVStaticStorage.WhiteTexture,
                 color,
                 2f * size,
@@ -208,7 +210,7 @@ namespace Game {
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
             int data = Terrain.ExtractData(value);
             if (!GetIsTopPart(data)) {
-                StateInfo stateInfo = GetStateInfo(GetState(data));
+                FaceInfo stateInfo = GetFaceInfo(GetFaceFromDataStatic(data));
                 generator.GenerateMeshVertices(
                     this,
                     x,
@@ -224,7 +226,7 @@ namespace Game {
                     x,
                     y,
                     z,
-                    stateInfo.SwitchBodyBlockMesh,
+                    stateInfo.ButtonBodyBlockMesh,
                     Color.White,
                     null,
                     geometry.SubsetOpaque
@@ -234,7 +236,7 @@ namespace Game {
                     x,
                     y,
                     z,
-                    stateInfo.SwitchLeverBlockMesh,
+                    stateInfo.ButtonTopBlockMesh,
                     Color.White,
                     null,
                     geometry.GetGeometry(GVStaticStorage.WhiteTexture).SubsetOpaque
@@ -255,19 +257,19 @@ namespace Game {
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {
             int data = Terrain.ExtractData(value);
-            StateInfo stateInfo = GetStateInfo(GetState(data));
-            return GetIsTopPart(data) ? stateInfo.TopCollisionBoxes : stateInfo.BottomCollisionBoxes;
+            FaceInfo stateInfo = GetFaceInfo(GetFaceFromDataStatic(data));
+            return GetIsTopPart(data) ? stateInfo.TopCollisionBoxes : stateInfo.ButtonCollisionBoxes;
         }
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
-            result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetFace(0, raycastResult.CellFace.Face));
+            result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetFace(Terrain.ExtractData(value), raycastResult.CellFace.Face));
             result.CellFace = raycastResult.CellFace;
             return result;
         }
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
-            dropValues.Add(new BlockDropValue { Value = BlockIndex, Count = 1 });
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetDuration(0, GetDuration(Terrain.ExtractData(oldValue)))), Count = 1 });
             showDebris = DestructionDebrisScale > 0f;
         }
 
@@ -287,34 +289,22 @@ namespace Game {
         public static bool GetIsTopPart(int data) => (data & 131072) != 0;
         public static int SetIsTopPart(int data, bool isUp) => (data & -131073) | (isUp ? 131072 : 0);
 
-        public static bool GetLeverState(int data, int color) {
-            int colorIndex = Color2ColorIndex[color];
-            if (colorIndex < 0) {
-                return false;
-            }
-            return (data & (1 << (colorIndex + 3))) != 0;
+        public static int GetDuration(int data) {
+            int result = (data >> 3) & 16383;
+            return result == 0 ? 10 : result;
         }
 
-        public static int SetLeverState(int data, int color, bool state) {
-            int colorIndex = Color2ColorIndex[color];
-            if (colorIndex < 0) {
-                return data;
-            }
-            return (data & (-1 - (1 << (colorIndex + 3)))) | (state ? 1 << (colorIndex + 3) : 0);
-        }
+        public static int SetDuration(int data, int duration) => (data & -131065) | (((duration == 10 ? 0 : duration) & 16383) << 3);
 
-        public static int GetState(int data) => data & 131071;
-
-        public StateInfo GetStateInfo(int state) {
-            if (!m_cachedStateInfos.TryGetValue(state, out StateInfo result)) {
-                result = GenerateStateInfo(state);
-                m_cachedStateInfos.Add(state, result);
+        public FaceInfo GetFaceInfo(int face) {
+            if (!m_cachedFaceInfos.TryGetValue(face, out FaceInfo result)) {
+                result = GenerateStateInfo(face);
+                m_cachedFaceInfos.Add(face, result);
             }
             return result;
         }
 
-        public StateInfo GenerateStateInfo(int state) {
-            int face = GetFaceFromDataStatic(state);
+        public FaceInfo GenerateStateInfo(int face) {
             float radians;
             bool flag;
             if (face < 4) {
@@ -346,14 +336,14 @@ namespace Game {
             bottomCollisionBoxes[0] = baseBoundingBox;
             Vector3 downTranslation = new(-m_upPoint3[face]);
             topCollisionBoxes[0] = new BoundingBox(baseBoundingBox.Min + downTranslation, baseBoundingBox.Max + downTranslation);
-            BoundingBox firstSwitchBoundingBox = default;
-            BlockMesh switchBodyBlockMesh = new();
-            BlockMesh switchLeverBlockMesh = new();
+            BoundingBox firstButtonBoundingBox = default;
+            BlockMesh buttonBodyBlockMesh = new();
+            BlockMesh buttonTopBlockMesh = new();
             for (int colorIndex = 0; colorIndex < 14; colorIndex++) {
-                Matrix switchMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
-                switchBodyBlockMesh.AppendModelMeshPart(
-                    m_switchBodyMeshPart,
-                    m_switchBodyBoneAbsoluteTransform * switchMatrix * m,
+                Matrix buttonMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
+                buttonBodyBlockMesh.AppendModelMeshPart(
+                    m_buttonBodyMeshPart,
+                    m_buttonBodyBoneAbsoluteTransform * buttonMatrix * m,
                     false,
                     false,
                     false,
@@ -361,9 +351,9 @@ namespace Game {
                     Color.White
                 );
                 int color = ColorIndex2Color[colorIndex];
-                switchLeverBlockMesh.AppendModelMeshPart(
-                    m_switchLeverMeshPart,
-                    m_switchLeverBoneAbsoluteTransform * (GetLeverState(state, color) ? Matrix.CreateRotationX(-MathF.PI / 6) : Matrix.CreateRotationX(MathF.PI / 6)) * switchMatrix * m,
+                buttonTopBlockMesh.AppendModelMeshPart(
+                    m_buttonTopMeshPart,
+                    m_buttonTopBoneAbsoluteTransform * buttonMatrix * m,
                     false,
                     false,
                     false,
@@ -372,9 +362,9 @@ namespace Game {
                 );
                 int collisionBoxIndex = colorIndex + 1;
                 if (colorIndex == 0) {
-                    firstSwitchBoundingBox = switchBodyBlockMesh.CalculateBoundingBox();
-                    bottomCollisionBoxes[collisionBoxIndex] = firstSwitchBoundingBox;
-                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstSwitchBoundingBox.Min + downTranslation, firstSwitchBoundingBox.Max + downTranslation);
+                    firstButtonBoundingBox = buttonBodyBlockMesh.CalculateBoundingBox();
+                    bottomCollisionBoxes[collisionBoxIndex] = firstButtonBoundingBox;
+                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstButtonBoundingBox.Min + downTranslation, firstButtonBoundingBox.Max + downTranslation);
                 }
                 else {
                     Vector3 down = new(-m_upPoint3[face]);
@@ -382,16 +372,16 @@ namespace Game {
                     if (colorIndex >= 7) {
                         transition += Vector3.Cross(down, CellFace.FaceToVector3(face)) * 0.2f;
                     }
-                    bottomCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstSwitchBoundingBox.Min + transition, firstSwitchBoundingBox.Max + transition);
-                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstSwitchBoundingBox.Min + downTranslation + transition, firstSwitchBoundingBox.Max + downTranslation + transition);
+                    bottomCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstButtonBoundingBox.Min + transition, firstButtonBoundingBox.Max + transition);
+                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstButtonBoundingBox.Min + downTranslation + transition, firstButtonBoundingBox.Max + downTranslation + transition);
                 }
             }
-            return new StateInfo {
+            return new FaceInfo {
                 BaseBlockMesh = baseBlockMesh,
-                SwitchBodyBlockMesh = switchBodyBlockMesh,
-                SwitchLeverBlockMesh = switchLeverBlockMesh,
+                ButtonBodyBlockMesh = buttonBodyBlockMesh,
+                ButtonTopBlockMesh = buttonTopBlockMesh,
                 TopCollisionBoxes = topCollisionBoxes,
-                BottomCollisionBoxes = bottomCollisionBoxes
+                ButtonCollisionBoxes = bottomCollisionBoxes
             };
         }
     }
