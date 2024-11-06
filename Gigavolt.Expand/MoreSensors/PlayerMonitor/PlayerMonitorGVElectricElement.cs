@@ -176,7 +176,7 @@ namespace Game {
                                 uint[] m_hookedImage = new uint[Window.Size.X * Window.Size.Y];
                                 GCHandle gcHandle = GCHandle.Alloc(m_hookedImage, GCHandleType.Pinned);
                                 switch (VersionsManager.Platform) {
-                                    case Platform.Desktop:
+                                    case Platform.Windows:
                                         WindowsGLReadPixels(Window.Size.X, Window.Size.Y, gcHandle.AddrOfPinnedObject());
                                         break;
                                     case Platform.Android:

@@ -140,7 +140,7 @@ namespace Game {
         public void SetPath(string path) {
             if (string.IsNullOrEmpty(path)) {
                 switch (VersionsManager.Platform) {
-                    case Platform.Desktop:
+                    case Platform.Windows:
                         path = AppDomain.CurrentDomain.BaseDirectory;
                         break;
                     case Platform.Android:

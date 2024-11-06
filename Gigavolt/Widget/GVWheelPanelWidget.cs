@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Engine;
@@ -222,7 +222,7 @@ namespace Game {
                             }
                             break;
                         case GVBlockHelperWidget.DisplayMode.Description:
-                            ScreensManager.SwitchScreen("RecipaediaDescription", [value, new List<int> { value }]);
+                            ScreensManager.SwitchScreen("RecipaediaDescription", value, new List<int> { value });
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             break;
                         case GVBlockHelperWidget.DisplayMode.Duplicate:

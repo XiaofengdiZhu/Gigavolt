@@ -12,7 +12,7 @@ namespace Game {
 
         public readonly Dictionary<uint, HashSet<GV8x4GlowPoint>> m_glowPoints = new();
         public readonly PrimitivesRenderer3D m_primitivesRenderer = new();
-        public readonly Dictionary<uint, TexturedBatch3D>[] batchCache = [new Dictionary<uint, TexturedBatch3D>(), new Dictionary<uint, TexturedBatch3D>(), new Dictionary<uint, TexturedBatch3D>()];
+        public readonly Dictionary<uint, TexturedBatch3D>[] batchCache = [new(), new(), new()];
 
         public int[] DrawOrders => [110];
 

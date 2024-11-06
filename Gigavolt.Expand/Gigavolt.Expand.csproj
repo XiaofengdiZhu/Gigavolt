@@ -51,14 +51,14 @@
 		</ProjectReference>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Jint" Version="4.0.3"/>
+		<PackageReference Include="Jint" Version="4.1.0"/>
 		<PackageReference Include="OpenTK" Version="3.3.3.0">
 			<Aliases>OpenTKForWindows</Aliases>
 		</PackageReference>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2.1"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2.1"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2.1"/>
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2.2"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2.2"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2.2"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="GigavoltExpandModLoader.cs"/>

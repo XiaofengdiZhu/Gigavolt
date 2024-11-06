@@ -25,14 +25,14 @@ namespace Game {
         public readonly ButtonWidget m_linesButton;
 
         public readonly Color[] m_colors = [
-            new Color(0, 0, 0),
-            new Color(140, 0, 0),
-            new Color(0, 112, 0),
-            new Color(0, 0, 96),
-            new Color(160, 0, 128),
-            new Color(0, 112, 112),
-            new Color(160, 112, 0),
-            new Color(180, 180, 180)
+            new(0, 0, 0),
+            new(140, 0, 0),
+            new(0, 112, 0),
+            new(0, 0, 96),
+            new(160, 0, 128),
+            new(0, 112, 112),
+            new(160, 112, 0),
+            new(180, 180, 180)
         ];
 
         public EditGVSignCDialog(SubsystemGVSignBlockCBehavior subsystemSignBlockBehavior, Point3 signPoint) {

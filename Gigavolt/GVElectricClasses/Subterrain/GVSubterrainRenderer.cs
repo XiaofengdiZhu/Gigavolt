@@ -26,7 +26,7 @@ namespace Game {
             m_subsystemSky = project.FindSubsystem<SubsystemSky>(true);
             m_subsystemAnimatedTextures = project.FindSubsystem<SubsystemAnimatedTextures>(true);
             OpaqueShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"));
-            AlphatestedShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"), [new ShaderMacro("ALPHATESTED")]);
+            AlphatestedShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"), new ShaderMacro("ALPHATESTED"));
             TransparentShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.psh"));
             Display.DeviceReset += Display_DeviceReset;
         }

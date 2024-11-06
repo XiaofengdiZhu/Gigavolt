@@ -147,7 +147,7 @@ namespace Engine.Graphics {
                 GLWrapper.ApplyDepthStencilState(Display.DepthStencilState);
                 GLWrapper.ApplyBlendState(Display.BlendState);
                 switch (VersionsManager.Platform) {
-                    case Platform.Desktop:
+                    case Platform.Windows:
                         WindowsGLDrawElements(primitiveType, indicesCount, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
                         break;
                     case Platform.Android:

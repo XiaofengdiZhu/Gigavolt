@@ -1653,9 +1653,7 @@ namespace Game {
                             for (int k = key.Z - 1; k <= key.Z + 1; k++) {
                                 for (int l = 0; l < 6; l++) {
                                     m_tmpResult.Clear();
-                                    if (terrain.GetChunkAtCell(i, k) is not {
-                                            AreBehaviorsNotified: true
-                                        }) {
+                                    if (terrain.GetChunkAtCell(i, k) is not { AreBehaviorsNotified: true }) {
                                         continue;
                                     }
                                     int cellValue = terrain.GetCellValue(i, j, k);
@@ -1747,9 +1745,7 @@ namespace Game {
                 if (visited.Contains(key)) {
                     continue;
                 }
-                if (terrain.GetChunkAtCell(key.X, key.Z) is not {
-                        AreBehaviorsNotified: true
-                    }) {
+                if (terrain.GetChunkAtCell(key.X, key.Z) is not { AreBehaviorsNotified: true }) {
                     continue;
                 }
                 int cellValue = terrain.GetCellValue(key.X, key.Y, key.Z);

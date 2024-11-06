@@ -36,9 +36,7 @@ namespace Game {
                     cellFace.Z,
                     cellFace.Face,
                     subterrainId
-                ) is CounterGVElectricElement {
-                    m_edited: true
-                } electricElement) {
+                ) is CounterGVElectricElement { m_edited: true } electricElement) {
                 m_counter = electricElement.m_counter;
                 m_edited = true;
             }

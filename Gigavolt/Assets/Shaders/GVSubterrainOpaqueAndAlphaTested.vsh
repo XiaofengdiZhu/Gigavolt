@@ -20,7 +20,7 @@ void main()
 {
     v_texcoord = a_texcoord;
     v_color = a_color;
-    
+
     a_position = u_subterrainTransform * vec4(a_position, 1.0);
     gl_Position = u_viewProjectionMatrix * vec4(a_position.x - u_origin.x, a_position.y, a_position.z - u_origin.y, 1.0);
 

@@ -13,23 +13,23 @@ namespace Game {
         public Color m_color;
 
         public readonly Vector2[] m_centers = [
-            new Vector2(0f, 6f),
-            new Vector2(-4f, 3f),
-            new Vector2(-4f, -3f),
-            new Vector2(0f, -6f),
-            new Vector2(4f, -3f),
-            new Vector2(4f, 3f),
-            new Vector2(0f, 0f)
+            new(0f, 6f),
+            new(-4f, 3f),
+            new(-4f, -3f),
+            new(0f, -6f),
+            new(4f, -3f),
+            new(4f, 3f),
+            new(0f, 0f)
         ];
 
         public readonly Vector2[] m_sizes = [
-            new Vector2(3.2f, 1f),
-            new Vector2(1f, 2.3f),
-            new Vector2(1f, 2.3f),
-            new Vector2(3.2f, 1f),
-            new Vector2(1f, 2.3f),
-            new Vector2(1f, 2.3f),
-            new Vector2(3.2f, 1f)
+            new(3.2f, 1f),
+            new(1f, 2.3f),
+            new(1f, 2.3f),
+            new(3.2f, 1f),
+            new(1f, 2.3f),
+            new(1f, 2.3f),
+            new(3.2f, 1f)
         ];
 
         public readonly int[] m_patterns = [

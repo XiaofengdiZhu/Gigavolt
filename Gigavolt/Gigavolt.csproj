@@ -47,9 +47,9 @@
 	<ItemGroup>
 		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" GeneratePathProperty="true"/>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2.1"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2.1"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2.1"/>
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2.2"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2.2"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2.2"/>
 		<PackageReference Include="CoreCLR-NCalc-Mod" Version="3.1.1" GeneratePathProperty="true"/>
 	</ItemGroup>
 	<ItemGroup>

@@ -22,21 +22,21 @@ namespace Game {
         ];
 
         public static readonly Point3[] m_faceToPoint3 = [
-            new Point3(0, 0, 1),
-            new Point3(1, 0, 0),
-            new Point3(0, 0, -1),
-            new Point3(-1, 0, 0),
-            new Point3(0, 1, 0),
-            new Point3(0, -1, 0)
+            new(0, 0, 1),
+            new(1, 0, 0),
+            new(0, 0, -1),
+            new(-1, 0, 0),
+            new(0, 1, 0),
+            new(0, -1, 0)
         ];
 
         public static readonly Vector3[] m_faceToVector3 = [
-            new Vector3(0f, 0f, 1f),
-            new Vector3(1f, 0f, 0f),
-            new Vector3(0f, 0f, -1f),
-            new Vector3(-1f, 0f, 0f),
-            new Vector3(0f, 1f, 0f),
-            new Vector3(0f, -1f, 0f)
+            new(0f, 0f, 1f),
+            new(1f, 0f, 0f),
+            new(0f, 0f, -1f),
+            new(-1f, 0f, 0f),
+            new(0f, 1f, 0f),
+            new(0f, -1f, 0f)
         ];
 
         public Point3 Point {

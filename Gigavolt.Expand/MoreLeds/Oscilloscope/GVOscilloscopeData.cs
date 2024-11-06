@@ -166,7 +166,7 @@ namespace Game {
                     m_waveBatch.FlushBackground();
                 }
                 switch (VersionsManager.Platform) {
-                    case Platform.Desktop:
+                    case Platform.Windows:
                         WindowsEnableGLPointSize();
                         break;
                     case Platform.Android:

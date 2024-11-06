@@ -9,7 +9,14 @@ namespace Game {
         public bool Pulling;
         public bool Strict;
 
-        public IEditableItemData Copy() => new GVPistonData { MaxExtension = MaxExtension, PullCount = PullCount, Speed = Speed, Transparent = Transparent, Pulling = Pulling, Strict = Strict};
+        public IEditableItemData Copy() => new GVPistonData {
+            MaxExtension = MaxExtension,
+            PullCount = PullCount,
+            Speed = Speed,
+            Transparent = Transparent,
+            Pulling = Pulling,
+            Strict = Strict
+        };
 
         public void LoadString(string data) {
             string[] arr = data.Split(',');
