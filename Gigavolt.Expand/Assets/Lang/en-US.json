@@ -301,7 +301,7 @@
     },
     "GVButtonCabinetBlock:0": {
       "DisplayName": "GV Button Cabinet",
-      "Description": "A Button Cabinet has 14 colored buttons, and it can be connected to wire harness. The output voltage is fixed at 0xFFFFFFFF V. The output duration can be edited. It can not be triggered by a projectile striking it."
+      "Description": "A Button Cabinet has 14 colored buttons, and it can be connected to wire harnesses. The output voltage is fixed at 0xFFFFFFFF V. The output duration can be edited. It cannot be triggered by a projectile striking it."
     }
   },
   "ContentWidgets": {

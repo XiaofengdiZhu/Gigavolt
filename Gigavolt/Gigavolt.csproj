@@ -14,11 +14,11 @@
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateDependencyFile>false</GenerateDependencyFile>
-		<Prefer32Bit>false</Prefer32Bit>
+		<ErrorReport>prompt</ErrorReport>
 		<Title>Gigavolt 十亿伏特</Title>
-		<Authors>销锋镝铸 XiaofengdiZhu</Authors>
-		<Description>A mod for Survivalcraft that take a new Electric system with Gigavolt to the game. 一个为生存战争游戏带来十亿伏特电力系统的mod。</Description>
-		<Copyright>销锋镝铸 XiaofengdiZhu</Copyright>
+		<Authors>XiaofengdiZhu 销锋镝铸</Authors>
+		<Description>A mod for Survivalcraft that takes a new Electric system with Gigavolt to the game. 一个为生存战争游戏带来十亿伏特电力系统的mod。</Description>
+		<Copyright>XiaofengdiZhu 销锋镝铸</Copyright>
 		<PackageProjectUrl>https://xiaofengdizhu.github.io/GigavoltDoc/</PackageProjectUrl>
 		<PackageLicenseUrl>https://raw.githubusercontent.com/XiaofengdiZhu/Gigavolt/refs/heads/main/LICENSE.txt</PackageLicenseUrl>
 		<RepositoryUrl>https://xiaofengdizhu.github.io/Gigavolt/</RepositoryUrl>
@@ -28,21 +28,12 @@
 		<FileVersion>2.0.0</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
+		<DebugType>pdbonly</DebugType>
 		<OutputPath>bin\Debug\</OutputPath>
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<DebugType>none</DebugType>
-		<Optimize>true</Optimize>
 		<OutputPath>bin\Release\</OutputPath>
-		<DefineConstants>TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" GeneratePathProperty="true"/>
