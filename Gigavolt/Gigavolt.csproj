@@ -52,25 +52,25 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>NCalc.dll</TargetPath>
 		</None>
-		<None Update="Assets\Textures\GV8NumberLed.png">
+		<None Update="Assets\Textures\GV8NumberLed.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\Gui\GVCopy.png">
+		<None Update="Assets\Textures\Gui\GVCopy.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\Gui\GVDelete.png">
+		<None Update="Assets\Textures\Gui\GVDelete.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\Gui\GVContinue.png">
+		<None Update="Assets\Textures\Gui\GVContinue.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\Gui\GVPause.png">
+		<None Update="Assets\Textures\Gui\GVPause.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\Gui\GVStep.png">
+		<None Update="Assets\Textures\Gui\GVStep.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\Gui\GVJump.png">
+		<None Update="Assets\Textures\Gui\GVJump.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Shaders\GVSubterrainOpaqueAndAlphaTested.psh">
@@ -85,10 +85,10 @@
 		<None Update="Assets\Shaders\GVSubterrainTransparent.vsh">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\Gui\GVMouseScroll.png">
+		<None Update="Assets\Textures\Gui\GVMouseScroll.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\Gui\GVRecipaedia.png">
+		<None Update="Assets\Textures\Gui\GVRecipaedia.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Lang\en-US.json">
@@ -350,55 +350,55 @@
 		<None Include="icon.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock16-4.png">
+		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock16-4.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock32-8.png">
+		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock32-8.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock4-1.png">
+		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock4-1.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock8-2.png">
+		<None Include="Assets\Textures\GVAnalogToDigitalConverterBlock8-2.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock1-4.png">
+		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock1-4.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock2-8.png">
+		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock2-8.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock4-16.png">
+		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock4-16.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock8-32.png">
+		<None Include="Assets\Textures\GVDigitalToAnalogConverterBlock8-32.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Dialogs\EditGVSignDialog.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GV2OTransformer.png">
+		<None Include="Assets\Textures\GV2OTransformer.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\O2GVTransformer.png">
+		<None Include="Assets\Textures\O2GVTransformer.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Widgets\GVDispenserWidget.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GV8NumberLedBlockFull.png">
+		<None Include="Assets\Textures\GV8NumberLedBlockFull.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVOneLedBlockEmpty.png">
+		<None Include="Assets\Textures\GVOneLedBlockEmpty.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GV4x2LedBlockFull.png">
+		<None Include="Assets\Textures\GV4x2LedBlockFull.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GV4x4LedBlockFull.png">
+		<None Include="Assets\Textures\GV4x4LedBlockFull.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GV8x4LedBlockFull.png">
+		<None Include="Assets\Textures\GV8x4LedBlockFull.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Models\GVAdjustableDelayGate.dae">
@@ -410,7 +410,7 @@
 		<None Update="Assets\Models\GVDebugTable.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVDebugBlock.png">
+		<None Update="Assets\Textures\GVDebugBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

@@ -209,11 +209,10 @@
 		<None Include="modinfo.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="packages.config"/>
-		<None Update="Assets\Textures\GVFourDimensionalMemoryBankBlock.png">
+		<None Update="Assets\Textures\GVFourDimensionalMemoryBankBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVVolatileFourDimensionalMemoryBankBlock.png">
+		<None Update="Assets\Textures\GVVolatileFourDimensionalMemoryBankBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Dialogs\EditGVFourDimensionalMemoryBankDialog.xml">
@@ -225,181 +224,181 @@
 		<None Include="icon.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Adder.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Adder.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Divider.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Divider.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Multiplier.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Multiplier.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Subtracter.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Subtracter.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Equaler.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Equaler.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Greater.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Greater.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\LeftShifter.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\LeftShifter.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Lesser.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Lesser.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Logarithmer.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Logarithmer.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Maximumer.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Maximumer.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Minimumer.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Minimumer.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoGreater.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoGreater.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoLesser.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoLesser.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Power.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Power.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Remainder.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Remainder.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\RightShifter.png">
+		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\RightShifter.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMultiplexerBlock.png">
+		<None Include="Assets\Textures\GVMultiplexerBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVJumpWireBlock.png">
+		<None Include="Assets\Textures\GVJumpWireBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVNesEmulatorBlock.png">
+		<None Include="Assets\Textures\GVNesEmulatorBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVPlayerControllerBlock.png">
+		<None Update="Assets\Textures\GVPlayerControllerBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock0.png">
+		<None Include="Assets\Textures\GVDisplayLedBlock0.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock1.png">
+		<None Include="Assets\Textures\GVDisplayLedBlock1.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock2.png">
+		<None Include="Assets\Textures\GVDisplayLedBlock2.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock3.png">
+		<None Include="Assets\Textures\GVDisplayLedBlock3.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock4.png">
+		<None Include="Assets\Textures\GVDisplayLedBlock4.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock5.png">
+		<None Include="Assets\Textures\GVDisplayLedBlock5.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVTerrainRaycastDetectorBlock.png">
+		<None Include="Assets\Textures\GVTerrainRaycastDetectorBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVTerrainScanner.png">
+		<None Include="Assets\Textures\GVTerrainScanner.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cos.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cos.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sin.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sin.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Acos.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Acos.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Asin.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Asin.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Atan.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Atan.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cosh.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cosh.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cot.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cot.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Csc.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Csc.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Deg2Rad.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Deg2Rad.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Rad2Deg.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Rad2Deg.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sec.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sec.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sinh.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sinh.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\SMR.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\SMR.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tan.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tan.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tanh.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tanh.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\TCR.png">
+		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\TCR.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVMemoryBanksOperatorBlock.png">
+		<None Include="Assets\Textures\GVMemoryBanksOperatorBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVFetcherBlock0.png">
+		<None Include="Assets\Textures\GVFetcherBlock0.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Models\GVFetcher.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVFetcherBlock2.png">
+		<None Include="Assets\Textures\GVFetcherBlock2.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVInventoryControllerBlock.png">
+		<None Include="Assets\Textures\GVInventoryControllerBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVVolatileMemoryBankBlock.png">
+		<None Include="Assets\Textures\GVVolatileMemoryBankBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Models\GVMemoryBank.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVListMemoryBankBlock.png">
+		<None Include="Assets\Textures\GVListMemoryBankBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVVolatileListMemoryBankBlock.png">
+		<None Include="Assets\Textures\GVVolatileListMemoryBankBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="Assets\Models\MoreProjectiles.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVJavascriptMicrocontrollerBlock.png">
+		<None Include="Assets\Textures\GVJavascriptMicrocontrollerBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\Textures\GVGuidedDispenserBlock.png">
+		<None Include="Assets\Textures\GVGuidedDispenserBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVPlayerMonitorBlock.png">
+		<None Update="Assets\Textures\GVPlayerMonitorBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVCameraBlock0.png">
+		<None Update="Assets\Textures\GVCameraBlock0.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVCameraBlock1.png">
+		<None Update="Assets\Textures\GVCameraBlock1.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Models\GVAttractor.dae">
@@ -408,7 +407,7 @@
 		<None Update="Assets\Models\GVSignalGenerator.dae">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVSignalGeneratorBlock.png">
+		<None Update="Assets\Textures\GVSignalGeneratorBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Shaders\GVOscilloscopeBackground.vsh">
@@ -432,37 +431,37 @@
 		<None Update="Assets\Shaders\GVOscilloscopeBlur.vsh">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVOscilloscopeArrowButton.png">
+		<None Update="Assets\Textures\GVOscilloscopeArrowButton.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVOscilloscopeAutoButton.png">
+		<None Update="Assets\Textures\GVOscilloscopeAutoButton.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVOscilloscopeMoonButton.png">
+		<None Update="Assets\Textures\GVOscilloscopeMoonButton.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVOscilloscopeSunButton.png">
+		<None Update="Assets\Textures\GVOscilloscopeSunButton.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\SCREENS\GVOscilloscopeScreen.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVOscilloscopeBlock.png">
+		<None Update="Assets\Textures\GVOscilloscopeBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVTractorBeamBlock.png">
+		<None Update="Assets\Textures\GVTractorBeamBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Lang\en-US.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVSolid8NumberLedBlockFull.png">
+		<None Update="Assets\Textures\GVSolid8NumberLedBlockFull.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVSolid8NumberLedBlock.png">
+		<None Update="Assets\Textures\GVSolid8NumberLedBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVSwitchCabinetBlock.png">
+		<None Update="Assets\Textures\GVSwitchCabinetBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Dialogs\EditGVButtonCabinetDialog.xml">
