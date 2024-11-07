@@ -764,56 +764,9 @@ namespace Game {
 
         public static bool IsBlockMovable(int value, int pistonFace, int y, out bool isEnd) {
             isEnd = false;
-            if (y is <= 0 or >= 255) {
-                return false;
-            }
-            int num = Terrain.ExtractContents(value);
-            Block block = BlocksManager.Blocks[num];
-            int data = Terrain.ExtractData(value);
-            switch (block) {
-                case CraftingTableBlock _:
-                case ChestBlock _:
-                case FurnaceBlock _:
-                case RottenPumpkinBlock _:
-                case CactusBlock _:
-                case DiamondBlock _:
-                case PumpkinBlock _:
-                case JackOLanternBlock _:
-                case BedrockBlock _:
-                case PistonHeadBlock _:
-                case GVPistonHeadBlock _:
-                case DispenserBlock _: return false;
-                case FurnitureBlock _: return true;
-                case PistonBlock _: return !PistonBlock.GetIsExtended(data);
-                case GVPistonBlock _: return !GVPistonBlock.GetIsExtended(data);
-                case DoorBlock _:
-                case TrapdoorBlock _:
-                case BottomSuckerBlock _: return false;
-                case MountedElectricElementBlock elementBlock:
-                    isEnd = true;
-                    return elementBlock.GetFace(value) == pistonFace;
-                case MountedGVElectricElementBlock GVElementBlock:
-                    isEnd = true;
-                    return GVElementBlock.GetFace(value) == pistonFace;
-                case LadderBlock _:
-                    isEnd = true;
-                    return pistonFace == LadderBlock.GetFace(data);
-                case AttachedSignBlock _:
-                    isEnd = true;
-                    return pistonFace == AttachedSignBlock.GetFace(data);
-                case GVSignBlock _:
-                    isEnd = true;
-                    return pistonFace == GVSignBlock.GetFace(data);
-                default: return !block.IsNonDuplicable_(value) && (block.IsCollidable_(value) || (!block.IsDiggingTransparent && block.DestructionDebrisScale == 0f));
-            }
+            return y is > 0 and < 255 && BlocksManager.Blocks[Terrain.ExtractContents(value)].IsMovableByPiston(value, pistonFace, y, out isEnd);
         }
 
-        public static bool IsBlockBlocking(int value, int y) {
-            if (y is <= 0 or >= 255) {
-                return true;
-            }
-            Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-            return block.IsCollidable_(value) || (!block.IsDiggingTransparent && block.DestructionDebrisScale == 0f);
-        }
+        public static bool IsBlockBlocking(int value, int y) => y is <= 0 or >= 255 || BlocksManager.Blocks[Terrain.ExtractContents(value)].IsBlockingPiston(value);
     }
 }

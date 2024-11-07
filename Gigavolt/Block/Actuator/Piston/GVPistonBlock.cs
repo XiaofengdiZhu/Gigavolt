@@ -196,5 +196,11 @@ namespace Game {
         }
 
         public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value) => true;
+
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd) {
+            int data = Terrain.ExtractData(value);
+            isEnd = false;
+            return !GetIsExtended(data);
+        }
     }
 }

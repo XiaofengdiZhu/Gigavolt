@@ -101,5 +101,10 @@ namespace Game {
         public static bool GetTransparent(int data) => ((data >> 6) & 1) == 1;
         public static int SetTransparent(int data, bool transparent) => (data & -65) | (transparent ? 64 : 0);
         public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value) => true;
+
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd) {
+            isEnd = false;
+            return false;
+        }
     }
 }

@@ -320,5 +320,10 @@ namespace Game {
             box = [boundingBox];
             m_cachedCollisionBoxes.Add(data, box);
         }
+
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd) {
+            isEnd = false;
+            return false;
+        }
     }
 }

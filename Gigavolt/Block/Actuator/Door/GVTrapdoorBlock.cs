@@ -247,9 +247,16 @@ namespace Game {
 
         public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
-            if (GetUpsideDown(data)) {
-                return GetOpen(data) != 0;
-            }
+            return GetUpsideDown(data) && GetOpen(data) != 0;
+        }
+
+        public override bool IsCollapseDestructibleBlock(int value) {
+            int data = Terrain.ExtractData(value);
+            return !GetUpsideDown(data) || GetOpen(data) == 0;
+        }
+
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd) {
+            isEnd = false;
             return false;
         }
     }

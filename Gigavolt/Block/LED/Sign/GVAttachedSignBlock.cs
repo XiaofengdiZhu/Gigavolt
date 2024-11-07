@@ -228,5 +228,11 @@ namespace Game {
             }
             return data & -125;
         }
+
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd) {
+            isEnd = true;
+            int data = Terrain.ExtractData(value);
+            return pistonFace == GetFace(data);
+        }
     }
 }
