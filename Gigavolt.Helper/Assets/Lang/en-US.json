@@ -1,11 +1,11 @@
 ﻿{
   "Language": {
-    "Name": "中文"
+    "Name": "English"
   },
   "ContentWidgets": {
     "GVHelpTopicScreen": {
-      "1": "十亿伏特文档",
-      "2": "复制网址 "
+      "1": "Gigavolt Doc",
+      "2": "Copy URL "
     }
   }
 }

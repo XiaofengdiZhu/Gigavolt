@@ -51,6 +51,7 @@
 		<ProjectReference Include="reference\XamariNES\XamariNES.csproj">
 			<Project>{5875710C-1FDC-4CC1-9B58-FB6704900075}</Project>
 			<Private>True</Private>
+			<PrivateAssets>all</PrivateAssets>
 		</ProjectReference>
 	</ItemGroup>
 	<ItemGroup>

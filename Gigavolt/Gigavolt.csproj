@@ -96,7 +96,9 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="BaseBlock\GVBaseBlock.cs"/>
 		<Compile Include="BaseBlock\GVBaseSignBlock.cs"/>
+		<Compile Include="BaseBlock\IGVBaseBlock.cs"/>
 		<Compile Include="BaseBlock\IGVCustomWheelPanelBlock.cs"/>
 		<Compile Include="Block\Furniture\ButtonFurnitureGVElectricElement.cs"/>
 		<Compile Include="Block\Furniture\FurnitureGVElectricElement.cs"/>

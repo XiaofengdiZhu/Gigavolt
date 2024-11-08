@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVInventoryFetcherBlock : Block, IGVElectricElementBlock {
+    public class GVInventoryFetcherBlock : GVBaseBlock, IGVElectricElementBlock {
         public const int Index = 885;
 
         public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[32];

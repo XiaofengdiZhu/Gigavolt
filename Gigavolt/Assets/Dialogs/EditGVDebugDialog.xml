@@ -23,11 +23,6 @@
 						<CanvasWidget Size="20, 0"/>
 						<CheckboxWidget Name="EditGVDebugDialog.PreventChunkFromBeingFree" CheckboxSize="24, 24" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
 					</StackPanelWidget>
-					<StackPanelWidget Name="EditGVDebugDialog.GVHelperPanel" Direction="Horizontal" HorizontalAlignment="Center" Margin="0, 10" IsVisible="false">
-						<LabelWidget Text="[EditGVDebugDialog:9]" WordWrap="true" VerticalAlignment="Center"/>
-						<CanvasWidget Size="20, 0"/>
-						<CheckboxWidget Name="EditGVDebugDialog.GVHelperSlotActive" CheckboxSize="24, 24" IsAutoCheckingEnabled="false" Margin="0, 10" VerticalAlignment="Center"/>
-					</StackPanelWidget>
 					<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="0, 10">
 						<LabelWidget Text="[EditGVDebugDialog:10]" WordWrap="true" VerticalAlignment="Center"/>
 						<CanvasWidget Size="20, 0"/>

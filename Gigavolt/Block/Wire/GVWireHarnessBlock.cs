@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVWireHarnessBlock : Block, IGVElectricWireElementBlock, IGVCustomWheelPanelBlock {
+    public class GVWireHarnessBlock : GVBaseBlock, IGVElectricWireElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 890;
         public readonly BlockMesh m_standaloneBlockMesh = new();
         public readonly BoundingBox[] m_collisionBoxesByFace = new BoundingBox[6];

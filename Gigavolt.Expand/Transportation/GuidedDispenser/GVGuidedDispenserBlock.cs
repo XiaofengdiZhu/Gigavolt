@@ -1,8 +1,9 @@
+using System;
 using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVGuidedDispenserBlock : CubeBlock, IGVElectricElementBlock {
+    public class GVGuidedDispenserBlock : CubeBlock, IGVElectricElementBlock, IGVBaseBlock {
         public enum Mode { Dispense, Shoot }
 
         public const int Index = 880;
@@ -104,5 +105,8 @@ namespace Game {
             isEnd = false;
             return false;
         }
+
+        public Func<int, RecipaediaDescriptionScreen> GetBlockDescriptionScreenHandler { get; set; } = _ => IGVBaseBlock.DefaultRecipaediaDescriptionScreen;
+        public override RecipaediaDescriptionScreen GetBlockDescriptionScreen(int value) => GetBlockDescriptionScreenHandler(value);
     }
 }

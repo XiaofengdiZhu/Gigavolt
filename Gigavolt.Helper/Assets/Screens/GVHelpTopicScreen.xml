@@ -28,7 +28,8 @@
 					</CanvasWidget>
 				</BevelledButtonWidget>
 			</StackPanelWidget>
-			<CanvasWidget Size="Infinity, Infinity" Margin="0, 4">
+			<CanvasWidget Size="0, 4"/>
+			<CanvasWidget Size="Infinity, Infinity">
 				<ScrollPanelWidget Name="ScrollPanel" Direction="Vertical" ClampToBounds="true">
 					<RectangleWidget Name="GVHelpTopicScreen.Image" OutlineThickness="0" FillColor="255, 255, 255"/>
 				</ScrollPanelWidget>

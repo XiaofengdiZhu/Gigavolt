@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVDoorBlock : Block, IGVElectricElementBlock {
+    public class GVDoorBlock : GVBaseBlock, IGVElectricElementBlock {
         public readonly float m_pivotDistance = 0.0625f;
         public const int Index = 864;
 

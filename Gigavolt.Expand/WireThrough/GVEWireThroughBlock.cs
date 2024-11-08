@@ -3,7 +3,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVEWireThroughBlock : Block, IGVElectricWireElementBlock, IPaintableBlock {
+    public class GVEWireThroughBlock : GVBaseBlock, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 868;
 
         public readonly int[] m_wiredTextureSlot = [

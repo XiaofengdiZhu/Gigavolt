@@ -19,7 +19,7 @@ namespace Game {
             throw new KeyNotFoundException($"Block with name <{typeof(T).Name}> is not found.");
         }
 
-        public static T GetBlock<T>(bool findSubtypes = true, bool throwIfNotFound = true) where T : Block {
+        public static T GetBlock<T>(bool findSubtypes = true, bool throwIfNotFound = true) where T : GVBaseBlock {
             if (BlocksManager.Blocks[GetBlockIndex<T>(findSubtypes, throwIfNotFound)] is T result) {
                 return result;
             }

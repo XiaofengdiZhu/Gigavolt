@@ -3,7 +3,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVDebugBlock : Block, IGVElectricElementBlock {
+    public class GVDebugBlock : GVBaseBlock, IGVElectricElementBlock {
         public const int Index = 842;
 
         public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[4];

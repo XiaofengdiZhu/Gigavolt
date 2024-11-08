@@ -40,9 +40,6 @@ namespace Game {
 
         public static bool WheelPanelEnabled = true;
 
-        public static bool GVHelperAvailable = false;
-        public static bool GVHelperSlotActive = false;
-
         public static HashSet<TerrainChunk> EditableItemBehaviorChangedChunks = [];
 
         public static Texture2D WhiteTexture;

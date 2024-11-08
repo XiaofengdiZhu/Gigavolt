@@ -13,46 +13,36 @@
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateDependencyFile>false</GenerateDependencyFile>
+		<ErrorReport>prompt</ErrorReport>
+		<Title>Gigavolt.Helper 十亿伏特·帮助包</Title>
+		<Authors>XiaofengdiZhu 销锋镝铸</Authors>
+		<Description>A mod for Survivalcraft Gigavolt mod and its Expand mod that takes help. 一个为生存战争游戏十亿伏特mod及其扩展mod带来帮助包的mod。</Description>
+		<Copyright>XiaofengdiZhu 销锋镝铸</Copyright>
+		<PackageProjectUrl>https://xiaofengdizhu.github.io/GigavoltDoc/</PackageProjectUrl>
+		<PackageLicenseUrl>https://raw.githubusercontent.com/XiaofengdiZhu/Gigavolt/refs/heads/main/LICENSE.txt</PackageLicenseUrl>
+		<RepositoryUrl>https://xiaofengdizhu.github.io/Gigavolt/</RepositoryUrl>
+		<RepositoryType>GitHub</RepositoryType>
+		<Version>2.0.0</Version>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<FileVersion>2.0.0</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<PlatformTarget>AnyCPU</PlatformTarget>
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
+		<DebugType>pdbonly</DebugType>
 		<OutputPath>bin\Debug\</OutputPath>
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-		<PlatformTarget>AnyCPU</PlatformTarget>
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
+		<DebugType>none</DebugType>
 		<OutputPath>bin\Release\</OutputPath>
-		<DefineConstants>TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 	<ItemGroup>
-		<Reference Include="Engine">
-			<HintPath>..\Gigavolt\reference\Engine.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="EntitySystem">
-			<HintPath>..\Gigavolt\reference\EntitySystem.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Survivalcraft">
-			<HintPath>..\Gigavolt\reference\Survivalcraft.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2.2"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2.2"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2.2"/>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="ComponentGVHelper.cs"/>
-		<Compile Include="GVHelperInventorySlotWidget.cs"/>
+		<Compile Include="GVHelperModLoader.cs"/>
 		<Compile Include="GVHelpTopicScreen.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
-		<Compile Include="StaticGVHelper.cs"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Gigavolt.Expand\Gigavolt.Expand.csproj">
@@ -67,13 +57,7 @@
 		</ProjectReference>
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="Assets\Gigavolt.Helper.xdb">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 		<None Include="Assets\Lang\zh-CN.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Widgets\GVHelperInventorySlotWidget.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="modinfo.json">
@@ -82,60 +66,221 @@
 		<None Include="Assets\Screens\GVHelpTopicScreen.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="Assets\GVHelperImages\GVMemoryBankBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVTruthTableCircuitBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVDispenserBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVGuidedDispenserBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVInventoryControllerBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVJavascriptMicrocontrollerBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVListMemoryBankBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVMemoryBanksOperatorBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVMultiplexerBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVNesEmulatorBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVRealTimeClockBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVSignBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVSoundGeneratorBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVTerrainRaycastDetectorBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\GVHelperImages\GVTerrainScannerBlock.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 		<None Include="icon.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Assets\Lang\en-US.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\analog-to-digital-converter.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\attractor.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\block_display_led.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\camera.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\complex_piston.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\copper_hammer.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\debug.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\digital-to-analog-converter.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\dispenser.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\four_dimensional_memory_bank.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\guided_dispenser.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\image_display_led.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\inventory_controller.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\inventory_fetcher.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\javascript_microcontroller.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\jump_wire.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\list_memory_bank.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\memory_bank.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\memory_banks_operator.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\more_one_in_one_out.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\more_two_in_two_out.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\multiplexer.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\nes_emulator.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\oscilloscope.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\player_controller.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\player_monitor.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\real_time_clock.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\sign.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\signal_generator.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\sound_generator.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\terrain_display_led.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\terrain_raycast_detector.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\terrain_scanner.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\tractor_beam.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\zh\truth_table.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\analog-to-digital-converter.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\attractor.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\block_display_led.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\camera.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\complex_piston.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\copper_hammer.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\debug.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\digital-to-analog-converter.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\dispenser.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\four_dimensional_memory_bank.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\guided_dispenser.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\image_display_led.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\inventory_controller.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\inventory_fetcher.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\javascript_microcontroller.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\jump_wire.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\list_memory_bank.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\memory_bank.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\memory_banks_operator.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\more_one_in_one_out.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\multiplexer.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\nes_emulator.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\oscilloscope.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\player_controller.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\player_monitor.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\real_time_clock.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\sign.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\signal_generator.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\sound_generator.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\terrain_display_led.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\terrain_raycast_detector.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\terrain_scanner.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\tractor_beam.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\GVHelperImages\en\truth_table.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
-	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-		 Other similar extension points exist, see Microsoft.Common.targets.
-	<Target Name="BeforeBuild">
-	</Target>
-	<Target Name="AfterBuild">
-	</Target>
-	-->
+	<ItemGroup>
+		<Folder Include="Assets\GVHelperImages\zh\"/>
+	</ItemGroup>
 </Project>

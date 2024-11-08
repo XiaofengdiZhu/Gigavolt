@@ -3,7 +3,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVCrusherProjectileBlock : Block, IGVCustomWheelPanelBlock {
+    public class GVCrusherProjectileBlock : GVBaseBlock, IGVCustomWheelPanelBlock {
         public const int Index = 883;
 
         public readonly BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[2];

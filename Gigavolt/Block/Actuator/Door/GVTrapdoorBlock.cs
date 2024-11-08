@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class GVTrapdoorBlock : Block, IGVElectricElementBlock {
+    public class GVTrapdoorBlock : GVBaseBlock, IGVElectricElementBlock {
         public const int Index = 865;
 
         public readonly BlockMesh[] m_standaloneBlockMesh = new BlockMesh[2];

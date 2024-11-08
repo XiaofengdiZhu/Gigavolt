@@ -7,7 +7,7 @@ using Color = Engine.Color;
 using Image = Engine.Media.Image;
 
 namespace Game {
-    public class GVCopperHammerBlock : Block {
+    public class GVCopperHammerBlock : GVBaseBlock {
         public const int Index = 867;
         public static Texture2D WhiteTexture;
 

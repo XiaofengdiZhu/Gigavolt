@@ -217,12 +217,12 @@ namespace Game {
                     switch (m_lastFocusedBlockHelperWidget.Mode) {
                         case GVBlockHelperWidget.DisplayMode.Recipes:
                             if (m_lastFocusedBlockHelperWidget.RecipesCount > 0) {
-                                ScreensManager.SwitchScreen("RecipaediaRecipes", value);
+                                ScreensManager.SwitchScreen(BlocksManager.Blocks[Terrain.ExtractContents(value)].GetBlockRecipeScreen(value), value);
                                 AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             }
                             break;
                         case GVBlockHelperWidget.DisplayMode.Description:
-                            ScreensManager.SwitchScreen("RecipaediaDescription", value, new List<int> { value });
+                            ScreensManager.SwitchScreen(BlocksManager.Blocks[Terrain.ExtractContents(value)].GetBlockDescriptionScreen(value), value, new List<int> { value });
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             break;
                         case GVBlockHelperWidget.DisplayMode.Duplicate:

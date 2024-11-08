@@ -17,9 +17,6 @@ namespace Game {
         public readonly CheckboxWidget m_wheelPanelEnabledCheckbox;
         public readonly BevelledButtonWidget m_helpButton;
 
-        public readonly StackPanelWidget m_GVHelperPanel;
-        public readonly CheckboxWidget m_GVHelperSlotActiveCheckbox;
-
         public readonly SubsystemGVDebugBlockBehavior m_subsystem;
 
         public readonly SubsystemGVElectricity m_subsystemGVElectricity;
@@ -39,13 +36,7 @@ namespace Game {
             m_preventChunkFromBeingFreeCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.PreventChunkFromBeingFree");
             m_displayVoltageCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.DisplayVoltage");
             m_wheelPanelEnabledCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.WheelPanelEnabled");
-            m_GVHelperPanel = Children.Find<StackPanelWidget>("EditGVDebugDialog.GVHelperPanel");
-            m_GVHelperSlotActiveCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.GVHelperSlotActive");
             m_helpButton = Children.Find<BevelledButtonWidget>("EditGVDebugDialog.Help");
-            if (GVStaticStorage.GVHelperAvailable) {
-                m_GVHelperPanel.IsVisible = true;
-                m_GVHelperSlotActiveCheckbox.IsChecked = GVStaticStorage.GVHelperSlotActive;
-            }
             m_handler = handler;
             m_subsystem = subsystem;
             m_subsystemGVElectricity = subsystemGVElectricity;
@@ -74,9 +65,6 @@ namespace Game {
             }
             if (m_wheelPanelEnabledCheckbox.IsClicked) {
                 m_wheelPanelEnabledCheckbox.IsChecked = !m_wheelPanelEnabledCheckbox.IsChecked;
-            }
-            if (m_GVHelperSlotActiveCheckbox.IsClicked) {
-                m_GVHelperSlotActiveCheckbox.IsChecked = !m_GVHelperSlotActiveCheckbox.IsChecked;
             }
             if (m_okButton.IsClicked) {
                 if (m_speedTextBox.Text.Length > 0) {
@@ -120,7 +108,6 @@ namespace Game {
                 GVStaticStorage.WheelPanelEnabled = m_wheelPanelEnabledCheckbox.IsChecked;
                 m_subsystem.SetDisplayStepFloatingButtons(m_displayStepFloatingButtonsCheckbox.IsChecked);
                 m_subsystem.SetKeyboardDebug(m_keyboardControlCheckbox.IsChecked);
-                GVStaticStorage.GVHelperSlotActive = m_GVHelperSlotActiveCheckbox.IsChecked;
                 Dismiss(false);
             }
             if (m_helpButton.IsClicked) {

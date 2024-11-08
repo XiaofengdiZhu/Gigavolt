@@ -5,7 +5,7 @@ using Engine.Graphics;
 using GameEntitySystem;
 
 namespace Game {
-    public class GVPistonBlock : Block, IGVElectricElementBlock, IGVCustomWheelPanelBlock {
+    public class GVPistonBlock : GVBaseBlock, IGVElectricElementBlock, IGVCustomWheelPanelBlock {
         public const int Index = 854;
 
         public readonly BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[4];
