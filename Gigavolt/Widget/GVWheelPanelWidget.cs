@@ -9,7 +9,7 @@ namespace Game {
     public class GVWheelPanelWidget : CanvasWidget {
         public class GVWheelPanelInventory : IInventory {
             public int Value;
-            public int Count;
+            public int Count { get; set; }
             public int GetSlotValue(int slotIndex) => Value;
 
             public int GetSlotCount(int slotIndex) => Count;
@@ -321,14 +321,17 @@ namespace Game {
                 }
                 int mouseWheelMovement = Input.MouseWheelMovement;
                 if (mouseWheelMovement != 0) {
+                    bool countNotAdjusted = true;
                     if (dragHostWidget.m_dragData == m_originalInventoryDragData) {
                         IInventory inventory = m_originalInventoryDragData.Inventory;
                         if (inventory is ComponentCreativeInventory) {
-                            if (mouseWheelMovement > 0) {
+                            if (SettingsManager.CreativeDragMaxStacking
+                                || mouseWheelMovement > 0) {
                                 int value = inventory.GetSlotValue(m_originalInventoryDragData.SlotIndex);
-                                if (!BlocksManager.Blocks[Terrain.ExtractContents(value)].IsNonDuplicable_(value)) {
+                                Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+                                if (!block.IsNonDuplicable_(value)) {
                                     m_inventory.Value = value;
-                                    m_inventory.Count = 1;
+                                    m_inventory.Count = SettingsManager.CreativeDragMaxStacking ? block.GetMaxStacking(value) : 1;
                                     dragHostWidget.m_dragData = m_inventoryDragData;
                                 }
                             }
@@ -342,19 +345,22 @@ namespace Game {
                                 && count < capacity) {
                                 inventory.AddSlotItems(index, value, 1);
                                 count++;
+                                countNotAdjusted = false;
                             }
                             else if (Input.MouseWheelMovement < 0
                                 && count > 1) {
                                 inventory.RemoveSlotItems(index, 1);
                                 count--;
+                                countNotAdjusted = false;
                             }
                             if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
                                 LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count");
                                 labelWidget.Text = count.ToString();
+                                labelWidget.IsVisible = count > 1;
                             }
                         }
                     }
-                    if (dragHostWidget.m_dragData == m_inventoryDragData) {
+                    if (countNotAdjusted && dragHostWidget.m_dragData == m_inventoryDragData) {
                         m_inventory.Count = mouseWheelMovement > 0 ? Math.Min(m_inventory.Count + 1, m_inventory.GetSlotCapacity(0, m_inventory.Value)) : Math.Max(m_inventory.Count - 1, 1);
                         if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
                             LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count");
