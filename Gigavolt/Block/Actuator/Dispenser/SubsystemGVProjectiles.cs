@@ -83,7 +83,6 @@ namespace Game {
                 AngularVelocity = angularVelocity,
                 CreationTime = m_subsystemGameInfo.TotalElapsedGameTime,
                 IsInFluid = IsWater(position),
-                Owner = owner,
                 ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable,
                 DisableGravity = disableGravity,
                 DisableDamping = disableDamping,
@@ -94,9 +93,11 @@ namespace Game {
             };
             m_projectiles.Add(projectile);
             ProjectileAdded?.Invoke(projectile);
-            if (owner != null
-                && owner.PlayerStats != null) {
-                owner.PlayerStats.RangedAttacks++;
+            if (owner != null) {
+                projectile.Owner = owner;
+                if (owner.PlayerStats != null) {
+                    owner.PlayerStats.RangedAttacks++;
+                }
             }
             return projectile;
         }

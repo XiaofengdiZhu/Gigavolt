@@ -4,6 +4,14 @@
 
         public override void __ModInitialize() {
             ModsManager.RegisterHook("BlocksInitalized", this);
+            EditGVDebugDialog.m_helpAction = () => ScreensManager.SwitchScreen(m_GVHelpTopicScreen, GVBlocksManager.GetBlockIndex<GVDebugBlock>());
+            EditGVMemoryBankDialog.m_helpAction = () => ScreensManager.SwitchScreen(m_GVHelpTopicScreen, GVBlocksManager.GetBlockIndex<GVMemoryBankBlock>());
+            EditGVTruthTableDialog.m_helpAction = () => ScreensManager.SwitchScreen(m_GVHelpTopicScreen, GVBlocksManager.GetBlockIndex<GVTruthTableCircuitBlock>());
+            EditGVJavascriptMicrocontrollerDialog.m_helpAction = () => ScreensManager.SwitchScreen(m_GVHelpTopicScreen, GVBlocksManager.GetBlockIndex<GVJavascriptMicrocontrollerBlock>());
+            EditGVListMemoryBankDialog.m_helpAction = () => ScreensManager.SwitchScreen(m_GVHelpTopicScreen, GVBlocksManager.GetBlockIndex<GVListMemoryBankBlock>());
+            EditGVVolatileListMemoryBankDialog.m_volatileHelpAction = EditGVListMemoryBankDialog.m_helpAction;
+            EditGVFourDimensionalMemoryBankDialog.m_helpAction = () => ScreensManager.SwitchScreen(m_GVHelpTopicScreen, GVBlocksManager.GetBlockIndex<GVFourDimensionalMemoryBankBlock>());
+            EditGVVolatileFourDimensionalMemoryBankDialog.m_volatileHelpAction = EditGVFourDimensionalMemoryBankDialog.m_helpAction;
         }
 
         public override void BlocksInitalized() {
