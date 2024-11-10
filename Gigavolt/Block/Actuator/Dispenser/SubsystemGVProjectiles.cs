@@ -339,16 +339,16 @@ namespace Game {
                         else if (terrainRaycastResult.HasValue) {
                             CellFace cellFace2 = terrainRaycastResult.Value.CellFace;
                             int cellValue = m_subsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
-                            int num = Terrain.ExtractContents(cellValue);
-                            Block block2 = BlocksManager.Blocks[num];
-                            float num2 = projectile.Velocity.Length();
+                            int contents = Terrain.ExtractContents(cellValue);
+                            Block block2 = BlocksManager.Blocks[contents];
+                            float velocityLength = projectile.Velocity.Length();
                             SubsystemBlockBehavior[] blockBehaviors2 = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
                             for (int j = 0; j < blockBehaviors2.Length; j++) {
                                 for (int k = 0; k < projectile.Count; k++) {
                                     blockBehaviors2[j].OnHitByProjectile(cellFace2, projectile);
                                 }
                             }
-                            if (num2 > 10f
+                            if (velocityLength > 10f
                                 && m_random.Float(0f, 1f) > block2.GetProjectileResilience(cellValue)) {
                                 m_subsystemTerrain.DestroyCell(
                                     0,
@@ -413,7 +413,7 @@ namespace Game {
                                     }
                                 }
                                 else {
-                                    blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
+                                    blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(contents);
                                     foreach (SubsystemBlockBehavior behavior in blockBehaviors) {
                                         behavior.OnInteract(new TerrainRaycastResult { CellFace = new CellFace(cellFace2.X, cellFace2.Y, cellFace2.Z, cellFace2.Face) }, null);
                                     }
@@ -424,7 +424,7 @@ namespace Game {
                             if (isDataModifier && !projectile.ToRemove) {
                                 int tempContent = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z));
                                 if (tempContent == 0) {
-                                    m_subsystemTerrain.ChangeCell(cellFace2.X, cellFace2.Y, cellFace2.Z, Terrain.MakeBlockValue(num, m_subsystemTerrain.Terrain.GetCellLightFast(cellFace2.X, cellFace2.Y, cellFace2.Z), Terrain.ExtractData(projectile.Value)));
+                                    m_subsystemTerrain.ChangeCell(cellFace2.X, cellFace2.Y, cellFace2.Z, Terrain.MakeBlockValue(contents, m_subsystemTerrain.Terrain.GetCellLightFast(cellFace2.X, cellFace2.Y, cellFace2.Z), Terrain.ExtractData(projectile.Value)));
                                 }
                                 else {
                                     m_subsystemTerrain.ChangeCell(positionInt.X, positionInt.Y, positionInt.Z, Terrain.MakeBlockValue(tempContent, m_subsystemTerrain.Terrain.GetCellLightFast(positionInt.X, positionInt.Y, positionInt.Z), Terrain.ExtractData(projectile.Value)));
@@ -471,7 +471,7 @@ namespace Game {
                                 projectile.ToRemove = true;
                                 continue;
                             }
-                            if (stopAtIsPassable && Vector3.DistanceSquared(position, stopAtVector3) < 3f) {
+                            /*if (stopAtIsPassable && Vector3.DistanceSquared(position, stopAtVector3) < 3f) {
                                 if (projectile.ProjectileStoppedAction != ProjectileStoppedAction.Disappear) {
                                     m_subsystemPickables.AddPickable(
                                         projectile.Value,
@@ -483,15 +483,15 @@ namespace Game {
                                 }
                                 projectile.ToRemove = true;
                                 continue;
-                            }
-                            if (num2 > 5f) {
+                            }*/
+                            if (velocityLength > 5f) {
                                 m_subsystemSoundMaterials.PlayImpactSound(cellValue, position, 1f);
                             }
                             if (block.IsStickable_(projectile.Value)
-                                && num2 > 10f
+                                && velocityLength > 10f
                                 && m_random.Bool(block2.GetProjectileStickProbability(projectile.Value))) {
                                 Vector3 v3 = Vector3.Normalize(projectile.Velocity);
-                                float s = MathUtils.Lerp(0.1f, 0.2f, MathUtils.Saturate((num2 - 15f) / 20f));
+                                float s = MathUtils.Lerp(0.1f, 0.2f, MathUtils.Saturate((velocityLength - 15f) / 20f));
                                 vector2 = position + terrainRaycastResult.Value.Distance * Vector3.Normalize(projectile.Velocity) + v3 * s;
                             }
                             else {
