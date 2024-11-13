@@ -88,7 +88,7 @@ namespace Game {
                         || rangeAbs.Z == 0) {
                         return false;
                     }
-                    Point3 startPosition = CellFaces[0].Point + new Point3((int)(m_inInput & 0xFFu) * (m_inInput >> 24 == 1u ? -1 : 1), (int)((m_inInput >> 8) & 0xFFu) * (m_inInput >> 25 == 1u ? -1 : 1), (int)((m_inInput >> 16) & 0xFFu) * (m_inInput >> 26 == 1u ? -1 : 1));
+                    Point3 startPosition = CellFaces[0].Point + new Point3((int)(m_inInput & 0xFFu) * (((m_inInput >> 24) & 1u) == 1u ? -1 : 1), (int)((m_inInput >> 8) & 0xFFu) * (m_inInput >> 25 == 1u ? -1 : 1), (int)((m_inInput >> 16) & 0xFFu) * (m_inInput >> 26 == 1u ? -1 : 1));
                     bool xDirection = ((m_inInput >> 24) & 1u) == 1u;
                     bool yDirection = ((m_inInput >> 25) & 1u) == 1u;
                     bool zDirection = ((m_inInput >> 26) & 1u) == 1u;

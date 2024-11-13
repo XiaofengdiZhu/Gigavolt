@@ -256,7 +256,7 @@ namespace Game {
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
         public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) => Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
-        public static bool GetClassic(int data) => data >> 13 == 1;
+        public static bool GetClassic(int data) => (data & 8192) != 0;
         public static int SetClassic(int data, bool classic) => (data & -8193) | (classic ? 8192 : 0);
     }
 }

@@ -59,19 +59,19 @@ namespace Game {
                 if (m_originType == 0) {
                     int slot = (int)(m_voltage & 0xffu);
                     itemValue = originInventory.GetSlotValue(slot);
-                    itemCount = Math.Min(m_voltage >> 16 == 1u ? int.MaxValue : (int)((m_voltage >> 8) & 0xffu), originInventory.GetSlotCount(slot));
+                    itemCount = Math.Min(((m_voltage >> 16) & 1u) == 1u ? int.MaxValue : (int)((m_voltage >> 8) & 0xffu), originInventory.GetSlotCount(slot));
                     if (itemCount == 0) {
                         return false;
                     }
                     itemAtSlots.Add(slot);
-                    throwOut = m_voltage >> 17 == 0u;
+                    throwOut = ((m_voltage >> 17) & 1u) == 0u;
                 }
                 else if (m_originType == 2) {
-                    bool specifyData = m_voltage >> 10 == 1u;
+                    bool specifyData = ((m_voltage >> 10) & 1u) == 1u;
                     int itemContents = (int)(m_voltage & 0x3ffu);
                     itemValue = Terrain.MakeBlockValue(itemContents, 0, specifyData ? (int)((m_voltage >> 14) & 0x3ffffu) : 0);
-                    itemCount = m_voltage >> 11 == 1u ? int.MaxValue : 1;
-                    throwOut = m_voltage >> 12 == 0u;
+                    itemCount = ((m_voltage >> 11) & 1u) == 1u ? int.MaxValue : 1;
+                    throwOut = ((m_voltage >> 12) & 1u) == 0u;
                     int nowCount = 0;
                     for (int i = 0; i < originInventory.SlotsCount; i++) {
                         int value = originInventory.GetSlotValue(i);

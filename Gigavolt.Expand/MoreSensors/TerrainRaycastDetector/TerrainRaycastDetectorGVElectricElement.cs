@@ -47,8 +47,8 @@ namespace Game {
                 }
             }
             uint length = m_rightInput & 0xFFFu;
-            bool detectData = m_rightInput >> 12 == 1u;
-            bool skipFluid = m_rightInput >> 13 == 1u;
+            bool detectData = ((m_rightInput >> 12) & 1u) == 1u;
+            bool skipFluid = ((m_rightInput >> 13) & 1u) == 1u;
             int specifiedContent = Terrain.ExtractContents((int)m_leftInput);
             int specifiedData = Terrain.ExtractData((int)m_leftInput);
             if (length == 0) {
