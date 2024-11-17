@@ -33,8 +33,8 @@
 		<MemberSubsystemTemplate Name="GVDataModifierProjectileBlockBehavior" Guid="8210b070-0f9e-49e5-a382-630f4ba49f15" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="b86083be-8f5c-4a53-9876-d971fe70cc82" Value="Game.SubsystemGVDataModifierProjectileBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVInventoryControllerBlockBehavior" Guid="c50d7476-0dac-4210-87e8-6150c4f60246" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
-			<Parameter Name="Class" Guid="4bd8fb72-d7f7-466d-84be-cbc0a3470cff" Value="Game.SubsystemGVInventoryControllerBlockBehavior" Type="string"/>
+		<MemberSubsystemTemplate Name="GVCanBePlacedOnInventoryBlockBehavior" Guid="c50d7476-0dac-4210-87e8-6150c4f60246" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="4bd8fb72-d7f7-466d-84be-cbc0a3470cff" Value="Game.SubsystemGVCanBePlacedOnInventoryBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVJavascriptMicrocontrollerBlockBehavior" Guid="75b5af50-ae40-44f0-9ea9-ceeffa984e74" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="fdec63d8-84d4-4881-8662-d7dcf41f77ed" Value="Game.SubsystemGVJavascriptMicrocontrollerBlockBehavior" Type="string"/>
@@ -64,6 +64,9 @@
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVButtonCabinetBlockBehavior" Guid="0ee27acb-1953-4a93-9599-15e02abdea8a" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="99c7adbe-8494-4f99-98f0-bd900f8a49eb" Value="Game.SubsystemGVButtonCabinetBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVTouchpadBehavior" Guid="e1d874b5-2c79-4cc3-8730-a60f93190034" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="c590d0b0-8fec-47d9-aef1-b57f2e255139" Value="Game.SubsystemGVTouchpadBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>

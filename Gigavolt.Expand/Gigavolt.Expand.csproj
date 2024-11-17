@@ -139,6 +139,9 @@
 		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs"/>
 		<Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs"/>
 		<Compile Include="MoreSensors\TerrainScanner\TerrainScannerGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\Touchpad\TouchpadGVElectricElement.cs"/>
+		<Compile Include="MoreSensors\Touchpad\GVTouchpadBlock.cs"/>
+		<Compile Include="MoreSensors\Touchpad\SubsystemGVTouchpadBehavior.cs"/>
 		<Compile Include="MoreSources\ButtonCabinet\EditGVButtonCabinetDialog.cs"/>
 		<Compile Include="MoreSources\ButtonCabinet\GVButtonCabinetBlock.cs"/>
 		<Compile Include="MoreSources\ButtonCabinet\SubsystemGVButtonCabinetBlockBehavior.cs"/>
@@ -164,7 +167,6 @@
 		<Compile Include="Transportation\Attractor\SubsystemGVAttractorBlockBehavior.cs"/>
 		<Compile Include="Transportation\InventoryController\GVInventoryControllerBlock.cs"/>
 		<Compile Include="Transportation\InventoryController\InventoryControllerGVElectricElement.cs"/>
-		<Compile Include="Transportation\InventoryController\SubsystemGVInventoryControllerBlockBehavior.cs"/>
 		<Compile Include="Transportation\InventoryFetcher\InventoryFetcherGVElectricElement.cs"/>
 		<Compile Include="Transportation\InventoryFetcher\GVInventoryFetcherBlock.cs"/>
 		<Compile Include="Transportation\GuidedDispenser\GuidedDispenserGVElectricElement.cs"/>
@@ -178,6 +180,7 @@
 		<Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerData.cs"/>
 		<Compile Include="JavascriptMicrocontroller\SubsystemGVJavascriptMicrocontrollerBlockBehavior.cs"/>
 		<Compile Include="JavascriptMicrocontroller\JavascriptMicrocontrollerGVElectricElement.cs"/>
+		<Compile Include="Transportation\SubsystemGVCanBePlacedOnInventoryBlockBehavior.cs" />
 		<Compile Include="WireThrough\EditGVCopperHammerDialog.cs"/>
 		<Compile Include="WireThrough\GVAStar.cs"/>
 		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
@@ -466,6 +469,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Dialogs\EditGVButtonCabinetDialog.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVTouchpadBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

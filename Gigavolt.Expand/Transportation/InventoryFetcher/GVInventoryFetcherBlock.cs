@@ -65,7 +65,7 @@ namespace Game {
             m_textures[2] = ContentManager.Get<Texture2D>("Textures/GVFetcherBlock2");
         }
 
-        public override IEnumerable<int> GetCreativeValues() => new[] { Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, 2), Terrain.MakeBlockValue(BlockIndex, 0, 1) };
+        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, 2), Terrain.MakeBlockValue(BlockIndex, 0, 1)];
 
         public override int GetShadowStrength(int value) => !GetIsShaft(Terrain.ExtractData(value)) ? base.GetShadowStrength(value) : 0;
 
@@ -152,8 +152,10 @@ namespace Game {
                 return null;
             }
             int originFace = GetFace(data);
+            int originOppositeFace = CellFace.OppositeFace(originFace);
             if (originFace == face
-                || CellFace.OppositeFace(originFace) == connectorFace) {
+                || originOppositeFace == connectorFace
+                || (originOppositeFace != face && originFace != connectorFace && CellFace.OppositeFace(face) == connectorFace)) {
                 return GVElectricConnectorType.Input;
             }
             return null;

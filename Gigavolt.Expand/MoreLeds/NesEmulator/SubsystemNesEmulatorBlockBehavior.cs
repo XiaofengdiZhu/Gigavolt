@@ -19,7 +19,7 @@ namespace Game {
         public bool EmuStarted;
         public readonly bool RomValid;
 
-        public SubsystemNesEmulatorBlockBehavior() : base(BlocksManager.GetBlockIndex<GVNesEmulatorBlock>()) {
+        public SubsystemNesEmulatorBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVNesEmulatorBlock>()) {
             _emu = new NESEmulator(GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.MoreLeds.NesEmulator.nestest.nes")), GetFrameFromEmulator);
             RomValid = true;
             _renderer = new BitmapRenderer();
@@ -40,7 +40,7 @@ namespace Game {
             }
         }
 
-        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVNesEmulatorBlock>()];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVNesEmulatorBlock>()];
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {

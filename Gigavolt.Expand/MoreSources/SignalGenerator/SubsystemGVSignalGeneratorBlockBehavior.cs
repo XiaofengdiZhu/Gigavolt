@@ -12,7 +12,7 @@ namespace Game {
         }
 
         public readonly Dictionary<Point3, Data> m_datas = new();
-        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVSignalGeneratorBlock>()];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVSignalGeneratorBlock>()];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);

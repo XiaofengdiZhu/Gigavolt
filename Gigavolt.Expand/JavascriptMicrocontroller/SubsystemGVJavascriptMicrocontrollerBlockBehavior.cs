@@ -1,8 +1,8 @@
 namespace Game {
     public class SubsystemGVJavascriptMicrocontrollerBlockBehavior : SubsystemGVEditableItemBehavior<GVJavascriptMicrocontrollerData> {
-        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVJavascriptMicrocontrollerBlock>()];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVJavascriptMicrocontrollerBlock>()];
 
-        public SubsystemGVJavascriptMicrocontrollerBlockBehavior() : base(BlocksManager.GetBlockIndex<GVJavascriptMicrocontrollerBlock>()) { }
+        public SubsystemGVJavascriptMicrocontrollerBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVJavascriptMicrocontrollerBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
         public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));

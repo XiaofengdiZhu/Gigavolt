@@ -10,6 +10,8 @@ namespace Game {
         public readonly int m_originFace;
         public uint m_voltage;
 
+        public readonly int GVInventoryFetcherBlockIndex;
+
         public InventoryFetcherGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, Point3 point, uint subterrainId) : base(
             subsystemGVElectricity,
             new List<GVCellFace> {
@@ -30,6 +32,7 @@ namespace Game {
             int originData = Terrain.ExtractData(value);
             m_originType = GVInventoryFetcherBlock.GetType(originData);
             m_originFace = GVInventoryFetcherBlock.GetFace(originData);
+            GVInventoryFetcherBlockIndex = GVBlocksManager.GetBlockIndex<GVInventoryFetcherBlock>();
         }
 
         public override bool Simulate() {
@@ -48,7 +51,8 @@ namespace Game {
                 && m_voltage > 0) {
                 GVCellFace cellFace = CellFaces[0];
                 Point3 originFaceDirection = CellFace.FaceToPoint3(m_originFace);
-                ComponentInventoryBase originInventory = m_subsystemBlockEntities.GetBlockEntity(cellFace.X - originFaceDirection.X, cellFace.Y - originFaceDirection.Y, cellFace.Z - originFaceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
+                //ComponentInventoryBase originInventory = m_subsystemBlockEntities.GetBlockEntity(cellFace.X - originFaceDirection.X, cellFace.Y - originFaceDirection.Y, cellFace.Z - originFaceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
+                ComponentInventoryBase originInventory = FindInventory(cellFace.Point, -originFaceDirection, out _);
                 if (originInventory == null) {
                     return false;
                 }
@@ -92,38 +96,54 @@ namespace Game {
                 else {
                     return false;
                 }
-                Point3 position = new(cellFace.X, cellFace.Y, cellFace.Z);
-                while (true) {
-                    position += originFaceDirection;
-                    int value = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z);
-                    int contents = Terrain.ExtractContents(value);
-                    if (contents == GVBlocksManager.GetBlockIndex<GVInventoryFetcherBlock>()) {
-                        int data = Terrain.ExtractData(value);
-                        int type = GVInventoryFetcherBlock.GetType(data);
-                        int face = GVInventoryFetcherBlock.GetFace(data);
-                        int oppositeFace = CellFace.OppositeFace(face);
-                        if (type == 1
-                            && (face == m_originFace || oppositeFace == m_originFace)) {
-                            continue;
-                        }
-                        if ((type == 0 || type == 2)
-                            && oppositeFace == m_originFace) {
-                            ComponentInventoryBase inventory = m_subsystemBlockEntities.GetBlockEntity(position.X + originFaceDirection.X, position.Y + originFaceDirection.Y, position.Z + originFaceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
-                            if (inventory != null) {
-                                int removedCount = itemCount - ComponentInventoryBase.AcquireItems(inventory, itemValue, itemCount);
-                                if (removedCount > 0) {
-                                    foreach (int slot in itemAtSlots) {
-                                        removedCount -= originInventory.RemoveSlotItems(slot, removedCount);
-                                        if (itemCount <= 0) {
-                                            break;
-                                        }
-                                    }
-                                }
+                ComponentInventoryBase inventory = FindInventory(cellFace.Point, originFaceDirection, out Point3 end);
+                if (inventory != null) {
+                    int removedCount = itemCount - ComponentInventoryBase.AcquireItems(inventory, itemValue, itemCount);
+                    if (removedCount > 0) {
+                        foreach (int slot in itemAtSlots) {
+                            removedCount -= originInventory.RemoveSlotItems(slot, removedCount);
+                            if (itemCount <= 0) {
+                                break;
                             }
                         }
                     }
-                    else {
-                        ComponentInventoryBase inventory = m_subsystemBlockEntities.GetBlockEntity(position.X, position.Y, position.Z)?.Entity.FindComponent<ComponentInventoryBase>();
+                }
+                else if (throwOut) {
+                    int value = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(end.X, end.Y, end.Z);
+                    if (!BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)) {
+                        Vector3 originFaceVector3 = CellFace.FaceToVector3(m_originFace);
+                        m_subsystemPickables.AddPickable(
+                            itemValue,
+                            itemCount,
+                            new Vector3(end.X + 0.5f, end.Y + 0.5f, end.Z + 0.5f) - 0.4f * originFaceVector3,
+                            1.8f * originFaceVector3,
+                            null
+                        );
+                        foreach (int slot in itemAtSlots) {
+                            itemCount -= originInventory.RemoveSlotItems(slot, itemCount);
+                            if (itemCount <= 0) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            /*while (true) {
+                position += originFaceDirection;
+                int value = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z);
+                int contents = Terrain.ExtractContents(value);
+                if (contents == GVInventoryFetcherBlockIndex) {
+                    int data = Terrain.ExtractData(value);
+                    int type = GVInventoryFetcherBlock.GetType(data);
+                    int face = GVInventoryFetcherBlock.GetFace(data);
+                    int oppositeFace = CellFace.OppositeFace(face);
+                    if (type == 1
+                        && (face == m_originFace || oppositeFace == m_originFace)) {
+                        continue;
+                    }
+                    if ((type == 0 || type == 2)
+                        && oppositeFace == m_originFace) {
+                        ComponentInventoryBase inventory = m_subsystemBlockEntities.GetBlockEntity(position.X + originFaceDirection.X, position.Y + originFaceDirection.Y, position.Z + originFaceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
                         if (inventory != null) {
                             int removedCount = itemCount - ComponentInventoryBase.AcquireItems(inventory, itemValue, itemCount);
                             if (removedCount > 0) {
@@ -135,27 +155,62 @@ namespace Game {
                                 }
                             }
                         }
-                        else if (throwOut && !BlocksManager.Blocks[contents].IsCollidable_(value)) {
-                            Vector3 originFaceVector3 = CellFace.FaceToVector3(m_originFace);
-                            m_subsystemPickables.AddPickable(
-                                itemValue,
-                                itemCount,
-                                new Vector3(position.X + 0.5f, position.Y + 0.5f, position.Z + 0.5f) - 0.4f * originFaceVector3,
-                                1.8f * originFaceVector3,
-                                null
-                            );
+                    }
+                }
+                else {
+                    ComponentInventoryBase inventory = m_subsystemBlockEntities.GetBlockEntity(position.X, position.Y, position.Z)?.Entity.FindComponent<ComponentInventoryBase>();
+                    if (inventory != null) {
+                        int removedCount = itemCount - ComponentInventoryBase.AcquireItems(inventory, itemValue, itemCount);
+                        if (removedCount > 0) {
                             foreach (int slot in itemAtSlots) {
-                                itemCount -= originInventory.RemoveSlotItems(slot, itemCount);
+                                removedCount -= originInventory.RemoveSlotItems(slot, removedCount);
                                 if (itemCount <= 0) {
                                     break;
                                 }
                             }
                         }
                     }
+                    else if (throwOut && !BlocksManager.Blocks[contents].IsCollidable_(value)) {
+                        Vector3 originFaceVector3 = CellFace.FaceToVector3(m_originFace);
+                        m_subsystemPickables.AddPickable(
+                            itemValue,
+                            itemCount,
+                            new Vector3(position.X + 0.5f, position.Y + 0.5f, position.Z + 0.5f) - 0.4f * originFaceVector3,
+                            1.8f * originFaceVector3,
+                            null
+                        );
+                        foreach (int slot in itemAtSlots) {
+                            itemCount -= originInventory.RemoveSlotItems(slot, itemCount);
+                            if (itemCount <= 0) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                break;
+            }*/
+            return false;
+        }
+
+        public ComponentInventoryBase FindInventory(Point3 start, Point3 direction, out Point3 end) {
+            Point3 position = start;
+            while (true) {
+                position += direction;
+                int value = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z);
+                if (Terrain.ExtractContents(value) == GVInventoryFetcherBlockIndex) {
+                    int face = GVInventoryFetcherBlock.GetFace(Terrain.ExtractData(value));
+                    int oppositeFace = CellFace.OppositeFace(face);
+                    if (face != m_originFace
+                        && oppositeFace != m_originFace) {
+                        break;
+                    }
+                }
+                else {
                     break;
                 }
             }
-            return false;
+            end = position;
+            return m_subsystemBlockEntities.GetBlockEntity(position.X, position.Y, position.Z)?.Entity.FindComponent<ComponentInventoryBase>(false);
         }
     }
 }

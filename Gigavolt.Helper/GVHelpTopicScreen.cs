@@ -51,13 +51,14 @@ namespace Game {
             { typeof(GVInventoryControllerBlock), new I18NHelp { WebUrl = "expand/transportation/inventory_controller.html", ImageName = "inventory_controller" } },
             { typeof(GVTractorBeamBlock), new I18NHelp { WebUrl = "expand/transportation/tractor_beam.html", ImageName = "tractor_beam" } },
             { typeof(GVSignalGeneratorBlock), new I18NHelp { WebUrl = "expand/others/signal_generator.html", ImageName = "signal_generator" } },
-            { typeof(GVPlayerControllerBlock), new I18NHelp { WebUrl = "expand/others/player_controller.html", ImageName = "player_controller" } }
+            { typeof(GVPlayerControllerBlock), new I18NHelp { WebUrl = "expand/others/player_controller.html", ImageName = "player_controller" } },
+            { typeof(GVTouchpadBlock), new I18NHelp { WebUrl = "expand/sensors/touchpad.html", ImageName = "touchpad" } }
         };
 
         public static I18NHelp DisplayLedData2I18NHelp(int data) {
             switch (GVDisplayLedBlock.GetType(data)) {
-                case 2 or 3: return new I18NHelp { WebUrl = "expand/displays/image_display_led.html", ImageName = "image_display_led" };
-                case 4 or 5: return new I18NHelp { WebUrl = "expand/displays/terrain_display_led.html", ImageName = "terrain_display_led" };
+                case 1: return new I18NHelp { WebUrl = "expand/displays/image_display_led.html", ImageName = "image_display_led" };
+                case 2: return new I18NHelp { WebUrl = "expand/displays/terrain_display_led.html", ImageName = "terrain_display_led" };
                 default: return new I18NHelp { WebUrl = "base/shift/block_display_led.html", ImageName = "block_display_led" };
             }
         }
@@ -90,8 +91,10 @@ namespace Game {
                 if (blockType == typeof(GVDisplayLedBlock)) {
                     i18nHelp = DisplayLedData2I18NHelp(Terrain.ExtractData(blockValue));
                 }
-                if ((i18nHelp != null || m_type2I18NHelp.TryGetValue(blockType, out i18nHelp))
-                    && i18nHelp != null
+                else {
+                    m_type2I18NHelp.TryGetValue(blockType, out i18nHelp);
+                }
+                if (i18nHelp != null
                     && i18nHelp != m_lastI18NHelp) {
                     bool isZh = ModsManager.Configs["Language"].StartsWith("zh");
                     m_lastSubtexture?.Texture.Dispose();

@@ -1,7 +1,7 @@
 ﻿namespace Game {
     public class SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior : SubsystemGVEditableItemBehavior<GVVolatileFourDimensionalMemoryBankData> {
-        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVVolatileFourDimensionalMemoryBankBlock>()];
-        public SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior() : base(BlocksManager.GetBlockIndex<GVVolatileListMemoryBankBlock>()) { }
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVVolatileFourDimensionalMemoryBankBlock>()];
+        public SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVVolatileListMemoryBankBlock>()) { }
 
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;

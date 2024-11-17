@@ -6,7 +6,7 @@ namespace Game {
         public SubsystemGVElectricity m_subsystemGVElectricity;
         public SubsystemAudio m_subsystemAudio;
 
-        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVSwitchCabinetBlock>()];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVSwitchCabinetBlock>()];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);

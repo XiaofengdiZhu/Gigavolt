@@ -6,19 +6,17 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVTractorBeamBlockBehavior : SubsystemBlockBehavior, IDrawable, IGVBlockBehavior {
-        public SubsystemTerrain m_subsystemTerrain;
         public SubsystemGVSubterrain m_subsystemGVSubterrain;
         public readonly Dictionary<uint, Dictionary<GVCellFace, Vector3>> m_indicatorLine = new();
         public readonly Dictionary<uint, Dictionary<Point3, HashSet<Point3>>> m_scanPreviews = new();
         public readonly Dictionary<uint, Dictionary<Point3, GVSubterrainSystem>> m_subterrainSystems = new();
         public readonly FlatBatch3D m_flatBatch = new() { Layer = 0, DepthStencilState = DepthStencilState.None, RasterizerState = RasterizerState.CullNoneScissor, BlendState = BlendState.AlphaBlend };
 
-        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVTractorBeamBlock>()];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVTractorBeamBlock>()];
         public UpdateOrder UpdateOrder => UpdateOrder.Terrain;
         public int[] DrawOrders => [2000];
 
         public override void Load(ValuesDictionary valuesDictionary) {
-            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemGVSubterrain = Project.FindSubsystem<SubsystemGVSubterrain>(true);
         }
 
@@ -146,7 +144,7 @@ namespace Game {
                     blocks
                 );
                 foreach (Point3 point in scanResult.Keys) {
-                    m_subsystemTerrain.ChangeCell(point.X, point.Y, point.Z, AirBlock.Index);
+                    SubsystemTerrain.ChangeCell(point.X, point.Y, point.Z, AirBlock.Index);
                 }
                 if (systems == null
                     || systems.Count == 0) {
@@ -194,7 +192,7 @@ namespace Game {
                     || result.ContainsKey(point)) {
                     continue;
                 }
-                TerrainChunk chunk = m_subsystemTerrain.Terrain.GetChunkAtCell(point.X, point.Z);
+                TerrainChunk chunk = SubsystemTerrain.Terrain.GetChunkAtCell(point.X, point.Z);
                 if (chunk == null) {
                     return null;
                 }

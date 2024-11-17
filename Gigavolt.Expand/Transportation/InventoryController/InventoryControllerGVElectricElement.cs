@@ -7,11 +7,18 @@ using Engine;
 
 namespace Game {
     public class InventoryControllerGVElectricElement : RotateableGVElectricElement {
+        public readonly SubsystemBlockEntities m_subsystemBlockEntities;
         public uint m_voltage;
         public uint m_lastBottomInput;
-        ComponentInventoryBase m_originInventory;
+        public readonly int m_originFace;
 
-        public InventoryControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
+        public readonly int GVInventoryFetcherBlockIndex;
+
+        public InventoryControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
+            GVInventoryFetcherBlockIndex = GVBlocksManager.GetBlockIndex<GVInventoryFetcherBlock>();
+            m_originFace = cellFace.Face;
+        }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
@@ -28,7 +35,7 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(m_originFace, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Bottom:
@@ -65,12 +72,8 @@ namespace Game {
                         }
                     }
                     else {
-                        if (m_originInventory == null) {
-                            GVCellFace cellFace = CellFaces[0];
-                            Point3 faceDirection = CellFace.FaceToPoint3(cellFace.Face);
-                            m_originInventory = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(cellFace.X - faceDirection.X, cellFace.Y - faceDirection.Y, cellFace.Z - faceDirection.Z)?.Entity.FindComponent<ComponentInventoryBase>();
-                        }
-                        inventory = m_originInventory;
+                        GVCellFace cellFace = CellFaces[0];
+                        inventory = FindInventory(cellFace.Point, -CellFace.FaceToPoint3(cellFace.Face));
                     }
                     if (inventory == null) {
                         return m_voltage != voltage;
@@ -465,6 +468,26 @@ namespace Game {
                     );
                 }
             }
+        }
+
+        public ComponentInventoryBase FindInventory(Point3 start, Point3 direction) {
+            Point3 position = start;
+            while (true) {
+                position += direction;
+                int value = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetCellValue(position.X, position.Y, position.Z);
+                if (Terrain.ExtractContents(value) == GVInventoryFetcherBlockIndex) {
+                    int face = GVInventoryFetcherBlock.GetFace(Terrain.ExtractData(value));
+                    int oppositeFace = CellFace.OppositeFace(face);
+                    if (face != m_originFace
+                        && oppositeFace != m_originFace) {
+                        break;
+                    }
+                }
+                else {
+                    break;
+                }
+            }
+            return m_subsystemBlockEntities.GetBlockEntity(position.X, position.Y, position.Z)?.Entity.FindComponent<ComponentInventoryBase>(false);
         }
     }
 }

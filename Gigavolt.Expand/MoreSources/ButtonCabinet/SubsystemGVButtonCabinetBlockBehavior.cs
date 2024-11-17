@@ -6,7 +6,7 @@ namespace Game {
         public SubsystemGVElectricity m_subsystemGVElectricity;
         public SubsystemAudio m_subsystemAudio;
 
-        public override int[] HandledBlocks => [BlocksManager.GetBlockIndex<GVButtonCabinetBlock>()];
+        public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVButtonCabinetBlock>()];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
@@ -103,7 +103,6 @@ namespace Game {
                 return true;
             }
             int color = GVButtonCabinetBlock.ColorIndex2Color[colorIndex];
-            int contents = Terrain.ExtractContents(raycastResult.Value);
             int data = Terrain.ExtractData(raycastResult.Value);
             int face = GVButtonCabinetBlock.GetFaceFromDataStatic(data);
             Point3 upDirection = GVButtonCabinetBlock.m_upPoint3[face];
