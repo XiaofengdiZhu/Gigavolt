@@ -142,16 +142,19 @@
 		<Compile Include="MoreSensors\Touchpad\TouchpadGVElectricElement.cs"/>
 		<Compile Include="MoreSensors\Touchpad\GVTouchpadBlock.cs"/>
 		<Compile Include="MoreSensors\Touchpad\SubsystemGVTouchpadBehavior.cs"/>
-		<Compile Include="MoreSources\ButtonCabinet\EditGVButtonCabinetDialog.cs"/>
-		<Compile Include="MoreSources\ButtonCabinet\GVButtonCabinetBlock.cs"/>
-		<Compile Include="MoreSources\ButtonCabinet\SubsystemGVButtonCabinetBlockBehavior.cs"/>
-		<Compile Include="MoreSources\ButtonCabinet\ButtonCabinetGVElectricElement.cs"/>
+		<Compile Include="MoreSources\BitButtonCabinet\BitButtonCabinetGVElectricElement.cs"/>
+		<Compile Include="MoreSources\BitButtonCabinet\GVBitButtonCabinetBlock.cs"/>
+		<Compile Include="MoreSources\BitButtonCabinet\SubsystemGVBitButtonCabinetBlockBehavior.cs"/>
+		<Compile Include="MoreSources\ColoredButtonCabinet\EditGVButtonCabinetDialog.cs"/>
+		<Compile Include="MoreSources\ColoredButtonCabinet\GVButtonCabinetBlock.cs"/>
+		<Compile Include="MoreSources\ColoredButtonCabinet\SubsystemGVButtonCabinetBlockBehavior.cs"/>
+		<Compile Include="MoreSources\ColoredButtonCabinet\ButtonCabinetGVElectricElement.cs"/>
 		<Compile Include="MoreSources\SignalGenerator\GVSignalGeneratorBlock.cs"/>
 		<Compile Include="MoreSources\SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
 		<Compile Include="MoreSources\SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
-		<Compile Include="MoreSources\SwitchCabinet\GVSwitchCabinetBlock.cs"/>
-		<Compile Include="MoreSources\SwitchCabinet\SubsystemGVSwitchCabinetBlockBehavior.cs"/>
-		<Compile Include="MoreSources\SwitchCabinet\SwitchCabinetGVElectricElement.cs"/>
+		<Compile Include="MoreSources\ColoredSwitchCabinet\GVSwitchCabinetBlock.cs"/>
+		<Compile Include="MoreSources\ColoredSwitchCabinet\SubsystemGVSwitchCabinetBlockBehavior.cs"/>
+		<Compile Include="MoreSources\ColoredSwitchCabinet\SwitchCabinetGVElectricElement.cs"/>
 		<Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs"/>
 		<Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs"/>
 		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
@@ -180,7 +183,7 @@
 		<Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerData.cs"/>
 		<Compile Include="JavascriptMicrocontroller\SubsystemGVJavascriptMicrocontrollerBlockBehavior.cs"/>
 		<Compile Include="JavascriptMicrocontroller\JavascriptMicrocontrollerGVElectricElement.cs"/>
-		<Compile Include="Transportation\SubsystemGVCanBePlacedOnInventoryBlockBehavior.cs" />
+		<Compile Include="Transportation\SubsystemGVCanBePlacedOnInventoryBlockBehavior.cs"/>
 		<Compile Include="WireThrough\EditGVCopperHammerDialog.cs"/>
 		<Compile Include="WireThrough\GVAStar.cs"/>
 		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
@@ -472,6 +475,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Textures\GVTouchpadBlock.webp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Textures\GVBitButtonCabinetBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

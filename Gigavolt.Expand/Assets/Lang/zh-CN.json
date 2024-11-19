@@ -296,12 +296,20 @@
       "Description": "多数字的发光二极管，当连接到电源时，LED会发出微弱的白光。和GV 8数字LED灯类似，但它在六个面上显示"
     },
     "GVSwitchCabinetBlock:0": {
-      "DisplayName": "GV开关柜",
+      "DisplayName": "GV彩色开关柜",
       "Description": "拥有14色开关的开关柜，可直接与总线相连，输出电压固定为0xFFFFFFFF V"
     },
     "GVButtonCabinetBlock:0": {
-      "DisplayName": "GV按钮柜",
+      "DisplayName": "GV彩色按钮柜",
       "Description": "拥有14色按钮的按钮柜，可直接与总线相连，输出电压固定为0xFFFFFFFF V，可编辑持续周期，不会被投掷物击中而触发"
+    },
+    "GVBitSwitchCabinetBlock:0": {
+      "DisplayName": "GV比特开关柜",
+      "Description": "拥有32个开关，每个开关控制该开关柜输出的每一位"
+    },
+    "GVBitButtonCabinetBlock:0": {
+      "DisplayName": "GV比特按钮柜",
+      "Description": "拥有32个按钮，每个按钮控制该按钮柜输出的每一位，可编辑持续周期，不会被投掷物击中而触发"
     },
     "GVTouchpadBlock:0": {
       "DisplayName": "GV触摸板",

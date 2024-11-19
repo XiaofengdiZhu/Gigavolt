@@ -296,12 +296,16 @@
       "Description": "Similar to GV 8 Numerical LED, but it displays on six faces. When connected to a power source emits weak white light."
     },
     "GVSwitchCabinetBlock:0": {
-      "DisplayName": "GV Switch Cabinet",
+      "DisplayName": "GV Colored Switch Cabinet",
       "Description": "A Switch Cabinet has 14 colored switches, and it can be connected to wire harness. The output voltage is fixed at 0xFFFFFFFF V."
     },
     "GVButtonCabinetBlock:0": {
-      "DisplayName": "GV Button Cabinet",
+      "DisplayName": "GV Colored Button Cabinet",
       "Description": "A Button Cabinet has 14 colored buttons, and it can be connected to wire harnesses. The output voltage is fixed at 0xFFFFFFFF V. The output duration can be edited. It cannot be triggered by a projectile striking it."
+    },
+    "GVBitButtonCabinetBlock:0": {
+      "DisplayName": "GV Bit Button Cabinet",
+      "Description": "A Button Cabinet has 32 colored buttons. Every button controls every output bit of this element. The output duration can be edited. It cannot be triggered by a projectile striking it."
     },
     "GVTouchpadBlock:0": {
       "DisplayName": "GV Touchpad",

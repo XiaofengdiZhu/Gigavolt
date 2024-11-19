@@ -101,8 +101,6 @@ namespace Game {
                 false,
                 Color.White
             );
-            BlockMesh buttonBodyBlockMesh = new();
-            BlockMesh buttonTopBlockMesh = new();
             for (int colorIndex = 0; colorIndex < 14; colorIndex++) {
                 Matrix buttonMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
                 m_standaloneButtonBodyBlockMesh.AppendModelMeshPart(

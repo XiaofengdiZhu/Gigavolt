@@ -68,5 +68,8 @@
 		<MemberSubsystemTemplate Name="GVTouchpadBehavior" Guid="e1d874b5-2c79-4cc3-8730-a60f93190034" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="c590d0b0-8fec-47d9-aef1-b57f2e255139" Value="Game.SubsystemGVTouchpadBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="GVBitButtonCabinetBlockBehavior" Guid="37a21b9e-abeb-49b7-b91d-f828d4edd5dc" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="b2da5b82-3a6b-4ead-a9ef-10ccbff22ed6" Value="Game.SubsystemGVBitButtonCabinetBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 </Mod>
