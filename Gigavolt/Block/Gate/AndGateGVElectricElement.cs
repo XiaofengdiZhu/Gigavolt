@@ -17,7 +17,7 @@ namespace Game {
                     num++;
                 }
             }
-            m_voltage = num == 2u ? num2 : 0u;
+            m_voltage = num >= 2u ? num2 : 0u;
             return m_voltage != voltage;
         }
     }

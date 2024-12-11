@@ -1,6 +1,6 @@
 namespace Game {
     public class NotGateGVElectricElement : RotateableGVElectricElement {
-        public uint m_voltage;
+        public uint m_voltage = uint.MaxValue;
 
         public NotGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
@@ -8,7 +8,7 @@ namespace Game {
 
         public override bool Simulate() {
             uint voltage = m_voltage;
-            uint num = 0;
+            uint num = 0u;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {

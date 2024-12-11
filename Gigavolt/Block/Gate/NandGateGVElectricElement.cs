@@ -1,6 +1,6 @@
 namespace Game {
     public class NandGateGVElectricElement : RotateableGVElectricElement {
-        public uint m_voltage;
+        public uint m_voltage = uint.MaxValue;
 
         public NandGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
 
@@ -17,7 +17,7 @@ namespace Game {
                     num++;
                 }
             }
-            m_voltage = num == 2u ? ~num2 : 0u;
+            m_voltage = num >= 2u ? ~num2 : uint.MaxValue;
             return m_voltage != voltage;
         }
     }
