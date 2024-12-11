@@ -14,7 +14,7 @@ namespace Game {
             if (terrain.IsCellValid(x, y, z)) {
                 int cellValue = terrain.GetCellValue(x, y, z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-                if ((!block.IsCollidable_(cellValue) || block.IsFaceTransparent(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue))
+                if (!block.IsFaceSuitableForElectricElements(SubsystemGVElectricity.SubsystemTerrain, cellFace, cellValue)
                     && (cellFace.Face != 4 || block is not FenceBlock)) {
                     SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(
                         0,

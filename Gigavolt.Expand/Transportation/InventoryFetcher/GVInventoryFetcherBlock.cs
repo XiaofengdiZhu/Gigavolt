@@ -162,5 +162,10 @@ namespace Game {
         }
 
         public int GetConnectionMask(int value) => GetIsShaft(Terrain.ExtractData(value)) ? 0 : int.MaxValue;
+
+        public override bool IsFaceSuitableForElectricElements(SubsystemTerrain subsystemTerrain, CellFace cellFace, int value) {
+            int blockFace = GetFace(Terrain.ExtractData(value));
+            return cellFace.Face == blockFace || cellFace.Face == CellFace.OppositeFace(blockFace);
+        }
     }
 }

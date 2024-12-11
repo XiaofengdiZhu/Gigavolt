@@ -77,7 +77,7 @@ namespace Game {
         public static Matrix m_switchLeverBoneAbsoluteTransform;
 
         public override void Initialize() {
-            m_baseTexture = ContentManager.Get<Texture2D>("Textures/GVSwitchCabinetBlock");
+            m_baseTexture = ContentManager.Get<Texture2D>("Textures/GVColoredCabinetBlock");
             if (m_modelsNotInitialized) {
                 m_baseModelMesh = ContentManager.Get<Model>("Models/GVSignalGenerator").FindMesh("GVSignalGenerator");
                 m_baseModelMeshPart = m_baseModelMesh.MeshParts[0];

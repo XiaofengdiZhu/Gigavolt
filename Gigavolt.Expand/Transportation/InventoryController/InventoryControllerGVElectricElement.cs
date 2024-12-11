@@ -42,12 +42,8 @@ namespace Game {
                                 bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                                 bottomConnected = true;
                                 break;
-                            case GVElectricConnectorDirection.Right:
-                                rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
-                            case GVElectricConnectorDirection.Left:
-                                leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                            case GVElectricConnectorDirection.Right: rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
+                            case GVElectricConnectorDirection.Left: leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                         }
                     }
                 }
@@ -86,33 +82,21 @@ namespace Game {
                     int dataInput = (int)((leftInput >> 14) & 0x3ffffu);
                     int valueInput = Terrain.MakeBlockValue(contentsInput, 0, dataInput);
                     switch (bottomInput) {
-                        case 1u:
-                            m_voltage = (uint)inventory.GetSlotValue(sourceSlotInput);
-                            break;
-                        case 2u:
-                            m_voltage = (uint)inventory.GetSlotCount(sourceSlotInput);
-                            break;
-                        case 3u:
-                            m_voltage = (uint)inventory.GetSlotCapacity(sourceSlotInput, inventory.GetSlotValue(sourceSlotInput));
-                            break;
-                        case 4u:
-                            m_voltage = (uint)(inventory.GetSlotCapacity(sourceSlotInput, inventory.GetSlotValue(sourceSlotInput)) - inventory.GetSlotCount(sourceSlotInput));
-                            break;
+                        case 1u: m_voltage = (uint)inventory.GetSlotValue(sourceSlotInput); break;
+                        case 2u: m_voltage = (uint)inventory.GetSlotCount(sourceSlotInput); break;
+                        case 3u: m_voltage = (uint)inventory.GetSlotCapacity(sourceSlotInput, inventory.GetSlotValue(sourceSlotInput)); break;
+                        case 4u: m_voltage = (uint)(inventory.GetSlotCapacity(sourceSlotInput, inventory.GetSlotValue(sourceSlotInput)) - inventory.GetSlotCount(sourceSlotInput)); break;
                         case 5u:
                             m_voltage = (uint)inventory.m_slots.Sum(
                                 slot => specifyDataInput ? slot.Value == valueInput ? slot.Count : 0 :
                                     Terrain.ExtractContents(slot.Value) == contentsInput ? slot.Count : 0
-                            );
-                            break;
-                        case 6u:
-                            m_voltage = (uint)inventory.m_slots.FindIndex(slot => specifyDataInput ? slot.Value == valueInput : Terrain.ExtractContents(slot.Value) == contentsInput);
-                            break;
+                            ); break;
+                        case 6u: m_voltage = (uint)inventory.m_slots.FindIndex(slot => specifyDataInput ? slot.Value == valueInput : Terrain.ExtractContents(slot.Value) == contentsInput); break;
                         case 7u:
                             m_voltage = (uint)inventory.m_slots.Sum(
                                 slot => specifyDataInput ? slot.Value == valueInput ? 1 : 0 :
                                     Terrain.ExtractContents(slot.Value) == contentsInput ? 1 : 0
-                            );
-                            break;
+                            ); break;
                         case 8u: {
                             int output = 0;
                             for (int i = 0; i < inventory.SlotsCount; i++) {
@@ -129,27 +113,13 @@ namespace Game {
                             m_voltage = (uint)output;
                             break;
                         }
-                        case 9u:
-                            m_voltage = (uint)inventory.SlotsCount;
-                            break;
-                        case 10u:
-                            m_voltage = (uint)inventory.m_slots.Count(slot => slot.Count > 0);
-                            break;
-                        case 11u:
-                            m_voltage = (uint)inventory.m_slots.Count(slot => slot.Count == 0);
-                            break;
-                        case 12u:
-                            m_voltage = (uint)inventory.m_slots.FindIndex(slot => slot.Count > 0);
-                            break;
-                        case 13u:
-                            m_voltage = (uint)inventory.m_slots.FindLastIndex(slot => slot.Count > 0);
-                            break;
-                        case 14u:
-                            m_voltage = (uint)inventory.m_slots.FindIndex(slot => slot.Count == 0);
-                            break;
-                        case 15u:
-                            m_voltage = (uint)inventory.m_slots.FindLastIndex(slot => slot.Count == 0);
-                            break;
+                        case 9u: m_voltage = (uint)inventory.SlotsCount; break;
+                        case 10u: m_voltage = (uint)inventory.m_slots.Count(slot => slot.Count > 0); break;
+                        case 11u: m_voltage = (uint)inventory.m_slots.Count(slot => slot.Count == 0); break;
+                        case 12u: m_voltage = (uint)inventory.m_slots.FindIndex(slot => slot.Count > 0); break;
+                        case 13u: m_voltage = (uint)inventory.m_slots.FindLastIndex(slot => slot.Count > 0); break;
+                        case 14u: m_voltage = (uint)inventory.m_slots.FindIndex(slot => slot.Count == 0); break;
+                        case 15u: m_voltage = (uint)inventory.m_slots.FindLastIndex(slot => slot.Count == 0); break;
                         case 16u: {
                             int sourceValue = inventory.GetSlotValue(sourceSlotInput);
                             int sourceCount = inventory.GetSlotCount(sourceSlotInput);
@@ -322,9 +292,7 @@ namespace Game {
                             }
                             break;
                         }
-                        case 18u:
-                            m_voltage = (uint)inventory.RemoveSlotItems(sourceSlotInput, countInput);
-                            break;
+                        case 18u: m_voltage = (uint)inventory.RemoveSlotItems(sourceSlotInput, countInput); break;
                         case 19u: {
                             int shouldRemove = countInput;
                             for (int i = 0; i < inventory.SlotsCount; i++) {
@@ -453,8 +421,8 @@ namespace Game {
             if (terrain.IsCellValid(x, y, z)) {
                 int cellValue = terrain.GetCellValue(x, y, z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-                if ((!block.IsCollidable_(cellValue) || block.IsFaceTransparent(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue))
-                    && (cellFace.Face != 4 || !(block is FenceBlock))
+                if (!block.IsFaceSuitableForElectricElements(SubsystemGVElectricity.SubsystemTerrain, cellFace, cellValue)
+                    && (cellFace.Face != 4 || block is not FenceBlock)
                     && SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(x, y, z)?.Entity.FindComponent<ComponentInventoryBase>() == null) {
                     SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(
                         0,

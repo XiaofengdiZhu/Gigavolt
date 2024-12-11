@@ -468,7 +468,7 @@
 		<None Update="Assets\Textures\GVSolid8NumberLedBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Assets\Textures\GVSwitchCabinetBlock.webp">
+		<None Update="Assets\Textures\GVColoredCabinetBlock.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Dialogs\EditGVButtonCabinetDialog.xml">
