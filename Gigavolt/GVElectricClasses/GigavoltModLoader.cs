@@ -1,7 +1,11 @@
+using Engine;
 using GameEntitySystem;
 
 namespace Game {
     public class GigavoltModLoader : ModLoader {
+        public GVDebugData m_debugData;
+        public SubsystemGVElectricBlockBehavior m_blockBehavior;
+
         public override void __ModInitialize() {
             ModsManager.RegisterHook("OnProjectDisposed", this);
             ModsManager.RegisterHook("ToFreeChunks", this);
@@ -18,8 +22,6 @@ namespace Game {
                 }
             }
             GVStaticStorage.GVSGCFEEList.Clear();
-            GVStaticStorage.PreventChunkFromBeingFree = false;
-            GVStaticStorage.GVUsingChunks.Clear();
             IGVCustomWheelPanelBlock.BasicElementsValues.Clear();
             IGVCustomWheelPanelBlock.WireThroughValues.Clear();
             IGVCustomWheelPanelBlock.TransformerValues.Clear();
@@ -28,7 +30,7 @@ namespace Game {
         }
 
         public override void ToFreeChunks(TerrainUpdater terrainUpdater, TerrainChunk chunk, out bool KeepWorking) {
-            KeepWorking = GVStaticStorage.PreventChunkFromBeingFree && GVStaticStorage.GVUsingChunks.Contains(chunk.Coords);
+            KeepWorking = m_debugData.PreventChunkFromBeingFree && m_blockBehavior.m_usingChunks.Contains(chunk.Coords);
         }
 
         public override void OnProjectLoaded(Project project) {
@@ -37,6 +39,7 @@ namespace Game {
                 serializer.SaveChunkData(chunk);
             }
             GVStaticStorage.EditableItemBehaviorChangedChunks.Clear();
+            m_debugData = project.FindSubsystem<SubsystemGVDebugBlockBehavior>().m_data;
             IGVCustomWheelPanelBlock.BasicElementsValues.Clear();
             IGVCustomWheelPanelBlock.BasicElementsValues.AddRange(
                 [
@@ -66,6 +69,22 @@ namespace Game {
             IGVCustomWheelPanelBlock.LedValues.Clear();
             IGVCustomWheelPanelBlock.LedValues.AddRange([GVBlocksManager.GetBlockIndex<GVMulticoloredLedBlock>(), GVBlocksManager.GetBlockIndex<GV8NumberLedBlock>(), GVBlocksManager.GetBlockIndex<GVOneLedBlock>()]);
             IGVCustomWheelPanelBlock.LedValues.AddRange(GVBlocksManager.GetBlock<GV8x4LedBlock>().GetCreativeValues());
+            m_blockBehavior = project.FindSubsystem<SubsystemGVElectricBlockBehavior>();
+            if (m_debugData.LoadChunkInAdvance
+                && m_blockBehavior.m_usingChunks.Count > 0) {
+                SubsystemTerrain subsystemTerrain = project.FindSubsystem<SubsystemTerrain>(true);
+                foreach (Point2 chunkCord in m_blockBehavior.m_usingChunks) {
+                    TerrainChunk chunk = subsystemTerrain.Terrain.AllocateChunk(chunkCord.X, chunkCord.Y);
+                    while (chunk.ThreadState < TerrainChunkState.InvalidContents4) {
+                        subsystemTerrain.TerrainUpdater.UpdateChunkSingleStep(chunk, 0);
+                    }
+                    chunk.State = chunk.ThreadState;
+                    if (!chunk.AreBehaviorsNotified) {
+                        chunk.AreBehaviorsNotified = true;
+                        subsystemTerrain.TerrainUpdater.NotifyBlockBehaviors(chunk);
+                    }
+                }
+            }
         }
     }
 }

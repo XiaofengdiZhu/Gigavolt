@@ -15,6 +15,7 @@ namespace Game {
         public readonly CheckboxWidget m_preventChunkFromBeingFreeCheckbox;
         public readonly CheckboxWidget m_displayVoltageCheckbox;
         public readonly CheckboxWidget m_wheelPanelEnabledCheckbox;
+        public readonly CheckboxWidget m_loadChunkInAdvanceCheckbox;
         public readonly BevelledButtonWidget m_helpButton;
 
         public readonly SubsystemGVDebugBlockBehavior m_subsystem;
@@ -36,6 +37,7 @@ namespace Game {
             m_preventChunkFromBeingFreeCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.PreventChunkFromBeingFree");
             m_displayVoltageCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.DisplayVoltage");
             m_wheelPanelEnabledCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.WheelPanelEnabled");
+            m_loadChunkInAdvanceCheckbox = Children.Find<CheckboxWidget>("EditGVDebugDialog.LoadChunkInAdvance");
             m_helpButton = Children.Find<BevelledButtonWidget>("EditGVDebugDialog.Help");
             m_handler = handler;
             m_subsystem = subsystem;
@@ -45,9 +47,10 @@ namespace Game {
             m_lastSpeedText = data.Speed.ToString("F2");
             m_displayStepFloatingButtonsCheckbox.IsChecked = data.DisplayStepFloatingButtons;
             m_keyboardControlCheckbox.IsChecked = data.KeyboardControl;
-            m_preventChunkFromBeingFreeCheckbox.IsChecked = GVStaticStorage.PreventChunkFromBeingFree;
+            m_preventChunkFromBeingFreeCheckbox.IsChecked = data.PreventChunkFromBeingFree;
             m_displayVoltageCheckbox.IsChecked = GVStaticStorage.DisplayVoltage;
             m_wheelPanelEnabledCheckbox.IsChecked = GVStaticStorage.WheelPanelEnabled;
+            m_loadChunkInAdvanceCheckbox.IsChecked = data.LoadChunkInAdvance;
         }
 
         public override void Update() {
@@ -59,12 +62,21 @@ namespace Game {
             }
             if (m_preventChunkFromBeingFreeCheckbox.IsClicked) {
                 m_preventChunkFromBeingFreeCheckbox.IsChecked = !m_preventChunkFromBeingFreeCheckbox.IsChecked;
+                if (!m_preventChunkFromBeingFreeCheckbox.IsChecked) {
+                    m_loadChunkInAdvanceCheckbox.IsChecked = false;
+                }
             }
             if (m_displayVoltageCheckbox.IsClicked) {
                 m_displayVoltageCheckbox.IsChecked = !m_displayVoltageCheckbox.IsChecked;
             }
             if (m_wheelPanelEnabledCheckbox.IsClicked) {
                 m_wheelPanelEnabledCheckbox.IsChecked = !m_wheelPanelEnabledCheckbox.IsChecked;
+            }
+            if (m_loadChunkInAdvanceCheckbox.IsClicked) {
+                m_loadChunkInAdvanceCheckbox.IsChecked = !m_loadChunkInAdvanceCheckbox.IsChecked;
+                if (m_loadChunkInAdvanceCheckbox.IsChecked) {
+                    m_preventChunkFromBeingFreeCheckbox.IsChecked = true;
+                }
             }
             if (m_okButton.IsClicked) {
                 if (m_speedTextBox.Text.Length > 0) {
@@ -104,7 +116,8 @@ namespace Game {
                     );
                 }
                 GVStaticStorage.DisplayVoltage = m_displayVoltageCheckbox.IsChecked;
-                GVStaticStorage.PreventChunkFromBeingFree = m_preventChunkFromBeingFreeCheckbox.IsChecked;
+                m_subsystem.SetPreventChunkFromBeingFree(m_preventChunkFromBeingFreeCheckbox.IsChecked);
+                m_subsystem.SetLoadChunkInAdvance(m_loadChunkInAdvanceCheckbox.IsChecked);
                 GVStaticStorage.WheelPanelEnabled = m_wheelPanelEnabledCheckbox.IsChecked;
                 m_subsystem.SetDisplayStepFloatingButtons(m_displayStepFloatingButtonsCheckbox.IsChecked);
                 m_subsystem.SetKeyboardDebug(m_keyboardControlCheckbox.IsChecked);

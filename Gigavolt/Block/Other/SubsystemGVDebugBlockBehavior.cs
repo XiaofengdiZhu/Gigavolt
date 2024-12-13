@@ -68,6 +68,18 @@ namespace Game {
             }
         }
 
+        public void SetPreventChunkFromBeingFree(bool enable, bool force = false) {
+            if (force || m_data.PreventChunkFromBeingFree != enable) {
+                m_data.PreventChunkFromBeingFree = enable;
+            }
+        }
+
+        public void SetLoadChunkInAdvance(bool enable, bool force = false) {
+            if (force || m_data.LoadChunkInAdvance != enable) {
+                m_data.LoadChunkInAdvance = enable;
+            }
+        }
+
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
                 return false;

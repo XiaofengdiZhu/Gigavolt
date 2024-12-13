@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Engine;
 using Engine.Graphics;
 
 namespace Game {
@@ -32,9 +31,6 @@ namespace Game {
         }
 
         public static readonly List<SoundGeneratorGVElectricElement> GVSGCFEEList = new();
-
-        public static bool PreventChunkFromBeingFree = false;
-        public static readonly HashSet<Point2> GVUsingChunks = new();
 
         public static bool DisplayVoltage = false;
 

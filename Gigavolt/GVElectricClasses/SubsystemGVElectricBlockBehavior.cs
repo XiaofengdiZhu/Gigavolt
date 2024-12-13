@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using Engine;
 using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVElectricBlockBehavior : SubsystemBlockBehavior, IGVBlockBehavior {
         public SubsystemGVElectricity m_subsystemGVElectric;
+        public HashSet<Point2> m_usingChunks = [];
 
         public override int[] HandledBlocks => [
             GVBlocksManager.GetBlockIndex<GVOneLedCBlock>(),
@@ -68,14 +70,14 @@ namespace Game {
 
         public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded) {
             m_subsystemGVElectric.OnGVElectricElementBlockGenerated(x, y, z, 0);
-            GVStaticStorage.GVUsingChunks.Add(new Point2(x >> 4, z >> 4));
+            m_usingChunks.Add(new Point2(x >> 4, z >> 4));
         }
 
         public void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded, GVSubterrainSystem system) => m_subsystemGVElectric.OnGVElectricElementBlockGenerated(x, y, z, system.ID);
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) {
             m_subsystemGVElectric.OnGVElectricElementBlockAdded(x, y, z, 0);
-            GVStaticStorage.GVUsingChunks.Add(new Point2(x >> 4, z >> 4));
+            m_usingChunks.Add(new Point2(x >> 4, z >> 4));
         }
 
         public void OnBlockAdded(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) => m_subsystemGVElectric.OnGVElectricElementBlockAdded(x, y, z, system.ID);
@@ -190,6 +192,25 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
             m_subsystemGVElectric = Project.FindSubsystem<SubsystemGVElectricity>(true);
+            string str = valuesDictionary.GetValue("UsingChunks", string.Empty);
+            if (str.Length > 0) {
+                foreach (string chunk in str.Split(';')) {
+                    string[] split = chunk.Split(',');
+                    m_usingChunks.Add(new Point2(int.Parse(split[0]), int.Parse(split[1])));
+                }
+            }
+        }
+
+        public override void Save(ValuesDictionary valuesDictionary) {
+            HashSet<Point2> usingChunks = [];
+            foreach (GVCellFace cellFace in Project.FindSubsystem<SubsystemGVElectricity>(true).m_GVElectricElementsByCellFace[0u].Keys) {
+                usingChunks.Add(new Point2(cellFace.X >> 4, cellFace.Z >> 4));
+            }
+            valuesDictionary.SetValue("UsingChunks", string.Join(";", usingChunks));
+        }
+
+        public override void Dispose() {
+            m_usingChunks.Clear();
         }
     }
 }

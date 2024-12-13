@@ -455,7 +455,8 @@
       "6": "Keyboard Debugging",
       "7": "Keep Running Out\nof Visibility",
       "8": "Hover Display\nVoltage",
-      "10": "Enable Shortcut\nWheel Panel"
+      "10": "Enable Shortcut\nWheel Panel",
+      "11": "Load Elements Out of\nVisibility In Advance"
     },
     "EditGVCounterDialog": {
       "1": "Edit Counter",
