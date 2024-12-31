@@ -1,8 +1,9 @@
 using System;
 using Engine;
+using Engine.Graphics;
 
 namespace Game {
-    public class SubsystemGVMovingBlocks : SubsystemMovingBlocks {
+    public class SubsystemGVMovingBlocks : SubsystemMovingBlocks, IDrawable {
         public new void GenerateGeometry(MovingBlockSet movingBlockSet) {
             Point3 point = default;
             point.X = movingBlockSet.CurrentVelocity.X > 0f ? (int)MathF.Floor(movingBlockSet.Position.X) : point.X = (int)MathF.Ceiling(movingBlockSet.Position.X);
@@ -120,6 +121,55 @@ namespace Game {
                 for (int j = 0; j < count2; j++) {
                     m_indices.Add(array[j] + count);
                 }
+            }
+        }
+
+        public new void Draw(Camera camera, int drawOrder) {
+            m_vertices.Count = 0;
+            m_indices.Count = 0;
+            foreach (MovingBlockSet movingBlockSet2 in m_movingBlockSets) {
+                DrawMovingBlockSet(camera, movingBlockSet2);
+            }
+            int num = 0;
+            while (num < m_removing.Count) {
+                MovingBlockSet movingBlockSet = m_removing[num];
+                if (movingBlockSet.RemainCounter-- > 0) {
+                    DrawMovingBlockSet(camera, movingBlockSet);
+                    num++;
+                }
+                else {
+                    m_removing.RemoveAt(num);
+                    movingBlockSet.Dispose();
+                }
+            }
+            if (m_vertices.Count > 0) {
+                Vector3 viewPosition = camera.ViewPosition;
+                Vector3 vector = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
+                Matrix value = Matrix.CreateTranslation(vector - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
+                Display.BlendState = BlendState.AlphaBlend;
+                Display.DepthStencilState = DepthStencilState.Default;
+                Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+                m_shader.GetParameter("u_origin").SetValue(vector.XZ);
+                m_shader.GetParameter("u_viewProjectionMatrix").SetValue(value);
+                m_shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
+                m_shader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+                m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointClamp);
+                m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+                m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(m_subsystemSky.ViewFogRange.X, 1f / (m_subsystemSky.ViewFogRange.Y - m_subsystemSky.ViewFogRange.X)));
+                Display.DrawUserIndexed(
+                    PrimitiveType.TriangleList,
+                    m_shader,
+                    TerrainVertex.VertexDeclaration,
+                    m_vertices.Array,
+                    0,
+                    m_vertices.Count,
+                    m_indices.Array,
+                    0,
+                    m_indices.Count
+                );
+            }
+            if (DebugDrawMovingBlocks) {
+                DebugDraw();
             }
         }
     }

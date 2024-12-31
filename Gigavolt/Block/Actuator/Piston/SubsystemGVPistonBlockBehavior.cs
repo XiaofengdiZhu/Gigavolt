@@ -501,13 +501,17 @@ namespace Game {
                         for (int i = 2; i <= count; i++) {
                             if (Math.Abs(faceDirection.X) > 0) {
                                 if (i > m_allocatedX) {
-                                    m_movingTerrain.AllocateChunk(i, 0);
+                                    if (m_movingTerrain.GetChunkAtCoords(i, 0) == null) {
+                                        m_movingTerrain.AllocateChunk(i, 0);
+                                    }
                                     m_allocatedX = i;
                                 }
                             }
                             else if (Math.Abs(faceDirection.Z) > 0) {
                                 if (i > m_allocatedZ) {
-                                    m_movingTerrain.AllocateChunk(0, i);
+                                    if (m_movingTerrain.GetChunkAtCoords(0, i) == null) {
+                                        m_movingTerrain.AllocateChunk(0, i);
+                                    }
                                     m_allocatedZ = i;
                                 }
                             }
@@ -596,13 +600,17 @@ namespace Game {
                     for (int i = 2; i <= count; i++) {
                         if (Math.Abs(faceDirection.X) > 0) {
                             if (i > m_allocatedX) {
-                                m_movingTerrain.AllocateChunk(i, 0);
+                                if (m_movingTerrain.GetChunkAtCoords(i, 0) == null) {
+                                    m_movingTerrain.AllocateChunk(i, 0);
+                                }
                                 m_allocatedX = i;
                             }
                         }
                         else if (Math.Abs(faceDirection.Z) > 0) {
                             if (i > m_allocatedZ) {
-                                m_movingTerrain.AllocateChunk(0, i);
+                                if (m_movingTerrain.GetChunkAtCoords(0, i) == null) {
+                                    m_movingTerrain.AllocateChunk(0, i);
+                                }
                                 m_allocatedZ = i;
                             }
                         }

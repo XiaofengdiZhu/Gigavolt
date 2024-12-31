@@ -35,7 +35,7 @@ namespace Game {
                             case GVElectricConnectorDirection.Top:
                                 if (m_classic) {
                                     if (isSignalHigh) {
-                                        m_voltage += 1u;
+                                        m_voltage |= 1u;
                                     }
                                 }
                                 else {
@@ -45,7 +45,7 @@ namespace Game {
                             case GVElectricConnectorDirection.Right:
                                 if (m_classic) {
                                     if (isSignalHigh) {
-                                        m_voltage += 2u;
+                                        m_voltage |= 2u;
                                     }
                                 }
                                 else {
@@ -61,7 +61,7 @@ namespace Game {
                             case GVElectricConnectorDirection.Bottom:
                                 if (m_classic) {
                                     if (isSignalHigh) {
-                                        m_voltage += 4u;
+                                        m_voltage |= 4u;
                                     }
                                 }
                                 else {
@@ -77,7 +77,7 @@ namespace Game {
                             case GVElectricConnectorDirection.Left:
                                 if (m_classic) {
                                     if (isSignalHigh) {
-                                        m_voltage += 8u;
+                                        m_voltage |= 8u;
                                     }
                                 }
                                 else {
