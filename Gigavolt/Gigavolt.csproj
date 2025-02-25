@@ -7,7 +7,7 @@
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>Game</RootNamespace>
 		<AssemblyName>Gigavolt</AssemblyName>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<FileAlignment>512</FileAlignment>
 		<Deterministic>true</Deterministic>
 		<LangVersion>preview</LangVersion>
@@ -23,9 +23,9 @@
 		<PackageLicenseUrl>https://raw.githubusercontent.com/XiaofengdiZhu/Gigavolt/refs/heads/main/LICENSE.txt</PackageLicenseUrl>
 		<RepositoryUrl>https://xiaofengdizhu.github.io/Gigavolt/</RepositoryUrl>
 		<RepositoryType>GitHub</RepositoryType>
-		<Version>2.0.0</Version>
-		<AssemblyVersion>2.0.0</AssemblyVersion>
-		<FileVersion>2.0.0</FileVersion>
+		<Version>2.1.0</Version>
+		<AssemblyVersion>2.1.0</AssemblyVersion>
+		<FileVersion>2.1.0</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<DebugType>pdbonly</DebugType>
@@ -37,10 +37,10 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" GeneratePathProperty="true"/>
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2.2"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2.2"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2.2"/>
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.6"/>
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.8.0.1"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.8.0.1"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.8.0.1"/>
 		<PackageReference Include="CoreCLR-NCalc-Mod" Version="3.1.1" GeneratePathProperty="true"/>
 	</ItemGroup>
 	<ItemGroup>
@@ -165,7 +165,6 @@
 		<Compile Include="Block\Actuator\Piston\GVPistonHeadBlock.cs"/>
 		<Compile Include="Block\Actuator\Piston\GVPistonMode.cs"/>
 		<Compile Include="Block\Actuator\Piston\PistonGVElectricElement.cs"/>
-		<Compile Include="Block\Actuator\Piston\SubsystemGVMovingBlocks.cs"/>
 		<Compile Include="Block\Actuator\Piston\SubsystemGVPistonBlockBehavior.cs"/>
 		<Compile Include="Block\Actuator\SoundGenerator\GVSoundGeneratorBlock.cs"/>
 		<Compile Include="Block\Actuator\SoundGenerator\SoundGeneratorGVElectricElement.cs"/>

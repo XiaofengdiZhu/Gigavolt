@@ -139,13 +139,9 @@ namespace Game {
 
         public void SetPath(string path) {
             if (string.IsNullOrEmpty(path)) {
-                switch (VersionsManager.Platform) {
-                    case Platform.Windows:
-                        path = AppDomain.CurrentDomain.BaseDirectory;
-                        break;
-                    case Platform.Android:
-                        path = Storage.GetSystemPath("android:SurvivalCraft2.3");
-                        break;
+                switch (VersionsManager.PlatformString) {
+                    case "Windows": path = AppDomain.CurrentDomain.BaseDirectory; break;
+                    case "Android": path = Storage.GetSystemPath("android:SurvivalCraft2.3"); break;
                     default: throw new Exception("Unsupported platform");
                 }
             }

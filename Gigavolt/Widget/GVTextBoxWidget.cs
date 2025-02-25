@@ -66,7 +66,7 @@ namespace Game {
                 if (value != m_hasFocus) {
                     m_hasFocus = value;
                     if (value) {
-                        if (VersionsManager.Platform == Platform.Windows) {
+                        if (VersionsManager.PlatformString == "Windows") {
                             if (m_hasFocus && Text == string.Empty) {
                                 KeyboardInput.GetInput();
                             }

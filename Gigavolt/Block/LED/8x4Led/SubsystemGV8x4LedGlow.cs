@@ -44,7 +44,7 @@ namespace Game {
                         float dotResult = Vector3.Dot(direction, camera.ViewDirection);
                         if (Vector3.Dot(direction, camera.ViewDirection) > 0.01f) {
                             float distance = direction.Length();
-                            if (distance < m_subsystemSky.ViewFogRange.Y) {
+                            if (distance < m_subsystemSky.VisibilityRange) {
                                 Vector3 right = key.Right;
                                 Vector3 up = key.Up;
                                 float size = key.Size;

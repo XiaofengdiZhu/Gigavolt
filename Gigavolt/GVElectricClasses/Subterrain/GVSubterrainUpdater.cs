@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Engine;
-using Engine.Graphics;
 using GameEntitySystem;
 
 namespace Game {
@@ -637,14 +636,6 @@ namespace Game {
 
         public void GenerateChunkVertices(TerrainChunk chunk, int stage) {
             m_subterrainSystem.BlockGeometryGenerator.ResetCache();
-            if (!chunk.Draws.TryGetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture, out TerrainGeometry[] terrainGeometry)) {
-                terrainGeometry = new TerrainGeometry[16];
-                for (int i = 0; i < 16; i++) {
-                    TerrainGeometry t = new(chunk.Draws, i);
-                    terrainGeometry[i] = t;
-                }
-                chunk.Draws.Add(m_subsystemAnimatedTextures.AnimatedBlocksTexture, terrainGeometry);
-            }
             TerrainChunk chunkAtCoords1 = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords2 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords3 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y - 1);
@@ -677,13 +668,13 @@ namespace Game {
                         && generateHash == chunk.SliceContentsHashes[i]) {
                         continue;
                     }
-                    foreach (KeyValuePair<Texture2D, TerrainGeometry[]> c in chunk.Draws) {
-                        TerrainGeometrySubset[] subsets = c.Value[i].Subsets;
-                        for (int p = 0; p < subsets.Length; p++) {
-                            subsets[p].Vertices.Clear();
-                            subsets[p].Indices.Clear();
-                        }
+                    chunk.GeneratedSliceContentsHashes[i] = 0;
+                    TerrainGeometry geometry = chunk.ChunkSliceGeometries[i];
+                    if (geometry == null) {
+                        geometry = new TerrainGeometry(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+                        chunk.ChunkSliceGeometries[i] = geometry;
                     }
+                    geometry.ClearGeometry();
                     for (int xInChunk = minX; xInChunk < maxX; ++xInChunk) {
                         for (int zInChunk = minZ; zInChunk < maxZ; ++zInChunk) {
                             switch (xInChunk) {
@@ -712,7 +703,7 @@ namespace Game {
                                             BlocksManager.Blocks[contents]
                                             .GenerateTerrainVertices(
                                                 m_subterrainSystem.BlockGeometryGenerator,
-                                                terrainGeometry[i],
+                                                geometry,
                                                 cellValueFast,
                                                 xInWorld,
                                                 y,
@@ -724,6 +715,7 @@ namespace Game {
                             }
                         }
                     }
+                    chunk.GeneratedSliceContentsHashes[i] = chunk.SliceContentsHashes[i];
                 }
             }
         }

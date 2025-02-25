@@ -42,16 +42,16 @@ namespace Game {
         public readonly PrimitivesRenderer2D m_primitivesRenderer2D = new();
         public SamplerState m_samplerState;
         public virtual string ExportExtension => ".png";
-        static readonly Color birchLeavesColor = BlockColorsMap.BirchLeavesColorsMap.Lookup(8, 8);
-        static readonly Color grassColor = BlockColorsMap.GrassColorsMap.Lookup(8, 8);
-        static readonly Color ivyColor = BlockColorsMap.IvyColorsMap.Lookup(8, 8);
-        static readonly Color kelpColor = BlockColorsMap.KelpColorsMap.Lookup(8, 8);
-        static readonly Color mimosaLeavesColor = BlockColorsMap.MimosaLeavesColorsMap.Lookup(8, 8);
-        static readonly Color oakLeavesColor = BlockColorsMap.OakLeavesColorsMap.Lookup(8, 8);
-        static readonly Color seagrassColor = BlockColorsMap.SeagrassColorsMap.Lookup(8, 8);
-        static readonly Color spruceLeavesColor = BlockColorsMap.SpruceLeavesColorsMap.Lookup(8, 8);
-        static readonly Color tallSpruceLeavesColor = BlockColorsMap.TallSpruceLeavesColorsMap.Lookup(8, 8);
-        static readonly Color waterColor = BlockColorsMap.WaterColorsMap.Lookup(8, 8);
+        static readonly Color birchLeavesColor = BlockColorsMap.BirchLeaves.Lookup(8, 8);
+        static readonly Color grassColor = BlockColorsMap.Grass.Lookup(8, 8);
+        static readonly Color ivyColor = BlockColorsMap.Ivy.Lookup(8, 8);
+        static readonly Color kelpColor = BlockColorsMap.Kelp.Lookup(8, 8);
+        static readonly Color mimosaLeavesColor = BlockColorsMap.MimosaLeaves.Lookup(8, 8);
+        static readonly Color oakLeavesColor = BlockColorsMap.OakLeaves.Lookup(8, 8);
+        static readonly Color seagrassColor = BlockColorsMap.Seagrass.Lookup(8, 8);
+        static readonly Color spruceLeavesColor = BlockColorsMap.SpruceLeaves.Lookup(8, 8);
+        static readonly Color tallSpruceLeavesColor = BlockColorsMap.TallSpruceLeaves.Lookup(8, 8);
+        static readonly Color waterColor = BlockColorsMap.Water.Lookup(8, 8);
 
         public abstract uint Read(uint index);
         public abstract void Write(uint index, uint data);
@@ -200,9 +200,7 @@ namespace Game {
                     Color maskColor = Color.Transparent;
                     int blockData = Terrain.ExtractData(value);
                     switch (block) {
-                        case WoodBlock woodBlock:
-                            slotIndex = woodBlock.m_sideTextureSlot;
-                            break;
+                        case WoodBlock woodBlock: slotIndex = woodBlock.m_sideTextureSlot; break;
                         case PaintedCubeBlock: {
                             int? intColor = PaintedCubeBlock.GetColor(blockData);
                             if (intColor.HasValue) {
@@ -215,46 +213,44 @@ namespace Game {
                     }
                     float slotX = slotIndex % 16;
                     float slotY = slotIndex / 16;
-                    switch (id) {
-                        case BirchLeavesBlock.Index:
-                            maskColor = birchLeavesColor;
-                            break;
-                        case GrassBlock.Index:
-                        case GrassTrapBlock.Index:
-                        case TallGrassBlock.Index:
+                    if (id == BirchLeavesBlock.Index) {
+                        maskColor = birchLeavesColor;
+                    }
+                    else if (id == GrassBlock.Index
+                        || id == GrassTrapBlock.Index
+                        || id == TallGrassBlock.Index) {
+                        maskColor = grassColor;
+                    }
+                    else if (id == CottonBlock.Index
+                        || id == RyeBlock.Index) {
+                        if (CottonBlock.GetIsWild(blockData)) {
                             maskColor = grassColor;
-                            break;
-                        case CottonBlock.Index:
-                        case RyeBlock.Index:
-                            if (CottonBlock.GetIsWild(blockData)) {
-                                maskColor = grassColor;
-                            }
-                            break;
-                        case IvyBlock.Index:
-                            maskColor = ivyColor;
-                            break;
-                        case KelpBlock.Index:
-                            maskColor = kelpColor;
-                            break;
-                        case MimosaLeavesBlock.Index:
-                            maskColor = mimosaLeavesColor;
-                            break;
-                        case OakLeavesBlock.Index:
-                            maskColor = oakLeavesColor;
-                            break;
-                        case SeagrassBlock.Index:
-                            maskColor = seagrassColor;
-                            break;
-                        case ChristmasTreeBlock.Index:
-                        case SpruceLeavesBlock.Index:
-                            maskColor = spruceLeavesColor;
-                            break;
-                        case TallSpruceLeavesBlock.Index:
-                            maskColor = tallSpruceLeavesColor;
-                            break;
-                        case WaterBlock.Index:
-                            maskColor = waterColor;
-                            break;
+                        }
+                    }
+                    else if (id == IvyBlock.Index) {
+                        maskColor = ivyColor;
+                    }
+                    else if (id == KelpBlock.Index) {
+                        maskColor = kelpColor;
+                    }
+                    else if (id == MimosaLeavesBlock.Index) {
+                        maskColor = mimosaLeavesColor;
+                    }
+                    else if (id == OakLeavesBlock.Index) {
+                        maskColor = oakLeavesColor;
+                    }
+                    else if (id == SeagrassBlock.Index) {
+                        maskColor = seagrassColor;
+                    }
+                    else if (id == ChristmasTreeBlock.Index
+                        || id == SpruceLeavesBlock.Index) {
+                        maskColor = spruceLeavesColor;
+                    }
+                    else if (id == TallSpruceLeavesBlock.Index) {
+                        maskColor = tallSpruceLeavesColor;
+                    }
+                    else if (id == WaterBlock.Index) {
+                        maskColor = waterColor;
                     }
                     texturedBatch.QueueQuad(
                         new Vector2(x * slotSide, y * slotSide),

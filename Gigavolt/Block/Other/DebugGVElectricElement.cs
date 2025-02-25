@@ -17,9 +17,11 @@ namespace Game {
         public override uint GetOutputVoltage(int face) => Double2Uint(SubsystemGVElectricity.SpeedFactor);
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
-            int cellValue = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y - 1, cellFace.Z);
+            Terrain terrain = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId);
+            int cellValue = terrain.GetCellValue(cellFace.X, cellFace.Y - 1, cellFace.Z);
+            int elementCellValue = terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-            if (!block.IsFaceSuitableForElectricElements(SubsystemGVElectricity.SubsystemTerrain, cellFace, cellValue)
+            if (block.IsFaceNonAttachable(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue, elementCellValue)
                 && (cellFace.Face != 4 || block is not FenceBlock)) {
                 SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(
                     0,

@@ -179,9 +179,7 @@ namespace Game {
                     TerrainRenderer.PrepareForDrawing(camera);
                     TerrainRenderer.DrawOpaqueAndAlphaTested(camera);
                     break;
-                case 100:
-                    TerrainRenderer.DrawTransparent(camera);
-                    break;
+                case 100: TerrainRenderer.DrawTransparent(camera); break;
             }
             foreach (GVSubterrainSystem child in Children.Values) {
                 child.Draw(camera, drawOrder);
@@ -383,9 +381,6 @@ namespace Game {
             }
         }
 
-        public static bool IsBlockAllowedForSubterrain(int contents) => contents switch {
-            AirBlock.Index or BedrockBlock.Index or FireBlock.Index => false,
-            _ => true
-        };
+        public static bool IsBlockAllowedForSubterrain(int contents) => contents != AirBlock.Index && contents != BedrockBlock.Index && contents != FireBlock.Index;
     }
 }

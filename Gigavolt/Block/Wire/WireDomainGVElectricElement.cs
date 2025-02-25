@@ -41,7 +41,7 @@ namespace Game {
                 Point3 point = CellFace.FaceToPoint3(cellFace.Face);
                 int cellValue2 = terrain.GetCellValue(cellFace.X - point.X, cellFace.Y - point.Y, cellFace.Z - point.Z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
-                if (!block.IsFaceSuitableForElectricElements(SubsystemGVElectricity.SubsystemTerrain, cellFace, cellValue2)) {
+                if (block.IsFaceNonAttachable(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue2, cellValue)) {
                     num2 &= ~(1 << cellFace.Face);
                 }
             }

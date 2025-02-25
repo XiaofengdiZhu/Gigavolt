@@ -1,4 +1,4 @@
-﻿<Mod>
+﻿<Mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://gitee.com/THPRC/survivalcraft-api/raw/SCAPI1.8/Survivalcraft/Content/Assets/Database.xsd">
 	<Folder Name="Abstract" Guid="e6fcac21-922d-4234-97c0-fe6feb5a0697">
 		<SubsystemTemplate Name="GVEditableItemBehavior" Guid="5ac0a57e-c339-4c46-8e0a-e500e3b9e295" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<ParameterSet Name="Items" Description="Contains data associated with items" Guid="edc2d637-6375-4163-a389-0060ebee2a38"/>
@@ -60,10 +60,6 @@
 		<MemberSubsystemTemplate Name="GVSignBlockBehavior" Guid="fe35671f-f5d3-4c53-9650-831179e307f3" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<ParameterSet Name="Texts" Description="Contains sign texts" Guid="7f899bea-68d8-432e-8141-1ddf6d329af6"/>
 			<Parameter Name="Class" Guid="9164da3a-70ed-4d99-bd66-f3d914d4e4e6" Value="Game.SubsystemGVSignBlockBehavior" Type="string"/>
-		</MemberSubsystemTemplate>
-		<MemberSubsystemTemplate Name="GVMovingBlocks" Description="Handles moving blocks" Guid="58edfc08-f40c-4b8c-8d74-ab342df25be5" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
-			<ParameterSet Name="MovingBlockSets" Guid="034e8093-eda8-4e45-8c3c-6a6bc605f6b1"/>
-			<Parameter Name="Class" Guid="23012304-e3b9-4fab-be04-c7512078d0c1" Value="Game.SubsystemGVMovingBlocks" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="GVDoorBlockBehavior" Guid="551cf220-2d44-45cd-ac5c-bc14ed45b4ac" InheritanceParent="5ac0a57e-c339-4c46-8e0a-e500e3b9e295">
 			<Parameter Name="Class" Guid="55c7a663-552c-49f8-be52-81f5a75843d1" Value="Game.SubsystemGVDoorBlockBehavior" Type="string"/>

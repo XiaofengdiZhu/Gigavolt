@@ -26,7 +26,15 @@ namespace Game {
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
             int textureSlotCount = block.GetTextureSlotCount(value);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    0,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
                 DynamicArray<int> indices = subsetsByFace[0].Indices;
                 int faceTextureSlot = block.GetFaceTextureSlot(0, value);
@@ -86,7 +94,15 @@ namespace Game {
                 indices.Array[count2 + 5] = count + 3; //D
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    1,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
                 DynamicArray<int> indices2 = subsetsByFace[1].Indices;
                 int faceTextureSlot2 = block.GetFaceTextureSlot(1, value);
@@ -146,7 +162,15 @@ namespace Game {
                 indices2.Array[count4 + 5] = count3 + 3;
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    2,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
                 DynamicArray<int> indices3 = subsetsByFace[2].Indices;
                 int faceTextureSlot3 = block.GetFaceTextureSlot(2, value);
@@ -206,7 +230,15 @@ namespace Game {
                 indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    3,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
                 DynamicArray<int> indices4 = subsetsByFace[3].Indices;
                 int faceTextureSlot4 = block.GetFaceTextureSlot(3, value);
@@ -266,7 +298,15 @@ namespace Game {
                 indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = y < 255 ? chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    4,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
                 DynamicArray<int> indices5 = subsetsByFace[4].Indices;
                 int faceTextureSlot5 = block.GetFaceTextureSlot(4, value);
@@ -326,7 +366,15 @@ namespace Game {
                 indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = y > 0 ? chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    5,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
                 DynamicArray<int> indices6 = subsetsByFace[5].Indices;
                 int faceTextureSlot6 = block.GetFaceTextureSlot(5, value);
@@ -395,7 +443,15 @@ namespace Game {
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
             int textureSlotCount = block.GetTextureSlotCount(value);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    0,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
                 DynamicArray<int> indices = subsetsByFace[0].Indices;
                 int faceTextureSlot = block.GetFaceTextureSlot(0, value);
@@ -455,7 +511,15 @@ namespace Game {
                 indices.Array[count2 + 5] = count + 3;
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    1,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
                 DynamicArray<int> indices2 = subsetsByFace[1].Indices;
                 int faceTextureSlot2 = block.GetFaceTextureSlot(1, value);
@@ -515,7 +579,15 @@ namespace Game {
                 indices2.Array[count4 + 5] = count3 + 3;
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    2,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
                 DynamicArray<int> indices3 = subsetsByFace[2].Indices;
                 int faceTextureSlot3 = block.GetFaceTextureSlot(2, value);
@@ -575,7 +647,15 @@ namespace Game {
                 indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    3,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
                 DynamicArray<int> indices4 = subsetsByFace[3].Indices;
                 int faceTextureSlot4 = block.GetFaceTextureSlot(3, value);
@@ -635,7 +715,15 @@ namespace Game {
                 indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = y < 255 ? chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast)
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    4,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )
                 || height11 < 1f
                 || height12 < 1f
                 || height21 < 1f
@@ -699,7 +787,15 @@ namespace Game {
                 indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = y > 0 ? chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    5,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
                 DynamicArray<int> indices6 = subsetsByFace[5].Indices;
                 int faceTextureSlot5 = block.GetFaceTextureSlot(5, value);
@@ -768,7 +864,15 @@ namespace Game {
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
             int textureSlotCount = block.GetTextureSlotCount(value);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    0,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
                 DynamicArray<int> indices = subsetsByFace[0].Indices;
                 int faceTextureSlot = block.GetFaceTextureSlot(0, value);
@@ -828,7 +932,15 @@ namespace Game {
                 indices.Array[count2 + 5] = count + 3;
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    1,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
                 DynamicArray<int> indices2 = subsetsByFace[1].Indices;
                 int faceTextureSlot2 = block.GetFaceTextureSlot(1, value);
@@ -888,7 +1000,15 @@ namespace Game {
                 indices2.Array[count4 + 5] = count3 + 3;
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    2,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
                 DynamicArray<int> indices3 = subsetsByFace[2].Indices;
                 int faceTextureSlot3 = block.GetFaceTextureSlot(2, value);
@@ -948,7 +1068,15 @@ namespace Game {
                 indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    3,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
                 DynamicArray<int> indices4 = subsetsByFace[3].Indices;
                 int faceTextureSlot4 = block.GetFaceTextureSlot(3, value);
@@ -1008,7 +1136,15 @@ namespace Game {
                 indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = y < 255 ? chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    4,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
                 DynamicArray<int> indices5 = subsetsByFace[4].Indices;
                 int faceTextureSlot5 = block.GetFaceTextureSlot(4, value);
@@ -1068,7 +1204,15 @@ namespace Game {
                 indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = y > 0 ? chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast)) {
+            if (block.ShouldGenerateFace(
+                    SubsystemTerrain,
+                    5,
+                    value,
+                    cellValueFast,
+                    x,
+                    y,
+                    z
+                )) {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
                 DynamicArray<int> indices6 = subsetsByFace[5].Indices;
                 int faceTextureSlot6 = block.GetFaceTextureSlot(5, value);

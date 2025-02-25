@@ -12,6 +12,7 @@ namespace Game {
 
         public readonly DynamicArray<TerrainChunk> m_chunksToDraw = [];
         public static readonly DynamicArray<int> m_tmpIndices = [];
+        public static DynamicArray<TerrainVertex> m_tmpVertices = [];
 
         public static Shader OpaqueShader;
         public static Shader AlphatestedShader;
@@ -54,74 +55,109 @@ namespace Game {
 
         public void SetupTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk) {
             DisposeTerrainChunkGeometryVertexIndexBuffers(chunk);
-            CompileDrawSubsets(chunk.Draws, chunk.Buffers);
+            CompileDrawSubsets(chunk.ChunkSliceGeometries, chunk.Buffers);
             chunk.CopySliceContentsHashes();
         }
 
-        public static void CompileDrawSubsets(Dictionary<Texture2D, TerrainGeometry[]> list, DynamicArray<TerrainChunkGeometry.Buffer> buffers, Func<TerrainVertex, TerrainVertex> vertexTransform = null) {
-            foreach ((Texture2D key, TerrainGeometry[] geometry) in list) {
-                int num = 0;
-                while (num < 112) {
-                    int num2 = 0;
-                    int num3 = 0;
-                    int i;
-                    for (i = num; i < 112; i++) {
-                        int num4 = i / 16;
-                        int num5 = i % 16;
-                        TerrainGeometrySubset terrainGeometrySubset = geometry[num5].Subsets[num4];
-                        if (vertexTransform != null) {
-                            DynamicArray<TerrainVertex> tmpList = [];
-                            foreach (TerrainVertex t in terrainGeometrySubset.Vertices) {
-                                TerrainVertex vertex = vertexTransform(t);
-                                tmpList.Add(vertex);
-                            }
-                            terrainGeometrySubset.Vertices = tmpList;
+        public class SubsetStat {
+            public int[] subsetTotalIndexCount = new int[7];
+            public int[] subsetTotalVertexCount = new int[7];
+            public int[] subsetSettedIndexCount = new int[7];
+            public int[] subsetSettedVertexCount = new int[7];
+            public int totalIndexCount;
+            public int totalVertextCount;
+            public TerrainChunkGeometry.Buffer Buffer;
+        }
+
+        public static Dictionary<Texture2D, SubsetStat> stat = new();
+
+        public static void CompileDrawSubsets(TerrainGeometry[] chunkSliceGeometries, DynamicArray<TerrainChunkGeometry.Buffer> buffers, Func<TerrainVertex, TerrainVertex> vertexTransform = null) {
+            stat.Clear();
+            //按贴图进行分组统计Subset的顶点数与索引数
+            for (int k = 0; k < chunkSliceGeometries.Length; k++) {
+                TerrainGeometry geometry = chunkSliceGeometries[k]; //第k个slice
+                //统计每个subset的indexCount与VertexCount
+                foreach (KeyValuePair<Texture2D, TerrainGeometry> drawItem in geometry.Draws) {
+                    TerrainGeometry subGeometry = drawItem.Value;
+                    for (int i = 0; i < subGeometry.Subsets.Length; i++) {
+                        if (!stat.TryGetValue(drawItem.Key, out SubsetStat subsetStat)) {
+                            subsetStat = new SubsetStat();
+                            stat.Add(drawItem.Key, subsetStat);
                         }
-                        try {
-                            _ = checked(num2 + terrainGeometrySubset.Vertices.Count);
-                        }
-                        catch (Exception) {
-                            if (i > num) {
-                                break;
-                            }
-                        }
-                        num2 += terrainGeometrySubset.Vertices.Count;
-                        num3 += terrainGeometrySubset.Indices.Count;
+                        int ic = subGeometry.Subsets[i].Indices.Count;
+                        int vc = subGeometry.Subsets[i].Vertices.Count;
+                        subsetStat.subsetTotalIndexCount[i] += ic;
+                        subsetStat.subsetTotalVertexCount[i] += vc;
+                        subsetStat.totalIndexCount += ic;
+                        subsetStat.totalVertextCount += vc;
                     }
-                    if (num2 > 0
-                        && num3 > 0) {
-                        TerrainChunkGeometry.Buffer buffer = new();
-                        buffer.Texture = key;
-                        buffers.Add(buffer);
-                        buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, num2);
-                        buffer.IndexBuffer = new IndexBuffer(IndexFormat.ThirtyTwoBits, num3);
-                        int num6 = 0;
-                        int num7 = 0;
-                        for (int j = num; j < i; j++) {
-                            int num8 = j / 16;
-                            int num9 = j % 16;
-                            TerrainGeometrySubset terrainGeometrySubset2 = geometry[num9].Subsets[num8];
-                            if (num9 == 0
-                                || j == num) {
-                                buffer.SubsetIndexBufferStarts[num8] = num7;
+                }
+            }
+            //按贴图分组完成，生成buffer
+            foreach (KeyValuePair<Texture2D, SubsetStat> statItem in stat) {
+                if (statItem.Value.totalIndexCount == 0) {
+                    continue;
+                }
+                TerrainChunkGeometry.Buffer buffer = new();
+                buffer.IndexBuffer = new IndexBuffer(IndexFormat.ThirtyTwoBits, statItem.Value.totalIndexCount);
+                buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, statItem.Value.totalVertextCount);
+                buffer.Texture = statItem.Key;
+                statItem.Value.Buffer = buffer;
+                buffers.Add(buffer);
+                int subsetSettedIndexCount = 0;
+                int subsetSettedVertexCount = 0;
+                for (int i = 0; i < 7; i++) {
+                    if (i == 0) {
+                        buffer.SubsetIndexBufferStarts[i] = 0;
+                        buffer.SubsetIndexBufferEnds[i] = statItem.Value.subsetTotalIndexCount[i];
+                        buffer.SubsetVertexBufferStarts[i] = 0;
+                        buffer.SubsetVertexBufferEnds[i] = statItem.Value.subsetTotalVertexCount[i];
+                        subsetSettedIndexCount = statItem.Value.subsetTotalIndexCount[i];
+                        subsetSettedVertexCount = statItem.Value.subsetTotalVertexCount[i];
+                    }
+                    else {
+                        buffer.SubsetIndexBufferStarts[i] = subsetSettedIndexCount;
+                        buffer.SubsetIndexBufferEnds[i] = statItem.Value.subsetTotalIndexCount[i] + buffer.SubsetIndexBufferStarts[i];
+                        buffer.SubsetVertexBufferStarts[i] = subsetSettedVertexCount;
+                        buffer.SubsetVertexBufferEnds[i] = statItem.Value.subsetTotalVertexCount[i] + buffer.SubsetVertexBufferStarts[i];
+                        subsetSettedIndexCount += statItem.Value.subsetTotalIndexCount[i];
+                        subsetSettedVertexCount += statItem.Value.subsetTotalVertexCount[i];
+                    }
+                }
+            }
+            //将顶点列表与索引列表写入buffer
+            for (int k = 0; k < chunkSliceGeometries.Length; k++) {
+                TerrainGeometry geometry = chunkSliceGeometries[k]; //第k个slice
+                //统计每个subset的indexCount与VertexCount
+                foreach (KeyValuePair<Texture2D, TerrainGeometry> drawItem in geometry.Draws) {
+                    TerrainGeometry subGeometry = drawItem.Value;
+                    for (int i = 0; i < subGeometry.Subsets.Length; i++) {
+                        if (stat.TryGetValue(drawItem.Key, out SubsetStat subsetStat)) {
+                            if (subsetStat.totalIndexCount == 0) {
+                                continue;
                             }
-                            if (terrainGeometrySubset2.Indices.Count > 0) {
-                                m_tmpIndices.Count = terrainGeometrySubset2.Indices.Count;
-                                ShiftIndices(terrainGeometrySubset2.Indices.Array, m_tmpIndices.Array, num6, terrainGeometrySubset2.Indices.Count);
-                                buffer.IndexBuffer.SetData(m_tmpIndices.Array, 0, m_tmpIndices.Count, num7);
-                                num7 += m_tmpIndices.Count;
-                            }
-                            if (terrainGeometrySubset2.Vertices.Count > 0) {
-                                buffer.VertexBuffer.SetData(terrainGeometrySubset2.Vertices.Array, 0, terrainGeometrySubset2.Vertices.Count, num6);
-                                num6 += terrainGeometrySubset2.Vertices.Count;
-                            }
-                            if (num9 == 15
-                                || j == i - 1) {
-                                buffer.SubsetIndexBufferEnds[num8] = num7;
+                            TerrainGeometryDynamicArray<int> indices = subGeometry.Subsets[i].Indices;
+                            TerrainGeometryDynamicArray<TerrainVertex> vertices = subGeometry.Subsets[i].Vertices;
+                            if (indices.Count > 0) {
+                                TerrainChunkGeometry.Buffer buffer = subsetStat.Buffer;
+                                m_tmpIndices.Count = indices.Count;
+                                ShiftIndices(indices.Array, m_tmpIndices.Array, buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i], indices.Count);
+                                buffer.IndexBuffer.SetData(m_tmpIndices.Array, 0, indices.Count, buffer.SubsetIndexBufferStarts[i] + subsetStat.subsetSettedIndexCount[i]);
+                                if (vertexTransform != null) {
+                                    m_tmpVertices.Count = vertices.Count;
+                                    for (int j = 0; j < vertices.Count; j++) {
+                                        m_tmpVertices[j] = vertexTransform(vertices[j]);
+                                    }
+                                    buffer.VertexBuffer.SetData(m_tmpVertices.Array, 0, vertices.Count, buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i]);
+                                }
+                                else {
+                                    buffer.VertexBuffer.SetData(vertices.Array, 0, vertices.Count, buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i]);
+                                }
+                                subsetStat.subsetSettedIndexCount[i] += indices.Count;
+                                subsetStat.subsetSettedVertexCount[i] += vertices.Count;
                             }
                         }
                     }
-                    num = i;
                 }
             }
         }
