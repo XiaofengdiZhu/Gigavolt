@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 	<CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
+		<BevelledRectangleWidget Style="{Styles/DialogArea}"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 			<LabelWidget Text="[EditGVJavascriptMicrocontrollerDialog:1]" HorizontalAlignment="Center"/>
 			<CanvasWidget Size="0, 5"/>
@@ -35,7 +35,7 @@
 				<CanvasWidget Size="0, 15"/>
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 					<CanvasWidget Size="474, 34" HorizontalAlignment="Center">
-						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<BevelledRectangleWidget Style="{Styles/Area}"/>
 						<TextBoxWidget Name="EditGVJavascriptMicrocontrollerDialog.LinearText" Size="470, 30" MaximumLength="1000000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 					<BitmapButtonWidget Name="EditGVJavascriptMicrocontrollerDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>

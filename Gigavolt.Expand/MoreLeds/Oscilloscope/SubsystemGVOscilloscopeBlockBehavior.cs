@@ -149,7 +149,7 @@ namespace Game {
                         float dotResult = Vector3.Dot(direction, camera.ViewDirection);
                         if (dotResult > 0.01f) {
                             float distance = direction.Length();
-                            if (distance < m_subsystemSky.ViewFogRange.Y) {
+                            if (distance < m_subsystemSky.VisibilityRange) {
                                 int newLodLevel = direction.LengthSquared() switch {
                                     < 3f => 0, //全特效
                                     < 5.3f => 1, //关闭按钮显示、降低虚线精度

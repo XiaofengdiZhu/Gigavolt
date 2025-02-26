@@ -1,9 +1,7 @@
-extern alias OpenTKForWindows;
-extern alias OpenTKForAndroid;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Game;
+using Silk.NET.OpenGLES;
 
 namespace Engine.Graphics {
     public class GVOscilloscopeWaveFlatBatch2D : FlatBatch2D {
@@ -61,7 +59,7 @@ namespace Engine.Graphics {
                 while (num2 > 0) {
                     int num3 = Math.Min(num2, 196605);
                     DrawUserIndexed(
-                        GVPrimitiveType.TriangleList,
+                        PrimitiveType.TriangleList,
                         GVOscilloscopeBackgroundShader,
                         VertexPositionColor.VertexDeclaration,
                         TriangleVertices.Array,
@@ -91,7 +89,7 @@ namespace Engine.Graphics {
                 while (num8 > 0) {
                     int num9 = Math.Min(num8, 131070);
                     DrawUserIndexed(
-                        GVPrimitiveType.Points,
+                        PrimitiveType.Points,
                         GVOscilloscopeWaveShader,
                         VertexPositionColor.VertexDeclaration,
                         PointsVertices.Array,
@@ -105,7 +103,7 @@ namespace Engine.Graphics {
                     num8 -= num9;
                 }
                 DrawUserIndexed(
-                    GVPrimitiveType.LineList,
+                    PrimitiveType.LineList,
                     GVOscilloscopeWaveShader,
                     VertexPositionColor.VertexDeclaration,
                     LineVertices.Array,
@@ -129,7 +127,7 @@ namespace Engine.Graphics {
             GVOscilloscopeBackgroundShader.DashAndGapLength = dashAndGapLength;
         }
 
-        public static void DrawUserIndexed<T>(GVPrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct {
+        public static unsafe void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct {
             //VerifyParametersDrawUserIndexed(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount, indexData, startIndex, indicesCount);
             GCHandle gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
             GCHandle gCHandle2 = GCHandle.Alloc(indexData, GCHandleType.Pinned);
@@ -146,54 +144,12 @@ namespace Engine.Graphics {
                 GLWrapper.ApplyRasterizerState(Display.RasterizerState);
                 GLWrapper.ApplyDepthStencilState(Display.DepthStencilState);
                 GLWrapper.ApplyBlendState(Display.BlendState);
-                switch (VersionsManager.Platform) {
-                    case Platform.Windows:
-                        WindowsGLDrawElements(primitiveType, indicesCount, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
-                        break;
-                    case Platform.Android:
-                        AndroidGLDrawElements(primitiveType, indicesCount, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
-                        break;
-                }
+                GLWrapper.GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), (uint)indicesCount, DrawElementsType.UnsignedInt, (gCHandle2.AddrOfPinnedObject() + 4 * startIndex).ToPointer());
             }
             finally {
                 gCHandle.Free();
                 gCHandle2.Free();
             }
         }
-
-        public enum GVPrimitiveType {
-            LineList,
-            LineStrip,
-            TriangleList,
-            TriangleStrip,
-            Points
-        }
-#pragma warning disable CS0618 // 类型或成员已过时
-        public static void WindowsGLDrawElements(GVPrimitiveType primitiveType, int indicesCount, IntPtr indices) {
-            OpenTKForWindows::OpenTK.Graphics.ES30.GL.DrawElements(WindowsTranslateGVPrimitiveType(primitiveType), indicesCount, OpenTKForWindows::OpenTK.Graphics.ES30.DrawElementsType.UnsignedInt, indices);
-        }
-
-
-        public static OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType WindowsTranslateGVPrimitiveType(GVPrimitiveType type) => type switch {
-            GVPrimitiveType.LineList => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.Lines,
-            GVPrimitiveType.LineStrip => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.LineStrip,
-            GVPrimitiveType.TriangleList => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.Triangles,
-            GVPrimitiveType.TriangleStrip => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.TriangleStrip,
-            GVPrimitiveType.Points => OpenTKForWindows::OpenTK.Graphics.ES30.PrimitiveType.Points,
-            _ => throw new InvalidOperationException("Unsupported primitive type.")
-        };
-#pragma warning restore CS0618 // 类型或成员已过时
-        public static void AndroidGLDrawElements(GVPrimitiveType primitiveType, int indicesCount, IntPtr indices) {
-            OpenTKForAndroid::OpenTK.Graphics.ES30.GL.DrawElements(AndroidTranslateGVPrimitiveType(primitiveType), indicesCount, OpenTKForAndroid::OpenTK.Graphics.ES30.DrawElementsType.UnsignedInt, indices);
-        }
-
-        public static OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode AndroidTranslateGVPrimitiveType(GVPrimitiveType type) => type switch {
-            GVPrimitiveType.LineList => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.Lines,
-            GVPrimitiveType.LineStrip => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.LineStrip,
-            GVPrimitiveType.TriangleList => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.Triangles,
-            GVPrimitiveType.TriangleStrip => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.TriangleStrip,
-            GVPrimitiveType.Points => OpenTKForAndroid::OpenTK.Graphics.ES30.BeginMode.Points,
-            _ => throw new InvalidOperationException("Unsupported primitive type.")
-        };
     }
 }

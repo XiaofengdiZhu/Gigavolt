@@ -1,9 +1,8 @@
-extern alias OpenTKForWindows;
-extern alias OpenTKForAndroid;
 using System;
 using System.Runtime.InteropServices;
 using Engine;
 using Engine.Graphics;
+using Silk.NET.OpenGLES;
 
 namespace Game {
     public class PlayerMonitorGVElectricElement : RotateableGVElectricElement {
@@ -32,7 +31,7 @@ namespace Game {
             return 0u;
         }
 
-        public override bool Simulate() {
+        public override unsafe bool Simulate() {
             uint bottomInput = m_bottomInput;
             uint inInput = m_inInput;
             int rotation = Rotation;
@@ -158,7 +157,7 @@ namespace Game {
                         break;
                     }
                     case 33u: {
-                        m_rightOutput = componentPlayer.ComponentBody.IsSneaking ? uint.MaxValue : 0u;
+                        m_rightOutput = componentPlayer.ComponentBody.IsCrouching ? uint.MaxValue : 0u;
                         m_topOutput = componentPlayer.ComponentLocomotion.m_falling ? uint.MaxValue : 0u;
                         break;
                     }
@@ -175,14 +174,15 @@ namespace Game {
                                 GLWrapper.BindFramebuffer(GLWrapper.m_mainFramebuffer);
                                 uint[] m_hookedImage = new uint[Window.Size.X * Window.Size.Y];
                                 GCHandle gcHandle = GCHandle.Alloc(m_hookedImage, GCHandleType.Pinned);
-                                switch (VersionsManager.Platform) {
-                                    case Platform.Windows:
-                                        WindowsGLReadPixels(Window.Size.X, Window.Size.Y, gcHandle.AddrOfPinnedObject());
-                                        break;
-                                    case Platform.Android:
-                                        AndroidGLReadPixels(Window.Size.X, Window.Size.Y, gcHandle.AddrOfPinnedObject());
-                                        break;
-                                }
+                                GLWrapper.GL.ReadPixels(
+                                    0,
+                                    0,
+                                    (uint)Window.Size.X,
+                                    (uint)Window.Size.Y,
+                                    PixelFormat.Rgba,
+                                    PixelType.UnsignedByte,
+                                    gcHandle.AddrOfPinnedObject().ToPointer()
+                                );
                                 memory.UintArray2Data(m_hookedImage, Window.Size.X, Window.Size.Y);
                                 gcHandle.Free();
                                 GLWrapper.BindFramebuffer(lastFrameBuffer);
@@ -199,29 +199,5 @@ namespace Game {
         }
 
         public static uint Float2Uint(float num) => ((num < 0 ? 1u : 0u) << 31) | (((uint)Math.Truncate(Math.Abs(num)) & 0x7fff) << 16) | (uint)Math.Round(num % 1 * 0xffff);
-
-        public void WindowsGLReadPixels(int width, int height, nint pixels) {
-            OpenTKForWindows::OpenTK.Graphics.ES30.GL.ReadPixels(
-                0,
-                0,
-                width,
-                height,
-                OpenTKForWindows::OpenTK.Graphics.ES30.PixelFormat.Rgba,
-                OpenTKForWindows::OpenTK.Graphics.ES30.PixelType.UnsignedByte,
-                pixels
-            );
-        }
-
-        public void AndroidGLReadPixels(int width, int height, nint pixels) {
-            OpenTKForAndroid::OpenTK.Graphics.ES30.GL.ReadPixels(
-                0,
-                0,
-                width,
-                height,
-                OpenTKForAndroid::OpenTK.Graphics.ES30.PixelFormat.Rgba,
-                OpenTKForAndroid::OpenTK.Graphics.ES30.PixelType.UnsignedByte,
-                pixels
-            );
-        }
     }
 }

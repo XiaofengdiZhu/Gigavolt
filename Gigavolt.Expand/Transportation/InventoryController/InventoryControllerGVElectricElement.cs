@@ -420,8 +420,9 @@ namespace Game {
             Terrain terrain = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId);
             if (terrain.IsCellValid(x, y, z)) {
                 int cellValue = terrain.GetCellValue(x, y, z);
+                int elementCellValue = terrain.GetCellValue(point.X, point.Y, point.Z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-                if (!block.IsFaceSuitableForElectricElements(SubsystemGVElectricity.SubsystemTerrain, cellFace, cellValue)
+                if (block.IsFaceNonAttachable(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue, elementCellValue)
                     && (cellFace.Face != 4 || block is not FenceBlock)
                     && SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(x, y, z)?.Entity.FindComponent<ComponentInventoryBase>() == null) {
                     SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(

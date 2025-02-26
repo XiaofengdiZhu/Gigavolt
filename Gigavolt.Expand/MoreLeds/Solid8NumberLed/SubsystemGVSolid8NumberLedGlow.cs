@@ -45,7 +45,7 @@ namespace Game {
                             float dotResult = Vector3.Dot(direction, camera.ViewDirection);
                             if (Vector3.Dot(direction, camera.ViewDirection) > 0.01f) {
                                 float distance = direction.Length();
-                                if (distance < m_subsystemSky.ViewFogRange.Y) {
+                                if (distance < m_subsystemSky.VisibilityRange) {
                                     Vector3 up = face < 4 ? Vector3.UnitY :
                                         Math.Abs(direction.X) > Math.Abs(direction.Z) ? new Vector3((direction.X > 0 ? 1 : -1) * (direction.Y < 0 ? 1 : -1), 0, 0) : new Vector3(0, 0, (direction.Z > 0 ? 1 : -1) * (direction.Y < 0 ? 1 : -1));
                                     Vector3 right = Vector3.Cross(forward, up);

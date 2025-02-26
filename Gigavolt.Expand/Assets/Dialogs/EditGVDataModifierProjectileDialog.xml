@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 	<CanvasWidget Size="700, 300" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
+		<BevelledRectangleWidget Style="{Styles/DialogArea}"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 			<LabelWidget Font="{Fonts/Pericles}" Text="[EditGVDataModifierProjectileDialog:1]" HorizontalAlignment="Center"/>
 			<CanvasWidget Size="0, Infinity"/>
@@ -8,7 +8,7 @@
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 				<LabelWidget Text="[EditGVDataModifierProjectileDialog:2]"/>
 				<CanvasWidget Size="124, 34">
-					<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+					<BevelledRectangleWidget Style="{Styles/Area}"/>
 					<TextBoxWidget Name="EditGVDataModifierProjectileDialog.Data" Size="120, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 				</CanvasWidget>
 			</StackPanelWidget>

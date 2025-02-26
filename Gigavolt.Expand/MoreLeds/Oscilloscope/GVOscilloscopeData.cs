@@ -1,6 +1,4 @@
-﻿extern alias OpenTKForWindows;
-extern alias OpenTKForAndroid;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
@@ -80,9 +78,7 @@ namespace Game {
                             DisplaySize = 320;
                             cacheIndex = 2;
                             break;
-                        default:
-                            DisplaySize = 160;
-                            break;
+                        default: DisplaySize = 160; break;
                     }
                     RenderTarget2D blurRenderTarget = null;
                     RenderTarget2D tempBlurRenderTarget = null;
@@ -164,14 +160,6 @@ namespace Game {
                 if (lodLevel < 3) {
                     m_waveBatch.QueueQuad(new Vector2(0, 0), new Vector2(displayWidth, displayHeight), 0, Color.Transparent);
                     m_waveBatch.FlushBackground();
-                }
-                switch (VersionsManager.Platform) {
-                    case Platform.Windows:
-                        WindowsEnableGLPointSize();
-                        break;
-                    case Platform.Android:
-                        AndroidEnableGLPointSize();
-                        break;
                 }
                 float levelRange = MaxLevel - MinLevel;
                 float displayWidthMax = displayWidth - 1;
@@ -662,15 +650,6 @@ namespace Game {
             }
         }
 
-#pragma warning disable CS0618 // 类型或成员已过时
-        public static void WindowsEnableGLPointSize() {
-            OpenTKForWindows::OpenTK.Graphics.ES30.GL.Enable((OpenTKForWindows::OpenTK.Graphics.ES30.All)34370);
-        }
-
-        public static void AndroidEnableGLPointSize() {
-            OpenTKForAndroid::OpenTK.Graphics.ES30.GL.Enable((OpenTKForAndroid::OpenTK.Graphics.ES30.All)34370);
-        }
-#pragma warning restore CS0618 // 类型或成员已过时
         public void Dispose() {
             m_texture?.Dispose();
             foreach (RenderTarget2D renderTarget in m_cachedWaveRenderTargets) {

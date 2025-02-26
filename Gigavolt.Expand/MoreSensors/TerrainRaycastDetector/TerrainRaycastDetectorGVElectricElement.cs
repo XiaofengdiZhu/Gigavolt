@@ -81,7 +81,8 @@ namespace Game {
                 int value = chunkAtCell.GetCellValueFast(position.X & 15, position.Y, position.Z & 15);
                 int content = Terrain.ExtractContents(value);
                 if (content == 0
-                    || (skipFluid && content is WaterBlock.Index or MagmaBlock.Index)) {
+                    || (skipFluid && content == WaterBlock.Index)
+                    || content == MagmaBlock.Index) {
                     if (detected > 0) {
                         break;
                     }

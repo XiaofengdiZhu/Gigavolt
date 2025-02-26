@@ -211,7 +211,7 @@ namespace Game {
                 foreach (TerrainChunk terrainChunk in m_subsystemTerrain.Terrain.AllocatedChunks) {
                     if (Vector2.DistanceSquared(m_camera.ViewPosition.XZ, terrainChunk.Center) <= MathUtils.Sqr(m_subsystemSky.VisibilityRange)
                         && terrainChunk.State == TerrainChunkState.Valid) {
-                        terrainChunk.FogEnds[0] = float.MaxValue;
+                        terrainChunk.HazeEnds[0] = float.MaxValue;
                     }
                 }
                 RenderTarget2D lastRenderTarget = Display.RenderTarget;

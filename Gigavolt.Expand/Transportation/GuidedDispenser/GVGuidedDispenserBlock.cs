@@ -36,6 +36,7 @@ namespace Game {
                 primitivesRenderer,
                 value,
                 new Vector3(size),
+                1f,
                 ref matrix,
                 color,
                 color,
