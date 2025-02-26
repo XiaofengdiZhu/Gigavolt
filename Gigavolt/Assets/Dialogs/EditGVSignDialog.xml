@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 	<CanvasWidget Size="600, 420" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
+		<BevelledRectangleWidget Style="{Styles/DialogArea}"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" Margin="10, 0" IsVisible="true">
 			<StackPanelWidget Name="EditGVSignDialog.LinesPage" Direction="Vertical">
 				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">

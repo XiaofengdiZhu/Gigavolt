@@ -5,7 +5,6 @@
 		</SubsystemTemplate>
 		<SubsystemTemplate Name="GVBlockBehavior" Guid="0f40208e-af0e-4bca-978a-e79445378b05" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb"/>
 	</Folder>
-	<Parameter Name="Class" Guid="1739995d-79de-4d04-9763-432c22b3f416" new-Value="Game.SubsystemGVMovingBlocks" Type="string"/>
 	<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
 		<MemberSubsystemTemplate Name="GVElectricBlockBehavior" Guid="24a2b7a9-c5c1-4319-9fd0-31a23479ebe6" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="bb270000-c814-47de-99f0-abed8ef8395b" Value="Game.SubsystemGVElectricBlockBehavior" Type="string"/>

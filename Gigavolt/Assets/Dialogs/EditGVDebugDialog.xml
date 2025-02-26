@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 	<CanvasWidget Size="720, 440" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
+		<BevelledRectangleWidget Style="{Styles/DialogArea}"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near">
 			<LabelWidget Font="{Fonts/Pericles}" Text="[EditGVDebugDialog:1]" HorizontalAlignment="Center" Margin="0, 15"/>
 			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Near">
@@ -9,7 +9,7 @@
 						<LabelWidget Text="[EditGVDebugDialog:4]" VerticalAlignment="Center"/>
 						<CanvasWidget Size="20, 0"/>
 						<CanvasWidget Size="124, 34">
-							<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+							<BevelledRectangleWidget Style="{Styles/Area}"/>
 							<TextBoxWidget Name="EditGVDebugDialog.Speed" Size="120, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
 					</StackPanelWidget>

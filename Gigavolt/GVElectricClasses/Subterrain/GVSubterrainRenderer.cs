@@ -14,9 +14,9 @@ namespace Game {
         public static readonly DynamicArray<int> m_tmpIndices = [];
         public static DynamicArray<TerrainVertex> m_tmpVertices = [];
 
-        public static Shader OpaqueShader;
-        public static Shader AlphatestedShader;
-        public static Shader TransparentShader;
+        public static Shader m_opaqueShader;
+        public static Shader m_alphaTestedShader;
+        public static Shader m_transparentShader;
 
         public static readonly SamplerState m_samplerState = new() { AddressModeU = TextureAddressMode.Clamp, AddressModeV = TextureAddressMode.Clamp, FilterMode = TextureFilterMode.Point, MaxLod = 0f };
 
@@ -26,9 +26,9 @@ namespace Game {
             m_subterrainSystem = system;
             m_subsystemSky = project.FindSubsystem<SubsystemSky>(true);
             m_subsystemAnimatedTextures = project.FindSubsystem<SubsystemAnimatedTextures>(true);
-            OpaqueShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"));
-            AlphatestedShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"), new ShaderMacro("ALPHATESTED"));
-            TransparentShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.psh"));
+            m_opaqueShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"));
+            m_alphaTestedShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"), new ShaderMacro("ALPHATESTED"));
+            m_transparentShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.psh"));
             Display.DeviceReset += Display_DeviceReset;
         }
 
@@ -174,21 +174,21 @@ namespace Game {
             Display.BlendState = BlendState.Opaque;
             Display.DepthStencilState = DepthStencilState.Default;
             Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-            OpaqueShader.GetParameter("u_origin", true).SetValue(v.XZ);
-            AlphatestedShader.GetParameter("u_origin", true).SetValue(v.XZ);
+            m_opaqueShader.GetParameter("u_origin", true).SetValue(v.XZ);
+            m_alphaTestedShader.GetParameter("u_origin", true).SetValue(v.XZ);
             Matrix viewProjectionMatrix = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
-            OpaqueShader.GetParameter("u_viewProjectionMatrix", true).SetValue(viewProjectionMatrix);
-            AlphatestedShader.GetParameter("u_viewProjectionMatrix", true).SetValue(viewProjectionMatrix);
-            OpaqueShader.GetParameter("u_subterrainTransform", true).SetValue(m_subterrainSystem.GlobalTransform);
-            AlphatestedShader.GetParameter("u_subterrainTransform", true).SetValue(m_subterrainSystem.GlobalTransform);
-            OpaqueShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-            AlphatestedShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+            m_opaqueShader.GetParameter("u_viewProjectionMatrix", true).SetValue(viewProjectionMatrix);
+            m_alphaTestedShader.GetParameter("u_viewProjectionMatrix", true).SetValue(viewProjectionMatrix);
+            m_opaqueShader.GetParameter("u_subterrainTransform", true).SetValue(m_subterrainSystem.GlobalTransform);
+            m_alphaTestedShader.GetParameter("u_subterrainTransform", true).SetValue(m_subterrainSystem.GlobalTransform);
+            m_opaqueShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+            m_alphaTestedShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
             SamplerState samplerState = SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState;
-            OpaqueShader.GetParameter("u_samplerState", true).SetValue(samplerState);
-            AlphatestedShader.GetParameter("u_samplerState", true).SetValue(samplerState);
+            m_opaqueShader.GetParameter("u_samplerState", true).SetValue(samplerState);
+            m_alphaTestedShader.GetParameter("u_samplerState", true).SetValue(samplerState);
             foreach (TerrainChunk terrainChunk in m_chunksToDraw) {
-                DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk, 31);
-                DrawTerrainChunkGeometrySubsets(AlphatestedShader, terrainChunk, 32);
+                DrawTerrainChunkGeometrySubsets(m_opaqueShader, terrainChunk, 31);
+                DrawTerrainChunkGeometrySubsets(m_alphaTestedShader, terrainChunk, 32);
             }
         }
 
@@ -198,13 +198,13 @@ namespace Game {
             Display.BlendState = BlendState.AlphaBlend;
             Display.DepthStencilState = DepthStencilState.Default;
             Display.RasterizerState = m_subsystemSky.ViewUnderWaterDepth > 0f ? RasterizerState.CullClockwiseScissor : RasterizerState.CullCounterClockwiseScissor;
-            TransparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
-            TransparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix);
-            TransparentShader.GetParameter("u_subterrainTransform", true).SetValue(m_subterrainSystem.GlobalTransform);
-            TransparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-            TransparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+            m_transparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
+            m_transparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix);
+            m_transparentShader.GetParameter("u_subterrainTransform", true).SetValue(m_subterrainSystem.GlobalTransform);
+            m_transparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+            m_transparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             foreach (TerrainChunk terrainChunk in m_chunksToDraw) {
-                DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk, 64);
+                DrawTerrainChunkGeometrySubsets(m_transparentShader, terrainChunk, 64);
             }
         }
 

@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 	<CanvasWidget Size="840, 440" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2"/>
+		<BevelledRectangleWidget Style="{Styles/DialogArea}"/>
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
 			<LabelWidget Text="[EditGVMemoryBankDialog:1]" HorizontalAlignment="Center"/>
 			<CanvasWidget Size="0, 5"/>
@@ -17,13 +17,13 @@
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 					<LabelWidget Name="EditGVMemoryBankDialog.RowCountLabel" Text="[EditGVMemoryBankDialog:3]"/>
 					<CanvasWidget Size="104, 34">
-						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<BevelledRectangleWidget Style="{Styles/Area}"/>
 						<TextBoxWidget Name="EditGVMemoryBankDialog.RowCount" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 					<CanvasWidget Size="20, 34"/>
 					<LabelWidget Name="EditGVMemoryBankDialog.ColCountLabel" Text="[EditGVMemoryBankDialog:4]"/>
 					<CanvasWidget Size="104, 34">
-						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<BevelledRectangleWidget Style="{Styles/Area}"/>
 						<TextBoxWidget Name="EditGVMemoryBankDialog.ColCount" Size="100, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 				</StackPanelWidget>
@@ -32,7 +32,7 @@
 				<CanvasWidget Size="0, 10"/>
 				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 					<CanvasWidget Size="474, 34" HorizontalAlignment="Center">
-						<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+						<BevelledRectangleWidget Style="{Styles/Area}"/>
 						<TextBoxWidget Name="EditGVMemoryBankDialog.LinearText" Size="470, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 					</CanvasWidget>
 					<BitmapButtonWidget Name="EditGVMemoryBankDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>

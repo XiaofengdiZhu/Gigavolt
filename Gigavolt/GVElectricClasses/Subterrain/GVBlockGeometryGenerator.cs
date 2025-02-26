@@ -19,6 +19,7 @@ namespace Game {
         }
 
         public override void GenerateCubeVertices(Block block, int value, int x, int y, int z, Color color, TerrainGeometrySubset[] subsetsByFace) {
+            int blockIndex = block.BlockIndex;
             TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
             TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
             TerrainChunk chunkAtCell3 = Terrain.GetChunkAtCell(x + 1, z);
@@ -26,7 +27,8 @@ namespace Game {
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
             int textureSlotCount = block.GetTextureSlotCount(value);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     0,
                     value,
@@ -94,7 +96,8 @@ namespace Game {
                 indices.Array[count2 + 5] = count + 3; //D
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     1,
                     value,
@@ -162,7 +165,8 @@ namespace Game {
                 indices2.Array[count4 + 5] = count3 + 3;
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     2,
                     value,
@@ -230,7 +234,8 @@ namespace Game {
                 indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     3,
                     value,
@@ -298,7 +303,8 @@ namespace Game {
                 indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = y < 255 ? chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     4,
                     value,
@@ -366,7 +372,8 @@ namespace Game {
                 indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = y > 0 ? chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     5,
                     value,
@@ -436,6 +443,7 @@ namespace Game {
         }
 
         public override void GenerateCubeVertices(Block block, int value, int x, int y, int z, float height11, float height21, float height22, float height12, Color sideColor, Color topColor11, Color topColor21, Color topColor22, Color topColor12, int overrideTopTextureSlot, TerrainGeometrySubset[] subsetsByFace) {
+            int blockIndex = block.BlockIndex;
             TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
             TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
             TerrainChunk chunkAtCell3 = Terrain.GetChunkAtCell(x + 1, z);
@@ -443,7 +451,8 @@ namespace Game {
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
             int textureSlotCount = block.GetTextureSlotCount(value);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     0,
                     value,
@@ -511,7 +520,8 @@ namespace Game {
                 indices.Array[count2 + 5] = count + 3;
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     1,
                     value,
@@ -579,7 +589,8 @@ namespace Game {
                 indices2.Array[count4 + 5] = count3 + 3;
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     2,
                     value,
@@ -647,7 +658,8 @@ namespace Game {
                 indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     3,
                     value,
@@ -715,7 +727,8 @@ namespace Game {
                 indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = y < 255 ? chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(
+            if (((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     4,
                     value,
@@ -723,7 +736,7 @@ namespace Game {
                     x,
                     y,
                     z
-                )
+                ))
                 || height11 < 1f
                 || height12 < 1f
                 || height21 < 1f
@@ -787,9 +800,10 @@ namespace Game {
                 indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = y > 0 ? chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
-                    5,
+                    4,
                     value,
                     cellValueFast,
                     x,
@@ -857,6 +871,7 @@ namespace Game {
         }
 
         public override void GenerateCubeVertices(Block block, int value, int x, int y, int z, int rotationX, int rotationY, int rotationZ, Color color, TerrainGeometrySubset[] subsetsByFace) {
+            int blockIndex = block.BlockIndex;
             TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
             TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
             TerrainChunk chunkAtCell3 = Terrain.GetChunkAtCell(x + 1, z);
@@ -864,7 +879,8 @@ namespace Game {
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
             int textureSlotCount = block.GetTextureSlotCount(value);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     0,
                     value,
@@ -932,7 +948,8 @@ namespace Game {
                 indices.Array[count2 + 5] = count + 3;
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     1,
                     value,
@@ -1000,7 +1017,8 @@ namespace Game {
                 indices2.Array[count4 + 5] = count3 + 3;
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     2,
                     value,
@@ -1068,7 +1086,8 @@ namespace Game {
                 indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     3,
                     value,
@@ -1136,7 +1155,8 @@ namespace Game {
                 indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = y < 255 ? chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     4,
                     value,
@@ -1204,7 +1224,8 @@ namespace Game {
                 indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = y > 0 ? chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF) : m_subterrainSystem.Light << 10;
-            if (block.ShouldGenerateFace(
+            if ((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
+                && block.ShouldGenerateFace(
                     SubsystemTerrain,
                     5,
                     value,
