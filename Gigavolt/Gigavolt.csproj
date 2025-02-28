@@ -300,7 +300,6 @@
 		<Compile Include="GVElectricClasses\SubsystemGVElectricity.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
 		<Compile Include="Screen\GVMBExternalContentScreen.cs"/>
-		<Compile Include="Widget\GVTextBoxWidget.cs"/>
 		<Compile Include="Widget\GVWheelPanelWidget.cs"/>
 	</ItemGroup>
 	<ItemGroup>

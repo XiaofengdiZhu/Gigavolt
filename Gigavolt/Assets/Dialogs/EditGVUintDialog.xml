@@ -76,7 +76,7 @@
 						<LabelWidget Text="[EditGVUintDialog:4]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<BevelledRectangleWidget Style="{Styles/Area}"/>
-							<GVTextBoxWidget Name="EditGVUintDialog.OctTextBox" Text="0" Size="160, 30" MaximumLength="13" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+							<TextBoxWidget Name="EditGVUintDialog.OctTextBox" Text="0" Size="160, 30" MaximumLength="13" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyOct" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
@@ -85,7 +85,7 @@
 						<LabelWidget Text="[EditGVUintDialog:5]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<BevelledRectangleWidget Style="{Styles/Area}"/>
-							<GVTextBoxWidget Name="EditGVUintDialog.DecTextBox" Text="0" Size="160, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+							<TextBoxWidget Name="EditGVUintDialog.DecTextBox" Text="0" Size="160, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyDec" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>
@@ -94,7 +94,7 @@
 						<LabelWidget Text="[EditGVUintDialog:6]" Size="100, 34"/>
 						<CanvasWidget Size="164, 34">
 							<BevelledRectangleWidget Style="{Styles/Area}"/>
-							<GVTextBoxWidget Name="EditGVUintDialog.HexTextBox" Text="0" Size="160, 30" MaximumLength="8" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+							<TextBoxWidget Name="EditGVUintDialog.HexTextBox" Text="0" Size="160, 30" MaximumLength="8" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
 						</CanvasWidget>
 						<BitmapButtonWidget Name="EditGVUintDialog.CopyHex" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
 					</StackPanelWidget>

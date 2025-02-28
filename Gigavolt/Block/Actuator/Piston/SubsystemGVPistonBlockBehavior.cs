@@ -772,7 +772,8 @@ namespace Game {
 
         public static bool IsBlockMovable(int value, int pistonFace, int y, out bool isEnd) {
             isEnd = false;
-            return y is > 0 and < 255 && BlocksManager.Blocks[Terrain.ExtractContents(value)].IsMovableByPiston(value, pistonFace, y, out isEnd);
+            int contents = Terrain.ExtractContents(value);
+            return y is > 0 and < 255 && contents != ChestBlock.Index && contents != DispenserBlock.Index && contents != FurnaceBlock.Index && contents != BlocksManager.GetBlockIndex<GVDispenserBlock>() && BlocksManager.Blocks[contents].IsMovableByPiston(value, pistonFace, y, out isEnd);
         }
 
         public static bool IsBlockBlocking(int value, int y) => y is <= 0 or >= 255 || BlocksManager.Blocks[Terrain.ExtractContents(value)].IsBlockingPiston(value);

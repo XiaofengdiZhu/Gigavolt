@@ -210,7 +210,7 @@ namespace Game {
         }
 
         public override void LoadString(string data) {
-            string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] array = data.Split(';');
             if (array.Length >= 1) {
                 string text = array[0];
                 ID = uint.Parse(text, NumberStyles.HexNumber, null);
@@ -234,7 +234,9 @@ namespace Game {
                 Data = new Dictionary<int, Image<Rgba32>>();
                 string[] array2 = array[2].Split(',');
                 foreach (string key in array2) {
-                    Data.Add(int.Parse(key), null);
+                    if (int.TryParse(key, out int w)) {
+                        Data.Add(w, null);
+                    }
                 }
                 LoadData();
             }
@@ -542,7 +544,7 @@ namespace Game {
                     comment = zip.Comment;
                 }
                 Data = newData;
-                string[] array = comment.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] array = comment.Split([';'], StringSplitOptions.RemoveEmptyEntries);
                 if (array.Length >= 2) {
                     string[] array2 = array[1].Split(',');
                     if (array2.Length == 10) {

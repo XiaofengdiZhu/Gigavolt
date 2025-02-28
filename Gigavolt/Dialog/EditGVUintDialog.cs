@@ -10,13 +10,13 @@ namespace Game {
         public readonly BevelledButtonWidget[] BinKeyboard = new BevelledButtonWidget[32];
 
         public readonly CheckboxWidget OctCheckbox;
-        public readonly GVTextBoxWidget OctTextBox;
+        public readonly TextBoxWidget OctTextBox;
         public readonly BitmapButtonWidget CopyOct;
         public readonly CheckboxWidget DecCheckbox;
-        public readonly GVTextBoxWidget DecTextBox;
+        public readonly TextBoxWidget DecTextBox;
         public readonly BitmapButtonWidget CopyDec;
         public readonly CheckboxWidget HexCheckbox;
-        public readonly GVTextBoxWidget HexTextBox;
+        public readonly TextBoxWidget HexTextBox;
         public readonly BitmapButtonWidget CopyHex;
         public readonly LabelWidget FixedLabel;
         public readonly BitmapButtonWidget CopyFixed;
@@ -41,8 +41,8 @@ namespace Game {
         public string m_lastOctString = "0";
         public string m_lastDecString = "0";
         public string m_lastHexString = "0";
-        GVTextBoxWidget m_lastFocusedTextBox;
-        int m_lastCaretPosition;
+        TextBoxWidget m_lastFocusedTextBox;
+        int m_lastCaret;
         int m_lastFocusedLength;
 
         public EditGVUintDialog(uint originalVoltage, Action<uint> handler) {
@@ -52,14 +52,14 @@ namespace Game {
                 BinKeyboard[i] = Children.Find<BevelledButtonWidget>($"EditGVUintDialog.BinKeyboard{i}");
             }
             OctCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.OctCheckbox");
-            OctTextBox = Children.Find<GVTextBoxWidget>("EditGVUintDialog.OctTextBox");
+            OctTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.OctTextBox");
             CopyOct = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyOct");
             DecCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.DecCheckbox");
-            DecTextBox = Children.Find<GVTextBoxWidget>("EditGVUintDialog.DecTextBox");
+            DecTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.DecTextBox");
             CopyDec = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyDec");
             HexCheckbox = Children.Find<CheckboxWidget>("EditGVUintDialog.HexCheckbox");
             HexCheckbox.IsChecked = true;
-            HexTextBox = Children.Find<GVTextBoxWidget>("EditGVUintDialog.HexTextBox");
+            HexTextBox = Children.Find<TextBoxWidget>("EditGVUintDialog.HexTextBox");
             CopyHex = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyHex");
             FixedLabel = Children.Find<LabelWidget>("EditGVUintDialog.FixedLabel");
             CopyFixed = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyFixed");
@@ -181,36 +181,36 @@ namespace Game {
                     }
                 }
             }
-            GVTextBoxWidget newFocusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
+            TextBoxWidget newFocusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
                 DecCheckbox.IsChecked ? DecTextBox : HexTextBox;
             if (!newFocusedTextBox.HasFocus) {
                 newFocusedTextBox.HasFocus = true;
             }
             if (newFocusedTextBox == m_lastFocusedTextBox) {
                 int newFocusedLength = newFocusedTextBox.Text.Length;
-                if (m_lastCaretPosition > newFocusedLength) {
-                    newFocusedTextBox.CaretPosition = newFocusedLength;
+                if (m_lastCaret > newFocusedLength) {
+                    newFocusedTextBox.Caret = newFocusedLength;
                 }
                 else {
-                    newFocusedTextBox.CaretPosition = m_lastCaretPosition;
+                    newFocusedTextBox.Caret = m_lastCaret;
                     if (newFocusedLength != m_lastFocusedLength) {
-                        newFocusedTextBox.CaretPosition += newFocusedLength - m_lastFocusedLength;
+                        newFocusedTextBox.Caret += newFocusedLength - m_lastFocusedLength;
                     }
                 }
             }
             else {
-                newFocusedTextBox.CaretPosition = newFocusedTextBox.Text.Length;
+                newFocusedTextBox.Caret = newFocusedTextBox.Text.Length;
             }
             for (int i = 0; i < 16; i++) {
                 if (NumberKeyboard[i].IsClicked
                     && newFocusedTextBox.Text.Length < newFocusedTextBox.MaximumLength) {
-                    string newVoltageString = newFocusedTextBox.Text.Insert(newFocusedTextBox.CaretPosition, NumberKeyboard[i].Text);
+                    string newVoltageString = newFocusedTextBox.Text.Insert(newFocusedTextBox.Caret, NumberKeyboard[i].Text);
                     int fromBase = OctCheckbox.IsChecked ? 8 :
                         DecCheckbox.IsChecked ? 10 : 16;
                     try {
                         uint newVoltage = Convert.ToUInt32(newVoltageString, fromBase);
                         ApplyNewVoltage(newVoltage);
-                        newFocusedTextBox.CaretPosition++;
+                        newFocusedTextBox.Caret++;
                     }
                     catch (Exception e) {
                         newFocusedTextBox.Text = OctCheckbox.IsChecked ? m_lastOctString :
@@ -220,9 +220,9 @@ namespace Game {
                 }
             }
             if (NumberKeyboardBackSpace.IsClicked) {
-                if (newFocusedTextBox.CaretPosition > 0) {
-                    bool flag = newFocusedTextBox.CaretPosition != newFocusedTextBox.Text.Length;
-                    string newVoltageString = newFocusedTextBox.Text.Remove(newFocusedTextBox.CaretPosition - 1, 1).Trim();
+                if (newFocusedTextBox.Caret > 0) {
+                    bool flag = newFocusedTextBox.Caret != newFocusedTextBox.Text.Length;
+                    string newVoltageString = newFocusedTextBox.Text.Remove(newFocusedTextBox.Caret - 1, 1).Trim();
                     uint newVoltage = newVoltageString == string.Empty ? 0u : Convert.ToUInt32(
                         newVoltageString,
                         OctCheckbox.IsChecked ? 8 :
@@ -230,7 +230,7 @@ namespace Game {
                     );
                     ApplyNewVoltage(newVoltage, true);
                     if (flag) {
-                        newFocusedTextBox.CaretPosition--;
+                        newFocusedTextBox.Caret--;
                     }
                 }
             }
@@ -248,11 +248,11 @@ namespace Game {
             }
             else if (NumberKeyboardLeft.IsClicked
                 || newFocusedTextBox.Input.IsKeyDownOnce(Key.LeftArrow)) {
-                newFocusedTextBox.CaretPosition--;
+                newFocusedTextBox.Caret--;
             }
             else if (NumberKeyboardRight.IsClicked
                 || newFocusedTextBox.Input.IsKeyDownOnce(Key.RightArrow)) {
-                newFocusedTextBox.CaretPosition++;
+                newFocusedTextBox.Caret++;
             }
             else if (CopyOct.IsClicked) {
                 ClipboardManager.ClipboardString = OctTextBox.Text;
@@ -268,7 +268,7 @@ namespace Game {
             }
             m_lastFocusedTextBox = OctCheckbox.IsChecked ? OctTextBox :
                 DecCheckbox.IsChecked ? DecTextBox : HexTextBox;
-            m_lastCaretPosition = m_lastFocusedTextBox.CaretPosition;
+            m_lastCaret = m_lastFocusedTextBox.Caret;
             m_lastFocusedLength = m_lastFocusedTextBox.Text.Length;
             if (ButtonOk.IsClicked) {
                 if (m_lastValidVoltage != m_originalVoltage) {
