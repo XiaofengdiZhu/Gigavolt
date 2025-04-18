@@ -20,7 +20,7 @@ namespace Game {
         public readonly BitmapButtonWidget CopyHex;
         public readonly LabelWidget FixedLabel;
         public readonly BitmapButtonWidget CopyFixed;
-        public readonly RectangleWidget ColorRectangle;
+        public readonly TransparentRectangleWidget ColorRectangle;
 
         public readonly BevelledButtonWidget NumberKeyboardShiftLeft;
         public readonly BevelledButtonWidget NumberKeyboardShiftRight;
@@ -63,7 +63,7 @@ namespace Game {
             CopyHex = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyHex");
             FixedLabel = Children.Find<LabelWidget>("EditGVUintDialog.FixedLabel");
             CopyFixed = Children.Find<BitmapButtonWidget>("EditGVUintDialog.CopyFixed");
-            ColorRectangle = Children.Find<RectangleWidget>("EditGVUintDialog.Color");
+            ColorRectangle = Children.Find<TransparentRectangleWidget>("EditGVUintDialog.Color");
             NumberKeyboardShiftLeft = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardShiftLeft");
             NumberKeyboardShiftRight = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardShiftRight");
             NumberKeyboardNegate = Children.Find<BevelledButtonWidget>("EditGVUintDialog.NumberKeyboardNegate");
@@ -223,11 +223,13 @@ namespace Game {
                 if (newFocusedTextBox.Caret > 0) {
                     bool flag = newFocusedTextBox.Caret != newFocusedTextBox.Text.Length;
                     string newVoltageString = newFocusedTextBox.Text.Remove(newFocusedTextBox.Caret - 1, 1).Trim();
-                    uint newVoltage = newVoltageString == string.Empty ? 0u : Convert.ToUInt32(
-                        newVoltageString,
-                        OctCheckbox.IsChecked ? 8 :
-                        DecCheckbox.IsChecked ? 10 : 16
-                    );
+                    uint newVoltage = newVoltageString == string.Empty
+                        ? 0u
+                        : Convert.ToUInt32(
+                            newVoltageString,
+                            OctCheckbox.IsChecked ? 8 :
+                            DecCheckbox.IsChecked ? 10 : 16
+                        );
                     ApplyNewVoltage(newVoltage, true);
                     if (flag) {
                         newFocusedTextBox.Caret--;

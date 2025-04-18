@@ -107,7 +107,7 @@
 					<StackPanelWidget Direction="Horizontal" Margin="0, 12">
 						<LabelWidget Text="[EditGVUintDialog:8]" Size="144, 34"/>
 						<CanvasWidget Size="164, 34">
-							<RectangleWidget Name="EditGVUintDialog.Color" FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
+							<TransparentRectangleWidget Name="EditGVUintDialog.Color" FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 128" OutlineThickness="1"/>
 						</CanvasWidget>
 					</StackPanelWidget>
 				</StackPanelWidget>

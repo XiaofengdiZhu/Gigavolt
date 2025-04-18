@@ -301,6 +301,7 @@
 		<Compile Include="Properties\AssemblyInfo.cs"/>
 		<Compile Include="Screen\GVMBExternalContentScreen.cs"/>
 		<Compile Include="Widget\GVWheelPanelWidget.cs"/>
+		<Compile Include="Widget\TransparentRectangleWidget.cs"/>
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Assets\Dialogs\EditGVButtonDialog.xml">
