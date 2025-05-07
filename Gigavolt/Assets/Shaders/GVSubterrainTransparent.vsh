@@ -24,8 +24,8 @@ void main()
     float alpha = mix(clamp(mix(1.2, 0.5, abs(direction.y / length(direction))), 0.0, 1.0), 0.85, a_color.w);
     v_color = vec4(a_color.xyz * alpha, alpha);
 
-    a_position = u_subterrainTransform * vec4(a_position, 1.0);
-    gl_Position = u_viewProjectionMatrix * vec4(a_position.x - u_origin.x, a_position.y, a_position.z - u_origin.y, 1.0);
+    vec4 b_position = u_subterrainTransform * vec4(a_position, 1.0);
+    gl_Position = u_viewProjectionMatrix * vec4(b_position.x - u_origin.x, b_position.y, b_position.z - u_origin.y, 1.0);
 
     OPENGL_POSITION_FIX;
 }

@@ -17,6 +17,7 @@ namespace Game {
         public int[] DrawOrders => [2000];
 
         public override void Load(ValuesDictionary valuesDictionary) {
+            base.Load(valuesDictionary);
             m_subsystemGVSubterrain = Project.FindSubsystem<SubsystemGVSubterrain>(true);
         }
 
@@ -60,7 +61,11 @@ namespace Game {
             }
         }
 
-        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(
+        public override void OnBlockRemoved(int value,
+            int newValue,
+            int x,
+            int y,
+            int z) => OnBlockRemoved(
             value,
             newValue,
             x,
@@ -69,7 +74,12 @@ namespace Game {
             null
         );
 
-        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
+        public void OnBlockRemoved(int value,
+            int newValue,
+            int x,
+            int y,
+            int z,
+            GVSubterrainSystem system) {
             Point3 tractorBeamBlockPoint = new(x, y, z);
             uint subterrainId = system?.ID ?? 0;
             RemoveSubterrain(tractorBeamBlockPoint, subterrainId, true);
