@@ -37,10 +37,10 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" GeneratePathProperty="true"/>
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.6"/>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.8.0.1"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.8.0.1"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.8.0.1"/>
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.8"/>
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.8.1"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.8.1"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.8.1"/>
 		<PackageReference Include="CoreCLR-NCalc-Mod" Version="3.1.1" GeneratePathProperty="true"/>
 	</ItemGroup>
 	<ItemGroup>
