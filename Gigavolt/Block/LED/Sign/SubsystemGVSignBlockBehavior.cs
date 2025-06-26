@@ -5,16 +5,21 @@ using System.Linq;
 using Engine;
 using Engine.Graphics;
 using Engine.Media;
+using Silk.NET.OpenGLES;
 using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemGVSignBlockBehavior : SubsystemBlockBehavior, IDrawable, IUpdateable, IGVBlockBehavior {
+        public static int m_maxTexts = 80;
+
         public SubsystemGameWidgets m_subsystemViews;
         public SubsystemGVSubterrain m_subsystemGVSubterrain;
         public SubsystemGameInfo m_subsystemGameInfo;
+        public SubsystemSky m_subsystemSky;
 
         public readonly Dictionary<uint, Dictionary<Point3, GVSignTextData>> m_textsByPoint = new() { { 0u, new Dictionary<Point3, GVSignTextData>() } };
-        public readonly GVSignTextData[] m_textureLocations = new GVSignTextData[32];
+        public readonly GVSignTextData[] m_textureLocations = new GVSignTextData[80];
+        public List<GVSignTextData> m_nearTexts = [];
         public readonly BitmapFont m_font = LabelWidget.BitmapFont;
         public RenderTarget2D m_renderTarget;
         public readonly List<Vector3> m_lastUpdatePositions = [];
@@ -29,13 +34,18 @@ namespace Game {
 
         public GVSignTextData GetSignData(Point3 point, uint subterrainId) => m_textsByPoint[subterrainId].TryGetValue(point, out GVSignTextData value) ? value : null;
 
-        public void SetSignData(Point3 point, uint subterrainId, string line, Color color, string url) {
+        public void SetSignData(Point3 point,
+            uint subterrainId,
+            string line,
+            Color color,
+            string url) {
             if (!m_textsByPoint.TryGetValue(subterrainId, out Dictionary<Point3, GVSignTextData> points)) {
                 points = new Dictionary<Point3, GVSignTextData>();
                 m_textsByPoint.Add(subterrainId, points);
             }
             if (points.TryGetValue(point, out GVSignTextData value)) {
                 value.Point = point;
+                value.SubterrainId = subterrainId;
                 value.Line = line;
                 value.Color = color;
                 value.Url = url;
@@ -44,6 +54,7 @@ namespace Game {
             else {
                 points[point] = new GVSignTextData {
                     Point = point,
+                    SubterrainId = subterrainId,
                     Line = line,
                     Color = color,
                     Url = url,
@@ -57,7 +68,12 @@ namespace Game {
             m_lastUpdatePositions.Clear();
         }
 
-        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) => OnNeighborBlockChanged(
+        public override void OnNeighborBlockChanged(int x,
+            int y,
+            int z,
+            int neighborX,
+            int neighborY,
+            int neighborZ) => OnNeighborBlockChanged(
             x,
             y,
             z,
@@ -67,7 +83,13 @@ namespace Game {
             null
         );
 
-        public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) {
+        public void OnNeighborBlockChanged(int x,
+            int y,
+            int z,
+            int neighborX,
+            int neighborY,
+            int neighborZ,
+            GVSubterrainSystem system) {
             Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
             int cellValueFast = terrain.GetCellValueFast(x, y, z);
             int data = Terrain.ExtractData(cellValueFast);
@@ -121,12 +143,21 @@ namespace Game {
             return true;
         }
 
-        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) {
+        public override void OnBlockRemoved(int value,
+            int newValue,
+            int x,
+            int y,
+            int z) {
             m_textsByPoint[0].Remove(new Point3(x, y, z));
             m_lastUpdatePositions.Clear();
         }
 
-        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
+        public void OnBlockRemoved(int value,
+            int newValue,
+            int x,
+            int y,
+            int z,
+            GVSubterrainSystem system) {
             Dictionary<Point3, GVSignTextData> points = m_textsByPoint[system.ID];
             points.Remove(new Point3(x, y, z));
             if (points.Count == 0) {
@@ -148,6 +179,7 @@ namespace Game {
             m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(true);
             m_subsystemGVSubterrain = Project.FindSubsystem<SubsystemGVSubterrain>(true);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
             CreateRenderTarget();
             foreach (ValuesDictionary value11 in valuesDictionary.GetValue<ValuesDictionary>("Texts").Values) {
                 Point3 point = value11.GetValue<Point3>("Point");
@@ -199,9 +231,14 @@ namespace Game {
         }
 
         public void CreateRenderTarget() {
+            GLWrapper.GL.GetInteger(GetPName.MaxTextureSize, out int maxTextureSize);
+            int eachSignHeight = (int)m_font.GlyphHeight * 4;
+            if (maxTextureSize < eachSignHeight * 80) {
+                m_maxTexts = maxTextureSize / eachSignHeight;
+            }
             m_renderTarget = new RenderTarget2D(
-                (int)m_font.GlyphHeight * 16,
-                (int)m_font.GlyphHeight * 4 * 32,
+                (int)(m_font.GlyphHeight * 16),
+                eachSignHeight * m_maxTexts,
                 1,
                 ColorFormat.Rgba8888,
                 DepthFormat.None
@@ -281,27 +318,41 @@ namespace Game {
             }
             m_lastUpdatePositions.Clear();
             m_lastUpdatePositions.AddRange(m_subsystemViews.GameWidgets.Select(v => v.ActiveCamera.ViewPosition));
-            bool flag3 = false;
-            foreach (Dictionary<Point3, GVSignTextData> points in m_textsByPoint.Values) {
+            m_nearTexts.Clear();
+            foreach ((uint subterrainId, Dictionary<Point3, GVSignTextData> points) in m_textsByPoint) {
+                Matrix transform = subterrainId == 0 ? default : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform;
                 foreach (GVSignTextData textData in points.Values) {
-                    textData.ToBeRenderedFrame = Time.FrameIndex;
-                    if (textData.TextureLocation.HasValue) {
-                        continue;
+                    Vector3 vectorPlus05Transformed = subterrainId == 0 ? new Vector3(textData.Point.X + 0.5f, textData.Point.Y + 0.5f, textData.Point.Z + 0.5f) : Vector3.Transform(new Vector3(textData.Point.X + 0.5f, textData.Point.Y + 0.5f, textData.Point.Z + 0.5f), transform);
+                    float num = m_subsystemViews.CalculateSquaredDistanceFromNearestView(vectorPlus05Transformed);
+                    if (num < m_subsystemSky.VisibilityRange) {
+                        textData.Distance = num;
+                        m_nearTexts.Add(textData);
                     }
-                    int num2 = m_textureLocations.FirstIndex(d => d == null);
-                    if (num2 < 0) {
-                        num2 = m_textureLocations.FirstIndex(d => d.ToBeRenderedFrame != Time.FrameIndex);
+                }
+            }
+            m_nearTexts.Sort((d1, d2) => Comparer<float>.Default.Compare(d1.Distance, d2.Distance));
+            if (m_nearTexts.Count > m_maxTexts) {
+                m_nearTexts.RemoveRange(m_maxTexts, m_nearTexts.Count - m_maxTexts);
+            }
+            bool flag3 = false;
+            foreach (GVSignTextData textData in m_nearTexts) {
+                textData.ToBeRenderedFrame = Time.FrameIndex;
+                if (textData.TextureLocation.HasValue) {
+                    continue;
+                }
+                int num2 = m_textureLocations.FirstIndex(d => d == null);
+                if (num2 < 0 || num2 >= m_maxTexts) {
+                    num2 = m_textureLocations.FirstIndex(d => d.ToBeRenderedFrame != Time.FrameIndex);
+                }
+                if (num2 >= 0) {
+                    GVSignTextData textData2 = m_textureLocations[num2];
+                    if (textData2 != null) {
+                        textData2.TextureLocation = null;
+                        m_textureLocations[num2] = null;
                     }
-                    if (num2 >= 0) {
-                        GVSignTextData textData2 = m_textureLocations[num2];
-                        if (textData2 != null) {
-                            textData2.TextureLocation = null;
-                            m_textureLocations[num2] = null;
-                        }
-                        m_textureLocations[num2] = textData;
-                        textData.TextureLocation = num2;
-                        flag3 = true;
-                    }
+                    m_textureLocations[num2] = textData;
+                    textData.TextureLocation = num2;
+                    flag3 = true;
                 }
             }
             if (!flag3) {
@@ -347,113 +398,112 @@ namespace Game {
                 null,
                 SamplerState.PointClamp
             );
-            foreach ((uint subterrainId, Dictionary<Point3, GVSignTextData> points) in m_textsByPoint) {
+            foreach (GVSignTextData nearText in m_nearTexts) {
+                uint subterrainId = nearText.SubterrainId;
                 GVSubterrainSystem subterrainSystem = subterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
                 Matrix transform = subterrainId == 0 ? default : subterrainSystem.GlobalTransform;
                 Matrix orientation = subterrainId == 0 ? default : transform.OrientationMatrix;
-                foreach (GVSignTextData nearText in points.Values) {
-                    if (!nearText.TextureLocation.HasValue) {
-                        continue;
+                if (!nearText.TextureLocation.HasValue) {
+                    continue;
+                }
+                int cellValue = m_subsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
+                int num = Terrain.ExtractContents(cellValue);
+                if (BlocksManager.Blocks[num] is not GVBaseSignBlock signBlock) {
+                    continue;
+                }
+                int data = Terrain.ExtractData(cellValue);
+                BlockMesh signSurfaceBlockMesh = signBlock.GetSignSurfaceBlockMesh(data);
+                if (signSurfaceBlockMesh != null) {
+                    TerrainChunk chunkAtCell = m_subsystemGVSubterrain.GetTerrain(subterrainId).GetChunkAtCell(nearText.Point.X, nearText.Point.Z);
+                    if (chunkAtCell != null
+                        && chunkAtCell.State >= TerrainChunkState.InvalidVertices1) {
+                        nearText.Light = Terrain.ExtractLight(cellValue);
                     }
-                    int cellValue = m_subsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
-                    int num = Terrain.ExtractContents(cellValue);
-                    if (BlocksManager.Blocks[num] is not GVBaseSignBlock signBlock) {
-                        continue;
+                    float x = 0f;
+                    float x2 = nearText.UsedTextureWidth / (m_font.GlyphHeight * 16f);
+                    float x3 = nearText.TextureLocation.Value / m_maxTexts;
+                    float x4 = (nearText.TextureLocation.Value + nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f)) / m_maxTexts;
+                    Vector3 vector = new(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
+                    Vector3 vectorPlus05Transformed = subterrainId == 0 ? new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f) : Vector3.Transform(new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f), transform);
+                    if (camera.ViewFrustum.Intersection(vectorPlus05Transformed + camera.ViewDirection)) {
+                        Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
+                        Vector3 vector2 = MathUtils.Max(0.01f * Vector3.Dot(camera.ViewPosition - vectorPlus05Transformed, signSurfaceNormal), 0.005f) * signSurfaceNormal;
+                        float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
+                        Color color = new(num2, num2, num2);
+                        for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++) {
+                            BlockMeshVertex blockMeshVertex = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3]];
+                            BlockMeshVertex blockMeshVertex2 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 1]];
+                            BlockMeshVertex blockMeshVertex3 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 2]];
+                            Vector3 p;
+                            Vector3 p2;
+                            Vector3 p3;
+                            if (subterrainId == 0) {
+                                p = blockMeshVertex.Position + vector + vector2;
+                                p2 = blockMeshVertex2.Position + vector + vector2;
+                                p3 = blockMeshVertex3.Position + vector + vector2;
+                            }
+                            else {
+                                p = Vector3.Transform(blockMeshVertex.Position + vector, transform) + Vector3.Transform(vector2, orientation);
+                                p2 = Vector3.Transform(blockMeshVertex2.Position + vector, transform) + Vector3.Transform(vector2, orientation);
+                                p3 = Vector3.Transform(blockMeshVertex3.Position + vector, transform) + Vector3.Transform(vector2, orientation);
+                            }
+                            Vector2 textureCoordinates = blockMeshVertex.TextureCoordinates;
+                            Vector2 textureCoordinates2 = blockMeshVertex2.TextureCoordinates;
+                            Vector2 textureCoordinates3 = blockMeshVertex3.TextureCoordinates;
+                            textureCoordinates.X = MathUtils.Lerp(x, x2, textureCoordinates.X);
+                            textureCoordinates2.X = MathUtils.Lerp(x, x2, textureCoordinates2.X);
+                            textureCoordinates3.X = MathUtils.Lerp(x, x2, textureCoordinates3.X);
+                            textureCoordinates.Y = MathUtils.Lerp(x3, x4, textureCoordinates.Y);
+                            textureCoordinates2.Y = MathUtils.Lerp(x3, x4, textureCoordinates2.Y);
+                            textureCoordinates3.Y = MathUtils.Lerp(x3, x4, textureCoordinates3.Y);
+                            texturedBatch3D.QueueTriangle(
+                                p,
+                                p2,
+                                p3,
+                                textureCoordinates,
+                                textureCoordinates2,
+                                textureCoordinates3,
+                                color
+                            );
+                        }
                     }
-                    int data = Terrain.ExtractData(cellValue);
-                    BlockMesh signSurfaceBlockMesh = signBlock.GetSignSurfaceBlockMesh(data);
-                    if (signSurfaceBlockMesh != null) {
-                        TerrainChunk chunkAtCell = m_subsystemGVSubterrain.GetTerrain(subterrainId).GetChunkAtCell(nearText.Point.X, nearText.Point.Z);
-                        if (chunkAtCell != null
-                            && chunkAtCell.State >= TerrainChunkState.InvalidVertices1) {
-                            nearText.Light = Terrain.ExtractLight(cellValue);
+                    if (nearText.FloatSize > 0
+                        && nearText.FloatColor.A > 0) {
+                        Vector3 position = nearText.FloatPosition;
+                        Matrix rotationMatrix = Matrix.CreateFromYawPitchRoll(nearText.FloatRotation.X, nearText.FloatRotation.Y, nearText.FloatRotation.Z);
+                        Vector3 right = rotationMatrix.Right * x2 * 2 * nearText.FloatSize;
+                        Vector3 up = rotationMatrix.Up * (x4 - x3) * 20 * nearText.FloatSize;
+                        if (subterrainId != 0) {
+                            position = Vector3.Transform(position, transform);
+                            right = Vector3.Transform(right, orientation);
+                            up = Vector3.Transform(up, orientation);
                         }
-                        float x = 0f;
-                        float x2 = nearText.UsedTextureWidth / (m_font.GlyphHeight * 16f);
-                        float x3 = nearText.TextureLocation.Value / 32f;
-                        float x4 = (nearText.TextureLocation.Value + nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f)) / 32f;
-                        Vector3 vector = new(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
-                        Vector3 vectorPlus05Transformed = subterrainId == 0 ? new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f) : Vector3.Transform(new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f), transform);
-                        if (camera.ViewFrustum.Intersection(vectorPlus05Transformed + camera.ViewDirection)) {
-                            Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
-                            Vector3 vector2 = MathUtils.Max(0.01f * Vector3.Dot(camera.ViewPosition - vectorPlus05Transformed, signSurfaceNormal), 0.005f) * signSurfaceNormal;
-                            float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
-                            Color color = new(num2, num2, num2);
-                            for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++) {
-                                BlockMeshVertex blockMeshVertex = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3]];
-                                BlockMeshVertex blockMeshVertex2 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 1]];
-                                BlockMeshVertex blockMeshVertex3 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 2]];
-                                Vector3 p;
-                                Vector3 p2;
-                                Vector3 p3;
-                                if (subterrainId == 0) {
-                                    p = blockMeshVertex.Position + vector + vector2;
-                                    p2 = blockMeshVertex2.Position + vector + vector2;
-                                    p3 = blockMeshVertex3.Position + vector + vector2;
-                                }
-                                else {
-                                    p = Vector3.Transform(blockMeshVertex.Position + vector, transform) + Vector3.Transform(vector2, orientation);
-                                    p2 = Vector3.Transform(blockMeshVertex2.Position + vector, transform) + Vector3.Transform(vector2, orientation);
-                                    p3 = Vector3.Transform(blockMeshVertex3.Position + vector, transform) + Vector3.Transform(vector2, orientation);
-                                }
-                                Vector2 textureCoordinates = blockMeshVertex.TextureCoordinates;
-                                Vector2 textureCoordinates2 = blockMeshVertex2.TextureCoordinates;
-                                Vector2 textureCoordinates3 = blockMeshVertex3.TextureCoordinates;
-                                textureCoordinates.X = MathUtils.Lerp(x, x2, textureCoordinates.X);
-                                textureCoordinates2.X = MathUtils.Lerp(x, x2, textureCoordinates2.X);
-                                textureCoordinates3.X = MathUtils.Lerp(x, x2, textureCoordinates3.X);
-                                textureCoordinates.Y = MathUtils.Lerp(x3, x4, textureCoordinates.Y);
-                                textureCoordinates2.Y = MathUtils.Lerp(x3, x4, textureCoordinates2.Y);
-                                textureCoordinates3.Y = MathUtils.Lerp(x3, x4, textureCoordinates3.Y);
-                                texturedBatch3D.QueueTriangle(
-                                    p,
-                                    p2,
-                                    p3,
-                                    textureCoordinates,
-                                    textureCoordinates2,
-                                    textureCoordinates3,
-                                    color
-                                );
-                            }
+                        Vector3[] offsets = [right - up, right + up, -right - up, -right + up];
+                        Vector3 min = new(float.MaxValue);
+                        Vector3 max = new(float.MinValue);
+                        foreach (Vector3 offset in offsets) {
+                            min.X = Math.Min(min.X, offset.X);
+                            min.Y = Math.Min(min.Y, offset.Y);
+                            min.Z = Math.Min(min.Z, offset.Z);
+                            max.X = Math.Max(max.X, offset.X);
+                            max.Y = Math.Max(max.Y, offset.Y);
+                            max.Z = Math.Max(max.Z, offset.Z);
                         }
-                        if (nearText.FloatSize > 0
-                            && nearText.FloatColor.A > 0) {
-                            Vector3 position = nearText.FloatPosition;
-                            Matrix rotationMatrix = Matrix.CreateFromYawPitchRoll(nearText.FloatRotation.X, nearText.FloatRotation.Y, nearText.FloatRotation.Z);
-                            Vector3 right = rotationMatrix.Right * x2 * 2 * nearText.FloatSize;
-                            Vector3 up = rotationMatrix.Up * (x4 - x3) * 20 * nearText.FloatSize;
-                            if (subterrainId != 0) {
-                                position = Vector3.Transform(position, transform);
-                                right = Vector3.Transform(right, orientation);
-                                up = Vector3.Transform(up, orientation);
-                            }
-                            Vector3[] offsets = [right - up, right + up, -right - up, -right + up];
-                            Vector3 min = new(float.MaxValue);
-                            Vector3 max = new(float.MinValue);
-                            foreach (Vector3 offset in offsets) {
-                                min.X = Math.Min(min.X, offset.X);
-                                min.Y = Math.Min(min.Y, offset.Y);
-                                min.Z = Math.Min(min.Z, offset.Z);
-                                max.X = Math.Max(max.X, offset.X);
-                                max.Y = Math.Max(max.Y, offset.Y);
-                                max.Z = Math.Max(max.Z, offset.Z);
-                            }
-                            if (camera.ViewFrustum.Intersection(new BoundingBox(position + min, position + max))) {
-                                texturedBatch3D.QueueQuad(
-                                    position + right - up,
-                                    position - right - up,
-                                    position - right + up,
-                                    position + right + up,
-                                    new Vector2(x2, x4),
-                                    new Vector2(x, x4),
-                                    new Vector2(x, x3),
-                                    new Vector2(x2, x3),
-                                    Color.MultiplyColorOnly(nearText.FloatColor, nearText.FloatLight)
-                                );
-                            }
+                        if (camera.ViewFrustum.Intersection(new BoundingBox(position + min, position + max))) {
+                            texturedBatch3D.QueueQuad(
+                                position + right - up,
+                                position - right - up,
+                                position - right + up,
+                                position + right + up,
+                                new Vector2(x2, x4),
+                                new Vector2(x, x4),
+                                new Vector2(x, x3),
+                                new Vector2(x2, x3),
+                                Color.MultiplyColorOnly(nearText.FloatColor, nearText.FloatLight)
+                            );
                         }
-                        m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
                     }
+                    m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
                 }
             }
         }

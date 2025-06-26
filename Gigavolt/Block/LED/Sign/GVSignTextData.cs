@@ -3,6 +3,7 @@
 namespace Game {
     public class GVSignTextData {
         public Point3 Point;
+        public uint SubterrainId;
         public Vector3 FloatPosition;
         public string Line = string.Empty;
         public Color Color = Color.White;
@@ -16,5 +17,6 @@ namespace Game {
         public int Light;
         public float FloatLight;
         public Vector3 FloatRotation;
+        public float Distance;
     }
 }

@@ -250,11 +250,15 @@ namespace Game {
             }
             else if (NumberKeyboardLeft.IsClicked
                 || newFocusedTextBox.Input.IsKeyDownOnce(Key.LeftArrow)) {
-                newFocusedTextBox.Caret--;
+                if (newFocusedTextBox.Caret > 0) {
+                    newFocusedTextBox.Caret--;
+                }
             }
             else if (NumberKeyboardRight.IsClicked
                 || newFocusedTextBox.Input.IsKeyDownOnce(Key.RightArrow)) {
-                newFocusedTextBox.Caret++;
+                if (newFocusedTextBox.Caret < newFocusedTextBox.Text.Length) {
+                    newFocusedTextBox.Caret++;
+                }
             }
             else if (CopyOct.IsClicked) {
                 ClipboardManager.ClipboardString = OctTextBox.Text;
