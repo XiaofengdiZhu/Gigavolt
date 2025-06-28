@@ -7,7 +7,7 @@
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>Game</RootNamespace>
 		<AssemblyName>Gigavolt.Helper</AssemblyName>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<FileAlignment>512</FileAlignment>
 		<LangVersion>preview</LangVersion>
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
@@ -22,9 +22,9 @@
 		<PackageLicenseUrl>https://raw.githubusercontent.com/XiaofengdiZhu/Gigavolt/refs/heads/main/LICENSE.txt</PackageLicenseUrl>
 		<RepositoryUrl>https://xiaofengdizhu.github.io/Gigavolt/</RepositoryUrl>
 		<RepositoryType>GitHub</RepositoryType>
-		<Version>2.0.0</Version>
-		<AssemblyVersion>2.0.0</AssemblyVersion>
-		<FileVersion>2.0.0</FileVersion>
+		<Version>2.1.1</Version>
+		<AssemblyVersion>2.1.1</AssemblyVersion>
+		<FileVersion>2.1.1</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<DebugType>pdbonly</DebugType>
@@ -35,9 +35,9 @@
 		<OutputPath>bin\Release\</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.7.2.2"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.7.2.2"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.7.2.2"/>
+		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.8.1.1"/>
+		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.8.1.1"/>
+		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.8.1.1"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="GVHelperModLoader.cs"/>
