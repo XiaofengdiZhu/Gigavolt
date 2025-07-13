@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 using Engine.Media;
+using SixLabors.ImageSharp.PixelFormats;
 using TemplatesDatabase;
 using Color = SixLabors.ImageSharp.Color;
 
@@ -140,7 +141,7 @@ namespace Game {
                             int startY = slotHeight * 8 + slotHeight / 2 - 1 + i * slotHeight;
                             int endY = startY + 2;
                             for (int y = startY; y < endY; y++) {
-                                image.SetPixelFast(x, y, Color.Orange);
+                                image.SetPixelFast(x, y, Color.Orange.ToPixel<Rgba32>());
                             }
                         }
                     }
@@ -161,7 +162,7 @@ namespace Game {
                                     && (y == startY || y == endY - 1)) {
                                     continue;
                                 }
-                                image.SetPixelFast(x, y, Color.Orange);
+                                image.SetPixelFast(x, y, Color.Orange.ToPixel<Rgba32>());
                             }
                         }
                     }

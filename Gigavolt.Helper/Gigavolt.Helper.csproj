@@ -35,14 +35,9 @@
 		<OutputPath>bin\Release\</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.8.1.1"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.8.1.1"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.8.1.1"/>
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="GVHelperModLoader.cs"/>
-		<Compile Include="GVHelpTopicScreen.cs"/>
-		<Compile Include="Properties\AssemblyInfo.cs"/>
+		<Compile Include="GVHelperModLoader.cs" />
+		<Compile Include="GVHelpTopicScreen.cs" />
+		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Gigavolt.Expand\Gigavolt.Expand.csproj">
@@ -281,6 +276,6 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Assets\GVHelperImages\zh\"/>
+		<Folder Include="Assets\GVHelperImages\zh\" />
 	</ItemGroup>
 </Project>

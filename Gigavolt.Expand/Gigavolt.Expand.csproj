@@ -51,10 +51,6 @@
 	<ItemGroup>
 		<PackageReference Include="Jint" Version="4.2.2"/>
 		<PackageReference Include="Silk.NET.OpenGLES" Version="2.22.0"/>
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.8"/>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.8.1.1"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.8.1.1"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.8.1.1"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="GigavoltExpandModLoader.cs"/>

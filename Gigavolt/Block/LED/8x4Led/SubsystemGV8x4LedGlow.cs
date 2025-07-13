@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 using Engine.Media;
 using GameEntitySystem;
+using SixLabors.ImageSharp.PixelFormats;
 using TemplatesDatabase;
 
 namespace Game {
@@ -108,9 +109,9 @@ namespace Game {
                 for (int x = 0; x < width; x++) {
                     int index = y * width + x;
                     if (((voltage >> index) & 1u) == 1u) {
-                        image.SetPixelFast(x, heightX2 ? y * 2 : y, SixLabors.ImageSharp.Color.White);
+                        image.SetPixelFast(x, heightX2 ? y * 2 : y, SixLabors.ImageSharp.Color.White.ToPixel<Rgba32>());
                         if (heightX2) {
-                            image.SetPixelFast(x, y * 2 + 1, SixLabors.ImageSharp.Color.White);
+                            image.SetPixelFast(x, y * 2 + 1, SixLabors.ImageSharp.Color.White.ToPixel<Rgba32>());
                         }
                     }
                 }

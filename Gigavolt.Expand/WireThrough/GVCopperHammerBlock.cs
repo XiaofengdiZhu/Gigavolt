@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 using SixLabors.ImageSharp;
@@ -19,7 +19,7 @@ namespace Game {
         public override void Initialize() {
             if (WhiteTexture == null
                 || WhiteTexture.m_isDisposed) {
-                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White.ToPixel<Rgba32>())));
             }
             Model model = ContentManager.Get<Model>("Models/Hammer");
             Matrix absoluteTransform1 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Handle").ParentBone);

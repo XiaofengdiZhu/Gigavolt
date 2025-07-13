@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -7,6 +7,7 @@ using System.Text;
 using Engine;
 using Engine.Media;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using Image = Engine.Media.Image;
@@ -18,7 +19,7 @@ namespace Game {
         public uint m_height;
         public bool m_dataChanged;
 
-        public static readonly PngEncoder DefaultPngEncoder = new() { ColorType = PngColorType.RgbWithAlpha, BitDepth = PngBitDepth.Bit8, TransparentColorMode = PngTransparentColorMode.Preserve };
+        public static readonly PngEncoder DefaultPngEncoder = new() { ColorType = PngColorType.RgbWithAlpha, BitDepth = PngBitDepth.Bit8, TransparentColorMode = TransparentColorMode.Preserve };
 
         public uint[] Data {
             get => m_data;
