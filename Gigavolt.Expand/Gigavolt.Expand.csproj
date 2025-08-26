@@ -1,479 +1,480 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProjectGuid>{27AAF39A-72D9-4836-91CA-181BBEDFD7A0}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Game</RootNamespace>
-		<AssemblyName>Gigavolt.Expand</AssemblyName>
-		<TargetFramework>net9.0</TargetFramework>
-		<FileAlignment>512</FileAlignment>
-		<Deterministic>true</Deterministic>
-		<LangVersion>preview</LangVersion>
-		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GenerateDependencyFile>false</GenerateDependencyFile>
-		<Prefer32Bit>false</Prefer32Bit>
-		<ErrorReport>prompt</ErrorReport>
-		<Title>Gigavolt.Expand 十亿伏特·扩展</Title>
-		<Authors>XiaofengdiZhu 销锋镝铸</Authors>
-		<Description>A mod for Survivalcraft Gigavolt mod that takes more elements and functions. 一个为生存战争游戏十亿伏特mod带来更多元件和功能的mod。</Description>
-		<Copyright>XiaofengdiZhu 销锋镝铸</Copyright>
-		<PackageProjectUrl>https://xiaofengdizhu.github.io/GigavoltDoc/</PackageProjectUrl>
-		<PackageLicenseUrl>https://raw.githubusercontent.com/XiaofengdiZhu/Gigavolt/refs/heads/main/LICENSE.txt</PackageLicenseUrl>
-		<RepositoryUrl>https://xiaofengdizhu.github.io/Gigavolt/</RepositoryUrl>
-		<RepositoryType>GitHub</RepositoryType>
-		<Version>2.1.1</Version>
-		<AssemblyVersion>2.1.1</AssemblyVersion>
-		<FileVersion>2.1.1</FileVersion>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<DebugType>pdbonly</DebugType>
-		<OutputPath>bin\Debug\</OutputPath>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-		<DebugType>none</DebugType>
-		<OutputPath>bin\Release\</OutputPath>
-	</PropertyGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
-			<Project>{77e3e4a0-32d2-423e-9014-5aef2b450f14}</Project>
-			<Private>False</Private>
-		</ProjectReference>
-		<ProjectReference Include="reference\XamariNES\XamariNES.csproj">
-			<Project>{5875710C-1FDC-4CC1-9B58-FB6704900075}</Project>
-			<Private>True</Private>
-			<PrivateAssets>all</PrivateAssets>
-		</ProjectReference>
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Jint" Version="4.2.2"/>
-		<PackageReference Include="Silk.NET.OpenGLES" Version="2.22.0"/>
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.8"/>
-		<PackageReference Include="SurvivalcraftAPI.Engine" Version="1.8.1.1"/>
-		<PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.8.1.1"/>
-		<PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.8.1.1"/>
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="GigavoltExpandModLoader.cs"/>
-		<Compile Include="JavascriptMicrocontroller\EditGVJavascriptMicrocontrollerDialog.cs"/>
-		<Compile Include="JumpWire\GVJumpWireBlock.cs"/>
-		<Compile Include="JumpWire\JumpWireGVElectricElement.cs"/>
-		<Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs"/>
-		<Compile Include="MoreLeds\DisplayLed\DisplayLedGVElectricElement.cs"/>
-		<Compile Include="MoreLeds\DisplayLed\GVDisplayPoint.cs"/>
-		<Compile Include="MoreLeds\DisplayLed\GVDisplayLedBlock.cs"/>
-		<Compile Include="MoreLeds\DisplayLed\SubsystemGVDisplayLedGlow.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\BitmapRender.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialog.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialogData.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\GVNesEmulatorBlock.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\GVNesEmulatorGlowPoint.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\NesEmulatorGVElectricElement.cs"/>
-		<Compile Include="MoreLeds\NesEmulator\SubsystemNesEmulatorBlockBehavior.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurShader1.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurShader2.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeWaveFlatBatch2D.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBackgroundShader.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurTexturedBatch2D.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeWaveShader.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopePrimitivesRenderer2D.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeScreen.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeData.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeBlock.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\GVVoltageRectangleWidget.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\OscilloscopeGVElectricElement.cs"/>
-		<Compile Include="MoreLeds\Oscilloscope\SubsystemGVOscilloscopeBlockBehavior.cs"/>
-		<Compile Include="MoreLeds\Solid8NumberLed\GV8NumberGlowPoint.cs"/>
-		<Compile Include="MoreLeds\Solid8NumberLed\GVSolid8NumberLedBlock.cs"/>
-		<Compile Include="MoreLeds\Solid8NumberLed\Solid8NumberLedGVElectricElement.cs"/>
-		<Compile Include="MoreLeds\Solid8NumberLed\SubsystemGVSolid8NumberLedGlow.cs"/>
-		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\EditGVFourDimensionalMemoryBankDialog.cs"/>
-		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankData.cs"/>
-		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankGVElectricElement.cs"/>
-		<Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\SubsystemGVFourDimensionalMemoryBankBlockBehavior.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemoryBank\EditGVListMemoryBankDialog.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemoryBank\GVListMemoryBankData.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemoryBank\GVListMemoryBankBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemoryBank\ListMemoryBankGVElectricElement.cs"/>
-		<Compile Include="MoreMemoryBanks\ListMemoryBank\SubsystemGVListMemoryBankBlockBehavior.cs"/>
-		<Compile Include="MoreMemoryBanks\MemoryBanksOperator\GVMemoryBanksOperatorBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\MemoryBanksOperator\MemoryBanksOperatorGVElectricElement.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\EditGVVolatileFourDimensionalMemoryBankDialog.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\VolatileFourDimensionalMemoryBankGVElectricElement.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\GVVolatileFourDimensionalMemoryBankBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\GVVolatileFourDimensionalMemoryBankData.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\EditGVVolatileListMemoryBankDialog.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\GVVolatileListMemoryBankBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\GVVolatileListMemoryBankData.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\VolatileListMemoryBankGVElectricElement.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileListMemoryBank\SubsystemGVVolatileListMemoryBankBlockBehavior.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\EditGVVolatileMemoryBankDialog.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\GVVolatileMemoryBankBlock.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\GVVolatileMemoryBankData.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\SubsystemGVVolatileMemoryBankBlockBehavior.cs"/>
-		<Compile Include="MoreMemoryBanks\VolatileMemoryBank\VolatileMemoryBankGVElectricElement.cs"/>
-		<Compile Include="MoreOneInOneOut\GVMoreOneInOneOutBlock.cs"/>
-		<Compile Include="MoreOneInOneOut\MoreOneInOneOutGVElectricElement.cs"/>
-		<Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
-		<Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
-		<Compile Include="MoreSensors\Camera\CameraGVElectricElement.cs"/>
-		<Compile Include="MoreSensors\Camera\GVCamera.cs"/>
-		<Compile Include="MoreSensors\Camera\GVCameraBlock.cs"/>
-		<Compile Include="MoreSensors\Camera\SubsystemGVCameraBlockBehavior.cs"/>
-		<Compile Include="MoreSensors\PlayerMonitor\GVPlayerMonitorBlock.cs"/>
-		<Compile Include="MoreSensors\PlayerMonitor\PlayerMonitorGVElectricElement.cs"/>
-		<Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs"/>
-		<Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs"/>
-		<Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs"/>
-		<Compile Include="MoreSensors\TerrainScanner\TerrainScannerGVElectricElement.cs"/>
-		<Compile Include="MoreSensors\Touchpad\TouchpadGVElectricElement.cs"/>
-		<Compile Include="MoreSensors\Touchpad\GVTouchpadBlock.cs"/>
-		<Compile Include="MoreSensors\Touchpad\SubsystemGVTouchpadBehavior.cs"/>
-		<Compile Include="MoreSources\BitButtonCabinet\BitButtonCabinetGVElectricElement.cs"/>
-		<Compile Include="MoreSources\BitButtonCabinet\GVBitButtonCabinetBlock.cs"/>
-		<Compile Include="MoreSources\BitButtonCabinet\SubsystemGVBitButtonCabinetBlockBehavior.cs"/>
-		<Compile Include="MoreSources\ColoredButtonCabinet\EditGVButtonCabinetDialog.cs"/>
-		<Compile Include="MoreSources\ColoredButtonCabinet\GVButtonCabinetBlock.cs"/>
-		<Compile Include="MoreSources\ColoredButtonCabinet\SubsystemGVButtonCabinetBlockBehavior.cs"/>
-		<Compile Include="MoreSources\ColoredButtonCabinet\ButtonCabinetGVElectricElement.cs"/>
-		<Compile Include="MoreSources\SignalGenerator\GVSignalGeneratorBlock.cs"/>
-		<Compile Include="MoreSources\SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
-		<Compile Include="MoreSources\SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
-		<Compile Include="MoreSources\ColoredSwitchCabinet\GVSwitchCabinetBlock.cs"/>
-		<Compile Include="MoreSources\ColoredSwitchCabinet\SubsystemGVSwitchCabinetBlockBehavior.cs"/>
-		<Compile Include="MoreSources\ColoredSwitchCabinet\SwitchCabinetGVElectricElement.cs"/>
-		<Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs"/>
-		<Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs"/>
-		<Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
-		<Compile Include="Multiplexer\GVMultiplexerBlock.cs"/>
-		<Compile Include="PlayerController\GVPlayerControllerBlock.cs"/>
-		<Compile Include="PlayerController\PlayerControllerGVElectricElement.cs"/>
-		<Compile Include="Properties\AssemblyInfo.cs"/>
-		<Compile Include="TractorBeam\GVTractorBeamBlock.cs"/>
-		<Compile Include="TractorBeam\SubsystemGVTractorBeamBlockBehavior.cs"/>
-		<Compile Include="TractorBeam\TractorBeamGVElectricElement.cs"/>
-		<Compile Include="Transportation\Attractor\GVAttractorBlock.cs"/>
-		<Compile Include="Transportation\Attractor\AttractorGVElectricElement.cs"/>
-		<Compile Include="Transportation\Attractor\SubsystemGVAttractorBlockBehavior.cs"/>
-		<Compile Include="Transportation\InventoryController\GVInventoryControllerBlock.cs"/>
-		<Compile Include="Transportation\InventoryController\InventoryControllerGVElectricElement.cs"/>
-		<Compile Include="Transportation\InventoryFetcher\InventoryFetcherGVElectricElement.cs"/>
-		<Compile Include="Transportation\InventoryFetcher\GVInventoryFetcherBlock.cs"/>
-		<Compile Include="Transportation\GuidedDispenser\GuidedDispenserGVElectricElement.cs"/>
-		<Compile Include="Transportation\GuidedDispenser\GVGuidedDispenserBlock.cs"/>
-		<Compile Include="Transportation\MoreProjectiles\EditGVDataModifierProjectileDialog.cs"/>
-		<Compile Include="Transportation\MoreProjectiles\GVCrusherProjectileBlock.cs"/>
-		<Compile Include="Transportation\MoreProjectiles\GVDataModifierProjectileBlock.cs"/>
-		<Compile Include="Transportation\MoreProjectiles\SubsystemGVCrusherProjectileBlockBehavior.cs"/>
-		<Compile Include="Transportation\MoreProjectiles\SubsystemGVDataModifierProjectileBlockBehavior.cs"/>
-		<Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerBlock.cs"/>
-		<Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerData.cs"/>
-		<Compile Include="JavascriptMicrocontroller\SubsystemGVJavascriptMicrocontrollerBlockBehavior.cs"/>
-		<Compile Include="JavascriptMicrocontroller\JavascriptMicrocontrollerGVElectricElement.cs"/>
-		<Compile Include="Transportation\SubsystemGVCanBePlacedOnInventoryBlockBehavior.cs"/>
-		<Compile Include="WireThrough\EditGVCopperHammerDialog.cs"/>
-		<Compile Include="WireThrough\GVAStar.cs"/>
-		<Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
-		<Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs"/>
-		<Compile Include="WireThrough\GVCopperHammerBlock.cs"/>
-		<Compile Include="Transportation\GVSolidifiedAirBlock.cs"/>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Assets\Dialogs\EditGVCopperHammerDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Dialogs\EditGVDataModifierProjectileDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Dialogs\EditGVListMemoryBankDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Dialogs\EditGVJavascriptMicrocontrollerDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Gigavolt.Expand.csv">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Gigavolt.Expand.xdb">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Lang\zh-CN.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="modinfo.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVFourDimensionalMemoryBankBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVVolatileFourDimensionalMemoryBankBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Dialogs\EditGVFourDimensionalMemoryBankDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Dialogs\EditGVNesEmulatorDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="icon.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Adder.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Divider.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Multiplier.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Subtracter.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Equaler.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Greater.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\LeftShifter.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Lesser.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Logarithmer.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Maximumer.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Minimumer.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoGreater.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoLesser.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Power.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Remainder.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\RightShifter.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMultiplexerBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVJumpWireBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVNesEmulatorBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVPlayerControllerBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock0.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock1.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock2.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock3.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock4.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVDisplayLedBlock5.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVTerrainRaycastDetectorBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVTerrainScanner.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cos.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sin.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Acos.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Asin.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Atan.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cosh.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cot.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Csc.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Deg2Rad.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Rad2Deg.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sec.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sinh.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\SMR.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tan.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tanh.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMoreOneInOneOutBlock\TCR.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVMemoryBanksOperatorBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVFetcherBlock0.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Models\GVFetcher.dae">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVFetcherBlock2.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVInventoryControllerBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVVolatileMemoryBankBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Models\GVMemoryBank.dae">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVListMemoryBankBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVVolatileListMemoryBankBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Models\MoreProjectiles.dae">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVJavascriptMicrocontrollerBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="Assets\Textures\GVGuidedDispenserBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVPlayerMonitorBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVCameraBlock0.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVCameraBlock1.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Models\GVAttractor.dae">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Models\GVSignalGenerator.dae">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVSignalGeneratorBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Shaders\GVOscilloscopeBackground.vsh">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Shaders\GVOscilloscopeBackground.psh">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Shaders\GVOscilloscopeWave.vsh">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Shaders\GVOscilloscopeWave.psh">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Shaders\GVOscilloscopeBlur1.psh">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Shaders\GVOscilloscopeBlur2.psh">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Shaders\GVOscilloscopeBlur.vsh">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVOscilloscopeArrowButton.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVOscilloscopeAutoButton.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVOscilloscopeMoonButton.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVOscilloscopeSunButton.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\SCREENS\GVOscilloscopeScreen.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVOscilloscopeBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVTractorBeamBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Lang\en-US.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVSolid8NumberLedBlockFull.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVSolid8NumberLedBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVColoredCabinetBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Dialogs\EditGVButtonCabinetDialog.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVTouchpadBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Textures\GVBitButtonCabinetBlock.webp">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes"/>
-	</ItemGroup>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{27AAF39A-72D9-4836-91CA-181BBEDFD7A0}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Game</RootNamespace>
+        <AssemblyName>Gigavolt.Expand</AssemblyName>
+        <TargetFramework>net9.0</TargetFramework>
+        <FileAlignment>512</FileAlignment>
+        <Deterministic>true</Deterministic>
+        <LangVersion>preview</LangVersion>
+        <Nullable>disable</Nullable>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateDependencyFile>false</GenerateDependencyFile>
+        <Prefer32Bit>false</Prefer32Bit>
+        <ErrorReport>prompt</ErrorReport>
+        <Title>Gigavolt.Expand 十亿伏特·扩展</Title>
+        <Authors>XiaofengdiZhu 销锋镝铸</Authors>
+        <Description>A mod for Survivalcraft Gigavolt mod that takes more elements and functions. 一个为生存战争游戏十亿伏特mod带来更多元件和功能的mod。</Description>
+        <Copyright>XiaofengdiZhu 销锋镝铸</Copyright>
+        <PackageProjectUrl>https://xiaofengdizhu.github.io/GigavoltDoc/</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/XiaofengdiZhu/Gigavolt/refs/heads/main/LICENSE.txt</PackageLicenseUrl>
+        <RepositoryUrl>https://xiaofengdizhu.github.io/Gigavolt/</RepositoryUrl>
+        <RepositoryType>GitHub</RepositoryType>
+        <Version>2.1.1</Version>
+        <AssemblyVersion>2.1.1</AssemblyVersion>
+        <FileVersion>2.1.1</FileVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugType>pdbonly</DebugType>
+        <OutputPath>bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>none</DebugType>
+        <OutputPath>bin\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Gigavolt\Gigavolt.csproj">
+            <Project>{77e3e4a0-32d2-423e-9014-5aef2b450f14}</Project>
+            <Private>False</Private>
+        </ProjectReference>
+        <ProjectReference Include="reference\XamariNES\XamariNES.csproj">
+            <Project>{5875710C-1FDC-4CC1-9B58-FB6704900075}</Project>
+            <Private>True</Private>
+            <PrivateAssets>all</PrivateAssets>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Jint" Version="4.2.2"/>
+        <PackageReference Include="Silk.NET.OpenGLES" Version="2.22.0"/>
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.10"/>
+        <PackageReference Include="SurvivalcraftAPI.Engine" Version="1.8.1.2"/>
+        <PackageReference Include="SurvivalcraftAPI.EntitySystem" Version="1.8.1.2"/>
+        <PackageReference Include="SurvivalcraftAPI.Survivalcraft" Version="1.8.1.2"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="GigavoltExpandModLoader.cs"/>
+        <Compile Include="JavascriptMicrocontroller\EditGVJavascriptMicrocontrollerDialog.cs"/>
+        <Compile Include="JumpWire\GVJumpWireBlock.cs"/>
+        <Compile Include="JumpWire\JumpWireGVElectricElement.cs"/>
+        <Compile Include="JumpWire\SubsystemGVJumpWireBlockBehavior.cs"/>
+        <Compile Include="MoreLeds\DisplayLed\DisplayLedGVElectricElement.cs"/>
+        <Compile Include="MoreLeds\DisplayLed\GVDisplayPoint.cs"/>
+        <Compile Include="MoreLeds\DisplayLed\GVDisplayLedBlock.cs"/>
+        <Compile Include="MoreLeds\DisplayLed\SubsystemGVDisplayLedGlow.cs"/>
+        <Compile Include="MoreLeds\NesEmulator\BitmapRender.cs"/>
+        <Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialog.cs"/>
+        <Compile Include="MoreLeds\NesEmulator\EditGVNesEmulatorDialogData.cs"/>
+        <Compile Include="MoreLeds\NesEmulator\GVNesEmulatorBlock.cs"/>
+        <Compile Include="MoreLeds\NesEmulator\GVNesEmulatorGlowPoint.cs"/>
+        <Compile Include="MoreLeds\NesEmulator\NesEmulatorGVElectricElement.cs"/>
+        <Compile Include="MoreLeds\NesEmulator\SubsystemNesEmulatorBlockBehavior.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurShader1.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurShader2.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeWaveFlatBatch2D.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBackgroundShader.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeBlurTexturedBatch2D.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopeWaveShader.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\Graphics\GVOscilloscopePrimitivesRenderer2D.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeScreen.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeData.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\GVOscilloscopeBlock.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\GVVoltageRectangleWidget.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\OscilloscopeGVElectricElement.cs"/>
+        <Compile Include="MoreLeds\Oscilloscope\SubsystemGVOscilloscopeBlockBehavior.cs"/>
+        <Compile Include="MoreLeds\Solid8NumberLed\GV8NumberGlowPoint.cs"/>
+        <Compile Include="MoreLeds\Solid8NumberLed\GVSolid8NumberLedBlock.cs"/>
+        <Compile Include="MoreLeds\Solid8NumberLed\Solid8NumberLedGVElectricElement.cs"/>
+        <Compile Include="MoreLeds\Solid8NumberLed\SubsystemGVSolid8NumberLedGlow.cs"/>
+        <Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\EditGVFourDimensionalMemoryBankDialog.cs"/>
+        <Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankData.cs"/>
+        <Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankBlock.cs"/>
+        <Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\GVFourDimensionalMemoryBankGVElectricElement.cs"/>
+        <Compile Include="MoreMemoryBanks\FourDimensionalMemoryBank\SubsystemGVFourDimensionalMemoryBankBlockBehavior.cs"/>
+        <Compile Include="MoreMemoryBanks\ListMemoryBank\EditGVListMemoryBankDialog.cs"/>
+        <Compile Include="MoreMemoryBanks\ListMemoryBank\GVListMemoryBankData.cs"/>
+        <Compile Include="MoreMemoryBanks\ListMemoryBank\GVListMemoryBankBlock.cs"/>
+        <Compile Include="MoreMemoryBanks\ListMemoryBank\ListMemoryBankGVElectricElement.cs"/>
+        <Compile Include="MoreMemoryBanks\ListMemoryBank\SubsystemGVListMemoryBankBlockBehavior.cs"/>
+        <Compile Include="MoreMemoryBanks\MemoryBanksOperator\GVMemoryBanksOperatorBlock.cs"/>
+        <Compile Include="MoreMemoryBanks\MemoryBanksOperator\MemoryBanksOperatorGVElectricElement.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\EditGVVolatileFourDimensionalMemoryBankDialog.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\VolatileFourDimensionalMemoryBankGVElectricElement.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\GVVolatileFourDimensionalMemoryBankBlock.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\GVVolatileFourDimensionalMemoryBankData.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileFourDimensionalMemoryBank\SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileListMemoryBank\EditGVVolatileListMemoryBankDialog.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileListMemoryBank\GVVolatileListMemoryBankBlock.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileListMemoryBank\GVVolatileListMemoryBankData.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileListMemoryBank\VolatileListMemoryBankGVElectricElement.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileListMemoryBank\SubsystemGVVolatileListMemoryBankBlockBehavior.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileMemoryBank\EditGVVolatileMemoryBankDialog.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileMemoryBank\GVVolatileMemoryBankBlock.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileMemoryBank\GVVolatileMemoryBankData.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileMemoryBank\SubsystemGVVolatileMemoryBankBlockBehavior.cs"/>
+        <Compile Include="MoreMemoryBanks\VolatileMemoryBank\VolatileMemoryBankGVElectricElement.cs"/>
+        <Compile Include="MoreOneInOneOut\GVMoreOneInOneOutBlock.cs"/>
+        <Compile Include="MoreOneInOneOut\MoreOneInOneOutGVElectricElement.cs"/>
+        <Compile Include="MoreSensors\BlockValuePlate\GVBlockValuePlateBlock.cs"/>
+        <Compile Include="MoreSensors\BlockValuePlate\BlockValuePlateGVElectricElement.cs"/>
+        <Compile Include="MoreSensors\Camera\CameraGVElectricElement.cs"/>
+        <Compile Include="MoreSensors\Camera\GVCamera.cs"/>
+        <Compile Include="MoreSensors\Camera\GVCameraBlock.cs"/>
+        <Compile Include="MoreSensors\Camera\SubsystemGVCameraBlockBehavior.cs"/>
+        <Compile Include="MoreSensors\PlayerMonitor\GVPlayerMonitorBlock.cs"/>
+        <Compile Include="MoreSensors\PlayerMonitor\PlayerMonitorGVElectricElement.cs"/>
+        <Compile Include="MoreSensors\TerrainRaycastDetector\TerrainRaycastDetectorGVElectricElement.cs"/>
+        <Compile Include="MoreSensors\TerrainRaycastDetector\GVTerrainRaycastDetectorBlock.cs"/>
+        <Compile Include="MoreSensors\TerrainScanner\GVTerrainScannerBlock.cs"/>
+        <Compile Include="MoreSensors\TerrainScanner\TerrainScannerGVElectricElement.cs"/>
+        <Compile Include="MoreSensors\Touchpad\TouchpadGVElectricElement.cs"/>
+        <Compile Include="MoreSensors\Touchpad\GVTouchpadBlock.cs"/>
+        <Compile Include="MoreSensors\Touchpad\SubsystemGVTouchpadBehavior.cs"/>
+        <Compile Include="MoreSources\BitButtonCabinet\BitButtonCabinetGVElectricElement.cs"/>
+        <Compile Include="MoreSources\BitButtonCabinet\GVBitButtonCabinetBlock.cs"/>
+        <Compile Include="MoreSources\BitButtonCabinet\SubsystemGVBitButtonCabinetBlockBehavior.cs"/>
+        <Compile Include="MoreSources\ColoredButtonCabinet\EditGVButtonCabinetDialog.cs"/>
+        <Compile Include="MoreSources\ColoredButtonCabinet\GVButtonCabinetBlock.cs"/>
+        <Compile Include="MoreSources\ColoredButtonCabinet\SubsystemGVButtonCabinetBlockBehavior.cs"/>
+        <Compile Include="MoreSources\ColoredButtonCabinet\ButtonCabinetGVElectricElement.cs"/>
+        <Compile Include="MoreSources\SignalGenerator\GVSignalGeneratorBlock.cs"/>
+        <Compile Include="MoreSources\SignalGenerator\SignalGeneratorGVElectricElement.cs"/>
+        <Compile Include="MoreSources\SignalGenerator\SubsystemGVSignalGeneratorBlockBehavior.cs"/>
+        <Compile Include="MoreSources\ColoredSwitchCabinet\GVSwitchCabinetBlock.cs"/>
+        <Compile Include="MoreSources\ColoredSwitchCabinet\SubsystemGVSwitchCabinetBlockBehavior.cs"/>
+        <Compile Include="MoreSources\ColoredSwitchCabinet\SwitchCabinetGVElectricElement.cs"/>
+        <Compile Include="MoreTwoInTwoOut\MoreTwoInTwoOutGVElectricElement.cs"/>
+        <Compile Include="MoreTwoInTwoOut\GVMoreTwoInTwoOutBlock.cs"/>
+        <Compile Include="Multiplexer\MultiplexerGVElectricElement.cs"/>
+        <Compile Include="Multiplexer\GVMultiplexerBlock.cs"/>
+        <Compile Include="PlayerController\GVPlayerControllerBlock.cs"/>
+        <Compile Include="PlayerController\PlayerControllerGVElectricElement.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="TractorBeam\GVTractorBeamBlock.cs"/>
+        <Compile Include="TractorBeam\SubsystemGVTractorBeamBlockBehavior.cs"/>
+        <Compile Include="TractorBeam\TractorBeamGVElectricElement.cs"/>
+        <Compile Include="Transportation\Attractor\GVAttractorBlock.cs"/>
+        <Compile Include="Transportation\Attractor\AttractorGVElectricElement.cs"/>
+        <Compile Include="Transportation\Attractor\SubsystemGVAttractorBlockBehavior.cs"/>
+        <Compile Include="Transportation\InventoryController\GVInventoryControllerBlock.cs"/>
+        <Compile Include="Transportation\InventoryController\InventoryControllerGVElectricElement.cs"/>
+        <Compile Include="Transportation\InventoryFetcher\InventoryFetcherGVElectricElement.cs"/>
+        <Compile Include="Transportation\InventoryFetcher\GVInventoryFetcherBlock.cs"/>
+        <Compile Include="Transportation\GuidedDispenser\GuidedDispenserGVElectricElement.cs"/>
+        <Compile Include="Transportation\GuidedDispenser\GVGuidedDispenserBlock.cs"/>
+        <Compile Include="Transportation\MoreProjectiles\EditGVDataModifierProjectileDialog.cs"/>
+        <Compile Include="Transportation\MoreProjectiles\GVCrusherProjectileBlock.cs"/>
+        <Compile Include="Transportation\MoreProjectiles\GVDataModifierProjectileBlock.cs"/>
+        <Compile Include="Transportation\MoreProjectiles\SubsystemGVCrusherProjectileBlockBehavior.cs"/>
+        <Compile Include="Transportation\MoreProjectiles\SubsystemGVDataModifierProjectileBlockBehavior.cs"/>
+        <Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerBlock.cs"/>
+        <Compile Include="JavascriptMicrocontroller\GVJavascriptMicrocontrollerData.cs"/>
+        <Compile Include="JavascriptMicrocontroller\SubsystemGVJavascriptMicrocontrollerBlockBehavior.cs"/>
+        <Compile Include="JavascriptMicrocontroller\JavascriptMicrocontrollerGVElectricElement.cs"/>
+        <Compile Include="Transportation\SubsystemGVCanBePlacedOnInventoryBlockBehavior.cs"/>
+        <Compile Include="WireThrough\EditGVCopperHammerDialog.cs"/>
+        <Compile Include="WireThrough\GVAStar.cs"/>
+        <Compile Include="WireThrough\GVEWireThroughBlock.cs"/>
+        <Compile Include="WireThrough\SubsystemGVCopperHammerBlockBehavior.cs"/>
+        <Compile Include="WireThrough\GVCopperHammerBlock.cs"/>
+        <Compile Include="Transportation\GVSolidifiedAirBlock.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Assets\Dialogs\EditGVCopperHammerDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Dialogs\EditGVDataModifierProjectileDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Dialogs\EditGVListMemoryBankDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Dialogs\EditGVJavascriptMicrocontrollerDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Gigavolt.Expand.csv">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Gigavolt.Expand.xdb">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Lang\zh-CN.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="modinfo.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVFourDimensionalMemoryBankBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVVolatileFourDimensionalMemoryBankBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Dialogs\EditGVFourDimensionalMemoryBankDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Dialogs\EditGVNesEmulatorDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="icon.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Adder.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Divider.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Multiplier.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Subtracter.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Equaler.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Greater.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\LeftShifter.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Lesser.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Logarithmer.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Maximumer.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Minimumer.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoGreater.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\NoLesser.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Power.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\Remainder.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreTwoInTwoOutBlock\RightShifter.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMultiplexerBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVJumpWireBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVNesEmulatorBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVPlayerControllerBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDisplayLedBlock0.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDisplayLedBlock1.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDisplayLedBlock2.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDisplayLedBlock3.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDisplayLedBlock4.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVDisplayLedBlock5.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVTerrainRaycastDetectorBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVTerrainScanner.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cos.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sin.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Acos.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Asin.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Atan.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cosh.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Cot.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Csc.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Deg2Rad.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Rad2Deg.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sec.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Sinh.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\SMR.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tan.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\Tanh.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMoreOneInOneOutBlock\TCR.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVMemoryBanksOperatorBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVFetcherBlock0.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Models\GVFetcher.dae">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVFetcherBlock2.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVInventoryControllerBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVVolatileMemoryBankBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Models\GVMemoryBank.dae">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVListMemoryBankBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVVolatileListMemoryBankBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Models\MoreProjectiles.dae">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVJavascriptMicrocontrollerBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Assets\Textures\GVGuidedDispenserBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVPlayerMonitorBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVCameraBlock0.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVCameraBlock1.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Models\GVAttractor.dae">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Models\GVSignalGenerator.dae">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVSignalGeneratorBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Shaders\GVOscilloscopeBackground.vsh">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Shaders\GVOscilloscopeBackground.psh">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Shaders\GVOscilloscopeWave.vsh">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Shaders\GVOscilloscopeWave.psh">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Shaders\GVOscilloscopeBlur1.psh">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Shaders\GVOscilloscopeBlur2.psh">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Shaders\GVOscilloscopeBlur.vsh">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVOscilloscopeArrowButton.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVOscilloscopeAutoButton.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVOscilloscopeMoonButton.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVOscilloscopeSunButton.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\SCREENS\GVOscilloscopeScreen.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVOscilloscopeBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVTractorBeamBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Lang\en-US.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVSolid8NumberLedBlockFull.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVSolid8NumberLedBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVColoredCabinetBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Dialogs\EditGVButtonCabinetDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVTouchpadBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\Textures\GVBitButtonCabinetBlock.webp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="MoreLeds\NesEmulator\nestest.nes"/>
+    </ItemGroup>
 </Project>

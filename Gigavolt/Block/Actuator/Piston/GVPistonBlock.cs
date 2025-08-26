@@ -20,30 +20,35 @@ namespace Game {
                     Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(name).ParentBone);
                     for (int j = 0; j < 6; j++) {
                         int num = SetFace(SetIsExtended(SetMode(0, GVPistonMode), i != 0), j);
-                        Matrix m = j < 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f + (float)Math.PI) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
-                            j != 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) : Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                        Matrix m = j < 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f)
+                            * Matrix.CreateRotationY(j * (float)Math.PI / 2f + (float)Math.PI)
+                            * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
+                            j != 4 ?
+                                Matrix.CreateTranslation(0f, -0.5f, 0f)
+                                * Matrix.CreateRotationX(-(float)Math.PI / 2f)
+                                * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
+                                Matrix.CreateTranslation(0f, -0.5f, 0f)
+                                * Matrix.CreateRotationX((float)Math.PI / 2f)
+                                * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                         m_blockMeshesByData[num] = new BlockMesh();
                         m_blockMeshesByData[num]
-                        .AppendModelMeshPart(
-                            model.FindMesh(name).MeshParts[0],
-                            boneAbsoluteTransform * m,
-                            false,
-                            false,
-                            false,
-                            false,
-                            Color.White
-                        );
+                            .AppendModelMeshPart(
+                                model.FindMesh(name).MeshParts[0],
+                                boneAbsoluteTransform * m,
+                                false,
+                                false,
+                                false,
+                                false,
+                                Color.White
+                            );
                         if (i == 0) {
                             switch (GVPistonMode) {
                                 case GVPistonMode.Pulling:
-                                    m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 1 << j);
-                                    break;
+                                    m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 1 << j); break;
                                 case GVPistonMode.StrictPulling:
-                                    m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 1 << j);
-                                    break;
+                                    m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 1 << j); break;
                                 case GVPistonMode.Complex:
-                                    m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 1 << j);
-                                    break;
+                                    m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 1 << j); break;
                             }
                         }
                     }
@@ -51,25 +56,22 @@ namespace Game {
                 Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("PistonRetracted").ParentBone);
                 m_standaloneBlockMeshes[(int)GVPistonMode] = new BlockMesh();
                 m_standaloneBlockMeshes[(int)GVPistonMode]
-                .AppendModelMeshPart(
-                    model.FindMesh("PistonRetracted").MeshParts[0],
-                    boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.5f, 0f),
-                    false,
-                    false,
-                    false,
-                    false,
-                    Color.White
-                );
+                    .AppendModelMeshPart(
+                        model.FindMesh("PistonRetracted").MeshParts[0],
+                        boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.5f, 0f),
+                        false,
+                        false,
+                        false,
+                        false,
+                        Color.White
+                    );
                 switch (GVPistonMode) {
                     case GVPistonMode.Pulling:
-                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 4);
-                        break;
+                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 4); break;
                     case GVPistonMode.StrictPulling:
-                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 4);
-                        break;
+                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 4); break;
                     case GVPistonMode.Complex:
-                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 4);
-                        break;
+                        m_standaloneBlockMeshes[(int)GVPistonMode].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 4); break;
                 }
             }
         }
@@ -81,7 +83,6 @@ namespace Game {
                 if (face != face2) {
                     return face != CellFace.OppositeFace(face2);
                 }
-                return false;
             }
             return false;
         }
@@ -104,24 +105,38 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int mode = (int)GetMode(Terrain.ExtractData(value));
             if (mode < m_standaloneBlockMeshes.Length
                 && m_standaloneBlockMeshes[mode] != null) {
-                BlocksManager.DrawMeshBlock(
-                    primitivesRenderer,
-                    m_standaloneBlockMeshes[mode],
-                    color,
-                    1f * size,
-                    ref matrix,
-                    environmentData
-                );
+                BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMeshes[mode], color, 1f * size, ref matrix, environmentData);
             }
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new PistonGVElectricElement(subsystemGVElectricity, new GVPoint3(x, y, z, subterrainId), GetMode(Terrain.ExtractData(value)) == GVPistonMode.Complex);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new PistonGVElectricElement(
+            subsystemGVElectricity,
+            new GVPoint3(x, y, z, subterrainId),
+            GetMode(Terrain.ExtractData(value)) == GVPistonMode.Complex
+        );
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) => GVElectricConnectorType.Input;
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) => GVElectricConnectorType.Input;
 
         public int GetConnectionMask(int value) => int.MaxValue;
 
@@ -146,7 +161,10 @@ namespace Game {
             _ => 25
         };
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             float num = float.PositiveInfinity;
             int face = 0;
@@ -164,9 +182,18 @@ namespace Game {
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetMode(SetFace(SetIsExtended(data, false), 0), GetMode(data))), Count = 1 });
+            dropValues.Add(
+                new BlockDropValue {
+                    Value = Terrain.MakeBlockValue(BlockIndex, 0, SetMode(SetFace(SetIsExtended(data, false), 0), GetMode(data))), Count = 1
+                }
+            );
             showDebris = true;
         }
 
@@ -192,7 +219,9 @@ namespace Game {
         public int GetCustomCopyBlock(Project project, int centerValue) {
             SubsystemGVPistonBlockBehavior subsystem = project.FindSubsystem<SubsystemGVPistonBlockBehavior>(true);
             int id = subsystem.GetIdFromValue(centerValue);
-            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVPistonData)subsystem.GetItemData(id).Copy()));
+            return id == 0
+                ? centerValue
+                : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVPistonData)subsystem.GetItemData(id).Copy()));
         }
 
         public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value) => true;

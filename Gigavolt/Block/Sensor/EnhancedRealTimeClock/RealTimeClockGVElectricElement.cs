@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Engine;
 
 namespace Game {
@@ -13,7 +12,8 @@ namespace Game {
         public readonly SubsystemTimeOfDay m_subsystemTimeOfDay;
         public readonly bool m_classic;
 
-        public RealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public RealTimeClockGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) :
+            base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemWeather = subsystemGVElectricity.Project.FindSubsystem<SubsystemWeather>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
             m_subsystemTimeOfDay = subsystemGVElectricity.Project.FindSubsystem<SubsystemTimeOfDay>(true);
@@ -62,7 +62,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection == GVElectricConnectorDirection.In) {
                         noInput = false;
                         m_input = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
@@ -76,14 +77,11 @@ namespace Game {
             if (m_input != input) {
                 switch (m_input) {
                     case 1:
-                        circuitAdd = (int)Math.Ceiling((DateTime.Today.AddDays(1) - now).TotalSeconds / SubsystemGVElectricity.CircuitStepDuration);
-                        break;
-                    case 3:
-                        circuitAdd = (int)MathF.Ceiling(0.25f / SubsystemGVElectricity.CircuitStepDuration);
-                        break;
-                    default:
-                        circuitAdd = 1;
-                        break;
+                        circuitAdd = (int)Math.Ceiling(
+                            (DateTime.Today.AddDays(1) - now).TotalSeconds / SubsystemGVElectricity.CircuitStepDuration
+                        ); break;
+                    case 3: circuitAdd = (int)MathF.Ceiling(0.25f / SubsystemGVElectricity.CircuitStepDuration); break;
+                    default: circuitAdd = 1; break;
                 }
             }
             SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + MathUtils.Max(circuitAdd, 1));
@@ -107,8 +105,10 @@ namespace Game {
                     m_outputs[3] = 0u;
                     return true;
                 case 3:
-                    double precipitationStartTimeLeft = Math.Ceiling(m_subsystemWeather.m_precipitationStartTime - m_subsystemGameInfo.TotalElapsedGameTime);
-                    double precipitationEndTimeLeft = Math.Ceiling(m_subsystemWeather.m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime);
+                    double precipitationStartTimeLeft =
+                        Math.Ceiling(m_subsystemWeather.m_precipitationStartTime - m_subsystemGameInfo.TotalElapsedGameTime);
+                    double precipitationEndTimeLeft =
+                        Math.Ceiling(m_subsystemWeather.m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime);
                     m_outputs[0] = (uint)Math.Abs(precipitationStartTimeLeft);
                     m_outputs[1] = precipitationStartTimeLeft < 0 ? uint.MaxValue : 0u;
                     m_outputs[2] = (uint)Math.Abs(precipitationEndTimeLeft);

@@ -87,7 +87,7 @@ namespace Game {
             try {
                 int blockValue = (int)parameters[0];
                 Type blockType = BlocksManager.Blocks[Terrain.ExtractContents(blockValue)].GetType();
-                I18NHelp i18nHelp = null;
+                I18NHelp i18nHelp;
                 if (blockType == typeof(GVDisplayLedBlock)) {
                     i18nHelp = DisplayLedData2I18NHelp(Terrain.ExtractData(blockValue));
                 }

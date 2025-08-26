@@ -141,7 +141,7 @@ namespace Game {
                         }
                     }
                     if (attractExplosion) {
-                        HashSet<SubsystemExplosions.ExplosionData> toRemove = new();
+                        HashSet<SubsystemExplosions.ExplosionData> toRemove = [];
                         foreach (SubsystemExplosions.ExplosionData explosion in m_subsystemExplosions.m_queuedExplosions) {
                             Vector3 explosionPosition = new(explosion.X + 0.5f, explosion.Y + 0.5f, explosion.Z + 0.5f);
                             bool inDistance = ignoreDistance;

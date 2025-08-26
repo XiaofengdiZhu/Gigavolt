@@ -1,9 +1,10 @@
 [*]
-charset = utf-8-bom
+charset = utf-8
 end_of_line = crlf
 insert_final_newline = false
 indent_style = space
 indent_size = 4
+tab_width = 4
 
 # Microsoft .NET properties
 csharp_new_line_before_members_in_object_initializers = true
@@ -120,7 +121,9 @@ dotnet_naming_symbols.public_static_fields_symbols.resharper_applicable_kinds = 
 dotnet_naming_symbols.public_static_fields_symbols.resharper_required_modifiers = static
 dotnet_naming_symbols.static_readonly_symbols.applicable_accessibilities = public, internal, protected, protected_internal, private_protected
 dotnet_naming_symbols.static_readonly_symbols.applicable_kinds = field
-dotnet_naming_symbols.static_readonly_symbols.required_modifiers = static, readonly
+dotnet_naming_symbols.static_readonly_symbols.required_modifiers = readonly, static
+dotnet_naming_symbols.static_readonly_symbols.resharper_applicable_kinds = readonly_field
+dotnet_naming_symbols.static_readonly_symbols.resharper_required_modifiers = static
 dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:suggestion
 dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:suggestion
 dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:suggestion
@@ -135,7 +138,7 @@ dotnet_style_require_accessibility_modifiers = omit_if_default:suggestion
 # ReSharper properties
 resharper_align_multiline_binary_expressions_chain = false
 resharper_align_multiline_statement_conditions = false
-resharper_autodetect_indent_settings = true
+resharper_autodetect_indent_settings = false
 resharper_blank_lines_after_block_statements = 0
 resharper_blank_lines_after_using_list = 0
 resharper_braces_for_for = required
@@ -146,9 +149,12 @@ resharper_constructor_or_destructor_body = expression_body
 resharper_continuous_indent_multiplier = 1
 resharper_cpp_max_line_length = 0
 resharper_csharp_continuous_indent_multiplier = 1
+resharper_csharp_allow_comment_after_lbrace = true
 resharper_csharp_empty_block_style = together_same_line
 resharper_csharp_keep_blank_lines_in_code = 0
-resharper_csharp_max_line_length = 1000
+resharper_csharp_keep_blank_lines_in_declarations = 1
+resharper_csharp_max_enum_members_on_line = 6
+resharper_csharp_max_line_length = 150
 resharper_csharp_wrap_after_invocation_lpar = true
 resharper_csharp_wrap_arguments_style = chop_if_long
 resharper_csharp_wrap_before_binary_opsign = true
@@ -167,7 +173,8 @@ resharper_formatter_on_tag = @formatter:on
 resharper_formatter_tags_enabled = true
 resharper_fsharp_max_line_length = 0
 resharper_html_max_line_length = 0
-resharper_instance_members_qualify_declared_in = 
+resharper_instance_members_qualify_declared_in =
+resharper_keep_existing_declaration_parens_arrangement = false
 resharper_keep_existing_embedded_arrangement = false
 resharper_keep_existing_enum_arrangement = true
 resharper_keep_existing_expr_member_arrangement = false
@@ -175,14 +182,16 @@ resharper_keep_existing_initializer_arrangement = false
 resharper_keep_existing_invocation_parens_arrangement = false
 resharper_keep_existing_linebreaks = false
 resharper_keep_existing_list_patterns_arrangement = false
+resharper_keep_existing_primary_constructor_declaration_parens_arrangement = false
 resharper_keep_existing_property_patterns_arrangement = false
 resharper_keep_existing_switch_expression_arrangement = false
 resharper_local_function_body = expression_body
-resharper_max_array_initializer_elements_on_line = 4
-resharper_max_enum_members_on_line = 4
-resharper_max_formal_parameters_on_line = 4
-resharper_max_invocation_arguments_on_line = 4
-resharper_max_primary_constructor_parameters_on_line = 4
+resharper_max_array_initializer_elements_on_line = 6
+resharper_max_enum_members_on_line = 6
+resharper_max_formal_parameters_on_line = 6
+resharper_max_initializer_elements_on_line = 6
+resharper_max_invocation_arguments_on_line = 6
+resharper_max_primary_constructor_parameters_on_line = 6
 resharper_method_or_operator_body = expression_body
 resharper_nested_ternary_style = compact
 resharper_new_line_before_while = true
@@ -211,13 +220,16 @@ resharper_wrap_multiple_declaration_style = chop_if_long
 resharper_wrap_object_and_collection_initializer_style = chop_if_long
 resharper_wrap_property_pattern = chop_if_long
 resharper_wrap_ternary_expr_style = chop_if_long
-resharper_xmldoc_max_line_length = 1000
+resharper_xmldoc_max_line_length = 150
 resharper_xmldoc_wrap_lines = false
+resharper_xml_attribute_indent = single_indent
 resharper_xml_attribute_style = first_attribute_on_single_line
 resharper_xml_keep_user_linebreaks = false
 resharper_xml_max_blank_lines_between_tags = 0
 resharper_xml_max_line_length = 0
+resharper_xml_pi_attributes_indent = single_indent
 resharper_xml_pi_attribute_style = first_attribute_on_single_line
+resharper_xml_space_before_self_closing = false
 resharper_xml_wrap_lines = false
 
 # ReSharper inspection severities
@@ -237,6 +249,7 @@ resharper_enforce_if_statement_braces_highlighting = hint
 resharper_field_can_be_made_read_only_global_highlighting = hint
 resharper_for_can_be_converted_to_foreach_highlighting = hint
 resharper_inconsistent_naming_highlighting = hint
+resharper_invalid_xml_doc_comment_highlighting = warning
 resharper_invert_if_highlighting = none
 resharper_member_can_be_private_global_highlighting = none
 resharper_member_can_be_protected_global_highlighting = none
@@ -269,27 +282,26 @@ resharper_web_config_module_not_resolved_highlighting = warning
 resharper_web_config_type_not_resolved_highlighting = warning
 resharper_web_config_wrong_module_highlighting = warning
 
-[{*.har,*.jsb2,*.jsb3,*.json,*.jsonc,*.postman_collection,*.postman_collection.json,*.postman_environment,*.postman_environment.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,jest.config}]
-indent_style = space
+[{*.xml,*.xdb,*.cr,*.clo,*.xsd,*.dae}]
 indent_size = 2
 
-[{*.ant,*.appxmanifest,*.axml,*.cscfg,*.csdef,*.disco,*.dotsettings,*.filelayout,*.fxml,*.jhm,*.jnlp,*.jrxml,*.manifest,*.myapp,*.nuspec,*.rng,*.stylecop,*.svcmap,*.tld,*.wadcfgx,*.webref,*.wsdl,*.xdb,*.xml,*.xsd,*.xsl,*.xslt,*.xul,StyleCop.Cache,*.dae}]
-indent_style = tab
-tab_width = 4
+[{*.har,*.jsb2,*.jsb3,*.json,*.jsonc,*.postman_collection,*.postman_collection.json,*.postman_environment,*.postman_environment.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,.ws-context,jest.config}]
+indent_size = 2
+ij_visual_guides =
+ij_json_array_wrapping = split_into_lines
+ij_json_keep_blank_lines_in_code = 0
+ij_json_keep_indents_on_empty_lines = false
+ij_json_keep_line_breaks = false
+ij_json_keep_trailing_comma = false
+ij_json_object_wrapping = split_into_lines
+ij_json_property_alignment = do_not_align
+ij_json_space_after_colon = true
+ij_json_space_after_comma = true
+ij_json_space_before_colon = false
+ij_json_space_before_comma = false
+ij_json_spaces_within_braces = false
+ij_json_spaces_within_brackets = false
+ij_json_wrap_long_lines = false
 
-[*.config]
+[{*.psh,*.vsh}]
 indent_style = tab
-tab_width = 4
-
-[*.props]
-indent_style = tab
-tab_width = 4
-
-[{*.androidproj,*.ccproj,*.csproj}]
-indent_style = tab
-tab_width = 4
-
-[*.{appxmanifest,asax,ascx,aspx,axaml,build,c,c++,c++m,cc,ccm,cginc,compute,cp,cpp,cppm,cs,cshtml,cu,cuh,cxx,cxxm,dtd,fs,fsi,fsscript,fsx,fx,fxh,h,hh,hlsl,hlsli,hlslinc,hpp,hxx,inc,inl,ino,ipp,ixx,master,ml,mli,mpp,mq4,mq5,mqh,mxx,nuspec,paml,razor,resw,resx,skin,tpp,usf,ush,vb,xaml,xamlx,xoml,xsd}]
-indent_style = space
-indent_size = 4
-tab_width = 4
