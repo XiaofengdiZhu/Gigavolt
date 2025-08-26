@@ -9,9 +9,22 @@ namespace Game {
         public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[4];
         public readonly BlockMesh m_standaloneBlockMesh = new();
         public Texture2D texture;
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DebugGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, 4), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new DebugGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, 4), subterrainId);
+
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             if (face == 4
                 && SubsystemGVElectricity.GetConnectorDirection(4, 0, connectorFace).HasValue) {
                 return GVElectricConnectorType.Output;
@@ -30,15 +43,15 @@ namespace Game {
                 Matrix identity = Matrix.Identity;
                 identity *= Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 m_blockMeshesByData[i]
-                .AppendModelMeshPart(
-                    model.FindMesh("Lever").MeshParts[0],
-                    boneAbsoluteTransform * identity,
-                    false,
-                    false,
-                    false,
-                    false,
-                    Color.White
-                );
+                    .AppendModelMeshPart(
+                        model.FindMesh("Lever").MeshParts[0],
+                        boneAbsoluteTransform * identity,
+                        false,
+                        false,
+                        false,
+                        false,
+                        Color.White
+                    );
             }
             m_standaloneBlockMesh.AppendModelMeshPart(
                 model.FindMesh("Lever").MeshParts[0],
@@ -71,7 +84,12 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
@@ -83,7 +101,10 @@ namespace Game {
             );
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             float num = Vector3.Dot(forward, Vector3.UnitZ);
             float num2 = Vector3.Dot(forward, Vector3.UnitX);

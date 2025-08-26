@@ -4,7 +4,16 @@
 
         public override bool OnHitAsProjectile(CellFace? cellFace, ComponentBody componentBody, WorldItem worldItem) {
             if (cellFace.HasValue) {
-                SubsystemTerrain.ChangeCell(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z, Terrain.MakeBlockValue(SubsystemTerrain.Terrain.GetCellValueFast(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z), SubsystemTerrain.Terrain.GetCellLightFast(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z), Terrain.ExtractData(worldItem.Value)));
+                SubsystemTerrain.ChangeCell(
+                    cellFace.Value.X,
+                    cellFace.Value.Y,
+                    cellFace.Value.Z,
+                    Terrain.MakeBlockValue(
+                        SubsystemTerrain.Terrain.GetCellValueFast(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z),
+                        SubsystemTerrain.Terrain.GetCellLightFast(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z),
+                        Terrain.ExtractData(worldItem.Value)
+                    )
+                );
                 return true;
             }
             return false;

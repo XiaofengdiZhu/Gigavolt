@@ -13,7 +13,13 @@ namespace Game {
         public bool m_isHarness;
         public readonly Action<int, bool> m_handler;
 
-        public readonly int[] m_textureIds = [GVBlocksManager.GetBlockIndex<GVWireThroughPlanksBlock>(), GVBlocksManager.GetBlockIndex<GVWireThroughStoneBlock>(), GVBlocksManager.GetBlockIndex<GVWireThroughBricksBlock>(), GVBlocksManager.GetBlockIndex<GVWireThroughCobblestoneBlock>()];
+        public readonly int[] m_textureIds = [
+            GVBlocksManager.GetBlockIndex<GVWireThroughPlanksBlock>(),
+            GVBlocksManager.GetBlockIndex<GVWireThroughStoneBlock>(),
+            GVBlocksManager.GetBlockIndex<GVWireThroughBricksBlock>(),
+            GVBlocksManager.GetBlockIndex<GVWireThroughCobblestoneBlock>()
+        ];
+
         public static readonly string[] m_textureNames = ["木板", "石头", "砖头", "鹅卵石"];
 
         public EditGVCopperHammerDialog(int texture, bool isHarness, Action<int, bool> handler) {
@@ -61,6 +67,12 @@ namespace Game {
             }
         }
 
-        public int GetValue(int texture, bool isHarness) => isHarness ? Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<GVEWireThroughBlock>(), 0, GVEWireThroughBlock.SetIsWireHarness(GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetWireFacesBitmask(0, 5), texture), true)) : m_textureIds[texture];
+        public int GetValue(int texture, bool isHarness) => isHarness
+            ? Terrain.MakeBlockValue(
+                GVBlocksManager.GetBlockIndex<GVEWireThroughBlock>(),
+                0,
+                GVEWireThroughBlock.SetIsWireHarness(GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetWireFacesBitmask(0, 5), texture), true)
+            )
+            : m_textureIds[texture];
     }
 }

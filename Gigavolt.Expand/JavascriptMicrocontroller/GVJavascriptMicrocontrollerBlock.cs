@@ -14,7 +14,12 @@ namespace Game {
 
         public GVJavascriptMicrocontrollerBlock() : base("Models/GigavoltGates", "AnalogToDigitalConverter", 0.5f) { }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
@@ -51,16 +56,38 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new JavascriptMicrocontrollerGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), value, subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new JavascriptMicrocontrollerGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(value)),
+            value,
+            subterrainId
+        );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
-            SubsystemGVJavascriptMicrocontrollerBlockBehavior blockBehavior = subsystem.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
+            SubsystemGVJavascriptMicrocontrollerBlockBehavior blockBehavior =
+                subsystem.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
             GVJavascriptMicrocontrollerData blockData = blockBehavior.GetItemData(blockBehavior.GetIdFromValue(value));
             if (blockData == null) {
                 return null;
             }
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(Terrain.ExtractData(value)), connectorFace);
+                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(
+                    GetFace(value),
+                    GetRotation(Terrain.ExtractData(value)),
+                    connectorFace
+                );
                 if (connectorDirection.HasValue) {
                     int type = blockData.m_portsDefinition[(int)connectorDirection.Value];
                     return type switch {
@@ -74,9 +101,15 @@ namespace Game {
         }
 
         public int GetCustomCopyBlock(Project project, int centerValue) {
-            SubsystemGVJavascriptMicrocontrollerBlockBehavior subsystem = project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
+            SubsystemGVJavascriptMicrocontrollerBlockBehavior subsystem =
+                project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
             int id = subsystem.GetIdFromValue(centerValue);
-            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVJavascriptMicrocontrollerData)subsystem.GetItemData(id).Copy()));
+            return id == 0
+                ? centerValue
+                : subsystem.SetIdToValue(
+                    centerValue,
+                    subsystem.StoreItemDataAtUniqueId((GVJavascriptMicrocontrollerData)subsystem.GetItemData(id).Copy())
+                );
         }
     }
 }

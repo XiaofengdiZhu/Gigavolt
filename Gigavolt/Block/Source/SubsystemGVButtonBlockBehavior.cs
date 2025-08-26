@@ -31,7 +31,13 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GVButtonData blockData = GetItemData(id, true);
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVButtonDialog(blockData, delegate { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id))); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVButtonDialog(
+                    blockData,
+                    delegate { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id))); }
+                )
+            );
             return true;
         }
     }

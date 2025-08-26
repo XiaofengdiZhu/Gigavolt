@@ -70,29 +70,11 @@ namespace Game {
                         Dismiss(true);
                     }
                     else {
-                        DialogsManager.ShowDialog(
-                            null,
-                            new MessageDialog(
-                                "发生错误",
-                                "最大推拉数不能转换为自然数",
-                                "OK",
-                                null,
-                                null
-                            )
-                        );
+                        DialogsManager.ShowDialog(null, new MessageDialog("发生错误", "最大推拉数不能转换为自然数", "OK", null, null));
                     }
                 }
                 else {
-                    DialogsManager.ShowDialog(
-                        null,
-                        new MessageDialog(
-                            "发生错误",
-                            "最大延伸数不能转换为自然数",
-                            "OK",
-                            null,
-                            null
-                        )
-                    );
+                    DialogsManager.ShowDialog(null, new MessageDialog("发生错误", "最大延伸数不能转换为自然数", "OK", null, null));
                 }
             }
             if (Input.Cancel

@@ -69,7 +69,13 @@ namespace Game {
             batchCache.Flush(camera.ViewProjectionMatrix);
         }
 
-        public static void Draw8Number(TexturedBatch3D batch, uint voltage, Vector3 center, float halfSize, Vector3 right, Vector3 up, Color color) {
+        public static void Draw8Number(TexturedBatch3D batch,
+            uint voltage,
+            Vector3 center,
+            float halfSize,
+            Vector3 right,
+            Vector3 up,
+            Color color) {
             Vector3 p = center + halfSize * (right + up);
             float size = halfSize * 2f;
             for (int y = 0; y < 2; y++) {

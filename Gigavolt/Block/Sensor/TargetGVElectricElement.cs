@@ -6,7 +6,11 @@ namespace Game {
         public uint m_score;
         public readonly bool m_classic;
 
-        public TargetGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) => m_classic = classic;
+        public TargetGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_classic = classic;
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

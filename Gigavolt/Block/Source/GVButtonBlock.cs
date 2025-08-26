@@ -21,35 +21,44 @@ namespace Game {
         public override void Initialize() {
             if (GVStaticStorage.WhiteTexture == null
                 || GVStaticStorage.WhiteTexture.m_isDisposed) {
-                GVStaticStorage.WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+                GVStaticStorage.WhiteTexture = Texture2D.Load(
+                    new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White))
+                );
             }
             Model model = ContentManager.Get<Model>("Models/GVButton");
             Matrix boneAbsoluteTransform_Body = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Button").ParentBone);
             Matrix boneAbsoluteTransform_Top = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Top").ParentBone);
             for (int i = 0; i < 6; i++) {
-                Matrix matrix = i >= 4 ? i != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                Matrix matrix = i >= 4
+                    ? i != 4
+                        ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)
+                        : Matrix.CreateTranslation(0.5f, 0f, 0.5f)
+                    : Matrix.CreateRotationX((float)Math.PI / 2f)
+                    * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                    * Matrix.CreateRotationY(i * (float)Math.PI / 2f)
+                    * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                 m_blockMeshesByFace_Body[i] = new BlockMesh();
                 m_blockMeshesByFace_Body[i]
-                .AppendModelMeshPart(
-                    model.FindMesh("Button").MeshParts[0],
-                    boneAbsoluteTransform_Body * matrix,
-                    false,
-                    false,
-                    false,
-                    false,
-                    Color.White
-                );
+                    .AppendModelMeshPart(
+                        model.FindMesh("Button").MeshParts[0],
+                        boneAbsoluteTransform_Body * matrix,
+                        false,
+                        false,
+                        false,
+                        false,
+                        Color.White
+                    );
                 m_blockMeshesByFace_Top[i] = new BlockMesh();
                 m_blockMeshesByFace_Top[i]
-                .AppendModelMeshPart(
-                    model.FindMesh("Top").MeshParts[0],
-                    boneAbsoluteTransform_Top * matrix,
-                    false,
-                    false,
-                    false,
-                    false,
-                    Color.White
-                );
+                    .AppendModelMeshPart(
+                        model.FindMesh("Top").MeshParts[0],
+                        boneAbsoluteTransform_Top * matrix,
+                        false,
+                        false,
+                        false,
+                        false,
+                        Color.White
+                    );
                 m_collisionBoxesByFace[i] = [m_blockMeshesByFace_Body[i].CalculateBoundingBox()];
             }
             Matrix matrix2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
@@ -76,15 +85,25 @@ namespace Game {
         public override int GetFace(int value) => Terrain.ExtractData(value) & 7;
         public static int SetFace(int value, int face) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -8) | (face & 7));
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
             result.Value = SetFace(value, raycastResult.CellFace.Face);
             result.CellFace = raycastResult.CellFace;
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, Terrain.ExtractData(SetFace(oldValue, 0))), Count = 1 });
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
+            dropValues.Add(
+                new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, Terrain.ExtractData(SetFace(oldValue, 0))), Count = 1 }
+            );
             showDebris = true;
         }
 
@@ -134,13 +153,20 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int? blockColor = GetColor(Terrain.ExtractData(value));
             environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh_Body,
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                environmentData.SubsystemTerrain == null
+                    ? BlocksTexturesManager.DefaultBlocksTexture
+                    : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 color,
                 2f * size,
                 ref matrix,
@@ -150,7 +176,8 @@ namespace Game {
                 primitivesRenderer,
                 m_standaloneBlockMesh_Top,
                 blockColor.HasValue ? GVStaticStorage.WhiteTexture :
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture :
+                environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,
                 ref matrix,
@@ -158,20 +185,26 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new ButtonGVElectricElement(
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new ButtonGVElectricElement(
             subsystemGVElectricity,
             value,
-            new GVCellFace(
-                x,
-                y,
-                z,
-                GetFace(value),
-                GetConnectionMask(value)
-            ),
+            new GVCellFace(x, y, z, GetFace(value), GetConnectionMask(value)),
             subterrainId
         );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {
@@ -200,7 +233,9 @@ namespace Game {
             yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 10));
         }
 
-        public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
+        public override string GetCategory(int value) =>
+            GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
+
         public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 11 : base.GetDisplayOrder(value);
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
@@ -217,9 +252,7 @@ namespace Game {
             int? result = (data >> 14) & 0xF;
             switch (result.Value) {
                 case 0: return null;
-                case <= 7:
-                    result--;
-                    break;
+                case <= 7: result--; break;
             }
             return result;
         }
@@ -236,12 +269,15 @@ namespace Game {
 
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
-        public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) => Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
+        public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) =>
+            Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
 
         public int GetCustomCopyBlock(Project project, int centerValue) {
             SubsystemGVButtonBlockBehavior subsystem = project.FindSubsystem<SubsystemGVButtonBlockBehavior>(true);
             int id = subsystem.GetIdFromValue(centerValue);
-            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVButtonData)subsystem.GetItemData(id).Copy()));
+            return id == 0
+                ? centerValue
+                : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVButtonData)subsystem.GetItemData(id).Copy()));
         }
     }
 }

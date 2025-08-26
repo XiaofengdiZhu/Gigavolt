@@ -8,7 +8,11 @@ namespace Game {
 
         public int m_value;
 
-        public BlockValuePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
+        public BlockValuePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

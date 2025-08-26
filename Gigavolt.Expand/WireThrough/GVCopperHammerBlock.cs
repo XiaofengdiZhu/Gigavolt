@@ -19,7 +19,9 @@ namespace Game {
         public override void Initialize() {
             if (WhiteTexture == null
                 || WhiteTexture.m_isDisposed) {
-                WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+                WhiteTexture = Texture2D.Load(
+                    new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White))
+                );
             }
             Model model = ContentManager.Get<Model>("Models/Hammer");
             Matrix absoluteTransform1 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Handle").ParentBone);
@@ -53,13 +55,20 @@ namespace Game {
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) { }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             int? blockColor = GetColor(Terrain.ExtractData(value));
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh_Handle,
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                environmentData.SubsystemTerrain == null
+                    ? BlocksTexturesManager.DefaultBlocksTexture
+                    : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 color,
                 2f * size,
                 ref matrix,
@@ -69,7 +78,8 @@ namespace Game {
                 primitivesRenderer,
                 m_standaloneBlockMesh_Head,
                 blockColor.HasValue ? WhiteTexture :
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture :
+                environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,
                 ref matrix,
@@ -79,12 +89,17 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int? paintColor = GetColor(Terrain.ExtractData(value));
-            return paintColor.HasValue ? SubsystemPalette.GetName(subsystemTerrain, paintColor, LanguageControl.Get(GetType().Name, 0)) : base.GetDisplayName(subsystemTerrain, value);
+            return paintColor.HasValue
+                ? SubsystemPalette.GetName(subsystemTerrain, paintColor, LanguageControl.Get(GetType().Name, 0))
+                : base.GetDisplayName(subsystemTerrain, value);
         }
 
-        public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Expand";
+        public override string GetCategory(int value) =>
+            GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Expand";
 
-        public override string GetDescription(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? LanguageControl.Get(GetType().Name, 1) : base.GetDescription(value);
+        public override string GetDescription(int value) => GetColor(Terrain.ExtractData(value)).HasValue
+            ? LanguageControl.Get(GetType().Name, 1)
+            : base.GetDescription(value);
 
         public override IEnumerable<int> GetCreativeValues() {
             yield return Terrain.MakeBlockValue(BlockIndex);

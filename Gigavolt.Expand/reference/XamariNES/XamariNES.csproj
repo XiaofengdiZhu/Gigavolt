@@ -1,60 +1,60 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProjectGuid>{5875710C-1FDC-4CC1-9B58-FB6704900075}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<RootNamespace>XamariNES</RootNamespace>
-		<AssemblyName>XamariNES</AssemblyName>
-		<TargetFramework>net9.0</TargetFramework>
-		<FileAlignment>512</FileAlignment>
-		<Deterministic>true</Deterministic>
-		<LangVersion>preview</LangVersion>
-		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GenerateDependencyFile>false</GenerateDependencyFile>
-		<Authors>enusbaum</Authors>
-		<ErrorReport>prompt</ErrorReport>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<DebugType>pdbonly</DebugType>
-		<OutputPath>bin\Debug\</OutputPath>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-		<DebugType>none</DebugType>
-		<OutputPath>bin\Release\</OutputPath>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="XamariNES.Cartridge\Flags\Byte6Flags.cs"/>
-		<Compile Include="XamariNES.Cartridge\Flags\Byte7Flags.cs"/>
-		<Compile Include="XamariNES.Cartridge\ICartridge.cs"/>
-		<Compile Include="XamariNES.Cartridge\Mappers\Enums\enumNametableMirroring.cs"/>
-		<Compile Include="XamariNES.Cartridge\Mappers\IMapper.cs"/>
-		<Compile Include="XamariNES.Cartridge\Mappers\impl\CNROM.cs"/>
-		<Compile Include="XamariNES.Cartridge\Mappers\impl\MapperBase.cs"/>
-		<Compile Include="XamariNES.Cartridge\Mappers\impl\MMC1.cs"/>
-		<Compile Include="XamariNES.Cartridge\Mappers\impl\NROM.cs"/>
-		<Compile Include="XamariNES.Cartridge\Mappers\impl\UxROM.cs"/>
-		<Compile Include="XamariNES.Cartridge\NESCartridge.cs"/>
-		<Compile Include="XamariNES.Common\Extensions\ByteExtension.cs"/>
-		<Compile Include="XamariNES.Common\Extensions\IntExtensions.cs"/>
-		<Compile Include="XamariNES.Controller\Enums\enumButtons.cs"/>
-		<Compile Include="XamariNES.Controller\IController.cs"/>
-		<Compile Include="XamariNES.Controller\NESController.cs"/>
-		<Compile Include="XamariNES.CPU\Core.cs"/>
-		<Compile Include="XamariNES.CPU\CPUInstruction.cs"/>
-		<Compile Include="XamariNES.CPU\CPUStatus.cs"/>
-		<Compile Include="XamariNES.CPU\Enums\EnumAddressingMode.cs"/>
-		<Compile Include="XamariNES.CPU\Enums\EnumOpcode.cs"/>
-		<Compile Include="XamariNES.CPU\Memory.cs"/>
-		<Compile Include="XamariNES.Emulator\Enums\enumEmulatorSpeed.cs"/>
-		<Compile Include="XamariNES.Emulator\NESEmulator.cs"/>
-		<Compile Include="XamariNES.PPU\Core.cs"/>
-		<Compile Include="XamariNES.PPU\Flags\CycleStateFlags.cs"/>
-		<Compile Include="XamariNES.PPU\Flags\PPUCtrlFlags.cs"/>
-		<Compile Include="XamariNES.PPU\Flags\PPUMaskFlags.cs"/>
-		<Compile Include="XamariNES.PPU\Flags\PPUStatusFlags.cs"/>
-		<Compile Include="XamariNES.PPU\Flags\ScanLineStateFlags.cs"/>
-		<Compile Include="XamariNES.PPU\Memory.cs"/>
-	</ItemGroup>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{5875710C-1FDC-4CC1-9B58-FB6704900075}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <RootNamespace>XamariNES</RootNamespace>
+        <AssemblyName>XamariNES</AssemblyName>
+        <TargetFramework>net9.0</TargetFramework>
+        <FileAlignment>512</FileAlignment>
+        <Deterministic>true</Deterministic>
+        <LangVersion>preview</LangVersion>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateDependencyFile>false</GenerateDependencyFile>
+        <Authors>enusbaum</Authors>
+        <ErrorReport>prompt</ErrorReport>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugType>pdbonly</DebugType>
+        <OutputPath>bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>none</DebugType>
+        <OutputPath>bin\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="XamariNES.Cartridge\Flags\Byte6Flags.cs"/>
+        <Compile Include="XamariNES.Cartridge\Flags\Byte7Flags.cs"/>
+        <Compile Include="XamariNES.Cartridge\ICartridge.cs"/>
+        <Compile Include="XamariNES.Cartridge\Mappers\Enums\enumNametableMirroring.cs"/>
+        <Compile Include="XamariNES.Cartridge\Mappers\IMapper.cs"/>
+        <Compile Include="XamariNES.Cartridge\Mappers\impl\CNROM.cs"/>
+        <Compile Include="XamariNES.Cartridge\Mappers\impl\MapperBase.cs"/>
+        <Compile Include="XamariNES.Cartridge\Mappers\impl\MMC1.cs"/>
+        <Compile Include="XamariNES.Cartridge\Mappers\impl\NROM.cs"/>
+        <Compile Include="XamariNES.Cartridge\Mappers\impl\UxROM.cs"/>
+        <Compile Include="XamariNES.Cartridge\NESCartridge.cs"/>
+        <Compile Include="XamariNES.Common\Extensions\ByteExtension.cs"/>
+        <Compile Include="XamariNES.Common\Extensions\IntExtensions.cs"/>
+        <Compile Include="XamariNES.Controller\Enums\enumButtons.cs"/>
+        <Compile Include="XamariNES.Controller\IController.cs"/>
+        <Compile Include="XamariNES.Controller\NESController.cs"/>
+        <Compile Include="XamariNES.CPU\Core.cs"/>
+        <Compile Include="XamariNES.CPU\CPUInstruction.cs"/>
+        <Compile Include="XamariNES.CPU\CPUStatus.cs"/>
+        <Compile Include="XamariNES.CPU\Enums\EnumAddressingMode.cs"/>
+        <Compile Include="XamariNES.CPU\Enums\EnumOpcode.cs"/>
+        <Compile Include="XamariNES.CPU\Memory.cs"/>
+        <Compile Include="XamariNES.Emulator\Enums\enumEmulatorSpeed.cs"/>
+        <Compile Include="XamariNES.Emulator\NESEmulator.cs"/>
+        <Compile Include="XamariNES.PPU\Core.cs"/>
+        <Compile Include="XamariNES.PPU\Flags\CycleStateFlags.cs"/>
+        <Compile Include="XamariNES.PPU\Flags\PPUCtrlFlags.cs"/>
+        <Compile Include="XamariNES.PPU\Flags\PPUMaskFlags.cs"/>
+        <Compile Include="XamariNES.PPU\Flags\PPUStatusFlags.cs"/>
+        <Compile Include="XamariNES.PPU\Flags\ScanLineStateFlags.cs"/>
+        <Compile Include="XamariNES.PPU\Memory.cs"/>
+    </ItemGroup>
 </Project>

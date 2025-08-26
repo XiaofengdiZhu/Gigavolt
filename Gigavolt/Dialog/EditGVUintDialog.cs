@@ -329,7 +329,8 @@ namespace Game {
                 m_lastHexString = Convert.ToString(newVoltage, 16).ToUpper();
                 HexTextBox.Text = m_lastHexString;
             }
-            FixedLabel.Text = ((newVoltage >> 31 == 1 ? -1 : 1) * (((newVoltage >> 16) & 0x7fffu) + (double)(newVoltage & 0xffffu) / 0xffff)).ToString("G");
+            FixedLabel.Text =
+                ((newVoltage >> 31 == 1 ? -1 : 1) * (((newVoltage >> 16) & 0x7fffu) + (double)(newVoltage & 0xffffu) / 0xffff)).ToString("G");
             for (int i = 0; i < 32; i++) {
                 bool newBit = ((newVoltage >> i) & 1u) == 1u;
                 bool oldBit = ((m_lastValidVoltage >> i) & 1u) == 1u;
@@ -350,7 +351,12 @@ namespace Game {
                     LanguageControl.Get("ContentWidgets", typeName, "9"),
                     exception switch {
                         ArgumentOutOfRangeException => LanguageControl.Get("ContentWidgets", typeName, "10"),
-                        FormatException => string.Format(LanguageControl.Get("ContentWidgets", typeName, "11"), fromBase == 8 ? "7" : "9", fromBase == 16 ? LanguageControl.Get("ContentWidgets", typeName, "12") : "", fromBase == 16 ? LanguageControl.Get("ContentWidgets", typeName, "13") : ""),
+                        FormatException => string.Format(
+                            LanguageControl.Get("ContentWidgets", typeName, "11"),
+                            fromBase == 8 ? "7" : "9",
+                            fromBase == 16 ? LanguageControl.Get("ContentWidgets", typeName, "12") : "",
+                            fromBase == 16 ? LanguageControl.Get("ContentWidgets", typeName, "13") : ""
+                        ),
                         OverflowException => string.Format(
                             LanguageControl.Get("ContentWidgets", typeName, "14"),
                             fromBase switch {

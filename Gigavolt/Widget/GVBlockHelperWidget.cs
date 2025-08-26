@@ -104,40 +104,19 @@ namespace Game {
         }
 
         public override void Draw(DrawContext dc) {
-            Vector2 center = Vector2.Transform(new Vector2(Size.X / 2f, Mode is DisplayMode.Duplicate or DisplayMode.Cancel ? Size.Y - Size.X / 2f : Size.X / 2f), GlobalTransform);
+            Vector2 center = Vector2.Transform(
+                new Vector2(Size.X / 2f, Mode is DisplayMode.Duplicate or DisplayMode.Cancel ? Size.Y - Size.X / 2f : Size.X / 2f),
+                GlobalTransform
+            );
             Color color1 = new Color(0, 0, 0, 128) * GlobalColorTransform;
             Color color2 = new Color(0, 0, 0, 96) * GlobalColorTransform;
             Color color3 = new Color(0, 0, 0, 64) * GlobalColorTransform;
             FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(100);
             float radius = Size.X / 2f * GlobalTransform.Right.Length();
-            flatBatch2D.QueueEllipse(
-                center,
-                new Vector2(radius),
-                0f,
-                color1,
-                64
-            );
-            flatBatch2D.QueueEllipse(
-                center,
-                new Vector2(radius - 0.5f),
-                0f,
-                color2,
-                64
-            );
-            flatBatch2D.QueueEllipse(
-                center,
-                new Vector2(radius + 0.5f),
-                0f,
-                color3,
-                64
-            );
-            flatBatch2D.QueueDisc(
-                center,
-                new Vector2(radius),
-                0f,
-                color3,
-                64
-            );
+            flatBatch2D.QueueEllipse(center, new Vector2(radius), 0f, color1, 64);
+            flatBatch2D.QueueEllipse(center, new Vector2(radius - 0.5f), 0f, color2, 64);
+            flatBatch2D.QueueEllipse(center, new Vector2(radius + 0.5f), 0f, color3, 64);
+            flatBatch2D.QueueDisc(center, new Vector2(radius), 0f, color3, 64);
             base.Draw(dc);
         }
     }

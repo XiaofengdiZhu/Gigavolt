@@ -10,10 +10,24 @@ namespace Game {
             m_texture = ContentManager.Get<Texture2D>("Textures/GVVolatileFourDimensionalMemoryBankBlock");
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new VolatileFourDimensionalMemoryBankGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), value, subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new VolatileFourDimensionalMemoryBankGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(value)),
+            value,
+            subterrainId
+        );
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
-            SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior subsystem = subsystemTerrain.Project.FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
+            SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior subsystem =
+                subsystemTerrain.Project.FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
             if (subsystem.GetIdFromValue(value) == 0) {
                 value = subsystem.SetIdToValue(value, subsystem.StoreItemDataAtUniqueId(new GVVolatileFourDimensionalMemoryBankData()));
             }
@@ -21,9 +35,15 @@ namespace Game {
         }
 
         public override int GetCustomCopyBlock(Project project, int centerValue) {
-            SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior subsystem = project.FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
+            SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior subsystem =
+                project.FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
             int id = subsystem.GetIdFromValue(centerValue);
-            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVVolatileFourDimensionalMemoryBankData)subsystem.GetItemData(id).Copy()));
+            return id == 0
+                ? centerValue
+                : subsystem.SetIdToValue(
+                    centerValue,
+                    subsystem.StoreItemDataAtUniqueId((GVVolatileFourDimensionalMemoryBankData)subsystem.GetItemData(id).Copy())
+                );
         }
     }
 }

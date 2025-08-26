@@ -57,7 +57,11 @@ namespace Game {
                 }
                 for (int j = 0; j < 4; j++) {
                     int num = (i << 2) + j;
-                    Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(-j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                    Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f)
+                        * Matrix.CreateRotationZ(-j * (float)Math.PI / 2f)
+                        * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                        * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians))
+                        * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                     BlockMesh blockMesh = new();
                     blockMesh.AppendModelMeshPart(
                         modelMeshPart,
@@ -89,7 +93,12 @@ namespace Game {
 
         public GVSignalGeneratorBlock() : base("Models/GVSignalGenerator", "GVSignalGenerator", 0.375f) { }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) {
             int face = GetFace(value);
             int data = Terrain.ExtractData(value);
             int rotation = GetRotation(data);
@@ -109,7 +118,8 @@ namespace Game {
                 return null;
             }
             if (!subsystemGVElectricity.m_GVElectricElementsToAdd[subterrainId].ContainsKey(another)) {
-                int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(another.X, another.Y, another.Z);
+                int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId)
+                    .GetCellValue(another.X, another.Y, another.Z);
                 if (Terrain.ExtractContents(anotherValue) == BlockIndex
                     && GetFace(anotherValue) == face) {
                     int anotherData = Terrain.ExtractData(anotherValue);
@@ -122,7 +132,12 @@ namespace Game {
             return null;
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
@@ -167,11 +182,19 @@ namespace Game {
             return GetIsTopPart(data) ? m_bottomCollisionBoxes[data & 0x1F] : m_collisionBoxes[data & 0x1F];
         }
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             bool isUp = GetIsTopPart(data);
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                GVElectricConnectorDirection? connectorDirection =
+                    SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
                 switch (connectorDirection) {
                     case GVElectricConnectorDirection.Right:
                     case GVElectricConnectorDirection.Left: return GVElectricConnectorType.Input;

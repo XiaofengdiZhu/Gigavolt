@@ -8,7 +8,11 @@ namespace Game {
         public bool m_writeAllowed;
         public bool m_clockAllowed;
 
-        public MemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public MemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVMemoryBankBlockBehavior>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
             m_data = m_SubsystemGVMemoryBankBlockBehavior.GetItemData(m_SubsystemGVMemoryBankBlockBehavior.GetIdFromValue(value));
@@ -39,7 +43,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Right) {
                             num2 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);

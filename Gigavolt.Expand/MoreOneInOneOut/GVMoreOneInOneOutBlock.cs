@@ -35,7 +35,12 @@ namespace Game {
 
         public GVMoreOneInOneOutBlock() : base("Models/GigavoltGates", "AndGate", 0.5f) { }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
@@ -72,12 +77,30 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new MoreOneInOneOutGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), value, subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new MoreOneInOneOutGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(value)),
+            value,
+            subterrainId
+        );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                GVElectricConnectorDirection? connectorDirection =
+                    SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
                 if (connectorDirection == GVElectricConnectorDirection.Bottom) {
                     return GVElectricConnectorType.Input;
                 }
@@ -89,7 +112,11 @@ namespace Game {
             return null;
         }
 
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, "DisplayName", GetType(Terrain.ExtractData(value)).ToString());
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(
+            GetType().Name,
+            "DisplayName",
+            GetType(Terrain.ExtractData(value)).ToString()
+        );
 
         public override string GetDescription(int value) {
             string typeName = GetType().Name;
@@ -105,7 +132,12 @@ namespace Game {
             }
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetType(data, GetType(data))), Count = 1 });
             showDebris = true;

@@ -10,7 +10,8 @@ namespace Game {
         public uint m_voltage;
         public List<GVTruthTableData.SectionInput> lastInputs = new() { Capacity = 20 };
 
-        public TruthTableCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public TruthTableCircuitGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) :
+            base(subsystemGVElectricity, cellFace, subterrainId) {
             m_subsystemTruthTableCircuitBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTruthTableCircuitBlockBehavior>(true);
             m_data = m_subsystemTruthTableCircuitBlockBehavior.GetItemData(m_subsystemTruthTableCircuitBlockBehavior.GetIdFromValue(value));
         }
@@ -27,7 +28,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Top) {
                             sectionInput.i1 = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);

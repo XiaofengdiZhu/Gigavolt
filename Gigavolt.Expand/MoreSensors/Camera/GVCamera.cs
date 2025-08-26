@@ -30,7 +30,9 @@ namespace Game {
             get {
                 if (m_projectionMatrix == null) {
                     m_projectionMatrix = GVCalculateBaseProjectionMatrix(new Vector2(m_viewSize), m_viewAngel);
-                    m_projectionMatrix *= CreateScaleTranslation(0.5f * m_viewSize.X, -0.5f * m_viewSize.Y, m_viewSize.X / 2f, m_viewSize.Y / 2f) * Matrix.Identity * CreateScaleTranslation(2f / m_viewSize.X, -2f / m_viewSize.Y, -1f, 1f);
+                    m_projectionMatrix *= CreateScaleTranslation(0.5f * m_viewSize.X, -0.5f * m_viewSize.Y, m_viewSize.X / 2f, m_viewSize.Y / 2f)
+                        * Matrix.Identity
+                        * CreateScaleTranslation(2f / m_viewSize.X, -2f / m_viewSize.Y, -1f, 1f);
                 }
                 return m_projectionMatrix.Value;
             }
@@ -38,7 +40,10 @@ namespace Game {
 
         public override Matrix ScreenProjectionMatrix {
             get {
-                m_screenProjectionMatrix ??= GVCalculateBaseProjectionMatrix(new Vector2(m_viewSize), m_viewAngel) * CreateScaleTranslation(0.5f * m_viewSize.X, -0.5f * m_viewSize.Y, m_viewSize.X / 2f, m_viewSize.Y / 2f) * Matrix.Identity * CreateScaleTranslation(2f / m_viewSize.X, -2f / m_viewSize.Y, -1f, 1f);
+                m_screenProjectionMatrix ??= GVCalculateBaseProjectionMatrix(new Vector2(m_viewSize), m_viewAngel)
+                    * CreateScaleTranslation(0.5f * m_viewSize.X, -0.5f * m_viewSize.Y, m_viewSize.X / 2f, m_viewSize.Y / 2f)
+                    * Matrix.Identity
+                    * CreateScaleTranslation(2f / m_viewSize.X, -2f / m_viewSize.Y, -1f, 1f);
                 return m_screenProjectionMatrix.Value;
             }
         }

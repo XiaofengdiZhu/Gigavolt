@@ -19,7 +19,6 @@ namespace Game {
             new(255, 0, 255)
         ];
 
-
         public readonly BlockMesh[] m_standaloneBlockMeshesByColor = new BlockMesh[8];
 
         public readonly BlockMesh[] m_blockMeshesByData = new BlockMesh[64];
@@ -60,7 +59,14 @@ namespace Game {
                 );
                 for (int j = 0; j < 6; j++) {
                     int num = SetMountingFace(SetColor(0, i), j);
-                    Matrix m2 = j >= 4 ? j != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                    Matrix m2 = j >= 4
+                        ? j != 4
+                            ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)
+                            : Matrix.CreateTranslation(0.5f, 0f, 0.5f)
+                        : Matrix.CreateRotationX((float)Math.PI / 2f)
+                        * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                        * Matrix.CreateRotationY(j * (float)Math.PI / 2f)
+                        * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                     m_blockMeshesByData[num] = new BlockMesh();
                     m_blockMeshesByData[num]
                     .AppendModelMeshPart(
@@ -117,7 +123,8 @@ namespace Game {
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
             int color = GetColor(data);
-            return LanguageControl.Get("LedBlock", color) + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
+            return LanguageControl.Get("LedBlock", color)
+                + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
         }
 
         public override IEnumerable<int> GetCreativeValues() {
@@ -129,7 +136,10 @@ namespace Game {
             }
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);
             int value2 = Terrain.ReplaceData(value, data);
             BlockPlacementData result = default;
@@ -138,7 +148,12 @@ namespace Game {
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int color = GetColor(Terrain.ExtractData(oldValue));
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, color)), Count = 1 });
             showDebris = true;
@@ -179,21 +194,31 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int color2 = GetColor(Terrain.ExtractData(value));
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneBlockMeshesByColor[color2],
-                color,
-                2f * size,
-                ref matrix,
-                environmentData
-            );
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMeshesByColor[color2], color, 2f * size, ref matrix, environmentData);
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new LedGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new LedGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {

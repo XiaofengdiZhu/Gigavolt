@@ -14,7 +14,12 @@ namespace Game {
             m_texture = ContentManager.Get<Texture2D>("Textures/GVVolatileMemoryBankBlock");
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
@@ -51,10 +56,24 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new VolatileMemoryBankGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), value, subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new VolatileMemoryBankGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(value)),
+            value,
+            subterrainId
+        );
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
-            SubsystemGVVolatileMemoryBankBlockBehavior subsystem = subsystemTerrain.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
+            SubsystemGVVolatileMemoryBankBlockBehavior subsystem =
+                subsystemTerrain.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
             if (subsystem.GetIdFromValue(value) == 0) {
                 value = subsystem.SetIdToValue(value, subsystem.StoreItemDataAtUniqueId(new GVVolatileMemoryBankData()));
             }
@@ -64,7 +83,9 @@ namespace Game {
         public override int GetCustomCopyBlock(Project project, int centerValue) {
             SubsystemGVVolatileMemoryBankBlockBehavior subsystem = project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
             int id = subsystem.GetIdFromValue(centerValue);
-            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVVolatileMemoryBankData)subsystem.GetItemData(id).Copy()));
+            return id == 0
+                ? centerValue
+                : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVVolatileMemoryBankData)subsystem.GetItemData(id).Copy()));
         }
     }
 }

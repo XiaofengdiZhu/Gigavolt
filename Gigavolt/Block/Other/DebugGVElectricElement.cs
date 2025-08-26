@@ -4,7 +4,11 @@ namespace Game {
     public class DebugGVElectricElement : GVElectricElement {
         public uint m_voltage;
 
-        public DebugGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public DebugGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDebugBlockBehavior>(true).m_elementHashSet.Add(this);
             m_voltage = Double2Uint(subsystemGVElectricity.SpeedFactor);
         }

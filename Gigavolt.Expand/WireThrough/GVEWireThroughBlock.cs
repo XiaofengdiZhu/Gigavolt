@@ -6,37 +6,31 @@ namespace Game {
     public class GVEWireThroughBlock : GVBaseBlock, IGVElectricWireElementBlock, IPaintableBlock {
         public const int Index = 868;
 
-        public readonly int[] m_wiredTextureSlot = [
-            168,
-            184,
-            152,
-            136,
-            216
-        ];
+        public readonly int[] m_wiredTextureSlot = [168, 184, 152, 136, 216];
 
-        public readonly int[] m_unwiredTextureSlot = [
-            4,
-            1,
-            70,
-            16,
-            78
-        ];
+        public readonly int[] m_unwiredTextureSlot = [4, 1, 70, 16, 78];
 
-        public readonly int[] m_coloredTextureSlot = [
-            23,
-            24,
-            39,
-            69,
-            78
-        ];
+        public readonly int[] m_coloredTextureSlot = [23, 24, 39, 69, 78];
 
         public static Texture2D m_harnessTexture;
 
         public static Texture2D HarnessTexture => m_harnessTexture ?? BlocksTexturesManager.DefaultBlocksTexture;
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => null;
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => null;
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             if (WireExistsOnFace(value, face)
                 && connectorFace == CellFace.OppositeFace(face)) {
                 return GVElectricConnectorType.InputOutput;
@@ -77,7 +71,12 @@ namespace Game {
             );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             BlocksManager.DrawCubeBlock(
                 primitivesRenderer,
@@ -89,11 +88,17 @@ namespace Game {
                 color,
                 environmentData,
                 GetIsWireHarness(Terrain.ExtractData(value)) ? HarnessTexture :
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture :
+                environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture
             );
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int? paintColor = GetPaintColor(oldValue);
             int data = Terrain.ExtractData(oldValue);
             int bitmask = GetWireFacesBitmask(data);
@@ -105,7 +110,18 @@ namespace Game {
                 for (int i = 0; i < 6; i++) {
                     if (WireExistsOnFace(oldValue, i)
                         && !WireExistsOnFace(newValue, i)) {
-                        dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GetIsWireHarness(data) ? GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>() : GVBlocksManager.GetBlockIndex<GVWireBlock>(), 0, SetColor(0, paintColor)), Count = 1 });
+                        dropValues.Add(
+                            new BlockDropValue {
+                                Value = Terrain.MakeBlockValue(
+                                    GetIsWireHarness(data)
+                                        ? GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>()
+                                        : GVBlocksManager.GetBlockIndex<GVWireBlock>(),
+                                    0,
+                                    SetColor(0, paintColor)
+                                ),
+                                Count = 1
+                            }
+                        );
                     }
                 }
             }
@@ -121,20 +137,16 @@ namespace Game {
             return SubsystemPalette.GetName(
                 subsystemTerrain,
                 GetColor(data),
-                string.Format(
-                    LanguageControl.Get(typeName, "Format"),
-                    str1,
-                    str2,
-                    str3,
-                    LanguageControl.Get(typeName, "6")
-                )
+                string.Format(LanguageControl.Get(typeName, "Format"), str1, str2, str3, LanguageControl.Get(typeName, "6"))
             );
         }
 
         public override string GetDescription(int value) {
             int data = Terrain.ExtractData(value);
             string typeName = GetType().Name;
-            return GetIsCross(data) ? LanguageControl.Get(typeName, "7") : string.Format(LanguageControl.Get(typeName, "8"), LanguageControl.Get(typeName, GetIsWireHarness(data) ? "4" : "5"));
+            return GetIsCross(data)
+                ? LanguageControl.Get(typeName, "7")
+                : string.Format(LanguageControl.Get(typeName, "8"), LanguageControl.Get(typeName, GetIsWireHarness(data) ? "4" : "5"));
         }
 
         public override IEnumerable<int> GetCreativeValues() {

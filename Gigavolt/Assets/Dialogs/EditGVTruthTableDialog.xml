@@ -1,33 +1,33 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-	<CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<BevelledRectangleWidget Style="{Styles/DialogArea}"/>
-		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
-			<LabelWidget Text="[EditGVTruthTableDialog:1]" HorizontalAlignment="Center"/>
-			<CanvasWidget Size="0, 5"/>
-			<CanvasWidget Size="Infinity, 50" Margin="30, 10">
-				<LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
-			</CanvasWidget>
-			<CanvasWidget Size="0, 15"/>
-			<StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
-				<CanvasWidget Size="0, Infinity"/>
-				<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-					<CanvasWidget Size="474, 34" HorizontalAlignment="Center">
-						<BevelledRectangleWidget Style="{Styles/Area}"/>
-						<TextBoxWidget Name="EditGVTruthTableDialog.LinearText" Size="470, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
-					</CanvasWidget>
-					<BitmapButtonWidget Name="EditGVTruthTableDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
-					<BitmapButtonWidget Name="EditGVTruthTableDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVDelete}" ClickedSubtexture="{Textures/Gui/GVDelete}" Margin="10, 0"/>
-				</StackPanelWidget>
-				<CanvasWidget Size="0, Infinity"/>
-			</StackPanelWidget>
-			<CanvasWidget Size="0, 15"/>
-			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-				<BevelledButtonWidget Name="EditGVTruthTableDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVTruthTableDialog:21]" Margin="20, 0"/>
-				<BevelledButtonWidget Name="EditGVTruthTableDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVTruthTableDialog:22]"/>
-			</StackPanelWidget>
-		</StackPanelWidget>
-		<BevelledButtonWidget Name="EditGVTruthTableDialog.Help" Size="48, 48" Margin="15, 15">
-			<RectangleWidget Size="30, 30" Name="BevelledButton.Image" Subtexture="{Textures/Atlas/HelpTopicIcon}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="true"/>
-		</BevelledButtonWidget>
-	</CanvasWidget>
+  <CanvasWidget Size="640, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <BevelledRectangleWidget Style="{Styles/DialogArea}"/>
+    <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
+      <LabelWidget Text="[EditGVTruthTableDialog:1]" HorizontalAlignment="Center"/>
+      <CanvasWidget Size="0, 5"/>
+      <CanvasWidget Size="Infinity, 50" Margin="30, 10">
+        <LabelWidget Color="128, 128, 128" Text="[EditGVTruthTableDialog:2]" HorizontalAlignment="Center" TextAnchor="HorizontalCenter" WordWrap="true"/>
+      </CanvasWidget>
+      <CanvasWidget Size="0, 15"/>
+      <StackPanelWidget Margin="20, 0" Direction="Vertical" HorizontalAlignment="Center">
+        <CanvasWidget Size="0, Infinity"/>
+        <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <CanvasWidget Size="474, 34" HorizontalAlignment="Center">
+            <BevelledRectangleWidget Style="{Styles/Area}"/>
+            <TextBoxWidget Name="EditGVTruthTableDialog.LinearText" Size="470, 30" MaximumLength="100000" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+          </CanvasWidget>
+          <BitmapButtonWidget Name="EditGVTruthTableDialog.CopyData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="10, 0"/>
+          <BitmapButtonWidget Name="EditGVTruthTableDialog.DeleteData" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVDelete}" ClickedSubtexture="{Textures/Gui/GVDelete}" Margin="10, 0"/>
+        </StackPanelWidget>
+        <CanvasWidget Size="0, Infinity"/>
+      </StackPanelWidget>
+      <CanvasWidget Size="0, 15"/>
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <BevelledButtonWidget Name="EditGVTruthTableDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVTruthTableDialog:21]" Margin="20, 0"/>
+        <BevelledButtonWidget Name="EditGVTruthTableDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVTruthTableDialog:22]"/>
+      </StackPanelWidget>
+    </StackPanelWidget>
+    <BevelledButtonWidget Name="EditGVTruthTableDialog.Help" Size="48, 48" Margin="15, 15">
+      <RectangleWidget Size="30, 30" Name="BevelledButton.Image" Subtexture="{Textures/Atlas/HelpTopicIcon}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="true"/>
+    </BevelledButtonWidget>
+  </CanvasWidget>
 </CanvasWidget>

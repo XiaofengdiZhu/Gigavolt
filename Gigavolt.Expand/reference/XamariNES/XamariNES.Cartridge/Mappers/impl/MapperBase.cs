@@ -11,8 +11,8 @@ namespace XamariNES.Cartridge.Mappers.impl {
         public delegate void WriteInterceptor(int offset, byte value);
 
         //Dictionary of Interceptors
-        protected readonly Dictionary<int, ReadInterceptor> ReadInterceptors = new Dictionary<int, ReadInterceptor>();
-        protected readonly Dictionary<int, WriteInterceptor> WriteInterceptors = new Dictionary<int, WriteInterceptor>();
+        protected readonly Dictionary<int, ReadInterceptor> ReadInterceptors = new();
+        protected readonly Dictionary<int, WriteInterceptor> WriteInterceptors = new();
 
         //Cached Interceptors
         protected ReadInterceptor currentReadInterceptor;

@@ -8,7 +8,9 @@ namespace Game {
         public SubsystemGVVolatileMemoryBankBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVVolatileMemoryBankBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
+
+        public override int SetIdToValue(int value, int id) =>
+            Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             try {
@@ -40,7 +42,13 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GVVolatileMemoryBankData memoryBankData = GetItemData(id, true);
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVVolatileMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVVolatileMemoryBankDialog(
+                    memoryBankData,
+                    () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }
+                )
+            );
             return true;
         }
     }

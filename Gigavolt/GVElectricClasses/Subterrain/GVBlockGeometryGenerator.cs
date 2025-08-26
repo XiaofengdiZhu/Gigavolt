@@ -6,7 +6,14 @@ namespace Game {
         public readonly SubsystemGVElectricity SubsystemGVElectricity;
         public readonly GVSubterrainSystem m_subterrainSystem;
 
-        public GVBlockGeometryGenerator(Terrain terrain, SubsystemTerrain subsystemTerrain, SubsystemElectricity subsystemElectricity, SubsystemFurnitureBlockBehavior subsystemFurnitureBlockBehavior, SubsystemMetersBlockBehavior subsystemMetersBlockBehavior, SubsystemPalette subsystemPalette, SubsystemGVElectricity subsystemGVElectricity, GVSubterrainSystem subterrainSystem) : base(
+        public GVBlockGeometryGenerator(Terrain terrain,
+            SubsystemTerrain subsystemTerrain,
+            SubsystemElectricity subsystemElectricity,
+            SubsystemFurnitureBlockBehavior subsystemFurnitureBlockBehavior,
+            SubsystemMetersBlockBehavior subsystemMetersBlockBehavior,
+            SubsystemPalette subsystemPalette,
+            SubsystemGVElectricity subsystemGVElectricity,
+            GVSubterrainSystem subterrainSystem) : base(
             terrain,
             subsystemTerrain,
             subsystemElectricity,
@@ -18,7 +25,13 @@ namespace Game {
             m_subterrainSystem = subterrainSystem;
         }
 
-        public override void GenerateCubeVertices(Block block, int value, int x, int y, int z, Color color, TerrainGeometrySubset[] subsetsByFace) {
+        public override void GenerateCubeVertices(Block block,
+            int value,
+            int x,
+            int y,
+            int z,
+            Color color,
+            TerrainGeometrySubset[] subsetsByFace) {
             int blockIndex = block.BlockIndex;
             TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
             TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
@@ -442,7 +455,22 @@ namespace Game {
             }
         }
 
-        public override void GenerateCubeVertices(Block block, int value, int x, int y, int z, float height11, float height21, float height22, float height12, Color sideColor, Color topColor11, Color topColor21, Color topColor22, Color topColor12, int overrideTopTextureSlot, TerrainGeometrySubset[] subsetsByFace) {
+        public override void GenerateCubeVertices(Block block,
+            int value,
+            int x,
+            int y,
+            int z,
+            float height11,
+            float height21,
+            float height22,
+            float height12,
+            Color sideColor,
+            Color topColor11,
+            Color topColor21,
+            Color topColor22,
+            Color topColor12,
+            int overrideTopTextureSlot,
+            TerrainGeometrySubset[] subsetsByFace) {
             int blockIndex = block.BlockIndex;
             TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
             TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
@@ -728,15 +756,15 @@ namespace Game {
             }
             cellValueFast = y < 255 ? chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF) : m_subterrainSystem.Light << 10;
             if (((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex)
-                && block.ShouldGenerateFace(
-                    SubsystemTerrain,
-                    4,
-                    value,
-                    cellValueFast,
-                    x,
-                    y,
-                    z
-                ))
+                    && block.ShouldGenerateFace(
+                        SubsystemTerrain,
+                        4,
+                        value,
+                        cellValueFast,
+                        x,
+                        y,
+                        z
+                    ))
                 || height11 < 1f
                 || height12 < 1f
                 || height21 < 1f
@@ -870,7 +898,16 @@ namespace Game {
             }
         }
 
-        public override void GenerateCubeVertices(Block block, int value, int x, int y, int z, int rotationX, int rotationY, int rotationZ, Color color, TerrainGeometrySubset[] subsetsByFace) {
+        public override void GenerateCubeVertices(Block block,
+            int value,
+            int x,
+            int y,
+            int z,
+            int rotationX,
+            int rotationY,
+            int rotationZ,
+            Color color,
+            TerrainGeometrySubset[] subsetsByFace) {
             int blockIndex = block.BlockIndex;
             TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
             TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
@@ -1391,7 +1428,15 @@ namespace Game {
             return CombineLightAndShadow(light, shadow);
         }
 
-        public static void GenerateGVWireVertices(BlockGeometryGenerator generator, int value, int x, int y, int z, int mountingFace, float centerBoxSize, Vector2 centerOffset, TerrainGeometrySubset subset) {
+        public static void GenerateGVWireVertices(BlockGeometryGenerator generator,
+            int value,
+            int x,
+            int y,
+            int z,
+            int mountingFace,
+            float centerBoxSize,
+            Vector2 centerOffset,
+            TerrainGeometrySubset subset) {
             SubsystemGVElectricity SubsystemGVElectricity;
             if (generator is GVBlockGeometryGenerator GVGenerator) {
                 SubsystemGVElectricity = GVGenerator.SubsystemGVElectricity;
@@ -1444,20 +1489,16 @@ namespace Game {
             int cellContents = generator.Terrain.GetCellContents(x - point.X, y - point.Y, z - point.Z);
             bool flag = cellContents is 2 or 7 or 8 or 6 or 62 or 72;
             Vector3 v4 = CellFace.FaceToVector3(SubsystemGVElectricity.GetConnectorFace(mountingFace, GVElectricConnectorDirection.Top));
-            Vector3 vector2 = CellFace.FaceToVector3(SubsystemGVElectricity.GetConnectorFace(mountingFace, GVElectricConnectorDirection.Left)) * centerOffset.X + v4 * centerOffset.Y;
+            Vector3 vector2 =
+                CellFace.FaceToVector3(SubsystemGVElectricity.GetConnectorFace(mountingFace, GVElectricConnectorDirection.Left)) * centerOffset.X
+                + v4 * centerOffset.Y;
             int num4 = 0;
             DynamicArray<GVElectricConnectionPath> m_GVtmpConnectionPaths = [];
-            SubsystemGVElectricity.GetAllConnectedNeighbors(
-                x,
-                y,
-                z,
-                mountingFace,
-                generator.Terrain,
-                m_GVtmpConnectionPaths
-            );
+            SubsystemGVElectricity.GetAllConnectedNeighbors(x, y, z, mountingFace, generator.Terrain, m_GVtmpConnectionPaths);
             foreach (GVElectricConnectionPath tmpConnectionPath in m_GVtmpConnectionPaths) {
                 if ((num4 & (1 << tmpConnectionPath.ConnectorFace)) == 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(mountingFace, 0, tmpConnectionPath.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(mountingFace, 0, tmpConnectionPath.ConnectorFace);
                     if (!(centerOffset == Vector2.Zero)
                         || connectorDirection != GVElectricConnectorDirection.In) {
                         num4 |= 1 << tmpConnectionPath.ConnectorFace;
@@ -1466,7 +1507,11 @@ namespace Game {
                         Color outerTopColor = innerTopColor2;
                         Color outerBottomColor = innerBottomColor2;
                         if (innerContents != GVWireBlockIndex) {
-                            int outerValue = generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ);
+                            int outerValue = generator.Terrain.GetCellValue(
+                                x + tmpConnectionPath.NeighborOffsetX,
+                                y + tmpConnectionPath.NeighborOffsetY,
+                                z + tmpConnectionPath.NeighborOffsetZ
+                            );
                             IGVElectricElementBlock outerBlock = BlocksManager.Blocks[Terrain.ExtractContents(outerValue)] as IGVElectricElementBlock;
                             if (outerBlock == null) {
                                 continue;
@@ -1489,7 +1534,9 @@ namespace Game {
                                 }
                             }
                         }
-                        Vector3 vector3 = connectorDirection != GVElectricConnectorDirection.In ? CellFace.FaceToVector3(tmpConnectionPath.ConnectorFace) : -Vector3.Normalize(vector2);
+                        Vector3 vector3 = connectorDirection != GVElectricConnectorDirection.In
+                            ? CellFace.FaceToVector3(tmpConnectionPath.ConnectorFace)
+                            : -Vector3.Normalize(vector2);
                         Vector3 vector4 = Vector3.Cross(vector, vector3);
                         float s = centerBoxSize >= 0f ? Math.Max(0.03125f, centerBoxSize / 2f) : centerBoxSize / 2f;
                         float num5 = connectorDirection == GVElectricConnectorDirection.In ? 0.03125f : 0.5f;
@@ -1514,7 +1561,13 @@ namespace Game {
                         Vector2 vector13 = v2 + v3 * new Vector2(Math.Max(0.0625f, centerBoxSize), 1f);
                         Vector2 vector14 = v2 + v3 * new Vector2(centerBoxSize, 0.5f);
                         Vector2 vector15 = v2 + v3 * new Vector2(num6 * 2f, 0.5f);
-                        int num7 = Terrain.ExtractLight(generator.Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ));
+                        int num7 = Terrain.ExtractLight(
+                            generator.Terrain.GetCellValue(
+                                x + tmpConnectionPath.NeighborOffsetX,
+                                y + tmpConnectionPath.NeighborOffsetY,
+                                z + tmpConnectionPath.NeighborOffsetZ
+                            )
+                        );
                         float num8 = LightingManager.LightIntensityByLightValue[num7];
                         float num9 = 0.5f * (innerLightValue + num8);
                         float num10 = LightingManager.CalculateLighting(-vector4);
@@ -1526,11 +1579,31 @@ namespace Game {
                         float num16 = num11 * innerLightValue;
                         float num17 = num12 * innerLightValue;
                         float num18 = num12 * num9;
-                        Color color5 = new((byte)(innerBottomColor2.R * num13), (byte)(innerBottomColor2.G * num13), (byte)(innerBottomColor2.B * num13)); //内部底部
-                        Color color6 = new((byte)(outerBottomColor.R * num14), (byte)(outerBottomColor.G * num14), (byte)(outerBottomColor.B * num14)); //外面底部
-                        Color color7 = new((byte)(outerBottomColor.R * num15), (byte)(outerBottomColor.G * num15), (byte)(outerBottomColor.B * num15)); //外面底部
-                        Color color8 = new((byte)(innerBottomColor2.R * num16), (byte)(innerBottomColor2.G * num16), (byte)(innerBottomColor2.B * num16)); //内部底部
-                        Color color9 = new((byte)(innerTopColor2.R * num17), (byte)(innerTopColor2.G * num17), (byte)(innerTopColor2.B * num17)); //内部顶部
+                        Color color5 = new(
+                            (byte)(innerBottomColor2.R * num13),
+                            (byte)(innerBottomColor2.G * num13),
+                            (byte)(innerBottomColor2.B * num13)
+                        ); //内部底部
+                        Color color6 = new(
+                            (byte)(outerBottomColor.R * num14),
+                            (byte)(outerBottomColor.G * num14),
+                            (byte)(outerBottomColor.B * num14)
+                        ); //外面底部
+                        Color color7 = new(
+                            (byte)(outerBottomColor.R * num15),
+                            (byte)(outerBottomColor.G * num15),
+                            (byte)(outerBottomColor.B * num15)
+                        ); //外面底部
+                        Color color8 = new(
+                            (byte)(innerBottomColor2.R * num16),
+                            (byte)(innerBottomColor2.G * num16),
+                            (byte)(innerBottomColor2.B * num16)
+                        ); //内部底部
+                        Color color9 = new(
+                            (byte)(innerTopColor2.R * num17),
+                            (byte)(innerTopColor2.G * num17),
+                            (byte)(innerTopColor2.B * num17)
+                        ); //内部顶部
                         Color color10 = new((byte)(outerTopColor.R * num18), (byte)(outerTopColor.G * num18), (byte)(outerTopColor.B * num18)); //外面顶部
                         int count = subset.Vertices.Count;
                         subset.Vertices.Count += 6;

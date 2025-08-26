@@ -12,31 +12,12 @@ namespace Game {
         public GVCellFace(CellFace cellFace) : this(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face) { }
         public GVCellFace(Point3 point3) : this(point3.X, point3.Y, point3.Z, 0) { }
 
-        public static readonly int[] m_oppositeFaces = [
-            2,
-            3,
-            0,
-            1,
-            5,
-            4
-        ];
+        public static readonly int[] m_oppositeFaces = [2, 3, 0, 1, 5, 4];
 
-        public static readonly Point3[] m_faceToPoint3 = [
-            new(0, 0, 1),
-            new(1, 0, 0),
-            new(0, 0, -1),
-            new(-1, 0, 0),
-            new(0, 1, 0),
-            new(0, -1, 0)
-        ];
+        public static readonly Point3[] m_faceToPoint3 = [new(0, 0, 1), new(1, 0, 0), new(0, 0, -1), new(-1, 0, 0), new(0, 1, 0), new(0, -1, 0)];
 
         public static readonly Vector3[] m_faceToVector3 = [
-            new(0f, 0f, 1f),
-            new(1f, 0f, 0f),
-            new(0f, 0f, -1f),
-            new(-1f, 0f, 0f),
-            new(0f, 1f, 0f),
-            new(0f, -1f, 0f)
+            new(0f, 0f, 1f), new(1f, 0f, 0f), new(0f, 0f, -1f), new(-1f, 0f, 0f), new(0f, 1f, 0f), new(0f, -1f, 0f)
         ];
 
         public Point3 Point {
@@ -92,15 +73,9 @@ namespace Game {
             result.Y = y;
             result.Z = z;
             switch (axis) {
-                case 0:
-                    result.Face = direction > 0f ? 1 : 3;
-                    break;
-                case 1:
-                    result.Face = direction > 0f ? 4 : 5;
-                    break;
-                case 2:
-                    result.Face = !(direction > 0f) ? 2 : 0;
-                    break;
+                case 0: result.Face = direction > 0f ? 1 : 3; break;
+                case 1: result.Face = direction > 0f ? 4 : 5; break;
+                case 2: result.Face = !(direction > 0f) ? 2 : 0; break;
             }
             return result;
         }

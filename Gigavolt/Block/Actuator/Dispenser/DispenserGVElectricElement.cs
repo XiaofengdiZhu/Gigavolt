@@ -33,7 +33,9 @@ namespace Game {
             }
             if (m_voltage != voltage
                 && m_voltage > 0) {
-                m_subsystemBlockEntities.GetBlockEntity(CellFaces[0].Point.X, CellFaces[0].Point.Y, CellFaces[0].Point.Z)?.Entity.FindComponent<ComponentGVDispenser>()?.Dispense(m_voltage);
+                m_subsystemBlockEntities.GetBlockEntity(CellFaces[0].Point.X, CellFaces[0].Point.Y, CellFaces[0].Point.Z)
+                    ?.Entity.FindComponent<ComponentGVDispenser>()
+                    ?.Dispense(m_voltage);
             }
             return false;
         }

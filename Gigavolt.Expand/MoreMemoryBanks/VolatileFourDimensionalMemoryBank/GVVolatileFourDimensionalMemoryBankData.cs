@@ -16,7 +16,12 @@ namespace Game {
             m_updateTime = DateTime.Now;
         }
 
-        public GVVolatileFourDimensionalMemoryBankData(uint ID, Dictionary<int, Image<Rgba32>> image = null, int xLength = 0, int yLength = 0, int zLength = 0, int wLength = 0) {
+        public GVVolatileFourDimensionalMemoryBankData(uint ID,
+            Dictionary<int, Image<Rgba32>> image = null,
+            int xLength = 0,
+            int yLength = 0,
+            int zLength = 0,
+            int wLength = 0) {
             this.ID = ID;
             m_data = image;
             m_xLength = xLength;
@@ -72,7 +77,9 @@ namespace Game {
         public override string SaveString() {
             StringBuilder stringBuilder = new();
             stringBuilder.Append(ID.ToString("X"));
-            stringBuilder.Append($";{m_xLength},{m_yLength},{m_zLength},{m_wLength},{m_xOffset},{m_yOffset},{m_zOffset},{m_wOffset},{m_xSize},{m_ySize}");
+            stringBuilder.Append(
+                $";{m_xLength},{m_yLength},{m_zLength},{m_wLength},{m_xOffset},{m_yOffset},{m_zOffset},{m_wOffset},{m_xSize},{m_ySize}"
+            );
             return stringBuilder.ToString();
         }
     }

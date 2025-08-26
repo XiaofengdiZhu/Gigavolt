@@ -5,7 +5,11 @@ namespace Game {
     public class XorGateGVElectricElement : RotateableGVElectricElement {
         public uint m_voltage;
 
-        public XorGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
+        public XorGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

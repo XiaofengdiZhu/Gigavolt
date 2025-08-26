@@ -68,7 +68,12 @@ namespace Game {
             );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh[GetModel(Terrain.ExtractData(value))],
@@ -79,9 +84,13 @@ namespace Game {
             );
         }
 
-        public override int GetShadowStrength(int value) => 4 + (int)Math.Round((float)GetOpen(Terrain.ExtractData(value)) / 90 * (DefaultShadowStrength - 4));
+        public override int GetShadowStrength(int value) =>
+            4 + (int)Math.Round((float)GetOpen(Terrain.ExtractData(value)) / 90 * (DefaultShadowStrength - 4));
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             float num = Vector3.Dot(forward, Vector3.UnitZ);
             float num2 = Vector3.Dot(forward, Vector3.UnitX);
@@ -142,10 +151,21 @@ namespace Game {
 
         public override bool IsHeatBlocker(int value) => GetOpen(Terrain.ExtractData(value)) >= 90;
 
-        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, 1)), Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, 2))];
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetModel(Terrain.ExtractData(value)));
+        public override IEnumerable<int> GetCreativeValues() => [
+            Terrain.MakeBlockValue(BlockIndex, 0, 0),
+            Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, 1)),
+            Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, 2))
+        ];
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) =>
+            LanguageControl.Get(GetType().Name, GetModel(Terrain.ExtractData(value)));
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int model = GetModel(Terrain.ExtractData(oldValue));
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, model)), Count = 1 });
             showDebris = true;
@@ -237,9 +257,25 @@ namespace Game {
 
         #endregion
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DoorGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetHingeFace(Terrain.ExtractData(value))), subterrainId);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new DoorGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetHingeFace(Terrain.ExtractData(value))),
+            subterrainId
+        );
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int hingeFace = GetHingeFace(Terrain.ExtractData(value));
             if (face == hingeFace) {
                 GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(hingeFace, 0, connectorFace);
@@ -277,9 +313,11 @@ namespace Game {
             return data | 4;
         }
 
-        public static bool IsTopPart(Terrain terrain, int x, int y, int z) => BlocksManager.Blocks[terrain.GetCellContents(x, y - 1, z)] is GVDoorBlock;
+        public static bool IsTopPart(Terrain terrain, int x, int y, int z) =>
+            BlocksManager.Blocks[terrain.GetCellContents(x, y - 1, z)] is GVDoorBlock;
 
-        public static bool IsBottomPart(Terrain terrain, int x, int y, int z) => BlocksManager.Blocks[terrain.GetCellContents(x, y + 1, z)] is GVDoorBlock;
+        public static bool IsBottomPart(Terrain terrain, int x, int y, int z) =>
+            BlocksManager.Blocks[terrain.GetCellContents(x, y + 1, z)] is GVDoorBlock;
 
         public static int GetHingeFace(int data) {
             int rotation = GetRotation(data);
@@ -303,8 +341,12 @@ namespace Game {
             float num = !rightHanded ? 1 : -1;
             Matrix identity = Matrix.Identity;
             identity *= Matrix.CreateScale(0f - num, 1f, 1f);
-            identity *= Matrix.CreateTranslation((0.5f - m_pivotDistance) * num, 0f, 0f) * Matrix.CreateRotationY(open > 0 ? num * MathUtils.DegToRad(open) : 0f) * Matrix.CreateTranslation((0f - (0.5f - m_pivotDistance)) * num, 0f, 0f);
-            identity *= Matrix.CreateTranslation(0f, 0f, 0.5f - m_pivotDistance) * Matrix.CreateRotationY(rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+            identity *= Matrix.CreateTranslation((0.5f - m_pivotDistance) * num, 0f, 0f)
+                * Matrix.CreateRotationY(open > 0 ? num * MathUtils.DegToRad(open) : 0f)
+                * Matrix.CreateTranslation((0f - (0.5f - m_pivotDistance)) * num, 0f, 0f);
+            identity *= Matrix.CreateTranslation(0f, 0f, 0.5f - m_pivotDistance)
+                * Matrix.CreateRotationY(rotation * (float)Math.PI / 2f)
+                * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
             blockMesh.AppendModelMeshPart(
                 m_modelMeshPart[model],
                 m_boneAbsoluteTransform[model] * identity,

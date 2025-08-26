@@ -9,7 +9,9 @@ namespace Game {
         public SubsystemGVCounterBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVCounterBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 4095;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -131041) | ((id & 4095) << 5));
+
+        public override int SetIdToValue(int value, int id) =>
+            Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -131041) | ((id & 4095) << 5));
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);

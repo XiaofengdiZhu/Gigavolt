@@ -3,7 +3,12 @@ using Engine.Graphics;
 
 namespace Game {
     public class GVSolidifiedAirBlock : GVBaseBlock {
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             Color newColor = new(color.RGB, 100);
             DrawCubeBlock(
                 primitivesRenderer,
@@ -13,7 +18,9 @@ namespace Game {
                 newColor,
                 newColor,
                 environmentData,
-                environmentData.SubsystemTerrain != null ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture
+                environmentData.SubsystemTerrain != null
+                    ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture
+                    : BlocksTexturesManager.DefaultBlocksTexture
             );
         }
 
@@ -21,7 +28,14 @@ namespace Game {
 
         public const int Index = 888;
 
-        public static void DrawCubeBlock(PrimitivesRenderer3D primitivesRenderer, int value, Vector3 size, ref Matrix matrix, Color color, Color topColor, DrawBlockEnvironmentData environmentData, Texture2D texture) {
+        public static void DrawCubeBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Vector3 size,
+            ref Matrix matrix,
+            Color color,
+            Color topColor,
+            DrawBlockEnvironmentData environmentData,
+            Texture2D texture) {
             environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             TexturedBatch3D texturedBatch3D = primitivesRenderer.TexturedBatch(
                 texture,

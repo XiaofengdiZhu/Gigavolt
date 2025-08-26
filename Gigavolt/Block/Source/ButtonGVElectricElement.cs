@@ -8,7 +8,11 @@ namespace Game {
         public uint m_voltage;
         public bool m_wasPressed;
 
-        public ButtonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public ButtonGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemGVButtonBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVButtonBlockBehavior>(true);
             m_blockData = m_subsystemGVButtonBlockBehavior.GetItemData(m_subsystemGVButtonBlockBehavior.GetIdFromValue(value));
         }
@@ -23,7 +27,9 @@ namespace Game {
                     "Audio/Click",
                     1f,
                     0f,
-                    SubterrainId == 0 ? position : Vector3.Transform(position, GVStaticStorage.GVSubterrainSystemDictionary[SubterrainId].GlobalTransform),
+                    SubterrainId == 0
+                        ? position
+                        : Vector3.Transform(position, GVStaticStorage.GVSubterrainSystemDictionary[SubterrainId].GlobalTransform),
                     2f,
                     true
                 );

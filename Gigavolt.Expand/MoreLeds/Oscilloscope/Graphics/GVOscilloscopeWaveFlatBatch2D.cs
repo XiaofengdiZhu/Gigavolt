@@ -11,7 +11,9 @@ namespace Engine.Graphics {
         public readonly DynamicArray<int> LineStripeIndices = [];
         public static readonly GVOscilloscopeBackgroundShader GVOscilloscopeBackgroundShader = new();
         public static readonly GVOscilloscopeWaveShader GVOscilloscopeWaveShader = new();
-        public override bool IsEmpty() => LineIndices.Count == 0 && TriangleIndices.Count == 0 && PointsIndices.Count == 0 && LineStripeIndices.Count == 0;
+
+        public override bool IsEmpty() =>
+            LineIndices.Count == 0 && TriangleIndices.Count == 0 && PointsIndices.Count == 0 && LineStripeIndices.Count == 0;
 
         public override void Clear() {
             LineVertices.Clear();
@@ -127,24 +129,31 @@ namespace Engine.Graphics {
             GVOscilloscopeBackgroundShader.DashAndGapLength = dashAndGapLength;
         }
 
-        public static unsafe void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct {
+        public static unsafe void DrawUserIndexed<T>(PrimitiveType primitiveType,
+            Shader shader,
+            VertexDeclaration vertexDeclaration,
+            T[] vertexData,
+            int startVertex,
+            int verticesCount,
+            int[] indexData,
+            int startIndex,
+            int indicesCount) where T : struct {
             //VerifyParametersDrawUserIndexed(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount, indexData, startIndex, indicesCount);
             GCHandle gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
             GCHandle gCHandle2 = GCHandle.Alloc(indexData, GCHandleType.Pinned);
             try {
                 GLWrapper.ApplyRenderTarget(Display.RenderTarget);
                 GLWrapper.ApplyViewportScissor(Display.Viewport, Display.ScissorRectangle, Display.RasterizerState.ScissorTestEnable);
-                GLWrapper.ApplyShaderAndBuffers(
-                    shader,
-                    vertexDeclaration,
-                    gCHandle.AddrOfPinnedObject(),
-                    0,
-                    0
-                );
+                GLWrapper.ApplyShaderAndBuffers(shader, vertexDeclaration, gCHandle.AddrOfPinnedObject(), 0, 0);
                 GLWrapper.ApplyRasterizerState(Display.RasterizerState);
                 GLWrapper.ApplyDepthStencilState(Display.DepthStencilState);
                 GLWrapper.ApplyBlendState(Display.BlendState);
-                GLWrapper.GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), (uint)indicesCount, DrawElementsType.UnsignedInt, (gCHandle2.AddrOfPinnedObject() + 4 * startIndex).ToPointer());
+                GLWrapper.GL.DrawElements(
+                    GLWrapper.TranslatePrimitiveType(primitiveType),
+                    (uint)indicesCount,
+                    DrawElementsType.UnsignedInt,
+                    (gCHandle2.AddrOfPinnedObject() + 4 * startIndex).ToPointer()
+                );
             }
             finally {
                 gCHandle.Free();

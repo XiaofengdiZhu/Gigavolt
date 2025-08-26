@@ -9,7 +9,11 @@ using TemplatesDatabase;
 namespace Game {
     public class SubsystemGVOscilloscopeBlockBehavior : SubsystemBlockBehavior, IDrawable {
         public SubsystemSky m_subsystemSky;
-        public readonly Dictionary<uint, Dictionary<Point3, GVOscilloscopeData>> m_datas = new() { { 0u, new Dictionary<Point3, GVOscilloscopeData>() } };
+
+        public readonly Dictionary<uint, Dictionary<Point3, GVOscilloscopeData>> m_datas = new() {
+            { 0u, new Dictionary<Point3, GVOscilloscopeData>() }
+        };
+
         public readonly GVOscilloscopePrimitivesRenderer2D m_primitivesRenderer2D = new();
         public TexturedBatch2D m_numberBatch;
         public TexturedBatch2D m_arrowButtonBatch;
@@ -170,7 +174,9 @@ namespace Game {
                                 float size = 0.5f;
                                 if (subterrainId != 0) {
                                     Matrix orientation = transform.OrientationMatrix;
-                                    float scale = MathF.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13);
+                                    float scale = MathF.Sqrt(
+                                        transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13
+                                    );
                                     size *= scale;
                                     right = Vector3.Transform(right, orientation) / scale;
                                     up = Vector3.Transform(up, orientation) / scale;

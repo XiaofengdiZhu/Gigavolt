@@ -69,7 +69,8 @@ namespace Game {
         public void DowngradeChunkNeighborhoodState(Point2 coordinates, int radius, TerrainChunkState state, bool forceGeometryRegeneration) {
             for (int i = -radius; i <= radius; i++) {
                 for (int j = -radius; j <= radius; j++) {
-                    TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(coordinates.X + i, coordinates.Y + j) ?? m_terrain.AllocateChunk(coordinates.X + i, coordinates.Y + j);
+                    TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(coordinates.X + i, coordinates.Y + j)
+                        ?? m_terrain.AllocateChunk(coordinates.X + i, coordinates.Y + j);
                     if (chunkAtCoords.State > state) {
                         chunkAtCoords.State = state;
                         if (forceGeometryRegeneration) {
@@ -388,7 +389,9 @@ namespace Game {
                                 int cellLightFast2 = chunkAtCell2.GetCellLightFast(num6, l, num7);
                                 int cellLightFast3 = chunkAtCell3.GetCellLightFast(num8, l, num9);
                                 int cellLightFast4 = chunkAtCell4.GetCellLightFast(num10, l, num11);
-                                int num18 = MathUtils.Max(cellLightFast, cellLightFast2, cellLightFast3, cellLightFast4) - 1 - block2.LightAttenuation;
+                                int num18 = MathUtils.Max(cellLightFast, cellLightFast2, cellLightFast3, cellLightFast4)
+                                    - 1
+                                    - block2.LightAttenuation;
                                 if (num18 > Terrain.ExtractLight(cellValueFast2)) {
                                     chunk.SetCellValueFast(num17, Terrain.ReplaceLight(cellValueFast2, num18));
                                     if (num18 > 1) {
@@ -523,94 +526,34 @@ namespace Game {
                 int num3 = z & 15;
                 TerrainChunk chunkAtCell = m_terrain.GetChunkAtCell(x, z);
                 if (num2 == 0) {
-                    PropagateLightSource(
-                        m_terrain.GetChunkAtCell(x - 1, z),
-                        x - 1,
-                        y,
-                        z,
-                        light
-                    );
+                    PropagateLightSource(m_terrain.GetChunkAtCell(x - 1, z), x - 1, y, z, light);
                 }
                 else {
-                    PropagateLightSource(
-                        chunkAtCell,
-                        x - 1,
-                        y,
-                        z,
-                        light
-                    );
+                    PropagateLightSource(chunkAtCell, x - 1, y, z, light);
                 }
                 if (num2 == 15) {
-                    PropagateLightSource(
-                        m_terrain.GetChunkAtCell(x + 1, z),
-                        x + 1,
-                        y,
-                        z,
-                        light
-                    );
+                    PropagateLightSource(m_terrain.GetChunkAtCell(x + 1, z), x + 1, y, z, light);
                 }
                 else {
-                    PropagateLightSource(
-                        chunkAtCell,
-                        x + 1,
-                        y,
-                        z,
-                        light
-                    );
+                    PropagateLightSource(chunkAtCell, x + 1, y, z, light);
                 }
                 if (num3 == 0) {
-                    PropagateLightSource(
-                        m_terrain.GetChunkAtCell(x, z - 1),
-                        x,
-                        y,
-                        z - 1,
-                        light
-                    );
+                    PropagateLightSource(m_terrain.GetChunkAtCell(x, z - 1), x, y, z - 1, light);
                 }
                 else {
-                    PropagateLightSource(
-                        chunkAtCell,
-                        x,
-                        y,
-                        z - 1,
-                        light
-                    );
+                    PropagateLightSource(chunkAtCell, x, y, z - 1, light);
                 }
                 if (num3 == 15) {
-                    PropagateLightSource(
-                        m_terrain.GetChunkAtCell(x, z + 1),
-                        x,
-                        y,
-                        z + 1,
-                        light
-                    );
+                    PropagateLightSource(m_terrain.GetChunkAtCell(x, z + 1), x, y, z + 1, light);
                 }
                 else {
-                    PropagateLightSource(
-                        chunkAtCell,
-                        x,
-                        y,
-                        z + 1,
-                        light
-                    );
+                    PropagateLightSource(chunkAtCell, x, y, z + 1, light);
                 }
                 if (y > 0) {
-                    PropagateLightSource(
-                        chunkAtCell,
-                        x,
-                        y - 1,
-                        z,
-                        light
-                    );
+                    PropagateLightSource(chunkAtCell, x, y - 1, z, light);
                 }
                 if (y < 255) {
-                    PropagateLightSource(
-                        chunkAtCell,
-                        x,
-                        y + 1,
-                        z,
-                        light
-                    );
+                    PropagateLightSource(chunkAtCell, x, y + 1, z, light);
                 }
             }
         }
@@ -693,7 +636,19 @@ namespace Game {
                                 default:
                                     int xInWorld = xInChunk + chunk.Origin.X;
                                     int zInWorld = zInChunk + chunk.Origin.Y;
-                                    int bottom = MathUtils.Max(16 * i, 0, MathUtils.Min(chunk.GetBottomHeightFast(xInChunk, zInChunk) - 1, MathUtils.Min(m_terrain.GetBottomHeight(xInWorld - 1, zInWorld), m_terrain.GetBottomHeight(xInWorld + 1, zInWorld), m_terrain.GetBottomHeight(xInWorld, zInWorld - 1), m_terrain.GetBottomHeight(xInWorld, zInWorld + 1))));
+                                    int bottom = MathUtils.Max(
+                                        16 * i,
+                                        0,
+                                        MathUtils.Min(
+                                            chunk.GetBottomHeightFast(xInChunk, zInChunk) - 1,
+                                            MathUtils.Min(
+                                                m_terrain.GetBottomHeight(xInWorld - 1, zInWorld),
+                                                m_terrain.GetBottomHeight(xInWorld + 1, zInWorld),
+                                                m_terrain.GetBottomHeight(xInWorld, zInWorld - 1),
+                                                m_terrain.GetBottomHeight(xInWorld, zInWorld + 1)
+                                            )
+                                        )
+                                    );
                                     int top = MathUtils.Min(16 * (i + 1), byte.MaxValue, chunk.GetTopHeightFast(xInChunk, zInChunk) + 1);
                                     int cellIndex = TerrainChunk.CalculateCellIndex(xInChunk, 0, zInChunk);
                                     for (int y = bottom; y < top; ++y) {
@@ -701,14 +656,14 @@ namespace Game {
                                         int contents = Terrain.ExtractContents(cellValueFast);
                                         if (contents != 0) {
                                             BlocksManager.Blocks[contents]
-                                            .GenerateTerrainVertices(
-                                                m_subterrainSystem.BlockGeometryGenerator,
-                                                geometry,
-                                                cellValueFast,
-                                                xInWorld,
-                                                y,
-                                                zInWorld
-                                            );
+                                                .GenerateTerrainVertices(
+                                                    m_subterrainSystem.BlockGeometryGenerator,
+                                                    geometry,
+                                                    cellValueFast,
+                                                    xInWorld,
+                                                    y,
+                                                    zInWorld
+                                                );
                                         }
                                     }
                                     break;
@@ -838,14 +793,7 @@ namespace Game {
                         if (contents != 0) {
                             List<IGVBlockBehavior> blockBehaviors = m_subsystemGVBlockBehaviors.GetBlockBehaviors(contents);
                             foreach (IGVBlockBehavior blockBehavior in blockBehaviors) {
-                                blockBehavior.OnBlockGenerated(
-                                    cellValueFast,
-                                    x,
-                                    num2,
-                                    z,
-                                    isLoaded,
-                                    m_subterrainSystem
-                                );
+                                blockBehavior.OnBlockGenerated(cellValueFast, x, num2, z, isLoaded, m_subterrainSystem);
                             }
                         }
                         num2++;

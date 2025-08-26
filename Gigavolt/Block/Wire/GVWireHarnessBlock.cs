@@ -47,9 +47,21 @@ namespace Game {
             }
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => null;
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => null;
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             if (!WireExistsOnFace(value, face)) {
                 return null;
             }
@@ -106,26 +118,37 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneBlockMesh,
-                color * WireColor1,
-                2f * size,
-                ref matrix,
-                environmentData
-            );
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color * WireColor1, 2f * size, ref matrix, environmentData);
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             Point3 point = CellFace.FaceToPoint3(raycastResult.CellFace.Face);
-            int cellValue = subsystemTerrain.Terrain.GetCellValue(raycastResult.CellFace.X + point.X, raycastResult.CellFace.Y + point.Y, raycastResult.CellFace.Z + point.Z);
+            int cellValue = subsystemTerrain.Terrain.GetCellValue(
+                raycastResult.CellFace.X + point.X,
+                raycastResult.CellFace.Y + point.Y,
+                raycastResult.CellFace.Z + point.Z
+            );
             int oldMask = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is GVWireHarnessBlock ? GetWireFacesBitmask(cellValue) : 0;
             int newMask = (1 << raycastResult.CellFace.Face) | oldMask;
-            return newMask == oldMask ? default : new BlockPlacementData { Value = SetWireFacesBitmask(value, newMask), CellFace = raycastResult.CellFace };
+            return newMask == oldMask
+                ? default
+                : new BlockPlacementData { Value = SetWireFacesBitmask(value, newMask), CellFace = raycastResult.CellFace };
         }
 
-        public override BlockPlacementData GetDigValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, int toolValue, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetDigValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            int toolValue,
+            TerrainRaycastResult raycastResult) {
             int wireFacesBitmask = GetWireFacesBitmask(value);
             wireFacesBitmask &= ~(1 << raycastResult.CollisionBoxIndex);
             BlockPlacementData result = default;
@@ -134,7 +157,12 @@ namespace Game {
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             for (int i = 0; i < 6; i++) {
                 if (WireExistsOnFace(oldValue, i)
                     && !WireExistsOnFace(newValue, i)) {

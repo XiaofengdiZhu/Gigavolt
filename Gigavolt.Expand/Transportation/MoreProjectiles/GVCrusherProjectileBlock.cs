@@ -15,15 +15,15 @@ namespace Game {
                 ModelMesh mesh = model.FindMesh(i == 0 ? "GVCrusher" : "GVInteractor");
                 Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(mesh.ParentBone);
                 m_standaloneBlockMeshes[i]
-                .AppendModelMeshPart(
-                    mesh.MeshParts[0],
-                    boneAbsoluteTransform * Matrix.CreateTranslation(0f, 0f, 0f),
-                    false,
-                    false,
-                    false,
-                    false,
-                    Color.White
-                );
+                    .AppendModelMeshPart(
+                        mesh.MeshParts[0],
+                        boneAbsoluteTransform * Matrix.CreateTranslation(0f, 0f, 0f),
+                        false,
+                        false,
+                        false,
+                        false,
+                        Color.White
+                    );
             }
             SubsystemGVProjectiles.m_crusherBlockValue = BlockIndex;
             SubsystemGVProjectiles.m_interactorBlockValue = Terrain.MakeBlockValue(BlockIndex, 0, 1);
@@ -32,17 +32,15 @@ namespace Game {
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) { }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int data = Terrain.ExtractData(value);
             if (data < m_standaloneBlockMeshes.Length) {
-                BlocksManager.DrawMeshBlock(
-                    primitivesRenderer,
-                    m_standaloneBlockMeshes[data],
-                    color,
-                    2.5f * size,
-                    ref matrix,
-                    environmentData
-                );
+                BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMeshes[data], color, 2.5f * size, ref matrix, environmentData);
             }
         }
 
@@ -55,6 +53,8 @@ namespace Game {
             }
         }
 
-        public List<int> GetCustomWheelPanelValues(int centerValue) => [BlockIndex, Terrain.MakeBlockValue(BlockIndex, 0, 1), GVBlocksManager.GetBlockIndex<GVDataModifierProjectileBlock>()];
+        public List<int> GetCustomWheelPanelValues(int centerValue) => [
+            BlockIndex, Terrain.MakeBlockValue(BlockIndex, 0, 1), GVBlocksManager.GetBlockIndex<GVDataModifierProjectileBlock>()
+        ];
     }
 }

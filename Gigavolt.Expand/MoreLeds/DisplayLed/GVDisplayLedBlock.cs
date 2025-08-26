@@ -17,7 +17,12 @@ namespace Game {
 
         public GVDisplayLedBlock() : base("Models/GigavoltGates", "OneLed", 0.5f) { }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int data = Terrain.ExtractData(value);
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
@@ -68,9 +73,21 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DisplayLedGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new DisplayLedGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {
@@ -88,18 +105,33 @@ namespace Game {
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             string typeName = GetType().Name;
             int data = Terrain.ExtractData(value);
-            return LanguageControl.Get(typeName, "DisplayNamePrefix", GetComplex(data) ? "2" : "1") + LanguageControl.Get(typeName, "DisplayName", (GetType(data) + 1).ToString());
+            return LanguageControl.Get(typeName, "DisplayNamePrefix", GetComplex(data) ? "2" : "1")
+                + LanguageControl.Get(typeName, "DisplayName", (GetType(data) + 1).ToString());
         }
 
         public override string GetDescription(int value) {
             string typeName = GetType().Name;
             int data = Terrain.ExtractData(value);
-            return GetComplex(data) ? string.Format(LanguageControl.Get(typeName, "ComplexDescription", "0"), LanguageControl.Get(typeName, "ComplexDescription", (GetType(data) + 1).ToString())) : LanguageControl.Get(typeName, "SimpleDescription", (GetType(data) + 1).ToString());
+            return GetComplex(data)
+                ? string.Format(
+                    LanguageControl.Get(typeName, "ComplexDescription", "0"),
+                    LanguageControl.Get(typeName, "ComplexDescription", (GetType(data) + 1).ToString())
+                )
+                : LanguageControl.Get(typeName, "SimpleDescription", (GetType(data) + 1).ToString());
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetComplex(SetType(0, GetType(data)), GetComplex(data))), Count = 1 });
+            dropValues.Add(
+                new BlockDropValue {
+                    Value = Terrain.MakeBlockValue(BlockIndex, 0, SetComplex(SetType(0, GetType(data)), GetComplex(data))), Count = 1
+                }
+            );
             showDebris = true;
         }
 

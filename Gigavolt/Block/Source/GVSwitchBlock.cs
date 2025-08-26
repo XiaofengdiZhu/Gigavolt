@@ -18,11 +18,12 @@ namespace Game {
         public readonly BlockMesh[] m_blockMeshesByIndex_Lever = new BlockMesh[12];
         public readonly BoundingBox[][] m_collisionBoxesByIndex = new BoundingBox[12][];
 
-
         public override void Initialize() {
             if (GVStaticStorage.WhiteTexture == null
                 || GVStaticStorage.WhiteTexture.m_isDisposed) {
-                GVStaticStorage.WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+                GVStaticStorage.WhiteTexture = Texture2D.Load(
+                    new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White))
+                );
             }
             Model model = ContentManager.Get<Model>("Models/Switch");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Body").ParentBone);
@@ -30,33 +31,40 @@ namespace Game {
             for (int i = 0; i < 6; i++) {
                 for (int j = 0; j < 2; j++) {
                     int num = (i << 1) | j;
-                    Matrix matrix = i >= 4 ? i != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                    Matrix matrix = i >= 4
+                        ? i != 4
+                            ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)
+                            : Matrix.CreateTranslation(0.5f, 0f, 0.5f)
+                        : Matrix.CreateRotationX((float)Math.PI / 2f)
+                        * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                        * Matrix.CreateRotationY(i * (float)Math.PI / 2f)
+                        * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                     Matrix matrix2 = Matrix.CreateRotationX(j == 0 ? MathUtils.DegToRad(30f) : MathUtils.DegToRad(-30f));
                     //主体模型
                     m_blockMeshesByIndex_Body[num] = new BlockMesh();
                     m_blockMeshesByIndex_Body[num]
-                    .AppendModelMeshPart(
-                        model.FindMesh("Body").MeshParts[0],
-                        boneAbsoluteTransform * matrix,
-                        false,
-                        false,
-                        false,
-                        false,
-                        Color.White
-                    );
+                        .AppendModelMeshPart(
+                            model.FindMesh("Body").MeshParts[0],
+                            boneAbsoluteTransform * matrix,
+                            false,
+                            false,
+                            false,
+                            false,
+                            Color.White
+                        );
                     m_collisionBoxesByIndex[num] = [m_blockMeshesByIndex_Body[num].CalculateBoundingBox()];
                     //拉杆模型
                     m_blockMeshesByIndex_Lever[num] = new BlockMesh();
                     m_blockMeshesByIndex_Lever[num]
-                    .AppendModelMeshPart(
-                        model.FindMesh("Lever").MeshParts[0],
-                        boneAbsoluteTransform2 * matrix2 * matrix,
-                        false,
-                        false,
-                        false,
-                        false,
-                        Color.White
-                    );
+                        .AppendModelMeshPart(
+                            model.FindMesh("Lever").MeshParts[0],
+                            boneAbsoluteTransform2 * matrix2 * matrix,
+                            false,
+                            false,
+                            false,
+                            false,
+                            Color.White
+                        );
                 }
             }
             Matrix matrix3 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
@@ -82,20 +90,35 @@ namespace Game {
 
         public static bool GetLeverState(int value) => (Terrain.ExtractData(value) & 1) != 0;
 
-        public static int SetLeverState(int value, bool state) => Terrain.ReplaceData(value, state ? Terrain.ExtractData(value) | 1 : Terrain.ExtractData(value) & -2);
+        public static int SetLeverState(int value, bool state) => Terrain.ReplaceData(
+            value,
+            state ? Terrain.ExtractData(value) | 1 : Terrain.ExtractData(value) & -2
+        );
 
         public override int GetFace(int value) => (Terrain.ExtractData(value) >> 1) & 7;
         public static int SetFace(int value, int face) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -15) | ((face & 7) << 1));
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
             result.Value = SetFace(SetLeverState(value, false), raycastResult.CellFace.Face);
             result.CellFace = raycastResult.CellFace;
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, Terrain.ExtractData(SetFace(SetLeverState(oldValue, false), 0))), Count = 1 });
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
+            dropValues.Add(
+                new BlockDropValue {
+                    Value = Terrain.MakeBlockValue(BlockIndex, 0, Terrain.ExtractData(SetFace(SetLeverState(oldValue, false), 0))), Count = 1
+                }
+            );
             showDebris = true;
         }
 
@@ -142,13 +165,20 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int? blockColor = GetColor(Terrain.ExtractData(value));
             environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 switchBodyMesh,
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                environmentData.SubsystemTerrain == null
+                    ? BlocksTexturesManager.DefaultBlocksTexture
+                    : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 color,
                 2f * size,
                 ref matrix,
@@ -158,7 +188,8 @@ namespace Game {
                 primitivesRenderer,
                 switchLeverMesh,
                 blockColor.HasValue ? GVStaticStorage.WhiteTexture :
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture :
+                environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,
                 ref matrix,
@@ -166,20 +197,26 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new SwitchGVElectricElement(
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new SwitchGVElectricElement(
             subsystemGVElectricity,
-            new GVCellFace(
-                x,
-                y,
-                z,
-                GetFace(value),
-                GetConnectionMask(value)
-            ),
+            new GVCellFace(x, y, z, GetFace(value), GetConnectionMask(value)),
             value,
             subterrainId
         );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {
@@ -210,7 +247,9 @@ namespace Game {
             yield return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, 10));
         }
 
-        public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
+        public override string GetCategory(int value) =>
+            GetColor(Terrain.ExtractData(value)).HasValue ? "GV Electrics Multiple" : "GV Electrics Regular";
+
         public override int GetDisplayOrder(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? 10 : base.GetDisplayOrder(value);
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
@@ -227,9 +266,7 @@ namespace Game {
             int? result = (data >> 14) & 0xF;
             switch (result.Value) {
                 case 0: return null;
-                case <= 7:
-                    result--;
-                    break;
+                case <= 7: result--; break;
             }
             return result;
         }
@@ -246,12 +283,15 @@ namespace Game {
 
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
-        public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) => Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
+        public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) =>
+            Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
 
         public int GetCustomCopyBlock(Project project, int centerValue) {
             SubsystemGVSwitchBlockBehavior subsystem = project.FindSubsystem<SubsystemGVSwitchBlockBehavior>(true);
             int id = subsystem.GetIdFromValue(centerValue);
-            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GigaVoltageLevelData)subsystem.GetItemData(id).Copy()));
+            return id == 0
+                ? centerValue
+                : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GigaVoltageLevelData)subsystem.GetItemData(id).Copy()));
         }
     }
 }

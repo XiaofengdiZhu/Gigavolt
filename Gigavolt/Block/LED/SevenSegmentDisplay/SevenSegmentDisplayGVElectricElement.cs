@@ -51,11 +51,17 @@ namespace Game {
             113
         ];
 
-        public SevenSegmentDisplayGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVGlow>(true);
+        public SevenSegmentDisplayGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVGlow>(true);
 
         public override void OnAdded() {
             GVCellFace cellFace = CellFaces[0];
-            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            int data = Terrain.ExtractData(
+                SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)
+            );
             int mountingFace = GVSevenSegmentDisplayBlock.GetMountingFace(data);
             m_color = GVLedBlock.LedColors[GVSevenSegmentDisplayBlock.GetColor(data)];
             for (int i = 0; i < 7; i++) {
@@ -64,7 +70,8 @@ namespace Game {
                 Vector3 vector2 = mountingFace < 4 ? Vector3.UnitY : Vector3.UnitX;
                 Vector3 v2 = Vector3.Cross(vector, vector2);
                 GVGlowPoint glowPoint = m_subsystemGlow.AddGlowPoint(SubterrainId);
-                glowPoint.Position = v - 0.43f * CellFace.FaceToVector3(mountingFace) + m_centers[i].X * 0.0625f * v2 + m_centers[i].Y * 0.0625f * vector2;
+                glowPoint.Position =
+                    v - 0.43f * CellFace.FaceToVector3(mountingFace) + m_centers[i].X * 0.0625f * v2 + m_centers[i].Y * 0.0625f * vector2;
                 glowPoint.Forward = vector;
                 Vector2 size = m_sizes[i];
                 glowPoint.Right = v2 * size.X * 0.0625f;

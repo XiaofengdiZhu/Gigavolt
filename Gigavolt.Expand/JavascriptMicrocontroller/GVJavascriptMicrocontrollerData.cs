@@ -7,13 +7,7 @@ using JsEngine = Jint.Engine;
 
 namespace Game {
     public class GVJavascriptMicrocontrollerData : IEditableItemData {
-        public static readonly int[] DefaultPortsDefinition = [
-            -1,
-            -1,
-            -1,
-            -1,
-            -1
-        ]; //-1:No input or output. 0:Input. 1:Output
+        public static readonly int[] DefaultPortsDefinition = [-1, -1, -1, -1, -1]; //-1:No input or output. 0:Input. 1:Output
 
         public int[] m_portsDefinition = (int[])DefaultPortsDefinition.Clone();
         public int m_executeAgain;
@@ -57,7 +51,9 @@ namespace Game {
             m_jsEngine.SetValue("executeAgain", ExecuteAgain);
         }
 
-        public IEditableItemData Copy() => new GVJavascriptMicrocontrollerData { m_portsDefinition = (int[])m_portsDefinition.Clone(), m_script = JsEngine.PrepareScript(LastLoadedCode), LastLoadedCode = LastLoadedCode };
+        public IEditableItemData Copy() => new GVJavascriptMicrocontrollerData {
+            m_portsDefinition = (int[])m_portsDefinition.Clone(), m_script = JsEngine.PrepareScript(LastLoadedCode), LastLoadedCode = LastLoadedCode
+        };
 
         public uint[] Exe(uint[] inputs, Point3 position) {
             m_position = position;
@@ -75,13 +71,7 @@ namespace Game {
             catch (Exception e) {
                 Log.Error(e);
             }
-            uint[] outputs = [
-                0,
-                0,
-                0,
-                0,
-                0
-            ];
+            uint[] outputs = [0, 0, 0, 0, 0];
             for (int i = 0; i < 5; i++) {
                 if (m_portsDefinition[i] == 1) {
                     try {

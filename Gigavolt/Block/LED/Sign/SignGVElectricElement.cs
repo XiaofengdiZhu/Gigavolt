@@ -14,7 +14,11 @@ namespace Game {
         public uint m_inputBottom;
         public uint m_inputLeft;
 
-        public SignGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGVSignBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSignBlockBehavior>(true);
+        public SignGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_subsystemGVSignBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVSignBlockBehavior>(true);
 
         public override void OnAdded() {
             Point3 point = CellFaces[0].Point;
@@ -60,24 +64,20 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, 0, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, 0, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection.Value) {
                             case GVElectricConnectorDirection.In:
-                                m_inputIn = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputIn = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Top:
-                                m_inputTop = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputTop = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Right:
-                                m_inputRight = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputRight = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Bottom:
-                                m_inputBottom = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputBottom = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Left:
-                                m_inputLeft = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputLeft = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                         }
                     }
                 }
@@ -126,7 +126,12 @@ namespace Game {
             }
             if (m_inputTop != inputTop
                 || m_inputRight != inputRight) {
-                m_glowPoint.FloatPosition = m_originalPosition + new Vector3((m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f), ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f), ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f));
+                m_glowPoint.FloatPosition = m_originalPosition
+                    + new Vector3(
+                        (m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f),
+                        ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f),
+                        ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f)
+                    );
             }
             if (((m_inputBottom >> 27) & 1u) == 1u
                 && ((inputBottom >> 27) & 1) == 0u) {

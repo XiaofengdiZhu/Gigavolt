@@ -23,7 +23,9 @@ namespace Game {
             base.Initialize();
             if (GVStaticStorage.WhiteTexture == null
                 || GVStaticStorage.WhiteTexture.m_isDisposed) {
-                GVStaticStorage.WhiteTexture = Texture2D.Load(new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White)));
+                GVStaticStorage.WhiteTexture = Texture2D.Load(
+                    new Image(new Image<Rgba32>(Image.DefaultImageSharpConfiguration, 1, 1, SixLabors.ImageSharp.Color.White))
+                );
             }
             //获取顶部模型
             Model model = ContentManager.Get<Model>("Models/GVAdjustableDelayGate");
@@ -46,18 +48,22 @@ namespace Game {
                 for (int j = 0; j < 4; j++) {
                     float radians2 = -j * (float)Math.PI / 2f;
                     int num = (i << 2) + j;
-                    Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(radians2) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                    Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f)
+                        * Matrix.CreateRotationZ(radians2)
+                        * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                        * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians))
+                        * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                     m_blockMeshes_Top[num] = new BlockMesh();
                     m_blockMeshes_Top[num]
-                    .AppendModelMeshPart(
-                        model.FindMesh("Top").MeshParts[0],
-                        boneAbsoluteTransform * m,
-                        false,
-                        false,
-                        false,
-                        false,
-                        Color.White
-                    );
+                        .AppendModelMeshPart(
+                            model.FindMesh("Top").MeshParts[0],
+                            boneAbsoluteTransform * m,
+                            false,
+                            false,
+                            false,
+                            false,
+                            Color.White
+                        );
                 }
             }
             Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
@@ -72,22 +78,43 @@ namespace Game {
             );
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             showDebris = true;
             if (toolLevel >= RequiredToolLevel) {
                 int oldData = Terrain.ExtractData(oldValue);
                 bool classic = GetClassic(oldData);
-                dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, classic ? SetDelay(SetClassic(0, true), GetDelay(oldData)) : SetColor(0, GetColor(oldData))), Count = 1 });
+                dropValues.Add(
+                    new BlockDropValue {
+                        Value = Terrain.MakeBlockValue(
+                            BlockIndex,
+                            0,
+                            classic ? SetDelay(SetClassic(0, true), GetDelay(oldData)) : SetColor(0, GetColor(oldData))
+                        ),
+                        Count = 1
+                    }
+                );
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int? blockColor = GetColor(Terrain.ExtractData(value));
             environmentData = environmentData ?? BlocksManager.m_defaultEnvironmentData;
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                environmentData.SubsystemTerrain == null
+                    ? BlocksTexturesManager.DefaultBlocksTexture
+                    : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 color,
                 2f * size,
                 ref matrix,
@@ -97,7 +124,8 @@ namespace Game {
                 primitivesRenderer,
                 m_standaloneBlockMesh_Top,
                 blockColor.HasValue ? GVStaticStorage.WhiteTexture :
-                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture : environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
+                environmentData.SubsystemTerrain == null ? BlocksTexturesManager.DefaultBlocksTexture :
+                environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture,
                 blockColor.HasValue ? color * SubsystemPalette.GetColor(environmentData, blockColor) : color,
                 2f * size,
                 ref matrix,
@@ -143,27 +171,35 @@ namespace Game {
             }
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new AdjustableDelayGateGVElectricElement(
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new AdjustableDelayGateGVElectricElement(
             subsystemGVElectricity,
-            new GVCellFace(
-                x,
-                y,
-                z,
-                GetFace(value),
-                GetConnectionMask(value)
-            ),
+            new GVCellFace(x, y, z, GetFace(value), GetConnectionMask(value)),
             value,
             subterrainId
         );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                GVElectricConnectorDirection? connectorDirection =
+                    SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
                 switch (connectorDirection) {
                     case GVElectricConnectorDirection.Bottom: return GVElectricConnectorType.Input;
                     case GVElectricConnectorDirection.Top: return GVElectricConnectorType.Output;
-                    case GVElectricConnectorDirection.In: return GetClassic(data) || GetColor(data).HasValue ? GVElectricConnectorType.Output : GVElectricConnectorType.Input;
+                    case GVElectricConnectorDirection.In:
+                        return GetClassic(data) || GetColor(data).HasValue ? GVElectricConnectorType.Output : GVElectricConnectorType.Input;
                 }
             }
             return null;
@@ -214,7 +250,9 @@ namespace Game {
                 return LanguageControl.Get(GetType().Name, "ClassicDisplayName");
             }
             int? paintColor = GetColor(data);
-            return paintColor.HasValue ? SubsystemPalette.GetName(subsystemTerrain, paintColor, LanguageControl.Get(GetType().Name, "ColoredDisplayName")) : LanguageControl.Get(GetType().Name, "DisplayName");
+            return paintColor.HasValue
+                ? SubsystemPalette.GetName(subsystemTerrain, paintColor, LanguageControl.Get(GetType().Name, "ColoredDisplayName"))
+                : LanguageControl.Get(GetType().Name, "DisplayName");
         }
 
         public override string GetDescription(int value) {
@@ -222,7 +260,9 @@ namespace Game {
             if (GetClassic(data)) {
                 return LanguageControl.Get(GetType().Name, "ClassicDescription");
             }
-            return GetColor(Terrain.ExtractData(value)).HasValue ? LanguageControl.Get(GetType().Name, "ColoredDescription") : LanguageControl.Get(GetType().Name, "Description");
+            return GetColor(Terrain.ExtractData(value)).HasValue
+                ? LanguageControl.Get(GetType().Name, "ColoredDescription")
+                : LanguageControl.Get(GetType().Name, "Description");
         }
 
         public override bool IsEditable_(int value) => GetClassic(Terrain.ExtractData(value));
@@ -236,9 +276,7 @@ namespace Game {
             int? result = (data >> 14) & 0xF;
             switch (result.Value) {
                 case 0: return null;
-                case <= 7:
-                    result--;
-                    break;
+                case <= 7: result--; break;
             }
             return result;
         }
@@ -255,7 +293,9 @@ namespace Game {
 
         public int? GetPaintColor(int value) => GetColor(Terrain.ExtractData(value));
 
-        public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) => Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
+        public int Paint(SubsystemTerrain subsystemTerrain, int value, int? color) =>
+            Terrain.ReplaceData(value, SetColor(Terrain.ExtractData(value), color));
+
         public static bool GetClassic(int data) => (data & 8192) != 0;
         public static int SetClassic(int data, bool classic) => (data & -8193) | (classic ? 8192 : 0);
     }

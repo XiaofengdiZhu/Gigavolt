@@ -10,7 +10,11 @@ namespace Game {
         public bool m_edited;
         public readonly GVCounterData m_blockData;
 
-        public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public CounterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
             m_blockData = m_subsystemGVCounterBlockBehavior.GetItemData(m_subsystemGVCounterBlockBehavior.GetIdFromValue(value));
             uint overflowVoltage = m_blockData?.Overflow ?? 0u;
@@ -30,13 +34,8 @@ namespace Game {
                     m_counter = num.Value;
                 }
             }
-            if (SubsystemGVElectricity.GetGVElectricElement(
-                    cellFace.X,
-                    cellFace.Y,
-                    cellFace.Z,
-                    cellFace.Face,
-                    subterrainId
-                ) is CounterGVElectricElement { m_edited: true } electricElement) {
+            if (SubsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, subterrainId)
+                is CounterGVElectricElement { m_edited: true } electricElement) {
                 m_counter = electricElement.m_counter;
                 m_edited = true;
             }
@@ -72,7 +71,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Right) {
                             flag = IsSignalHigh(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));

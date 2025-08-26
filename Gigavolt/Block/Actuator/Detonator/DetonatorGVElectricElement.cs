@@ -6,7 +6,11 @@ namespace Game {
         public readonly GVSubterrainSystem m_subterrainSystem;
         public readonly bool m_classic;
 
-        public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public DetonatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subterrainSystem = subterrainId == 0 ? null : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
             m_classic = classic;
         }
@@ -16,7 +20,9 @@ namespace Game {
             GVCellFace cellFace = CellFaces[0];
             Point3 position = CellFaces[0].Point;
             if (SubterrainId != 0) {
-                position = Terrain.ToCell(Vector3.Transform(new Vector3(position.X + 0.5f, position.Y + 0.5f, position.Z + 0.5f), m_subterrainSystem.GlobalTransform));
+                position = Terrain.ToCell(
+                    Vector3.Transform(new Vector3(position.X + 0.5f, position.Y + 0.5f, position.Z + 0.5f), m_subterrainSystem.GlobalTransform)
+                );
             }
             int blockIndex = GVBlocksManager.GetBlockIndex<GVDetonatorBlock>();
             Block block = BlocksManager.Blocks[blockIndex];
@@ -37,14 +43,7 @@ namespace Game {
                 else {
                     m_subterrainSystem.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, AirBlock.Index);
                 }
-                m_subsystemExplosions.AddExplosion(
-                    position.X,
-                    position.Y,
-                    position.Z,
-                    pressure,
-                    block.GetExplosionIncendiary(blockIndex),
-                    false
-                );
+                m_subsystemExplosions.AddExplosion(position.X, position.Y, position.Z, pressure, block.GetExplosionIncendiary(blockIndex), false);
             }
         }
 

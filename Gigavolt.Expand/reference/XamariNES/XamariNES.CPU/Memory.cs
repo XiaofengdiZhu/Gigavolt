@@ -82,9 +82,7 @@ namespace XamariNES.CPU {
             //NES APU & I/O Registers
             if (offset <= 0x4017) {
                 switch (offset) {
-                    case 0x4016:
-                        _controller.SignalController(data);
-                        break;
+                    case 0x4016: _controller.SignalController(data); break;
                 }
                 return;
             }

@@ -25,7 +25,11 @@ namespace Game {
 
         public string m_enterString;
 
-        public static Action m_helpAction = () => { WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/base/shift/memory_bank.html"); };
+        public static Action m_helpAction = () => {
+            WebBrowserManager.LaunchBrowser(
+                $"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/base/shift/memory_bank.html"
+            );
+        };
 
         public virtual Action HelpAction => m_helpAction;
 
@@ -88,26 +92,14 @@ namespace Game {
                             Log.Error(error);
                             DialogsManager.ShowDialog(
                                 null,
-                                new MessageDialog(
-                                    LanguageControl.Error,
-                                    LanguageControl.Get(GetType().Name, 2),
-                                    "OK",
-                                    null,
-                                    null
-                                )
+                                new MessageDialog(LanguageControl.Error, LanguageControl.Get(GetType().Name, 2), "OK", null, null)
                             );
                         }
                     }
                     else {
                         DialogsManager.ShowDialog(
                             null,
-                            new MessageDialog(
-                                LanguageControl.Error,
-                                LanguageControl.Get(GetType().Name, 3),
-                                "OK",
-                                null,
-                                null
-                            )
+                            new MessageDialog(LanguageControl.Error, LanguageControl.Get(GetType().Name, 3), "OK", null, null)
                         );
                     }
                 }

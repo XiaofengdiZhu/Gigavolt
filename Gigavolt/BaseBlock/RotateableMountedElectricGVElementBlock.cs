@@ -48,7 +48,11 @@ namespace Game {
                 }
                 for (int j = 0; j < 4; j++) {
                     int num = (i << 2) + j;
-                    Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(-j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                    Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f)
+                        * Matrix.CreateRotationZ(-j * (float)Math.PI / 2f)
+                        * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                        * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians))
+                        * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                     BlockMesh blockMesh = new();
                     blockMesh.AppendModelMeshPart(
                         modelMeshPart,
@@ -78,15 +82,13 @@ namespace Game {
         public override int GetFace(int value) => (Terrain.ExtractData(value) >> 2) & 7;
         public static int GetFaceFromDataStatic(int data) => (data >> 2) & 7;
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneBlockMesh,
-                color,
-                2f * size,
-                ref matrix,
-                environmentData
-            );
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, 2f * size, ref matrix, environmentData);
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
@@ -114,7 +116,10 @@ namespace Game {
             );
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             int rotation = 0;
             if (raycastResult.CellFace.Face >= 4) {
                 Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
@@ -145,7 +150,12 @@ namespace Game {
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, Terrain.ExtractData(oldValue) & -32), Count = 1 });
             showDebris = DestructionDebrisScale > 0f;
         }

@@ -19,53 +19,63 @@ namespace Game {
                 Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(name).ParentBone);
                 for (int j = 0; j < 6; j++) {
                     int num = SetFace(SetType(0, i), j);
-                    Matrix m = j < 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
-                        j != 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) : Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                    Matrix m = j < 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f)
+                        * Matrix.CreateRotationY(j * (float)Math.PI / 2f)
+                        * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
+                        j != 4 ?
+                            Matrix.CreateTranslation(0f, -0.5f, 0f)
+                            * Matrix.CreateRotationX((float)Math.PI / 2f)
+                            * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
+                            Matrix.CreateTranslation(0f, -0.5f, 0f)
+                            * Matrix.CreateRotationX(-(float)Math.PI / 2f)
+                            * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                     m_blockMeshesByData[num] = new BlockMesh();
                     m_blockMeshesByData[num]
-                    .AppendModelMeshPart(
-                        model.FindMesh(name).MeshParts[0],
-                        boneAbsoluteTransform * m,
-                        false,
-                        false,
-                        false,
-                        false,
-                        Color.White
-                    );
+                        .AppendModelMeshPart(
+                            model.FindMesh(name).MeshParts[0],
+                            boneAbsoluteTransform * m,
+                            false,
+                            false,
+                            false,
+                            false,
+                            Color.White
+                        );
                     m_collisionBoxesByData[num] = [m_blockMeshesByData[num].CalculateBoundingBox()];
                 }
             }
             Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("FetcherHead").ParentBone);
             m_standaloneBlockMeshes[0] = new BlockMesh();
             m_standaloneBlockMeshes[0]
-            .AppendModelMeshPart(
-                model.FindMesh("FetcherHead").MeshParts[0],
-                boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationY((float)Math.PI),
-                false,
-                false,
-                false,
-                false,
-                Color.White
-            );
+                .AppendModelMeshPart(
+                    model.FindMesh("FetcherHead").MeshParts[0],
+                    boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationY((float)Math.PI),
+                    false,
+                    false,
+                    false,
+                    false,
+                    Color.White
+                );
             Matrix boneAbsoluteTransform3 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("FetcherShaft").ParentBone);
             m_standaloneBlockMeshes[1] = new BlockMesh();
             m_standaloneBlockMeshes[1]
-            .AppendModelMeshPart(
-                model.FindMesh("FetcherShaft").MeshParts[0],
-                boneAbsoluteTransform3 * Matrix.CreateTranslation(0f, -0.5f, 0f),
-                false,
-                false,
-                false,
-                false,
-                Color.White
-            );
+                .AppendModelMeshPart(
+                    model.FindMesh("FetcherShaft").MeshParts[0],
+                    boneAbsoluteTransform3 * Matrix.CreateTranslation(0f, -0.5f, 0f),
+                    false,
+                    false,
+                    false,
+                    false,
+                    Color.White
+                );
             m_standaloneBlockMeshes[2] = m_standaloneBlockMeshes[0];
             m_textures[0] = ContentManager.Get<Texture2D>("Textures/GVFetcherBlock0");
             m_textures[1] = m_textures[0];
             m_textures[2] = ContentManager.Get<Texture2D>("Textures/GVFetcherBlock2");
         }
 
-        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, 2), Terrain.MakeBlockValue(BlockIndex, 0, 1)];
+        public override IEnumerable<int> GetCreativeValues() => [
+            Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, 2), Terrain.MakeBlockValue(BlockIndex, 0, 1)
+        ];
 
         public override int GetShadowStrength(int value) => !GetIsShaft(Terrain.ExtractData(value)) ? base.GetShadowStrength(value) : 0;
 
@@ -92,7 +102,12 @@ namespace Game {
             return num < m_collisionBoxesByData.Length ? m_collisionBoxesByData[num] : base.GetCustomCollisionBoxes(terrain, value);
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int type = GetType(Terrain.ExtractData(value));
             if (type < m_standaloneBlockMeshes.Length
                 && m_standaloneBlockMeshes[type] != null) {
@@ -108,7 +123,10 @@ namespace Game {
             }
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             float num = float.PositiveInfinity;
             int face = 0;
@@ -126,13 +144,19 @@ namespace Game {
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int data = Terrain.ExtractData(oldValue);
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetType(SetFace(0, 0), GetType(data))), Count = 1 });
             showDebris = true;
         }
 
-        public override Vector3 GetIconBlockOffset(int value, DrawBlockEnvironmentData environmentData) => GetIsShaft(Terrain.ExtractData(value)) ? Vector3.Zero : new Vector3(0.2f, -0.2f, 0f);
+        public override Vector3 GetIconBlockOffset(int value, DrawBlockEnvironmentData environmentData) =>
+            GetIsShaft(Terrain.ExtractData(value)) ? Vector3.Zero : new Vector3(0.2f, -0.2f, 0f);
 
         public static int GetType(int data) => data & 3;
 
@@ -143,9 +167,21 @@ namespace Game {
         public static int GetFace(int data) => (data >> 2) & 7;
 
         public static int SetFace(int data, int face) => (data & -57) | ((face & 7) << 2);
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => GetIsShaft(Terrain.ExtractData(value)) ? null : new InventoryFetcherGVElectricElement(subsystemGVElectricity, value, new Point3(x, y, z), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricElement
+            CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) =>
+            GetIsShaft(Terrain.ExtractData(value))
+                ? null
+                : new InventoryFetcherGVElectricElement(subsystemGVElectricity, value, new Point3(x, y, z), subterrainId);
+
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             int type = GetType(data);
             if (type == 1) {

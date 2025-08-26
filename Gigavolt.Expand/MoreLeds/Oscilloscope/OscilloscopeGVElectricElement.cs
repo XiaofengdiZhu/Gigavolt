@@ -7,11 +7,17 @@ namespace Game {
         public uint m_lastInInput;
         public int m_lastCircuitStep;
 
-        public OscilloscopeGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVOscilloscopeBlockBehavior>(true);
+        public OscilloscopeGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVOscilloscopeBlockBehavior>(true);
 
         public override void OnAdded() {
             GVCellFace cellFace = CellFaces[0];
-            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            int data = Terrain.ExtractData(
+                SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)
+            );
             int mountingFace = FourLedBlock.GetMountingFace(data);
             Vector3 v = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             Vector3 vector = CellFace.FaceToVector3(mountingFace);
@@ -41,7 +47,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(face, 0, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(face, 0, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Top:

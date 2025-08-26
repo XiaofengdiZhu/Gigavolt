@@ -14,7 +14,11 @@ namespace Game {
 
         public readonly int GVInventoryFetcherBlockIndex;
 
-        public InventoryControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public InventoryControllerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemBlockEntities = SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true);
             GVInventoryFetcherBlockIndex = GVBlocksManager.GetBlockIndex<GVInventoryFetcherBlock>();
             m_originFace = cellFace.Face;
@@ -35,15 +39,18 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(m_originFace, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(m_originFace, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Bottom:
                                 bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                                 bottomConnected = true;
                                 break;
-                            case GVElectricConnectorDirection.Right: rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
-                            case GVElectricConnectorDirection.Left: leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
+                            case GVElectricConnectorDirection.Right:
+                                rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
+                            case GVElectricConnectorDirection.Left:
+                                leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                         }
                     }
                 }
@@ -85,17 +92,20 @@ namespace Game {
                         case 1u: m_voltage = (uint)inventory.GetSlotValue(sourceSlotInput); break;
                         case 2u: m_voltage = (uint)inventory.GetSlotCount(sourceSlotInput); break;
                         case 3u: m_voltage = (uint)inventory.GetSlotCapacity(sourceSlotInput, inventory.GetSlotValue(sourceSlotInput)); break;
-                        case 4u: m_voltage = (uint)(inventory.GetSlotCapacity(sourceSlotInput, inventory.GetSlotValue(sourceSlotInput)) - inventory.GetSlotCount(sourceSlotInput)); break;
+                        case 4u:
+                            m_voltage = (uint)(inventory.GetSlotCapacity(sourceSlotInput, inventory.GetSlotValue(sourceSlotInput))
+                                - inventory.GetSlotCount(sourceSlotInput)); break;
                         case 5u:
-                            m_voltage = (uint)inventory.m_slots.Sum(
-                                slot => specifyDataInput ? slot.Value == valueInput ? slot.Count : 0 :
-                                    Terrain.ExtractContents(slot.Value) == contentsInput ? slot.Count : 0
+                            m_voltage = (uint)inventory.m_slots.Sum(slot => specifyDataInput ? slot.Value == valueInput ? slot.Count : 0 :
+                                Terrain.ExtractContents(slot.Value) == contentsInput ? slot.Count : 0
                             ); break;
-                        case 6u: m_voltage = (uint)inventory.m_slots.FindIndex(slot => specifyDataInput ? slot.Value == valueInput : Terrain.ExtractContents(slot.Value) == contentsInput); break;
+                        case 6u:
+                            m_voltage = (uint)inventory.m_slots.FindIndex(slot =>
+                                specifyDataInput ? slot.Value == valueInput : Terrain.ExtractContents(slot.Value) == contentsInput
+                            ); break;
                         case 7u:
-                            m_voltage = (uint)inventory.m_slots.Sum(
-                                slot => specifyDataInput ? slot.Value == valueInput ? 1 : 0 :
-                                    Terrain.ExtractContents(slot.Value) == contentsInput ? 1 : 0
+                            m_voltage = (uint)inventory.m_slots.Sum(slot => specifyDataInput ? slot.Value == valueInput ? 1 : 0 :
+                                Terrain.ExtractContents(slot.Value) == contentsInput ? 1 : 0
                             ); break;
                         case 8u: {
                             int output = 0;
@@ -393,7 +403,9 @@ namespace Game {
                 slot.Count = 0;
             }
             int index = 0;
-            foreach (KeyValuePair<int, int> pair in desc ? allItems.OrderByDescending(item => orderByValue ? item.Value : item.Key) : allItems.OrderBy(item => orderByValue ? item.Value : item.Key)) {
+            foreach (KeyValuePair<int, int> pair in desc
+                ? allItems.OrderByDescending(item => orderByValue ? item.Value : item.Key)
+                : allItems.OrderBy(item => orderByValue ? item.Value : item.Key)) {
                 int leftCount = pair.Value;
                 while (leftCount > 0
                     && index < inventory.SlotsCount) {
@@ -424,7 +436,10 @@ namespace Game {
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
                 if (block.IsFaceNonAttachable(SubsystemGVElectricity.SubsystemTerrain, cellFace.Face, cellValue, elementCellValue)
                     && (cellFace.Face != 4 || block is not FenceBlock)
-                    && SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true).GetBlockEntity(x, y, z)?.Entity.FindComponent<ComponentInventoryBase>() == null) {
+                    && SubsystemGVElectricity.Project.FindSubsystem<SubsystemBlockEntities>(true)
+                        .GetBlockEntity(x, y, z)
+                        ?.Entity.FindComponent<ComponentInventoryBase>()
+                    == null) {
                     SubsystemGVElectricity.SubsystemGVSubterrain.DestroyCell(
                         0,
                         cellFace.X,

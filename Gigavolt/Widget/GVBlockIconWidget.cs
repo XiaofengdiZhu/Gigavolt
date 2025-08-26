@@ -4,8 +4,17 @@ namespace Game {
     public class GVBlockIconWidget : CanvasWidget {
         public static readonly Color LostFocusColorTransform = new(178, 178, 178);
 
-        public readonly LabelWidget NameLabel = new() { FontScale = 0.7f, HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Near, IsVisible = false };
-        public readonly BlockIconWidget Icon = new() { IsDrawRequired = true, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Center, ColorTransform = LostFocusColorTransform };
+        public readonly LabelWidget NameLabel = new() {
+            FontScale = 0.7f, HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Near, IsVisible = false
+        };
+
+        public readonly BlockIconWidget Icon = new() {
+            IsDrawRequired = true,
+            VerticalAlignment = WidgetAlignment.Center,
+            HorizontalAlignment = WidgetAlignment.Center,
+            ColorTransform = LostFocusColorTransform
+        };
+
         public float FullHeight => Size.Y - NameLabel.Margin.Y;
         public float NameLabelMarginY => NameLabel.Margin.Y;
 
@@ -14,7 +23,8 @@ namespace Game {
             set {
                 if (value != Icon.Value) {
                     Icon.Value = value;
-                    string text = BlocksManager.Blocks[Terrain.ExtractContents(value)].GetDisplayName(Icon.DrawBlockEnvironmentData.SubsystemTerrain, value);
+                    string text = BlocksManager.Blocks[Terrain.ExtractContents(value)]
+                        .GetDisplayName(Icon.DrawBlockEnvironmentData.SubsystemTerrain, value);
                     if (ModsManager.Configs["Language"]?.StartsWith("zh") ?? true) {
                         if (text.Length > 4) {
                             text = text.Insert(text[3] == 'G' && text[4] == 'V' ? 5 : 4, "\n");

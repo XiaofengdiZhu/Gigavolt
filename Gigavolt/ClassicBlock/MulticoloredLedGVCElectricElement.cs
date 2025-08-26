@@ -9,12 +9,20 @@ namespace Game {
 
         public GVGlowPoint m_glowPoint;
 
-        public MulticoloredLedGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVGlow>(true);
+        public MulticoloredLedGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_subsystemGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVGlow>(true);
 
         public override void OnAdded() {
             m_glowPoint = m_subsystemGlow.AddGlowPoint(SubterrainId);
             GVCellFace cellFace = CellFaces[0];
-            int mountingFace = MulticoloredLedBlock.GetMountingFace(Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)));
+            int mountingFace = MulticoloredLedBlock.GetMountingFace(
+                Terrain.ExtractData(
+                    SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)
+                )
+            );
             Vector3 v = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
             m_glowPoint.Position = v - 0.43f * CellFace.FaceToVector3(mountingFace);
             m_glowPoint.Forward = CellFace.FaceToVector3(mountingFace);

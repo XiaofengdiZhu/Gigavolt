@@ -168,13 +168,7 @@ namespace Game {
             }
             int slotSide = 1 << multiplier;
             RenderTarget2D originRenderTarget = Display.RenderTarget;
-            RenderTarget2D renderTarget = new(
-                dataWidth << multiplier,
-                dataHeight << multiplier,
-                1,
-                ColorFormat.Rgba8888,
-                DepthFormat.None
-            );
+            RenderTarget2D renderTarget = new(dataWidth << multiplier, dataHeight << multiplier, 1, ColorFormat.Rgba8888, DepthFormat.None);
             Display.RenderTarget = renderTarget;
             TexturedBatch2D texturedBatch = m_primitivesRenderer2D.TexturedBatch(
                 GameManager.Project.FindSubsystem<SubsystemBlocksTexture>(true).BlocksTexture,
@@ -206,7 +200,8 @@ namespace Game {
                             if (intColor.HasValue) {
                                 // ReSharper disable once ConstantConditionalAccessQualifier
                                 // ReSharper disable once ConstantNullCoalescingCondition
-                                maskColor = GameManager.Project.FindSubsystem<SubsystemPalette>(false)?.GetColor(intColor.Value) ?? WorldPalette.DefaultColors[intColor.Value];
+                                maskColor = GameManager.Project.FindSubsystem<SubsystemPalette>(false)?.GetColor(intColor.Value)
+                                    ?? WorldPalette.DefaultColors[intColor.Value];
                             }
                             break;
                         }
@@ -262,14 +257,7 @@ namespace Game {
                     );
                 }
             }
-            texturedBatch.QueueQuad(
-                new Vector2(0, 0),
-                new Vector2(1, 1),
-                0f,
-                new Vector2(0, 0),
-                new Vector2(1, 1),
-                Color.White
-            );
+            texturedBatch.QueueQuad(new Vector2(0, 0), new Vector2(1, 1), 0f, new Vector2(0, 0), new Vector2(1, 1), Color.White);
             m_primitivesRenderer2D.Flush();
             Display.RenderTarget = originRenderTarget;
             return renderTarget;

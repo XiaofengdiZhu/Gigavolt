@@ -4,7 +4,10 @@ namespace Game {
         public bool m_wasPressed;
         public int m_duration;
 
-        public ButtonCabinetGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace[] cellFaces, uint subterrainId, int duration = 10) : base(subsystemGVElectricity, cellFaces, subterrainId) => m_duration = duration;
+        public ButtonCabinetGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            GVCellFace[] cellFaces,
+            uint subterrainId,
+            int duration = 10) : base(subsystemGVElectricity, cellFaces, subterrainId) => m_duration = duration;
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 
@@ -26,14 +29,7 @@ namespace Game {
             if (cellFace.Mask == 1) {
                 for (int color = 1; color < 16; color++) {
                     SubsystemGVElectricity.RemoveGVElectricElement(
-                        SubsystemGVElectricity.GetGVElectricElement(
-                            cellFace.X,
-                            cellFace.Y,
-                            cellFace.Z,
-                            cellFace.Face,
-                            SubterrainId,
-                            1 << color
-                        )
+                        SubsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, SubterrainId, 1 << color)
                     );
                 }
             }

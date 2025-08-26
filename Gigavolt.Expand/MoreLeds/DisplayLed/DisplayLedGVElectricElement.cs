@@ -42,11 +42,17 @@ namespace Game {
             -Vector3.UnitX
         ];
 
-        public DisplayLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGVDisplayLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDisplayLedGlow>(true);
+        public DisplayLedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_subsystemGVDisplayLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDisplayLedGlow>(true);
 
         public override void OnAdded() {
             GVCellFace cellFace = CellFaces[0];
-            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            int data = Terrain.ExtractData(
+                SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)
+            );
             int mountingFace = cellFace.Face;
             int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
@@ -86,7 +92,11 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, electricRotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(
+                        CellFaces[0].Face,
+                        electricRotation,
+                        connection.ConnectorFace
+                    );
                     if (connectorDirection.HasValue) {
                         if (m_complex) {
                             if (connectorDirection.Value == GVElectricConnectorDirection.In) {
@@ -123,7 +133,12 @@ namespace Game {
                     Size = (m_inputTop & 0xFFFFu) / 8f,
                     CustomBit = ((m_inputBottom >> 27) & 1u) == 1u,
                     Color = new Color(m_inputLeft),
-                    Position = m_originalPosition + new Vector3((m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f), ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f), ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f))
+                    Position = m_originalPosition
+                        + new Vector3(
+                            (m_inputRight & 0x7FFFu) / (((m_inputRight >> 15) & 1u) == 1u ? -8f : 8f),
+                            ((m_inputTop >> 16) & 0x7FFFu) / (((m_inputTop >> 31) & 1u) == 1u ? -8f : 8f),
+                            ((m_inputRight >> 16) & 0x7FFFu) / (((m_inputRight >> 31) & 1u) == 1u ? -8f : 8f)
+                        )
                 };
                 float yaw = (m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f);
                 float pitch = ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f);

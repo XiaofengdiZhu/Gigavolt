@@ -35,11 +35,15 @@ namespace Game {
             if (m_voltage != voltage
                 && m_voltage > 0) {
                 Point3 position = CellFaces[0].Point;
-                ComponentGVDispenser component = m_subsystemBlockEntities.GetBlockEntity(CellFaces[0].Point.X, CellFaces[0].Point.Y, CellFaces[0].Point.Z)?.Entity.FindComponent<ComponentGVDispenser>();
+                ComponentGVDispenser component = m_subsystemBlockEntities
+                    .GetBlockEntity(CellFaces[0].Point.X, CellFaces[0].Point.Y, CellFaces[0].Point.Z)
+                    ?.Entity.FindComponent<ComponentGVDispenser>();
                 if (component == null) {
                     return false;
                 }
-                int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(position.X, position.Y, position.Z));
+                int data = Terrain.ExtractData(
+                    SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(position.X, position.Y, position.Z)
+                );
                 int face = GVGuidedDispenserBlock.GetDirection(data);
                 int slotIndex = 0;
                 int slotValue = 0;

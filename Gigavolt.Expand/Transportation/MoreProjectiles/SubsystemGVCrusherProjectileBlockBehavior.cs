@@ -28,7 +28,9 @@ namespace Game {
                 else {
                     try {
                         ComponentMiner componentMiner = new();
-                        SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z)));
+                        SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(
+                            Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z))
+                        );
                         for (int i = 0; i < blockBehaviors.Length; i++) {
                             blockBehaviors[i].OnInteract(new TerrainRaycastResult { CellFace = cellFace.Value }, componentMiner);
                         }

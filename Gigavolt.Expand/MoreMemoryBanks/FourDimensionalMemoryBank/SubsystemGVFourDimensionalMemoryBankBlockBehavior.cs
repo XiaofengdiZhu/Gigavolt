@@ -21,7 +21,9 @@ namespace Game {
 
         public SubsystemGVFourDimensionalMemoryBankBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVFourDimensionalMemoryBankBlock>()) { }
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
+
+        public override int SetIdToValue(int value, int id) =>
+            Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             bool isDragInProgress = componentPlayer.DragHostWidget.IsDragInProgress;
@@ -32,7 +34,8 @@ namespace Game {
             int count = inventory.GetSlotCount(slotIndex);
             int id = GetIdFromValue(value);
             GVFourDimensionalMemoryBankData memoryBankData = GetItemData(id, true);
-            memoryBankData = memoryBankData ?? new GVFourDimensionalMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), m_subsystemGameInfo.DirectoryName);
+            memoryBankData = memoryBankData
+                ?? new GVFourDimensionalMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), m_subsystemGameInfo.DirectoryName);
             if (memoryBankData.m_worldDirectory == null) {
                 memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
                 memoryBankData.LoadData();
@@ -57,7 +60,13 @@ namespace Game {
                 memoryBankData.m_worldDirectory = m_subsystemGameInfo.DirectoryName;
                 memoryBankData.LoadData();
             }
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVFourDimensionalMemoryBankDialog(memoryBankData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVFourDimensionalMemoryBankDialog(
+                    memoryBankData,
+                    () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(memoryBankData, id))); }
+                )
+            );
             return true;
         }
 
@@ -65,8 +74,7 @@ namespace Game {
             try {
                 IEnumerable<uint> worldIDList = m_itemsData.Values.Select(d => d.ID);
                 List<string> fileList = Storage.ListDirectoryNames($"{m_subsystemGameInfo.DirectoryName}/GVFDMB/").ToList();
-                uint[] fileNumberList = fileList.Select(
-                        fileName => {
+                uint[] fileNumberList = fileList.Select(fileName => {
                             int index = fileName.LastIndexOf('.');
                             if (index >= 0) {
                                 fileName = fileName.Substring(0, index);

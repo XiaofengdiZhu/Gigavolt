@@ -32,7 +32,8 @@ namespace Game {
                 m_data.DisplayStepFloatingButtons = enable;
                 if (enable) {
                     if (m_subsystemGVElectricity.m_debugButtonsDictionary.Count == 0) {
-                        foreach (ComponentPlayer componentPlayer in m_subsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
+                        foreach (ComponentPlayer componentPlayer in m_subsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true)
+                            .ComponentPlayers) {
                             GVStepFloatingButtons buttons = new(m_subsystemGVElectricity);
                             m_subsystemGVElectricity.m_debugButtonsDictionary.Add(componentPlayer, buttons);
                             componentPlayer.GameWidget.GuiWidget.AddChildren(buttons);

@@ -16,9 +16,18 @@ namespace Game {
 
         public readonly GVJavascriptMicrocontrollerData m_blockData;
         public readonly int[] m_tempPortsDefinition;
-        public readonly string[] m_state2String = [LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 8), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 9), LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 10)];
 
-        public static Action m_helpAction = () => { WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/expand/gates/javascript_microcontroller.html"); };
+        public readonly string[] m_state2String = [
+            LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 8),
+            LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 9),
+            LanguageControl.GetContentWidgets("EditGVJavascriptMicrocontrollerDialog", 10)
+        ];
+
+        public static Action m_helpAction = () => {
+            WebBrowserManager.LaunchBrowser(
+                $"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/expand/gates/javascript_microcontroller.html"
+            );
+        };
 
         public EditGVJavascriptMicrocontrollerDialog(GVJavascriptMicrocontrollerData blockData, Action handler) {
             try {
@@ -31,7 +40,9 @@ namespace Game {
                 m_deleteDataButton = Children.Find<BitmapButtonWidget>("EditGVJavascriptMicrocontrollerDialog.DeleteData");
                 m_tempPortsDefinition = (int[])blockData.m_portsDefinition.Clone();
                 for (int i = 0; i < 5; i++) {
-                    BevelledButtonWidget button = Children.Find<BevelledButtonWidget>($"EditGVJavascriptMicrocontrollerDialog.P{GVJavascriptMicrocontrollerData.OriginDirection2CustomDirection(i)}");
+                    BevelledButtonWidget button = Children.Find<BevelledButtonWidget>(
+                        $"EditGVJavascriptMicrocontrollerDialog.P{GVJavascriptMicrocontrollerData.OriginDirection2CustomDirection(i)}"
+                    );
                     button.Text = m_state2String[m_tempPortsDefinition[i] + 1];
                     m_portButtons[i] = button;
                 }
@@ -67,16 +78,7 @@ namespace Game {
                     Dismiss(true);
                 }
                 else {
-                    DialogsManager.ShowDialog(
-                        null,
-                        new MessageDialog(
-                            "发生错误",
-                            error,
-                            "OK",
-                            null,
-                            null
-                        )
-                    );
+                    DialogsManager.ShowDialog(null, new MessageDialog("发生错误", error, "OK", null, null));
                 }
             }
             if (m_helpButton.IsClicked) {

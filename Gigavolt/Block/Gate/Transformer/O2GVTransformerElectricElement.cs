@@ -3,7 +3,8 @@ namespace Game {
         public float m_voltage;
         readonly SubsystemGVElectricity subsystemGVElectricity;
 
-        public O2GVTransformerElectricElement(SubsystemElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) => subsystemGVElectricity = SubsystemElectricity.Project.FindSubsystem<SubsystemGVElectricity>(true);
+        public O2GVTransformerElectricElement(SubsystemElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) =>
+            subsystemGVElectricity = SubsystemElectricity.Project.FindSubsystem<SubsystemGVElectricity>(true);
 
         public override float GetOutputVoltage(int face) => m_voltage;
 

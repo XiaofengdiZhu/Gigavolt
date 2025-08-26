@@ -14,7 +14,11 @@ namespace Game {
         uint m_bottomInput;
         uint m_inInput;
 
-        public PlayerMonitorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public PlayerMonitorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemPlayers = SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true);
             m_terrain = SubsystemGVElectricity.SubsystemTerrain.Terrain;
         }
@@ -38,7 +42,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Bottom) {
                             m_bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
@@ -198,6 +203,8 @@ namespace Game {
             return rightOutput != m_rightOutput || leftOutput != m_leftOutput || topOutput != m_topOutput;
         }
 
-        public static uint Float2Uint(float num) => ((num < 0 ? 1u : 0u) << 31) | (((uint)Math.Truncate(Math.Abs(num)) & 0x7fff) << 16) | (uint)Math.Round(num % 1 * 0xffff);
+        public static uint Float2Uint(float num) => ((num < 0 ? 1u : 0u) << 31)
+            | (((uint)Math.Truncate(Math.Abs(num)) & 0x7fff) << 16)
+            | (uint)Math.Round(num % 1 * 0xffff);
     }
 }

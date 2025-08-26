@@ -18,17 +18,34 @@ namespace Game {
         public static Shader m_alphaTestedShader;
         public static Shader m_transparentShader;
 
-        public static readonly SamplerState m_samplerState = new() { AddressModeU = TextureAddressMode.Clamp, AddressModeV = TextureAddressMode.Clamp, FilterMode = TextureFilterMode.Point, MaxLod = 0f };
+        public static readonly SamplerState m_samplerState = new() {
+            AddressModeU = TextureAddressMode.Clamp, AddressModeV = TextureAddressMode.Clamp, FilterMode = TextureFilterMode.Point, MaxLod = 0f
+        };
 
-        public static readonly SamplerState m_samplerStateMips = new() { AddressModeU = TextureAddressMode.Clamp, AddressModeV = TextureAddressMode.Clamp, FilterMode = TextureFilterMode.PointMipLinear, MaxLod = 4f };
+        public static readonly SamplerState m_samplerStateMips = new() {
+            AddressModeU = TextureAddressMode.Clamp,
+            AddressModeV = TextureAddressMode.Clamp,
+            FilterMode = TextureFilterMode.PointMipLinear,
+            MaxLod = 4f
+        };
 
         public GVSubterrainRenderer(GVSubterrainSystem system, Project project) {
             m_subterrainSystem = system;
             m_subsystemSky = project.FindSubsystem<SubsystemSky>(true);
             m_subsystemAnimatedTextures = project.FindSubsystem<SubsystemAnimatedTextures>(true);
-            m_opaqueShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"));
-            m_alphaTestedShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"), new ShaderMacro("ALPHATESTED"));
-            m_transparentShader ??= new Shader(ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.vsh"), ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.psh"));
+            m_opaqueShader ??= new Shader(
+                ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"),
+                ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh")
+            );
+            m_alphaTestedShader ??= new Shader(
+                ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.vsh"),
+                ShaderCodeManager.GetFast("Shaders/GVSubterrainOpaqueAndAlphaTested.psh"),
+                new ShaderMacro("ALPHATESTED")
+            );
+            m_transparentShader ??= new Shader(
+                ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.vsh"),
+                ShaderCodeManager.GetFast("Shaders/GVSubterrainTransparent.psh")
+            );
             Display.DeviceReset += Display_DeviceReset;
         }
 
@@ -71,7 +88,9 @@ namespace Game {
 
         public static Dictionary<Texture2D, SubsetStat> stat = new();
 
-        public static void CompileDrawSubsets(TerrainGeometry[] chunkSliceGeometries, DynamicArray<TerrainChunkGeometry.Buffer> buffers, Func<TerrainVertex, TerrainVertex> vertexTransform = null) {
+        public static void CompileDrawSubsets(TerrainGeometry[] chunkSliceGeometries,
+            DynamicArray<TerrainChunkGeometry.Buffer> buffers,
+            Func<TerrainVertex, TerrainVertex> vertexTransform = null) {
             stat.Clear();
             //按贴图进行分组统计Subset的顶点数与索引数
             for (int k = 0; k < chunkSliceGeometries.Length; k++) {
@@ -141,17 +160,37 @@ namespace Game {
                             if (indices.Count > 0) {
                                 TerrainChunkGeometry.Buffer buffer = subsetStat.Buffer;
                                 m_tmpIndices.Count = indices.Count;
-                                ShiftIndices(indices.Array, m_tmpIndices.Array, buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i], indices.Count);
-                                buffer.IndexBuffer.SetData(m_tmpIndices.Array, 0, indices.Count, buffer.SubsetIndexBufferStarts[i] + subsetStat.subsetSettedIndexCount[i]);
+                                ShiftIndices(
+                                    indices.Array,
+                                    m_tmpIndices.Array,
+                                    buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i],
+                                    indices.Count
+                                );
+                                buffer.IndexBuffer.SetData(
+                                    m_tmpIndices.Array,
+                                    0,
+                                    indices.Count,
+                                    buffer.SubsetIndexBufferStarts[i] + subsetStat.subsetSettedIndexCount[i]
+                                );
                                 if (vertexTransform != null) {
                                     m_tmpVertices.Count = vertices.Count;
                                     for (int j = 0; j < vertices.Count; j++) {
                                         m_tmpVertices[j] = vertexTransform(vertices[j]);
                                     }
-                                    buffer.VertexBuffer.SetData(m_tmpVertices.Array, 0, vertices.Count, buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i]);
+                                    buffer.VertexBuffer.SetData(
+                                        m_tmpVertices.Array,
+                                        0,
+                                        vertices.Count,
+                                        buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i]
+                                    );
                                 }
                                 else {
-                                    buffer.VertexBuffer.SetData(vertices.Array, 0, vertices.Count, buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i]);
+                                    buffer.VertexBuffer.SetData(
+                                        vertices.Array,
+                                        0,
+                                        vertices.Count,
+                                        buffer.SubsetVertexBufferStarts[i] + subsetStat.subsetSettedVertexCount[i]
+                                    );
                                 }
                                 subsetStat.subsetSettedIndexCount[i] += indices.Count;
                                 subsetStat.subsetSettedVertexCount[i] += vertices.Count;
@@ -197,12 +236,16 @@ namespace Game {
             Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
             Display.BlendState = BlendState.AlphaBlend;
             Display.DepthStencilState = DepthStencilState.Default;
-            Display.RasterizerState = m_subsystemSky.ViewUnderWaterDepth > 0f ? RasterizerState.CullClockwiseScissor : RasterizerState.CullCounterClockwiseScissor;
+            Display.RasterizerState = m_subsystemSky.ViewUnderWaterDepth > 0f
+                ? RasterizerState.CullClockwiseScissor
+                : RasterizerState.CullCounterClockwiseScissor;
             m_transparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
-            m_transparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix);
+            m_transparentShader.GetParameter("u_viewProjectionMatrix", true)
+                .SetValue(Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix);
             m_transparentShader.GetParameter("u_subterrainTransform", true).SetValue(m_subterrainSystem.GlobalTransform);
             m_transparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-            m_transparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+            m_transparentShader.GetParameter("u_samplerState", true)
+                .SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             foreach (TerrainChunk terrainChunk in m_chunksToDraw) {
                 DrawTerrainChunkGeometrySubsets(m_transparentShader, terrainChunk, 64);
             }
@@ -228,14 +271,7 @@ namespace Game {
                                 shader.GetParameter("u_texture", true).SetValue(buffer.Texture);
                             }
                             int num3 = num2 - num;
-                            Display.DrawIndexed(
-                                PrimitiveType.TriangleList,
-                                shader,
-                                buffer.VertexBuffer,
-                                buffer.IndexBuffer,
-                                num,
-                                num3
-                            );
+                            Display.DrawIndexed(PrimitiveType.TriangleList, shader, buffer.VertexBuffer, buffer.IndexBuffer, num, num3);
                         }
                         num = int.MaxValue;
                     }

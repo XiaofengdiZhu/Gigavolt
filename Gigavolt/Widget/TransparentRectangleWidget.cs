@@ -74,14 +74,7 @@ namespace Game {
                 }
                 else {
                     dc.PrimitivesRenderer2D.FlatBatch(1, depthStencilState, null, BlendState.Additive)
-                    .QueueQuad(
-                        result,
-                        result2,
-                        result3,
-                        result4,
-                        Depth,
-                        color
-                    );
+                        .QueueQuad(result, result2, result3, result4, Depth, color);
                 }
             }
             Color color2 = OutlineColor * GlobalColorTransform;

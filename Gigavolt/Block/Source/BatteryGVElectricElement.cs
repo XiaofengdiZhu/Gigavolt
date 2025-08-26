@@ -5,7 +5,11 @@ namespace Game {
         public uint m_voltage;
         public bool m_edited;
 
-        public BatteryGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public BatteryGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemGVBatteryBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVBatteryBlockBehavior>(true);
             m_blockdata = m_subsystemGVBatteryBlockBehavior.GetItemData(m_subsystemGVBatteryBlockBehavior.GetIdFromValue(value), true);
             m_voltage = m_blockdata?.Data ?? uint.MaxValue;
@@ -14,7 +18,8 @@ namespace Game {
         public override uint GetOutputVoltage(int face) => m_voltage;
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
-            int cellValue = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y - 1, cellFace.Z);
+            int cellValue = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId)
+                .GetCellValue(cellFace.X, cellFace.Y - 1, cellFace.Z);
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
             if (!block.IsCollidable_(cellValue)
                 || block.IsTransparent_(cellValue)) {

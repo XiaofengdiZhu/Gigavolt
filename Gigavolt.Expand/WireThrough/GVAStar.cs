@@ -75,7 +75,10 @@ namespace Game {
                             closed.Add(neighborPosition);
                             continue;
                         }
-                        neighbor = new Node(neighborPosition, current) { G = current.G + 1, H = Math.Abs(neighborPosition.X - end.X) + Math.Abs(neighborPosition.Y - end.Y) + Math.Abs(neighborPosition.Z - end.Z) };
+                        neighbor = new Node(neighborPosition, current) {
+                            G = current.G + 1,
+                            H = Math.Abs(neighborPosition.X - end.X) + Math.Abs(neighborPosition.Y - end.Y) + Math.Abs(neighborPosition.Z - end.Z)
+                        };
                         open.Add(neighbor);
                     }
                     else {

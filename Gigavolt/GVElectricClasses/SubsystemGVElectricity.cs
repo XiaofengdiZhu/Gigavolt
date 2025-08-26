@@ -16,837 +16,123 @@ namespace Game {
         #region SomeLongVariables
 
         public static readonly GVElectricConnectionPath[] m_connectionPathsTable = [
-            new(
-                0,
-                1,
-                -1,
-                4,
-                4,
-                0
-            ),
-            new(
-                0,
-                1,
-                0,
-                0,
-                4,
-                5
-            ),
-            new(
-                0,
-                1,
-                -1,
-                2,
-                4,
-                5
-            ),
-            new(
-                0,
-                0,
-                0,
-                5,
-                4,
-                2
-            ),
-            new(
-                -1,
-                0,
-                -1,
-                3,
-                3,
-                0
-            ),
-            new(
-                -1,
-                0,
-                0,
-                0,
-                3,
-                1
-            ),
-            new(
-                -1,
-                0,
-                -1,
-                2,
-                3,
-                1
-            ),
-            new(
-                0,
-                0,
-                0,
-                1,
-                3,
-                2
-            ),
-            new(
-                0,
-                -1,
-                -1,
-                5,
-                5,
-                0
-            ),
-            new(
-                0,
-                -1,
-                0,
-                0,
-                5,
-                4
-            ),
-            new(
-                0,
-                -1,
-                -1,
-                2,
-                5,
-                4
-            ),
-            new(
-                0,
-                0,
-                0,
-                4,
-                5,
-                2
-            ),
-            new(
-                1,
-                0,
-                -1,
-                1,
-                1,
-                0
-            ),
-            new(
-                1,
-                0,
-                0,
-                0,
-                1,
-                3
-            ),
-            new(
-                1,
-                0,
-                -1,
-                2,
-                1,
-                3
-            ),
-            new(
-                0,
-                0,
-                0,
-                3,
-                1,
-                2
-            ),
-            new(
-                0,
-                0,
-                -1,
-                2,
-                2,
-                0
-            ),
+            new(0, 1, -1, 4, 4, 0),
+            new(0, 1, 0, 0, 4, 5),
+            new(0, 1, -1, 2, 4, 5),
+            new(0, 0, 0, 5, 4, 2),
+            new(-1, 0, -1, 3, 3, 0),
+            new(-1, 0, 0, 0, 3, 1),
+            new(-1, 0, -1, 2, 3, 1),
+            new(0, 0, 0, 1, 3, 2),
+            new(0, -1, -1, 5, 5, 0),
+            new(0, -1, 0, 0, 5, 4),
+            new(0, -1, -1, 2, 5, 4),
+            new(0, 0, 0, 4, 5, 2),
+            new(1, 0, -1, 1, 1, 0),
+            new(1, 0, 0, 0, 1, 3),
+            new(1, 0, -1, 2, 1, 3),
+            new(0, 0, 0, 3, 1, 2),
+            new(0, 0, -1, 2, 2, 0),
             null,
             null,
             null,
-            new(
-                -1,
-                1,
-                0,
-                4,
-                4,
-                1
-            ),
-            new(
-                0,
-                1,
-                0,
-                1,
-                4,
-                5
-            ),
-            new(
-                -1,
-                1,
-                0,
-                3,
-                4,
-                5
-            ),
-            new(
-                0,
-                0,
-                0,
-                5,
-                4,
-                3
-            ),
-            new(
-                -1,
-                0,
-                1,
-                0,
-                0,
-                1
-            ),
-            new(
-                0,
-                0,
-                1,
-                1,
-                0,
-                2
-            ),
-            new(
-                -1,
-                0,
-                1,
-                3,
-                0,
-                2
-            ),
-            new(
-                0,
-                0,
-                0,
-                2,
-                0,
-                3
-            ),
-            new(
-                -1,
-                -1,
-                0,
-                5,
-                5,
-                1
-            ),
-            new(
-                0,
-                -1,
-                0,
-                1,
-                5,
-                4
-            ),
-            new(
-                -1,
-                -1,
-                0,
-                3,
-                5,
-                4
-            ),
-            new(
-                0,
-                0,
-                0,
-                4,
-                5,
-                3
-            ),
-            new(
-                -1,
-                0,
-                -1,
-                2,
-                2,
-                1
-            ),
-            new(
-                0,
-                0,
-                -1,
-                1,
-                2,
-                0
-            ),
-            new(
-                -1,
-                0,
-                -1,
-                3,
-                2,
-                0
-            ),
-            new(
-                0,
-                0,
-                0,
-                0,
-                2,
-                3
-            ),
-            new(
-                -1,
-                0,
-                0,
-                3,
-                3,
-                1
-            ),
+            new(-1, 1, 0, 4, 4, 1),
+            new(0, 1, 0, 1, 4, 5),
+            new(-1, 1, 0, 3, 4, 5),
+            new(0, 0, 0, 5, 4, 3),
+            new(-1, 0, 1, 0, 0, 1),
+            new(0, 0, 1, 1, 0, 2),
+            new(-1, 0, 1, 3, 0, 2),
+            new(0, 0, 0, 2, 0, 3),
+            new(-1, -1, 0, 5, 5, 1),
+            new(0, -1, 0, 1, 5, 4),
+            new(-1, -1, 0, 3, 5, 4),
+            new(0, 0, 0, 4, 5, 3),
+            new(-1, 0, -1, 2, 2, 1),
+            new(0, 0, -1, 1, 2, 0),
+            new(-1, 0, -1, 3, 2, 0),
+            new(0, 0, 0, 0, 2, 3),
+            new(-1, 0, 0, 3, 3, 1),
             null,
             null,
             null,
-            new(
-                0,
-                1,
-                1,
-                4,
-                4,
-                2
-            ),
-            new(
-                0,
-                1,
-                0,
-                2,
-                4,
-                5
-            ),
-            new(
-                0,
-                1,
-                1,
-                0,
-                4,
-                5
-            ),
-            new(
-                0,
-                0,
-                0,
-                5,
-                4,
-                0
-            ),
-            new(
-                1,
-                0,
-                1,
-                1,
-                1,
-                2
-            ),
-            new(
-                1,
-                0,
-                0,
-                2,
-                1,
-                3
-            ),
-            new(
-                1,
-                0,
-                1,
-                0,
-                1,
-                3
-            ),
-            new(
-                0,
-                0,
-                0,
-                3,
-                1,
-                0
-            ),
-            new(
-                0,
-                -1,
-                1,
-                5,
-                5,
-                2
-            ),
-            new(
-                0,
-                -1,
-                0,
-                2,
-                5,
-                4
-            ),
-            new(
-                0,
-                -1,
-                1,
-                0,
-                5,
-                4
-            ),
-            new(
-                0,
-                0,
-                0,
-                4,
-                5,
-                0
-            ),
-            new(
-                -1,
-                0,
-                1,
-                3,
-                3,
-                2
-            ),
-            new(
-                -1,
-                0,
-                0,
-                2,
-                3,
-                1
-            ),
-            new(
-                -1,
-                0,
-                1,
-                0,
-                3,
-                1
-            ),
-            new(
-                0,
-                0,
-                0,
-                1,
-                3,
-                0
-            ),
-            new(
-                0,
-                0,
-                1,
-                0,
-                0,
-                2
-            ),
+            new(0, 1, 1, 4, 4, 2),
+            new(0, 1, 0, 2, 4, 5),
+            new(0, 1, 1, 0, 4, 5),
+            new(0, 0, 0, 5, 4, 0),
+            new(1, 0, 1, 1, 1, 2),
+            new(1, 0, 0, 2, 1, 3),
+            new(1, 0, 1, 0, 1, 3),
+            new(0, 0, 0, 3, 1, 0),
+            new(0, -1, 1, 5, 5, 2),
+            new(0, -1, 0, 2, 5, 4),
+            new(0, -1, 1, 0, 5, 4),
+            new(0, 0, 0, 4, 5, 0),
+            new(-1, 0, 1, 3, 3, 2),
+            new(-1, 0, 0, 2, 3, 1),
+            new(-1, 0, 1, 0, 3, 1),
+            new(0, 0, 0, 1, 3, 0),
+            new(0, 0, 1, 0, 0, 2),
             null,
             null,
             null,
-            new(
-                1,
-                1,
-                0,
-                4,
-                4,
-                3
-            ),
-            new(
-                0,
-                1,
-                0,
-                3,
-                4,
-                5
-            ),
-            new(
-                1,
-                1,
-                0,
-                1,
-                4,
-                5
-            ),
-            new(
-                0,
-                0,
-                0,
-                5,
-                4,
-                1
-            ),
-            new(
-                1,
-                0,
-                -1,
-                2,
-                2,
-                3
-            ),
-            new(
-                0,
-                0,
-                -1,
-                3,
-                2,
-                0
-            ),
-            new(
-                1,
-                0,
-                -1,
-                1,
-                2,
-                0
-            ),
-            new(
-                0,
-                0,
-                0,
-                0,
-                2,
-                1
-            ),
-            new(
-                1,
-                -1,
-                0,
-                5,
-                5,
-                3
-            ),
-            new(
-                0,
-                -1,
-                0,
-                3,
-                5,
-                4
-            ),
-            new(
-                1,
-                -1,
-                0,
-                1,
-                5,
-                4
-            ),
-            new(
-                0,
-                0,
-                0,
-                4,
-                5,
-                1
-            ),
-            new(
-                1,
-                0,
-                1,
-                0,
-                0,
-                3
-            ),
-            new(
-                0,
-                0,
-                1,
-                3,
-                0,
-                2
-            ),
-            new(
-                1,
-                0,
-                1,
-                1,
-                0,
-                2
-            ),
-            new(
-                0,
-                0,
-                0,
-                2,
-                0,
-                1
-            ),
-            new(
-                1,
-                0,
-                0,
-                1,
-                1,
-                3
-            ),
+            new(1, 1, 0, 4, 4, 3),
+            new(0, 1, 0, 3, 4, 5),
+            new(1, 1, 0, 1, 4, 5),
+            new(0, 0, 0, 5, 4, 1),
+            new(1, 0, -1, 2, 2, 3),
+            new(0, 0, -1, 3, 2, 0),
+            new(1, 0, -1, 1, 2, 0),
+            new(0, 0, 0, 0, 2, 1),
+            new(1, -1, 0, 5, 5, 3),
+            new(0, -1, 0, 3, 5, 4),
+            new(1, -1, 0, 1, 5, 4),
+            new(0, 0, 0, 4, 5, 1),
+            new(1, 0, 1, 0, 0, 3),
+            new(0, 0, 1, 3, 0, 2),
+            new(1, 0, 1, 1, 0, 2),
+            new(0, 0, 0, 2, 0, 1),
+            new(1, 0, 0, 1, 1, 3),
             null,
             null,
             null,
-            new(
-                0,
-                -1,
-                -1,
-                2,
-                2,
-                4
-            ),
-            new(
-                0,
-                0,
-                -1,
-                4,
-                2,
-                0
-            ),
-            new(
-                0,
-                -1,
-                -1,
-                5,
-                2,
-                0
-            ),
-            new(
-                0,
-                0,
-                0,
-                0,
-                2,
-                5
-            ),
-            new(
-                -1,
-                -1,
-                0,
-                3,
-                3,
-                4
-            ),
-            new(
-                -1,
-                0,
-                0,
-                4,
-                3,
-                1
-            ),
-            new(
-                -1,
-                -1,
-                0,
-                5,
-                3,
-                1
-            ),
-            new(
-                0,
-                0,
-                0,
-                1,
-                3,
-                5
-            ),
-            new(
-                0,
-                -1,
-                1,
-                0,
-                0,
-                4
-            ),
-            new(
-                0,
-                0,
-                1,
-                4,
-                0,
-                2
-            ),
-            new(
-                0,
-                -1,
-                1,
-                5,
-                0,
-                2
-            ),
-            new(
-                0,
-                0,
-                0,
-                2,
-                0,
-                5
-            ),
-            new(
-                1,
-                -1,
-                0,
-                1,
-                1,
-                4
-            ),
-            new(
-                1,
-                0,
-                0,
-                4,
-                1,
-                3
-            ),
-            new(
-                1,
-                -1,
-                0,
-                5,
-                1,
-                3
-            ),
-            new(
-                0,
-                0,
-                0,
-                3,
-                1,
-                5
-            ),
-            new(
-                0,
-                -1,
-                0,
-                5,
-                5,
-                4
-            ),
+            new(0, -1, -1, 2, 2, 4),
+            new(0, 0, -1, 4, 2, 0),
+            new(0, -1, -1, 5, 2, 0),
+            new(0, 0, 0, 0, 2, 5),
+            new(-1, -1, 0, 3, 3, 4),
+            new(-1, 0, 0, 4, 3, 1),
+            new(-1, -1, 0, 5, 3, 1),
+            new(0, 0, 0, 1, 3, 5),
+            new(0, -1, 1, 0, 0, 4),
+            new(0, 0, 1, 4, 0, 2),
+            new(0, -1, 1, 5, 0, 2),
+            new(0, 0, 0, 2, 0, 5),
+            new(1, -1, 0, 1, 1, 4),
+            new(1, 0, 0, 4, 1, 3),
+            new(1, -1, 0, 5, 1, 3),
+            new(0, 0, 0, 3, 1, 5),
+            new(0, -1, 0, 5, 5, 4),
             null,
             null,
             null,
-            new(
-                0,
-                1,
-                -1,
-                2,
-                2,
-                5
-            ),
-            new(
-                0,
-                0,
-                -1,
-                5,
-                2,
-                0
-            ),
-            new(
-                0,
-                1,
-                -1,
-                4,
-                2,
-                0
-            ),
-            new(
-                0,
-                0,
-                0,
-                0,
-                2,
-                4
-            ),
-            new(
-                1,
-                1,
-                0,
-                1,
-                1,
-                5
-            ),
-            new(
-                1,
-                0,
-                0,
-                5,
-                1,
-                3
-            ),
-            new(
-                1,
-                1,
-                0,
-                4,
-                1,
-                3
-            ),
-            new(
-                0,
-                0,
-                0,
-                3,
-                1,
-                4
-            ),
-            new(
-                0,
-                1,
-                1,
-                0,
-                0,
-                5
-            ),
-            new(
-                0,
-                0,
-                1,
-                5,
-                0,
-                2
-            ),
-            new(
-                0,
-                1,
-                1,
-                4,
-                0,
-                2
-            ),
-            new(
-                0,
-                0,
-                0,
-                2,
-                0,
-                4
-            ),
-            new(
-                -1,
-                1,
-                0,
-                3,
-                3,
-                5
-            ),
-            new(
-                -1,
-                0,
-                0,
-                5,
-                3,
-                1
-            ),
-            new(
-                -1,
-                1,
-                0,
-                4,
-                3,
-                1
-            ),
-            new(
-                0,
-                0,
-                0,
-                1,
-                3,
-                4
-            ),
-            new(
-                0,
-                1,
-                0,
-                4,
-                4,
-                5
-            ),
+            new(0, 1, -1, 2, 2, 5),
+            new(0, 0, -1, 5, 2, 0),
+            new(0, 1, -1, 4, 2, 0),
+            new(0, 0, 0, 0, 2, 4),
+            new(1, 1, 0, 1, 1, 5),
+            new(1, 0, 0, 5, 1, 3),
+            new(1, 1, 0, 4, 1, 3),
+            new(0, 0, 0, 3, 1, 4),
+            new(0, 1, 1, 0, 0, 5),
+            new(0, 0, 1, 5, 0, 2),
+            new(0, 1, 1, 4, 0, 2),
+            new(0, 0, 0, 2, 0, 4),
+            new(-1, 1, 0, 3, 3, 5),
+            new(-1, 0, 0, 5, 3, 1),
+            new(-1, 1, 0, 4, 3, 1),
+            new(0, 0, 0, 1, 3, 4),
+            new(0, 1, 0, 4, 4, 5),
             null,
             null,
             null
@@ -930,9 +216,15 @@ namespace Game {
 
         public readonly Dictionary<Point3, uint> m_persistentElementsVoltages = new();
         public readonly HashSet<GVElectricElement> m_GVElectricElements = [];
-        public readonly Dictionary<uint, Dictionary<GVCellFace, GVElectricElement>> m_GVElectricElementsByCellFace = new() { { 0u, new Dictionary<GVCellFace, GVElectricElement>() } };
+
+        public readonly Dictionary<uint, Dictionary<GVCellFace, GVElectricElement>> m_GVElectricElementsByCellFace =
+            new() { { 0u, new Dictionary<GVCellFace, GVElectricElement>() } };
+
         public readonly Dictionary<uint, Dictionary<Point3, bool>> m_pointsToUpdate = new() { { 0u, new Dictionary<Point3, bool>() } };
-        public readonly Dictionary<uint, Dictionary<Point3, GVElectricElement[]>> m_GVElectricElementsToAdd = new() { { 0u, new Dictionary<Point3, GVElectricElement[]>() } };
+
+        public readonly Dictionary<uint, Dictionary<Point3, GVElectricElement[]>> m_GVElectricElementsToAdd =
+            new() { { 0u, new Dictionary<Point3, GVElectricElement[]>() } };
+
         public readonly HashSet<GVElectricElement> m_GVElectricElementsToRemove = [];
         public readonly Dictionary<uint, HashSet<Point3>> m_wiresToUpdate = new() { { 0u, [] } };
         public readonly List<HashSet<GVElectricElement>> m_listsCache = [];
@@ -1040,7 +332,8 @@ namespace Game {
             return null;
         }
 
-        public static int GetConnectorFace(int mountingFace, GVElectricConnectorDirection connectionDirection) => m_connectorFacesTable[(int)(5 * mountingFace + connectionDirection)];
+        public static int GetConnectorFace(int mountingFace, GVElectricConnectorDirection connectionDirection) =>
+            m_connectorFacesTable[(int)(5 * mountingFace + connectionDirection)];
 
         public void GetAllConnectedNeighbors(int x, int y, int z, int mountingFace, Terrain terrain, DynamicArray<GVElectricConnectionPath> list) {
             int cellValue = terrain.GetCellValue(x, y, z);
@@ -1054,9 +347,12 @@ namespace Game {
                 }
             }
             IGVElectricWireElementBlock wireBlock = GVElectricElementBlock as IGVElectricWireElementBlock;
-            for (GVElectricConnectorDirection GVElectricConnectorDirection = GVElectricConnectorDirection.Top; GVElectricConnectorDirection <= GVElectricConnectorDirection.In; GVElectricConnectorDirection++) {
+            for (GVElectricConnectorDirection GVElectricConnectorDirection = GVElectricConnectorDirection.Top;
+                GVElectricConnectorDirection <= GVElectricConnectorDirection.In;
+                GVElectricConnectorDirection++) {
                 for (int i = 0; i < 4; i++) {
-                    GVElectricConnectionPath GVElectricConnectionPath = m_connectionPathsTable[20 * mountingFace + 4 * (int)GVElectricConnectorDirection + i];
+                    GVElectricConnectionPath GVElectricConnectionPath =
+                        m_connectionPathsTable[20 * mountingFace + 4 * (int)GVElectricConnectorDirection + i];
                     if (GVElectricConnectionPath == null) {
                         break;
                     }
@@ -1098,7 +394,8 @@ namespace Game {
                         terrain
                     );
                     if (connectorType2.HasValue
-                        && ((connectorType.Value != 0 && connectorType2.Value != GVElectricConnectorType.Output) || (connectorType.Value != GVElectricConnectorType.Output && connectorType2.Value != 0))) {
+                        && ((connectorType.Value != 0 && connectorType2.Value != GVElectricConnectorType.Output)
+                            || (connectorType.Value != GVElectricConnectorType.Output && connectorType2.Value != 0))) {
                         int connectionMask = GVElectricElementBlock.GetConnectionMask(cellValue);
                         int connectionMask2 = GVElectricElementBlock2.GetConnectionMask(cellValue2);
                         if (connectionMask2 == int.MaxValue
@@ -1123,29 +420,11 @@ namespace Game {
 
         public GVElectricElement GetGVElectricElement(int x, int y, int z, int mountingFace, uint subterrainId, int mask = int.MaxValue) {
             Dictionary<GVCellFace, GVElectricElement> elements = m_GVElectricElementsByCellFace[subterrainId];
-            elements.TryGetValue(
-                new GVCellFace(
-                    x,
-                    y,
-                    z,
-                    mountingFace,
-                    mask
-                ),
-                out GVElectricElement value
-            );
+            elements.TryGetValue(new GVCellFace(x, y, z, mountingFace, mask), out GVElectricElement value);
             if (value == null) {
                 if (mask == int.MaxValue) {
                     for (int i = 0; i < 16; i++) {
-                        elements.TryGetValue(
-                            new GVCellFace(
-                                x,
-                                y,
-                                z,
-                                mountingFace,
-                                1 << i
-                            ),
-                            out GVElectricElement value2
-                        );
+                        elements.TryGetValue(new GVCellFace(x, y, z, mountingFace, 1 << i), out GVElectricElement value2);
                         if (value2 != null) {
                             return value2;
                         }
@@ -1353,7 +632,13 @@ namespace Game {
             Point3 point = cellFace.Point;
             if (element is MountedGVElectricElement) {
                 Vector3 faceDirection = GVCellFace.FaceToVector3(face);
-                m_debugDrawPositions.Add(new Vector3(point.X - faceDirection.X * 0.48f + 0.5f, point.Y - faceDirection.Y * 0.48f + 0.5f, point.Z - faceDirection.Z * 0.48f + 0.5f));
+                m_debugDrawPositions.Add(
+                    new Vector3(
+                        point.X - faceDirection.X * 0.48f + 0.5f,
+                        point.Y - faceDirection.Y * 0.48f + 0.5f,
+                        point.Z - faceDirection.Z * 0.48f + 0.5f
+                    )
+                );
             }
             else {
                 m_debugDrawPositions.Add(new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f));
@@ -1411,7 +696,8 @@ namespace Game {
             valuesDictionary.SetValue("GigaVoltagesByCell", stringBuilder.ToString());
         }
 
-        public static GVElectricConnectionPath GetConnectionPath(int mountingFace, GVElectricConnectorDirection localConnector, int neighborIndex) => m_connectionPathsTable[16 * mountingFace + 4 * (int)localConnector + neighborIndex];
+        public static GVElectricConnectionPath GetConnectionPath(int mountingFace, GVElectricConnectorDirection localConnector, int neighborIndex) =>
+            m_connectionPathsTable[16 * mountingFace + 4 * (int)localConnector + neighborIndex];
 
         public void SimulateGVElectricElement(GVElectricElement GVElectricElement) {
             if (GVElectricElement.Simulate()) {
@@ -1436,16 +722,14 @@ namespace Game {
             foreach (GVCellFace cellFace2 in GVElectricElement.CellFaces) {
                 elements.Add(cellFace2, GVElectricElement);
                 m_tmpConnectionPaths.Clear();
-                GetAllConnectedNeighbors(
-                    cellFace2.X,
-                    cellFace2.Y,
-                    cellFace2.Z,
-                    cellFace2.Face,
-                    terrain,
-                    m_tmpConnectionPaths
-                );
+                GetAllConnectedNeighbors(cellFace2.X, cellFace2.Y, cellFace2.Z, cellFace2.Face, terrain, m_tmpConnectionPaths);
                 foreach (GVElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths) {
-                    GVCellFace cellFace = new(cellFace2.X + tmpConnectionPath.NeighborOffsetX, cellFace2.Y + tmpConnectionPath.NeighborOffsetY, cellFace2.Z + tmpConnectionPath.NeighborOffsetZ, tmpConnectionPath.NeighborFace);
+                    GVCellFace cellFace = new(
+                        cellFace2.X + tmpConnectionPath.NeighborOffsetX,
+                        cellFace2.Y + tmpConnectionPath.NeighborOffsetY,
+                        cellFace2.Z + tmpConnectionPath.NeighborOffsetZ,
+                        tmpConnectionPath.NeighborFace
+                    );
                     GVElectricElement value = GetGVElectricElement(
                         cellFace.X,
                         cellFace.Y,
@@ -1455,13 +739,7 @@ namespace Game {
                         cellFace2.Mask
                     );
                     if (value == null) {
-                        value = GetGVElectricElement(
-                            cellFace.X,
-                            cellFace.Y,
-                            cellFace.Z,
-                            cellFace.Face,
-                            GVElectricElement.SubterrainId
-                        );
+                        value = GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, GVElectricElement.SubterrainId);
                         if (value == null
                             || value == GVElectricElement
                             || !value.CellFaces.Contains(cellFace)) {
@@ -1565,13 +843,7 @@ namespace Game {
                 foreach ((Point3 key, bool b) in value) {
                     int cellValue = SubsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(key.X, key.Y, key.Z);
                     for (int i = 0; i < 6; i++) {
-                        GVElectricElement GVElectricElement = GetGVElectricElement(
-                            key.X,
-                            key.Y,
-                            key.Z,
-                            i,
-                            subterrainId
-                        );
+                        GVElectricElement GVElectricElement = GetGVElectricElement(key.X, key.Y, key.Z, i, subterrainId);
                         if (GVElectricElement != null) {
                             if (GVElectricElement is WireDomainGVElectricElement) {
                                 m_wiresToUpdate[subterrainId].Add(key);
@@ -1671,18 +943,7 @@ namespace Game {
                                     }
                                     for (int m = 0; m < 16; m++) {
                                         m_tmpResult.Clear();
-                                        ScanWireDomain(
-                                            new GVCellFace(
-                                                i,
-                                                j,
-                                                k,
-                                                l,
-                                                1 << m
-                                            ),
-                                            terrain,
-                                            m_tmpVisited,
-                                            m_tmpResult
-                                        );
+                                        ScanWireDomain(new GVCellFace(i, j, k, l, 1 << m), terrain, m_tmpVisited, m_tmpResult);
                                         if (m_tmpResult.Count > 0) {
                                             WireDomainGVElectricElement GVElectricElement = new(this, m_tmpResult, subterrainId);
                                             AddGVElectricElement(GVElectricElement);
@@ -1708,16 +969,7 @@ namespace Game {
                             for (int k = key.Z - 1; k <= key.Z + 1; k++) {
                                 for (int l = 0; l < 6; l++) {
                                     for (int m = 0; m < 16; m++) {
-                                        if (elements.TryGetValue(
-                                                new GVCellFace(
-                                                    i,
-                                                    j,
-                                                    k,
-                                                    l,
-                                                    1 << m
-                                                ),
-                                                out GVElectricElement value
-                                            )
+                                        if (elements.TryGetValue(new GVCellFace(i, j, k, l, 1 << m), out GVElectricElement value)
                                             && value is WireDomainGVElectricElement) {
                                             RemoveGVElectricElement(value);
                                         }
@@ -1770,26 +1022,13 @@ namespace Game {
                 }
                 for (int i = 0; i < 6; i++) {
                     if ((connectedWireFacesMask & (1 << i)) != 0) {
-                        GVCellFace key2 = new(
-                            key.X,
-                            key.Y,
-                            key.Z,
-                            i,
-                            newMask
-                        );
+                        GVCellFace key2 = new(key.X, key.Y, key.Z, i, newMask);
                         if (!visited.Add(key2)) {
                             continue;
                         }
                         result.Add(key2);
                         m_tmpConnectionPaths.Clear();
-                        GetAllConnectedNeighbors(
-                            key2.X,
-                            key2.Y,
-                            key2.Z,
-                            key2.Face,
-                            terrain,
-                            m_tmpConnectionPaths
-                        );
+                        GetAllConnectedNeighbors(key2.X, key2.Y, key2.Z, key2.Face, terrain, m_tmpConnectionPaths);
                         foreach (GVElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths) {
                             dynamicArray.Push(
                                 new GVCellFace(

@@ -13,7 +13,11 @@ namespace Game {
 
         public bool m_overflow;
 
-        public CounterGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public CounterGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemGVCounterBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVCounterBlockBehavior>(true);
             uint overflowVoltage = 16;
             uint? num = subsystemGVElectricity.ReadPersistentVoltage(cellFace.Point, SubterrainId);
@@ -57,7 +61,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Right) {
                             flag = IsSignalHigh(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));

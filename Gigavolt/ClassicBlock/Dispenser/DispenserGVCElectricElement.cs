@@ -27,10 +27,13 @@ namespace Game {
                 return false;
             }
             if (CalculateHighInputsCount() > 0) {
-                if (m_isDispenseAllowed && (!m_lastDispenseTime.HasValue || SubsystemGVElectricity.SubsystemTime.GameTime - m_lastDispenseTime > 0.1)) {
+                if (m_isDispenseAllowed
+                    && (!m_lastDispenseTime.HasValue || SubsystemGVElectricity.SubsystemTime.GameTime - m_lastDispenseTime > 0.1)) {
                     m_isDispenseAllowed = false;
                     m_lastDispenseTime = SubsystemGVElectricity.SubsystemTime.GameTime;
-                    m_subsystemBlockEntities.GetBlockEntity(CellFaces[0].Point.X, CellFaces[0].Point.Y, CellFaces[0].Point.Z)?.Entity.FindComponent<ComponentDispenser>()?.Dispense();
+                    m_subsystemBlockEntities.GetBlockEntity(CellFaces[0].Point.X, CellFaces[0].Point.Y, CellFaces[0].Point.Z)
+                        ?.Entity.FindComponent<ComponentDispenser>()
+                        ?.Dispense();
                 }
             }
             else {

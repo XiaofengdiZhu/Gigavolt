@@ -59,13 +59,8 @@ namespace Game {
             }
             foreach ((CellFace cellFace, Vector2 sightPosition) in sightingTouchpads) {
                 if (!m_sightingTouchpads.ContainsKey(cellFace)
-                    && m_subsystemGVElectricity.GetGVElectricElement(
-                        cellFace.X,
-                        cellFace.Y,
-                        cellFace.Z,
-                        cellFace.Face,
-                        0
-                    ) is TouchpadGVElectricElement element) {
+                    && m_subsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, 0) is
+                        TouchpadGVElectricElement element) {
                     element.m_sightStartTime = DateTime.Now;
                     element.m_sightPosition = sightPosition;
                     m_sightingTouchpads.Add(cellFace, element);
@@ -90,13 +85,7 @@ namespace Game {
             CellFace cellFace = raycastResult.CellFace;
             int face = raycastResult.CellFace.Face;
             if (RotateableMountedGVElectricElementBlock.GetFaceFromDataStatic(Terrain.ExtractData(raycastResult.Value)) == face
-                && m_subsystemGVElectricity.GetGVElectricElement(
-                    cellFace.X,
-                    cellFace.Y,
-                    cellFace.Z,
-                    face,
-                    0
-                ) is TouchpadGVElectricElement element) {
+                && m_subsystemGVElectricity.GetGVElectricElement(cellFace.X, cellFace.Y, cellFace.Z, face, 0) is TouchpadGVElectricElement element) {
                 if (element.m_interactStop
                     && m_interactingTouchpads.TryAdd(cellFace, element)) {
                     element.m_interactStartTime = DateTime.Now;

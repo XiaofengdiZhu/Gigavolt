@@ -63,7 +63,10 @@ namespace Game {
                 if (m_originType == 0) {
                     int slot = (int)(m_voltage & 0xffu);
                     itemValue = originInventory.GetSlotValue(slot);
-                    itemCount = Math.Min(((m_voltage >> 16) & 1u) == 1u ? int.MaxValue : (int)((m_voltage >> 8) & 0xffu), originInventory.GetSlotCount(slot));
+                    itemCount = Math.Min(
+                        ((m_voltage >> 16) & 1u) == 1u ? int.MaxValue : (int)((m_voltage >> 8) & 0xffu),
+                        originInventory.GetSlotCount(slot)
+                    );
                     if (itemCount == 0) {
                         return false;
                     }

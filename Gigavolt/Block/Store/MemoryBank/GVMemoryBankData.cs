@@ -18,7 +18,9 @@ namespace Game {
         public uint m_height;
         public bool m_dataChanged;
 
-        public static readonly PngEncoder DefaultPngEncoder = new() { ColorType = PngColorType.RgbWithAlpha, BitDepth = PngBitDepth.Bit8, TransparentColorMode = PngTransparentColorMode.Preserve };
+        public static readonly PngEncoder DefaultPngEncoder = new() {
+            ColorType = PngColorType.RgbWithAlpha, BitDepth = PngBitDepth.Bit8, TransparentColorMode = PngTransparentColorMode.Preserve
+        };
 
         public uint[] Data {
             get => m_data;
@@ -256,7 +258,8 @@ namespace Game {
             return bytes;
         }
 
-        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) => m_isDataInitialized ? UintArray2Bytes(Data, startIndex, length) : null;
+        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) =>
+            m_isDataInitialized ? UintArray2Bytes(Data, startIndex, length) : null;
 
         public static short[] UintArray2Shorts(uint[] array) {
             short[] shorts = new short[array.Length * 2];
@@ -298,11 +301,13 @@ namespace Game {
             }
             Image image = new(width == 0 ? array.Length : (int)width, height == 0 ? 1 : (int)height);
             int maxHeight = array.Length / image.Width + (array.Length % image.Width == 0u ? 0 : 1);
-            image.ProcessPixelRows(
-                accessor => {
+            image.ProcessPixelRows(accessor => {
                     Span<uint> arraySpan = array.AsSpan();
                     for (int y = 0; y < maxHeight; y++) {
-                        MemoryMarshal.Cast<uint, Rgba32>(arraySpan.Slice(y * image.Width, y == maxHeight - 1 ? array.Length - y * image.Width : image.Width)).CopyTo(accessor.GetRowSpan(y));
+                        MemoryMarshal.Cast<uint, Rgba32>(
+                                arraySpan.Slice(y * image.Width, y == maxHeight - 1 ? array.Length - y * image.Width : image.Width)
+                            )
+                            .CopyTo(accessor.GetRowSpan(y));
                     }
                 }
             );

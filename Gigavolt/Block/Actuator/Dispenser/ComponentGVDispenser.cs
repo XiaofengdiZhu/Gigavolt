@@ -115,24 +115,19 @@ namespace Game {
         public void DispenseItem(Point3 point, int face, int value) {
             Vector3 vector = CellFace.FaceToVector3(face);
             Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + 0.6f * vector;
-            m_subsystemPickables.AddPickable(
-                value,
-                1,
-                position,
-                1.8f * vector,
-                null
-            );
-            m_subsystemAudio.PlaySound(
-                "Audio/DispenserDispense",
-                1f,
-                0f,
-                new Vector3(position.X, position.Y, position.Z),
-                3f,
-                true
-            );
+            m_subsystemPickables.AddPickable(value, 1, position, 1.8f * vector, null);
+            m_subsystemAudio.PlaySound("Audio/DispenserDispense", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 3f, true);
         }
 
-        public void ShootItem(Point3 point, int face, int value, Vector3 velocity, bool disableGravity, bool disableDamping, bool safe, bool transform, Point3 stopAt) {
+        public void ShootItem(Point3 point,
+            int face,
+            int value,
+            Vector3 velocity,
+            bool disableGravity,
+            bool disableDamping,
+            bool safe,
+            bool transform,
+            Point3 stopAt) {
             Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + 0.6f * CellFace.FaceToVector3(face);
             bool flag;
             if (disableGravity
@@ -155,24 +150,10 @@ namespace Game {
                     != null;
             }
             else {
-                flag = m_subsystemProjectiles.FireProjectile(
-                        value,
-                        position,
-                        velocity,
-                        Vector3.Zero,
-                        null
-                    )
-                    != null;
+                flag = m_subsystemProjectiles.FireProjectile(value, position, velocity, Vector3.Zero, null) != null;
             }
             if (flag) {
-                m_subsystemAudio.PlaySound(
-                    "Audio/DispenserShoot",
-                    1f,
-                    0f,
-                    new Vector3(position.X, position.Y, position.Z),
-                    4f,
-                    true
-                );
+                m_subsystemAudio.PlaySound("Audio/DispenserShoot", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 4f, true);
             }
             else {
                 DispenseItem(point, face, value);

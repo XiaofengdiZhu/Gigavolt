@@ -62,16 +62,12 @@ namespace Game {
         public override void Draw(DrawContext dc) {
             Color color = Color * GlobalColorTransform;
             if (!string.IsNullOrEmpty(m_text)) {
-                Vector2 position = new(VoltageCentered ? ActualSize.X / 2f : ActualSize.X - 16f, ActualSize.Y / 2f - FontScale * Font.Scale * Font.GlyphHeight / 2f);
-                SamplerState samplerState = TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp;
-                FontBatch2D fontBatch2D = dc.PrimitivesRenderer2D.FontBatch(
-                    Font,
-                    1,
-                    DepthStencilState.None,
-                    null,
-                    null,
-                    samplerState
+                Vector2 position = new(
+                    VoltageCentered ? ActualSize.X / 2f : ActualSize.X - 16f,
+                    ActualSize.Y / 2f - FontScale * Font.Scale * Font.GlyphHeight / 2f
                 );
+                SamplerState samplerState = TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp;
+                FontBatch2D fontBatch2D = dc.PrimitivesRenderer2D.FontBatch(Font, 1, DepthStencilState.None, null, null, samplerState);
                 int count = fontBatch2D.TriangleVertices.Count;
                 fontBatch2D.QueueText(
                     Text,
@@ -92,7 +88,12 @@ namespace Game {
                 flatBatch2D.QueueLine(new Vector2(ActualSize.X - 1, 0f), new Vector2(ActualSize.X - 1, ActualSize.Y), 0f, Color.White);
             }
             if (IsBottom) {
-                flatBatch2D.QueueLine(IsRightmost ? new Vector2(ActualSize.X - 1, ActualSize.Y) : ActualSize, new Vector2(0f, ActualSize.Y), 0f, Color.White);
+                flatBatch2D.QueueLine(
+                    IsRightmost ? new Vector2(ActualSize.X - 1, ActualSize.Y) : ActualSize,
+                    new Vector2(0f, ActualSize.Y),
+                    0f,
+                    Color.White
+                );
             }
             //flatBatch2D.QueueQuad(v - new Vector2(0f, Font.GlyphHeight / 2f * FontScale * Font.Scale), v + new Vector2(1f, Font.GlyphHeight / 2f * FontScale * Font.Scale), 0f, color);
             flatBatch2D.TransformLines(GlobalTransform, count2);

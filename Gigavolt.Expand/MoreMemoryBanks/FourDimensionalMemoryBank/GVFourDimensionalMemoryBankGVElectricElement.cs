@@ -9,8 +9,12 @@ namespace Game {
         public uint m_voltage;
         public uint m_lastBottomInput;
 
-        public GVFourDimensionalMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
-            m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVFourDimensionalMemoryBankBlockBehavior>(true);
+        public GVFourDimensionalMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            GVCellFace cellFace,
+            int value,
+            uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            m_SubsystemGVMemoryBankBlockBehavior =
+                subsystemGVElectricity.Project.FindSubsystem<SubsystemGVFourDimensionalMemoryBankBlockBehavior>(true);
             m_subsystemGameInfo = subsystemGVElectricity.Project.FindSubsystem<SubsystemGameInfo>(true);
             m_data = m_SubsystemGVMemoryBankBlockBehavior.GetItemData(m_SubsystemGVMemoryBankBlockBehavior.GetIdFromValue(value));
             if (m_data != null) {
@@ -39,7 +43,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Right:
@@ -73,18 +78,8 @@ namespace Game {
                     if (bottomInput > 0u) {
                         m_voltage = 0u;
                         switch (bottomInput) {
-                            case 1u:
-                                m_voltage = m_data.Read(x, y, z, w);
-                                break;
-                            case 2u:
-                                m_data.Write(
-                                    x,
-                                    y,
-                                    z,
-                                    w,
-                                    inInput
-                                );
-                                break;
+                            case 1u: m_voltage = m_data.Read(x, y, z, w); break;
+                            case 2u: m_data.Write(x, y, z, w, inInput); break;
                             case 256u:
                                 m_data.m_xSize = MathUint.ToIntWithClamp(inInput);
                                 m_data.m_updateTime = DateTime.Now;
@@ -109,24 +104,12 @@ namespace Game {
                                 m_data.m_wOffset = MathUint.ToIntWithClamp(inInput);
                                 m_data.m_updateTime = DateTime.Now;
                                 break;
-                            case 272u:
-                                m_voltage = (uint)m_data.m_xSize;
-                                break;
-                            case 273u:
-                                m_voltage = (uint)m_data.m_ySize;
-                                break;
-                            case 274u:
-                                m_voltage = (uint)m_data.m_xOffset;
-                                break;
-                            case 275u:
-                                m_voltage = (uint)m_data.m_yOffset;
-                                break;
-                            case 276u:
-                                m_voltage = (uint)m_data.m_zOffset;
-                                break;
-                            case 277u:
-                                m_voltage = (uint)m_data.m_wOffset;
-                                break;
+                            case 272u: m_voltage = (uint)m_data.m_xSize; break;
+                            case 273u: m_voltage = (uint)m_data.m_ySize; break;
+                            case 274u: m_voltage = (uint)m_data.m_xOffset; break;
+                            case 275u: m_voltage = (uint)m_data.m_yOffset; break;
+                            case 276u: m_voltage = (uint)m_data.m_zOffset; break;
+                            case 277u: m_voltage = (uint)m_data.m_wOffset; break;
                         }
                     }
                 }

@@ -16,29 +16,34 @@ namespace Game {
                 for (GVPistonMode pistonMode = GVPistonMode.Pushing; pistonMode <= GVPistonMode.Complex; pistonMode++) {
                     for (int j = 0; j < 6; j++) {
                         int num = SetFace(SetMode(SetIsShaft(0, i != 0), pistonMode), j);
-                        Matrix m = j < 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f + (float)Math.PI) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
-                            j != 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) : Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                        Matrix m = j < 4 ? Matrix.CreateTranslation(0f, -0.5f, 0f)
+                            * Matrix.CreateRotationY(j * (float)Math.PI / 2f + (float)Math.PI)
+                            * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
+                            j != 4 ?
+                                Matrix.CreateTranslation(0f, -0.5f, 0f)
+                                * Matrix.CreateRotationX(-(float)Math.PI / 2f)
+                                * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f) :
+                                Matrix.CreateTranslation(0f, -0.5f, 0f)
+                                * Matrix.CreateRotationX((float)Math.PI / 2f)
+                                * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                         m_blockMeshesByData[num] = new BlockMesh();
                         m_blockMeshesByData[num]
-                        .AppendModelMeshPart(
-                            model.FindMesh(name).MeshParts[0],
-                            boneAbsoluteTransform * m,
-                            false,
-                            false,
-                            false,
-                            false,
-                            Color.White
-                        );
+                            .AppendModelMeshPart(
+                                model.FindMesh(name).MeshParts[0],
+                                boneAbsoluteTransform * m,
+                                false,
+                                false,
+                                false,
+                                false,
+                                Color.White
+                            );
                         switch (pistonMode) {
                             case GVPistonMode.Pulling:
-                                m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 1 << j);
-                                break;
+                                m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.0625f, 0f), 1 << j); break;
                             case GVPistonMode.StrictPulling:
-                                m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 1 << j);
-                                break;
+                                m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, 0.125f, 0f), 1 << j); break;
                             case GVPistonMode.Complex:
-                                m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 1 << j);
-                                break;
+                                m_blockMeshesByData[num].TransformTextureCoordinates(Matrix.CreateTranslation(0f, -0.5625f, 0f), 1 << j); break;
                         }
                     }
                 }
@@ -85,7 +90,12 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) { }
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) { }
 
         public static GVPistonMode GetMode(int data) => (GVPistonMode)(data & 3);
 

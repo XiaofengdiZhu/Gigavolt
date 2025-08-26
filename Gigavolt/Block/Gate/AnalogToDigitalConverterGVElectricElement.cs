@@ -5,7 +5,10 @@ namespace Game {
         public readonly bool m_classic;
         public readonly uint maxOutput;
 
-        public AnalogToDigitalConverterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public AnalogToDigitalConverterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            GVCellFace cellFace,
+            int value,
+            uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             int data = Terrain.ExtractData(value);
             m_type = GVAnalogToDigitalConverterBlock.GetType(data);
             m_classic = GVAnalogToDigitalConverterBlock.GetClassic(data);
@@ -23,26 +26,32 @@ namespace Game {
                 switch (connectorDirection.Value) {
                     case GVElectricConnectorDirection.Top: return m_classic ? (m_bits & 1) != 0 ? uint.MaxValue : 0u : m_bits & maxOutput;
                     case GVElectricConnectorDirection.Right:
-                        return m_classic ? (m_bits & 2) != 0 ? uint.MaxValue : 0u : m_type switch {
-                            1 => (m_bits >> 2) & maxOutput,
-                            2 => (m_bits >> 4) & maxOutput,
-                            3 => (m_bits >> 8) & maxOutput,
-                            _ => (m_bits >> 1) & maxOutput
-                        };
+                        return m_classic
+                            ? (m_bits & 2) != 0 ? uint.MaxValue : 0u
+                            : m_type switch {
+                                1 => (m_bits >> 2) & maxOutput,
+                                2 => (m_bits >> 4) & maxOutput,
+                                3 => (m_bits >> 8) & maxOutput,
+                                _ => (m_bits >> 1) & maxOutput
+                            };
                     case GVElectricConnectorDirection.Bottom:
-                        return m_classic ? (m_bits & 4) != 0 ? uint.MaxValue : 0u : m_type switch {
-                            1 => (m_bits >> 4) & maxOutput,
-                            2 => (m_bits >> 8) & maxOutput,
-                            3 => (m_bits >> 16) & maxOutput,
-                            _ => (m_bits >> 2) & maxOutput
-                        };
+                        return m_classic
+                            ? (m_bits & 4) != 0 ? uint.MaxValue : 0u
+                            : m_type switch {
+                                1 => (m_bits >> 4) & maxOutput,
+                                2 => (m_bits >> 8) & maxOutput,
+                                3 => (m_bits >> 16) & maxOutput,
+                                _ => (m_bits >> 2) & maxOutput
+                            };
                     case GVElectricConnectorDirection.Left:
-                        return m_classic ? (m_bits & 8) != 0 ? uint.MaxValue : 0u : m_type switch {
-                            1 => (m_bits >> 6) & maxOutput,
-                            2 => (m_bits >> 12) & maxOutput,
-                            3 => (m_bits >> 24) & maxOutput,
-                            _ => (m_bits >> 3) & maxOutput
-                        };
+                        return m_classic
+                            ? (m_bits & 8) != 0 ? uint.MaxValue : 0u
+                            : m_type switch {
+                                1 => (m_bits >> 6) & maxOutput,
+                                2 => (m_bits >> 12) & maxOutput,
+                                3 => (m_bits >> 24) & maxOutput,
+                                _ => (m_bits >> 3) & maxOutput
+                            };
                 }
             }
             return 0u;
@@ -54,7 +63,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue
                         && connectorDirection.Value == GVElectricConnectorDirection.In) {
                         m_bits = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);

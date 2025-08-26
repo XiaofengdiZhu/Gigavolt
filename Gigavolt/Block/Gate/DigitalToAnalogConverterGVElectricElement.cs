@@ -5,7 +5,10 @@ namespace Game {
         public uint m_voltage;
         public readonly uint maxInput;
 
-        public DigitalToAnalogConverterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public DigitalToAnalogConverterGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            GVCellFace cellFace,
+            int value,
+            uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             int data = Terrain.ExtractData(value);
             m_type = GVDigitalToAnalogConverterBlock.GetType(data);
             m_classic = GVDigitalToAnalogConverterBlock.GetClassic(data);
@@ -29,7 +32,8 @@ namespace Game {
                     uint inputVoltage = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                     bool isSignalHigh = IsSignalHigh(inputVoltage);
                     inputVoltage &= maxInput;
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection.Value) {
                             case GVElectricConnectorDirection.Top:

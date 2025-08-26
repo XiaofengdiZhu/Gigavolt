@@ -40,21 +40,27 @@ namespace Game {
                         Vector3 positionVector3 = new(key.Position.X + 0.5f, key.Position.Y + 0.5f, key.Position.Z + 0.5f);
                         for (int face = 0; face < CellFace.m_faceToVector3.Length; face++) {
                             Vector3 forward = CellFace.m_faceToVector3[face];
-                            Vector3 position = subterrainId == 0 ? positionVector3 + forward * 0.525f : Vector3.Transform(positionVector3 + forward * 0.525f, transform);
+                            Vector3 position = subterrainId == 0
+                                ? positionVector3 + forward * 0.525f
+                                : Vector3.Transform(positionVector3 + forward * 0.525f, transform);
                             Vector3 direction = position - camera.ViewPosition;
                             float dotResult = Vector3.Dot(direction, camera.ViewDirection);
                             if (Vector3.Dot(direction, camera.ViewDirection) > 0.01f) {
                                 float distance = direction.Length();
                                 if (distance < m_subsystemSky.VisibilityRange) {
                                     Vector3 up = face < 4 ? Vector3.UnitY :
-                                        Math.Abs(direction.X) > Math.Abs(direction.Z) ? new Vector3((direction.X > 0 ? 1 : -1) * (direction.Y < 0 ? 1 : -1), 0, 0) : new Vector3(0, 0, (direction.Z > 0 ? 1 : -1) * (direction.Y < 0 ? 1 : -1));
+                                        Math.Abs(direction.X) > Math.Abs(direction.Z) ?
+                                            new Vector3((direction.X > 0 ? 1 : -1) * (direction.Y < 0 ? 1 : -1), 0, 0) :
+                                            new Vector3(0, 0, (direction.Z > 0 ? 1 : -1) * (direction.Y < 0 ? 1 : -1));
                                     Vector3 right = Vector3.Cross(forward, up);
                                     float size = 0.5f;
                                     if (subterrainId != 0) {
                                         Matrix orientation = transform.OrientationMatrix;
                                         right = Vector3.Normalize(Vector3.Transform(right, orientation));
                                         up = Vector3.Normalize(Vector3.Transform(up, orientation));
-                                        size *= MathF.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13);
+                                        size *= MathF.Sqrt(
+                                            transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13
+                                        );
                                     }
                                     SubsystemGV8NumberLedGlow.Draw8Number(
                                         batchCache,

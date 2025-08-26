@@ -5,7 +5,9 @@ namespace Game {
         public SubsystemGVTruthTableCircuitBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVTruthTableCircuitBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
+
+        public override int SetIdToValue(int value, int id) =>
+            Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
@@ -31,7 +33,13 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GVTruthTableData truthTableData = GetItemData(id, true);
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVTruthTableDialog(truthTableData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(truthTableData, id))); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVTruthTableDialog(
+                    truthTableData,
+                    () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(truthTableData, id))); }
+                )
+            );
             return true;
         }
     }

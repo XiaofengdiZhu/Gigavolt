@@ -26,15 +26,13 @@ namespace Game {
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) { }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneBlockMesh,
-                color,
-                2.5f * size,
-                ref matrix,
-                environmentData
-            );
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, 2.5f * size, ref matrix, environmentData);
         }
 
         public List<int> GetCustomWheelPanelValues(int centerValue) {

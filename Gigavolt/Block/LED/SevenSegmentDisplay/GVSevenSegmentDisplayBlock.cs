@@ -17,7 +17,10 @@ namespace Game {
             ModelMesh modelMesh = ContentManager.Get<Model>("Models/Gates").FindMesh("SevenSegmentDisplay");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(modelMesh.ParentBone);
             for (int i = 0; i < 4; i++) {
-                Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f)
+                    * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                    * Matrix.CreateRotationY(i * (float)Math.PI / 2f)
+                    * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                 m_blockMeshesByFace[i] = new BlockMesh();
                 m_blockMeshesByFace[i]
                 .AppendModelMeshPart(
@@ -80,7 +83,8 @@ namespace Game {
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
             int color = GetColor(data);
-            return LanguageControl.Get("LedBlock", color) + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
+            return LanguageControl.Get("LedBlock", color)
+                + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
         }
 
         public override IEnumerable<int> GetCreativeValues() {
@@ -92,7 +96,10 @@ namespace Game {
             }
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             BlockPlacementData result;
             if (raycastResult.CellFace.Face < 4) {
                 int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);
@@ -106,7 +113,12 @@ namespace Game {
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int color = GetColor(Terrain.ExtractData(oldValue));
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetColor(0, color)), Count = 1 });
             showDebris = true;
@@ -147,20 +159,34 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneBlockMesh,
-                color,
-                2f * size,
-                ref matrix,
-                environmentData
-            );
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, 2f * size, ref matrix, environmentData);
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new SevenSegmentDisplayGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new SevenSegmentDisplayGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(value)),
+            subterrainId
+        );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {

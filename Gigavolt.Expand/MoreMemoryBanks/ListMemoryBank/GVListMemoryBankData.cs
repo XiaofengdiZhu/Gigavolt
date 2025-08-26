@@ -76,7 +76,12 @@ namespace Game {
 
         public override IEditableItemData Copy() => Copy(GVStaticStorage.GetUniqueGVMBID());
 
-        public override IEditableItemData Copy(uint id) => new GVListMemoryBankData(id, m_worldDirectory, m_isDataInitialized ? new List<uint>(Data) : null, LastOutput);
+        public override IEditableItemData Copy(uint id) => new GVListMemoryBankData(
+            id,
+            m_worldDirectory,
+            m_isDataInitialized ? new List<uint>(Data) : null,
+            LastOutput
+        );
 
         public override void LoadData() {
             if (m_worldDirectory != null) {
@@ -203,7 +208,8 @@ namespace Game {
             return bytes;
         }
 
-        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) => m_isDataInitialized ? UintList2Bytes(Data, startIndex, length) : null;
+        public override byte[] Data2Bytes(int startIndex = 0, int length = int.MaxValue) =>
+            m_isDataInitialized ? UintList2Bytes(Data, startIndex, length) : null;
 
         public static short[] UintList2Shorts(List<uint> array) {
             short[] shorts = new short[array.Count * 2];
@@ -226,7 +232,9 @@ namespace Game {
 
         public static List<uint> String2UintList(string str, int maxCount = int.MaxValue) {
             string[] strings = str.Split(',');
-            return strings.Select(number => uint.Parse(number, NumberStyles.HexNumber, null)).ToList().GetRange(0, MathUtils.Min(strings.Length, maxCount));
+            return strings.Select(number => uint.Parse(number, NumberStyles.HexNumber, null))
+                .ToList()
+                .GetRange(0, MathUtils.Min(strings.Length, maxCount));
         }
 
         public override string Data2String() => m_isDataInitialized ? UintList2String(Data) : null;

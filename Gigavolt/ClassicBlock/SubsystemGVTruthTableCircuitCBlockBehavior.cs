@@ -5,7 +5,9 @@ namespace Game {
         public SubsystemGVTruthTableCircuitCBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVTruthTableCircuitCBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
+
+        public override int SetIdToValue(int value, int id) =>
+            Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {

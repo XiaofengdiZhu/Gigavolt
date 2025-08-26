@@ -117,6 +117,7 @@ namespace XamariNES.CPU {
         /// </summary>
         /// <param name="statusByte"></param>
         /// <returns></returns>
-        public string ToString(byte statusByte) => $"{(statusByte.IsBitSet(7) ? "N" : "n")}{(statusByte.IsBitSet(6) ? "O" : "o")}{(statusByte.IsBitSet(3) ? "D" : "d")}{(statusByte.IsBitSet(2) ? "I" : "i")}{(statusByte.IsBitSet(1) ? "Z" : "z")}{(statusByte.IsBitSet(0) ? "C" : "c")}";
+        public string ToString(byte statusByte) =>
+            $"{(statusByte.IsBitSet(7) ? "N" : "n")}{(statusByte.IsBitSet(6) ? "O" : "o")}{(statusByte.IsBitSet(3) ? "D" : "d")}{(statusByte.IsBitSet(2) ? "I" : "i")}{(statusByte.IsBitSet(1) ? "Z" : "z")}{(statusByte.IsBitSet(0) ? "C" : "c")}";
     }
 }

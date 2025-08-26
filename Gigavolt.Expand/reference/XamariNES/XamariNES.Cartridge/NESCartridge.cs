@@ -88,7 +88,9 @@ namespace XamariNES.Cartridge {
             }
 
             //Set Initial Mirroring Mode
-            _nametableMirroring = Flags6.IsFlagSet(Byte6Flags.VerticalMirroring) ? enumNametableMirroring.Vertical : enumNametableMirroring.Horizontal;
+            _nametableMirroring = Flags6.IsFlagSet(Byte6Flags.VerticalMirroring)
+                ? enumNametableMirroring.Vertical
+                : enumNametableMirroring.Horizontal;
 
             //Set Flags7
             Flags7 = ROM[7];
@@ -96,45 +98,18 @@ namespace XamariNES.Cartridge {
             //_prgRam = new byte[prgRAMSize];
 
             //Load PRG ROM
-            Array.Copy(
-                ROM,
-                prgROMOffset,
-                _prgRom,
-                0,
-                prgROMSize
-            );
+            Array.Copy(ROM, prgROMOffset, _prgRom, 0, prgROMSize);
 
             //Load CHR ROM
-            Array.Copy(
-                ROM,
-                prgROMOffset + prgROMSize,
-                _chrRom,
-                0,
-                chrROMSize
-            );
+            Array.Copy(ROM, prgROMOffset + prgROMSize, _chrRom, 0, chrROMSize);
 
             //Load Proper Mapper
             int mapperNumber = (Flags7 & 0xF0) | ((Flags6 >> 4) & 0xF);
             switch (mapperNumber) {
-                case 0:
-                    MemoryMapper = new NROM(_prgRom, _chrRom, _nametableMirroring);
-                    break;
-                case 1:
-                    MemoryMapper = new MMC1(
-                        _prgRomBanks,
-                        _chrRom,
-                        _prgRom,
-                        UsesCHRRAM,
-                        false,
-                        _nametableMirroring
-                    );
-                    break;
-                case 2:
-                    MemoryMapper = new UxROM(_prgRom, _prgRomBanks, _chrRom, _nametableMirroring);
-                    break;
-                case 3:
-                    MemoryMapper = new CNROM(_prgRom, _prgRomBanks, _chrRom, _nametableMirroring);
-                    break;
+                case 0: MemoryMapper = new NROM(_prgRom, _chrRom, _nametableMirroring); break;
+                case 1: MemoryMapper = new MMC1(_prgRomBanks, _chrRom, _prgRom, UsesCHRRAM, false, _nametableMirroring); break;
+                case 2: MemoryMapper = new UxROM(_prgRom, _prgRomBanks, _chrRom, _nametableMirroring); break;
+                case 3: MemoryMapper = new CNROM(_prgRom, _prgRomBanks, _chrRom, _nametableMirroring); break;
                 default: throw new Exception($"Unsupported Mapper: {mapperNumber}");
             }
             return true;

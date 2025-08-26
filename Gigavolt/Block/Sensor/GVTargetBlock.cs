@@ -6,7 +6,12 @@ namespace Game {
     public class GVTargetBlock : MountedGVElectricElementBlock {
         public const int Index = 860;
 
-        public readonly BoundingBox[][] m_boundingBoxes = [[new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.0625f))], [new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.0625f, 1f, 1f))], [new BoundingBox(new Vector3(0f, 0f, 0.9375f), new Vector3(1f, 1f, 1f))], [new BoundingBox(new Vector3(0.9375f, 0f, 0f), new Vector3(1f, 1f, 1f))]];
+        public readonly BoundingBox[][] m_boundingBoxes = [
+            [new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.0625f))],
+            [new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.0625f, 1f, 1f))],
+            [new BoundingBox(new Vector3(0f, 0f, 0.9375f), new Vector3(1f, 1f, 1f))],
+            [new BoundingBox(new Vector3(0.9375f, 0f, 0f), new Vector3(1f, 1f, 1f))]
+        ];
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value) {
             int mountingFace = GetMountingFace(Terrain.ExtractData(value));
@@ -17,12 +22,19 @@ namespace Game {
             return base.GetCustomCollisionBoxes(terrain, value);
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
             if (raycastResult.CellFace.Face < 4) {
                 result.CellFace = raycastResult.CellFace;
                 int data = Terrain.ExtractData(value);
-                result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetMountingFace(SetClassic(data, GetClassic(data)), raycastResult.CellFace.Face));
+                result.Value = Terrain.MakeBlockValue(
+                    BlockIndex,
+                    0,
+                    SetMountingFace(SetClassic(data, GetClassic(data)), raycastResult.CellFace.Face)
+                );
             }
             return result;
         }
@@ -245,7 +257,12 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawFlatOrImageExtrusionBlock(
                 primitivesRenderer,
                 value,
@@ -264,9 +281,26 @@ namespace Game {
 
         public override int GetFace(int value) => GetMountingFace(Terrain.ExtractData(value));
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new TargetGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId, GetClassic(Terrain.ExtractData(value)));
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new TargetGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(value)),
+            subterrainId,
+            GetClassic(Terrain.ExtractData(value))
+        );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {
@@ -275,8 +309,16 @@ namespace Game {
             return null;
         }
 
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDisplayName" : "DisplayName");
-        public override string GetDescription(int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDescription" : "Description");
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(
+            GetType().Name,
+            GetClassic(Terrain.ExtractData(value)) ? "ClassicDisplayName" : "DisplayName"
+        );
+
+        public override string GetDescription(int value) => LanguageControl.Get(
+            GetType().Name,
+            GetClassic(Terrain.ExtractData(value)) ? "ClassicDescription" : "Description"
+        );
+
         public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
         public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 37 : 21;
         public override IEnumerable<int> GetCreativeValues() => [BlockIndex, Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(0, true))];

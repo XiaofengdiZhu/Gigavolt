@@ -2880,7 +2880,6 @@ namespace XamariNES.CPU {
             }
         }
 
-
         /// <summary>
         ///     Ticks the CPU for the specified number of instructions
         /// </summary>
@@ -3664,7 +3663,6 @@ namespace XamariNES.CPU {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void STA() => CPUMemory.WriteByte(ResolveAddress(), A);
 
-
         /// <summary>
         ///     STX - Store Accumulator
         ///     M = X
@@ -3673,7 +3671,6 @@ namespace XamariNES.CPU {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void STX() => CPUMemory.WriteByte(ResolveAddress(), X);
 
-
         /// <summary>
         ///     STY - Store Accumulator
         ///     M = Y
@@ -3681,7 +3678,6 @@ namespace XamariNES.CPU {
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void STY() => CPUMemory.WriteByte(ResolveAddress(), Y);
-
 
         /// <summary>
         ///     TAX - Transfer Accumulator to X

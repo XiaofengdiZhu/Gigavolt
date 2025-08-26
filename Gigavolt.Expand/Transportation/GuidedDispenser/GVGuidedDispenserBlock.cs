@@ -31,7 +31,12 @@ namespace Game {
             );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawCubeBlock(
                 primitivesRenderer,
                 value,
@@ -45,7 +50,10 @@ namespace Game {
             );
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             float num = Vector3.Dot(forward, Vector3.UnitZ);
             float num2 = Vector3.Dot(forward, Vector3.UnitX);
@@ -96,9 +104,21 @@ namespace Game {
 
         public static int SetAcceptsDrops(int data, bool acceptsDrops) => (data & -17) | (acceptsDrops ? 16 : 0);
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new GuidedDispenserGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new GuidedDispenserGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) => GVElectricConnectorType.Input;
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) => GVElectricConnectorType.Input;
 
         public int GetConnectionMask(int value) => int.MaxValue;
 
@@ -107,7 +127,9 @@ namespace Game {
             return false;
         }
 
-        public Func<int, RecipaediaDescriptionScreen> GetBlockDescriptionScreenHandler { get; set; } = _ => IGVBaseBlock.DefaultRecipaediaDescriptionScreen;
+        public Func<int, RecipaediaDescriptionScreen> GetBlockDescriptionScreenHandler { get; set; } =
+            _ => IGVBaseBlock.DefaultRecipaediaDescriptionScreen;
+
         public override RecipaediaDescriptionScreen GetBlockDescriptionScreen(int value) => GetBlockDescriptionScreenHandler(value);
     }
 }

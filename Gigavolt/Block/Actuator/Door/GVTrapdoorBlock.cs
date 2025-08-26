@@ -53,7 +53,12 @@ namespace Game {
             );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh[GetModel(Terrain.ExtractData(value))],
@@ -64,7 +69,10 @@ namespace Game {
             );
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             int rotation;
             bool upsideDown;
             if (raycastResult.CellFace.Face < 4) {
@@ -101,10 +109,19 @@ namespace Game {
 
         public override bool IsHeatBlocker(int value) => GetOpen(Terrain.ExtractData(value)) >= 90;
 
-        public override IEnumerable<int> GetCreativeValues() => [Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, 1))];
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetModel(Terrain.ExtractData(value)));
+        public override IEnumerable<int> GetCreativeValues() => [
+            Terrain.MakeBlockValue(BlockIndex, 0, 0), Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, 1))
+        ];
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) =>
+            LanguageControl.Get(GetType().Name, GetModel(Terrain.ExtractData(value)));
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             int model = GetModel(Terrain.ExtractData(oldValue));
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetModel(0, model)), Count = 1 });
             showDebris = true;
@@ -166,12 +183,24 @@ namespace Game {
             };
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) {
             int data = Terrain.ExtractData(value);
             return new TrapDoorGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetMountingFace(data)), subterrainId);
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (face == GetMountingFace(data)) {
                 int rotation = GetRotation(data);
@@ -225,7 +254,9 @@ namespace Game {
             bool upsideDown = GetUpsideDown(data);
             int model = GetModel(data);
             Matrix identity = Matrix.Identity;
-            identity *= Matrix.CreateTranslation(0f, -0.0625f, 0.4375f) * Matrix.CreateRotationX(open > 0 ? -MathUtils.DegToRad(open) : 0f) * Matrix.CreateTranslation(0f, 0.0625f, -0.4375f);
+            identity *= Matrix.CreateTranslation(0f, -0.0625f, 0.4375f)
+                * Matrix.CreateRotationX(open > 0 ? -MathUtils.DegToRad(open) : 0f)
+                * Matrix.CreateTranslation(0f, 0.0625f, -0.4375f);
             identity *= Matrix.CreateRotationZ(upsideDown ? (float)Math.PI : 0f);
             identity *= Matrix.CreateRotationY(rotation * (float)Math.PI / 2f);
             identity *= Matrix.CreateTranslation(new Vector3(0.5f, upsideDown ? 1 : 0, 0.5f));

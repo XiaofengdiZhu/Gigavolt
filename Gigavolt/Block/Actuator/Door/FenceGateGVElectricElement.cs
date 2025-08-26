@@ -7,7 +7,11 @@ namespace Game {
 
         public uint m_voltage;
 
-        public FenceGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public FenceGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystem = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVFenceGateBlockBehavior>(true);
             m_lastChangeCircuitStep = SubsystemGVElectricity.CircuitStep;
             m_needsReset = true;
@@ -24,13 +28,7 @@ namespace Game {
             }
             if (m_voltage != voltage) {
                 GVCellFace cellFace = CellFaces[0];
-                m_subsystem.OpenGate(
-                    cellFace.X,
-                    cellFace.Y,
-                    cellFace.Z,
-                    SubterrainId,
-                    MathUint.ToIntWithClamp(m_voltage)
-                );
+                m_subsystem.OpenGate(cellFace.X, cellFace.Y, cellFace.Z, SubterrainId, MathUint.ToIntWithClamp(m_voltage));
             }
             return false;
         }

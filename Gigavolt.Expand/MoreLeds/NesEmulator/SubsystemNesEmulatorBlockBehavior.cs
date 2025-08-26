@@ -20,7 +20,10 @@ namespace Game {
         public readonly bool RomValid;
 
         public SubsystemNesEmulatorBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVNesEmulatorBlock>()) {
-            _emu = new NESEmulator(GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.MoreLeds.NesEmulator.nestest.nes")), GetFrameFromEmulator);
+            _emu = new NESEmulator(
+                GetByteFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.MoreLeds.NesEmulator.nestest.nes")),
+                GetFrameFromEmulator
+            );
             RomValid = true;
             _renderer = new BitmapRenderer();
         }
@@ -47,7 +50,10 @@ namespace Game {
                 return false;
             }
             EditGVNesEmulatorDialogData Data = GetBlockData(new Point3(-875)) ?? new EditGVNesEmulatorDialogData();
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVNesEmulatorDialog(Data, this, delegate { SetBlockData(new Point3(-875), Data); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVNesEmulatorDialog(Data, this, delegate { SetBlockData(new Point3(-875), Data); })
+            );
             return true;
         }
 
@@ -62,13 +68,7 @@ namespace Game {
                         SetBlockData(new Point3(-875), Data);
                         int face = GVBlocksManager.GetBlock<GVNesEmulatorBlock>().GetFace(value);
                         SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(
-                            x,
-                            y,
-                            z,
-                            face,
-                            0
-                        );
+                        GVElectricElement GVElectricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, face, 0);
                         if (GVElectricElement != null) {
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(GVElectricElement, subsystemGVElectricity.CircuitStep + 1);
                         }
@@ -192,8 +192,7 @@ namespace Game {
                                             new Vector2(0f, 1f),
                                             new Vector2(0f, 0f),
                                             Color.White
-                                        );
-                                        break;
+                                        ); break;
                                     case 2:
                                         cachedBatch.QueueQuad(
                                             p,
@@ -205,8 +204,7 @@ namespace Game {
                                             new Vector2(1f, 1f),
                                             new Vector2(0f, 1f),
                                             Color.White
-                                        );
-                                        break;
+                                        ); break;
                                     case 3:
                                         cachedBatch.QueueQuad(
                                             p,
@@ -218,8 +216,7 @@ namespace Game {
                                             new Vector2(1f, 0f),
                                             new Vector2(1f, 1f),
                                             Color.White
-                                        );
-                                        break;
+                                        ); break;
                                     default:
                                         cachedBatch.QueueQuad(
                                             p,
@@ -231,8 +228,7 @@ namespace Game {
                                             new Vector2(0f, 0f),
                                             new Vector2(1f, 0f),
                                             Color.White
-                                        );
-                                        break;
+                                        ); break;
                                 }
                             }
                         }

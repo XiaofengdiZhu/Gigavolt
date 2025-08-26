@@ -14,14 +14,7 @@ namespace Game {
             m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
         }
 
-        public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) => OnBlockAdded(
-            value,
-            oldValue,
-            x,
-            y,
-            z,
-            null
-        );
+        public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) => OnBlockAdded(value, oldValue, x, y, z, null);
 
         public void OnBlockAdded(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) {
             Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
@@ -36,10 +29,28 @@ namespace Game {
                     if ((block.IsCollidable_(faceValue) && !block.IsFaceTransparent(SubsystemTerrain, face, faceValue))
                         || (face == 4 && block is FenceBlock)) {
                         if (system == null) {
-                            SubsystemTerrain.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<GVSwitchCabinetBlock>(), 0, GVSwitchCabinetBlock.SetIsTopPart(data, true)));
+                            SubsystemTerrain.ChangeCell(
+                                up.X,
+                                up.Y,
+                                up.Z,
+                                Terrain.MakeBlockValue(
+                                    GVBlocksManager.GetBlockIndex<GVSwitchCabinetBlock>(),
+                                    0,
+                                    GVSwitchCabinetBlock.SetIsTopPart(data, true)
+                                )
+                            );
                         }
                         else {
-                            system.ChangeCell(up.X, up.Y, up.Z, Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<GVSwitchCabinetBlock>(), 0, GVSwitchCabinetBlock.SetIsTopPart(data, true)));
+                            system.ChangeCell(
+                                up.X,
+                                up.Y,
+                                up.Z,
+                                Terrain.MakeBlockValue(
+                                    GVBlocksManager.GetBlockIndex<GVSwitchCabinetBlock>(),
+                                    0,
+                                    GVSwitchCabinetBlock.SetIsTopPart(data, true)
+                                )
+                            );
                         }
                         return;
                     }
@@ -69,14 +80,7 @@ namespace Game {
             }
         }
 
-        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(
-            value,
-            newValue,
-            x,
-            y,
-            z,
-            null
-        );
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(value, newValue, x, y, z, null);
 
         public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
             int data = Terrain.ExtractData(value);
@@ -85,7 +89,9 @@ namespace Game {
             bool isUp = GVSwitchCabinetBlock.GetIsTopPart(data);
             Point3 origin = new(x, y, z);
             Point3 another = origin + upDirection * (isUp ? -1 : 1);
-            int anotherData = Terrain.ExtractData((system == null ? SubsystemTerrain.Terrain : system.Terrain).GetCellValue(another.X, another.Y, another.Z));
+            int anotherData = Terrain.ExtractData(
+                (system == null ? SubsystemTerrain.Terrain : system.Terrain).GetCellValue(another.X, another.Y, another.Z)
+            );
             if (GVSwitchCabinetBlock.GetIsTopPart(anotherData) != isUp
                 && GVSwitchCabinetBlock.GetFaceFromDataStatic(anotherData) == face) {
                 if (system == null) {
@@ -113,29 +119,26 @@ namespace Game {
             int anotherData = Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(another.X, another.Y, another.Z));
             if (GVSwitchCabinetBlock.GetIsTopPart(anotherData) != isUp
                 && GVSwitchCabinetBlock.GetFaceFromDataStatic(anotherData) == face) {
-                if (m_subsystemGVElectricity.GetGVElectricElement(
+                if (m_subsystemGVElectricity.GetGVElectricElement(origin.X, origin.Y, origin.Z, face, 0, 1 << color) is SwitchCabinetGVElectricElement
+                    element) {
+                    bool newLeverState = !GVSwitchCabinetBlock.GetLeverState(data, color);
+                    element.m_on = newLeverState;
+                    SubsystemTerrain.ChangeCell(
                         origin.X,
                         origin.Y,
                         origin.Z,
-                        face,
-                        0,
-                        1 << color
-                    ) is SwitchCabinetGVElectricElement element) {
-                    bool newLeverState = !GVSwitchCabinetBlock.GetLeverState(data, color);
-                    element.m_on = newLeverState;
-                    SubsystemTerrain.ChangeCell(origin.X, origin.Y, origin.Z, Terrain.MakeBlockValue(contents, 0, GVSwitchCabinetBlock.SetLeverState(data, color, newLeverState)));
-                    SubsystemTerrain.ChangeCell(another.X, another.Y, another.Z, Terrain.MakeBlockValue(contents, 0, GVSwitchCabinetBlock.SetLeverState(anotherData, color, newLeverState)));
+                        Terrain.MakeBlockValue(contents, 0, GVSwitchCabinetBlock.SetLeverState(data, color, newLeverState))
+                    );
+                    SubsystemTerrain.ChangeCell(
+                        another.X,
+                        another.Y,
+                        another.Z,
+                        Terrain.MakeBlockValue(contents, 0, GVSwitchCabinetBlock.SetLeverState(anotherData, color, newLeverState))
+                    );
                     SubsystemTerrain.Terrain.GetChunkAtCell(origin.X, origin.Z).GeneratedSliceContentsHashes[origin.Y / 16] = 0;
                     SubsystemTerrain.Terrain.GetChunkAtCell(another.X, another.Z).GeneratedSliceContentsHashes[another.Y / 16] = 0;
                     m_subsystemGVElectricity.QueueGVElectricElementForSimulation(element, m_subsystemGVElectricity.CircuitStep + 1);
-                    m_subsystemAudio.PlaySound(
-                        "Audio/Click",
-                        1f,
-                        0f,
-                        raycastResult.HitPoint(),
-                        2f,
-                        true
-                    );
+                    m_subsystemAudio.PlaySound("Audio/Click", 1f, 0f, raycastResult.HitPoint(), 2f, true);
                 }
             }
             return true;

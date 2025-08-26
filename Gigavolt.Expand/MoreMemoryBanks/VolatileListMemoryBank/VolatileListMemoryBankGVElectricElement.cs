@@ -10,7 +10,10 @@ namespace Game {
         public uint m_voltage;
         public uint m_lastBottomInput;
 
-        public VolatileListMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public VolatileListMemoryBankGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            GVCellFace cellFace,
+            int value,
+            uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
             m_SubsystemGVMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileListMemoryBankBlockBehavior>(true);
             m_data = m_SubsystemGVMemoryBankBlockBehavior.GetItemData(m_SubsystemGVMemoryBankBlockBehavior.GetIdFromValue(value));
         }
@@ -31,7 +34,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Right:
@@ -73,9 +77,7 @@ namespace Game {
                         int inInputInt = MathUint.ToIntWithClamp(inInput);
                         List<uint> data = m_data.Data;
                         switch (bottomInput) {
-                            case 1u:
-                                m_voltage = m_data.Read(rightInput);
-                                break;
+                            case 1u: m_voltage = m_data.Read(rightInput); break;
                             case 2u:
                                 for (uint i = bigIndex; i >= smallIndex; i--) {
                                     m_data.Write(i, inInput);
@@ -110,12 +112,20 @@ namespace Game {
                                 break;
                             case 6u:
                                 if (smallIndexInt < data.Count) {
-                                    m_voltage = (uint)data.IndexOf(inInput, smallIndexInt, Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt));
+                                    m_voltage = (uint)data.IndexOf(
+                                        inInput,
+                                        smallIndexInt,
+                                        Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt)
+                                    );
                                 }
                                 break;
                             case 7u:
                                 if (smallIndexInt < data.Count) {
-                                    m_voltage = (uint)data.LastIndexOf(inInput, smallIndexInt, Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt));
+                                    m_voltage = (uint)data.LastIndexOf(
+                                        inInput,
+                                        smallIndexInt,
+                                        Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt)
+                                    );
                                 }
                                 break;
                             case 8u:
@@ -125,12 +135,8 @@ namespace Game {
                                     m_voltage = (uint)(m_data.Data.Count - oldCount);
                                 }
                                 break;
-                            case 9u:
-                                m_voltage = (uint)data.Where((u, i) => i >= smallIndex && i <= bigIndexInt && u == inInput).Count();
-                                break;
-                            case 10u:
-                                m_data.Write(leftInput, m_data.Read(rightInput));
-                                break;
+                            case 9u: m_voltage = (uint)data.Where((u, i) => i >= smallIndex && i <= bigIndexInt && u == inInput).Count(); break;
+                            case 10u: m_data.Write(leftInput, m_data.Read(rightInput)); break;
                             case 11u: {
                                 uint temp = m_data.Read(rightInput);
                                 if (leftInputInt < m_data.Data.Count) {
@@ -154,17 +160,23 @@ namespace Game {
                                 break;
                             case 13u:
                                 if (smallIndexInt < data.Count) {
-                                    data.Sort(smallIndexInt, Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt), new UintComparer());
+                                    data.Sort(
+                                        smallIndexInt,
+                                        Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt),
+                                        new UintComparer()
+                                    );
                                 }
                                 break;
                             case 14u:
                                 if (smallIndexInt < data.Count) {
-                                    data.Sort(smallIndexInt, Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt), new UintDecComparer());
+                                    data.Sort(
+                                        smallIndexInt,
+                                        Math.Min(bigIndexInt - smallIndexInt + 1, data.Count - smallIndexInt),
+                                        new UintDecComparer()
+                                    );
                                 }
                                 break;
-                            case 15u:
-                                m_voltage = (uint)data.Count;
-                                break;
+                            case 15u: m_voltage = (uint)data.Count; break;
                             case 16u:
                             case 32u:
                                 for (uint i = smallIndex; i < bigIndex; i++) {
@@ -415,15 +427,9 @@ namespace Game {
                                 m_data.m_offset = inInput;
                                 m_data.m_updateTime = DateTime.Now;
                                 break;
-                            case 272u:
-                                m_voltage = m_data.m_width;
-                                break;
-                            case 273u:
-                                m_voltage = m_data.m_height;
-                                break;
-                            case 274u:
-                                m_voltage = m_data.m_offset;
-                                break;
+                            case 272u: m_voltage = m_data.m_width; break;
+                            case 273u: m_voltage = m_data.m_height; break;
+                            case 274u: m_voltage = m_data.m_offset; break;
                         }
                     }
                 }

@@ -66,7 +66,11 @@ namespace Game {
             "HandClap"
         ];
 
-        public SoundGeneratorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public SoundGeneratorGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemNoise = subsystemGVElectricity.Project.FindSubsystem<SubsystemNoise>(true);
             m_subsystemParticles = subsystemGVElectricity.Project.FindSubsystem<SubsystemParticles>(true);
             Vector3 vector = CellFace.FaceToVector3(cellFace.Face);
@@ -84,7 +88,8 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection.Value == GVElectricConnectorDirection.In
                             || connectorDirection.Value == GVElectricConnectorDirection.Bottom) {
@@ -137,19 +142,13 @@ namespace Game {
                         Matrix transform = m_subterrainSystem.GlobalTransform;
                         position = Vector3.Transform(position, transform);
                         m_particleSystem.m_position = position;
-                        m_particleSystem.m_direction = Vector3.Normalize(Vector3.Transform(m_particleSystem.m_direction, transform.OrientationMatrix));
+                        m_particleSystem.m_direction =
+                            Vector3.Normalize(Vector3.Transform(m_particleSystem.m_direction, transform.OrientationMatrix));
                     }
                     float volume = num2 / 15f;
                     float pitch = Math.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);
                     float minDistance = 0.5f + 5f * num2 / 15f;
-                    SubsystemGVElectricity.SubsystemAudio.PlaySound(
-                        text2,
-                        volume,
-                        pitch,
-                        position,
-                        minDistance,
-                        true
-                    );
+                    SubsystemGVElectricity.SubsystemAudio.PlaySound(text2, volume, pitch, position, minDistance, true);
                     float loudness = num2 < 8 ? 0.25f : 0.5f;
                     float range = MathUtils.Lerp(2f, 20f, num2 / 15f);
                     m_subsystemNoise.MakeNoise(position, loudness, range);

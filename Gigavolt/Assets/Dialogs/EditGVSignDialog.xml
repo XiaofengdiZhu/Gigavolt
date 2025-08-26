@@ -1,61 +1,61 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-	<CanvasWidget Size="600, 420" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<BevelledRectangleWidget Style="{Styles/DialogArea}"/>
-		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" Margin="10, 0" IsVisible="true">
-			<StackPanelWidget Name="EditGVSignDialog.LinesPage" Direction="Vertical">
-				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-					<LabelWidget Text="[EditGVSignDialog:1]" HorizontalAlignment="Center" Margin="0, 15"/>
-				</StackPanelWidget>
-				<CanvasWidget Size="Infinity, Infinity">
-					<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-						<StackPanelWidget Margin="0, 4">
-							<CanvasWidget Size="70, 50" VerticalAlignment="Center">
-								<LabelWidget Text="[EditGVSignDialog:2]" VerticalAlignment="Center" Color="128, 128, 128"/>
-							</CanvasWidget>
-							<CanvasWidget Size="360, 50" VerticalAlignment="Center">
-								<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128"/>
-								<TextBoxWidget Name="EditGVSignDialog.TextBox1" Title="输入行 1" Size="360, 50" Description="" VerticalAlignment="Center" MaximumLength="16" Margin="10, 0"/>
-							</CanvasWidget>
-							<BevelledButtonWidget Name="EditGVSignDialog.ColorButton1" Style="{Styles/ButtonStyle_ColorPicker}" Margin="20, 0" VerticalAlignment="Center"/>
-						</StackPanelWidget>
-						<StackPanelWidget Name="EditGVSignDialog.ConvertedStackPanel" IsVisible="false" Margin="0, 4">
-							<CanvasWidget Size="150, 50" VerticalAlignment="Center">
-								<LabelWidget Text="[EditGVSignDialog:3]" VerticalAlignment="Center" Color="128, 128, 128"/>
-							</CanvasWidget>
-							<CanvasWidget Size="280, 50" VerticalAlignment="Center">
-								<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128"/>
-								<TextBoxWidget Name="EditGVSignDialog.ConvertedTextBox" Size="280, 50" Description="" VerticalAlignment="Center" Margin="10, 0"/>
-							</CanvasWidget>
-							<BitmapButtonWidget Name="EditGVSignDialog.CopyButton" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="20, 0"/>
-						</StackPanelWidget>
-					</StackPanelWidget>
-				</CanvasWidget>
-			</StackPanelWidget>
-			<StackPanelWidget Name="EditGVSignDialog.UrlPage" Direction="Vertical" IsVisible="false">
-				<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 15">
-					<LabelWidget Text="[EditGVSignDialog:6]" HorizontalAlignment="Center"/>
-					<LabelWidget Text="[EditGVSignDialog:7]" Color="128, 128, 128" HorizontalAlignment="Center" Margin="0, 0"/>
-					<LabelWidget Text="[EditGVSignDialog:8]" Color="128, 128, 128" HorizontalAlignment="Center" Margin="0, 0"/>
-				</StackPanelWidget>
-				<CanvasWidget Size="Infinity, Infinity">
-					<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-						<StackPanelWidget Margin="0, 10">
-							<CanvasWidget Size="480, 50" VerticalAlignment="Center">
-								<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128"/>
-								<TextBoxWidget Name="EditGVSignDialog.UrlTextBox" Title="输入Url" Size="480, 50" Description="" VerticalAlignment="Center" MaximumLength="256" Margin="10, 0"/>
-							</CanvasWidget>
-						</StackPanelWidget>
-						<BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" VerticalAlignment="Center" Name="EditGVSignDialog.UrlTestButton" Text="[EditGVSignDialog:9]" Margin="0, 10"/>
-					</StackPanelWidget>
-				</CanvasWidget>
-			</StackPanelWidget>
-			<BevelledButtonWidget Style="{Styles/ButtonStyle_310x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.ConvertButton" Text="[EditGVSignDialog:4]"/>
-			<UniformSpacingPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10, 15">
-				<BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.OkButton" Text="[EditGVSignDialog:10]"/>
-				<BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.UrlButton" Text="[EditGVSignDialog:11]"/>
-				<BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.LinesButton" Text="[EditGVSignDialog:12]"/>
-				<BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.CancelButton" Text="[EditGVSignDialog:13]"/>
-			</UniformSpacingPanelWidget>
-		</StackPanelWidget>
-	</CanvasWidget>
+  <CanvasWidget Size="600, 420" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <BevelledRectangleWidget Style="{Styles/DialogArea}"/>
+    <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" Margin="10, 0" IsVisible="true">
+      <StackPanelWidget Name="EditGVSignDialog.LinesPage" Direction="Vertical">
+        <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <LabelWidget Text="[EditGVSignDialog:1]" HorizontalAlignment="Center" Margin="0, 15"/>
+        </StackPanelWidget>
+        <CanvasWidget Size="Infinity, Infinity">
+          <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanelWidget Margin="0, 4">
+              <CanvasWidget Size="70, 50" VerticalAlignment="Center">
+                <LabelWidget Text="[EditGVSignDialog:2]" VerticalAlignment="Center" Color="128, 128, 128"/>
+              </CanvasWidget>
+              <CanvasWidget Size="360, 50" VerticalAlignment="Center">
+                <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128"/>
+                <TextBoxWidget Name="EditGVSignDialog.TextBox1" Title="输入行 1" Size="360, 50" Description="" VerticalAlignment="Center" MaximumLength="16" Margin="10, 0"/>
+              </CanvasWidget>
+              <BevelledButtonWidget Name="EditGVSignDialog.ColorButton1" Style="{Styles/ButtonStyle_ColorPicker}" Margin="20, 0" VerticalAlignment="Center"/>
+            </StackPanelWidget>
+            <StackPanelWidget Name="EditGVSignDialog.ConvertedStackPanel" IsVisible="false" Margin="0, 4">
+              <CanvasWidget Size="150, 50" VerticalAlignment="Center">
+                <LabelWidget Text="[EditGVSignDialog:3]" VerticalAlignment="Center" Color="128, 128, 128"/>
+              </CanvasWidget>
+              <CanvasWidget Size="280, 50" VerticalAlignment="Center">
+                <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128"/>
+                <TextBoxWidget Name="EditGVSignDialog.ConvertedTextBox" Size="280, 50" Description="" VerticalAlignment="Center" Margin="10, 0"/>
+              </CanvasWidget>
+              <BitmapButtonWidget Name="EditGVSignDialog.CopyButton" Size="16, 18" VerticalAlignment="Center" NormalSubtexture="{Textures/Gui/GVCopy}" ClickedSubtexture="{Textures/Gui/GVCopy}" Margin="20, 0"/>
+            </StackPanelWidget>
+          </StackPanelWidget>
+        </CanvasWidget>
+      </StackPanelWidget>
+      <StackPanelWidget Name="EditGVSignDialog.UrlPage" Direction="Vertical" IsVisible="false">
+        <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 15">
+          <LabelWidget Text="[EditGVSignDialog:6]" HorizontalAlignment="Center"/>
+          <LabelWidget Text="[EditGVSignDialog:7]" Color="128, 128, 128" HorizontalAlignment="Center" Margin="0, 0"/>
+          <LabelWidget Text="[EditGVSignDialog:8]" Color="128, 128, 128" HorizontalAlignment="Center" Margin="0, 0"/>
+        </StackPanelWidget>
+        <CanvasWidget Size="Infinity, Infinity">
+          <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanelWidget Margin="0, 10">
+              <CanvasWidget Size="480, 50" VerticalAlignment="Center">
+                <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128"/>
+                <TextBoxWidget Name="EditGVSignDialog.UrlTextBox" Title="输入Url" Size="480, 50" Description="" VerticalAlignment="Center" MaximumLength="256" Margin="10, 0"/>
+              </CanvasWidget>
+            </StackPanelWidget>
+            <BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" VerticalAlignment="Center" Name="EditGVSignDialog.UrlTestButton" Text="[EditGVSignDialog:9]" Margin="0, 10"/>
+          </StackPanelWidget>
+        </CanvasWidget>
+      </StackPanelWidget>
+      <BevelledButtonWidget Style="{Styles/ButtonStyle_310x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.ConvertButton" Text="[EditGVSignDialog:4]"/>
+      <UniformSpacingPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10, 15">
+        <BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.OkButton" Text="[EditGVSignDialog:10]"/>
+        <BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.UrlButton" Text="[EditGVSignDialog:11]"/>
+        <BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.LinesButton" Text="[EditGVSignDialog:12]"/>
+        <BevelledButtonWidget Style="{Styles/ButtonStyle_160x60}" HorizontalAlignment="Center" Name="EditGVSignDialog.CancelButton" Text="[EditGVSignDialog:13]"/>
+      </UniformSpacingPanelWidget>
+    </StackPanelWidget>
+  </CanvasWidget>
 </CanvasWidget>

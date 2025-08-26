@@ -2,8 +2,17 @@ using Engine;
 
 namespace Game {
     public abstract class MountedGVElectricElement : GVElectricElement {
-        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
-        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace[] cellFaces, uint subterrainId) : base(subsystemGVElectricity, cellFaces, subterrainId) { }
+        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) { }
+
+        public MountedGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace[] cellFaces, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFaces,
+            subterrainId
+        ) { }
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ) {
             Point3 point = CellFace.FaceToPoint3(cellFace.Face);

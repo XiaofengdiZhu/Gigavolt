@@ -14,7 +14,10 @@ namespace Game {
             return 59;
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             float num = Vector3.Dot(forward, Vector3.UnitZ);
             float num2 = Vector3.Dot(forward, Vector3.UnitX);
@@ -65,9 +68,21 @@ namespace Game {
 
         public static int SetAcceptsDrops(int data, bool acceptsDrops) => (data & -17) | (acceptsDrops ? 16 : 0);
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new DispenserGVCElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new DispenserGVCElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) => GVElectricConnectorType.Input;
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) => GVElectricConnectorType.Input;
 
         public int GetConnectionMask(int value) => int.MaxValue;
     }

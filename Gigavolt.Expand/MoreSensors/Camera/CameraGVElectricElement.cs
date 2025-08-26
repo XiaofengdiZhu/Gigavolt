@@ -49,7 +49,11 @@ namespace Game {
             -Vector3.UnitX
         ];
 
-        public CameraGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public CameraGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemDrawing = SubsystemGVElectricity.Project.FindSubsystem<SubsystemDrawing>(true);
             m_subsystemGameWidgets = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGameWidgets>(true);
             m_subsystemTerrain = SubsystemGVElectricity.SubsystemTerrain;
@@ -62,7 +66,9 @@ namespace Game {
 
         public override void OnAdded() {
             GVCellFace cellFace = CellFaces[0];
-            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            int data = Terrain.ExtractData(
+                SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)
+            );
             m_mountingFace = cellFace.Face;
             m_lastRotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_complex = GVDisplayLedBlock.GetComplex(data);
@@ -89,7 +95,12 @@ namespace Game {
             else {
                 m_camera.SetupPerspectiveCamera(originalPosition, forward, m_upVector3[m_mountingFace * 4 + m_lastRotation]);
             }
-            m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, originalPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
+            m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(
+                m_gameWidget.PlayerData.PlayerIndex,
+                originalPosition.XZ,
+                MathUtils.Min(m_subsystemSky.VisibilityRange, 64f),
+                0f
+            );
         }
 
         public override void OnRemoved() {
@@ -118,7 +129,11 @@ namespace Game {
                 foreach (GVElectricConnection connection in Connections) {
                     if (connection.ConnectorType != GVElectricConnectorType.Output
                         && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
-                        GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, electricRotation, connection.ConnectorFace);
+                        GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(
+                            CellFaces[0].Face,
+                            electricRotation,
+                            connection.ConnectorFace
+                        );
                         if (connectorDirection.HasValue) {
                             if (connectorDirection.Value == GVElectricConnectorDirection.In) {
                                 m_inputIn = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
@@ -159,7 +174,11 @@ namespace Game {
                 }
                 if (m_inputBottom != lastInputBottom) {
                     changed = true;
-                    Quaternion quaternion = Quaternion.CreateFromYawPitchRoll((m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f), ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f), ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f));
+                    Quaternion quaternion = Quaternion.CreateFromYawPitchRoll(
+                        (m_inputBottom & 0xFFu) * 0.017453292f * (((m_inputBottom >> 26) & 1u) == 1u ? -1f : 1f),
+                        ((m_inputBottom >> 8) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 25) & 1u) == 1u ? -1f : 1f),
+                        ((m_inputBottom >> 16) & 0xFFu) * 0.017453292f * (((m_inputBottom >> 24) & 1u) == 1u ? -1f : 1f)
+                    );
                     newViewDirection = quaternion.GetForwardVector();
                     newViewUp = quaternion.GetUpVector();
                 }
@@ -173,7 +192,12 @@ namespace Game {
                         newViewUp = Vector3.Transform(newViewUp, orientation);
                     }
                     m_camera.SetupPerspectiveCamera(newViewPosition, newViewDirection, newViewUp);
-                    m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, newViewPosition.XZ, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
+                    m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(
+                        m_gameWidget.PlayerData.PlayerIndex,
+                        newViewPosition.XZ,
+                        MathUtils.Min(m_subsystemSky.VisibilityRange, 64f),
+                        0f
+                    );
                 }
             }
             else {

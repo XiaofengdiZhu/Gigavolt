@@ -3,13 +3,7 @@ using Engine;
 
 namespace Game {
     public class JavascriptMicrocontrollerGVElectricElement : RotateableGVElectricElement {
-        public static readonly uint[] DefaultOutputs = [
-            0,
-            0,
-            0,
-            0,
-            0
-        ];
+        public static readonly uint[] DefaultOutputs = [0, 0, 0, 0, 0];
 
         public uint[] m_inputs = (uint[])DefaultOutputs.Clone();
         public uint[] m_outputs = (uint[])DefaultOutputs.Clone();
@@ -17,9 +11,15 @@ namespace Game {
         public readonly SubsystemGVJavascriptMicrocontrollerBlockBehavior m_subsystemJavascriptMicrocontrollerBlockBehavior;
         public int m_executeAgainCircuitStep = -1;
 
-        public JavascriptMicrocontrollerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
-            m_subsystemJavascriptMicrocontrollerBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
-            m_blockData = m_subsystemJavascriptMicrocontrollerBlockBehavior.GetItemData(m_subsystemJavascriptMicrocontrollerBlockBehavior.GetIdFromValue(value));
+        public JavascriptMicrocontrollerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            GVCellFace cellFace,
+            int value,
+            uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+            m_subsystemJavascriptMicrocontrollerBlockBehavior =
+                subsystemGVElectricity.Project.FindSubsystem<SubsystemGVJavascriptMicrocontrollerBlockBehavior>(true);
+            m_blockData = m_subsystemJavascriptMicrocontrollerBlockBehavior.GetItemData(
+                m_subsystemJavascriptMicrocontrollerBlockBehavior.GetIdFromValue(value)
+            );
         }
 
         public override uint GetOutputVoltage(int face) {
@@ -45,9 +45,11 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
-                        m_inputs[(int)connectorDirection.Value] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        m_inputs[(int)connectorDirection.Value] =
+                            connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                     }
                 }
             }
@@ -67,7 +69,12 @@ namespace Game {
                 if (SubterrainId == 0) {
                     TerrainChunk chunkAtCell = SubsystemGVElectricity.SubsystemTerrain.Terrain.GetChunkAtCell(point.X, point.Z);
                     ++chunkAtCell.ModificationCounter;
-                    SubsystemGVElectricity.SubsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, true);
+                    SubsystemGVElectricity.SubsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(
+                        chunkAtCell.Coords,
+                        1,
+                        TerrainChunkState.InvalidLight,
+                        true
+                    );
                     SubsystemGVElectricity.SubsystemTerrain.m_modifiedCells[point] = true;
                 }
                 else {

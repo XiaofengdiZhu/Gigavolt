@@ -23,34 +23,16 @@ namespace XamariNES.Cartridge.Mappers.impl {
             NametableMirroring = mirroring;
 
             //Assign first 16k of ROM
-            Array.Copy(
-                prgRom,
-                0,
-                _prgRom,
-                0,
-                prgRom.Length
-            );
+            Array.Copy(prgRom, 0, _prgRom, 0, prgRom.Length);
 
             //If it's less than 16k, just mirror it to the second bank
             if (prgRom.Length <= 0x4000) {
-                Array.Copy(
-                    prgRom,
-                    0,
-                    _prgRom,
-                    0x4000,
-                    prgRom.Length
-                );
+                Array.Copy(prgRom, 0, _prgRom, 0x4000, prgRom.Length);
             }
 
             //Setup PPU ROM
             if (chrRom != null) {
-                Array.Copy(
-                    chrRom,
-                    0,
-                    _chrRom,
-                    0,
-                    chrRom.Length
-                );
+                Array.Copy(chrRom, 0, _chrRom, 0, chrRom.Length);
             }
         }
 

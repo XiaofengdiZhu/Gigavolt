@@ -372,13 +372,12 @@ namespace XamariNES.PPU {
                         }
                         break;
                     //Nametable byte
-                    case 1:
-                        _nameTableByte = PPUMemory.ReadByte(0x2000 | (_registerPPUADDR & 0x0FFF));
-                        break;
+                    case 1: _nameTableByte = PPUMemory.ReadByte(0x2000 | (_registerPPUADDR & 0x0FFF)); break;
                     //Attribute table byte
                     case 3:
-                        _attributeTableByte = PPUMemory.ReadByte(0x23C0 | (_registerPPUADDR & 0x0C00) | ((_registerPPUADDR >> 4) & 0x38) | ((_registerPPUADDR >> 2) & 0x07));
-                        break;
+                        _attributeTableByte = PPUMemory.ReadByte(
+                            0x23C0 | (_registerPPUADDR & 0x0C00) | ((_registerPPUADDR >> 4) & 0x38) | ((_registerPPUADDR >> 2) & 0x07)
+                        ); break;
                     //Pattern table tile low
                     case 5:
                         int patternTableTileLowBase = _registerPPUCTRL.IsFlagSet(PPUCtrlFlags.BackgroundPatternTableAddress) ? 0x1000 : 0x0000;
@@ -394,7 +393,7 @@ namespace XamariNES.PPU {
                 }
             }
 
-            // OAMADDR is set to 0 during each of ticks 257-320 (the sprite tile loading interval) of the pre-render and visible scanlines 
+            // OAMADDR is set to 0 during each of ticks 257-320 (the sprite tile loading interval) of the pre-render and visible scanlines
             if (_currentCycle > 257
                 && _currentCycle <= 320
                 && (_scanLineState.IsFlagSet(ScanLineStateFlags.PreRender) || _scanLineState.IsFlagSet(ScanLineStateFlags.Visible))) {
@@ -439,13 +438,7 @@ namespace XamariNES.PPU {
                         _registerPPUSTATUS |= PPUStatusFlags.SpriteOverflow;
                         break;
                     }
-                    Array.Copy(
-                        _oamData,
-                        i,
-                        _sprites,
-                        _countedSprites * 4,
-                        4
-                    );
+                    Array.Copy(_oamData, i, _sprites, _countedSprites * 4, 4);
                     _spriteIndices[_countedSprites] = (i - _registerOAMADDR) / 4;
                     _countedSprites++;
                 }
@@ -553,18 +546,10 @@ namespace XamariNES.PPU {
             }
             int paletteAddress;
             switch (paletteNum) {
-                case 0:
-                    paletteAddress = 0x3F01;
-                    break;
-                case 1:
-                    paletteAddress = 0x3F05;
-                    break;
-                case 2:
-                    paletteAddress = 0x3F09;
-                    break;
-                case 3:
-                    paletteAddress = 0x3F0D;
-                    break;
+                case 0: paletteAddress = 0x3F01; break;
+                case 1: paletteAddress = 0x3F05; break;
+                case 2: paletteAddress = 0x3F09; break;
+                case 3: paletteAddress = 0x3F0D; break;
                 default: throw new Exception($"Invalid Background Palette Number: {paletteNum}");
             }
             paletteAddress += colorNum - 1;
@@ -587,18 +572,10 @@ namespace XamariNES.PPU {
             }
             int paletteAddress;
             switch (paletteNum) {
-                case 0:
-                    paletteAddress = 0x3F11;
-                    break;
-                case 1:
-                    paletteAddress = 0x3F15;
-                    break;
-                case 2:
-                    paletteAddress = 0x3F19;
-                    break;
-                case 3:
-                    paletteAddress = 0x3F1D;
-                    break;
+                case 0: paletteAddress = 0x3F11; break;
+                case 1: paletteAddress = 0x3F15; break;
+                case 2: paletteAddress = 0x3F19; break;
+                case 3: paletteAddress = 0x3F1D; break;
                 default: throw new Exception($"Invalid Sprite Palette Number: {paletteNum}");
             }
             paletteAddress += colorNum - 1;
@@ -633,7 +610,7 @@ namespace XamariNES.PPU {
             for (int i = 0; i < _countedSprites * 4; i += 4) {
                 int offset = xPos - _sprites[i + 3];
 
-                //Check if the sprite intersects 
+                //Check if the sprite intersects
                 if (offset <= 7
                     && offset >= 0) {
                     int yOffset = yPos - _sprites[i];
@@ -651,13 +628,7 @@ namespace XamariNES.PPU {
                     int patternAddress = currentSpritePatternTableOffset + patternIndex * 16;
                     bool flipHorizontal = (_sprites[i + 2] & 0x40) != 0;
                     bool flipVertical = (_sprites[i + 2] & 0x80) != 0;
-                    int colorNum = GetSpritePatternPixel(
-                        patternAddress,
-                        offset,
-                        yOffset,
-                        flipHorizontal,
-                        flipVertical
-                    );
+                    int colorNum = GetSpritePatternPixel(patternAddress, offset, yOffset, flipHorizontal, flipVertical);
 
                     // Handle transparent sprites
                     if (colorNum == 0) {
@@ -748,7 +719,6 @@ namespace XamariNES.PPU {
                 _registerPPUADDR++; // Increment Coarse X
             }
         }
-
 
         /// <summary>
         ///     If rendering is enabled, fine Y is incremented at dot 256 of each scanline, overflowing to coarse Y,

@@ -1,27 +1,27 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
-	<CanvasWidget Size="500, 340" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<BevelledRectangleWidget Style="{Styles/DialogArea}"/>
-		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
-			<LabelWidget Font="{Fonts/Pericles}" Text="[EditGVButtonDialog:1]" HorizontalAlignment="Center"/>
-			<CanvasWidget Size="0, Infinity"/>
-			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-				<LabelWidget Text="[EditGVButtonDialog:2]" VerticalAlignment="Center"/>
-				<BevelledButtonWidget Name="EditGVButtonDialog.GigaVoltageLevelButton" Size="140, 48" Text="0"/>
-				<LabelWidget Margin="10, 0" Text="[EditGVButtonDialog:3]" VerticalAlignment="Center"/>
-			</StackPanelWidget>
-			<StackPanelWidget Margin="0, 20" Direction="Horizontal" HorizontalAlignment="Center">
-				<LabelWidget Text="[EditGVButtonDialog:6]"/>
-				<CanvasWidget Size="124, 34">
-					<BevelledRectangleWidget Style="{Styles/Area}"/>
-					<TextBoxWidget Name="EditGVButtonDialog.Duration" Size="120, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
-				</CanvasWidget>
-				<LabelWidget Margin="10, 0" Text="[EditGVButtonDialog:7]"/>
-			</StackPanelWidget>
-			<CanvasWidget Size="0, Infinity"/>
-			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-				<BevelledButtonWidget Name="EditGVButtonDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVButtonDialog:4]" Margin="20, 0"/>
-				<BevelledButtonWidget Name="EditGVButtonDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVButtonDialog:5]"/>
-			</StackPanelWidget>
-		</StackPanelWidget>
-	</CanvasWidget>
+  <CanvasWidget Size="500, 340" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <BevelledRectangleWidget Style="{Styles/DialogArea}"/>
+    <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
+      <LabelWidget Font="{Fonts/Pericles}" Text="[EditGVButtonDialog:1]" HorizontalAlignment="Center"/>
+      <CanvasWidget Size="0, Infinity"/>
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <LabelWidget Text="[EditGVButtonDialog:2]" VerticalAlignment="Center"/>
+        <BevelledButtonWidget Name="EditGVButtonDialog.GigaVoltageLevelButton" Size="140, 48" Text="0"/>
+        <LabelWidget Margin="10, 0" Text="[EditGVButtonDialog:3]" VerticalAlignment="Center"/>
+      </StackPanelWidget>
+      <StackPanelWidget Margin="0, 20" Direction="Horizontal" HorizontalAlignment="Center">
+        <LabelWidget Text="[EditGVButtonDialog:6]"/>
+        <CanvasWidget Size="124, 34">
+          <BevelledRectangleWidget Style="{Styles/Area}"/>
+          <TextBoxWidget Name="EditGVButtonDialog.Duration" Size="120, 30" MaximumLength="11" FontScale="1" TextureLinearFilter="false" Margin="2, 2"/>
+        </CanvasWidget>
+        <LabelWidget Margin="10, 0" Text="[EditGVButtonDialog:7]"/>
+      </StackPanelWidget>
+      <CanvasWidget Size="0, Infinity"/>
+      <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <BevelledButtonWidget Name="EditGVButtonDialog.OK" Style="{Styles/ButtonStyle_160x60}" Text="[EditGVButtonDialog:4]" Margin="20, 0"/>
+        <BevelledButtonWidget Name="EditGVButtonDialog.Cancel" Style="{Styles/ButtonStyle_160x60}" Margin="20, 0" Text="[EditGVButtonDialog:5]"/>
+      </StackPanelWidget>
+    </StackPanelWidget>
+  </CanvasWidget>
 </CanvasWidget>

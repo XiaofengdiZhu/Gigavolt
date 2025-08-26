@@ -51,22 +51,41 @@ namespace Game {
         }
 
         public override void Update() {
-            int value = m_subsystemTerrain.Terrain.GetCellValue(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z);
+            int value = m_subsystemTerrain.Terrain.GetCellValue(
+                m_componentBlockEntity.Coordinates.X,
+                m_componentBlockEntity.Coordinates.Y,
+                m_componentBlockEntity.Coordinates.Z
+            );
             int data = Terrain.ExtractData(value);
             if (m_dispenseButton.IsClicked) {
                 data = GVDispenserBlock.SetMode(data, GVDispenserBlock.Mode.Dispense);
                 value = Terrain.ReplaceData(value, data);
-                m_subsystemTerrain.ChangeCell(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z, value);
+                m_subsystemTerrain.ChangeCell(
+                    m_componentBlockEntity.Coordinates.X,
+                    m_componentBlockEntity.Coordinates.Y,
+                    m_componentBlockEntity.Coordinates.Z,
+                    value
+                );
             }
             if (m_shootButton.IsClicked) {
                 data = GVDispenserBlock.SetMode(data, GVDispenserBlock.Mode.Shoot);
                 value = Terrain.ReplaceData(value, data);
-                m_subsystemTerrain.ChangeCell(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z, value);
+                m_subsystemTerrain.ChangeCell(
+                    m_componentBlockEntity.Coordinates.X,
+                    m_componentBlockEntity.Coordinates.Y,
+                    m_componentBlockEntity.Coordinates.Z,
+                    value
+                );
             }
             if (m_acceptsDropsBox.IsClicked) {
                 data = GVDispenserBlock.SetAcceptsDrops(data, !GVDispenserBlock.GetAcceptsDrops(data));
                 value = Terrain.ReplaceData(value, data);
-                m_subsystemTerrain.ChangeCell(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z, value);
+                m_subsystemTerrain.ChangeCell(
+                    m_componentBlockEntity.Coordinates.X,
+                    m_componentBlockEntity.Coordinates.Y,
+                    m_componentBlockEntity.Coordinates.Z,
+                    value
+                );
             }
             GVDispenserBlock.Mode mode = GVDispenserBlock.GetMode(data);
             m_dispenseButton.IsChecked = mode == GVDispenserBlock.Mode.Dispense;

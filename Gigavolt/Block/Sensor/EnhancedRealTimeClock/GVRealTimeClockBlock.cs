@@ -6,12 +6,30 @@ namespace Game {
 
         public GVRealTimeClockBlock() : base("Models/Gates", "RealTimeClock", 0.5f) { }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new RealTimeClockGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId, GetClassic(Terrain.ExtractData(value)));
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new RealTimeClockGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(value)),
+            subterrainId,
+            GetClassic(Terrain.ExtractData(value))
+        );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                GVElectricConnectorDirection? connectorDirection =
+                    SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
                 if (connectorDirection == GVElectricConnectorDirection.Top
                     || connectorDirection == GVElectricConnectorDirection.Right
                     || connectorDirection == GVElectricConnectorDirection.Left
@@ -25,8 +43,16 @@ namespace Game {
             return null;
         }
 
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDisplayName" : "DisplayName");
-        public override string GetDescription(int value) => LanguageControl.Get(GetType().Name, GetClassic(Terrain.ExtractData(value)) ? "ClassicDescription" : "Description");
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => LanguageControl.Get(
+            GetType().Name,
+            GetClassic(Terrain.ExtractData(value)) ? "ClassicDisplayName" : "DisplayName"
+        );
+
+        public override string GetDescription(int value) => LanguageControl.Get(
+            GetType().Name,
+            GetClassic(Terrain.ExtractData(value)) ? "ClassicDescription" : "Description"
+        );
+
         public override string GetCategory(int value) => GetClassic(Terrain.ExtractData(value)) ? "GV Electrics Regular" : "GV Electrics Shift";
         public override int GetDisplayOrder(int value) => GetClassic(Terrain.ExtractData(value)) ? 14 : 12;
         public override IEnumerable<int> GetCreativeValues() => [BlockIndex, Terrain.MakeBlockValue(BlockIndex, 0, SetClassic(0, true))];

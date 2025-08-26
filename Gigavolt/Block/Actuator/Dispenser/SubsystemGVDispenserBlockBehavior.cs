@@ -23,7 +23,11 @@ namespace Game {
         }
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) {
-            DatabaseObject databaseObject = Project.GameDatabase.Database.FindDatabaseObject("GVDispenser", Project.GameDatabase.EntityTemplateType, true);
+            DatabaseObject databaseObject = Project.GameDatabase.Database.FindDatabaseObject(
+                "GVDispenser",
+                Project.GameDatabase.EntityTemplateType,
+                true
+            );
             ValuesDictionary valuesDictionary = new();
             valuesDictionary.PopulateFromDatabaseObject(databaseObject);
             valuesDictionary.GetValue<ValuesDictionary>("BlockEntity").SetValue("Coordinates", new Point3(x, y, z));
@@ -44,11 +48,16 @@ namespace Game {
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
             if (m_subsystemGameInfo.WorldSettings.GameMode != GameMode.Adventure) {
-                ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
+                ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(
+                    raycastResult.CellFace.X,
+                    raycastResult.CellFace.Y,
+                    raycastResult.CellFace.Z
+                );
                 if (blockEntity != null
                     && componentMiner.ComponentPlayer != null) {
                     ComponentGVDispenser componentGVDispenser = blockEntity.Entity.FindComponent<ComponentGVDispenser>(true);
-                    componentMiner.ComponentPlayer.ComponentGui.ModalPanelWidget = new GVDispenserWidget(componentMiner.Inventory, componentGVDispenser);
+                    componentMiner.ComponentPlayer.ComponentGui.ModalPanelWidget =
+                        new GVDispenserWidget(componentMiner.Inventory, componentGVDispenser);
                     AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                     return true;
                 }
@@ -62,20 +71,15 @@ namespace Game {
             }
             ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(cellFace.X, cellFace.Y, cellFace.Z);
             if (blockEntity != null
-                && GVDispenserBlock.GetAcceptsDrops(Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)))) {
+                && GVDispenserBlock.GetAcceptsDrops(
+                    Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z))
+                )) {
                 ComponentGVDispenser inventory = blockEntity.Entity.FindComponent<ComponentGVDispenser>(true);
                 Pickable pickable = worldItem as Pickable;
                 int num = pickable?.Count ?? 1;
                 int num2 = ComponentInventoryBase.AcquireItems(inventory, worldItem.Value, num);
                 if (num2 < num) {
-                    m_subsystemAudio.PlaySound(
-                        "Audio/PickableCollected",
-                        1f,
-                        0f,
-                        worldItem.Position,
-                        3f,
-                        true
-                    );
+                    m_subsystemAudio.PlaySound("Audio/PickableCollected", 1f, 0f, worldItem.Position, 3f, true);
                 }
                 if (num2 <= 0) {
                     worldItem.ToRemove = true;

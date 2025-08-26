@@ -29,7 +29,6 @@ namespace Game {
         public DateTime? m_dragStartTime;
         public Vector2 m_dragStartPosition;
 
-
         public int[] DrawOrders => [2001];
         public UpdateOrder UpdateOrder => UpdateOrder.Reset;
 
@@ -117,7 +116,9 @@ namespace Game {
                                     && m_dragHostWidget.m_dragData is InventoryDragData data) {
                                     int centerBlockValue = data.Inventory.GetSlotValue(data.SlotIndex);
                                     Block centerBlock = BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)];
-                                    List<int> outerBlocksValue = centerBlock is IGVCustomWheelPanelBlock customWheelPanelBlock ? customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue) : BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList();
+                                    List<int> outerBlocksValue = centerBlock is IGVCustomWheelPanelBlock customWheelPanelBlock
+                                        ? customWheelPanelBlock.GetCustomWheelPanelValues(centerBlockValue)
+                                        : BlocksManager.Blocks[Terrain.ExtractContents(centerBlockValue)].GetCreativeValues().ToList();
                                     m_wheelPanelWidget.CenterBlockValue = centerBlockValue;
                                     m_wheelPanelWidget.OuterBlocksValue = outerBlocksValue;
                                     m_wheelPanelWidget.IsVisible = true;
@@ -163,7 +164,15 @@ namespace Game {
                         m_forceDisplayVoltage = blockData.GigaVoltageLevel;
                         m_componentPlayer.GameWidget.Input.Clear();
                         blockData.SaveString();
-                        m_subsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, m_subsystemGVButtonBlockBehavior.SetIdToValue(result.Value, m_subsystemGVButtonBlockBehavior.StoreItemDataAtUniqueId(blockData, id)));
+                        m_subsystemTerrain.ChangeCell(
+                            cellFace.X,
+                            cellFace.Y,
+                            cellFace.Z,
+                            m_subsystemGVButtonBlockBehavior.SetIdToValue(
+                                result.Value,
+                                m_subsystemGVButtonBlockBehavior.StoreItemDataAtUniqueId(blockData, id)
+                            )
+                        );
                     }
                 }
                 else {
@@ -199,7 +208,12 @@ namespace Game {
                         m_forceDisplayVoltage = blockData.Data;
                         m_componentPlayer.GameWidget.Input.Clear();
                         blockData.SaveString();
-                        m_subsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, behavior.SetIdToValue(result.Value, behavior.StoreItemDataAtUniqueId(blockData, id)));
+                        m_subsystemTerrain.ChangeCell(
+                            cellFace.X,
+                            cellFace.Y,
+                            cellFace.Z,
+                            behavior.SetIdToValue(result.Value, behavior.StoreItemDataAtUniqueId(blockData, id))
+                        );
                     }
                 }
             }
@@ -229,7 +243,8 @@ namespace Game {
             m_isCreativeMode = Project.FindSubsystem<SubsystemGameInfo>(true).WorldSettings.GameMode == GameMode.Creative;
             m_controlsContainer = m_componentPlayer.GuiWidget.Children.Find<CanvasWidget>("ControlsContainer");
             m_dragHostWidget = m_componentPlayer.DragHostWidget;
-            m_wheelPanelWidget = new GVWheelPanelWidget(Project, m_componentPlayer.ComponentGui) { IsVisible = false, SubsystemTerrain = m_subsystemTerrain };
+            m_wheelPanelWidget =
+                new GVWheelPanelWidget(Project, m_componentPlayer.ComponentGui) { IsVisible = false, SubsystemTerrain = m_subsystemTerrain };
             m_componentPlayer.ComponentGui.ControlsContainerWidget.AddChildren(m_wheelPanelWidget);
         }
 
@@ -249,16 +264,7 @@ namespace Game {
                     blockFace = mountedBlock.GetFace(blockValue);
                     if (!elements.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
                         for (int i = 0; i < 16; i++) {
-                            if (elements.TryGetValue(
-                                    new GVCellFace(
-                                        cellFace.X,
-                                        cellFace.Y,
-                                        cellFace.Z,
-                                        blockFace,
-                                        1 << i
-                                    ),
-                                    out element
-                                )) {
+                            if (elements.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace, 1 << i), out element)) {
                                 break;
                             }
                         }
@@ -271,7 +277,9 @@ namespace Game {
                             rotation = RotateableMountedGVElectricElementBlock.GetRotation(blockData);
                         }
                         Vector3 up = blockFace < 4 ? Vector3.UnitY :
-                            Math.Abs(viewDirection.X) > Math.Abs(viewDirection.Z) ? new Vector3((viewDirection.X > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1), 0, 0) : new Vector3(0, 0, (viewDirection.Z > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1));
+                            Math.Abs(viewDirection.X) > Math.Abs(viewDirection.Z) ?
+                                new Vector3((viewDirection.X > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1), 0, 0) :
+                                new Vector3(0, 0, (viewDirection.Z > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1));
                         Vector3 right = Vector3.Cross(forward, up);
                         const float size = 0.1f;
                         if (m_forceDisplayVoltage.HasValue) {
@@ -306,13 +314,7 @@ namespace Game {
                             && mask % 2 != 0) {
                             for (int i = 0; i < 16; i++) {
                                 if (elements.TryGetValue(
-                                        new GVCellFace(
-                                            cellFace.X,
-                                            cellFace.Y,
-                                            cellFace.Z,
-                                            blockFace,
-                                            1 << i
-                                        ),
+                                        new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace, 1 << i),
                                         out GVElectricElement element2
                                     )) {
                                     uint voltage = element2.GetOutputVoltage(blockFace);
@@ -342,8 +344,11 @@ namespace Game {
                                 cellFace.Z,
                                 m_subsystemTerrain.Terrain
                             );
-                            GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(blockFace, rotation, connectorFace);
-                            Vector3 offset = connectorDirection == GVElectricConnectorDirection.In ? -0.4f * (up + right) : 0.4f * CellFace.FaceToVector3(connectorFace);
+                            GVElectricConnectorDirection? connectorDirection =
+                                SubsystemGVElectricity.GetConnectorDirection(blockFace, rotation, connectorFace);
+                            Vector3 offset = connectorDirection == GVElectricConnectorDirection.In
+                                ? -0.4f * (up + right)
+                                : 0.4f * CellFace.FaceToVector3(connectorFace);
                             if (connectorType.HasValue) {
                                 switch (connectorType.Value) {
                                     case GVElectricConnectorType.Output:
@@ -355,10 +360,10 @@ namespace Game {
                                             right,
                                             up,
                                             Color.Red
-                                        );
-                                        break;
+                                        ); break;
                                     case GVElectricConnectorType.Input: {
-                                        GVElectricConnection connection = element.Connections.Find(connection => connection.ConnectorFace == connectorFace);
+                                        GVElectricConnection connection =
+                                            element.Connections.Find(connection => connection.ConnectorFace == connectorFace);
                                         if (connection != null) {
                                             SubsystemGV8NumberLedGlow.Draw8Number(
                                                 m_8NumberBatch,
@@ -373,13 +378,15 @@ namespace Game {
                                         break;
                                     }
                                     case GVElectricConnectorType.InputOutput: {
-                                        GVElectricConnection connection = element.Connections.Find(connection => connection.ConnectorFace == connectorFace);
+                                        GVElectricConnection connection =
+                                            element.Connections.Find(connection => connection.ConnectorFace == connectorFace);
                                         Vector3 outputOffset = offset;
                                         if (connection != null) {
                                             Vector3 inputOffset = offset;
                                             Vector3 offset2 = 0.11f
                                                 * (blockFace < 4 ? connectorFace > 3 ? right : up :
-                                                    rotation == connectorFace || rotation + 2 == connectorFace || rotation - 2 == connectorFace ? right : up);
+                                                    rotation == connectorFace || rotation + 2 == connectorFace || rotation - 2 == connectorFace ?
+                                                        right : up);
                                             inputOffset += offset2;
                                             outputOffset -= offset2;
                                             SubsystemGV8NumberLedGlow.Draw8Number(
@@ -460,22 +467,20 @@ namespace Game {
                     if (wireBlock.IsWireHarness(blockValue)) {
                         Vector3 forward = CellFace.FaceToVector3(cellFace.Face);
                         Vector3 up = cellFace.Face < 4 ? Vector3.UnitY :
-                            Math.Abs(viewDirection.X) > Math.Abs(viewDirection.Z) ? new Vector3((viewDirection.X > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1), 0, 0) : new Vector3(0, 0, (viewDirection.Z > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1));
+                            Math.Abs(viewDirection.X) > Math.Abs(viewDirection.Z) ?
+                                new Vector3((viewDirection.X > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1), 0, 0) :
+                                new Vector3(0, 0, (viewDirection.Z > 0 ? 1 : -1) * (viewDirection.Y < 0 ? 1 : -1));
                         Vector3 right = Vector3.Cross(forward, up);
                         for (int i = 0; i < 16; i++) {
                             if (elements.TryGetValue(
-                                    new GVCellFace(
-                                        cellFace.X,
-                                        cellFace.Y,
-                                        cellFace.Z,
-                                        blockFace,
-                                        1 << i
-                                    ),
+                                    new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace, 1 << i),
                                     out GVElectricElement element
                                 )) {
                                 uint voltage = element.GetOutputVoltage(blockFace);
                                 if (voltage > 0) {
-                                    Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) - (i % 4 * 2 - 3) / 8f * right - (i / 4 * 2 - 3) / 8f * up;
+                                    Vector3 position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f)
+                                        - (i % 4 * 2 - 3) / 8f * right
+                                        - (i / 4 * 2 - 3) / 8f * up;
                                     if (wireBlock.IsWireThrough()) {
                                         position += forward * 0.55f;
                                     }
@@ -496,16 +501,7 @@ namespace Game {
                     else {
                         if (!elements.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace), out GVElectricElement element)) {
                             for (int i = 0; i < 16; i++) {
-                                if (elements.TryGetValue(
-                                        new GVCellFace(
-                                            cellFace.X,
-                                            cellFace.Y,
-                                            cellFace.Z,
-                                            blockFace,
-                                            1 << i
-                                        ),
-                                        out element
-                                    )) {
+                                if (elements.TryGetValue(new GVCellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace, 1 << i), out element)) {
                                     break;
                                 }
                             }

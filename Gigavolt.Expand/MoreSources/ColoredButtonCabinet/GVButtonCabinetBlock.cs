@@ -19,14 +19,7 @@ namespace Game {
         public readonly BlockMesh m_standaloneButtonTopBlockMesh = new();
         readonly Dictionary<int, FaceInfo> m_cachedFaceInfos = new();
 
-        public static readonly Point3[] m_upPoint3 = [
-            Point3.UnitY,
-            Point3.UnitY,
-            Point3.UnitY,
-            Point3.UnitY,
-            -Point3.UnitZ,
-            Point3.UnitZ
-        ];
+        public static readonly Point3[] m_upPoint3 = [Point3.UnitY, Point3.UnitY, Point3.UnitY, Point3.UnitY, -Point3.UnitZ, Point3.UnitZ];
 
         public static readonly int[] ColorIndex2Color = [
             0,
@@ -102,7 +95,8 @@ namespace Game {
                 Color.White
             );
             for (int colorIndex = 0; colorIndex < 14; colorIndex++) {
-                Matrix buttonMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
+                Matrix buttonMatrix = Matrix.CreateScale(0.3f)
+                    * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
                 m_standaloneButtonBodyBlockMesh.AppendModelMeshPart(
                     m_buttonBodyMeshPart,
                     m_buttonBodyBoneAbsoluteTransform * buttonMatrix * standaloneMatrix,
@@ -125,7 +119,12 @@ namespace Game {
             }
         }
 
-        public override GVElectricElement[] CreateGVElectricElements(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
+        public override GVElectricElement[] CreateGVElectricElements(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) {
             int face = GetFace(value);
             int data = Terrain.ExtractData(value);
             Point3 upDirection = m_upPoint3[face];
@@ -140,7 +139,8 @@ namespace Game {
                 return null;
             }
             if (!subsystemGVElectricity.m_GVElectricElementsToAdd[subterrainId].ContainsKey(another)) {
-                int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(another.X, another.Y, another.Z);
+                int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId)
+                    .GetCellValue(another.X, another.Y, another.Z);
                 if (Terrain.ExtractContents(anotherValue) == BlockIndex
                     && GetFace(anotherValue) == face) {
                     int anotherData = Terrain.ExtractData(anotherValue);
@@ -149,22 +149,7 @@ namespace Game {
                         for (int color = 0; color < 16; color++) {
                             result[color] = new ButtonCabinetGVElectricElement(
                                 subsystemGVElectricity,
-                                [
-                                    new GVCellFace(
-                                        x,
-                                        y,
-                                        z,
-                                        face,
-                                        1 << color
-                                    ),
-                                    new GVCellFace(
-                                        another.X,
-                                        another.Y,
-                                        another.Z,
-                                        face,
-                                        1 << color
-                                    )
-                                ],
+                                [new GVCellFace(x, y, z, face, 1 << color), new GVCellFace(another.X, another.Y, another.Z, face, 1 << color)],
                                 subterrainId,
                                 GetDuration(data)
                             );
@@ -176,7 +161,12 @@ namespace Game {
             return null;
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBaseBlockMesh,
@@ -186,14 +176,7 @@ namespace Game {
                 ref matrix,
                 environmentData
             );
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneButtonBodyBlockMesh,
-                color,
-                2f * size,
-                ref matrix,
-                environmentData
-            );
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneButtonBodyBlockMesh, color, 2f * size, ref matrix, environmentData);
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneButtonTopBlockMesh,
@@ -259,19 +242,38 @@ namespace Game {
             return GetIsTopPart(data) ? stateInfo.TopCollisionBoxes : stateInfo.ButtonCollisionBoxes;
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetFace(Terrain.ExtractData(value), raycastResult.CellFace.Face));
             result.CellFace = raycastResult.CellFace;
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetDuration(0, GetDuration(Terrain.ExtractData(oldValue)))), Count = 1 });
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
+            dropValues.Add(
+                new BlockDropValue {
+                    Value = Terrain.MakeBlockValue(BlockIndex, 0, SetDuration(0, GetDuration(Terrain.ExtractData(oldValue)))), Count = 1
+                }
+            );
             showDebris = DestructionDebrisScale > 0f;
         }
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {
@@ -317,7 +319,10 @@ namespace Game {
                 radians = (float)Math.PI / 2f;
                 flag = true;
             }
-            Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+            Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f)
+                * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians))
+                * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
             BlockMesh baseBlockMesh = new();
             baseBlockMesh.AppendModelMeshPart(
                 m_baseModelMeshPart,
@@ -338,7 +343,8 @@ namespace Game {
             BlockMesh buttonBodyBlockMesh = new();
             BlockMesh buttonTopBlockMesh = new();
             for (int colorIndex = 0; colorIndex < 14; colorIndex++) {
-                Matrix buttonMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
+                Matrix buttonMatrix = Matrix.CreateScale(0.3f)
+                    * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
                 buttonBodyBlockMesh.AppendModelMeshPart(
                     m_buttonBodyMeshPart,
                     m_buttonBodyBoneAbsoluteTransform * buttonMatrix * m,
@@ -362,7 +368,10 @@ namespace Game {
                 if (colorIndex == 0) {
                     firstButtonBoundingBox = buttonBodyBlockMesh.CalculateBoundingBox();
                     bottomCollisionBoxes[collisionBoxIndex] = firstButtonBoundingBox;
-                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstButtonBoundingBox.Min + downTranslation, firstButtonBoundingBox.Max + downTranslation);
+                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(
+                        firstButtonBoundingBox.Min + downTranslation,
+                        firstButtonBoundingBox.Max + downTranslation
+                    );
                 }
                 else {
                     Vector3 down = new(-m_upPoint3[face]);
@@ -370,8 +379,14 @@ namespace Game {
                     if (colorIndex >= 7) {
                         transition += Vector3.Cross(down, CellFace.FaceToVector3(face)) * 0.2f;
                     }
-                    bottomCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstButtonBoundingBox.Min + transition, firstButtonBoundingBox.Max + transition);
-                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstButtonBoundingBox.Min + downTranslation + transition, firstButtonBoundingBox.Max + downTranslation + transition);
+                    bottomCollisionBoxes[collisionBoxIndex] = new BoundingBox(
+                        firstButtonBoundingBox.Min + transition,
+                        firstButtonBoundingBox.Max + transition
+                    );
+                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(
+                        firstButtonBoundingBox.Min + downTranslation + transition,
+                        firstButtonBoundingBox.Max + downTranslation + transition
+                    );
                 }
             }
             return new FaceInfo {

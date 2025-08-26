@@ -17,7 +17,11 @@ namespace Game {
         public uint m_lastInput;
         public readonly Vector3 m_originalPosition;
 
-        public AttractorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(subsystemGVElectricity, new List<GVCellFace> { new(point.X, point.Y, point.Z, 4) }, subterrainId) {
+        public AttractorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, Point3 point, uint subterrainId) : base(
+            subsystemGVElectricity,
+            new List<GVCellFace> { new(point.X, point.Y, point.Z, 4) },
+            subterrainId
+        ) {
             m_subsystemPickables = subsystemGVElectricity.Project.FindSubsystem<SubsystemPickables>(true);
             m_subsystemProjectiles = subsystemGVElectricity.Project.FindSubsystem<SubsystemProjectiles>(true);
             m_subsystemGVProjectiles = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVProjectiles>(true);
@@ -56,7 +60,8 @@ namespace Game {
                 bool attractProjectiles = ((m_lastInput >> 10) & 1u) == 1u;
                 bool attractPickables = ((m_lastInput >> 9) & 1u) == 1u;
                 bool parabola = ((m_lastInput >> 8) & 1u) == 1u;
-                Vector3 originalPosition = SubterrainId == 0 ? m_originalPosition : Vector3.Transform(m_originalPosition, m_subterrainSystem.GlobalTransform);
+                Vector3 originalPosition =
+                    SubterrainId == 0 ? m_originalPosition : Vector3.Transform(m_originalPosition, m_subterrainSystem.GlobalTransform);
                 Point3 originalPositionPoint = Terrain.ToCell(originalPosition);
                 if (speed != 0f || parabola) {
                     if (attractProjectiles) {
@@ -69,7 +74,9 @@ namespace Game {
                                     inDistance = distanceSquared > 0.5f && distanceSquared < rangeSquared;
                                 }
                                 if (inDistance) {
-                                    projectile.Velocity = parabola ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, originalPosition) : Vector3.Normalize(originalPosition - projectile.Position) * speed;
+                                    projectile.Velocity = parabola
+                                        ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, originalPosition)
+                                        : Vector3.Normalize(originalPosition - projectile.Position) * speed;
                                     projectile.DisableGravity = !parabola;
                                     projectile.DisableDamping = parabola || !rebound;
                                     projectile.Transform = false;
@@ -89,7 +96,9 @@ namespace Game {
                                     SubsystemGVProjectiles.Projectile newProjectile = m_subsystemGVProjectiles.AddProjectile(
                                         projectile.Value,
                                         projectile.Position,
-                                        parabola ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, originalPosition) : Vector3.Normalize(originalPosition - projectile.Position) * speed,
+                                        parabola
+                                            ? GuidedDispenserGVElectricElement.GetDirection(projectile.Position, originalPosition)
+                                            : Vector3.Normalize(originalPosition - projectile.Position) * speed,
                                         projectile.AngularVelocity,
                                         projectile.Owner,
                                         1,
@@ -125,7 +134,9 @@ namespace Game {
                                     m_subsystemGVProjectiles.FireProjectile(
                                         pickable.Value,
                                         pickable.Position,
-                                        parabola ? GuidedDispenserGVElectricElement.GetDirection(pickable.Position, originalPosition) : Vector3.Normalize(originalPosition - pickable.Position) * speed,
+                                        parabola
+                                            ? GuidedDispenserGVElectricElement.GetDirection(pickable.Position, originalPosition)
+                                            : Vector3.Normalize(originalPosition - pickable.Position) * speed,
                                         Vector3.Zero,
                                         null,
                                         pickable.Count,
@@ -157,7 +168,9 @@ namespace Game {
                                 SubsystemGVProjectiles.Projectile projectile = m_subsystemGVProjectiles.FireProjectile(
                                     FireBlock.Index,
                                     explosionPosition,
-                                    parabola ? GuidedDispenserGVElectricElement.GetDirection(explosionPosition, originalPosition) : Vector3.Normalize(originalPosition - explosionPosition) * speed,
+                                    parabola
+                                        ? GuidedDispenserGVElectricElement.GetDirection(explosionPosition, originalPosition)
+                                        : Vector3.Normalize(originalPosition - explosionPosition) * speed,
                                     Vector3.Zero,
                                     null,
                                     (int)explosion.Pressure,
@@ -181,7 +194,16 @@ namespace Game {
                                     );
                                 };
                                 projectile.ProjectileStoppedAction = ProjectileStoppedAction.Disappear;
-                                m_subsystemGVProjectiles.AddTrail(projectile, Vector3.Zero, new SmokeTrailParticleSystem((int)MathF.Min(MathF.Log10(explosion.Pressure) * 10f, 28f), MathF.Min(MathF.Log(explosion.Pressure), 6.4f), float.MaxValue, Color.White));
+                                m_subsystemGVProjectiles.AddTrail(
+                                    projectile,
+                                    Vector3.Zero,
+                                    new SmokeTrailParticleSystem(
+                                        (int)MathF.Min(MathF.Log10(explosion.Pressure) * 10f, 28f),
+                                        MathF.Min(MathF.Log(explosion.Pressure), 6.4f),
+                                        float.MaxValue,
+                                        Color.White
+                                    )
+                                );
                             }
                         }
                         foreach (SubsystemExplosions.ExplosionData explosion in toRemove) {
@@ -202,7 +224,9 @@ namespace Game {
                                 SubsystemGVProjectiles.Projectile projectile = m_subsystemGVProjectiles.FireProjectile(
                                     FireBlock.Index,
                                     firePosition,
-                                    parabola ? GuidedDispenserGVElectricElement.GetDirection(firePosition, originalPosition) : Vector3.Normalize(originalPosition - firePosition) * speed,
+                                    parabola
+                                        ? GuidedDispenserGVElectricElement.GetDirection(firePosition, originalPosition)
+                                        : Vector3.Normalize(originalPosition - firePosition) * speed,
                                     Vector3.Zero,
                                     null,
                                     1,
@@ -225,7 +249,11 @@ namespace Game {
                                     );
                                 };
                                 projectile.ProjectileStoppedAction = ProjectileStoppedAction.Disappear;
-                                m_subsystemGVProjectiles.AddTrail(projectile, Vector3.Zero, new SmokeTrailParticleSystem(m_random.Int(8, 20), m_random.Float(0.5f, 1.5f), float.MaxValue, Color.White));
+                                m_subsystemGVProjectiles.AddTrail(
+                                    projectile,
+                                    Vector3.Zero,
+                                    new SmokeTrailParticleSystem(m_random.Int(8, 20), m_random.Float(0.5f, 1.5f), float.MaxValue, Color.White)
+                                );
                             }
                         }
                         foreach (Point3 point in toRemove) {

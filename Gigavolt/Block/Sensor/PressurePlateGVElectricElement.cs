@@ -8,7 +8,8 @@ namespace Game {
         public float m_pressure;
         public readonly bool m_classic;
 
-        public PressurePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) : base(subsystemGVElectricity, cellFace, subterrainId) => m_classic = classic;
+        public PressurePlateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId, bool classic) :
+            base(subsystemGVElectricity, cellFace, subterrainId) => m_classic = classic;
 
         public void Press(float pressure) {
             m_lastPressFrameIndex = Time.FrameIndex;

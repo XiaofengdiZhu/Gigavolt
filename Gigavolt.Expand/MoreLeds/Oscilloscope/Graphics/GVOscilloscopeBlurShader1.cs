@@ -27,7 +27,10 @@ namespace Engine.Graphics {
             set => m_samplerStateParameter.SetValue(value);
         }
 
-        public GVOscilloscopeBlurShader1() : base(ShaderCodeManager.GetFast("Shaders/GVOscilloscopeBlur.vsh"), ShaderCodeManager.GetFast("Shaders/GVOscilloscopeBlur1.psh")) {
+        public GVOscilloscopeBlurShader1() : base(
+            ShaderCodeManager.GetFast("Shaders/GVOscilloscopeBlur.vsh"),
+            ShaderCodeManager.GetFast("Shaders/GVOscilloscopeBlur1.psh")
+        ) {
             m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", true);
             m_horizontal = GetParameter("u_horizontal", true);
             m_textureSizeParameter = GetParameter("u_textureSize", true);

@@ -24,12 +24,9 @@ namespace Game {
             if (blockColor.HasValue) {
                 foreach (GVElectricElement element in m_subsystemGVElectricity.m_GVElectricElements) {
                     switch (element) {
-                        case ButtonGVElectricElement button when button.CellFaces[0].Mask == 1 << blockColor.Value:
-                            button.Press();
-                            break;
-                        case SwitchGVElectricElement switchElement when switchElement.CellFaces[0].Mask == 1 << blockColor.Value:
-                            switchElement.Switch();
-                            break;
+                        case ButtonGVElectricElement button when button.CellFaces[0].Mask == 1 << blockColor.Value: button.Press(); break;
+                        case SwitchGVElectricElement switchElement
+                            when switchElement.CellFaces[0].Mask == 1 << blockColor.Value: switchElement.Switch(); break;
                     }
                 }
                 return true;
@@ -44,18 +41,47 @@ namespace Game {
                 int GVEWireThroughBlockIndex = GVBlocksManager.GetBlockIndex<GVEWireThroughBlock>();
                 if (contents == GVWireBlockIndex) {
                     flag = true;
-                    SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, Terrain.MakeBlockValue(GVEWireThroughBlockIndex, Terrain.ExtractLight(value), Terrain.ExtractData(value)));
+                    SubsystemTerrain.ChangeCell(
+                        cellFace.X,
+                        cellFace.Y,
+                        cellFace.Z,
+                        Terrain.MakeBlockValue(GVEWireThroughBlockIndex, Terrain.ExtractLight(value), Terrain.ExtractData(value))
+                    );
                 }
                 else if (contents == GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>()) {
                     flag = true;
-                    SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, Terrain.MakeBlockValue(GVEWireThroughBlockIndex, Terrain.ExtractLight(value), GVEWireThroughBlock.SetIsWireHarness(GVEWireThroughBlock.SetWireFacesBitmask(0, GVWireHarnessBlock.GetWireFacesBitmask(value)), true)));
+                    SubsystemTerrain.ChangeCell(
+                        cellFace.X,
+                        cellFace.Y,
+                        cellFace.Z,
+                        Terrain.MakeBlockValue(
+                            GVEWireThroughBlockIndex,
+                            Terrain.ExtractLight(value),
+                            GVEWireThroughBlock.SetIsWireHarness(
+                                GVEWireThroughBlock.SetWireFacesBitmask(0, GVWireHarnessBlock.GetWireFacesBitmask(value)),
+                                true
+                            )
+                        )
+                    );
                 }
                 else if (contents == GVBlocksManager.GetBlockIndex<GVEWireThroughBlock>()) {
                     flag = true;
                     int data = Terrain.ExtractData(value);
                     if (!GVEWireThroughBlock.GetIsCross(data)) {
                         int mask = GVEWireThroughBlock.GetWireFacesBitmask(data);
-                        SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, GVEWireThroughBlock.GetTexture(data) == 3 ? GVEWireThroughBlock.GetIsWireHarness(data) ? GVWireHarnessBlock.SetWireFacesBitmask(GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>(), mask) : GVWireBlock.SetWireFacesBitmask(Terrain.MakeBlockValue(GVWireBlockIndex, 0, GVWireBlock.SetColor(0, GVEWireThroughBlock.GetColor(data))), mask) : Terrain.ReplaceData(value, GVEWireThroughBlock.SetTexture(data, (GVEWireThroughBlock.GetTexture(data) + 1) % 4)));
+                        SubsystemTerrain.ChangeCell(
+                            cellFace.X,
+                            cellFace.Y,
+                            cellFace.Z,
+                            GVEWireThroughBlock.GetTexture(data) == 3
+                                ? GVEWireThroughBlock.GetIsWireHarness(data)
+                                    ? GVWireHarnessBlock.SetWireFacesBitmask(GVBlocksManager.GetBlockIndex<GVWireHarnessBlock>(), mask)
+                                    : GVWireBlock.SetWireFacesBitmask(
+                                        Terrain.MakeBlockValue(GVWireBlockIndex, 0, GVWireBlock.SetColor(0, GVEWireThroughBlock.GetColor(data))),
+                                        mask
+                                    )
+                                : Terrain.ReplaceData(value, GVEWireThroughBlock.SetTexture(data, (GVEWireThroughBlock.GetTexture(data) + 1) % 4))
+                        );
                     }
                 }
                 else {
@@ -76,8 +102,23 @@ namespace Game {
                                     for (int i = 0; i < m_glowPoints.Length; i++) {
                                         Point3 glowPoint = m_glowPoints[i];
                                         int face1 = CellFace.Point3ToFace(i == 0 ? m_glowPoints[1] - glowPoint : glowPoint - m_glowPoints[i - 1], 6);
-                                        int face2 = CellFace.Point3ToFace(i == m_glowPoints.Length - 1 ? m_glowPoints[i - 1] - glowPoint : glowPoint - m_glowPoints[i + 1], 6);
-                                        SubsystemTerrain.ChangeCell(m_glowPoints[i].X, m_glowPoints[i].Y, m_glowPoints[i].Z, Terrain.MakeBlockValue(GVEWireThroughBlockIndex, 0, GVEWireThroughBlock.SetWireFacesBitmask(GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetIsWireHarness(0, m_isHarness), m_texture), (1 << face1) | (1 << face2))));
+                                        int face2 = CellFace.Point3ToFace(
+                                            i == m_glowPoints.Length - 1 ? m_glowPoints[i - 1] - glowPoint : glowPoint - m_glowPoints[i + 1],
+                                            6
+                                        );
+                                        SubsystemTerrain.ChangeCell(
+                                            m_glowPoints[i].X,
+                                            m_glowPoints[i].Y,
+                                            m_glowPoints[i].Z,
+                                            Terrain.MakeBlockValue(
+                                                GVEWireThroughBlockIndex,
+                                                0,
+                                                GVEWireThroughBlock.SetWireFacesBitmask(
+                                                    GVEWireThroughBlock.SetTexture(GVEWireThroughBlock.SetIsWireHarness(0, m_isHarness), m_texture),
+                                                    (1 << face1) | (1 << face2)
+                                                )
+                                            )
+                                        );
                                     }
                                     m_glowPoints = Array.Empty<Point3>();
                                 }
@@ -100,14 +141,7 @@ namespace Game {
                     }
                 }
                 if (flag) {
-                    m_subsystemAudio.PlaySound(
-                        "Audio/Click",
-                        1f,
-                        0f,
-                        new Vector3(cellFace.X, cellFace.Y, cellFace.Z),
-                        2f,
-                        true
-                    );
+                    m_subsystemAudio.PlaySound("Audio/Click", 1f, 0f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f, true);
                 }
                 return true;
             }

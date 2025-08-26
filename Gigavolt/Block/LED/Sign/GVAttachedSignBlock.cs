@@ -36,7 +36,9 @@ namespace Game {
             Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Surface").ParentBone);
             for (int i = 0; i < 4; i++) {
                 float radians = (float)Math.PI / 2f * i;
-                Matrix m = Matrix.CreateTranslation(0f, 0f, -15f / 32f) * Matrix.CreateRotationY(radians) * Matrix.CreateTranslation(0.5f, -0.3125f, 0.5f);
+                Matrix m = Matrix.CreateTranslation(0f, 0f, -15f / 32f)
+                    * Matrix.CreateRotationY(radians)
+                    * Matrix.CreateTranslation(0.5f, -0.3125f, 0.5f);
                 BlockMesh blockMesh = new();
                 blockMesh.AppendModelMeshPart(
                     model.FindMesh("Sign").MeshParts[0],
@@ -51,8 +53,10 @@ namespace Game {
                 m_blockMeshes[i].AppendBlockMesh(blockMesh);
                 m_coloredBlockMeshes[i] = new BlockMesh();
                 m_coloredBlockMeshes[i].AppendBlockMesh(m_blockMeshes[i]);
-                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
-                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
+                m_blockMeshes[i]
+                    .TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+                m_coloredBlockMeshes[i]
+                    .TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
                 m_collisionBoxes[i] = new BoundingBox[1];
                 m_collisionBoxes[i][0] = blockMesh.CalculateBoundingBox();
                 m_surfaceMeshes[i] = new BlockMesh();
@@ -78,19 +82,31 @@ namespace Game {
                 Color.White
             );
             m_standaloneColoredBlockMesh.AppendBlockMesh(m_standaloneBlockMesh);
-            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
-            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
+            m_standaloneBlockMesh.TransformTextureCoordinates(
+                Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f)
+            );
+            m_standaloneColoredBlockMesh.TransformTextureCoordinates(
+                Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f)
+            );
             base.Initialize();
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             showDebris = true;
             int? color = GetColor(Terrain.ExtractData(oldValue));
             int data = SetColor(0, color);
             dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<T>(), 0, data), Count = 1 });
         }
 
-        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
+        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain,
+            Vector3 position,
+            int value,
+            float strength) {
             int? color = GetColor(Terrain.ExtractData(value));
             if (color.HasValue) {
                 return new BlockDebrisParticleSystem(
@@ -102,14 +118,7 @@ namespace Game {
                     m_coloredTextureSlot
                 );
             }
-            return new BlockDebrisParticleSystem(
-                subsystemTerrain,
-                position,
-                strength,
-                DestructionDebrisScale,
-                Color.White,
-                DefaultTextureSlot
-            );
+            return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, DefaultTextureSlot);
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
@@ -153,7 +162,12 @@ namespace Game {
             );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int? color2 = GetColor(Terrain.ExtractData(value));
             if (color2.HasValue) {
                 BlocksManager.DrawMeshBlock(
@@ -166,14 +180,7 @@ namespace Game {
                 );
             }
             else {
-                BlocksManager.DrawMeshBlock(
-                    primitivesRenderer,
-                    m_standaloneBlockMesh,
-                    color,
-                    1.25f * size,
-                    ref matrix,
-                    environmentData
-                );
+                BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, 1.25f * size, ref matrix, environmentData);
             }
         }
 
@@ -189,18 +196,33 @@ namespace Game {
             return m_collisionBoxes[face];
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) => default;
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) => default;
 
         public override BlockMesh GetSignSurfaceBlockMesh(int data) => m_surfaceMeshes[GetFace(data)];
 
         public override Vector3 GetSignSurfaceNormal(int data) => m_surfaceNormals[GetFace(data)];
 
-        public virtual GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
+        public virtual GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) {
             int data = Terrain.ExtractData(value);
             return new SignGVCElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(data)), subterrainId);
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (face != GetFace(data)
                 || !SubsystemElectricity.GetConnectorDirection(face, 0, connectorFace).HasValue) {

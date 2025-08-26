@@ -40,7 +40,9 @@ namespace Game {
                 Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Surface").ParentBone);
                 for (int i = 0; i < 4; i++) {
                     float radians = (float)Math.PI / 2f * i;
-                    Matrix m = Matrix.CreateTranslation(0f, 0f, -15f / 32f) * Matrix.CreateRotationY(radians) * Matrix.CreateTranslation(0.5f, -0.3125f, 0.5f);
+                    Matrix m = Matrix.CreateTranslation(0f, 0f, -15f / 32f)
+                        * Matrix.CreateRotationY(radians)
+                        * Matrix.CreateTranslation(0.5f, -0.3125f, 0.5f);
                     BlockMesh blockMesh1 = new();
                     blockMesh1.AppendModelMeshPart(
                         model.FindMesh("Sign").MeshParts[0],
@@ -58,7 +60,9 @@ namespace Game {
                     coloredBlockMeshes[i] = coloredBlockMesh;
                     coloredBlockMesh.AppendBlockMesh(blockMesh);
                     blockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(defaultTextureSlot % 16 / 16f, defaultTextureSlot / 16 / 16f, 0f));
-                    coloredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(coloredTextureSlot % 16 / 16f, coloredTextureSlot / 16 / 16f, 0f));
+                    coloredBlockMesh.TransformTextureCoordinates(
+                        Matrix.CreateTranslation(coloredTextureSlot % 16 / 16f, coloredTextureSlot / 16 / 16f, 0f)
+                    );
                     collisionBoxes[i] = [blockMesh1.CalculateBoundingBox()];
                     BlockMesh surfaceMesh = new();
                     surfaceMeshes[i] = surfaceMesh;
@@ -87,8 +91,12 @@ namespace Game {
                 BlockMesh standaloneColoredBlockMesh = new();
                 m_standaloneColoredBlockMesh[baseIndex] = standaloneColoredBlockMesh;
                 standaloneColoredBlockMesh.AppendBlockMesh(standaloneBlockMesh);
-                standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(defaultTextureSlot % 16 / 16f, defaultTextureSlot / 16 / 16f, 0f));
-                standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(coloredTextureSlot % 16 / 16f, coloredTextureSlot / 16 / 16f, 0f));
+                standaloneBlockMesh.TransformTextureCoordinates(
+                    Matrix.CreateTranslation(defaultTextureSlot % 16 / 16f, defaultTextureSlot / 16 / 16f, 0f)
+                );
+                standaloneColoredBlockMesh.TransformTextureCoordinates(
+                    Matrix.CreateTranslation(coloredTextureSlot % 16 / 16f, coloredTextureSlot / 16 / 16f, 0f)
+                );
             }
             poseIndex = 1;
             for (int materialIndex = 0; materialIndex < 2; materialIndex++) {
@@ -145,8 +153,12 @@ namespace Game {
                     BlockMesh blockMesh4 = new();
                     coloredBlockMeshes[i] = blockMesh4;
                     blockMesh4.AppendBlockMesh(blockMesh3);
-                    blockMesh3.TransformTextureCoordinates(Matrix.CreateTranslation(defaultTextureSlot % 16 / 16f, defaultTextureSlot / 16 / 16f, 0f));
-                    blockMesh4.TransformTextureCoordinates(Matrix.CreateTranslation(coloredTextureSlot % 16 / 16f, coloredTextureSlot / 16 / 16f, 0f));
+                    blockMesh3.TransformTextureCoordinates(
+                        Matrix.CreateTranslation(defaultTextureSlot % 16 / 16f, defaultTextureSlot / 16 / 16f, 0f)
+                    );
+                    blockMesh4.TransformTextureCoordinates(
+                        Matrix.CreateTranslation(coloredTextureSlot % 16 / 16f, coloredTextureSlot / 16 / 16f, 0f)
+                    );
                     BoundingBox[] collisionBox = new BoundingBox[2];
                     collisionBoxes[i] = collisionBox;
                     collisionBox[0] = blockMesh1.CalculateBoundingBox();
@@ -194,15 +206,23 @@ namespace Game {
                 BlockMesh standaloneColoredBlockMesh = new();
                 m_standaloneColoredBlockMesh[baseIndex] = standaloneColoredBlockMesh;
                 standaloneColoredBlockMesh.AppendBlockMesh(standaloneBlockMesh);
-                standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(defaultTextureSlot % 16 / 16f, defaultTextureSlot / 16 / 16f, 0f));
-                standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(coloredTextureSlot % 16 / 16f, coloredTextureSlot / 16 / 16f, 0f));
+                standaloneBlockMesh.TransformTextureCoordinates(
+                    Matrix.CreateTranslation(defaultTextureSlot % 16 / 16f, defaultTextureSlot / 16 / 16f, 0f)
+                );
+                standaloneColoredBlockMesh.TransformTextureCoordinates(
+                    Matrix.CreateTranslation(coloredTextureSlot % 16 / 16f, coloredTextureSlot / 16 / 16f, 0f)
+                );
             }
             base.Initialize();
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) {
             int data = Terrain.ExtractData(value);
-            return SubsystemPalette.GetName(subsystemTerrain, GetColor(data), LanguageControl.Get(GetType().Name, GetMaterial(data) == 1 ? "IronDisplayName" : "WoodDisplayName"));
+            return SubsystemPalette.GetName(
+                subsystemTerrain,
+                GetColor(data),
+                LanguageControl.Get(GetType().Name, GetMaterial(data) == 1 ? "IronDisplayName" : "WoodDisplayName")
+            );
         }
 
         public override string GetCategory(int value) => GetColor(Terrain.ExtractData(value)).HasValue ? "Painted" : base.GetCategory(value);
@@ -221,13 +241,25 @@ namespace Game {
             }
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             showDebris = true;
             int data = Terrain.ExtractData(oldValue);
-            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, SetMaterial(SetColor(SetPose(0, 1), GetColor(data)), GetMaterial(data))), Count = 1 });
+            dropValues.Add(
+                new BlockDropValue {
+                    Value = Terrain.MakeBlockValue(BlockIndex, 0, SetMaterial(SetColor(SetPose(0, 1), GetColor(data)), GetMaterial(data))), Count = 1
+                }
+            );
         }
 
-        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
+        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain,
+            Vector3 position,
+            int value,
+            float strength) {
             int data = Terrain.ExtractData(value);
             int? color = GetColor(data);
             if (color.HasValue) {
@@ -293,7 +325,12 @@ namespace Game {
             );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             int data = Terrain.ExtractData(value);
             int? color2 = GetColor(data);
             if (color2.HasValue) {
@@ -327,14 +364,21 @@ namespace Game {
             return m_collisionBoxes[GetBaseIndex(data)][GetPose(data) == 1 ? GetVariant(data) : GetFace(data)];
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             int data = Terrain.ExtractData(value);
             int? color = GetColor(data);
             int baseIndex = GetBaseIndex(data);
             BlockPlacementData result;
             if (raycastResult.CellFace.Face < 4) {
                 result = default;
-                result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetFace(SetMaterial(SetColor(0, color), GetMaterial(data)), raycastResult.CellFace.Face));
+                result.Value = Terrain.MakeBlockValue(
+                    BlockIndex,
+                    0,
+                    SetFace(SetMaterial(SetColor(0, color), GetMaterial(data)), raycastResult.CellFace.Face)
+                );
                 result.CellFace = raycastResult.CellFace;
                 return result;
             }
@@ -349,21 +393,46 @@ namespace Game {
                 }
             }
             result = default;
-            result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetHanging(SetDirection(SetMaterial(SetColor(SetPose(data, 1), color), GetMaterial(data)), direction), raycastResult.CellFace.Face == 5));
+            result.Value = Terrain.MakeBlockValue(
+                BlockIndex,
+                0,
+                SetHanging(
+                    SetDirection(SetMaterial(SetColor(SetPose(data, 1), color), GetMaterial(data)), direction),
+                    raycastResult.CellFace.Face == 5
+                )
+            );
             result.CellFace = raycastResult.CellFace;
             return result;
         }
 
-        public override BlockMesh GetSignSurfaceBlockMesh(int data) => m_surfaceMeshes[GetBaseIndex(data)][GetPose(data) == 1 ? GetVariant(data) : GetFace(data)];
+        public override BlockMesh GetSignSurfaceBlockMesh(int data) =>
+            m_surfaceMeshes[GetBaseIndex(data)][GetPose(data) == 1 ? GetVariant(data) : GetFace(data)];
 
-        public override Vector3 GetSignSurfaceNormal(int data) => m_surfaceNormals[GetBaseIndex(data)][GetPose(data) == 1 ? GetVariant(data) : GetFace(data)];
+        public override Vector3 GetSignSurfaceNormal(int data) =>
+            m_surfaceNormals[GetBaseIndex(data)][GetPose(data) == 1 ? GetVariant(data) : GetFace(data)];
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) {
             int data = Terrain.ExtractData(value);
-            return new SignGVCElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetPose(data) == 1 ? GetHanging(data) ? 5 : 4 : GetFace(data)), subterrainId);
+            return new SignGVCElectricElement(
+                subsystemGVElectricity,
+                new GVCellFace(x, y, z, GetPose(data) == 1 ? GetHanging(data) ? 5 : 4 : GetFace(data)),
+                subterrainId
+            );
         }
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (GetPose(data) == 1) {
                 if (GetHanging(data)) {
@@ -430,10 +499,16 @@ namespace Game {
         public static int GetBaseIndex(int data) => (data >> 9) & 3;
         public override int GetShadowStrength(int value) => GetPose(Terrain.ExtractData(value)) == 1 ? 3 : 6;
         public override float GetDensity(int value) => GetMaterial(Terrain.ExtractData(value)) == 1 ? 3f : 0.5f;
-        public override string GetSoundMaterialName(SubsystemTerrain subsystemTerrain, int value) => GetMaterial(Terrain.ExtractData(value)) == 1 ? "Metal" : "Wood";
+
+        public override string GetSoundMaterialName(SubsystemTerrain subsystemTerrain, int value) =>
+            GetMaterial(Terrain.ExtractData(value)) == 1 ? "Metal" : "Wood";
+
         public override float GetFireDuration(int value) => GetMaterial(Terrain.ExtractData(value)) == 1 ? 0f : 15f;
         public override float GetExplosionResilience(int value) => GetMaterial(Terrain.ExtractData(value)) == 1 ? 20f : 3f;
-        public override BlockDigMethod GetBlockDigMethod(int value) => GetMaterial(Terrain.ExtractData(value)) == 1 ? BlockDigMethod.Quarry : BlockDigMethod.Hack;
+
+        public override BlockDigMethod GetBlockDigMethod(int value) =>
+            GetMaterial(Terrain.ExtractData(value)) == 1 ? BlockDigMethod.Quarry : BlockDigMethod.Hack;
+
         public override int GetFaceTextureSlot(int face, int value) => GetMaterial(Terrain.ExtractData(value)) == 1 ? 63 : 4;
     }
 }

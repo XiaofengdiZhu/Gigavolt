@@ -37,7 +37,12 @@ namespace Game {
             m_collisionBoxes[0] = m_blockMesh.CalculateBoundingBox();
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             showDebris = true;
             if (toolLevel >= RequiredToolLevel) {
                 int data = Terrain.ExtractData(oldValue);
@@ -71,20 +76,30 @@ namespace Game {
             );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneBlockMesh,
-                color,
-                1f * size,
-                ref matrix,
-                environmentData
-            );
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, 1f * size, ref matrix, environmentData);
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new BatteryGVElectricElement(subsystemGVElectricity, value, new GVCellFace(x, y, z, 4), subterrainId);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new BatteryGVElectricElement(subsystemGVElectricity, value, new GVCellFace(x, y, z, 4), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             if (face == 4
                 && SubsystemGVElectricity.GetConnectorDirection(4, 0, connectorFace).HasValue) {
                 return GVElectricConnectorType.Output;
@@ -98,7 +113,9 @@ namespace Game {
         public int GetCustomCopyBlock(Project project, int centerValue) {
             SubsystemGVBatteryBlockBehavior subsystem = project.FindSubsystem<SubsystemGVBatteryBlockBehavior>(true);
             int id = subsystem.GetIdFromValue(centerValue);
-            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GigaVoltageLevelData)subsystem.GetItemData(id).Copy()));
+            return id == 0
+                ? centerValue
+                : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GigaVoltageLevelData)subsystem.GetItemData(id).Copy()));
         }
     }
 }

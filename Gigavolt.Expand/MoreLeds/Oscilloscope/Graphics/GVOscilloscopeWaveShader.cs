@@ -6,7 +6,10 @@ namespace Engine.Graphics {
 
         public readonly ShaderTransforms Transforms;
 
-        public GVOscilloscopeWaveShader() : base(ShaderCodeManager.GetFast("Shaders/GVOscilloscopeWave.vsh"), ShaderCodeManager.GetFast("Shaders/GVOscilloscopeWave.psh")) {
+        public GVOscilloscopeWaveShader() : base(
+            ShaderCodeManager.GetFast("Shaders/GVOscilloscopeWave.vsh"),
+            ShaderCodeManager.GetFast("Shaders/GVOscilloscopeWave.psh")
+        ) {
             m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", true);
             Transforms = new ShaderTransforms(1);
         }

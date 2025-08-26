@@ -74,8 +74,13 @@ namespace Game {
                     }
                 }
             }
-            double time = (m_subsystem.lastUpdate - (m_subsystem.last1000Updates.Count > 0 ? m_subsystem.last1000Updates.Peek() : m_subsystem.lastUpdate)).TotalSeconds;
-            m_label.Text = string.Format(LanguageControl.Get(GetType().Name, "1"), m_subsystem.last1000Updates.Count - 1, time.ToString(time < 1 ? "f4" : "f2"));
+            double time = (m_subsystem.lastUpdate
+                - (m_subsystem.last1000Updates.Count > 0 ? m_subsystem.last1000Updates.Peek() : m_subsystem.lastUpdate)).TotalSeconds;
+            m_label.Text = string.Format(
+                LanguageControl.Get(GetType().Name, "1"),
+                m_subsystem.last1000Updates.Count - 1,
+                time.ToString(time < 1 ? "f4" : "f2")
+            );
             m_pauseIcon.Subtexture = m_subsystem.debugMode ? m_continueSubtexture : m_pauseSubtexture;
         }
     }

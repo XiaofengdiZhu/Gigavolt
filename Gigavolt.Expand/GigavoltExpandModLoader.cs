@@ -17,7 +17,9 @@ namespace Game {
                 ]
             );
             IGVCustomWheelPanelBlock.LedValues.AddRange(GVBlocksManager.GetBlock<GVDisplayLedBlock>().GetCreativeValues());
-            IGVCustomWheelPanelBlock.LedValues.AddRange([GVBlocksManager.GetBlockIndex<GVOscilloscopeBlock>(), GVBlocksManager.GetBlockIndex<GVSolid8NumberLedBlock>()]);
+            IGVCustomWheelPanelBlock.LedValues.AddRange(
+                [GVBlocksManager.GetBlockIndex<GVOscilloscopeBlock>(), GVBlocksManager.GetBlockIndex<GVSolid8NumberLedBlock>()]
+            );
         }
     }
 }

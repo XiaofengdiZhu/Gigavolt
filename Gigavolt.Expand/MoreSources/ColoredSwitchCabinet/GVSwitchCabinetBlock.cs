@@ -19,14 +19,7 @@ namespace Game {
         public readonly BlockMesh m_standaloneSwitchLeverBlockMesh = new();
         readonly Dictionary<int, StateInfo> m_cachedStateInfos = new();
 
-        public static readonly Point3[] m_upPoint3 = [
-            Point3.UnitY,
-            Point3.UnitY,
-            Point3.UnitY,
-            Point3.UnitY,
-            -Point3.UnitZ,
-            Point3.UnitZ
-        ];
+        public static readonly Point3[] m_upPoint3 = [Point3.UnitY, Point3.UnitY, Point3.UnitY, Point3.UnitY, -Point3.UnitZ, Point3.UnitZ];
 
         public static readonly int[] ColorIndex2Color = [
             0,
@@ -102,7 +95,8 @@ namespace Game {
                 Color.White
             );
             for (int colorIndex = 0; colorIndex < 14; colorIndex++) {
-                Matrix switchMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
+                Matrix switchMatrix = Matrix.CreateScale(0.3f)
+                    * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
                 m_standaloneSwitchBodyBlockMesh.AppendModelMeshPart(
                     m_switchBodyMeshPart,
                     m_switchBodyBoneAbsoluteTransform * switchMatrix * standaloneMatrix,
@@ -125,7 +119,12 @@ namespace Game {
             }
         }
 
-        public override GVElectricElement[] CreateGVElectricElements(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) {
+        public override GVElectricElement[] CreateGVElectricElements(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) {
             int face = GetFace(value);
             int data = Terrain.ExtractData(value);
             Point3 upDirection = m_upPoint3[face];
@@ -140,7 +139,8 @@ namespace Game {
                 return null;
             }
             if (!subsystemGVElectricity.m_GVElectricElementsToAdd[subterrainId].ContainsKey(another)) {
-                int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId).GetCellValue(another.X, another.Y, another.Z);
+                int anotherValue = subsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId)
+                    .GetCellValue(another.X, another.Y, another.Z);
                 if (Terrain.ExtractContents(anotherValue) == BlockIndex
                     && GetFace(anotherValue) == face) {
                     int anotherData = Terrain.ExtractData(anotherValue);
@@ -149,22 +149,7 @@ namespace Game {
                         for (int color = 0; color < 16; color++) {
                             result[color] = new SwitchCabinetGVElectricElement(
                                 subsystemGVElectricity,
-                                [
-                                    new GVCellFace(
-                                        x,
-                                        y,
-                                        z,
-                                        face,
-                                        1 << color
-                                    ),
-                                    new GVCellFace(
-                                        another.X,
-                                        another.Y,
-                                        another.Z,
-                                        face,
-                                        1 << color
-                                    )
-                                ],
+                                [new GVCellFace(x, y, z, face, 1 << color), new GVCellFace(another.X, another.Y, another.Z, face, 1 << color)],
                                 subterrainId,
                                 GetLeverState(data, color)
                             );
@@ -176,7 +161,12 @@ namespace Game {
             return null;
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBaseBlockMesh,
@@ -186,14 +176,7 @@ namespace Game {
                 ref matrix,
                 environmentData
             );
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneSwitchBodyBlockMesh,
-                color,
-                2f * size,
-                ref matrix,
-                environmentData
-            );
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneSwitchBodyBlockMesh, color, 2f * size, ref matrix, environmentData);
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneSwitchLeverBlockMesh,
@@ -259,19 +242,34 @@ namespace Game {
             return GetIsTopPart(data) ? stateInfo.TopCollisionBoxes : stateInfo.BottomCollisionBoxes;
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             BlockPlacementData result = default;
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetFace(0, raycastResult.CellFace.Face));
             result.CellFace = raycastResult.CellFace;
             return result;
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             dropValues.Add(new BlockDropValue { Value = BlockIndex, Count = 1 });
             showDebris = DestructionDebrisScale > 0f;
         }
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {
@@ -329,7 +327,10 @@ namespace Game {
                 radians = (float)Math.PI / 2f;
                 flag = true;
             }
-            Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+            Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f)
+                * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians))
+                * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
             BlockMesh baseBlockMesh = new();
             baseBlockMesh.AppendModelMeshPart(
                 m_baseModelMeshPart,
@@ -350,7 +351,8 @@ namespace Game {
             BlockMesh switchBodyBlockMesh = new();
             BlockMesh switchLeverBlockMesh = new();
             for (int colorIndex = 0; colorIndex < 14; colorIndex++) {
-                Matrix switchMatrix = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
+                Matrix switchMatrix = Matrix.CreateScale(0.3f)
+                    * Matrix.CreateTranslation(colorIndex >= 7 ? -0.1f : 0.1f, 0.0625f, -1.1f + 0.2f * (colorIndex % 7));
                 switchBodyBlockMesh.AppendModelMeshPart(
                     m_switchBodyMeshPart,
                     m_switchBodyBoneAbsoluteTransform * switchMatrix * m,
@@ -363,7 +365,10 @@ namespace Game {
                 int color = ColorIndex2Color[colorIndex];
                 switchLeverBlockMesh.AppendModelMeshPart(
                     m_switchLeverMeshPart,
-                    m_switchLeverBoneAbsoluteTransform * (GetLeverState(state, color) ? Matrix.CreateRotationX(-MathF.PI / 6) : Matrix.CreateRotationX(MathF.PI / 6)) * switchMatrix * m,
+                    m_switchLeverBoneAbsoluteTransform
+                    * (GetLeverState(state, color) ? Matrix.CreateRotationX(-MathF.PI / 6) : Matrix.CreateRotationX(MathF.PI / 6))
+                    * switchMatrix
+                    * m,
                     false,
                     false,
                     false,
@@ -374,7 +379,10 @@ namespace Game {
                 if (colorIndex == 0) {
                     firstSwitchBoundingBox = switchBodyBlockMesh.CalculateBoundingBox();
                     bottomCollisionBoxes[collisionBoxIndex] = firstSwitchBoundingBox;
-                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstSwitchBoundingBox.Min + downTranslation, firstSwitchBoundingBox.Max + downTranslation);
+                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(
+                        firstSwitchBoundingBox.Min + downTranslation,
+                        firstSwitchBoundingBox.Max + downTranslation
+                    );
                 }
                 else {
                     Vector3 down = new(-m_upPoint3[face]);
@@ -382,8 +390,14 @@ namespace Game {
                     if (colorIndex >= 7) {
                         transition += Vector3.Cross(down, CellFace.FaceToVector3(face)) * 0.2f;
                     }
-                    bottomCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstSwitchBoundingBox.Min + transition, firstSwitchBoundingBox.Max + transition);
-                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(firstSwitchBoundingBox.Min + downTranslation + transition, firstSwitchBoundingBox.Max + downTranslation + transition);
+                    bottomCollisionBoxes[collisionBoxIndex] = new BoundingBox(
+                        firstSwitchBoundingBox.Min + transition,
+                        firstSwitchBoundingBox.Max + transition
+                    );
+                    topCollisionBoxes[collisionBoxIndex] = new BoundingBox(
+                        firstSwitchBoundingBox.Min + downTranslation + transition,
+                        firstSwitchBoundingBox.Max + downTranslation + transition
+                    );
                 }
             }
             return new StateInfo {

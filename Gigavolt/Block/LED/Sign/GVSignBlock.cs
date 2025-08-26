@@ -6,9 +6,21 @@ namespace Game {
 
         public GVSignBlock() : base("Models/IronSign", 78) { }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new SignGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(Terrain.ExtractData(value))), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new SignGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(Terrain.ExtractData(value))),
+            subterrainId
+        );
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             int? color = GetColor(Terrain.ExtractData(value));
             if (raycastResult.CellFace.Face < 4) {
                 int data = SetFace(SetColor(0, color), raycastResult.CellFace.Face);

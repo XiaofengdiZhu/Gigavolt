@@ -10,7 +10,11 @@ namespace Game {
         public uint m_inputLeft;
         public Vector3 m_targetOffset;
 
-        public TractorBeamGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTractorBeamBlockBehavior>(true);
+        public TractorBeamGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_subsystemBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVTractorBeamBlockBehavior>(true);
 
         public override uint GetOutputVoltage(int face) => 0u;
 
@@ -27,21 +31,18 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(cellFace.Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(cellFace.Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection.Value) {
                             case GVElectricConnectorDirection.Top:
-                                m_inputTop = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputTop = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Right:
-                                m_inputRight = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputRight = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Bottom:
-                                m_inputBottom = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputBottom = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Left:
-                                m_inputLeft = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inputLeft = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                         }
                     }
                 }
@@ -86,7 +87,12 @@ namespace Game {
                 if ((lastInputLeft & 1u) == 0u
                     && (m_inputLeft & 1u) == 1u) {
                     if (m_subterrainSystem == null) {
-                        m_subterrainSystem = m_subsystemBlockBehavior.AddSubterrain(tractorBeamBlockPoint, SubterrainId, m_targetOffset, Matrix.CreateFromYawPitchRoll(yaw, pitch, roll) * Matrix.CreateScale(scale) * Matrix.CreateTranslation(m_targetOffset));
+                        m_subterrainSystem = m_subsystemBlockBehavior.AddSubterrain(
+                            tractorBeamBlockPoint,
+                            SubterrainId,
+                            m_targetOffset,
+                            Matrix.CreateFromYawPitchRoll(yaw, pitch, roll) * Matrix.CreateScale(scale) * Matrix.CreateTranslation(m_targetOffset)
+                        );
                         if (m_subterrainSystem != null) {
                             m_subterrainSystem.UseParentLight = useParentLight;
                             if (!useParentLight) {
@@ -96,7 +102,9 @@ namespace Game {
                     }
                 }
                 else if (m_subterrainSystem != null) {
-                    m_subterrainSystem.BaseTransform = Matrix.CreateFromYawPitchRoll(yaw, pitch, roll) * Matrix.CreateScale(scale) * Matrix.CreateTranslation(m_targetOffset);
+                    m_subterrainSystem.BaseTransform = Matrix.CreateFromYawPitchRoll(yaw, pitch, roll)
+                        * Matrix.CreateScale(scale)
+                        * Matrix.CreateTranslation(m_targetOffset);
                     m_subterrainSystem.UseParentLight = useParentLight;
                     if (!useParentLight) {
                         m_subterrainSystem.Light = light;

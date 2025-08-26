@@ -43,15 +43,23 @@ namespace Game {
             -Vector3.UnitX
         ];
 
-        public TouchpadGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_subsystemGVDisplayLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDisplayLedGlow>(true);
+        public TouchpadGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_subsystemGVDisplayLedGlow = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVDisplayLedGlow>(true);
 
         public override void OnAdded() {
             GVCellFace cellFace = CellFaces[0];
-            int data = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            int data = Terrain.ExtractData(
+                SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)
+            );
             int mountingFace = cellFace.Face;
             int rotation = RotateableMountedGVElectricElementBlock.GetRotation(data);
             m_glowPoints = m_subsystemGVDisplayLedGlow.AddGlowPoints(SubterrainId);
-            GVDisplayPoint point = new() { Type = 1, Position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f), Color = Color.White, Complex = false };
+            GVDisplayPoint point = new() {
+                Type = 1, Position = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f), Color = Color.White, Complex = false
+            };
             Vector3 forward = -CellFace.FaceToVector3(mountingFace);
             if (forward.Y != 0) {
                 forward.Z += 0.0001f;
@@ -92,15 +100,17 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != GVElectricConnectorType.Input) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, electricRotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(
+                        CellFaces[0].Face,
+                        electricRotation,
+                        connection.ConnectorFace
+                    );
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection.Value) {
                             case GVElectricConnectorDirection.In:
-                                inputIn = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                inputIn = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Bottom:
-                                inputBottom = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                inputBottom = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                         }
                     }
                 }

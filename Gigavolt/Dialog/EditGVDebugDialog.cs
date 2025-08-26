@@ -24,7 +24,11 @@ namespace Game {
 
         public readonly string m_lastSpeedText;
 
-        public static Action m_helpAction = () => { WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/base/new/debug.html"); };
+        public static Action m_helpAction = () => {
+            WebBrowserManager.LaunchBrowser(
+                $"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/base/new/debug.html"
+            );
+        };
 
         public EditGVDebugDialog(SubsystemGVDebugBlockBehavior subsystem, SubsystemGVElectricity subsystemGVElectricity, Action handler) {
             XElement node = ContentManager.Get<XElement>("Dialogs/EditGVDebugDialog");
@@ -90,30 +94,12 @@ namespace Game {
                             Dismiss(true);
                         }
                         else {
-                            DialogsManager.ShowDialog(
-                                null,
-                                new MessageDialog(
-                                    LanguageControl.Error,
-                                    "速率转换为浮点数失败",
-                                    "OK",
-                                    null,
-                                    null
-                                )
-                            );
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "速率转换为浮点数失败", "OK", null, null));
                         }
                     }
                 }
                 else {
-                    DialogsManager.ShowDialog(
-                        null,
-                        new MessageDialog(
-                            LanguageControl.Error,
-                            "速率不能为空",
-                            "OK",
-                            null,
-                            null
-                        )
-                    );
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "速率不能为空", "OK", null, null));
                 }
                 GVStaticStorage.DisplayVoltage = m_displayVoltageCheckbox.IsChecked;
                 m_subsystem.SetPreventChunkFromBeingFree(m_preventChunkFromBeingFreeCheckbox.IsChecked);

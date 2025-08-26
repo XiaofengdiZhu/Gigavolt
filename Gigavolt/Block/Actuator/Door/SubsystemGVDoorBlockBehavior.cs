@@ -18,14 +18,7 @@ namespace Game {
                 int value = Terrain.ReplaceData(cellValue, data);
                 SubsystemTerrain.ChangeCell(x, y, z, value);
                 string name = open ? "Audio/Doors/DoorOpen" : "Audio/Doors/DoorClose";
-                m_subsystemAudio.PlaySound(
-                    name,
-                    0.7f,
-                    m_random.Float(-0.1f, 0.1f),
-                    new Vector3(x, y, z),
-                    4f,
-                    true
-                );
+                m_subsystemAudio.PlaySound(name, 0.7f, m_random.Float(-0.1f, 0.1f), new Vector3(x, y, z), 4f, true);
                 return true;
             }
             return false;
@@ -91,14 +84,7 @@ namespace Game {
             }
         }
 
-        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(
-            value,
-            newValue,
-            x,
-            y,
-            z,
-            null
-        );
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(value, newValue, x, y, z, null);
 
         public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
             int offset = 0;
@@ -126,7 +112,13 @@ namespace Game {
             null
         );
 
-        public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) {
+        public void OnNeighborBlockChanged(int x,
+            int y,
+            int z,
+            int neighborX,
+            int neighborY,
+            int neighborZ,
+            GVSubterrainSystem system) {
             Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
             int cellValue = terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);

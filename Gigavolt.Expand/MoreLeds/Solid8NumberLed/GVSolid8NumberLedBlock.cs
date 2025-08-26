@@ -26,7 +26,12 @@ namespace Game {
             );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             if (environmentData.DrawBlockMode == DrawBlockMode.UI) {
                 color = new Color(158, 158, 158);
             }
@@ -45,9 +50,21 @@ namespace Game {
 
         public override int GetTextureSlotCount(int value) => 1;
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new Solid8NumberLedGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new Solid8NumberLedGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
 
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) => GVElectricConnectorType.Input;
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) => GVElectricConnectorType.Input;
 
         public int GetConnectionMask(int value) => int.MaxValue;
 

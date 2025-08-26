@@ -14,7 +14,11 @@ namespace Game {
             SubterrainId = subterrainId;
         }
 
-        public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : this(subsystemGVElectricity, new List<GVCellFace> { cellFace }, subterrainId) { }
+        public GVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : this(
+            subsystemGVElectricity,
+            new List<GVCellFace> { cellFace },
+            subterrainId
+        ) { }
 
         public virtual uint GetOutputVoltage(int face) => 0u;
 

@@ -8,13 +8,7 @@ namespace Game {
         //abcdO
         public uint[] m_nodesVoltage;
 
-        public readonly uint[] default_nodesVoltage = [
-            0,
-            0,
-            0,
-            0,
-            0
-        ];
+        public readonly uint[] default_nodesVoltage = [0, 0, 0, 0, 0];
 
         //1~20常断，21~28常通
         public readonly bool[] default_switched = [
@@ -114,7 +108,11 @@ namespace Game {
 
         public bool m_noInInput = true;
 
-        public MultiplexerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public MultiplexerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_nodesVoltage = (uint[])default_nodesVoltage.Clone();
             m_inputsVoltage = (uint[])default_nodesVoltage.Clone();
             m_switches = (bool[])default_switched.Clone();
@@ -152,7 +150,8 @@ namespace Game {
             int rotation = Rotation;
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.NeighborConnectorType != GVElectricConnectorType.Input) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection.Value == GVElectricConnectorDirection.In) {
                             m_inputsVoltage[4] = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);

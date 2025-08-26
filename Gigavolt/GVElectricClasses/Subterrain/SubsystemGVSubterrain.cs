@@ -60,11 +60,17 @@ namespace Game {
                                         if (Terrain.ExtractContents(value) == AirBlock.Index) {
                                             continue;
                                         }
-                                        Point3 pointInWorld = Terrain.ToCell(Vector3.Transform(new Vector3(pointInSubterrain.X + 0.5f, pointInSubterrain.Y + 0.5f, pointInSubterrain.Z + 0.5f), subterrainSystem.GlobalTransform));
+                                        Point3 pointInWorld = Terrain.ToCell(
+                                            Vector3.Transform(
+                                                new Vector3(pointInSubterrain.X + 0.5f, pointInSubterrain.Y + 0.5f, pointInSubterrain.Z + 0.5f),
+                                                subterrainSystem.GlobalTransform
+                                            )
+                                        );
                                         if (pointInWorld.Y < 0
                                             || pointInWorld.Y > 255
                                             || blocks.ContainsKey(pointInWorld)
-                                            || m_subsystemTerrain.Terrain.GetCellContentsFast(pointInWorld.X, pointInWorld.Y, pointInWorld.Z) != AirBlock.Index) {
+                                            || m_subsystemTerrain.Terrain.GetCellContentsFast(pointInWorld.X, pointInWorld.Y, pointInWorld.Z)
+                                            != AirBlock.Index) {
                                             return false;
                                         }
                                         blocks.Add(pointInWorld, Terrain.ReplaceLight(value, 0));
@@ -109,13 +115,7 @@ namespace Game {
             foreach ((Point3 point, int value) in blocks) {
                 SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
                 foreach (SubsystemBlockBehavior behaviors in blockBehaviors) {
-                    behaviors.OnBlockGenerated(
-                        value,
-                        point.X,
-                        point.Y,
-                        point.Z,
-                        isPointLoaded[point]
-                    );
+                    behaviors.OnBlockGenerated(value, point.X, point.Y, point.Z, isPointLoaded[point]);
                 }
             }
             return true;
@@ -125,27 +125,21 @@ namespace Game {
 
         public void ChangeCell(int x, int y, int z, uint subterrainId, int value, bool updateModificationCounter = true) {
             if (subterrainId == 0) {
-                m_subsystemTerrain.ChangeCell(
-                    x,
-                    y,
-                    z,
-                    value,
-                    updateModificationCounter
-                );
+                m_subsystemTerrain.ChangeCell(x, y, z, value, updateModificationCounter);
             }
             else {
-                GVStaticStorage.GVSubterrainSystemDictionary[subterrainId]
-                ?.ChangeCell(
-                    x,
-                    y,
-                    z,
-                    value,
-                    updateModificationCounter
-                );
+                GVStaticStorage.GVSubterrainSystemDictionary[subterrainId]?.ChangeCell(x, y, z, value, updateModificationCounter);
             }
         }
 
-        public void DestroyCell(int toolLevel, int x, int y, int z, uint subterrainId, int newValue, bool noDrop, bool noParticleSystem) {
+        public void DestroyCell(int toolLevel,
+            int x,
+            int y,
+            int z,
+            uint subterrainId,
+            int newValue,
+            bool noDrop,
+            bool noParticleSystem) {
             if (subterrainId == 0) {
                 m_subsystemTerrain.DestroyCell(
                     toolLevel,
@@ -177,7 +171,6 @@ namespace Game {
         }
 
         public static bool IsNumberNearOne(float number) => Math.Abs(number - 1f) < FloatTolerance || Math.Abs(number + 1f) < FloatTolerance;
-
 
         public override void Dispose() {
             foreach (GVSubterrainSystem subterrainSystem in GVStaticStorage.GVSubterrainSystemDictionary.Values) {

@@ -28,7 +28,11 @@ namespace Game {
 
         public readonly DynamicArray<ComponentBody> m_bodies = new();
 
-        public MotionDetectorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public MotionDetectorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemBodies = subsystemGVElectricity.Project.FindSubsystem<SubsystemBodies>(true);
             m_subsystemMovingBlocks = subsystemGVElectricity.Project.FindSubsystem<SubsystemMovingBlocks>(true);
             m_subsystemProjectiles = subsystemGVElectricity.Project.FindSubsystem<SubsystemProjectiles>(true);
@@ -67,16 +71,12 @@ namespace Game {
             m_voltage = CalculateMotionVoltage();
             if (m_voltage > 0
                 && voltage == 0f) {
-                SubsystemGVElectricity.SubsystemAudio.PlaySound(
-                    "Audio/MotionDetectorClick",
-                    1f,
-                    0f,
-                    m_centerTransformed,
-                    1f,
-                    true
-                );
+                SubsystemGVElectricity.SubsystemAudio.PlaySound("Audio/MotionDetectorClick", 1f, 0f, m_centerTransformed, 1f, true);
             }
-            SubsystemGVElectricity.QueueGVElectricElementForSimulation(this, SubsystemGVElectricity.CircuitStep + MathUtils.Max((int)(0.25f * (0.9f + 0.000200000009f * (GetHashCode() % 1000)) / 0.01f), 1));
+            SubsystemGVElectricity.QueueGVElectricElementForSimulation(
+                this,
+                SubsystemGVElectricity.CircuitStep + MathUtils.Max((int)(0.25f * (0.9f + 0.000200000009f * (GetHashCode() % 1000)) / 0.01f), 1)
+            );
             return m_voltage != voltage;
         }
 
@@ -131,7 +131,11 @@ namespace Game {
                         true,
                         delegate(int value, float _) {
                             Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-                            return block.IsCollidable && block.BlockIndex != 15 && block.BlockIndex != 60 && block.BlockIndex != 44 && block.BlockIndex != 18;
+                            return block.IsCollidable
+                                && block.BlockIndex != 15
+                                && block.BlockIndex != 60
+                                && block.BlockIndex != 44
+                                && block.BlockIndex != 18;
                         }
                     )
                     .HasValue) {

@@ -44,30 +44,12 @@ namespace Game {
                             Dismiss(true);
                         }
                         catch (Exception ex) {
-                            DialogsManager.ShowDialog(
-                                null,
-                                new MessageDialog(
-                                    LanguageControl.Error,
-                                    ex.ToString(),
-                                    "OK",
-                                    null,
-                                    null
-                                )
-                            );
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, ex.ToString(), "OK", null, null));
                         }
                     }
                 }
                 else {
-                    DialogsManager.ShowDialog(
-                        null,
-                        new MessageDialog(
-                            LanguageControl.Error,
-                            "ROM·��δ��д",
-                            "OK",
-                            null,
-                            null
-                        )
-                    );
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "ROM·��δ��д", "OK", null, null));
                 }
             }
             if (Input.Cancel

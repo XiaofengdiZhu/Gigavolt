@@ -116,12 +116,8 @@ namespace XamariNES.PPU {
                         index %= 0x400; // In one of the 2 A regions
                     }
                     break;
-                case enumNametableMirroring.SingleLower:
-                    index %= 0x400;
-                    break;
-                case enumNametableMirroring.SingleUpper:
-                    index = index % 400 + 0x400;
-                    break;
+                case enumNametableMirroring.SingleLower: index %= 0x400; break;
+                case enumNametableMirroring.SingleUpper: index = index % 400 + 0x400; break;
                 default: throw new ArgumentOutOfRangeException();
             }
             return index;

@@ -10,7 +10,11 @@ namespace Game {
         public uint m_bottomInput;
         public uint m_inInput;
 
-        public TerrainScannerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_terrain = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId);
+        public TerrainScannerGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) => m_terrain = SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(subterrainId);
 
         public override bool Simulate() {
             m_rightInput = 0u;
@@ -23,24 +27,20 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Top:
-                                m_topInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_topInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Right:
-                                m_rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Bottom:
-                                m_bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Left:
-                                m_leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.In:
-                                m_inInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                         }
                     }
                 }
@@ -109,7 +109,9 @@ namespace Game {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     Point3 position = startPosition + directionX * x + directionY * y;
-                    int value = scanNearest ? GetNearestCellValue(position, direction, 0) : m_terrain.GetCellValue(position.X, position.Y, position.Z);
+                    int value = scanNearest
+                        ? GetNearestCellValue(position, direction, 0)
+                        : m_terrain.GetCellValue(position.X, position.Y, position.Z);
                     image[width * y + x] = (uint)(((m_topInput >> 16) & 1u) == 1u ? value : Terrain.ExtractContents(value));
                 }
             }

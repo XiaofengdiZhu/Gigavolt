@@ -17,7 +17,11 @@ namespace Game {
 
         public bool m_ignoreTextChanges;
 
-        public static Action m_helpAction = () => { WebBrowserManager.LaunchBrowser($"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/base/shift/truth_table.html"); };
+        public static Action m_helpAction = () => {
+            WebBrowserManager.LaunchBrowser(
+                $"https://xiaofengdizhu.github.io/GigavoltDoc/{(ModsManager.Configs["Language"]?.StartsWith("zh") ?? false ? "zh" : "en")}/base/shift/truth_table.html"
+            );
+        };
 
         public EditGVTruthTableDialog(GVTruthTableData truthTableData, Action handler) {
             try {
@@ -45,16 +49,7 @@ namespace Game {
                     Dismiss(true);
                 }
                 else {
-                    DialogsManager.ShowDialog(
-                        null,
-                        new MessageDialog(
-                            "发生错误",
-                            error,
-                            "OK",
-                            null,
-                            null
-                        )
-                    );
+                    DialogsManager.ShowDialog(null, new MessageDialog("发生错误", error, "OK", null, null));
                 }
             }
             if (m_copyDataButton.IsClicked

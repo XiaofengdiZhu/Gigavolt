@@ -89,13 +89,7 @@ namespace Game {
             if (m_okButton.IsClicked) {
                 string[] lines = [m_textBox1.Text, m_textBox2.Text, m_textBox3.Text, m_textBox4.Text];
                 Color[] colors = [m_colorButton1.Color, m_colorButton2.Color, m_colorButton3.Color, m_colorButton4.Color];
-                m_subsystemSignBlockBehavior.SetSignData(
-                    m_signPoint,
-                    0u,
-                    lines,
-                    colors,
-                    m_urlTextBox.Text
-                );
+                m_subsystemSignBlockBehavior.SetSignData(m_signPoint, 0u, lines, colors, m_urlTextBox.Text);
                 Dismiss();
             }
             if (m_urlButton.IsClicked) {

@@ -58,7 +58,9 @@ namespace Game {
                         typeIcon = ExternalContentManager.GetEntryTypeIcon(externalContentEntry2.Type);
                         break;
                 }
-                string text2 = externalContentEntry2.Type != ExternalContentType.Directory ? $"{typeDescription} | {DataSizeFormatter.Format(externalContentEntry2.Size)} | {externalContentEntry2.Time:dd-MMM-yyyy HH:mm}" : ExternalContentManager.GetEntryTypeDescription(externalContentEntry2.Type);
+                string text2 = externalContentEntry2.Type != ExternalContentType.Directory
+                    ? $"{typeDescription} | {DataSizeFormatter.Format(externalContentEntry2.Size)} | {externalContentEntry2.Time:dd-MMM-yyyy HH:mm}"
+                    : ExternalContentManager.GetEntryTypeDescription(externalContentEntry2.Type);
                 containerWidget.Children.Find<RectangleWidget>("ExternalContentItem.Icon").Subtexture = typeIcon;
                 containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Text").Text = fileName;
                 containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Details").Text = text2;
@@ -171,7 +173,9 @@ namespace Game {
                                     && e2.Type != ExternalContentType.Directory) {
                                     return -1;
                                 }
-                                return e1.Type != ExternalContentType.Directory && e2.Type == ExternalContentType.Directory ? 1 : string.CompareOrdinal(e1.Path, e2.Path);
+                                return e1.Type != ExternalContentType.Directory && e2.Type == ExternalContentType.Directory
+                                    ? 1
+                                    : string.CompareOrdinal(e1.Path, e2.Path);
                             }
                         );
                         foreach (ExternalContentEntry item in list) {
@@ -180,16 +184,7 @@ namespace Game {
                     },
                     delegate(Exception error) {
                         DialogsManager.HideDialog(busyDialog);
-                        DialogsManager.ShowDialog(
-                            null,
-                            new MessageDialog(
-                                LanguageControl.Error,
-                                error.ToString(),
-                                LanguageControl.Ok,
-                                null,
-                                null
-                            )
-                        );
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, error.ToString(), LanguageControl.Ok, null, null));
                     }
                 );
             }
@@ -205,29 +200,11 @@ namespace Game {
                 fileStream.Close();
                 stream.Close();
                 DialogsManager.HideDialog(busyDialog);
-                DialogsManager.ShowDialog(
-                    null,
-                    new MessageDialog(
-                        LanguageControl.Get(GetType().Name, 14),
-                        path,
-                        LanguageControl.Ok,
-                        null,
-                        null
-                    )
-                );
+                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 14), path, LanguageControl.Ok, null, null));
             }
             catch (Exception e) {
                 DialogsManager.HideDialog(busyDialog);
-                DialogsManager.ShowDialog(
-                    null,
-                    new MessageDialog(
-                        LanguageControl.Error,
-                        e.ToString(),
-                        LanguageControl.Ok,
-                        null,
-                        null
-                    )
-                );
+                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.ToString(), LanguageControl.Ok, null, null));
             }
         }
 
@@ -265,7 +242,12 @@ namespace Game {
                             default:
                                 long length = stream.Length;
                                 string desc = m_arrayData.Stream2Data(stream, extension);
-                                result = string.Format(LanguageControl.Get(GetType().Name, 11), entry.Path, length, desc.Length > 0 ? desc : LanguageControl.Get(GetType().Name, 17));
+                                result = string.Format(
+                                    LanguageControl.Get(GetType().Name, 11),
+                                    entry.Path,
+                                    length,
+                                    desc.Length > 0 ? desc : LanguageControl.Get(GetType().Name, 17)
+                                );
                                 break;
                         }
                         m_arrayData.SaveString();
@@ -274,42 +256,18 @@ namespace Game {
                         DialogsManager.HideDialog(busyDialog);
                         DialogsManager.ShowDialog(
                             null,
-                            new MessageDialog(
-                                LanguageControl.Get(GetType().Name, 16),
-                                result,
-                                LanguageControl.Ok,
-                                null,
-                                null
-                            )
+                            new MessageDialog(LanguageControl.Get(GetType().Name, 16), result, LanguageControl.Ok, null, null)
                         );
                     }
                     catch (Exception e) {
                         DialogsManager.HideDialog(busyDialog);
-                        DialogsManager.ShowDialog(
-                            null,
-                            new MessageDialog(
-                                LanguageControl.Error,
-                                e.ToString(),
-                                LanguageControl.Ok,
-                                null,
-                                null
-                            )
-                        );
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.ToString(), LanguageControl.Ok, null, null));
                     }
                     stream.Close();
                 },
                 delegate(Exception error) {
                     DialogsManager.HideDialog(busyDialog);
-                    DialogsManager.ShowDialog(
-                        null,
-                        new MessageDialog(
-                            LanguageControl.Error,
-                            error.ToString(),
-                            LanguageControl.Ok,
-                            null,
-                            null
-                        )
-                    );
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, error.ToString(), LanguageControl.Ok, null, null));
                 }
             );
         }

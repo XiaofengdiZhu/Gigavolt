@@ -51,16 +51,7 @@ namespace Game {
                 }
                 else {
                     m_dataTextBox.Text = m_lastInputText;
-                    DialogsManager.ShowDialog(
-                        null,
-                        new MessageDialog(
-                            "发生错误",
-                            "特殊值输入不符合要求",
-                            "OK",
-                            null,
-                            null
-                        )
-                    );
+                    DialogsManager.ShowDialog(null, new MessageDialog("发生错误", "特殊值输入不符合要求", "OK", null, null));
                 }
                 UpdateKeysState();
             }

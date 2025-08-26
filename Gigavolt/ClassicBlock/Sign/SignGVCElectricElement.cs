@@ -6,7 +6,11 @@ namespace Game {
 
         public double? m_lastMessageTime;
 
-        public SignGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
+        public SignGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) { }
 
         public override bool Simulate() {
             bool flag = CalculateHighInputsCount() > 0;
@@ -15,14 +19,16 @@ namespace Game {
                 && (!m_lastMessageTime.HasValue || SubsystemGVElectricity.SubsystemTime.GameTime - m_lastMessageTime.Value > 0.5)) {
                 m_isMessageAllowed = false;
                 m_lastMessageTime = SubsystemGVElectricity.SubsystemTime.GameTime;
-                SignData signData = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVSignBlockCBehavior>(true).GetSignData(CellFaces[0].Point, SubterrainId);
+                SignData signData = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVSignBlockCBehavior>(true)
+                    .GetSignData(CellFaces[0].Point, SubterrainId);
                 if (signData != null) {
                     string text = string.Join("\n", signData.Lines);
                     text = text.Trim('\n');
                     text = text.Replace("\\\n", "");
                     Color color = signData.Colors[0] == Color.Black ? Color.White : signData.Colors[0];
                     color *= 255f / MathUtils.Max(color.R, color.G, color.B);
-                    foreach (ComponentPlayer componentPlayer in SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
+                    foreach (ComponentPlayer componentPlayer in
+                        SubsystemGVElectricity.Project.FindSubsystem<SubsystemPlayers>(true).ComponentPlayers) {
                         componentPlayer.ComponentGui.DisplaySmallMessage(text, color, true, true);
                     }
                 }

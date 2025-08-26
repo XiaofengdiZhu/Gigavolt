@@ -12,7 +12,12 @@ namespace Game {
 
         public readonly int NeighborConnectorFace;
 
-        public GVElectricConnectionPath(int neighborOffsetX, int neighborOffsetY, int neighborOffsetZ, int neighborFace, int connectorFace, int neighborConnectorFace) {
+        public GVElectricConnectionPath(int neighborOffsetX,
+            int neighborOffsetY,
+            int neighborOffsetZ,
+            int neighborFace,
+            int connectorFace,
+            int neighborConnectorFace) {
             NeighborOffsetX = neighborOffsetX;
             NeighborOffsetY = neighborOffsetY;
             NeighborOffsetZ = neighborOffsetZ;

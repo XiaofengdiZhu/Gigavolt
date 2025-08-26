@@ -39,13 +39,7 @@ namespace Game {
                 if (col >= m_width) {
                     uint[] newData = new uint[(col + 1) * m_height];
                     for (int y = 0; y < m_height; y++) {
-                        Array.Copy(
-                            Data,
-                            y * m_width,
-                            newData,
-                            y * col,
-                            m_width
-                        );
+                        Array.Copy(Data, y * m_width, newData, y * col, m_width);
                     }
                     Data = newData;
                     m_width = col + 1;
@@ -65,8 +59,19 @@ namespace Game {
             Write(row * m_width + col, data);
         }
 
-        public override IEditableItemData Copy() => new GVVolatileMemoryBankData(GVStaticStorage.GetUniqueGVMBID(), m_isDataInitialized ? (uint[])Data.Clone() : null, m_width, m_height);
-        public override IEditableItemData Copy(uint id) => new GVVolatileMemoryBankData(id, m_isDataInitialized ? (uint[])Data.Clone() : null, m_width, m_height);
+        public override IEditableItemData Copy() => new GVVolatileMemoryBankData(
+            GVStaticStorage.GetUniqueGVMBID(),
+            m_isDataInitialized ? (uint[])Data.Clone() : null,
+            m_width,
+            m_height
+        );
+
+        public override IEditableItemData Copy(uint id) => new GVVolatileMemoryBankData(
+            id,
+            m_isDataInitialized ? (uint[])Data.Clone() : null,
+            m_width,
+            m_height
+        );
 
         public override void LoadString(string data) {
             string[] array = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);

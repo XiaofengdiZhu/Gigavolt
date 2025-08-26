@@ -56,7 +56,12 @@ namespace XamariNES.Cartridge.Mappers.impl {
 
         public enumNametableMirroring NametableMirroring { get; set; }
 
-        public MMC1(int prgRomBanks, byte[] chrRom, byte[] prgRom, bool useChrRam, bool usePrgRam, enumNametableMirroring mirroring = enumNametableMirroring.Horizontal) {
+        public MMC1(int prgRomBanks,
+            byte[] chrRom,
+            byte[] prgRom,
+            bool useChrRam,
+            bool usePrgRam,
+            enumNametableMirroring mirroring = enumNametableMirroring.Horizontal) {
             _prgRomBanks = prgRomBanks;
             _chrRom = chrRom;
             _prgRom = prgRom;
@@ -204,18 +209,10 @@ namespace XamariNES.Cartridge.Mappers.impl {
                 _currentPrgMode = (_registerShift >> 2) & 0x03;
                 _currentChrMode = (_registerShift >> 4) & 0x01;
                 switch (_registerControl & 0x03) {
-                    case 0:
-                        NametableMirroring = enumNametableMirroring.SingleLower;
-                        break;
-                    case 1:
-                        NametableMirroring = enumNametableMirroring.SingleUpper;
-                        break;
-                    case 2:
-                        NametableMirroring = enumNametableMirroring.Vertical;
-                        break;
-                    case 3:
-                        NametableMirroring = enumNametableMirroring.Horizontal;
-                        break;
+                    case 0: NametableMirroring = enumNametableMirroring.SingleLower; break;
+                    case 1: NametableMirroring = enumNametableMirroring.SingleUpper; break;
+                    case 2: NametableMirroring = enumNametableMirroring.Vertical; break;
+                    case 3: NametableMirroring = enumNametableMirroring.Horizontal; break;
                 }
             }
             else if (offset <= 0xBFFF) {

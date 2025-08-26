@@ -18,18 +18,25 @@ namespace Game {
             int num = 78;
             for (int j = 0; j < 6; j++) {
                 int num2 = SetMountingFace(0, j);
-                Matrix matrix = j >= 4 ? j != 4 ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f) : Matrix.CreateTranslation(0.5f, 0f, 0.5f) : Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+                Matrix matrix = j >= 4
+                    ? j != 4
+                        ? Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)
+                        : Matrix.CreateTranslation(0.5f, 0f, 0.5f)
+                    : Matrix.CreateRotationX((float)Math.PI / 2f)
+                    * Matrix.CreateTranslation(0f, 0f, -0.5f)
+                    * Matrix.CreateRotationY(j * (float)Math.PI / 2f)
+                    * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                 m_blockMeshesByData[num2] = new BlockMesh();
                 m_blockMeshesByData[num2]
-                .AppendModelMeshPart(
-                    model.FindMesh("PressurePlate").MeshParts[0],
-                    boneAbsoluteTransform * matrix,
-                    false,
-                    false,
-                    false,
-                    false,
-                    Color.White
-                );
+                    .AppendModelMeshPart(
+                        model.FindMesh("PressurePlate").MeshParts[0],
+                        boneAbsoluteTransform * matrix,
+                        false,
+                        false,
+                        false,
+                        false,
+                        Color.White
+                    );
                 m_blockMeshesByData[num2].TransformTextureCoordinates(Matrix.CreateTranslation(num % 16 / 16f, num / 16 / 16f, 0f));
                 m_blockMeshesByData[num2].GenerateSidesData();
                 Vector3 vector = Vector3.Transform(new Vector3(-0.5f, 0f, -0.5f), matrix);
@@ -40,7 +47,12 @@ namespace Game {
                 vector2.X = MathF.Round(vector2.X * 100f) / 100f;
                 vector2.Y = MathF.Round(vector2.Y * 100f) / 100f;
                 vector2.Z = MathF.Round(vector2.Z * 100f) / 100f;
-                m_collisionBoxesByData[num2] = [new BoundingBox(new Vector3(MathF.Min(vector.X, vector2.X), MathF.Min(vector.Y, vector2.Y), MathF.Min(vector.Z, vector2.Z)), new Vector3(MathF.Max(vector.X, vector2.X), MathF.Max(vector.Y, vector2.Y), MathF.Max(vector.Z, vector2.Z)))];
+                m_collisionBoxesByData[num2] = [
+                    new BoundingBox(
+                        new Vector3(MathF.Min(vector.X, vector2.X), MathF.Min(vector.Y, vector2.Y), MathF.Min(vector.Z, vector2.Z)),
+                        new Vector3(MathF.Max(vector.X, vector2.X), MathF.Max(vector.Y, vector2.Y), MathF.Max(vector.Z, vector2.Z))
+                    )
+                ];
             }
             Matrix identity = Matrix.Identity;
             m_standaloneBlockMeshesByMaterial = new BlockMesh();
@@ -56,16 +68,15 @@ namespace Game {
             m_standaloneBlockMeshesByMaterial.TransformTextureCoordinates(Matrix.CreateTranslation(num % 16 / 16f, num / 16 / 16f, 0f));
         }
 
-        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) => new(
-            subsystemTerrain,
-            position,
-            strength,
-            DestructionDebrisScale,
-            Color.White,
-            78
-        );
+        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain,
+            Vector3 position,
+            int value,
+            float strength) => new(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, 78);
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);
             int value2 = Terrain.ReplaceData(value, data);
             BlockPlacementData result = default;
@@ -82,7 +93,8 @@ namespace Game {
             return m_collisionBoxesByData[num];
         }
 
-        public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) => face != CellFace.OppositeFace(GetFace(value));
+        public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value) =>
+            face != CellFace.OppositeFace(GetFace(value));
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
             int num = Terrain.ExtractData(value);
@@ -112,20 +124,30 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneBlockMeshesByMaterial,
-                color,
-                2f * size,
-                ref matrix,
-                environmentData
-            );
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMeshesByMaterial, color, 2f * size, ref matrix, environmentData);
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new BlockValuePlateGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new BlockValuePlateGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), subterrainId);
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int face2 = GetFace(value);
             if (face == face2
                 && SubsystemGVElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {

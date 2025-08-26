@@ -22,7 +22,8 @@ namespace Game {
             public int GetSlotProcessCapacity(int slotIndex, int value) {
                 if (Count > 0
                     && Value != 0) {
-                    SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(true).GetBlockBehaviors(Terrain.ExtractContents(Value));
+                    SubsystemBlockBehavior[] blockBehaviors =
+                        Project.FindSubsystem<SubsystemBlockBehaviors>(true).GetBlockBehaviors(Terrain.ExtractContents(Value));
                     for (int i = 0; i < blockBehaviors.Length; i++) {
                         int processInventoryItemCapacity = blockBehaviors[i].GetProcessInventoryItemCapacity(this, slotIndex, value);
                         if (processInventoryItemCapacity > 0) {
@@ -46,7 +47,8 @@ namespace Game {
             public void ProcessSlotItems(int slotIndex, int value, int count, int processCount, out int processedValue, out int processedCount) {
                 if (Count > 0
                     && Value != 0) {
-                    foreach (SubsystemBlockBehavior subsystemBlockBehavior in Project.FindSubsystem<SubsystemBlockBehaviors>(true).GetBlockBehaviors(Terrain.ExtractContents(Value))) {
+                    foreach (SubsystemBlockBehavior subsystemBlockBehavior in Project.FindSubsystem<SubsystemBlockBehaviors>(true)
+                        .GetBlockBehaviors(Terrain.ExtractContents(Value))) {
                         int processInventoryItemCapacity = subsystemBlockBehavior.GetProcessInventoryItemCapacity(this, slotIndex, value);
                         if (processInventoryItemCapacity > 0) {
                             subsystemBlockBehavior.ProcessInventoryItem(
@@ -148,7 +150,9 @@ namespace Game {
                 }
                 OuterBlocksWidgets.Clear();
                 m_firstLevelCount = m_ringCount > 0 ? Math.Min(blocksValue.Count >= 28 ? 12 : 8, blocksValue.Count) : 0;
-                m_secondLevelCount = m_ringCount > 1 ? Math.Min(Math.Max(blocksValue.Count - m_firstLevelCount, m_firstLevelCount), 36 - m_firstLevelCount) : 0;
+                m_secondLevelCount = m_ringCount > 1
+                    ? Math.Min(Math.Max(blocksValue.Count - m_firstLevelCount, m_firstLevelCount), 36 - m_firstLevelCount)
+                    : 0;
                 if (m_secondLevelCount is > 8 and < 24) {
                     m_secondLevelCount++;
                 }
@@ -161,11 +165,29 @@ namespace Game {
                     OuterBlocksWidgets.Add(widget);
                     AddChildren(widget);
                     if (i < m_firstLevelCount) {
-                        SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i / m_firstLevelCount) * firstLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i / m_firstLevelCount) * firstLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
+                        SetPosition(
+                            widget,
+                            new Vector2(
+                                center + MathF.Cos(2 * MathF.PI * i / m_firstLevelCount) * firstLevelRadius - widget.Size.X / 2,
+                                center
+                                - MathF.Sin(2 * MathF.PI * i / m_firstLevelCount) * firstLevelRadius
+                                - CenterBlockWidget.FullHeight * 0.5f
+                                - CenterBlockWidget.NameLabelMarginY
+                            )
+                        );
                     }
                     else {
                         int i2 = i - m_firstLevelCount;
-                        SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i2 / m_secondLevelCount) * secondLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i2 / m_secondLevelCount) * secondLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
+                        SetPosition(
+                            widget,
+                            new Vector2(
+                                center + MathF.Cos(2 * MathF.PI * i2 / m_secondLevelCount) * secondLevelRadius - widget.Size.X / 2,
+                                center
+                                - MathF.Sin(2 * MathF.PI * i2 / m_secondLevelCount) * secondLevelRadius
+                                - CenterBlockWidget.FullHeight * 0.5f
+                                - CenterBlockWidget.NameLabelMarginY
+                            )
+                        );
                     }
                 }
                 AdjustFixedWidgets();
@@ -222,7 +244,11 @@ namespace Game {
                             }
                             break;
                         case GVBlockHelperWidget.DisplayMode.Description:
-                            ScreensManager.SwitchScreen(BlocksManager.Blocks[Terrain.ExtractContents(value)].GetBlockDescriptionScreen(value), value, new List<int> { value });
+                            ScreensManager.SwitchScreen(
+                                BlocksManager.Blocks[Terrain.ExtractContents(value)].GetBlockDescriptionScreen(value),
+                                value,
+                                new List<int> { value }
+                            );
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             break;
                         case GVBlockHelperWidget.DisplayMode.Duplicate:
@@ -235,15 +261,13 @@ namespace Game {
                                 newValue = value;
                             }
                             GameWidget gameWidget = m_componentGui.m_componentPlayer.PlayerData.GameWidget;
-                            Vector3 vector2 = Vector3.Normalize(gameWidget.ActiveCamera.ScreenToWorld(new Vector3(m_dragPosition.X, m_dragPosition.Y, 1f), Matrix.Identity) - gameWidget.ActiveCamera.ViewPosition) * 4f;
+                            Vector3 vector2 = Vector3.Normalize(
+                                    gameWidget.ActiveCamera.ScreenToWorld(new Vector3(m_dragPosition.X, m_dragPosition.Y, 1f), Matrix.Identity)
+                                    - gameWidget.ActiveCamera.ViewPosition
+                                )
+                                * 4f;
                             m_project.FindSubsystem<SubsystemPickables>(true)
-                            .AddPickable(
-                                newValue,
-                                1,
-                                gameWidget.ActiveCamera.ViewPosition,
-                                vector2,
-                                null
-                            );
+                                .AddPickable(newValue, 1, gameWidget.ActiveCamera.ViewPosition, vector2, null);
                             AudioManager.PlaySound("Audio/UI/ItemMoved", 1f, 0f, 0f);
                             break;
                     }
@@ -293,7 +317,9 @@ namespace Game {
                         dragHostWidget.m_dragData = m_originalInventoryDragData;
                         if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
                             containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").Value = CenterBlockValue;
-                            containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = BlocksManager.Blocks[Terrain.ExtractContents(CenterBlockValue)].GetDisplayName(m_subsystemTerrain, CenterBlockValue);
+                            containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = BlocksManager
+                                .Blocks[Terrain.ExtractContents(CenterBlockValue)]
+                                .GetDisplayName(m_subsystemTerrain, CenterBlockValue);
                         }
                         if (newFocusedBlockHelperWidget.Mode == GVBlockHelperWidget.DisplayMode.Cancel) {
                             IsVisible = false;
@@ -314,7 +340,9 @@ namespace Game {
                     if (m_lastFocusedBlockIconWidget != null) {
                         if (HitTestGlobal(m_dragPosition, widget => widget == this) == null) {
                             if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
-                                containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = BlocksManager.Blocks[Terrain.ExtractContents(m_lastFocusedBlockIconWidget.Value)].GetDisplayName(m_subsystemTerrain, m_lastFocusedBlockIconWidget.Value);
+                                containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = BlocksManager
+                                    .Blocks[Terrain.ExtractContents(m_lastFocusedBlockIconWidget.Value)]
+                                    .GetDisplayName(m_subsystemTerrain, m_lastFocusedBlockIconWidget.Value);
                             }
                         }
                     }
@@ -361,7 +389,9 @@ namespace Game {
                         }
                     }
                     if (countNotAdjusted && dragHostWidget.m_dragData == m_inventoryDragData) {
-                        m_inventory.Count = mouseWheelMovement > 0 ? Math.Min(m_inventory.Count + 1, m_inventory.GetSlotCapacity(0, m_inventory.Value)) : Math.Max(m_inventory.Count - 1, 1);
+                        m_inventory.Count = mouseWheelMovement > 0
+                            ? Math.Min(m_inventory.Count + 1, m_inventory.GetSlotCapacity(0, m_inventory.Value))
+                            : Math.Max(m_inventory.Count - 1, 1);
                         if (dragHostWidget.m_dragWidget is ContainerWidget containerWidget) {
                             LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count");
                             labelWidget.Text = m_inventory.Count.ToString();
@@ -380,42 +410,24 @@ namespace Game {
             FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(100);
             for (int ring = 0; ring <= m_ringCount; ring++) {
                 float radius = (FirstRingDiameter / 2f + RingSpacing * ring) * GlobalTransform.Right.Length();
-                flatBatch2D.QueueEllipse(
-                    center,
-                    new Vector2(radius),
-                    0f,
-                    color1,
-                    64
-                );
-                flatBatch2D.QueueEllipse(
-                    center,
-                    new Vector2(radius - 0.5f),
-                    0f,
-                    color2,
-                    64
-                );
-                flatBatch2D.QueueEllipse(
-                    center,
-                    new Vector2(radius + 0.5f),
-                    0f,
-                    color3,
-                    64
-                );
+                flatBatch2D.QueueEllipse(center, new Vector2(radius), 0f, color1, 64);
+                flatBatch2D.QueueEllipse(center, new Vector2(radius - 0.5f), 0f, color2, 64);
+                flatBatch2D.QueueEllipse(center, new Vector2(radius + 0.5f), 0f, color3, 64);
                 if (ring == m_ringCount) {
-                    flatBatch2D.QueueDisc(
-                        center,
-                        new Vector2(radius),
-                        0f,
-                        color3,
-                        64
-                    );
+                    flatBatch2D.QueueDisc(center, new Vector2(radius), 0f, color3, 64);
                 }
             }
             base.Draw(dc);
         }
 
         public void AdjustFixedWidgets() {
-            SetPosition(CenterBlockWidget, new Vector2(m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.Size.X) / 2, m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.FullHeight) * 0.5f - CenterBlockWidget.NameLabelMarginY));
+            SetPosition(
+                CenterBlockWidget,
+                new Vector2(
+                    m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.Size.X) / 2,
+                    m_ringCount * RingSpacing + (FirstRingDiameter - CenterBlockWidget.FullHeight) * 0.5f - CenterBlockWidget.NameLabelMarginY
+                )
+            );
             switch (m_ringCount) {
                 case 0:
                     SetPosition(DescriptionWidget, new Vector2(-56f, Size.Y - DescriptionWidget.Size.Y + 48f));
@@ -453,7 +465,16 @@ namespace Game {
                     continue;
                 }
                 GVBlockIconWidget widget = OuterBlocksWidgets[i + m_firstLevelCount - (i > index ? 1 : 0)];
-                SetPosition(widget, new Vector2(center + MathF.Cos(2 * MathF.PI * i / m_secondLevelCount) * secondLevelRadius - widget.Size.X / 2, center - MathF.Sin(2 * MathF.PI * i / m_secondLevelCount) * secondLevelRadius - CenterBlockWidget.FullHeight * 0.5f - CenterBlockWidget.NameLabelMarginY));
+                SetPosition(
+                    widget,
+                    new Vector2(
+                        center + MathF.Cos(2 * MathF.PI * i / m_secondLevelCount) * secondLevelRadius - widget.Size.X / 2,
+                        center
+                        - MathF.Sin(2 * MathF.PI * i / m_secondLevelCount) * secondLevelRadius
+                        - CenterBlockWidget.FullHeight * 0.5f
+                        - CenterBlockWidget.NameLabelMarginY
+                    )
+                );
             }
         }
     }

@@ -14,7 +14,11 @@ namespace Game {
         uint m_bottomInput;
         uint m_inInput;
 
-        public MemoryBanksOperatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
+        public MemoryBanksOperatorGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) { }
 
         public override uint GetOutputVoltage(int face) => 0u;
 
@@ -29,24 +33,20 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection) {
                             case GVElectricConnectorDirection.Right:
-                                m_rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_rightInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Left:
-                                m_leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_leftInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Top:
-                                m_topInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_topInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.Bottom:
-                                m_bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_bottomInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.In:
-                                m_inInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                m_inInput = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                         }
                     }
                 }
@@ -88,7 +88,12 @@ namespace Game {
                         || rangeAbs.Z == 0) {
                         return false;
                     }
-                    Point3 startPosition = CellFaces[0].Point + new Point3((int)(m_inInput & 0xFFu) * (((m_inInput >> 24) & 1u) == 1u ? -1 : 1), (int)((m_inInput >> 8) & 0xFFu) * (m_inInput >> 25 == 1u ? -1 : 1), (int)((m_inInput >> 16) & 0xFFu) * (m_inInput >> 26 == 1u ? -1 : 1));
+                    Point3 startPosition = CellFaces[0].Point
+                        + new Point3(
+                            (int)(m_inInput & 0xFFu) * (((m_inInput >> 24) & 1u) == 1u ? -1 : 1),
+                            (int)((m_inInput >> 8) & 0xFFu) * (m_inInput >> 25 == 1u ? -1 : 1),
+                            (int)((m_inInput >> 16) & 0xFFu) * (m_inInput >> 26 == 1u ? -1 : 1)
+                        );
                     bool xDirection = ((m_inInput >> 24) & 1u) == 1u;
                     bool yDirection = ((m_inInput >> 25) & 1u) == 1u;
                     bool zDirection = ((m_inInput >> 26) & 1u) == 1u;
@@ -161,7 +166,8 @@ namespace Game {
                                 int newValue;
                                 switch (BlocksManager.Blocks[sourceContents]) {
                                     case GVVolatileMemoryBankBlock: {
-                                        SubsystemGVVolatileMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
+                                        SubsystemGVVolatileMemoryBankBlockBehavior subsystem =
+                                            SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
                                             continue;
@@ -184,7 +190,8 @@ namespace Game {
                                         break;
                                     }
                                     case GVMemoryBankBlock: {
-                                        SubsystemGVMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVMemoryBankBlockBehavior>(true);
+                                        SubsystemGVMemoryBankBlockBehavior subsystem =
+                                            SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
                                             continue;
@@ -207,7 +214,8 @@ namespace Game {
                                         break;
                                     }
                                     case GVVolatileListMemoryBankBlock: {
-                                        SubsystemGVVolatileListMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileListMemoryBankBlockBehavior>(true);
+                                        SubsystemGVVolatileListMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project
+                                            .FindSubsystem<SubsystemGVVolatileListMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
                                             continue;
@@ -230,7 +238,8 @@ namespace Game {
                                         break;
                                     }
                                     case GVListMemoryBankBlock: {
-                                        SubsystemGVListMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVListMemoryBankBlockBehavior>(true);
+                                        SubsystemGVListMemoryBankBlockBehavior subsystem =
+                                            SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVListMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
                                             continue;
@@ -253,7 +262,8 @@ namespace Game {
                                         break;
                                     }
                                     case GVVolatileFourDimensionalMemoryBankBlock: {
-                                        SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
+                                        SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project
+                                            .FindSubsystem<SubsystemGVVolatileFourDimensionalMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
                                             continue;
@@ -269,14 +279,16 @@ namespace Game {
                                             newValue = value;
                                         }
                                         else {
-                                            GVVolatileFourDimensionalMemoryBankData newData = (GVVolatileFourDimensionalMemoryBankData)leftData.Copy();
+                                            GVVolatileFourDimensionalMemoryBankData
+                                                newData = (GVVolatileFourDimensionalMemoryBankData)leftData.Copy();
                                             newId = newData.ID;
                                             newValue = subsystem.SetIdToValue(value, subsystem.StoreItemDataAtUniqueId(newData));
                                         }
                                         break;
                                     }
                                     case GVFourDimensionalMemoryBankBlock: {
-                                        SubsystemGVFourDimensionalMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project.FindSubsystem<SubsystemGVFourDimensionalMemoryBankBlockBehavior>(true);
+                                        SubsystemGVFourDimensionalMemoryBankBlockBehavior subsystem = SubsystemGVElectricity.Project
+                                            .FindSubsystem<SubsystemGVFourDimensionalMemoryBankBlockBehavior>(true);
                                         if (!overwrite
                                             && subsystem.GetIdFromValue(value) > 0) {
                                             continue;
@@ -310,18 +322,32 @@ namespace Game {
                                     int xy = rangeAbs.X * rangeAbs.Y;
                                     switch (topData) {
                                         case GVFourDimensionalMemoryBankData: {
-                                            storeIdsDictionary.Add(Math.Abs(x - startPosition.X) + Math.Abs(y - startPosition.Y) * rangeAbs.X + Math.Abs(z - startPosition.Z) * xy, newId);
+                                            storeIdsDictionary.Add(
+                                                Math.Abs(x - startPosition.X)
+                                                + Math.Abs(y - startPosition.Y) * rangeAbs.X
+                                                + Math.Abs(z - startPosition.Z) * xy,
+                                                newId
+                                            );
                                             break;
                                         }
                                         case GVMemoryBankData: {
                                             if (xFixed) {
-                                                storeIdsDictionary.Add(Math.Abs(y - startPosition.Y) + Math.Abs(z - startPosition.Z) * rangeAbs.Y, newId);
+                                                storeIdsDictionary.Add(
+                                                    Math.Abs(y - startPosition.Y) + Math.Abs(z - startPosition.Z) * rangeAbs.Y,
+                                                    newId
+                                                );
                                             }
                                             else if (yFixed) {
-                                                storeIdsDictionary.Add(Math.Abs(x - startPosition.X) + Math.Abs(z - startPosition.Z) * rangeAbs.X, newId);
+                                                storeIdsDictionary.Add(
+                                                    Math.Abs(x - startPosition.X) + Math.Abs(z - startPosition.Z) * rangeAbs.X,
+                                                    newId
+                                                );
                                             }
                                             else if (zFixed) {
-                                                storeIdsDictionary.Add(Math.Abs(x - startPosition.X) + Math.Abs(y - startPosition.Y) * rangeAbs.X, newId);
+                                                storeIdsDictionary.Add(
+                                                    Math.Abs(x - startPosition.X) + Math.Abs(y - startPosition.Y) * rangeAbs.X,
+                                                    newId
+                                                );
                                             }
                                             break;
                                         }

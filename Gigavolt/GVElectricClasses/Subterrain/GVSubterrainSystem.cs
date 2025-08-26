@@ -46,7 +46,9 @@ namespace Game {
             set {
                 if (value != m_baseTransform) {
                     m_baseTransform = value;
-                    GlobalTransform = Parent == null ? OriginTransform * value * AnchorTransform : OriginTransform * value * AnchorTransform * Parent.GlobalTransform;
+                    GlobalTransform = Parent == null
+                        ? OriginTransform * value * AnchorTransform
+                        : OriginTransform * value * AnchorTransform * Parent.GlobalTransform;
                     m_invertedBaseTransform = null;
                 }
             }
@@ -87,7 +89,14 @@ namespace Game {
         public readonly Dictionary<Point3, bool> m_modifiedCells = [];
         public readonly DynamicArray<Point3> m_modifiedList = [];
 
-        public GVSubterrainSystem(Project project, Matrix transform = default, Point3 anchor = default, Vector3 originOffset = default, GVSubterrainSystem parent = null, Point2 min = default, Point2 max = default, Dictionary<Point3, int> blocks = null) {
+        public GVSubterrainSystem(Project project,
+            Matrix transform = default,
+            Point3 anchor = default,
+            Vector3 originOffset = default,
+            GVSubterrainSystem parent = null,
+            Point2 min = default,
+            Point2 max = default,
+            Dictionary<Point3, int> blocks = null) {
             m_subsystemBlockBehaviors = project.FindSubsystem<SubsystemBlockBehaviors>(true);
             m_subsystemTerrain = project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemPickables = project.FindSubsystem<SubsystemPickables>(true);
@@ -228,43 +237,28 @@ namespace Game {
             if (num2 != num) {
                 List<IGVBlockBehavior> blockBehaviors = m_subsystemGVBlockBehaviors.GetBlockBehaviors(num);
                 foreach (IGVBlockBehavior behavior in blockBehaviors) {
-                    behavior.OnBlockRemoved(
-                        cellValueFast,
-                        value,
-                        x,
-                        y,
-                        z,
-                        this
-                    );
+                    behavior.OnBlockRemoved(cellValueFast, value, x, y, z, this);
                 }
                 List<IGVBlockBehavior> blockBehaviors2 = m_subsystemGVBlockBehaviors.GetBlockBehaviors(num2);
                 foreach (IGVBlockBehavior behavior in blockBehaviors2) {
-                    behavior.OnBlockAdded(
-                        value,
-                        cellValueFast,
-                        x,
-                        y,
-                        z,
-                        this
-                    );
+                    behavior.OnBlockAdded(value, cellValueFast, x, y, z, this);
                 }
             }
             else {
                 List<IGVBlockBehavior> blockBehaviors3 = m_subsystemGVBlockBehaviors.GetBlockBehaviors(num2);
                 foreach (IGVBlockBehavior behavior in blockBehaviors3) {
-                    behavior.OnBlockModified(
-                        value,
-                        cellValueFast,
-                        x,
-                        y,
-                        z,
-                        this
-                    );
+                    behavior.OnBlockModified(value, cellValueFast, x, y, z, this);
                 }
             }
         }
 
-        public void DestroyCell(int toolLevel, int x, int y, int z, int newValue, bool noDrop, bool noParticleSystem) {
+        public void DestroyCell(int toolLevel,
+            int x,
+            int y,
+            int z,
+            int newValue,
+            bool noDrop,
+            bool noParticleSystem) {
             int cellValue = Terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             Block block = BlocksManager.Blocks[num];
@@ -273,38 +267,26 @@ namespace Game {
                 Vector3 terrainPosition = Subterrain2Terrain(new Vector3(x, y, z));
                 if (!noDrop) {
                     List<BlockDropValue> m_dropValues = [];
-                    block.GetDropValues(
-                        m_subsystemTerrain,
-                        cellValue,
-                        newValue,
-                        toolLevel,
-                        m_dropValues,
-                        out showDebris
-                    );
+                    block.GetDropValues(m_subsystemTerrain, cellValue, newValue, toolLevel, m_dropValues, out showDebris);
                     for (int i = 0; i < m_dropValues.Count; i++) {
                         BlockDropValue dropValue = m_dropValues[i];
                         if (dropValue.Count > 0) {
-                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(dropValue.Value));
+                            SubsystemBlockBehavior[] blockBehaviors =
+                                m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(dropValue.Value));
                             for (int j = 0; j < blockBehaviors.Length; j++) {
                                 blockBehaviors[j]
-                                .OnItemHarvested(
-                                    (int)Math.Ceiling(terrainPosition.X),
-                                    (int)Math.Ceiling(terrainPosition.Y),
-                                    (int)Math.Ceiling(terrainPosition.Z),
-                                    cellValue,
-                                    ref dropValue,
-                                    ref newValue
-                                );
+                                    .OnItemHarvested(
+                                        (int)Math.Ceiling(terrainPosition.X),
+                                        (int)Math.Ceiling(terrainPosition.Y),
+                                        (int)Math.Ceiling(terrainPosition.Z),
+                                        cellValue,
+                                        ref dropValue,
+                                        ref newValue
+                                    );
                             }
                             if (dropValue.Count > 0
                                 && Terrain.ExtractContents(dropValue.Value) != 0) {
-                                m_subsystemPickables.AddPickable(
-                                    dropValue.Value,
-                                    dropValue.Count,
-                                    terrainPosition + new Vector3(0.5f),
-                                    null,
-                                    null
-                                );
+                                m_subsystemPickables.AddPickable(dropValue.Value, dropValue.Count, terrainPosition + new Vector3(0.5f), null, null);
                             }
                         }
                     }
@@ -312,7 +294,9 @@ namespace Game {
                 if (showDebris
                     && !noParticleSystem
                     && m_subsystemViews.CalculateDistanceFromNearestView(terrainPosition) < 16f) {
-                    m_subsystemParticles.AddParticleSystem(block.CreateDebrisParticleSystem(m_subsystemTerrain, terrainPosition + new Vector3(0.5f), cellValue, 1f));
+                    m_subsystemParticles.AddParticleSystem(
+                        block.CreateDebrisParticleSystem(m_subsystemTerrain, terrainPosition + new Vector3(0.5f), cellValue, 1f)
+                    );
                 }
             }
             ChangeCell(x, y, z, newValue);
@@ -355,14 +339,7 @@ namespace Game {
                             int cellValue = terrainChunk.GetCellValueFast(x, y, z);
                             List<IGVBlockBehavior> blockBehaviors = m_subsystemGVBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
                             foreach (IGVBlockBehavior behavior in blockBehaviors) {
-                                behavior.OnBlockRemoved(
-                                    cellValue,
-                                    0,
-                                    x + (terrainChunk.Coords.X << 4),
-                                    y,
-                                    z + (terrainChunk.Coords.Y << 4),
-                                    this
-                                );
+                                behavior.OnBlockRemoved(cellValue, 0, x + (terrainChunk.Coords.X << 4), y, z + (terrainChunk.Coords.Y << 4), this);
                             }
                         }
                     }
@@ -381,6 +358,7 @@ namespace Game {
             }
         }
 
-        public static bool IsBlockAllowedForSubterrain(int contents) => contents != AirBlock.Index && contents != BedrockBlock.Index && contents != FireBlock.Index;
+        public static bool IsBlockAllowedForSubterrain(int contents) =>
+            contents != AirBlock.Index && contents != BedrockBlock.Index && contents != FireBlock.Index;
     }
 }

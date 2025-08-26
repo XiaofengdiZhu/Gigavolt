@@ -19,15 +19,15 @@ namespace Game {
             for (int i = 0; i < 2; i++) {
                 m_meshesByData[i] = new BlockMesh();
                 m_meshesByData[i]
-                .AppendModelMeshPart(
-                    model.FindMesh("Magnet").MeshParts[0],
-                    boneAbsoluteTransform * Matrix.CreateRotationY((float)Math.PI / 2f * i) * Matrix.CreateTranslation(0.5f, 0f, 0.5f),
-                    false,
-                    false,
-                    true,
-                    false,
-                    Color.White
-                );
+                    .AppendModelMeshPart(
+                        model.FindMesh("Magnet").MeshParts[0],
+                        boneAbsoluteTransform * Matrix.CreateRotationY((float)Math.PI / 2f * i) * Matrix.CreateTranslation(0.5f, 0f, 0.5f),
+                        false,
+                        false,
+                        true,
+                        false,
+                        Color.White
+                    );
                 m_collisionBoxesByData[i] = [m_meshesByData[i].CalculateBoundingBox()];
             }
             m_standaloneMesh.AppendModelMeshPart(
@@ -42,7 +42,12 @@ namespace Game {
             base.Initialize();
         }
 
-        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
             showDebris = true;
             if (toolLevel >= RequiredToolLevel) {
                 int data = Terrain.ExtractData(oldValue);
@@ -85,20 +90,26 @@ namespace Game {
             }
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
-            BlocksManager.DrawMeshBlock(
-                primitivesRenderer,
-                m_standaloneMesh,
-                color,
-                size,
-                ref matrix,
-                environmentData
-            );
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneMesh, color, size, ref matrix, environmentData);
         }
 
-        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new AttractorGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
+        public GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new AttractorGVElectricElement(subsystemGVElectricity, new Point3(x, y, z), subterrainId);
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             int data = !(MathF.Abs(forward.X) > MathF.Abs(forward.Z)) ? 1 : 0;
             BlockPlacementData result = default;
@@ -107,8 +118,14 @@ namespace Game {
             return result;
         }
 
-
-        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             if (face == 4
                 && SubsystemGVElectricity.GetConnectorDirection(4, 0, connectorFace).HasValue) {
                 return GVElectricConnectorType.Input;

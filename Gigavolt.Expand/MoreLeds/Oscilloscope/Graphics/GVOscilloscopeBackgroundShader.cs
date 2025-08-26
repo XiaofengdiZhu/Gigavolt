@@ -26,7 +26,10 @@ namespace Engine.Graphics {
             set => m_dashAndGapLength.SetValue(value);
         }
 
-        public GVOscilloscopeBackgroundShader() : base(ShaderCodeManager.GetFast("Shaders/GVOscilloscopeBackground.vsh"), ShaderCodeManager.GetFast("Shaders/GVOscilloscopeBackground.psh")) {
+        public GVOscilloscopeBackgroundShader() : base(
+            ShaderCodeManager.GetFast("Shaders/GVOscilloscopeBackground.vsh"),
+            ShaderCodeManager.GetFast("Shaders/GVOscilloscopeBackground.psh")
+        ) {
             m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", true);
             m_horizontalSpacing = GetParameter("u_horizontalSpacing", true);
             m_verticalSpacing = GetParameter("u_verticalSpacing", true);

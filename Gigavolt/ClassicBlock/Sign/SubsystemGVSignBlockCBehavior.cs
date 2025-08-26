@@ -58,7 +58,13 @@ namespace Game {
             null
         );
 
-        public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) {
+        public void OnNeighborBlockChanged(int x,
+            int y,
+            int z,
+            int neighborX,
+            int neighborY,
+            int neighborZ,
+            GVSubterrainSystem system) {
             Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
             int cellValueFast = terrain.GetCellValueFast(x, y, z);
             int num = Terrain.ExtractContents(cellValueFast);
@@ -175,13 +181,7 @@ namespace Game {
                 Color value8 = value11.GetValue("Color3", Color.Black);
                 Color value9 = value11.GetValue("Color4", Color.Black);
                 string value10 = value11.GetValue("Url", string.Empty);
-                SetSignData(
-                    value,
-                    subterrainId,
-                    [value2, value3, value4, value5],
-                    [value6, value7, value8, value9],
-                    value10
-                );
+                SetSignData(value, subterrainId, [value2, value3, value4, value5], [value6, value7, value8, value9], value10);
             }
             Display.DeviceReset += Display_DeviceReset;
         }
@@ -286,7 +286,10 @@ namespace Game {
                 bool flag = !string.IsNullOrEmpty(textData.Url);
                 for (int j = 0; j < list.Count; j++) {
                     fontBatch.QueueText(
-                        position: new Vector2(num4 / 2f, j * m_font.GlyphHeight + textData.TextureLocation.Value * (4f * m_font.GlyphHeight) + (num5 - num2) / 2f),
+                        position: new Vector2(
+                            num4 / 2f,
+                            j * m_font.GlyphHeight + textData.TextureLocation.Value * (4f * m_font.GlyphHeight) + (num5 - num2) / 2f
+                        ),
                         text: list[j],
                         depth: 0f,
                         color: flag ? new Color(0, 0, 64) : list2[j],
@@ -412,10 +415,16 @@ namespace Game {
                         float x3 = nearText.TextureLocation.Value / 32f;
                         float x4 = (nearText.TextureLocation.Value + nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f)) / 32f;
                         Vector3 vector = new(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
-                        Vector3 vectorPlus05Transformed = subterrainId == 0 ? new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f) : Vector3.Transform(new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f), transform);
+                        Vector3 vectorPlus05Transformed = subterrainId == 0
+                            ? new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f)
+                            : Vector3.Transform(new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f), transform);
                         if (camera.ViewFrustum.Intersection(vectorPlus05Transformed + camera.ViewDirection)) {
                             Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
-                            Vector3 vector2 = MathUtils.Max(0.01f * Vector3.Dot(camera.ViewPosition - vectorPlus05Transformed, signSurfaceNormal), 0.005f) * signSurfaceNormal;
+                            Vector3 vector2 = MathUtils.Max(
+                                    0.01f * Vector3.Dot(camera.ViewPosition - vectorPlus05Transformed, signSurfaceNormal),
+                                    0.005f
+                                )
+                                * signSurfaceNormal;
                             float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
                             Color color = new(num2, num2, num2);
                             for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++) {

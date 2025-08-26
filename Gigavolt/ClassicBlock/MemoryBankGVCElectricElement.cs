@@ -7,7 +7,11 @@
         public bool m_writeAllowed;
         public bool m_clockAllowed;
 
-        public MemoryBankGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) {
+        public MemoryBankGVCElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) {
             m_subsystemMemoryBankBlockBehavior = subsystemGVElectricity.Project.FindSubsystem<SubsystemGVMemoryBankCBlockBehavior>(true);
             m_data = m_subsystemMemoryBankBlockBehavior.GetItemData(m_subsystemMemoryBankBlockBehavior.GetIdFromValue(value));
             if (m_data != null) {
@@ -32,7 +36,8 @@
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == GVElectricConnectorDirection.Right) {
                             num2 = MathUint.Clamp(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace), 0, 15);
@@ -41,7 +46,11 @@
                             num3 = MathUint.Clamp(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace), 0, 15);
                         }
                         else if (connectorDirection == GVElectricConnectorDirection.Bottom) {
-                            uint num4 = MathUint.Clamp(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace), 0, 15);
+                            uint num4 = MathUint.Clamp(
+                                connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace),
+                                0,
+                                15
+                            );
                             flag = num4 >= 8;
                             flag3 = num4 > 0 && num4 < 8;
                             flag2 = true;

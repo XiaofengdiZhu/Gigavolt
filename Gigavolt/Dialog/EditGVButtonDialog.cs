@@ -29,7 +29,10 @@ namespace Game {
 
         public override void Update() {
             if (m_gigaVoltageLevelButton.IsClicked) {
-                DialogsManager.ShowDialog(this, new EditGVUintDialog(m_blockData.GigaVoltageLevel, newVoltage => m_gigaVoltageLevelButton.Text = newVoltage.ToString("X", null)));
+                DialogsManager.ShowDialog(
+                    this,
+                    new EditGVUintDialog(m_blockData.GigaVoltageLevel, newVoltage => m_gigaVoltageLevelButton.Text = newVoltage.ToString("X", null))
+                );
             }
             if (m_okButton.IsClicked) {
                 if (uint.TryParse(m_gigaVoltageLevelButton.Text, NumberStyles.HexNumber, null, out uint voltage)

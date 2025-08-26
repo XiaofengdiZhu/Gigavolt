@@ -10,7 +10,13 @@ namespace Game {
         public readonly Dictionary<uint, Dictionary<GVCellFace, Vector3>> m_indicatorLine = new();
         public readonly Dictionary<uint, Dictionary<Point3, HashSet<Point3>>> m_scanPreviews = new();
         public readonly Dictionary<uint, Dictionary<Point3, GVSubterrainSystem>> m_subterrainSystems = new();
-        public readonly FlatBatch3D m_flatBatch = new() { Layer = 0, DepthStencilState = DepthStencilState.None, RasterizerState = RasterizerState.CullNoneScissor, BlendState = BlendState.AlphaBlend };
+
+        public readonly FlatBatch3D m_flatBatch = new() {
+            Layer = 0,
+            DepthStencilState = DepthStencilState.None,
+            RasterizerState = RasterizerState.CullNoneScissor,
+            BlendState = BlendState.AlphaBlend
+        };
 
         public override int[] HandledBlocks => [GVBlocksManager.GetBlockIndex<GVTractorBeamBlock>()];
         public UpdateOrder UpdateOrder => UpdateOrder.Terrain;
@@ -27,14 +33,7 @@ namespace Game {
                     foreach (HashSet<Point3> points in previews.Values) {
                         foreach (Point3 point in points) {
                             m_flatBatch.QueueBoundingBox(
-                                new BoundingBox(
-                                    point.X,
-                                    point.Y,
-                                    point.Z,
-                                    point.X + 1f,
-                                    point.Y + 1f,
-                                    point.Z + 1f
-                                ),
+                                new BoundingBox(point.X, point.Y, point.Z, point.X + 1f, point.Y + 1f, point.Z + 1f),
                                 Color.Yellow
                             );
                         }
@@ -61,25 +60,9 @@ namespace Game {
             }
         }
 
-        public override void OnBlockRemoved(int value,
-            int newValue,
-            int x,
-            int y,
-            int z) => OnBlockRemoved(
-            value,
-            newValue,
-            x,
-            y,
-            z,
-            null
-        );
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(value, newValue, x, y, z, null);
 
-        public void OnBlockRemoved(int value,
-            int newValue,
-            int x,
-            int y,
-            int z,
-            GVSubterrainSystem system) {
+        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
             Point3 tractorBeamBlockPoint = new(x, y, z);
             uint subterrainId = system?.ID ?? 0;
             RemoveSubterrain(tractorBeamBlockPoint, subterrainId, true);
@@ -106,8 +89,14 @@ namespace Game {
         }
 
         public void AddPreview(Point3 tractorBeamBlockPoint, uint subterrainId, Vector3 targetOffset) {
-            Vector3 start = new(tractorBeamBlockPoint.X + 0.5f + targetOffset.X, tractorBeamBlockPoint.Y + 0.5f + targetOffset.Y, tractorBeamBlockPoint.Z + 0.5f + targetOffset.Z);
-            Point3 startPoint = Terrain.ToCell(subterrainId == 0u ? start : Vector3.Transform(start, GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform));
+            Vector3 start = new(
+                tractorBeamBlockPoint.X + 0.5f + targetOffset.X,
+                tractorBeamBlockPoint.Y + 0.5f + targetOffset.Y,
+                tractorBeamBlockPoint.Z + 0.5f + targetOffset.Z
+            );
+            Point3 startPoint = Terrain.ToCell(
+                subterrainId == 0u ? start : Vector3.Transform(start, GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform)
+            );
             Point3 non = Point3.Zero;
             Dictionary<Point3, int> scanResult = ScanTerrain(tractorBeamBlockPoint, startPoint, ref non, ref non);
             if (scanResult != null) {
@@ -115,7 +104,8 @@ namespace Game {
                     previews[tractorBeamBlockPoint] = new HashSet<Point3>(scanResult.Keys);
                 }
                 else {
-                    m_scanPreviews[subterrainId] = new Dictionary<Point3, HashSet<Point3>> { { tractorBeamBlockPoint, new HashSet<Point3>(scanResult.Keys) } };
+                    m_scanPreviews[subterrainId] =
+                        new Dictionary<Point3, HashSet<Point3>> { { tractorBeamBlockPoint, new HashSet<Point3>(scanResult.Keys) } };
                 }
             }
         }
@@ -130,7 +120,11 @@ namespace Game {
         }
 
         public GVSubterrainSystem AddSubterrain(Point3 tractorBeamBlockPoint, uint subterrainId, Vector3 targetOffset, Matrix transform) {
-            Vector3 scanStart = new(tractorBeamBlockPoint.X + 0.5f + targetOffset.X, tractorBeamBlockPoint.Y + 0.5f + targetOffset.Y, tractorBeamBlockPoint.Z + 0.5f + targetOffset.Z);
+            Vector3 scanStart = new(
+                tractorBeamBlockPoint.X + 0.5f + targetOffset.X,
+                tractorBeamBlockPoint.Y + 0.5f + targetOffset.Y,
+                tractorBeamBlockPoint.Z + 0.5f + targetOffset.Z
+            );
             if (subterrainId != 0u) {
                 scanStart = Vector3.Transform(scanStart, GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform);
             }

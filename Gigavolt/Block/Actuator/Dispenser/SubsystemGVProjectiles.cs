@@ -74,7 +74,17 @@ namespace Game {
         public static int? m_interactorBlockValue = null;
         public static int? m_dataModifierBlockContent = null;
 
-        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, int count = 1, bool disableGravity = false, bool disableDamping = false, bool safe = false, bool transform = false, Point3 stopAt = default) {
+        public virtual Projectile AddProjectile(int value,
+            Vector3 position,
+            Vector3 velocity,
+            Vector3 angularVelocity,
+            ComponentCreature owner,
+            int count = 1,
+            bool disableGravity = false,
+            bool disableDamping = false,
+            bool safe = false,
+            bool transform = false,
+            Point3 stopAt = default) {
             Projectile projectile = new() {
                 Value = value,
                 Position = position,
@@ -102,7 +112,17 @@ namespace Game {
             return projectile;
         }
 
-        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner, int count, bool disableGravity, bool disableDamping, bool safe, bool transform, Point3 stopAt) {
+        public virtual Projectile FireProjectile(int value,
+            Vector3 position,
+            Vector3 velocity,
+            Vector3 angularVelocity,
+            ComponentCreature owner,
+            int count,
+            bool disableGravity,
+            bool disableDamping,
+            bool safe,
+            bool transform,
+            Point3 stopAt) {
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
             Vector3 v = Vector3.Normalize(velocity);
@@ -188,11 +208,13 @@ namespace Game {
                         && num2 >= 0
                         && num2 < 255) {
                         m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
-                        m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num2);
+                        m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z)
+                            + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num2);
                         projectile.Light = m_subsystemTerrain.Terrain.GetCellLightFast(x, num2, z);
                     }
                     m_drawBlockEnvironmentData.Light = projectile.Light;
-                    m_drawBlockEnvironmentData.BillboardDirection = block.GetAlignToVelocity(projectile.Value) ? null : new Vector3?(camera.ViewDirection);
+                    m_drawBlockEnvironmentData.BillboardDirection =
+                        block.GetAlignToVelocity(projectile.Value) ? null : new Vector3?(camera.ViewDirection);
                     m_drawBlockEnvironmentData.InWorldMatrix.Translation = position;
                     Matrix matrix;
                     if (block.GetAlignToVelocity(projectile.Value)) {
@@ -205,14 +227,7 @@ namespace Game {
                     else {
                         matrix = Matrix.CreateTranslation(position);
                     }
-                    block.DrawBlock(
-                        m_primitivesRenderer,
-                        projectile.Value,
-                        Color.White,
-                        0.3f,
-                        ref matrix,
-                        m_drawBlockEnvironmentData
-                    );
+                    block.DrawBlock(m_primitivesRenderer, projectile.Value, Color.White, 0.3f, ref matrix, m_drawBlockEnvironmentData);
                 }
             }
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
@@ -247,48 +262,32 @@ namespace Game {
                         Vector3 v = block.ProjectileTipOffset * Vector3.Normalize(projectile.Velocity);
                         bool isCrusher = m_crusherBlockValue.HasValue && m_crusherBlockValue.Value == projectile.Value;
                         bool isInteractor = m_interactorBlockValue.HasValue && m_interactorBlockValue.Value == projectile.Value;
-                        bool isDataModifier = m_dataModifierBlockContent.HasValue && m_dataModifierBlockContent.Value == Terrain.ExtractContents(projectile.Value);
+                        bool isDataModifier = m_dataModifierBlockContent.HasValue
+                            && m_dataModifierBlockContent.Value == Terrain.ExtractContents(projectile.Value);
                         bool stopAtIsPassable = projectile.StopAt.Y is >= 0 and < 256;
                         if (stopAtIsPassable) {
-                            int stopAtBlock = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(projectile.StopAt.X, projectile.StopAt.Y, projectile.StopAt.Z));
+                            int stopAtBlock = Terrain.ExtractContents(
+                                m_subsystemTerrain.Terrain.GetCellValue(projectile.StopAt.X, projectile.StopAt.Y, projectile.StopAt.Z)
+                            );
                             stopAtIsPassable = !BlocksManager.Blocks[Terrain.ExtractContents(stopAtBlock)].IsCollidable_(stopAtBlock);
                         }
                         if (stopAtIsPassable && Vector3.DistanceSquared(position, stopAtVector3) < 3f) {
                             if (projectile.Transform
                                 && block.IsPlaceable) {
                                 m_subsystemTerrain.ChangeCell(projectile.StopAt.X, projectile.StopAt.Y, projectile.StopAt.Z, projectile.Value);
-                                m_subsystemAudio.PlaySound(
-                                    "Audio/BlockPlaced",
-                                    1f,
-                                    0f,
-                                    stopAtVector3,
-                                    5f,
-                                    false
-                                );
+                                m_subsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0f, stopAtVector3, 5f, false);
                                 projectile.ToRemove = true;
                                 continue;
                             }
                             if (projectile.ProjectileStoppedAction != ProjectileStoppedAction.Disappear) {
-                                m_subsystemPickables.AddPickable(
-                                    projectile.Value,
-                                    projectile.Count,
-                                    stopAtVector3,
-                                    Vector3.Zero,
-                                    null
-                                );
+                                m_subsystemPickables.AddPickable(projectile.Value, projectile.Count, stopAtVector3, Vector3.Zero, null);
                             }
                             projectile.ToRemove = true;
                             continue;
                         }
                         if (projectile.Velocity.Length() < 0.3f) {
                             if (projectile.ProjectileStoppedAction != ProjectileStoppedAction.Disappear) {
-                                m_subsystemPickables.AddPickable(
-                                    projectile.Value,
-                                    projectile.Count,
-                                    stopAtVector3,
-                                    Vector3.Zero,
-                                    null
-                                );
+                                m_subsystemPickables.AddPickable(projectile.Value, projectile.Count, stopAtVector3, Vector3.Zero, null);
                             }
                             projectile.ToRemove = true;
                             continue;
@@ -299,14 +298,18 @@ namespace Game {
                             newPosition + v,
                             isInteractor,
                             true,
-                            (value, _) => isCrusher || isInteractor || isDataModifier || BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)
+                            (value, _) => isCrusher
+                                || isInteractor
+                                || isDataModifier
+                                || BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)
                         );
                         bool flag = block.DisintegratesOnHit;
                         if (!projectile.Safe
                             && (terrainRaycastResult.HasValue || bodyRaycastResult.HasValue)) {
                             CellFace? cellFace = terrainRaycastResult.HasValue ? new CellFace?(terrainRaycastResult.Value.CellFace) : null;
                             ComponentBody componentBody = bodyRaycastResult?.ComponentBody;
-                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(projectile.Value));
+                            SubsystemBlockBehavior[] blockBehaviors =
+                                m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(projectile.Value));
                             for (int i = 0; i < blockBehaviors.Length; i++) {
                                 flag |= blockBehaviors[i].OnHitAsProjectile(cellFace, componentBody, projectile);
                             }
@@ -330,7 +333,8 @@ namespace Game {
                                 }
                             }
                             if (projectile.IsIncendiary) {
-                                bodyRaycastResult.Value.ComponentBody.Entity.FindComponent<ComponentOnFire>()?.SetOnFire(projectile?.Owner, m_random.Float(6f, 8f));
+                                bodyRaycastResult.Value.ComponentBody.Entity.FindComponent<ComponentOnFire>()
+                                    ?.SetOnFire(projectile?.Owner, m_random.Float(6f, 8f));
                             }
                             newPosition = position;
                             projectile.Velocity *= -0.05f;
@@ -342,7 +346,8 @@ namespace Game {
                             int contents = Terrain.ExtractContents(cellValue);
                             Block block2 = BlocksManager.Blocks[contents];
                             float velocityLength = projectile.Velocity.Length();
-                            SubsystemBlockBehavior[] blockBehaviors2 = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
+                            SubsystemBlockBehavior[] blockBehaviors2 =
+                                m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
                             for (int j = 0; j < blockBehaviors2.Length; j++) {
                                 for (int k = 0; k < projectile.Count; k++) {
                                     blockBehaviors2[j].OnHitByProjectile(cellFace2, projectile);
@@ -363,7 +368,12 @@ namespace Game {
                             }
                             if (!projectile.Safe
                                 && projectile.IsIncendiary) {
-                                m_subsystemFireBlockBehavior.SetCellOnFire(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z, 1f);
+                                m_subsystemFireBlockBehavior.SetCellOnFire(
+                                    terrainRaycastResult.Value.CellFace.X,
+                                    terrainRaycastResult.Value.CellFace.Y,
+                                    terrainRaycastResult.Value.CellFace.Z,
+                                    1f
+                                );
                                 Vector3 vector3 = position - 0.75f * Vector3.Normalize(projectile.Velocity);
                                 for (int k = 0; k < 8; k++) {
                                     Vector3 v2 = k == 0 ? Vector3.Normalize(projectile.Velocity) : m_random.Vector3(1.5f);
@@ -375,12 +385,18 @@ namespace Game {
                                         (_, _) => true
                                     );
                                     if (terrainRaycastResult2.HasValue) {
-                                        m_subsystemFireBlockBehavior.SetCellOnFire(terrainRaycastResult2.Value.CellFace.X, terrainRaycastResult2.Value.CellFace.Y, terrainRaycastResult2.Value.CellFace.Z, 1f);
+                                        m_subsystemFireBlockBehavior.SetCellOnFire(
+                                            terrainRaycastResult2.Value.CellFace.X,
+                                            terrainRaycastResult2.Value.CellFace.Y,
+                                            terrainRaycastResult2.Value.CellFace.Z,
+                                            1f
+                                        );
                                     }
                                 }
                             }
                             if (isCrusher && !projectile.ToRemove) {
-                                if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z)) == 0) {
+                                if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z))
+                                    == 0) {
                                     m_subsystemTerrain.DestroyCell(
                                         int.MaxValue,
                                         cellFace2.X,
@@ -406,28 +422,58 @@ namespace Game {
                                 continue;
                             }
                             if (isInteractor && !projectile.ToRemove) {
-                                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z)));
+                                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(
+                                    Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z))
+                                );
                                 if (blockBehaviors.Length > 0) {
                                     foreach (SubsystemBlockBehavior behavior in blockBehaviors) {
-                                        behavior.OnInteract(new TerrainRaycastResult { CellFace = new CellFace(positionInt.X, positionInt.Y, positionInt.Z, 0) }, null);
+                                        behavior.OnInteract(
+                                            new TerrainRaycastResult { CellFace = new CellFace(positionInt.X, positionInt.Y, positionInt.Z, 0) },
+                                            null
+                                        );
                                     }
                                 }
                                 else {
                                     blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(contents);
                                     foreach (SubsystemBlockBehavior behavior in blockBehaviors) {
-                                        behavior.OnInteract(new TerrainRaycastResult { CellFace = new CellFace(cellFace2.X, cellFace2.Y, cellFace2.Z, cellFace2.Face) }, null);
+                                        behavior.OnInteract(
+                                            new TerrainRaycastResult {
+                                                CellFace = new CellFace(cellFace2.X, cellFace2.Y, cellFace2.Z, cellFace2.Face)
+                                            },
+                                            null
+                                        );
                                     }
                                 }
                                 projectile.ToRemove = true;
                                 continue;
                             }
                             if (isDataModifier && !projectile.ToRemove) {
-                                int tempContent = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z));
+                                int tempContent = Terrain.ExtractContents(
+                                    m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z)
+                                );
                                 if (tempContent == 0) {
-                                    m_subsystemTerrain.ChangeCell(cellFace2.X, cellFace2.Y, cellFace2.Z, Terrain.MakeBlockValue(contents, m_subsystemTerrain.Terrain.GetCellLightFast(cellFace2.X, cellFace2.Y, cellFace2.Z), Terrain.ExtractData(projectile.Value)));
+                                    m_subsystemTerrain.ChangeCell(
+                                        cellFace2.X,
+                                        cellFace2.Y,
+                                        cellFace2.Z,
+                                        Terrain.MakeBlockValue(
+                                            contents,
+                                            m_subsystemTerrain.Terrain.GetCellLightFast(cellFace2.X, cellFace2.Y, cellFace2.Z),
+                                            Terrain.ExtractData(projectile.Value)
+                                        )
+                                    );
                                 }
                                 else {
-                                    m_subsystemTerrain.ChangeCell(positionInt.X, positionInt.Y, positionInt.Z, Terrain.MakeBlockValue(tempContent, m_subsystemTerrain.Terrain.GetCellLightFast(positionInt.X, positionInt.Y, positionInt.Z), Terrain.ExtractData(projectile.Value)));
+                                    m_subsystemTerrain.ChangeCell(
+                                        positionInt.X,
+                                        positionInt.Y,
+                                        positionInt.Z,
+                                        Terrain.MakeBlockValue(
+                                            tempContent,
+                                            m_subsystemTerrain.Terrain.GetCellLightFast(positionInt.X, positionInt.Y, positionInt.Z),
+                                            Terrain.ExtractData(projectile.Value)
+                                        )
+                                    );
                                 }
                                 projectile.ToRemove = true;
                                 continue;
@@ -437,18 +483,12 @@ namespace Game {
                                 && block.IsPlaceable) {
                                 if (stopAtIsPassable && Vector3.DistanceSquared(position, stopAtVector3) < 5f) {
                                     m_subsystemTerrain.ChangeCell(projectile.StopAt.X, projectile.StopAt.Y, projectile.StopAt.Z, projectile.Value);
-                                    m_subsystemAudio.PlaySound(
-                                        "Audio/BlockPlaced",
-                                        1f,
-                                        0f,
-                                        stopAtVector3,
-                                        5f,
-                                        false
-                                    );
+                                    m_subsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0f, stopAtVector3, 5f, false);
                                     projectile.ToRemove = true;
                                     continue;
                                 }
-                                if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z)) > 0) {
+                                if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(positionInt.X, positionInt.Y, positionInt.Z))
+                                    > 0) {
                                     m_subsystemTerrain.DestroyCell(
                                         int.MaxValue,
                                         positionInt.X,
@@ -460,14 +500,7 @@ namespace Game {
                                     );
                                 }
                                 m_subsystemTerrain.ChangeCell(positionInt.X, positionInt.Y, positionInt.Z, projectile.Value);
-                                m_subsystemAudio.PlaySound(
-                                    "Audio/BlockPlaced",
-                                    1f,
-                                    0f,
-                                    position,
-                                    5f,
-                                    false
-                                );
+                                m_subsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0f, position, 5f, false);
                                 projectile.ToRemove = true;
                                 continue;
                             }
@@ -514,7 +547,9 @@ namespace Game {
                         if (terrainRaycastResult.HasValue
                             || bodyRaycastResult.HasValue) {
                             if (flag && !projectile.Safe) {
-                                m_subsystemParticles.AddParticleSystem(block.CreateDebrisParticleSystem(m_subsystemTerrain, position, projectile.Value, 1f));
+                                m_subsystemParticles.AddParticleSystem(
+                                    block.CreateDebrisParticleSystem(m_subsystemTerrain, position, projectile.Value, 1f)
+                                );
                             }
                             else if (!projectile.ToRemove
                                 && (vector2.HasValue || projectile.Velocity.Length() < 1f)) {
@@ -523,22 +558,10 @@ namespace Game {
                                     if (num4 != 0) {
                                         if (vector2.HasValue) {
                                             CalculateVelocityAlignMatrix(block, vector2.Value, projectile.Velocity, out Matrix matrix);
-                                            m_subsystemPickables.AddPickable(
-                                                num4,
-                                                projectile.Count,
-                                                position,
-                                                Vector3.Zero,
-                                                matrix
-                                            );
+                                            m_subsystemPickables.AddPickable(num4, projectile.Count, position, Vector3.Zero, matrix);
                                         }
                                         else {
-                                            m_subsystemPickables.AddPickable(
-                                                num4,
-                                                projectile.Count,
-                                                position,
-                                                Vector3.Zero,
-                                                null
-                                            );
+                                            m_subsystemPickables.AddPickable(num4, projectile.Count, position, Vector3.Zero, null);
                                         }
                                     }
                                     projectile.ToRemove = true;
@@ -562,7 +585,12 @@ namespace Game {
                             if (!m_subsystemParticles.ContainsParticleSystem((ParticleSystemBase)projectile.TrailParticleSystem)) {
                                 m_subsystemParticles.AddParticleSystem((ParticleSystemBase)projectile.TrailParticleSystem);
                             }
-                            Vector3 v4 = projectile.TrailOffset != Vector3.Zero ? Vector3.TransformNormal(projectile.TrailOffset, Matrix.CreateFromAxisAngle(Vector3.Normalize(projectile.Rotation), projectile.Rotation.Length())) : Vector3.Zero;
+                            Vector3 v4 = projectile.TrailOffset != Vector3.Zero
+                                ? Vector3.TransformNormal(
+                                    projectile.TrailOffset,
+                                    Matrix.CreateFromAxisAngle(Vector3.Normalize(projectile.Rotation), projectile.Rotation.Length())
+                                )
+                                : Vector3.Zero;
                             projectile.TrailParticleSystem.Position = newPosition + v4;
                             if (projectile.IsInFluid) {
                                 projectile.TrailParticleSystem.IsStopped = true;
@@ -581,17 +609,20 @@ namespace Game {
                                 else {
                                     projectile.Velocity *= 0.2f;
                                 }
-                                float? surfaceHeight = m_subsystemFluidBlockBehavior.GetSurfaceHeight(newPositionInt.X, newPositionInt.Y, newPositionInt.Z);
+                                float? surfaceHeight = m_subsystemFluidBlockBehavior.GetSurfaceHeight(
+                                    newPositionInt.X,
+                                    newPositionInt.Y,
+                                    newPositionInt.Z
+                                );
                                 if (surfaceHeight.HasValue) {
-                                    m_subsystemParticles.AddParticleSystem(new WaterSplashParticleSystem(m_subsystemTerrain, new Vector3(newPosition.X, surfaceHeight.Value, newPosition.Z), false));
-                                    m_subsystemAudio.PlayRandomSound(
-                                        "Audio/Splashes",
-                                        1f,
-                                        m_random.Float(-0.2f, 0.2f),
-                                        newPosition,
-                                        6f,
-                                        true
+                                    m_subsystemParticles.AddParticleSystem(
+                                        new WaterSplashParticleSystem(
+                                            m_subsystemTerrain,
+                                            new Vector3(newPosition.X, surfaceHeight.Value, newPosition.Z),
+                                            false
+                                        )
                                     );
+                                    m_subsystemAudio.PlayRandomSound("Audio/Splashes", 1f, m_random.Float(-0.2f, 0.2f), newPosition, 6f, true);
                                     MakeProjectileNoise(projectile);
                                 }
                             }
@@ -599,27 +630,18 @@ namespace Game {
                         }
                         if (IsMagma(newPosition)) {
                             m_subsystemParticles.AddParticleSystem(new MagmaSplashParticleSystem(m_subsystemTerrain, newPosition, false));
-                            m_subsystemAudio.PlayRandomSound(
-                                "Audio/Sizzles",
-                                1f,
-                                m_random.Float(-0.2f, 0.2f),
-                                newPosition,
-                                3f,
-                                true
-                            );
+                            m_subsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, m_random.Float(-0.2f, 0.2f), newPosition, 3f, true);
                             projectile.ToRemove = true;
                             m_subsystemExplosions.TryExplodeBlock(newPositionInt.X, newPositionInt.Y, newPositionInt.Z, projectile.Value);
                         }
                         if (m_subsystemTime.PeriodicGameTimeEvent(1.0, projectile.GetHashCode() % 100 / 100.0)
-                            && (m_subsystemFireBlockBehavior.IsCellOnFire(newPositionInt.X, Terrain.ToCell(newPosition.Y + 0.1f), newPositionInt.Z) || m_subsystemFireBlockBehavior.IsCellOnFire(newPositionInt.X, Terrain.ToCell(newPosition.Y + 0.1f) - 1, newPositionInt.Z))) {
-                            m_subsystemAudio.PlayRandomSound(
-                                "Audio/Sizzles",
-                                1f,
-                                m_random.Float(-0.2f, 0.2f),
-                                newPosition,
-                                3f,
-                                true
-                            );
+                            && (m_subsystemFireBlockBehavior.IsCellOnFire(newPositionInt.X, Terrain.ToCell(newPosition.Y + 0.1f), newPositionInt.Z)
+                                || m_subsystemFireBlockBehavior.IsCellOnFire(
+                                    newPositionInt.X,
+                                    Terrain.ToCell(newPosition.Y + 0.1f) - 1,
+                                    newPositionInt.Z
+                                ))) {
+                            m_subsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, m_random.Float(-0.2f, 0.2f), newPosition, 3f, true);
                             projectile.ToRemove = true;
                             m_subsystemExplosions.TryExplodeBlock(newPositionInt.X, newPositionInt.Y, newPositionInt.Z, projectile.Value);
                         }
@@ -700,12 +722,20 @@ namespace Game {
         }
 
         public virtual bool IsWater(Vector3 position) {
-            int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
+            int cellContents = m_subsystemTerrain.Terrain.GetCellContents(
+                Terrain.ToCell(position.X),
+                Terrain.ToCell(position.Y),
+                Terrain.ToCell(position.Z)
+            );
             return BlocksManager.Blocks[cellContents] is WaterBlock;
         }
 
         public virtual bool IsMagma(Vector3 position) {
-            int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
+            int cellContents = m_subsystemTerrain.Terrain.GetCellContents(
+                Terrain.ToCell(position.X),
+                Terrain.ToCell(position.Y),
+                Terrain.ToCell(position.Z)
+            );
             return BlocksManager.Blocks[cellContents] is MagmaBlock;
         }
 

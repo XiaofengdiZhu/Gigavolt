@@ -17,7 +17,10 @@ namespace Game {
         public SubsystemGameInfo m_subsystemGameInfo;
         public SubsystemSky m_subsystemSky;
 
-        public readonly Dictionary<uint, Dictionary<Point3, GVSignTextData>> m_textsByPoint = new() { { 0u, new Dictionary<Point3, GVSignTextData>() } };
+        public readonly Dictionary<uint, Dictionary<Point3, GVSignTextData>> m_textsByPoint = new() {
+            { 0u, new Dictionary<Point3, GVSignTextData>() }
+        };
+
         public readonly GVSignTextData[] m_textureLocations = new GVSignTextData[80];
         public List<GVSignTextData> m_nearTexts = [];
         public readonly BitmapFont m_font = LabelWidget.BitmapFont;
@@ -32,13 +35,10 @@ namespace Game {
 
         public int[] DrawOrders => [51];
 
-        public GVSignTextData GetSignData(Point3 point, uint subterrainId) => m_textsByPoint[subterrainId].TryGetValue(point, out GVSignTextData value) ? value : null;
+        public GVSignTextData GetSignData(Point3 point, uint subterrainId) =>
+            m_textsByPoint[subterrainId].TryGetValue(point, out GVSignTextData value) ? value : null;
 
-        public void SetSignData(Point3 point,
-            uint subterrainId,
-            string line,
-            Color color,
-            string url) {
+        public void SetSignData(Point3 point, uint subterrainId, string line, Color color, string url) {
             if (!m_textsByPoint.TryGetValue(subterrainId, out Dictionary<Point3, GVSignTextData> points)) {
                 points = new Dictionary<Point3, GVSignTextData>();
                 m_textsByPoint.Add(subterrainId, points);
@@ -68,20 +68,16 @@ namespace Game {
             m_lastUpdatePositions.Clear();
         }
 
-        public override void OnNeighborBlockChanged(int x,
-            int y,
-            int z,
-            int neighborX,
-            int neighborY,
-            int neighborZ) => OnNeighborBlockChanged(
-            x,
-            y,
-            z,
-            neighborX,
-            neighborY,
-            neighborZ,
-            null
-        );
+        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) =>
+            OnNeighborBlockChanged(
+                x,
+                y,
+                z,
+                neighborX,
+                neighborY,
+                neighborZ,
+                null
+            );
 
         public void OnNeighborBlockChanged(int x,
             int y,
@@ -143,21 +139,12 @@ namespace Game {
             return true;
         }
 
-        public override void OnBlockRemoved(int value,
-            int newValue,
-            int x,
-            int y,
-            int z) {
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) {
             m_textsByPoint[0].Remove(new Point3(x, y, z));
             m_lastUpdatePositions.Clear();
         }
 
-        public void OnBlockRemoved(int value,
-            int newValue,
-            int x,
-            int y,
-            int z,
-            GVSubterrainSystem system) {
+        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
             Dictionary<Point3, GVSignTextData> points = m_textsByPoint[system.ID];
             points.Remove(new Point3(x, y, z));
             if (points.Count == 0) {
@@ -187,13 +174,7 @@ namespace Game {
                 string line1 = value11.GetValue("Line1", string.Empty);
                 Color color1 = value11.GetValue("Color1", Color.White);
                 string url = value11.GetValue("Url", string.Empty);
-                SetSignData(
-                    point,
-                    subterrainId,
-                    line1,
-                    color1,
-                    url
-                );
+                SetSignData(point, subterrainId, line1, color1, url);
             }
             Display.DeviceReset += Display_DeviceReset;
         }
@@ -284,7 +265,10 @@ namespace Game {
                 bool flag = !string.IsNullOrEmpty(textData.Url);
                 for (int j = 0; j < list.Count; j++) {
                     fontBatch.QueueText(
-                        position: new Vector2(num4 / 2f, j * m_font.GlyphHeight + textData.TextureLocation.Value * (4f * m_font.GlyphHeight) + (num5 - num2) / 2f),
+                        position: new Vector2(
+                            num4 / 2f,
+                            j * m_font.GlyphHeight + textData.TextureLocation.Value * (4f * m_font.GlyphHeight) + (num5 - num2) / 2f
+                        ),
                         text: list[j],
                         depth: 0f,
                         color: flag ? new Color(0, 0, 64) : list2[j],
@@ -322,7 +306,9 @@ namespace Game {
             foreach ((uint subterrainId, Dictionary<Point3, GVSignTextData> points) in m_textsByPoint) {
                 Matrix transform = subterrainId == 0 ? default : GVStaticStorage.GVSubterrainSystemDictionary[subterrainId].GlobalTransform;
                 foreach (GVSignTextData textData in points.Values) {
-                    Vector3 vectorPlus05Transformed = subterrainId == 0 ? new Vector3(textData.Point.X + 0.5f, textData.Point.Y + 0.5f, textData.Point.Z + 0.5f) : Vector3.Transform(new Vector3(textData.Point.X + 0.5f, textData.Point.Y + 0.5f, textData.Point.Z + 0.5f), transform);
+                    Vector3 vectorPlus05Transformed = subterrainId == 0
+                        ? new Vector3(textData.Point.X + 0.5f, textData.Point.Y + 0.5f, textData.Point.Z + 0.5f)
+                        : Vector3.Transform(new Vector3(textData.Point.X + 0.5f, textData.Point.Y + 0.5f, textData.Point.Z + 0.5f), transform);
                     float num = m_subsystemViews.CalculateSquaredDistanceFromNearestView(vectorPlus05Transformed);
                     if (num < m_subsystemSky.VisibilityRange) {
                         textData.Distance = num;
@@ -341,7 +327,8 @@ namespace Game {
                     continue;
                 }
                 int num2 = m_textureLocations.FirstIndex(d => d == null);
-                if (num2 < 0 || num2 >= m_maxTexts) {
+                if (num2 < 0
+                    || num2 >= m_maxTexts) {
                     num2 = m_textureLocations.FirstIndex(d => d.ToBeRenderedFrame != Time.FrameIndex);
                 }
                 if (num2 >= 0) {
@@ -424,10 +411,13 @@ namespace Game {
                     float x3 = nearText.TextureLocation.Value / m_maxTexts;
                     float x4 = (nearText.TextureLocation.Value + nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f)) / m_maxTexts;
                     Vector3 vector = new(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
-                    Vector3 vectorPlus05Transformed = subterrainId == 0 ? new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f) : Vector3.Transform(new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f), transform);
+                    Vector3 vectorPlus05Transformed = subterrainId == 0
+                        ? new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f)
+                        : Vector3.Transform(new Vector3(nearText.Point.X + 0.5f, nearText.Point.Y + 0.5f, nearText.Point.Z + 0.5f), transform);
                     if (camera.ViewFrustum.Intersection(vectorPlus05Transformed + camera.ViewDirection)) {
                         Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
-                        Vector3 vector2 = MathUtils.Max(0.01f * Vector3.Dot(camera.ViewPosition - vectorPlus05Transformed, signSurfaceNormal), 0.005f) * signSurfaceNormal;
+                        Vector3 vector2 = MathUtils.Max(0.01f * Vector3.Dot(camera.ViewPosition - vectorPlus05Transformed, signSurfaceNormal), 0.005f)
+                            * signSurfaceNormal;
                         float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
                         Color color = new(num2, num2, num2);
                         for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++) {
@@ -470,7 +460,11 @@ namespace Game {
                     if (nearText.FloatSize > 0
                         && nearText.FloatColor.A > 0) {
                         Vector3 position = nearText.FloatPosition;
-                        Matrix rotationMatrix = Matrix.CreateFromYawPitchRoll(nearText.FloatRotation.X, nearText.FloatRotation.Y, nearText.FloatRotation.Z);
+                        Matrix rotationMatrix = Matrix.CreateFromYawPitchRoll(
+                            nearText.FloatRotation.X,
+                            nearText.FloatRotation.Y,
+                            nearText.FloatRotation.Z
+                        );
                         Vector3 right = rotationMatrix.Right * x2 * 2 * nearText.FloatSize;
                         Vector3 up = rotationMatrix.Up * (x4 - x3) * 20 * nearText.FloatSize;
                         if (subterrainId != 0) {

@@ -1,7 +1,8 @@
 using Engine.Media;
 
 namespace Engine.Graphics {
-    public class GVOscilloscopePrimitivesRenderer2D : BasePrimitivesRenderer<GVOscilloscopeWaveFlatBatch2D, GVOscilloscopeBlurTexturedBatch2D, FontBatch2D> {
+    public class GVOscilloscopePrimitivesRenderer2D : BasePrimitivesRenderer<GVOscilloscopeWaveFlatBatch2D, GVOscilloscopeBlurTexturedBatch2D,
+        FontBatch2D> {
         public static Matrix ViewportMatrix() {
             Viewport viewport = Display.Viewport;
             float num = 1f / viewport.Width;
@@ -26,14 +27,23 @@ namespace Engine.Graphics {
             );
         }
 
-        public GVOscilloscopeWaveFlatBatch2D FlatBatch(int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null) {
+        public GVOscilloscopeWaveFlatBatch2D FlatBatch(int layer = 0,
+            DepthStencilState depthStencilState = null,
+            RasterizerState rasterizerState = null,
+            BlendState blendState = null) {
             depthStencilState = depthStencilState ?? DepthStencilState.None;
             rasterizerState = rasterizerState ?? RasterizerState.CullNoneScissor;
             blendState = blendState ?? BlendState.AlphaBlend;
             return FindFlatBatch(layer, depthStencilState, rasterizerState, blendState);
         }
 
-        public GVOscilloscopeBlurTexturedBatch2D TexturedBatch(Texture2D texture, bool useAlphaTest = false, int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null, SamplerState samplerState = null) {
+        public GVOscilloscopeBlurTexturedBatch2D TexturedBatch(Texture2D texture,
+            bool useAlphaTest = false,
+            int layer = 0,
+            DepthStencilState depthStencilState = null,
+            RasterizerState rasterizerState = null,
+            BlendState blendState = null,
+            SamplerState samplerState = null) {
             depthStencilState = depthStencilState ?? DepthStencilState.None;
             rasterizerState = rasterizerState ?? RasterizerState.CullNoneScissor;
             blendState = blendState ?? BlendState.AlphaBlend;
@@ -49,20 +59,18 @@ namespace Engine.Graphics {
             );
         }
 
-        public FontBatch2D FontBatch(BitmapFont font = null, int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null, SamplerState samplerState = null) {
+        public FontBatch2D FontBatch(BitmapFont font = null,
+            int layer = 0,
+            DepthStencilState depthStencilState = null,
+            RasterizerState rasterizerState = null,
+            BlendState blendState = null,
+            SamplerState samplerState = null) {
             font = font ?? BitmapFont.DebugFont;
             depthStencilState = depthStencilState ?? DepthStencilState.None;
             rasterizerState = rasterizerState ?? RasterizerState.CullNoneScissor;
             blendState = blendState ?? BlendState.AlphaBlend;
             samplerState = samplerState ?? SamplerState.LinearClamp;
-            return FindFontBatch(
-                font,
-                layer,
-                depthStencilState,
-                rasterizerState,
-                blendState,
-                samplerState
-            );
+            return FindFontBatch(font, layer, depthStencilState, rasterizerState, blendState, samplerState);
         }
 
         public void Flush(bool clearAfterFlush = true, int maxLayer = int.MaxValue) {

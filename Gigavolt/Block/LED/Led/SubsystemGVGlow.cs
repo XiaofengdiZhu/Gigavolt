@@ -50,7 +50,9 @@ namespace Game {
                                 float size = key.Size;
                                 if (subterrainId != 0) {
                                     Matrix orientation = transform.OrientationMatrix;
-                                    float scale = MathF.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13);
+                                    float scale = MathF.Sqrt(
+                                        transform.M11 * transform.M11 + transform.M12 * transform.M12 + transform.M13 * transform.M13
+                                    );
                                     size *= scale;
                                     right = Vector3.Transform(right, orientation) / scale;
                                     up = Vector3.Transform(up, orientation) / scale;
@@ -61,13 +63,7 @@ namespace Game {
                                 Vector3 p3 = position + size * (right + up);
                                 Vector3 p4 = position + size * (-right + up);
                                 if (key.Type == GVGlowPointType.Full) {
-                                    m_flatBatch.QueueQuad(
-                                        p,
-                                        p2,
-                                        p3,
-                                        p4,
-                                        key.Color
-                                    );
+                                    m_flatBatch.QueueQuad(p, p2, p3, p4, key.Color);
                                 }
                                 else {
                                     m_texturedBatchesByType[(int)key.Type]
@@ -94,7 +90,12 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
             m_texturedBatchesByType = Project.FindSubsystem<SubsystemGlow>().m_batchesByType;
-            m_flatBatch = m_primitivesRenderer.FlatBatch(0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.NonPremultiplied);
+            m_flatBatch = m_primitivesRenderer.FlatBatch(
+                0,
+                DepthStencilState.DepthRead,
+                RasterizerState.CullCounterClockwiseScissor,
+                BlendState.NonPremultiplied
+            );
         }
     }
 }

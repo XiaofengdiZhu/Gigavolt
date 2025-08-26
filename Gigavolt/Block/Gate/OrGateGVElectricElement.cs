@@ -2,7 +2,11 @@ namespace Game {
     public class OrGateGVElectricElement : RotateableGVElectricElement {
         public uint m_voltage;
 
-        public OrGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) { }
+        public OrGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, uint subterrainId) : base(
+            subsystemGVElectricity,
+            cellFace,
+            subterrainId
+        ) { }
 
         public override uint GetOutputVoltage(int face) => m_voltage;
 

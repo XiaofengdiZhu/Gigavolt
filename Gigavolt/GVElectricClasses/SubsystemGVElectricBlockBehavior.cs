@@ -73,47 +73,47 @@ namespace Game {
             m_usingChunks.Add(new Point2(x >> 4, z >> 4));
         }
 
-        public void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded, GVSubterrainSystem system) => m_subsystemGVElectric.OnGVElectricElementBlockGenerated(x, y, z, system.ID);
+        public void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded, GVSubterrainSystem system) =>
+            m_subsystemGVElectric.OnGVElectricElementBlockGenerated(x, y, z, system.ID);
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z) {
             m_subsystemGVElectric.OnGVElectricElementBlockAdded(x, y, z, 0);
             m_usingChunks.Add(new Point2(x >> 4, z >> 4));
         }
 
-        public void OnBlockAdded(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) => m_subsystemGVElectric.OnGVElectricElementBlockAdded(x, y, z, system.ID);
+        public void OnBlockAdded(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) =>
+            m_subsystemGVElectric.OnGVElectricElementBlockAdded(x, y, z, system.ID);
 
-        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => m_subsystemGVElectric.OnGVElectricElementBlockRemoved(x, y, z, 0);
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) =>
+            m_subsystemGVElectric.OnGVElectricElementBlockRemoved(x, y, z, 0);
 
-        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) => m_subsystemGVElectric.OnGVElectricElementBlockRemoved(x, y, z, system.ID);
+        public void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) =>
+            m_subsystemGVElectric.OnGVElectricElementBlockRemoved(x, y, z, system.ID);
 
-        public override void OnBlockModified(int value, int oldValue, int x, int y, int z) => m_subsystemGVElectric.OnGVElectricElementBlockModified(x, y, z, 0);
+        public override void OnBlockModified(int value, int oldValue, int x, int y, int z) =>
+            m_subsystemGVElectric.OnGVElectricElementBlockModified(x, y, z, 0);
 
-        public void OnBlockModified(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) => m_subsystemGVElectric.OnGVElectricElementBlockModified(x, y, z, system.ID);
+        public void OnBlockModified(int value, int oldValue, int x, int y, int z, GVSubterrainSystem system) =>
+            m_subsystemGVElectric.OnGVElectricElementBlockModified(x, y, z, system.ID);
 
         public override void OnChunkDiscarding(TerrainChunk chunk) => m_subsystemGVElectric.OnChunkDiscarding(chunk);
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
             for (int i = 0; i < 6; i++) {
-                m_subsystemGVElectric.GetGVElectricElement(
-                        x,
-                        y,
-                        z,
-                        i,
-                        0
-                    )
+                m_subsystemGVElectric.GetGVElectricElement(x, y, z, i, 0)
                     ?.OnNeighborBlockChanged(new CellFace(x, y, z, i), neighborX, neighborY, neighborZ);
             }
         }
 
-        public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) {
+        public void OnNeighborBlockChanged(int x,
+            int y,
+            int z,
+            int neighborX,
+            int neighborY,
+            int neighborZ,
+            GVSubterrainSystem system) {
             for (int i = 0; i < 6; i++) {
-                m_subsystemGVElectric.GetGVElectricElement(
-                        x,
-                        y,
-                        z,
-                        i,
-                        system.ID
-                    )
+                m_subsystemGVElectric.GetGVElectricElement(x, y, z, i, system.ID)
                     ?.OnNeighborBlockChanged(new CellFace(x, y, z, i), neighborX, neighborY, neighborZ);
             }
         }
@@ -123,13 +123,7 @@ namespace Game {
             int y = raycastResult.CellFace.Y;
             int z = raycastResult.CellFace.Z;
             for (int i = 0; i < 6; i++) {
-                GVElectricElement GVElectricElement = m_subsystemGVElectric.GetGVElectricElement(
-                    x,
-                    y,
-                    z,
-                    i,
-                    0
-                );
+                GVElectricElement GVElectricElement = m_subsystemGVElectric.GetGVElectricElement(x, y, z, i, 0);
                 if (GVElectricElement != null) {
                     return GVElectricElement.OnInteract(raycastResult, componentMiner);
                 }
@@ -145,13 +139,7 @@ namespace Game {
             GVElectricElement GVElectricElement;
             while (true) {
                 if (num < 6) {
-                    GVElectricElement = m_subsystemGVElectric.GetGVElectricElement(
-                        x,
-                        y,
-                        z,
-                        num,
-                        0
-                    );
+                    GVElectricElement = m_subsystemGVElectric.GetGVElectricElement(x, y, z, num, 0);
                     if (GVElectricElement != null) {
                         break;
                     }
@@ -171,13 +159,7 @@ namespace Game {
             GVElectricElement GVElectricElement;
             while (true) {
                 if (num < 6) {
-                    GVElectricElement = m_subsystemGVElectric.GetGVElectricElement(
-                        x,
-                        y,
-                        z,
-                        num,
-                        0
-                    );
+                    GVElectricElement = m_subsystemGVElectric.GetGVElectricElement(x, y, z, num, 0);
                     if (GVElectricElement != null) {
                         break;
                     }

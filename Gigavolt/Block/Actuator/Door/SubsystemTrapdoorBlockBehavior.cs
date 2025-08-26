@@ -38,14 +38,7 @@ namespace Game {
                 SubsystemTerrain.ChangeCell(x, y, z, value);
                 string name = open ? "Audio/Doors/DoorOpen" : "Audio/Doors/DoorClose";
                 SubsystemTerrain.Project.FindSubsystem<SubsystemAudio>(true)
-                .PlaySound(
-                    name,
-                    0.7f,
-                    m_random.Float(-0.1f, 0.1f),
-                    new Vector3(x, y, z),
-                    4f,
-                    true
-                );
+                    .PlaySound(name, 0.7f, m_random.Float(-0.1f, 0.1f), new Vector3(x, y, z), 4f, true);
                 return true;
             }
             return false;
@@ -55,14 +48,24 @@ namespace Game {
             if (subterrainId == 0) {
                 int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
                 if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is GVTrapdoorBlock) {
-                    SubsystemTerrain.ChangeCell(x, y, z, Terrain.ReplaceData(cellValue, GVTrapdoorBlock.SetOpen(Terrain.ExtractData(cellValue), open)));
+                    SubsystemTerrain.ChangeCell(
+                        x,
+                        y,
+                        z,
+                        Terrain.ReplaceData(cellValue, GVTrapdoorBlock.SetOpen(Terrain.ExtractData(cellValue), open))
+                    );
                 }
             }
             else {
                 GVSubterrainSystem subterrainSystem = GVStaticStorage.GVSubterrainSystemDictionary[subterrainId];
                 int cellValue = subterrainSystem.Terrain.GetCellValue(x, y, z);
                 if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] is GVTrapdoorBlock) {
-                    subterrainSystem.ChangeCell(x, y, z, Terrain.ReplaceData(cellValue, GVTrapdoorBlock.SetOpen(Terrain.ExtractData(cellValue), open)));
+                    subterrainSystem.ChangeCell(
+                        x,
+                        y,
+                        z,
+                        Terrain.ReplaceData(cellValue, GVTrapdoorBlock.SetOpen(Terrain.ExtractData(cellValue), open))
+                    );
                 }
             }
         }
@@ -89,7 +92,13 @@ namespace Game {
             null
         );
 
-        public void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ, GVSubterrainSystem system) {
+        public void OnNeighborBlockChanged(int x,
+            int y,
+            int z,
+            int neighborX,
+            int neighborY,
+            int neighborZ,
+            GVSubterrainSystem system) {
             Terrain terrain = system == null ? SubsystemTerrain.Terrain : system.Terrain;
             int cellValue = terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);

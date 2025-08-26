@@ -33,6 +33,7 @@
             }
         }
 
-        public string SaveString() => $"{Speed:F2};{GVStaticStorage.DisplayVoltage};{PreventChunkFromBeingFree};{DisplayStepFloatingButtons};{KeyboardControl};{GVStaticStorage.WheelPanelEnabled};{LoadChunkInAdvance}";
+        public string SaveString() =>
+            $"{Speed:F2};{GVStaticStorage.DisplayVoltage};{PreventChunkFromBeingFree};{DisplayStepFloatingButtons};{KeyboardControl};{GVStaticStorage.WheelPanelEnabled};{LoadChunkInAdvance}";
     }
 }

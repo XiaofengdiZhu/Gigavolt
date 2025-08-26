@@ -63,11 +63,19 @@ namespace Game {
                 ]
             );
             IGVCustomWheelPanelBlock.TransformerValues.Clear();
-            IGVCustomWheelPanelBlock.TransformerValues.AddRange([GVBlocksManager.GetBlockIndex<GV2OTransformerBlock>(), GVBlocksManager.GetBlockIndex<O2GVTransformerBlock>()]);
+            IGVCustomWheelPanelBlock.TransformerValues.AddRange(
+                [GVBlocksManager.GetBlockIndex<GV2OTransformerBlock>(), GVBlocksManager.GetBlockIndex<O2GVTransformerBlock>()]
+            );
             IGVCustomWheelPanelBlock.MemoryBankValues.Clear();
             IGVCustomWheelPanelBlock.MemoryBankValues.Add(GVBlocksManager.GetBlockIndex<GVMemoryBankBlock>());
             IGVCustomWheelPanelBlock.LedValues.Clear();
-            IGVCustomWheelPanelBlock.LedValues.AddRange([GVBlocksManager.GetBlockIndex<GVMulticoloredLedBlock>(), GVBlocksManager.GetBlockIndex<GV8NumberLedBlock>(), GVBlocksManager.GetBlockIndex<GVOneLedBlock>()]);
+            IGVCustomWheelPanelBlock.LedValues.AddRange(
+                [
+                    GVBlocksManager.GetBlockIndex<GVMulticoloredLedBlock>(),
+                    GVBlocksManager.GetBlockIndex<GV8NumberLedBlock>(),
+                    GVBlocksManager.GetBlockIndex<GVOneLedBlock>()
+                ]
+            );
             IGVCustomWheelPanelBlock.LedValues.AddRange(GVBlocksManager.GetBlock<GV8x4LedBlock>().GetCreativeValues());
             m_blockBehavior = project.FindSubsystem<SubsystemGVElectricBlockBehavior>();
             if (m_debugData.LoadChunkInAdvance

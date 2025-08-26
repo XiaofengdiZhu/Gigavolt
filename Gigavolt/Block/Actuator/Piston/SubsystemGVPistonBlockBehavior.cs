@@ -55,7 +55,9 @@ namespace Game {
         }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 6) & 2047;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -131009) | ((id & 2047) << 6));
+
+        public override int SetIdToValue(int value, int id) =>
+            Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -131009) | ((id & 2047) << 6));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
@@ -77,7 +79,15 @@ namespace Game {
                     blockData,
                     delegate {
                         inventory.RemoveSlotItems(slotIndex, count);
-                        inventory.AddSlotItems(slotIndex, Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, Terrain.ExtractData(SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)))), count);
+                        inventory.AddSlotItems(
+                            slotIndex,
+                            Terrain.MakeBlockValue(
+                                m_GVPistonBlockIndex,
+                                0,
+                                Terrain.ExtractData(SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)))
+                            ),
+                            count
+                        );
                     }
                 )
             );
@@ -98,15 +108,18 @@ namespace Game {
                     GVPistonBlock.GetMode(data),
                     blockData,
                     delegate {
-                        SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, Terrain.ExtractData(SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)))));
-                        SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
-                        GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(
+                        SubsystemTerrain.ChangeCell(
                             x,
                             y,
                             z,
-                            0,
-                            0
+                            Terrain.MakeBlockValue(
+                                m_GVPistonBlockIndex,
+                                0,
+                                Terrain.ExtractData(SetIdToValue(value, StoreItemDataAtUniqueId(blockData, id)))
+                            )
                         );
+                        SubsystemGVElectricity subsystemGVElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemGVElectricity>(true);
+                        GVElectricElement electricElement = subsystemGVElectricity.GetGVElectricElement(x, y, z, 0, 0);
                         if (electricElement != null) {
                             subsystemGVElectricity.QueueGVElectricElementForSimulation(electricElement, subsystemGVElectricity.CircuitStep + 1);
                         }
@@ -116,24 +129,10 @@ namespace Game {
             return true;
         }
 
-        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(
-            value,
-            newValue,
-            x,
-            y,
-            z,
-            null
-        );
+        public override void OnBlockRemoved(int value, int newValue, int x, int y, int z) => OnBlockRemoved(value, newValue, x, y, z, null);
 
         public override void OnBlockRemoved(int value, int newValue, int x, int y, int z, GVSubterrainSystem system) {
-            base.OnBlockRemoved(
-                value,
-                newValue,
-                x,
-                y,
-                z,
-                system
-            );
+            base.OnBlockRemoved(value, newValue, x, y, z, system);
             bool inSubterrain = system != null;
             uint subterrainId = system?.ID ?? 0u;
             int contents = Terrain.ExtractContents(value);
@@ -143,7 +142,9 @@ namespace Game {
                 StopPiston(point3);
                 int face2 = GVPistonBlock.GetFace(data);
                 Point3 point2 = CellFace.FaceToPoint3(face2);
-                int cellValue3 = inSubterrain ? system.Terrain.GetCellValue(x + point2.X, y + point2.Y, z + point2.Z) : m_subsystemTerrain.Terrain.GetCellValue(x + point2.X, y + point2.Y, z + point2.Z);
+                int cellValue3 = inSubterrain
+                    ? system.Terrain.GetCellValue(x + point2.X, y + point2.Y, z + point2.Z)
+                    : m_subsystemTerrain.Terrain.GetCellValue(x + point2.X, y + point2.Y, z + point2.Z);
                 int num4 = Terrain.ExtractContents(cellValue3);
                 int data4 = Terrain.ExtractData(cellValue3);
                 if (num4 == m_GVPistonHeadBlockIndex
@@ -176,8 +177,12 @@ namespace Game {
                 if (!m_allowPistonHeadRemove) {
                     int face = GVPistonHeadBlock.GetFace(data);
                     Point3 point = CellFace.FaceToPoint3(face);
-                    int cellValue = inSubterrain ? system.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z) : m_subsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
-                    int cellValue2 = inSubterrain ? system.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z) : m_subsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
+                    int cellValue = inSubterrain
+                        ? system.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z)
+                        : m_subsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
+                    int cellValue2 = inSubterrain
+                        ? system.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z)
+                        : m_subsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
                     int num2 = Terrain.ExtractContents(cellValue);
                     int num3 = Terrain.ExtractContents(cellValue2);
                     int data2 = Terrain.ExtractData(cellValue);
@@ -353,7 +358,10 @@ namespace Game {
                         Point3 faceDirection = CellFace.FaceToPoint3(face);
                         int min = int.MaxValue;
                         foreach (MovingBlock block in movingBlockSet.Blocks) {
-                            min = MathUtils.Min(min, block.Offset.X * faceDirection.X + block.Offset.Y * faceDirection.Y + block.Offset.Z * faceDirection.Z);
+                            min = MathUtils.Min(
+                                min,
+                                block.Offset.X * faceDirection.X + block.Offset.Y * faceDirection.Y + block.Offset.Z * faceDirection.Z
+                            );
                         }
                         Vector3 movingPosition = movingBlockSet.Position;
                         if (inSubterrain) {
@@ -363,7 +371,17 @@ namespace Game {
                         float num3 = tag.X * faceDirection.X + tag.Y * faceDirection.Y + tag.Z * faceDirection.Z;
                         if (num2 > num3) {
                             if (min + num2 - num3 > 1f) {
-                                movingBlockSet.SetBlock(faceDirection * (min - 1), Terrain.MakeBlockValue(m_GVPistonHeadBlockIndex, 0, GVPistonHeadBlock.SetTransparent(GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetIsShaft(GVPistonHeadBlock.SetMode(0, mode), true), face), transparent)));
+                                movingBlockSet.SetBlock(
+                                    faceDirection * (min - 1),
+                                    Terrain.MakeBlockValue(
+                                        m_GVPistonHeadBlockIndex,
+                                        0,
+                                        GVPistonHeadBlock.SetTransparent(
+                                            GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetIsShaft(GVPistonHeadBlock.SetMode(0, mode), true), face),
+                                            transparent
+                                        )
+                                    )
+                                );
                             }
                         }
                         else if (num2 < num3
@@ -467,11 +485,22 @@ namespace Game {
                 num++;
             }
             Vector3 positionVector3 = new(position.X, position.Y, position.Z);
-            Vector3 positionVector3Transformed = inSubterrain ? Vector3.Transform(positionVector3, subterrainSystem.GlobalTransform) : positionVector3;
+            Vector3 positionVector3Transformed =
+                inSubterrain ? Vector3.Transform(positionVector3, subterrainSystem.GlobalTransform) : positionVector3;
             //伸长
             if (length > num) {
                 DynamicArray<MovingBlock> movingBlocks2 = m_movingBlocks;
-                item = new MovingBlock { Offset = Point3.Zero, Value = Terrain.MakeBlockValue(m_GVPistonHeadBlockIndex, 0, GVPistonHeadBlock.SetTransparent(GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetMode(GVPistonHeadBlock.SetIsShaft(0, num > 0), mode), face), transparent)) };
+                item = new MovingBlock {
+                    Offset = Point3.Zero,
+                    Value = Terrain.MakeBlockValue(
+                        m_GVPistonHeadBlockIndex,
+                        0,
+                        GVPistonHeadBlock.SetTransparent(
+                            GVPistonHeadBlock.SetFace(GVPistonHeadBlock.SetMode(GVPistonHeadBlock.SetIsShaft(0, num > 0), mode), face),
+                            transparent
+                        )
+                    )
+                };
                 movingBlocks2.Add(item);
                 int num3 = 0;
                 while (num3 < pullCount + 1) {
@@ -494,7 +523,10 @@ namespace Game {
                     && num3 < pullCount + 1) {
                     return false;
                 }
-                if (!IsBlockBlocking(terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z), position.Y + offset.Y)) {
+                if (!IsBlockBlocking(
+                        terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z),
+                        position.Y + offset.Y
+                    )) {
                     Point3 p = position.Point + (length - num) * faceDirection;
                     if (num5 > 30) {
                         int count = (num5 + 1) / 16;
@@ -541,10 +573,20 @@ namespace Game {
                             foreach (MovingBlock movingBlock in m_movingBlocks) {
                                 if (movingBlock.Offset != Point3.Zero) {
                                     if (inSubterrain) {
-                                        subterrainSystem.ChangeCell(position.X + movingBlock.Offset.X, position.Y + movingBlock.Offset.Y, position.Z + movingBlock.Offset.Z, 0);
+                                        subterrainSystem.ChangeCell(
+                                            position.X + movingBlock.Offset.X,
+                                            position.Y + movingBlock.Offset.Y,
+                                            position.Z + movingBlock.Offset.Z,
+                                            0
+                                        );
                                     }
                                     else {
-                                        m_subsystemTerrain.ChangeCell(position.X + movingBlock.Offset.X, position.Y + movingBlock.Offset.Y, position.Z + movingBlock.Offset.Z, 0);
+                                        m_subsystemTerrain.ChangeCell(
+                                            position.X + movingBlock.Offset.X,
+                                            position.Y + movingBlock.Offset.Y,
+                                            position.Z + movingBlock.Offset.Z,
+                                            0
+                                        );
                                     }
                                 }
                             }
@@ -553,19 +595,22 @@ namespace Game {
                             m_allowPistonHeadRemove = false;
                         }
                         if (inSubterrain) {
-                            subterrainSystem.ChangeCell(position.X, position.Y, position.Z, Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, GVPistonBlock.SetIsExtended(data, true)));
+                            subterrainSystem.ChangeCell(
+                                position.X,
+                                position.Y,
+                                position.Z,
+                                Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, GVPistonBlock.SetIsExtended(data, true))
+                            );
                         }
                         else {
-                            m_subsystemTerrain.ChangeCell(position.X, position.Y, position.Z, Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, GVPistonBlock.SetIsExtended(data, true)));
+                            m_subsystemTerrain.ChangeCell(
+                                position.X,
+                                position.Y,
+                                position.Z,
+                                Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, GVPistonBlock.SetIsExtended(data, true))
+                            );
                         }
-                        m_subsystemAudio.PlaySound(
-                            "Audio/Piston",
-                            1f,
-                            0f,
-                            positionVector3Transformed,
-                            2f,
-                            true
-                        );
+                        m_subsystemAudio.PlaySound("Audio/Piston", 1f, 0f, positionVector3Transformed, 2f, true);
                     }
                 }
                 return false;
@@ -633,26 +678,29 @@ namespace Game {
                     try {
                         if (inSubterrain) {
                             foreach (MovingBlock movingBlock2 in m_movingBlocks) {
-                                subterrainSystem.ChangeCell(position.X + movingBlock2.Offset.X, position.Y + movingBlock2.Offset.Y, position.Z + movingBlock2.Offset.Z, 0);
+                                subterrainSystem.ChangeCell(
+                                    position.X + movingBlock2.Offset.X,
+                                    position.Y + movingBlock2.Offset.Y,
+                                    position.Z + movingBlock2.Offset.Z,
+                                    0
+                                );
                             }
                         }
                         else {
                             foreach (MovingBlock movingBlock2 in m_movingBlocks) {
-                                m_subsystemTerrain.ChangeCell(position.X + movingBlock2.Offset.X, position.Y + movingBlock2.Offset.Y, position.Z + movingBlock2.Offset.Z, 0);
+                                m_subsystemTerrain.ChangeCell(
+                                    position.X + movingBlock2.Offset.X,
+                                    position.Y + movingBlock2.Offset.Y,
+                                    position.Z + movingBlock2.Offset.Z,
+                                    0
+                                );
                             }
                         }
                     }
                     finally {
                         m_allowPistonHeadRemove = false;
                     }
-                    m_subsystemAudio.PlaySound(
-                        "Audio/Piston",
-                        1f,
-                        0f,
-                        positionVector3Transformed,
-                        2f,
-                        true
-                    );
+                    m_subsystemAudio.PlaySound("Audio/Piston", 1f, 0f, positionVector3Transformed, 2f, true);
                 }
                 return false;
             }
@@ -712,10 +760,20 @@ namespace Game {
                 }
                 if (flag) {
                     if (inSubterrain) {
-                        subterrainSystem.ChangeCell(position.X, position.Y, position.Z, Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, GVPistonBlock.SetIsExtended(data, isExtended)));
+                        subterrainSystem.ChangeCell(
+                            position.X,
+                            position.Y,
+                            position.Z,
+                            Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, GVPistonBlock.SetIsExtended(data, isExtended))
+                        );
                     }
                     else {
-                        m_subsystemTerrain.ChangeCell(position.X, position.Y, position.Z, Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, GVPistonBlock.SetIsExtended(data, isExtended)));
+                        m_subsystemTerrain.ChangeCell(
+                            position.X,
+                            position.Y,
+                            position.Z,
+                            Terrain.MakeBlockValue(m_GVPistonBlockIndex, 0, GVPistonBlock.SetIsExtended(data, isExtended))
+                        );
                     }
                 }
             }
@@ -761,7 +819,8 @@ namespace Game {
                 || movingBlockSet.Tag is not GVPoint3 key) {
                 return;
             }
-            if (Terrain.ExtractContents(m_subsystemGVSubterrain.GetTerrain(key.SubterrainId).GetCellValue(key.X, key.Y, key.Z)) == m_GVPistonBlockIndex) {
+            if (Terrain.ExtractContents(m_subsystemGVSubterrain.GetTerrain(key.SubterrainId).GetCellValue(key.X, key.Y, key.Z))
+                == m_GVPistonBlockIndex) {
                 if (!m_actions.TryGetValue(key, out QueuedAction value)) {
                     value = new QueuedAction();
                     m_actions.Add(key, value);
@@ -773,9 +832,15 @@ namespace Game {
         public static bool IsBlockMovable(int value, int pistonFace, int y, out bool isEnd) {
             isEnd = false;
             int contents = Terrain.ExtractContents(value);
-            return y is > 0 and < 255 && contents != ChestBlock.Index && contents != DispenserBlock.Index && contents != FurnaceBlock.Index && contents != BlocksManager.GetBlockIndex<GVDispenserBlock>() && BlocksManager.Blocks[contents].IsMovableByPiston(value, pistonFace, y, out isEnd);
+            return y is > 0 and < 255
+                && contents != ChestBlock.Index
+                && contents != DispenserBlock.Index
+                && contents != FurnaceBlock.Index
+                && contents != BlocksManager.GetBlockIndex<GVDispenserBlock>()
+                && BlocksManager.Blocks[contents].IsMovableByPiston(value, pistonFace, y, out isEnd);
         }
 
-        public static bool IsBlockBlocking(int value, int y) => y is <= 0 or >= 255 || BlocksManager.Blocks[Terrain.ExtractContents(value)].IsBlockingPiston(value);
+        public static bool IsBlockBlocking(int value, int y) =>
+            y is <= 0 or >= 255 || BlocksManager.Blocks[Terrain.ExtractContents(value)].IsBlockingPiston(value);
     }
 }

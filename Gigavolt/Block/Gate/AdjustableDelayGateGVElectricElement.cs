@@ -7,7 +7,8 @@ namespace Game {
 
         public override int DelaySteps => m_delaySteps;
 
-        public AdjustableDelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId) : base(subsystemGVElectricity, cellFace, subterrainId) => m_delaySteps = GVAdjustableDelayGateBlock.GetDelay(Terrain.ExtractData(value));
+        public AdjustableDelayGateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, GVCellFace cellFace, int value, uint subterrainId)
+            : base(subsystemGVElectricity, cellFace, subterrainId) => m_delaySteps = GVAdjustableDelayGateBlock.GetDelay(Terrain.ExtractData(value));
 
         public override bool Simulate() {
             uint voltage = m_voltage;
@@ -16,23 +17,32 @@ namespace Game {
             foreach (GVElectricConnection connection in Connections) {
                 if (connection.ConnectorType != GVElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    GVElectricConnectorDirection? connectorDirection =
+                        SubsystemGVElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         switch (connectorDirection.Value) {
                             case GVElectricConnectorDirection.Bottom:
-                                num = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                                break;
+                                num = connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace); break;
                             case GVElectricConnectorDirection.In:
-                                int delay = Math.Min(MathUint.ToIntWithClamp(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)), 0xFF);
+                                int delay = Math.Min(
+                                    MathUint.ToIntWithClamp(connection.NeighborGVElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)),
+                                    0xFF
+                                );
                                 if (delay != DelaySteps) {
                                     Point3 point = CellFaces[0].Point;
-                                    int oldData = Terrain.ExtractData(SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(point.X, point.Y, point.Z));
+                                    int oldData = Terrain.ExtractData(
+                                        SubsystemGVElectricity.SubsystemGVSubterrain.GetTerrain(SubterrainId).GetCellValue(point.X, point.Y, point.Z)
+                                    );
                                     SubsystemGVElectricity.SubsystemGVSubterrain.ChangeCell(
                                         point.X,
                                         point.Y,
                                         point.Z,
                                         SubterrainId,
-                                        Terrain.MakeBlockValue(GVBlocksManager.GetBlockIndex<GVAdjustableDelayGateBlock>(), 0, GVAdjustableDelayGateBlock.SetDelay(oldData, delay))
+                                        Terrain.MakeBlockValue(
+                                            GVBlocksManager.GetBlockIndex<GVAdjustableDelayGateBlock>(),
+                                            0,
+                                            GVAdjustableDelayGateBlock.SetDelay(oldData, delay)
+                                        )
                                     );
                                 }
                                 break;

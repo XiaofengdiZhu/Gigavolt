@@ -189,7 +189,10 @@ namespace Game {
                     m_lastScrollPosition = m_scrollPanel.ScrollPosition;
                     int notRenderCount1 = Math.Max((int)m_lastScrollPosition / 60 - 3, 1);
                     m_placeholder1.Size = new Vector2(1, notRenderCount1 * 60f);
-                    int renderCount = Math.Min((int)(m_canvas.ActualSize.Y + m_lastScrollPosition) / 60 + 6 - notRenderCount1, m_data.RecordsCount - notRenderCount1);
+                    int renderCount = Math.Min(
+                        (int)(m_canvas.ActualSize.Y + m_lastScrollPosition) / 60 + 6 - notRenderCount1,
+                        m_data.RecordsCount - notRenderCount1
+                    );
                     Dictionary<int, Widget> renderedRows = new();
                     HashSet<Widget> toRemove = new();
                     foreach (Widget row in m_scrollStack.Children) {
@@ -279,14 +282,7 @@ namespace Game {
             Vector2 size = m_canvas.GlobalBounds.Size();
             if (!m_displayTable
                 && size.X > 0) {
-                FlatBatch2D.QueueQuad(
-                    m_canvas.GlobalBounds.Min,
-                    m_canvas.GlobalBounds.Max,
-                    0,
-                    Vector2.Zero,
-                    Vector2.One,
-                    Color.White
-                );
+                FlatBatch2D.QueueQuad(m_canvas.GlobalBounds.Min, m_canvas.GlobalBounds.Max, 0, Vector2.Zero, Vector2.One, Color.White);
                 FlatBatch2D.Flush();
             }
         }
@@ -307,20 +303,8 @@ namespace Game {
                         ColorFormat.Rgba8888,
                         DepthFormat.None
                     );
-                    m_cachedBlurRenderTarget ??= new RenderTarget2D(
-                        width,
-                        height,
-                        1,
-                        ColorFormat.Rgba8888,
-                        DepthFormat.None
-                    );
-                    m_cachedTempBlurRenderTarget ??= new RenderTarget2D(
-                        width,
-                        height,
-                        1,
-                        ColorFormat.Rgba8888,
-                        DepthFormat.None
-                    );
+                    m_cachedBlurRenderTarget ??= new RenderTarget2D(width, height, 1, ColorFormat.Rgba8888, DepthFormat.None);
+                    m_cachedTempBlurRenderTarget ??= new RenderTarget2D(width, height, 1, ColorFormat.Rgba8888, DepthFormat.None);
                     m_texture = m_data.GenerateTexture(
                         0,
                         (int)size.X,
@@ -363,17 +347,29 @@ namespace Game {
 
         public StackPanelWidget GenerateTableRow(uint[] record, int index, bool isBottom) {
             StackPanelWidget row = new() { Direction = LayoutDirection.Horizontal, Tag = index };
-            row.AddChildren(new GVVoltageRectangleWidget { Text = $"{record[0]:X8} V", Color = GVOscilloscopeData.WaveColor[0], Size = new Vector2(190f, 60f), IsBottom = isBottom });
-            row.AddChildren(new GVVoltageRectangleWidget { Text = $"{record[1]:X8} V", Color = GVOscilloscopeData.WaveColor[1], Size = new Vector2(192f, 60f), IsBottom = isBottom });
-            row.AddChildren(new GVVoltageRectangleWidget { Text = $"{record[2]:X8} V", Color = GVOscilloscopeData.WaveColor[2], Size = new Vector2(192f, 60f), IsBottom = isBottom });
-            row.AddChildren(new GVVoltageRectangleWidget { Text = $"{record[3]:X8} V", Color = GVOscilloscopeData.WaveColor[3], Size = new Vector2(192f, 60f), IsBottom = isBottom });
             row.AddChildren(
                 new GVVoltageRectangleWidget {
-                    Text = (index + 1).ToString(),
-                    Size = new Vector2(126f, 60f),
-                    IsBottom = isBottom,
-                    IsRightmost = true,
-                    VoltageCentered = true
+                    Text = $"{record[0]:X8} V", Color = GVOscilloscopeData.WaveColor[0], Size = new Vector2(190f, 60f), IsBottom = isBottom
+                }
+            );
+            row.AddChildren(
+                new GVVoltageRectangleWidget {
+                    Text = $"{record[1]:X8} V", Color = GVOscilloscopeData.WaveColor[1], Size = new Vector2(192f, 60f), IsBottom = isBottom
+                }
+            );
+            row.AddChildren(
+                new GVVoltageRectangleWidget {
+                    Text = $"{record[2]:X8} V", Color = GVOscilloscopeData.WaveColor[2], Size = new Vector2(192f, 60f), IsBottom = isBottom
+                }
+            );
+            row.AddChildren(
+                new GVVoltageRectangleWidget {
+                    Text = $"{record[3]:X8} V", Color = GVOscilloscopeData.WaveColor[3], Size = new Vector2(192f, 60f), IsBottom = isBottom
+                }
+            );
+            row.AddChildren(
+                new GVVoltageRectangleWidget {
+                    Text = (index + 1).ToString(), Size = new Vector2(126f, 60f), IsBottom = isBottom, IsRightmost = true, VoltageCentered = true
                 }
             );
             return row;

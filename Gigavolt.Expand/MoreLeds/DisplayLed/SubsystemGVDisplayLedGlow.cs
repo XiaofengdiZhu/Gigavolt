@@ -61,7 +61,9 @@ namespace Game {
                             }
                             Block block = BlocksManager.Blocks[id];
                             float size = key.Complex ? key.Size : block.InHandScale;
-                            if (key.Complex ? camera.ViewFrustum.Intersection(new BoundingSphere(position, size)) : camera.ViewFrustum.Intersection(position + camera.ViewDirection)) {
+                            if (key.Complex
+                                ? camera.ViewFrustum.Intersection(new BoundingSphere(position, size))
+                                : camera.ViewFrustum.Intersection(position + camera.ViewDirection)) {
                                 int x = Terrain.ToCell(position.X);
                                 int y = Terrain.ToCell(position.Y);
                                 int z = Terrain.ToCell(position.Z);
@@ -70,7 +72,8 @@ namespace Game {
                                     && chunkAtCell.State >= TerrainChunkState.InvalidVertices1
                                     && y is >= 0 and < 255) {
                                     m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
-                                    m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
+                                    m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z)
+                                        + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
                                 }
                                 m_drawBlockEnvironmentData.Light = key.Complex ? 15 : m_subsystemTerrain.Terrain.GetCellLightFast(x, y, z);
                                 m_drawBlockEnvironmentData.BillboardDirection = camera.ViewDirection;
@@ -78,14 +81,7 @@ namespace Game {
                                 if (subterrainId != 0) {
                                     rotationMatrix *= transform;
                                 }
-                                block.DrawBlock(
-                                    m_primitivesRenderer,
-                                    value,
-                                    key.Color,
-                                    size,
-                                    ref rotationMatrix,
-                                    m_drawBlockEnvironmentData
-                                );
+                                block.DrawBlock(m_primitivesRenderer, value, key.Color, size, ref rotationMatrix, m_drawBlockEnvironmentData);
                             }
                         }
                         else {
@@ -118,7 +114,11 @@ namespace Game {
                                 forward = Vector3.Zero;
                             }
                             else {
-                                lightValue = m_subsystemTerrain.Terrain.GetCellLightFast(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
+                                lightValue = m_subsystemTerrain.Terrain.GetCellLightFast(
+                                    Terrain.ToCell(position.X),
+                                    Terrain.ToCell(position.Y),
+                                    Terrain.ToCell(position.Z)
+                                );
                                 forward = rotationMatrix.Forward * 0.43f;
                             }
                             Vector3 right = rotationMatrix.Right * halfWidth;

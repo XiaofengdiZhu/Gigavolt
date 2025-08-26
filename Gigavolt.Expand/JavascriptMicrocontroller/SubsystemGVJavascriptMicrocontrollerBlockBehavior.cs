@@ -5,7 +5,9 @@ namespace Game {
         public SubsystemGVJavascriptMicrocontrollerBlockBehavior() : base(GVBlocksManager.GetBlockIndex<GVJavascriptMicrocontrollerBlock>()) { }
 
         public override int GetIdFromValue(int value) => (Terrain.ExtractData(value) >> 5) & 8191;
-        public override int SetIdToValue(int value, int id) => Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
+
+        public override int SetIdToValue(int value, int id) =>
+            Terrain.ReplaceData(value, (Terrain.ExtractData(value) & -262113) | ((id & 8191) << 5));
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer) {
             if (componentPlayer.DragHostWidget.IsDragInProgress) {
@@ -31,7 +33,13 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer) {
             int id = GetIdFromValue(value);
             GVJavascriptMicrocontrollerData javascriptMicrocontrollerData = GetItemData(id, true);
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditGVJavascriptMicrocontrollerDialog(javascriptMicrocontrollerData, () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(javascriptMicrocontrollerData, id))); }));
+            DialogsManager.ShowDialog(
+                componentPlayer.GuiWidget,
+                new EditGVJavascriptMicrocontrollerDialog(
+                    javascriptMicrocontrollerData,
+                    () => { SubsystemTerrain.ChangeCell(x, y, z, SetIdToValue(value, StoreItemDataAtUniqueId(javascriptMicrocontrollerData, id))); }
+                )
+            );
             return true;
         }
     }

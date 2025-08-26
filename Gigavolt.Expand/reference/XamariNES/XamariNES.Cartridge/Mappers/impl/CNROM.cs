@@ -36,23 +36,11 @@ namespace XamariNES.Cartridge.Mappers.impl {
             NametableMirroring = nametableMirroring;
 
             //Copy over all of PRG ROM (16KB or 32KB)
-            Array.Copy(
-                prgRom,
-                0,
-                _prgRom,
-                0,
-                prgRom.Length
-            );
+            Array.Copy(prgRom, 0, _prgRom, 0, prgRom.Length);
 
             //If it was only 16KB, go ahead and mirror the second 16KB
             if (prgRom.Length <= 0x4000) {
-                Array.Copy(
-                    prgRom,
-                    0,
-                    _prgRom,
-                    0x4000,
-                    prgRom.Length
-                );
+                Array.Copy(prgRom, 0, _prgRom, 0x4000, prgRom.Length);
             }
         }
 

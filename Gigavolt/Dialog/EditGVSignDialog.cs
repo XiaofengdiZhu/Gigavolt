@@ -75,13 +75,7 @@ namespace Game {
             if (m_okButton.IsClicked) {
                 string line = m_textBox1.Text;
                 Color color = m_colorButton1.Color;
-                m_subsystemSignBlockBehavior.SetSignData(
-                    m_signPoint,
-                    0,
-                    line,
-                    color,
-                    m_urlTextBox.Text
-                );
+                m_subsystemSignBlockBehavior.SetSignData(m_signPoint, 0, line, color, m_urlTextBox.Text);
                 Dismiss();
             }
             if (m_urlButton.IsClicked) {

@@ -4,7 +4,8 @@ using Engine.Graphics;
 using GameEntitySystem;
 
 namespace Game {
-    public class GVFourDimensionalMemoryBankBlock() : RotateableMountedGVElectricElementBlock("Models/GVMemoryBank", "MemoryBank", 0.875f), IGVCustomWheelPanelBlock {
+    public class GVFourDimensionalMemoryBankBlock()
+        : RotateableMountedGVElectricElementBlock("Models/GVMemoryBank", "MemoryBank", 0.875f), IGVCustomWheelPanelBlock {
         public const int Index = 891;
         public Texture2D m_texture;
 
@@ -13,7 +14,12 @@ namespace Game {
             m_texture = ContentManager.Get<Texture2D>("Textures/GVFourDimensionalMemoryBankBlock");
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer,
+            int value,
+            Color color,
+            float size,
+            ref Matrix matrix,
+            DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,
                 m_standaloneBlockMesh,
@@ -50,12 +56,30 @@ namespace Game {
             );
         }
 
-        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity, int value, int x, int y, int z, uint subterrainId) => new GVFourDimensionalMemoryBankGVElectricElement(subsystemGVElectricity, new GVCellFace(x, y, z, GetFace(value)), value, subterrainId);
+        public override GVElectricElement CreateGVElectricElement(SubsystemGVElectricity subsystemGVElectricity,
+            int value,
+            int x,
+            int y,
+            int z,
+            uint subterrainId) => new GVFourDimensionalMemoryBankGVElectricElement(
+            subsystemGVElectricity,
+            new GVCellFace(x, y, z, GetFace(value)),
+            value,
+            subterrainId
+        );
 
-        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem, int value, int face, int connectorFace, int x, int y, int z, Terrain terrain) {
+        public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
+            int value,
+            int face,
+            int connectorFace,
+            int x,
+            int y,
+            int z,
+            Terrain terrain) {
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                GVElectricConnectorDirection? connectorDirection =
+                    SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
                 switch (connectorDirection) {
                     case GVElectricConnectorDirection.Right:
                     case GVElectricConnectorDirection.Left:
@@ -70,9 +94,15 @@ namespace Game {
         public List<int> GetCustomWheelPanelValues(int centerValue) => IGVCustomWheelPanelBlock.MemoryBankValues;
 
         public virtual int GetCustomCopyBlock(Project project, int centerValue) {
-            SubsystemGVFourDimensionalMemoryBankBlockBehavior subsystem = project.FindSubsystem<SubsystemGVFourDimensionalMemoryBankBlockBehavior>(true);
+            SubsystemGVFourDimensionalMemoryBankBlockBehavior subsystem =
+                project.FindSubsystem<SubsystemGVFourDimensionalMemoryBankBlockBehavior>(true);
             int id = subsystem.GetIdFromValue(centerValue);
-            return id == 0 ? centerValue : subsystem.SetIdToValue(centerValue, subsystem.StoreItemDataAtUniqueId((GVFourDimensionalMemoryBankData)subsystem.GetItemData(id).Copy()));
+            return id == 0
+                ? centerValue
+                : subsystem.SetIdToValue(
+                    centerValue,
+                    subsystem.StoreItemDataAtUniqueId((GVFourDimensionalMemoryBankData)subsystem.GetItemData(id).Copy())
+                );
         }
     }
 }
