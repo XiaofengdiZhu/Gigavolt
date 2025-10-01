@@ -203,6 +203,7 @@ resharper_place_expr_property_on_single_line = true
 resharper_place_simple_case_statement_on_same_line = true
 resharper_place_simple_enum_on_single_line = true
 resharper_place_simple_switch_expression_on_single_line = true
+resharper_prefer_wrap_around_eq = avoid
 resharper_resx_max_line_length = 0
 resharper_static_members_qualify_with = current_type
 resharper_t4_max_line_length = 0

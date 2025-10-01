@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Engine;
 using Engine.Graphics;
 
 namespace Game {
     public class GVSignalGeneratorBlock : RotateableMountedGVElectricElementBlock {
-        public const int Index = 897;
         Texture2D texture;
         public readonly BoundingBox[][] m_bottomCollisionBoxes = new BoundingBox[24][];
 
@@ -182,6 +182,25 @@ namespace Game {
             return GetIsTopPart(data) ? m_bottomCollisionBoxes[data & 0x1F] : m_collisionBoxes[data & 0x1F];
         }
 
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain,
+            ComponentMiner componentMiner,
+            int value,
+            TerrainRaycastResult raycastResult) {
+            BlockPlacementData result = base.GetPlacementValue(subsystemTerrain, componentMiner, value, raycastResult);
+            result.Value = Terrain.ReplaceData(result.Value, SetIsTopPart(Terrain.ExtractData(result.Value), false));
+            return result;
+        }
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain,
+            int oldValue,
+            int newValue,
+            int toolLevel,
+            List<BlockDropValue> dropValues,
+            out bool showDebris) {
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(BlockIndex, 0, Terrain.ExtractData(oldValue) & -64), Count = 1 });
+            showDebris = DestructionDebrisScale > 0f;
+        }
+
         public override GVElectricConnectorType? GetGVConnectorType(SubsystemGVSubterrain subsystem,
             int value,
             int face,
@@ -193,8 +212,11 @@ namespace Game {
             int data = Terrain.ExtractData(value);
             bool isUp = GetIsTopPart(data);
             if (GetFace(value) == face) {
-                GVElectricConnectorDirection? connectorDirection =
-                    SubsystemGVElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                GVElectricConnectorDirection? connectorDirection = SubsystemGVElectricity.GetConnectorDirection(
+                    GetFace(value),
+                    GetRotation(data),
+                    connectorFace
+                );
                 switch (connectorDirection) {
                     case GVElectricConnectorDirection.Right:
                     case GVElectricConnectorDirection.Left: return GVElectricConnectorType.Input;
